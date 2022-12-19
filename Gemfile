@@ -52,8 +52,20 @@ gem "bootsnap", require: false
 gem "devise"
 
 group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  # Capybara for integration testing
+  gem "capybara"
+
+  # Byebug for debugging
+  gem "byebug", platform: :mri
+
+  # RSpec to write test suites
+  gem "rspec-rails", "~> 3.5"
+
+  # Factory bot for test data creation
+  gem "factory_bot_rails"
+
+  # DB cleaner for test data management
+  gem "database_cleaner"
 end
 
 group :development do

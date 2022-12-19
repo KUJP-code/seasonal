@@ -1,24 +1,9 @@
-# README
+# Stuff I can already do
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- Install RSpec/other testing stuff
+- Install I18ln
+    - And the Devise version
+- Install Rubocop
+- Create the splash page and its controller
+- Create a basic User controller so I can actually see a non-login page
+    - Add the nav bar and style it to match the real site
