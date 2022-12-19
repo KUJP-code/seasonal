@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       # Ensures just the locale also goes to root
       get '/:locale', to: 'users#index'
     end
+    get '/current_event', to: 'welcomes#current_event'
   end
 
   # Defines the root path route ("/")

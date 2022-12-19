@@ -1,5 +1,9 @@
 ---
 ja:
+  controllers:
+    welcomes:
+      sign_in: "ログイン"
+      sign_up: "アカウント登録"
   activerecord:
     errors:
       messages:
