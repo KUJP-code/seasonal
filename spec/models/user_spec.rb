@@ -38,5 +38,25 @@ RSpec.describe 'User' do
       role = create(:admin_user).role
       expect(role).to eq 'admin'
     end
+
+    it 'can be confirmed with customer?' do
+      confirmable = create(:customer_user).customer?
+      expect(confirmable).to be true
+    end
+
+    it 'can be confirmed with school manager' do
+      confirmable = create(:sm_user).school_manager?
+      expect(confirmable).to be true
+    end
+
+    it 'can be confirmed with area manager' do
+      confirmable = create(:am_user).area_manager?
+      expect(confirmable).to be true
+    end
+
+    it 'can be confirmed with admin' do
+      confirmable = create(:admin_user).admin?
+      expect(confirmable).to be true
+    end
   end
 end
