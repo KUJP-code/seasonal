@@ -51,6 +51,9 @@ gem "bootsnap", require: false
 # Use Devise for authentication
 gem "devise"
 
+# Localize Devise views so I can read my own app
+gem 'devise-i18n'
+
 group :development, :test do
   # Use Faker to generate test data
   gem "faker"

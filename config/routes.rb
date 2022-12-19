@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
-  devise_for :users, path: "auth"
+  scope "(/:locale)", locale: /ja|en/ do
+    devise_for :users, path: "auth"
 
-  authenticate :user do
-    resources :users
+    authenticate :user do
+      resources :users
+
+      # Ensures just the locale also goes to root
+      get '/:locale', to: 'users#index'
+    end
   end
 
   # Defines the root path route ("/")
