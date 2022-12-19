@@ -1,6 +1,5 @@
 # Stuff I can already do
 
-- Install RSpec/other testing stuff
 - Install I18ln
     - And the Devise version
 - Install Rubocop
