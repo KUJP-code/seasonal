@@ -52,6 +52,9 @@ gem "bootsnap", require: false
 gem "devise"
 
 group :development, :test do
+  # Use Faker to generate test data
+  gem "faker"
+
   # Capybara for integration testing
   gem "capybara"
 
