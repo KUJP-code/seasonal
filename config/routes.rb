@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
-  scope "(/:locale)", locale: /ja|en/ do
-    devise_for :users, path: "auth"
+  scope '(/:locale)', locale: /ja|en/ do
+    devise_for :users, path: 'auth'
 
     authenticate :user do
       resources :users
@@ -12,7 +14,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   authenticated :user do
-    root to: "users#index", as: :authenticated_root
+    root to: 'users#index', as: :authenticated_root
   end
-  root to: redirect("/auth/sign_in")
+  root to: redirect('/auth/sign_in')
 end

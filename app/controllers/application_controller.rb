@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Everything here applies to and is accessible from the whole app
 class ApplicationController < ActionController::Base
   before_action :switch_locale
 

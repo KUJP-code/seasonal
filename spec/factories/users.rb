@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :user do
     id { |n| n }
@@ -7,19 +9,19 @@ FactoryBot.define do
     password { Faker::Internet.password(min_length: 10) }
 
     trait :customer do
-      role {0}
+      role { 0 }
     end
 
     trait :school_manager do
-      role {1}
+      role { 1 }
     end
 
     trait :area_manager do
-      role {2}
+      role { 2 }
     end
 
     trait :admin do
-      role {3}
+      role { 3 }
     end
 
     factory :customer_user, traits: [:customer]

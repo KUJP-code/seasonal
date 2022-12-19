@@ -1,0 +1,15 @@
+require:
+  - rubocop-rails
+  - rubocop-performance
+  - rubocop-rspec
+  
+AllCops:
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'bin/{rails,rake}'
+    - 'bin/bundle'
+    - !ruby/regexp /old_and_unused\.rb$/ 
+  NewCops: enable
+    
