@@ -8,6 +8,13 @@ ja:
           has_one: "%{record}が存在しているので削除できません"
           has_many: "%{record}が存在しているので削除できません"
   controllers:
+    events:
+      event: "イベント"
+    users:
+      children: "子供達:"
+      delete: "ユーザーを削除"
+      delete_confirm: "%{name}を削除してもよろしいですか?"
+      edit: "編集情報"
     welcomes:
       sign_in: "ログイン"
       sign_up: "アカウント登録"
@@ -117,6 +124,11 @@ ja:
     template:
       body: 次の項目を確認してください
       header: "%{model}に%{count}個のエラーが発生しました"
+  flash:
+    delete_successful: "ユーザーを削除しました"
+    delete_unsuccessful: "ユーザーを削除できませんでした"
+    update_successful: "ユーザーが正常に更新されました"
+    update_unsuccessful: "ユーザーを更新できませんでした"
   helpers:
     select:
       prompt: 選択してください
@@ -127,9 +139,9 @@ ja:
   nav_bar:
     children: "子供達"
     customers: "顧客"
-    schools: "学校"
     logout: "ログアウト"
     profile: "プロフィール"
+    schools: "学校"
   number:
     currency:
       format:
@@ -182,8 +194,10 @@ ja:
   roles:
     admin: "管理者"
     area_manager: "エリアマネージャー"
-    school_manager: "学校マネージャー"
     customer: "お客様"
+    school_manager: "学校マネージャー"
+    # area_manager: "%{area}エリアマネージャー"
+    # school_manager: "%{school}校長"
   support:
     array:
       last_word_connector: "、"
@@ -196,5 +210,3 @@ ja:
       long: "%Y/%m/%d %H:%M"
       short: "%m/%d %H:%M"
     pm: 午後
-  user:
-    children: "子供達:"

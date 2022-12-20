@@ -1,0 +1,10 @@
+<main id="user_show">
+    <%= render @user %>
+
+    <% if @user.customer? %>
+        <div id="event_container">
+            <h2><%= t('controllers.events.event') %></h2>
+            <%# Show each event each child is registered for and their registration status %>
+        </div>
+    <% end %>
+</main>

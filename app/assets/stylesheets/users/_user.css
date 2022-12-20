@@ -1,35 +1,52 @@
-.user_partial h1,
-.user_partial h2,
-.user_partial h3,
-.user_partial h4,
-.user_partial h5,
-.user_partial h6, 
-.user_partial ul,
-.user_partial li {
-    margin: 0;
-    padding: 0;
-}
+/* For all User partials */
 
-/* For the User#index view */
-
-#user_index .user_partial {
+.user_partial {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     justify-content: center;
     padding: 1vw;
     gap: 1vw;
-    height: 20vh;
     overflow-x: hidden;
     overflow-y: scroll;
     border-radius: 1vw;
     text-align: center;
-    box-shadow: 0px 0.5vw 0.5vw grey;
+    box-shadow: var(--container-shadow);
 }
 
-#user_index .user_partial ul {
+.user_partial .children,
+.user_partial .key_info {
+    flex: 1 1 auto;
+}
+
+.user_partial .key_info {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    overflow: clip;
+}
+
+.user_partial ul {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    gap: 2vw;
+    gap: max(20px, 2vw);
+}
+
+.user_partial .user_options {
+    flex: 0 0 auto;
+}
+
+/* For the User#show view */
+
+#user_show .user_partial {
+    width: 90%;
+}
+
+/* For the User#index view */
+
+#user_index .user_partial {
+    height: max(150px, 15vw);
 }

@@ -1,0 +1,15 @@
+#user_show {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    gap: 1vw;
+    padding: 1vw;
+}
+
+#user_show #event_container {
+    width: 90%;
+    border-radius: 1vw;
+    padding: 1vw;
+    box-shadow: var(--container-shadow);
+    text-align: center;
+}
