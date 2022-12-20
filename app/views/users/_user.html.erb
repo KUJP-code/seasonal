@@ -1,0 +1,23 @@
+<div class="user_partial">
+    <%# TODO: Link will be their name once they have one %>
+    <div class="key_info">
+        <h2><%= link_to user.email, user_path(user) %></h2>
+        
+        <% unless user.customer? %>
+            <h4><%= t("roles.#{user.role}") %></h4>
+        <% end %>
+    </div>
+
+    <% if user.customer? %>
+        <div class="children">
+            <h4><%= t("user.children") %></h4>
+            <%# TODO: these will all be links once children exist %>
+            <ul>
+                <li class="user_child">Child 1</li>
+                <li class="user_child">Child 2</li>
+                <li class="user_child">Child 3</li>
+                <li class="user_child">Child 4</li>                
+            </ul>
+        </div>
+    <% end %>
+</div>

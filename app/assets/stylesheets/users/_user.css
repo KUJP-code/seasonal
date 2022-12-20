@@ -1,0 +1,35 @@
+.user_partial h1,
+.user_partial h2,
+.user_partial h3,
+.user_partial h4,
+.user_partial h5,
+.user_partial h6, 
+.user_partial ul,
+.user_partial li {
+    margin: 0;
+    padding: 0;
+}
+
+/* For the User#index view */
+
+#user_index .user_partial {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    padding: 1vw;
+    gap: 1vw;
+    height: 20vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    border-radius: 1vw;
+    text-align: center;
+    box-shadow: 0px 0.5vw 0.5vw grey;
+}
+
+#user_index .user_partial ul {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 2vw;
+}
