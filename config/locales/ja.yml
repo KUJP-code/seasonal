@@ -1,5 +1,11 @@
 ---
 ja:
+  nav_bar:
+    children: "子供達"
+    customers: "顧客"
+    schools: "学校"
+    logout: "ログアウト"
+    profile: "プロフィール"
   controllers:
     welcomes:
       sign_in: "ログイン"

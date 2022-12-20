@@ -30,6 +30,12 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  nav_bar: 
+    child_list: "Children"
+    customers: "Customers"
+    schools: "Schools"
+    logout: "Sign Out"
+    profile: "My Profile"
   controllers:
     welcomes:
       sign_in: "Sign In"

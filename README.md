@@ -1,4 +1,4 @@
 # Stuff I can already do
 
-- Create a basic User controller so I can actually see a non-login page
-    - Add the nav bar and style it to match the real site
+- Add the nav bar and style it to match the real site
+    - Stick the nav bar to the top of the screen
