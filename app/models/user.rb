@@ -9,8 +9,4 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-
-  def role
-    self[:role].tr('_', ' ').gsub(/\b[a-z]/, &:upcase)
-  end
 end
