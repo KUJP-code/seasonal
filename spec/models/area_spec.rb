@@ -29,7 +29,7 @@ RSpec.describe Area do
 
   context 'with associations' do
     context 'with manager' do
-      it 'has a manager' do
+      it 'knows its manager' do
         am = create(:am_user)
         area = create(:area, manager: am)
         manager = area.manager

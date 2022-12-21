@@ -11,6 +11,7 @@ FactoryBot.define do
 
     trait :customer do
       role { 0 }
+      school_id { create(:school).id }
     end
 
     trait :school_manager do

@@ -81,4 +81,51 @@ RSpec.describe 'User' do
       expect(valid).to be false
     end
   end
+
+  context 'with association' do
+    context 'when regular user' do
+      # it 'knows which area it belongs to' do
+      #   area = create(:area)
+      #   area_user = create(:user, area: area)
+      #   user_area = area_user.area
+      #   expect(user_area).to be area
+      # end
+
+      it "doesn't need a managed area" do
+        no_managing = build(:user, managed_area: nil)
+        no_managing_valid = no_managing.save
+        expect(no_managing_valid).to be true
+      end
+
+      xit 'knows its school' do
+      end
+
+      xit 'knows its area through school' do
+      end
+    end
+
+    context 'when area manager' do
+      it 'knows its area' do
+        attrs = attributes_for(:area, manager: nil)
+        managed_area = user.create_managed_area(attrs)
+        user_area = user.managed_area
+        expect(user_area).to be managed_area
+      end
+
+      xit "doesn't need a school" do
+      end
+    end
+
+    context 'when school manager' do
+      xit 'knows its school' do
+        attrs = attributes_for(:school, manager: nil)
+        managed_school = user.create_managed_school(attrs)
+        user_school = user.managed_school
+        expect(user_school).to be managed_school
+      end
+
+      xit "doesn't need a school" do
+      end
+    end
+  end
 end
