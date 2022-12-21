@@ -39,24 +39,46 @@ RSpec.describe 'User' do
       expect(role).to eq 'admin'
     end
 
-    it 'can be confirmed with customer?' do
+    it 'can be confirmed with #customer?' do
       confirmable = create(:customer_user).customer?
       expect(confirmable).to be true
     end
 
-    it 'can be confirmed with school manager' do
+    it 'can be confirmed with #school_manager?' do
       confirmable = create(:sm_user).school_manager?
       expect(confirmable).to be true
     end
 
-    it 'can be confirmed with area manager' do
+    it 'can be confirmed with #area_manager?' do
       confirmable = create(:am_user).area_manager?
       expect(confirmable).to be true
     end
 
-    it 'can be confirmed with admin' do
+    it 'can be confirmed with #admin?' do
       confirmable = create(:admin_user).admin?
       expect(confirmable).to be true
+    end
+  end
+
+  context 'when password is invalid' do
+    it 'rejects passwords shorter than 10 characters' do
+      short_pass = build(:user, password: 'short')
+      valid = short_pass.save
+      expect(valid).to be false
+    end
+
+    it 'rejects users with no password' do
+      no_pass = build(:user, password: 'nil')
+      valid = no_pass.save
+      expect(valid).to be false
+    end
+  end
+
+  context 'when email is invalid' do
+    it 'rejects users with no email' do
+      no_email = build(:user, email: 'nil')
+      valid = no_email.save
+      expect(valid).to be false
     end
   end
 end
