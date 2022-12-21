@@ -1,0 +1,7 @@
+en:
+  nav_bar: 
+    child_list: "Children"
+    customers: "Customers"
+    logout: "Sign Out"
+    profile: "My Profile"
+    schools: "Schools"

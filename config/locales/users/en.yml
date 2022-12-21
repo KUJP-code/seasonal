@@ -1,0 +1,23 @@
+en:
+  users:
+    destroy:
+      success: "Successfully deleted user"
+      failure: "Couldn't delete user"
+    show:  
+      event: "Event"
+    update:
+      success: "Successfully updated user"
+      failure: "Couldn't update user"
+    user:
+      children: "Children:"
+      delete: "Delete User"
+      delete_confirm: "Are you sure you want to delete this user?"
+      edit: "Edit User"
+      roles:
+        admin: "Admin"
+        area_manager: "Area Manager"
+        customer: "Customer"
+        school_manager: "School Manager"
+        # area_manager: "%{area} Area Manager"
+        # school_manager: "School Manager at %{school}"
+    

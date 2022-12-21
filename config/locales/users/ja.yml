@@ -1,0 +1,23 @@
+ja:
+  users:
+    destroy:
+      success: "ユーザーを削除しました"
+      failure: "ユーザーを削除できませんでした"
+    show:
+      event: "イベント"
+    update:
+      success: "ユーザーが正常に更新されました"
+      failure: "ユーザーを更新できませんでした"
+    user:
+      children: "子供達:"
+      delete: "ユーザーを削除"
+      delete_confirm: "ユーザーを削除してもよろしいですか?"
+      edit: "編集情報"
+      roles:
+        admin: "管理者"
+        area_manager: "エリアマネージャー"
+        customer: "お客様"
+        school_manager: "学校マネージャー"
+        # area_manager: "%{area}エリアマネージャー"
+        # school_manager: "%{school}校長"
+    

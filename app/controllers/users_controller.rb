@@ -33,10 +33,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     if @user.update(user_params)
-      flash[:notice] = t('flash.update_successful')
+      flash[:notice] = t('.success')
       redirect_to user_path(@user)
     else
-      flash.now[:alert] = t('flash.update_unsuccessful')
+      flash.now[:alert] = t('.failure')
       render :edit, status: :unprocessable_entity
     end
   end
@@ -45,10 +45,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     if @user.destroy
-      flash[:notice] = t('flash.delete_successful')
+      flash[:notice] = t('.success')
       redirect_to users_path
     else
-      flash.now[:alert] = t('flash.delete_unsuccessful')
+      flash.now[:alert] = t('.failure')
     end
   end
 
