@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :user do
     id { |n| n }
+    # TODO: Add these back in when the fields are added
     # name { Faker::Name.name }
     # username { Faker::Internet.unique.username }
     email { Faker::Internet.unique.email }

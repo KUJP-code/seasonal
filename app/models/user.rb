@@ -2,6 +2,8 @@
 
 # Manages AR data for User class
 class User < ApplicationRecord
+  has_one :area, dependent: :restrict_with_exception
+
   # Map role integer in db to a string w/methods
   enum :role, customer: 0, school_manager: 1, area_manager: 2, admin: 3, default: :customer
 

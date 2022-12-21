@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
     authenticate :user do
       resources :users
+      resources :areas
 
       # Ensures just the locale also goes to root
       get '/:locale', to: 'users#index'
