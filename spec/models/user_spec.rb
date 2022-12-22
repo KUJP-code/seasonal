@@ -116,7 +116,7 @@ RSpec.describe 'User' do
     context 'when area manager' do
       subject(:area_manager) { create(:am_user) }
 
-      it 'knows its area' do
+      it 'knows its managed area' do
         managed_area = area_manager.create_managed_area(attributes_for(:area))
         user_area = area_manager.managed_area
         expect(user_area).to be managed_area

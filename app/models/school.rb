@@ -6,5 +6,6 @@ class School < ApplicationRecord
 
   has_many :users, dependent: :restrict_with_exception
 
-  validates :phone, format: { with: /\A[0-9 \-+x.)(]+\Z/ }
+  validates :name, :address, :phone, presence: true
+  validates :phone, format: { with: /\A[0-9 \-+x.)(]+\Z/, message: I18n.t('schools.validations.phone') }
 end

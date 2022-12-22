@@ -1,0 +1,4 @@
+en:
+  schools:
+    validations:
+      phone: "Your phone number can only contain numbers, spaces and -+()."

@@ -1,0 +1,4 @@
+ja:
+  schools:
+    validations:
+      phone: '電話番号には、数字、スペース、-+() のみを含めることができます。'

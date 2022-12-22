@@ -36,5 +36,7 @@ RSpec.describe Area do
         expect(manager).to be am
       end
     end
+
+    # TODO: lots more association tests to write
   end
 end

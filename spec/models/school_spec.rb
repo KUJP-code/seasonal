@@ -28,15 +28,21 @@ RSpec.describe School do
   context 'when invalid' do
     context 'when required values missing' do
       it "doesn't save without address" do
-        
+        valid_school.address = nil
+        valid = valid_school.save
+        expect(valid).to be false
       end
 
       it "doesn't save without name" do
-        
+        valid_school.name = nil
+        valid = valid_school.save
+        expect(valid).to be false
       end
 
       it "doesn't save without phone number" do
-        
+        valid_school.phone = nil
+        valid = valid_school.save
+        expect(valid).to be false
       end
     end
 
@@ -61,7 +67,7 @@ RSpec.describe School do
         expect(valid).to be false
       end
 
-      it "doesn't accept symbols other than +" do
+      it "doesn't accept disallowed symbols" do
         illegal_symbols = build(:school, phone: '79%*9723#')
         valid = illegal_symbols.save
         expect(valid).to be false
@@ -69,32 +75,73 @@ RSpec.describe School do
     end
   end
 
-  # context 'when associated' do
-  #   context 'with area' do
-  #     it 'knows its area' do
-  #       area = create(:area)
-  #       new_school = create(:school, area: area)
-  #       school_area = new_school.area
-  #       expect(school_area).to be area
-  #     end
-  #   end
+  context 'when associated' do
+    context 'with area' do
+      let(:schools) { create_list(:school, 10) }
+      let(:area) { create(:area) }
 
-  #   context 'with manager' do
-  #     it 'knows its manager' do
-  #       manager = create(:sm_user)
-  #       new_school = create(:school, manager: manager)
-  #       school_manager = new_school.manager
-  #       expect(school_manager).to be manager
-  #     end
-  #   end
+      it 'knows its area' do
+        new_school = create(:school, area: area)
+        school_area = new_school.area
+        expect(school_area).to be area
+      end
 
-  #   context 'with users' do
-  #     it 'knows its users' do
-  #       users = build_list(:user, 10)
-  #       school.users.create(users)
-  #       school_users = school.users
-  #       expect(school_users).to eq users
-  #     end
-  #   end
-  # end
+      it 'can be added to a new area' do
+        transfer_school = create(:school)
+        area.schools << transfer_school
+        area_schools = area.schools
+        expect(area_schools).to include(transfer_school)
+      end
+
+      it "knows it's been added to a new area" do
+        transfer_school = create(:school)
+        area.schools << transfer_school
+        t_school_area = transfer_school.area
+        expect(t_school_area).to be area
+      end
+
+      it 'area knows its schools' do
+        schools.each do |school|
+          area.schools << school
+        end
+        area_schools = area.schools
+        expect(area_schools).to eq schools
+      end
+    end
+
+    context 'with manager' do
+      it 'knows its manager' do
+        manager = create(:sm_user)
+        new_school = create(:school, manager: manager)
+        school_manager = new_school.manager
+        expect(school_manager).to be manager
+      end
+
+      it 'manager knows its school' do
+        manager = create(:sm_user)
+        new_school = create(:school, manager: manager)
+        manager_school = manager.managed_school
+        expect(manager_school).to eq new_school
+      end
+    end
+
+    context 'with customers' do
+      let(:customers) { create_list(:customer_user, 10) }
+
+      it 'knows its customers' do
+        customers.each do |customer|
+          school.users << customer
+        end
+        school_customers = school.users.customers
+        expect(school_customers).to eq customers
+      end
+
+      it 'customers know their school' do
+        customer = customers.first
+        school.users << customer
+        customer_school = customer.school
+        expect(customer_school).to be school
+      end
+    end
+  end
 end

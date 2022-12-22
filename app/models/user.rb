@@ -16,6 +16,12 @@ class User < ApplicationRecord
   # Map role integer in db to a string w/methods
   enum :role, customer: 0, school_manager: 1, area_manager: 2, admin: 3, default: :customer
 
+  # Create scopes for each role
+  scope :customers, -> { where(role: :customer) }
+  scope :area_managers, -> { where(role: :area_manager) }
+  scope :school_managers, -> { where(role: :school_manager) }
+  scope :admins, -> { where(role: :admin) }
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
