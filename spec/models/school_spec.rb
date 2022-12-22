@@ -26,17 +26,17 @@ RSpec.describe School do
   end
 
   context 'when invalid' do
-    context 'when phone number invalid' do
-      it "doesn't accept letters" do
-        not_numbers = build(:school, phone: '79ug9723A')
-        valid = not_numbers.save
-        expect(valid).to be false
+    context 'when required values missing' do
+      it "doesn't save without address" do
+        
       end
 
-      it "doesn't accept symbols other than +" do
-        illegal_symbols = build(:school, phone: '79%*9723#')
-        valid = illegal_symbols.save
-        expect(valid).to be false
+      it "doesn't save without name" do
+        
+      end
+
+      it "doesn't save without phone number" do
+        
       end
     end
 
@@ -51,6 +51,20 @@ RSpec.describe School do
         valid_school.manager = nil
         no_manager_valid = valid_school.save
         expect(no_manager_valid).to be false
+      end
+    end
+
+    context 'when phone number invalid' do
+      it "doesn't accept letters" do
+        not_numbers = build(:school, phone: '79ug9723A')
+        valid = not_numbers.save
+        expect(valid).to be false
+      end
+
+      it "doesn't accept symbols other than +" do
+        illegal_symbols = build(:school, phone: '79%*9723#')
+        valid = illegal_symbols.save
+        expect(valid).to be false
       end
     end
   end
