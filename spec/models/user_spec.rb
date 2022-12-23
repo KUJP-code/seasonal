@@ -112,18 +112,22 @@ RSpec.describe 'User' do
     end
   end
 
+  # Looks like I'll need to create areas through area managers
   context 'when area manager' do
     subject(:area_manager) { create(:am_user) }
 
+    let(:area_attr) { attributes_for(:area) }
+    let(:new_am) { create(:am_user) }
+
     it 'knows its managed area' do
-      managed_area = area_manager.create_managed_area(attributes_for(:area))
-      user_area = area_manager.managed_area
-      expect(user_area).to be managed_area
+      created_area = area_manager.create_managed_area(area_attr)
+      managed_area = area_manager.managed_area
+      expect(managed_area).to be created_area
     end
 
     it 'managed area knows manager' do
-      managed_area = area_manager.create_managed_area(attributes_for(:area))
-      manager = managed_area.manager
+      created_area = area_manager.create_managed_area(area_attr)
+      manager = created_area.manager
       expect(manager).to be area_manager
     end
 
@@ -132,10 +136,31 @@ RSpec.describe 'User' do
       valid = no_school.save!
       expect(valid).to be true
     end
+
+    # Gonna need to handle this by updating the existing am account and
+    # creating a new one for the moving am, due to this issue
+    # (https://github.com/rails/rails/issues/43096)
+    it 'can change areas' do
+      created_area = area_manager.create_managed_area(area_attr)
+      old_manager = created_area.manager.email
+      created_area.manager.update(id: area_manager.id, email: 'new@gmail.com', password: 'newpasswordpassword')
+      new_manager = created_area.manager.email
+      expect(new_manager).not_to eq old_manager
+    end
+
+    it 'area knows its manager changed' do
+      created_area = area_manager.create_managed_area(area_attr)
+      created_area.manager = new_am
+      current_manager = created_area.manager
+      expect(current_manager).to be new_am
+    end
   end
 
   context 'when school manager' do
     subject(:school_manager) { create(:sm_user) }
+
+    let(:school_attr) { attributes_for(:school) }
+    let(:new_sm) { create(:sm_user) }
 
     it 'knows its managed school' do
       managed_school = school_manager.create_managed_school(attributes_for(:school))
@@ -153,6 +178,24 @@ RSpec.describe 'User' do
       no_school = build(:sm_user)
       valid = no_school.save!
       expect(valid).to be true
+    end
+
+    # Gonna need to handle this by updating the existing sm account and
+    # creating a new one for the moving sm, due to this issue
+    # (https://github.com/rails/rails/issues/43096)
+    it 'can change schools' do
+      created_school = school_manager.create_managed_school(school_attr)
+      old_manager = created_school.manager.email
+      created_school.manager.update(id: school_manager.id, email: 'new@gmail.com', password: 'newpasswordpassword')
+      new_manager = created_school.manager.email
+      expect(new_manager).not_to eq old_manager
+    end
+
+    it 'area knows its manager changed' do
+      created_school = school_manager.create_managed_school(school_attr)
+      created_school.manager = new_sm
+      current_manager = created_school.manager
+      expect(current_manager).to be new_sm
     end
   end
 end
