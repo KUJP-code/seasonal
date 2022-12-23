@@ -9,7 +9,10 @@ class CreateSchools < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    add_reference :schools, :manager, null: false, index: true
-    add_foreign_key :schools, :users, column: :manager_id
+    add_reference :schools, :manager,
+                            null: false,
+                            index: true
+    add_foreign_key :schools, :users,
+                              column: :manager_id
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_21_111704) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_23_072837) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,6 +20,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_21_111704) do
     t.datetime "updated_at", null: false
     t.bigint "manager_id", null: false
     t.index ["manager_id"], name: "index_areas_on_manager_id"
+  end
+
+  create_table "children", force: :cascade do |t|
+    t.date "birthday"
+    t.integer "level", default: 0
+    t.string "allergies"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "parent_id", null: false
+    t.bigint "school_id", null: false
+    t.index ["parent_id"], name: "index_children_on_parent_id"
+    t.index ["school_id"], name: "index_children_on_school_id"
   end
 
   create_table "schools", force: :cascade do |t|
@@ -50,6 +62,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_21_111704) do
   end
 
   add_foreign_key "areas", "users", column: "manager_id"
+  add_foreign_key "children", "schools"
+  add_foreign_key "children", "users", column: "parent_id"
   add_foreign_key "schools", "areas"
   add_foreign_key "schools", "users", column: "manager_id"
   add_foreign_key "users", "schools"

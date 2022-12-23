@@ -13,8 +13,12 @@ class User < ApplicationRecord
                          inverse_of: :manager,
                          dependent: :restrict_with_exception
 
-  # Map role integer in db to a string w/methods
-  enum :role, customer: 0, school_manager: 1, area_manager: 2, admin: 3, default: :customer
+  # Map role integer in db to a string
+  enum :role, customer: 0,
+              school_manager: 1,
+              area_manager: 2,
+              admin: 3,
+              default: :customer
 
   # Create scopes for each role
   scope :customers, -> { where(role: :customer) }
