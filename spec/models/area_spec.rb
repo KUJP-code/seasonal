@@ -27,16 +27,58 @@ RSpec.describe Area do
     end
   end
 
-  context 'with associations' do
-    context 'with manager' do
-      it 'knows its manager' do
-        am = create(:am_user)
-        area = create(:area, manager: am)
-        manager = area.manager
-        expect(manager).to be am
-      end
+  context 'with manager' do
+    it 'knows its manager' do
+      am = create(:am_user)
+      managed_area = create(:area, manager: am)
+      manager = managed_area.manager
+      expect(manager).to be am
     end
 
-    # TODO: lots more association tests to write
+    it "it's manager knows it" do
+      am = create(:am_user)
+      managed_area = create(:area, manager: am)
+      manager_area = am.managed_area
+      expect(manager_area).to eq managed_area
+    end
+  end
+
+  context 'with schools' do
+    let(:schools) { create_list(:school, 10) }
+
+    it 'knows its schools' do
+      schools.each do |school|
+        area.schools << school
+      end
+      area_schools = area.schools
+      expect(area_schools).to eq schools
+    end
+
+    it 'its schools know it' do
+      area.schools = schools
+      school_area = area.schools[rand(0..9)].area
+      expect(school_area).to be area
+    end
+
+    context 'with users' do
+      let(:school) { create(:school, area: area) }
+      let(:users) { create_list(:customer_user, 10) }
+
+      before do
+        users.each do |user|
+          school.users << user
+        end
+      end
+
+      it 'knows its users through school' do
+        area_users = area.users
+        expect(area_users).to eq users
+      end
+
+      it 'its users know it through school' do
+        user_area = users[rand(0..9)].area
+        expect(user_area).to eq area
+      end
+    end
   end
 end

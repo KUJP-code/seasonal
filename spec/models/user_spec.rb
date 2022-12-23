@@ -83,78 +83,76 @@ RSpec.describe 'User' do
     end
   end
 
-  context 'with association' do
-    context 'when regular user' do
-      it 'knows its school' do
-        user_attr = attributes_for(:customer_user)
-        customer = school.users.create(user_attr)
-        customer_school = customer.school
-        expect(customer_school).to be school
-      end
-
-      # it "doesn't need a managed school" do
-      #   no_managing = build(:user, managed_school: nil)
-      #   no_managing_valid = no_managing.save
-      #   expect(no_managing_valid).to be true
-      # end
-
-      it "doesn't need a managed area" do
-        no_managing = build(:user, managed_area: nil)
-        no_managing_valid = no_managing.save
-        expect(no_managing_valid).to be true
-      end
-
-      # Uses eq not be because you're comparing hashes converted from AR objects
-      it 'knows its area through school' do
-        customer = school.users.create(attributes_for(:customer_user))
-        school_area = school.area
-        customer_area = customer.area
-        expect(school_area).to eq(customer_area)
-      end
+  context 'when regular user' do
+    it 'knows its school' do
+      user_attr = attributes_for(:customer_user)
+      customer = school.users.create(user_attr)
+      customer_school = customer.school
+      expect(customer_school).to be school
     end
 
-    context 'when area manager' do
-      subject(:area_manager) { create(:am_user) }
-
-      it 'knows its managed area' do
-        managed_area = area_manager.create_managed_area(attributes_for(:area))
-        user_area = area_manager.managed_area
-        expect(user_area).to be managed_area
-      end
-
-      it 'managed area knows manager' do
-        managed_area = area_manager.create_managed_area(attributes_for(:area))
-        manager = managed_area.manager
-        expect(manager).to be area_manager
-      end
-
-      it "doesn't need a school" do
-        no_school = build(:am_user)
-        valid = no_school.save!
-        expect(valid).to be true
-      end
+    it "doesn't need a managed school" do
+      no_managing = build(:user, managed_school: nil)
+      no_managing_valid = no_managing.save
+      expect(no_managing_valid).to be true
     end
 
-    context 'when school manager' do
-      subject(:school_manager) { create(:sm_user) }
+    it "doesn't need a managed area" do
+      no_managing = build(:user, managed_area: nil)
+      no_managing_valid = no_managing.save
+      expect(no_managing_valid).to be true
+    end
 
-      it 'knows its managed school' do
-        managed_school = school_manager.create_managed_school(attributes_for(:school))
-        user_school = school_manager.managed_school
-        expect(user_school).to be managed_school
-      end
+    # Uses eq not be because you're comparing hashes converted from AR objects
+    it 'knows its area through school' do
+      customer = school.users.create(attributes_for(:customer_user))
+      school_area = school.area
+      customer_area = customer.area
+      expect(school_area).to eq(customer_area)
+    end
+  end
 
-      it 'managed school knows manager' do
-        managed_school = school_manager.create_managed_school(attributes_for(:school))
-        manager = managed_school.manager
-        expect(manager).to be school_manager
-      end
+  context 'when area manager' do
+    subject(:area_manager) { create(:am_user) }
 
-      it "doesn't need a school" do
-        no_school = build(:sm_user)
-        valid = no_school.save!
-        expect(valid).to be true
-      end
+    it 'knows its managed area' do
+      managed_area = area_manager.create_managed_area(attributes_for(:area))
+      user_area = area_manager.managed_area
+      expect(user_area).to be managed_area
+    end
+
+    it 'managed area knows manager' do
+      managed_area = area_manager.create_managed_area(attributes_for(:area))
+      manager = managed_area.manager
+      expect(manager).to be area_manager
+    end
+
+    it "doesn't need a school" do
+      no_school = build(:am_user)
+      valid = no_school.save!
+      expect(valid).to be true
+    end
+  end
+
+  context 'when school manager' do
+    subject(:school_manager) { create(:sm_user) }
+
+    it 'knows its managed school' do
+      managed_school = school_manager.create_managed_school(attributes_for(:school))
+      user_school = school_manager.managed_school
+      expect(user_school).to be managed_school
+    end
+
+    it 'managed school knows manager' do
+      managed_school = school_manager.create_managed_school(attributes_for(:school))
+      manager = managed_school.manager
+      expect(manager).to be school_manager
+    end
+
+    it "doesn't need a school" do
+      no_school = build(:sm_user)
+      valid = no_school.save!
+      expect(valid).to be true
     end
   end
 end

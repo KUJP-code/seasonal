@@ -1,4 +1,5 @@
 # frozen_string_literal: true
 
-# module SchoolsHelper
-# end
+# Shares re-usable helper methods for School
+module SchoolsHelper
+end
