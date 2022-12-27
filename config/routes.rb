@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :events
   resources :children
   resources :schools
   scope '(/:locale)', locale: /ja|en/ do
