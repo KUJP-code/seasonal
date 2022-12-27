@@ -62,7 +62,7 @@ RSpec.describe Area do
 
     context 'with users' do
       let(:school) { create(:school, area: area) }
-      let(:users) { create_list(:customer_user, 10) }
+      let(:users) { create_list(:customer_user, 3) }
 
       before do
         users.each do |user|
@@ -75,9 +75,30 @@ RSpec.describe Area do
         expect(area_users).to eq users
       end
 
-      it 'its users know it through school' do
-        user_area = users[rand(0..9)].area
+      it 'users know their area through school' do
+        user_area = users[rand(0..2)].area
         expect(user_area).to eq area
+      end
+    end
+
+    context 'with children' do
+      let(:school) { create(:school, area: area) }
+      let(:children) { create_list(:child, 3) }
+
+      before do
+        children.each do |child|
+          school.children << child
+        end
+      end
+
+      it 'knows its children through school' do
+        area_children = area.children
+        expect(area_children).to eq children
+      end
+
+      it 'children know their area through school' do
+        child_area = children[rand(0..2)].area
+        expect(child_area).to eq area
       end
     end
   end

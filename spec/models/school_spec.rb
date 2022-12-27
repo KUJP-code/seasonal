@@ -125,7 +125,7 @@ RSpec.describe School do
   end
 
   context 'with customers' do
-    let(:customers) { create_list(:customer_user, 10) }
+    let(:customers) { create_list(:customer_user, 3) }
 
     it 'knows its customers' do
       customers.each do |customer|
@@ -140,6 +140,47 @@ RSpec.describe School do
       school.users << customer
       customer_school = customer.school
       expect(customer_school).to be school
+    end
+  end
+
+  context 'with children' do
+    let(:children) { create_list(:child, 3) }
+    let(:child) { create(:child) }
+
+    before do
+      school.children = children
+    end
+
+    it 'knows its children' do
+      school_children = school.children
+      expect(school_children).to match_array(children)
+    end
+
+    it 'children know their school' do
+      child_school = school.children.first.school
+      expect(child_school).to eq school
+    end
+
+    it 'can add new children' do
+      school.children << child
+      school_children = school.children
+      expect(school_children).to include(child)
+    end
+
+    # necessary to call reload so the list of children is updated
+    it 'knows children have moved to a different school' do
+      new_school = create(:school)
+      transfer_child = school.children.first
+      new_school.children << transfer_child
+      school_children = school.children.reload
+      expect(school_children).not_to include(transfer_child)
+    end
+
+    it 'can unenroll children' do
+      unenrolled_child = school.children.first
+      expect { unenrolled_child.destroy }.to \
+        change(Child.all, :count)
+        .by(-1)
     end
   end
 end

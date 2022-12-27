@@ -198,4 +198,26 @@ RSpec.describe 'User' do
       expect(current_manager).to be new_sm
     end
   end
+
+  context 'with children' do
+    let(:child) { create(:child, parent: user) }
+    let(:children) { create_list(:child, 5) }
+
+    it 'knows its children' do
+      user.children = children
+      parent_children = user.children
+      expect(parent_children).to match_array(children)
+    end
+
+    it 'children know their parent' do
+      child_parent = child.parent
+      expect(child_parent).to eq user
+    end
+
+    it 'destroys all children when destroyed' do
+      user.children = children
+      user.destroy
+      expect(Child.all).to be_empty
+    end
+  end
 end
