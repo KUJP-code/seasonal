@@ -112,4 +112,21 @@ RSpec.describe Child do
       expect(area_children).to include(new_child)
     end
   end
+
+  context 'with events' do
+    xit "knows which events it's attending" do
+    end
+
+    xit "knows which events it's registered for but not attending" do
+    end
+
+    xit 'knows which events it has attended' do
+    end
+
+    xit 'knows which events it will attend' do
+    end
+
+    xit "knows which events it's attending at different schools" do
+    end
+  end
 end

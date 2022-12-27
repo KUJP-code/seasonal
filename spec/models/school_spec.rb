@@ -183,4 +183,13 @@ RSpec.describe School do
         .by(-1)
     end
   end
+
+  context 'with events' do
+    let(:events) { [create(:event, school: school), create(:event, school: school)] }
+
+    it 'knows its events' do
+      school_events = school.events
+      expect(school_events).to match_array(events)
+    end
+  end
 end

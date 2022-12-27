@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 class Event < ApplicationRecord
   belongs_to :school
+  delegate :area, to: :school
 
   validates :name, :description, :start_date, :end_date, presence: true
 

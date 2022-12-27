@@ -220,4 +220,12 @@ RSpec.describe 'User' do
       expect(Child.all).to be_empty
     end
   end
+
+  context 'with events' do
+    xit 'knows its registered events' do
+    end
+
+    xit 'knows its unregistered events' do
+    end
+  end
 end

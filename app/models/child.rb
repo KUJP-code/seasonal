@@ -3,7 +3,6 @@
 class Child < ApplicationRecord
   belongs_to :parent, class_name: 'User'
   belongs_to :school
-
   delegate :area, to: :school
 
   # Map level integer in db to a string

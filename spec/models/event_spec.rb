@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Event do
@@ -72,6 +74,51 @@ RSpec.describe Event do
       no_school = build(:event, school: nil)
       valid = no_school.save
       expect(valid).to be false
+    end
+  end
+
+  context 'with area' do
+    subject(:associated_event) { create(:event, school: school) }
+
+    let(:area) { create(:area) }
+    let(:school) { create(:school, area: area) }
+
+    it 'knows its area' do
+      event_area = associated_event.area
+      expect(event_area).to eq area
+    end
+  end
+
+  context 'with children' do
+    xit 'knows all registered children' do
+    end
+
+    xit 'knows which children are attending' do
+    end
+
+    xit 'knows which attending children are from other schools' do
+    end
+
+    xit "knows which children aren't attending" do
+    end
+  end
+
+  context 'with school' do
+    subject(:associated_event) { create(:event, school: school) }
+
+    let(:school) { create(:school) }
+
+    it 'knows its school' do
+      event_school = associated_event.school
+      expect(event_school).to eq school
+    end
+  end
+
+  context 'with customers' do
+    xit 'knows its registered customers' do
+    end
+
+    xit 'knows its unregistered customers' do
     end
   end
 end

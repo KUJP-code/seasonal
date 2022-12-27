@@ -102,4 +102,15 @@ RSpec.describe Area do
       end
     end
   end
+
+  context 'with events' do
+    subject(:events) { [create(:event, school: school), create(:event, school: school)] }
+
+    let(:school) { create(:school, area: area) }
+
+    it 'knows its events' do
+      area_events = area.events
+      expect(area_events).to match_array(events)
+    end
+  end
 end
