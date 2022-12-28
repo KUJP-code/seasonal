@@ -1,15 +1,18 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :events
-  resources :children
-  resources :schools
+  
   scope '(/:locale)', locale: /ja|en/ do
     devise_for :users, path: 'auth'
 
+    # Require users to be signed in to view these resources
     authenticate :user do
       resources :users
       resources :areas
+      resources :time_slots
+      resources :events
+      resources :children
+      resources :schools
 
       # Ensures just the locale also goes to root
       get '/:locale', to: 'users#index'

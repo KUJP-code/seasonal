@@ -18,7 +18,6 @@ class User < ApplicationRecord
   has_many :children, dependent: :destroy,
                       foreign_key: :parent_id,
                       inverse_of: :parent
-  
 
   # Map role integer in db to a string
   enum :role, customer: 0,

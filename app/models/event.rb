@@ -4,6 +4,8 @@ class Event < ApplicationRecord
   belongs_to :school
   delegate :area, to: :school
 
+  has_many :time_slots, dependent: :destroy
+
   validates :name, :description, :start_date, :end_date, presence: true
 
   validates :start_date, comparison: { greater_than_or_equal_to: Time.zone.today, less_than_or_equal_to: :end_date }
