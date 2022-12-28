@@ -192,4 +192,13 @@ RSpec.describe School do
       expect(school_events).to match_array(events)
     end
   end
+
+  context 'with time slots' do
+    it 'knows its time slots' do
+      event = school.events.create(attributes_for(:event))
+      time_slot = event.time_slots.create(attributes_for(:time_slot))
+      school_slots = school.time_slots
+      expect(school_slots).to include(time_slot)
+    end
+  end
 end

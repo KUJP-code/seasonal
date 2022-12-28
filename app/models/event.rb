@@ -12,7 +12,7 @@ class Event < ApplicationRecord
   validates :end_date, comparison: { greater_than_or_equal_to: Time.zone.today }
   validates_comparison_of :end_date, greater_than_or_equal_to: :start_date
 
-  # Create scopes for event timing
+  # Set scopes for event status
   scope :past_events, -> { where('end_date < ?', Time.zone.today) }
   scope :current_events, -> { where('start_date <= ? and end_date >= ?', Time.zone.today, Time.zone.today) }
   scope :future_events, -> { where('start_date > ?', Time.zone.today) }

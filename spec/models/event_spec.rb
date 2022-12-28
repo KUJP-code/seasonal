@@ -121,4 +121,13 @@ RSpec.describe Event do
     xit 'knows its unregistered customers' do
     end
   end
+
+  context 'with time slots' do
+    let(:time_slots) { [create(:time_slot, event: event), create(:time_slot, event: event)] }
+
+    it 'knows its time slots' do
+      event_slots = event.time_slots
+      expect(event_slots).to match_array(time_slots)
+    end
+  end
 end

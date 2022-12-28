@@ -129,4 +129,12 @@ RSpec.describe Child do
     xit "knows which events it's attending at different schools" do
     end
   end
+
+  context 'with time_slots' do
+    xit 'knows which time slots its attending' do
+    end
+
+    xit "knows which time slots at its school it isn't attending" do
+    end
+  end
 end

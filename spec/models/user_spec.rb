@@ -219,6 +219,14 @@ RSpec.describe 'User' do
       user.destroy
       expect(Child.all).to be_empty
     end
+
+    context 'with time slots' do
+      xit 'knows the time slots its children are attending' do
+      end
+
+      xit "knows the time slots its children aren't attending" do
+      end
+    end
   end
 
   context 'with events' do

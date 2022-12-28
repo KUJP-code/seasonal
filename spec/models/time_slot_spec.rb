@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe TimeSlot do
   let(:time_slot) { create(:time_slot) }
+  let(:event) { create(:event) }
 
   context 'when valid' do
     let(:valid_time_slot) { build(:time_slot) }
@@ -85,6 +86,56 @@ RSpec.describe TimeSlot do
       absurd_cost = build(:time_slot, cost: 50_000)
       valid = absurd_cost.save
       expect(valid).to be false
+    end
+  end
+
+  context 'with scopes' do
+    # Can't test past scope because of db validations
+    it "knows today's time slots" do
+      current_slot = create(:time_slot, start_time: 1.hour.from_now, end_time: 2.hours.from_now, event: event)
+      todays_slots = event.time_slots.todays_slots
+      expect(todays_slots).to include(current_slot)
+    end
+
+    it 'knows future time slots' do
+      future_slot = create(:time_slot, start_time: 1.day.from_now, end_time: 2.days.from_now, event: event)
+      todays_slots = event.time_slots.future_slots
+      expect(todays_slots).to include(future_slot)
+    end
+  end
+
+  context 'with event' do
+    it 'knows its event' do
+      associated_ts = event.time_slots.create(attributes_for(:time_slot))
+      ts_event = associated_ts.event
+      expect(ts_event).to eq event
+    end
+  end
+
+  context 'with children' do
+    xit 'knows which children are attending' do
+    end
+
+    xit "knows which children at its school aren't attending" do
+    end
+
+    context 'with user' do
+      xit 'knows which users have registered children' do
+      end
+
+      xit "knows which users haven't registered children" do
+      end
+    end
+  end
+
+  context 'with school' do
+    let(:school) { create(:school) }
+
+    it 'knows which school its held at' do
+      event.school = school
+      school_slot = event.time_slots.create(attributes_for(:time_slot))
+      slot_school = school_slot.school
+      expect(slot_school).to eq school
     end
   end
 end
