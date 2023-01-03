@@ -94,13 +94,13 @@ RSpec.describe TimeSlot do
     it "knows today's time slots" do
       current_slot = create(:time_slot, start_time: 1.hour.from_now, end_time: 2.hours.from_now, event: event)
       todays_slots = event.time_slots.todays_slots
-      expect(todays_slots).to include(current_slot)
+      expect(todays_slots).to contain_exactly(current_slot)
     end
 
     it 'knows future time slots' do
       future_slot = create(:time_slot, start_time: 1.day.from_now, end_time: 2.days.from_now, event: event)
-      todays_slots = event.time_slots.future_slots
-      expect(todays_slots).to include(future_slot)
+      future_slots = event.time_slots.future_slots
+      expect(future_slots).to contain_exactly(future_slot)
     end
   end
 
@@ -114,17 +114,6 @@ RSpec.describe TimeSlot do
 
   context 'with children' do
     xit 'knows which children are attending' do
-    end
-
-    xit "knows which children at its school aren't attending" do
-    end
-
-    context 'with user' do
-      xit 'knows which users have registered children' do
-      end
-
-      xit "knows which users haven't registered children" do
-      end
     end
   end
 
