@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-# Manages AR data for User class
+# Represents a user
+# Access changes based on role
+# Can be customer, school manager, area manager or admin
 class User < ApplicationRecord
   belongs_to :school, optional: true
   # TODO: Maybe I should just use has_many for this cos of the bug??

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Represents an event time slot
+# Must have an event
 class TimeSlot < ApplicationRecord
   belongs_to :event
   delegate :school, to: :event

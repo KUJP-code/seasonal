@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Represents a single school
+# Must have a school manager
 class School < ApplicationRecord
   belongs_to :manager, class_name: 'User'
   belongs_to :area

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Represents an event at a single school, with one or many time slots
+# Must have a school
 class Event < ApplicationRecord
   belongs_to :school
   delegate :area, to: :school

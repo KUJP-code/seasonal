@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-# Tests helper methods for Event
+# Contains helper methods for Events
 module EventsHelper
 end

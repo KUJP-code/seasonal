@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Represents a child, or student, enrolled at a school and/or attending an event
+# Must have a parent, and a school
 class Child < ApplicationRecord
   belongs_to :parent, class_name: 'User'
   belongs_to :school
