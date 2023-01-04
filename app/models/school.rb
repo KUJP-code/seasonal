@@ -12,4 +12,14 @@ class School < ApplicationRecord
 
   validates :name, :address, :phone, presence: true
   validates :phone, format: { with: /\A[0-9 \-+x.)(]+\Z/, message: I18n.t('schools.validations.phone') }
+  validate :manager, :school_manager?
+
+  private
+
+  def school_manager?
+    return false unless manager
+    return false unless manager.role == :school_manager
+
+    true
+  end
 end
