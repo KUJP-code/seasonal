@@ -201,12 +201,12 @@ RSpec.describe 'User' do
 
   context 'with children' do
     let(:child) { create(:child, parent: user) }
-    let(:children) { create_list(:child, 5) }
+    let(:time_slot) { create(:time_slot) }
 
     it 'knows its children' do
-      user.children = children
+      user.children << child
       parent_children = user.children
-      expect(parent_children).to match_array(children)
+      expect(parent_children).to contain_exactly(child)
     end
 
     it 'children know their parent' do
@@ -215,25 +215,34 @@ RSpec.describe 'User' do
     end
 
     it 'destroys all children when destroyed' do
-      user.children = children
+      user.children << child
       user.destroy
       expect(Child.all).to be_empty
     end
 
+    context 'with registrations' do
+      it 'knows its childrens registrations' do
+        child_registration = child.registrations.create(registerable: time_slot)
+        user_registrations = user.registrations
+        expect(user_registrations).to contain_exactly(child_registration)
+      end
+    end
+
+    context 'with events' do
+      it 'knows its childrens registered events' do
+        child_registration = child.registrations.create(registerable: time_slot)
+        registration_event = child_registration.event
+        user_events = user.events
+        expect(user_events).to contain_exactly(registration_event)
+      end
+    end
+
     context 'with time slots' do
-      xit 'knows the time slots its children are attending' do
+      it 'knows the time slots its children are attending' do
+        child.registrations.create(registerable: time_slot)
+        user_slots = user.time_slots
+        expect(user_slots).to contain_exactly(time_slot)
       end
-
-      xit "knows the time slots its children aren't attending" do
-      end
-    end
-  end
-
-  context 'with events' do
-    xit 'knows its registered events' do
-    end
-
-    xit 'knows its unregistered events' do
     end
   end
 end

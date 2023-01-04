@@ -194,11 +194,21 @@ RSpec.describe School do
   end
 
   context 'with time slots' do
+    let(:event) { school.events.create(attributes_for(:event)) }
+    let(:time_slot) { event.time_slots.create(attributes_for(:time_slot)) }
+
     it 'knows its time slots' do
-      event = school.events.create(attributes_for(:event))
-      time_slot = event.time_slots.create(attributes_for(:time_slot))
       school_slots = school.time_slots
       expect(school_slots).to include(time_slot)
+    end
+
+    context 'with registrations' do
+      let(:registration) { time_slot.registrations.create(attributes_for(:registration)) }
+
+      it 'knows its registrations' do
+        school_registrations = school.registrations
+        expect(school_registrations).to contain_exactly(registration)
+      end
     end
   end
 end

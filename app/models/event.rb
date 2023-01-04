@@ -5,6 +5,8 @@ class Event < ApplicationRecord
   delegate :area, to: :school
 
   has_many :time_slots, dependent: :destroy
+  has_many :registrations, through: :time_slots
+  has_many :children, through: :registrations
 
   validates :name, :description, :start_date, :end_date, presence: true
 
@@ -16,4 +18,9 @@ class Event < ApplicationRecord
   scope :past_events, -> { where('end_date < ?', Time.zone.today) }
   scope :current_events, -> { where('start_date <= ? and end_date >= ?', Time.zone.today, Time.zone.today) }
   scope :future_events, -> { where('start_date > ?', Time.zone.today) }
+
+  # TODO: Do this with ActiveRecord, not select
+  def diff_school_attendees
+    children.reject { |child| child.school == school }
+  end
 end

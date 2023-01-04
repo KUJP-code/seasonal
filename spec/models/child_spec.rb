@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Child do
-  let(:child_attr) { attributes_for(:child) }
   let(:valid_child) { build(:child) }
   let(:child) { create(:child) }
 
@@ -58,6 +57,7 @@ RSpec.describe Child do
   end
 
   context 'with school' do
+    let(:child_attr) { attributes_for(:child) }
     let(:school) { create(:school) }
 
     it 'knows its school' do
@@ -113,28 +113,51 @@ RSpec.describe Child do
     end
   end
 
-  context 'with events' do
-    xit "knows which events it's attending" do
+  context 'with registrations' do
+    let(:event) { create(:event, school: child.school) }
+    let(:time_slot) { create(:time_slot, event: event) }
+    let(:registration) { create(:registration, child: child, registerable: time_slot) }
+
+    it 'knows its registered time slot' do
+      regsitered_slot = registration.registerable
+      expect(regsitered_slot).to eq time_slot
     end
 
-    xit "knows which events it's registered for but not attending" do
+    it 'registration cost matches time slot cost' do
+      reg_cost = registration.cost
+      slot_cost = time_slot.cost
+      expect(reg_cost).to eq slot_cost
     end
 
-    xit 'knows which events it has attended' do
+    it 'registration cost can be discounted without affecting slot cost' do
+      registration.cost = 0
+      slot_cost = time_slot.cost
+      expect(slot_cost).not_to eq 0
     end
 
-    xit 'knows which events it will attend' do
+    context 'with time_slots' do
+      it "knows which time slots it's attending" do
+        time_slot.registrations.create(child: child, cost: time_slot.cost)
+        attending_list = child.time_slots
+        expect(attending_list).to include(time_slot)
+      end
     end
 
-    xit "knows which events it's attending at different schools" do
-    end
-  end
+    context 'with events through time slots' do
+      it "knows which events it's attending" do
+        child.registrations.create(registerable: time_slot, cost: time_slot.cost)
+        child_events = child.events
+        expect(child_events).to include(event)
+      end
 
-  context 'with time_slots' do
-    xit 'knows which time slots its attending' do
-    end
-
-    xit "knows which time slots at its school it isn't attending" do
+      # TODO: must be a cleaner way to write this
+      it "knows which events it's attending at different schools" do
+        diff_school_event = create(:event)
+        diff_school_slot = create(:time_slot, event: diff_school_event)
+        diff_school_slot.registrations.create(child: child)
+        diff_school_events = child.diff_school_events
+        expect(diff_school_events).to contain_exactly(diff_school_event)
+      end
     end
   end
 end

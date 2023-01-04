@@ -18,6 +18,11 @@ class User < ApplicationRecord
   has_many :children, dependent: :destroy,
                       foreign_key: :parent_id,
                       inverse_of: :parent
+  has_many :registrations, through: :children
+  has_many :time_slots, through: :registrations,
+                        source: :registerable,
+                        source_type: 'TimeSlot'
+  has_many :events, through: :time_slots
 
   # Map role integer in db to a string
   enum :role, customer: 0,

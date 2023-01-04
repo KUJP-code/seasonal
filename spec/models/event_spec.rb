@@ -89,20 +89,6 @@ RSpec.describe Event do
     end
   end
 
-  context 'with children' do
-    xit 'knows all registered children' do
-    end
-
-    xit 'knows which children are attending' do
-    end
-
-    xit 'knows which attending children are from other schools' do
-    end
-
-    xit "knows which children aren't attending" do
-    end
-  end
-
   context 'with school' do
     subject(:associated_event) { create(:event, school: school) }
 
@@ -114,20 +100,44 @@ RSpec.describe Event do
     end
   end
 
-  context 'with customers' do
-    xit 'knows its registered customers' do
-    end
-
-    xit 'knows its unregistered customers' do
-    end
-  end
-
   context 'with time slots' do
-    let(:time_slots) { [create(:time_slot, event: event), create(:time_slot, event: event)] }
+    let(:ts) { [create(:time_slot, event: event), create(:time_slot, event: event)] }
 
     it 'knows its time slots' do
       event_slots = event.time_slots
-      expect(event_slots).to match_array(time_slots)
+      expect(event_slots).to match_array(ts)
+    end
+
+    context 'with registrations' do
+      let(:registrations) { [create(:registration, registerable: ts[0]), create(:registration, registerable: ts[1])] }
+
+      it 'knows its registrations' do
+        event_registrations = event.registrations
+        expect(event_registrations).to match_array(registrations)
+      end
+    end
+
+    context 'with children through registrations' do
+      let(:child) { create(:child, school: event.school) }
+
+      before do
+        ts.each do |slot|
+          slot.registrations.create(child: child, cost: slot.cost)
+        end
+      end
+
+      it 'knows which children are attending' do
+        event_children = event.children
+        expect(event_children).to include(child)
+      end
+
+      # TODO: must be a cleaner way to write this
+      it 'knows which attending children are from other schools' do
+        diff_school_child = create(:child)
+        ts[0].registrations.create(child: diff_school_child)
+        foreign_kids = event.diff_school_attendees
+        expect(foreign_kids).to contain_exactly(diff_school_child)
+      end
     end
   end
 end

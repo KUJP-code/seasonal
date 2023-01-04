@@ -112,5 +112,14 @@ RSpec.describe Area do
       area_events = area.events
       expect(area_events).to match_array(events)
     end
+
+    context 'with registrations' do
+      it 'knows its registrations' do
+        time_slot = events[0].time_slots.create(attributes_for(:time_slot))
+        registration = time_slot.registrations.create(attributes_for(:registration))
+        area_registrations = area.registrations
+        expect(area_registrations).to contain_exactly(registration)
+      end
+    end
   end
 end

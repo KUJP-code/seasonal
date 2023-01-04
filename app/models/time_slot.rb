@@ -3,6 +3,7 @@
 class TimeSlot < ApplicationRecord
   belongs_to :event
   delegate :school, to: :event
+  delegate :area, to: :event
 
   has_many :registrations, as: :registerable,
                            dependent: :destroy

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_28_031500) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_29_075000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -43,6 +43,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_28_031500) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_events_on_school_id"
+  end
+
+  create_table "registrations", force: :cascade do |t|
+    t.integer "cost"
+    t.bigint "child_id", null: false
+    t.string "registerable_type", null: false
+    t.bigint "registerable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["child_id"], name: "index_registrations_on_child_id"
+    t.index ["registerable_type", "registerable_id"], name: "index_registrations_on_registerable"
   end
 
   create_table "schools", force: :cascade do |t|
@@ -88,6 +99,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_28_031500) do
   add_foreign_key "children", "schools"
   add_foreign_key "children", "users", column: "parent_id"
   add_foreign_key "events", "schools"
+  add_foreign_key "registrations", "children"
   add_foreign_key "schools", "areas"
   add_foreign_key "schools", "users", column: "manager_id"
   add_foreign_key "time_slots", "events"

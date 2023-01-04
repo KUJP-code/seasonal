@@ -112,8 +112,21 @@ RSpec.describe TimeSlot do
     end
   end
 
-  context 'with children' do
-    xit 'knows which children are attending' do
+  context 'with registrations' do
+    let(:child) { create(:child) }
+    let(:registration) { time_slot.registrations.create(child: child) }
+
+    it 'knows its registrations' do
+      slot_registrations = time_slot.registrations
+      expect(slot_registrations).to contain_exactly(registration)
+    end
+
+    context 'with children' do
+      it 'knows which children are attending' do
+        registration
+        slot_children = time_slot.children
+        expect(slot_children).to contain_exactly(child)
+      end
     end
   end
 
