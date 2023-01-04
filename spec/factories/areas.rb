@@ -3,6 +3,11 @@
 FactoryBot.define do
   factory :area do
     name { Faker::Address.city }
-    manager { create(:am_user) }
+
+    trait :managed do
+      managers { [create(:am_user)] }
+    end
+
+    factory :managed_area, traits: [:managed]
   end
 end

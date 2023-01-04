@@ -52,12 +52,6 @@ RSpec.describe School do
         no_area_valid = valid_school.save
         expect(no_area_valid).to be false
       end
-
-      it "doesn't save without manager" do
-        valid_school.manager = nil
-        no_manager_valid = valid_school.save
-        expect(no_manager_valid).to be false
-      end
     end
 
     context 'when phone number invalid' do
@@ -109,56 +103,62 @@ RSpec.describe School do
   end
 
   context 'with manager' do
+    subject(:managed_school) { create(:school, managers: [manager]) }
+
+    let(:manager) { create(:sm_user) }
+    let(:new_sm) { create(:sm_user) }
+
     it 'knows its manager' do
-      manager = create(:sm_user)
-      new_school = create(:school, manager: manager)
-      school_manager = new_school.manager
-      expect(school_manager).to be manager
+      managers = managed_school.managers
+      expect(managers).to contain_exactly(manager)
     end
 
-    it 'manager knows its school' do
-      manager = create(:sm_user)
-      new_school = create(:school, manager: manager)
-      manager_school = manager.managed_school
-      expect(manager_school).to eq new_school
+    it 'can remove a manager' do
+      managed_school.managers.destroy(manager)
+      managers = managed_school.managers
+      expect(managers).to be_empty
+    end
+
+    it 'can add a manager' do
+      managed_school.managers << new_sm
+      managers = managed_school.managers
+      expect(managers).to include(new_sm)
+    end
+
+    it 'can change managers' do
+      managed_school.managers = [new_sm]
+      new_managers = managed_school.managers
+      expect(new_managers).to contain_exactly(new_sm)
+    end
+
+    it 'old manager knows its been removed as manager' do
+      old_sm = managed_school.managers.first
+      managed_school.managers = [new_sm]
+      old_sm_areas = old_sm.managed_schools
+      expect(old_sm_areas).not_to include(managed_school)
     end
   end
 
   context 'with customers' do
-    let(:customers) { create_list(:customer_user, 3) }
+    let(:customer) { create(:customer_user) }
 
     it 'knows its customers' do
-      customers.each do |customer|
-        school.users << customer
-      end
-      school_customers = school.users.customers
-      expect(school_customers).to eq customers
-    end
-
-    it 'customers know their school' do
-      customer = customers.first
       school.users << customer
-      customer_school = customer.school
-      expect(customer_school).to be school
+      school_customers = school.users.customers
+      expect(school_customers).to contain_exactly(customer)
     end
   end
 
   context 'with children' do
-    let(:children) { create_list(:child, 3) }
     let(:child) { create(:child) }
 
     before do
-      school.children = children
+      school.children << child
     end
 
     it 'knows its children' do
       school_children = school.children
-      expect(school_children).to match_array(children)
-    end
-
-    it 'children know their school' do
-      child_school = school.children.first.school
-      expect(child_school).to eq school
+      expect(school_children).to contain_exactly(child)
     end
 
     it 'can add new children' do

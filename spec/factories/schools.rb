@@ -6,6 +6,11 @@ FactoryBot.define do
     address { Faker::Address.full_address }
     phone { Faker::PhoneNumber.phone_number }
     area { create(:area) }
-    manager { create(:sm_user) }
+
+    trait :managed do
+      managers { [create(:sm_user)] }
+    end
+
+    factory :managed_school, traits: [:managed]
   end
 end

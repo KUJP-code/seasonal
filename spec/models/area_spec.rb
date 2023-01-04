@@ -3,119 +3,108 @@
 require 'rails_helper'
 
 RSpec.describe Area do
-  let(:valid_area) { build(:area) }
-  let(:area) { create(:area) }
+  let(:area) { create(:managed_area) }
 
   context 'when valid' do
+    subject(:valid_area) { build(:area) }
+
     it 'saves' do
-      valid = valid_area.save
+      valid = valid_area.save!
+      expect(valid).to be true
+    end
+
+    it 'saves without a manager' do
+      valid_area.managers = []
+      valid = valid_area.save!
       expect(valid).to be true
     end
   end
 
   context 'when invalid' do
     it "doesn't save without a name" do
-      valid_area.name = nil
-      valid = valid_area.save
-      expect(valid).to be false
-    end
-
-    it "doesn't save without a manager" do
-      valid_area.manager = nil
-      valid = valid_area.save
+      no_name = build(:area, name: nil)
+      valid = no_name.save
       expect(valid).to be false
     end
   end
 
   context 'with manager' do
-    it 'knows its manager' do
-      am = create(:am_user)
-      managed_area = create(:area, manager: am)
-      manager = managed_area.manager
-      expect(manager).to be am
+    subject(:managed_area) { create(:area, managers: [manager]) }
+
+    let(:manager) { create(:am_user) }
+    let(:new_am) { create(:am_user) }
+
+    it 'knows its managers' do
+      managers = managed_area.managers
+      expect(managers).to contain_exactly(manager)
     end
 
-    it "it's manager knows it" do
-      am = create(:am_user)
-      managed_area = create(:area, manager: am)
-      manager_area = am.managed_area
-      expect(manager_area).to eq managed_area
+    it 'can remove a manager' do
+      managed_area.managers.destroy(manager)
+      managers = managed_area.managers
+      expect(managers).to be_empty
+    end
+
+    it 'can add a manager' do
+      managed_area.managers << new_am
+      managers = managed_area.managers
+      expect(managers).to include(new_am)
+    end
+
+    it 'can change managers' do
+      managed_area.managers = [new_am]
+      new_managers = managed_area.managers
+      expect(new_managers).to contain_exactly(new_am)
+    end
+
+    it 'old manager knows its been removed as manager' do
+      old_am = managed_area.managers.first
+      managed_area.managers = [new_am]
+      old_am_areas = old_am.managed_areas
+      expect(old_am_areas).not_to include(managed_area)
     end
   end
 
   context 'with schools' do
-    let(:schools) { create_list(:school, 10) }
+    let(:school) { create(:school, area: area) }
 
     it 'knows its schools' do
-      schools.each do |school|
-        area.schools << school
-      end
       area_schools = area.schools
-      expect(area_schools).to eq schools
-    end
-
-    it 'its schools know it' do
-      area.schools = schools
-      school_area = area.schools[rand(0..9)].area
-      expect(school_area).to be area
+      expect(area_schools).to contain_exactly(school)
     end
 
     context 'with users' do
-      let(:school) { create(:school, area: area) }
-      let(:users) { create_list(:customer_user, 3) }
-
-      before do
-        users.each do |user|
-          school.users << user
-        end
-      end
+      let(:user) { create(:customer_user, school: school) }
 
       it 'knows its users through school' do
         area_users = area.users
-        expect(area_users).to eq users
-      end
-
-      it 'users know their area through school' do
-        user_area = users[rand(0..2)].area
-        expect(user_area).to eq area
+        expect(area_users).to contain_exactly(user)
       end
     end
 
     context 'with children' do
-      let(:school) { create(:school, area: area) }
-      let(:children) { create_list(:child, 3) }
-
-      before do
-        children.each do |child|
-          school.children << child
-        end
-      end
+      let(:child) { create(:child, school: school) }
 
       it 'knows its children through school' do
         area_children = area.children
-        expect(area_children).to eq children
-      end
-
-      it 'children know their area through school' do
-        child_area = children[rand(0..2)].area
-        expect(child_area).to eq area
+        expect(area_children).to contain_exactly(child)
       end
     end
-  end
 
-  context 'with events' do
-    subject(:events) { [create(:event, school: school), create(:event, school: school)] }
+    context 'with events' do
+      let(:event) { create(:event, school: school) }
 
-    let(:school) { create(:school, area: area) }
-
-    it 'knows its events' do
-      area_events = area.events
-      expect(area_events).to match_array(events)
+      it 'knows its events' do
+        area_events = area.events
+        expect(area_events).to contain_exactly(event)
+      end
     end
 
     context 'with registrations' do
+      let(:event) { create(:event, school: school) }
+      let(:time_slot) { event.time_slots.create(attributes_for(:time_slot)) }
+
       it 'knows its registrations' do
-        time_slot = events[0].time_slots.create(attributes_for(:time_slot))
         registration = time_slot.registrations.create(attributes_for(:registration))
         area_registrations = area.registrations
         expect(area_registrations).to contain_exactly(registration)

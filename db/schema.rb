@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_29_075000) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_04_151639) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,8 +18,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_29_075000) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "manager_id", null: false
-    t.index ["manager_id"], name: "index_areas_on_manager_id"
   end
 
   create_table "children", force: :cascade do |t|
@@ -29,7 +27,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_29_075000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "parent_id", null: false
-    t.bigint "school_id", null: false
+    t.bigint "school_id"
     t.index ["parent_id"], name: "index_children_on_parent_id"
     t.index ["school_id"], name: "index_children_on_school_id"
   end
@@ -43,6 +41,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_29_075000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_events_on_school_id"
+  end
+
+  create_table "managements", force: :cascade do |t|
+    t.string "manageable_type", null: false
+    t.bigint "manageable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "manager_id", null: false
+    t.index ["manageable_type", "manageable_id"], name: "index_managements_on_manageable"
+    t.index ["manager_id"], name: "index_managements_on_manager_id"
   end
 
   create_table "registrations", force: :cascade do |t|
@@ -60,12 +68,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_29_075000) do
     t.string "name"
     t.string "address"
     t.string "phone"
-    t.bigint "area_id", null: false
+    t.bigint "area_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "manager_id", null: false
     t.index ["area_id"], name: "index_schools_on_area_id"
-    t.index ["manager_id"], name: "index_schools_on_manager_id"
   end
 
   create_table "time_slots", force: :cascade do |t|
@@ -95,13 +101,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_29_075000) do
     t.index ["school_id"], name: "index_users_on_school_id"
   end
 
-  add_foreign_key "areas", "users", column: "manager_id"
   add_foreign_key "children", "schools"
   add_foreign_key "children", "users", column: "parent_id"
   add_foreign_key "events", "schools"
+  add_foreign_key "managements", "users", column: "manager_id"
   add_foreign_key "registrations", "children"
   add_foreign_key "schools", "areas"
-  add_foreign_key "schools", "users", column: "manager_id"
   add_foreign_key "time_slots", "events"
   add_foreign_key "users", "schools"
 end

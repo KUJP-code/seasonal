@@ -9,17 +9,17 @@ class Area < ApplicationRecord
   has_many :events, through: :schools
   has_many :time_slots, through: :events
   has_many :registrations, through: :time_slots
-
-  belongs_to :manager, class_name: 'User'
+  has_many :managements, as: :manageable,
+                         dependent: :destroy
+  has_many :managers, through: :managements
 
   validates :name, presence: true
-  validate :manager, :area_manager?
+  validate :managers, :area_manager?, unless: -> { managers.empty? }
 
   private
 
   def area_manager?
-    return false unless manager
-    return false unless manager.role == :area_manager
+    return false unless managers || managers.all(&:area_manager?)
 
     true
   end

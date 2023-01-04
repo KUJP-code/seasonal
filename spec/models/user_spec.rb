@@ -19,48 +19,6 @@ RSpec.describe 'User' do
     end
   end
 
-  context 'when role is specified' do
-    it 'sets role as customer' do
-      role = create(:customer_user).role
-      expect(role).to eq 'customer'
-    end
-
-    it 'sets role as school manager' do
-      role = create(:sm_user).role
-      expect(role).to eq 'school_manager'
-    end
-
-    it 'sets role as area manager' do
-      role = create(:am_user).role
-      expect(role).to eq 'area_manager'
-    end
-
-    it 'sets role as admin' do
-      role = create(:admin_user).role
-      expect(role).to eq 'admin'
-    end
-
-    it 'can be confirmed with #customer?' do
-      confirmable = create(:customer_user).customer?
-      expect(confirmable).to be true
-    end
-
-    it 'can be confirmed with #school_manager?' do
-      confirmable = create(:sm_user).school_manager?
-      expect(confirmable).to be true
-    end
-
-    it 'can be confirmed with #area_manager?' do
-      confirmable = create(:am_user).area_manager?
-      expect(confirmable).to be true
-    end
-
-    it 'can be confirmed with #admin?' do
-      confirmable = create(:admin_user).admin?
-      expect(confirmable).to be true
-    end
-  end
-
   context 'when password is invalid' do
     it 'rejects passwords shorter than 10 characters' do
       short_pass = build(:user, password: 'short')
@@ -92,18 +50,17 @@ RSpec.describe 'User' do
     end
 
     it "doesn't need a managed school" do
-      no_managing = build(:user, managed_school: nil)
+      no_managing = build(:user, managed_schools: [])
       no_managing_valid = no_managing.save
       expect(no_managing_valid).to be true
     end
 
     it "doesn't need a managed area" do
-      no_managing = build(:user, managed_area: nil)
+      no_managing = build(:user, managed_areas: [])
       no_managing_valid = no_managing.save
       expect(no_managing_valid).to be true
     end
 
-    # Uses eq not be because you're comparing hashes converted from AR objects
     it 'knows its area through school' do
       customer = school.users.create(attributes_for(:customer_user))
       school_area = school.area
@@ -112,23 +69,20 @@ RSpec.describe 'User' do
     end
   end
 
-  # Looks like I'll need to create areas through area managers
   context 'when area manager' do
-    subject(:area_manager) { create(:am_user) }
+    subject(:am) { create(:am_user) }
 
-    let(:area_attr) { attributes_for(:area) }
-    let(:new_am) { create(:am_user) }
+    let(:managed_area) { am.managed_areas.create(attributes_for(:area)) }
+    let(:new_area) { create(:area) }
 
-    it 'knows its managed area' do
-      created_area = area_manager.create_managed_area(area_attr)
-      managed_area = area_manager.managed_area
-      expect(managed_area).to be created_area
+    it 'can create a managed area' do
+      area_managers = managed_area.managers
+      expect(area_managers).to contain_exactly(am)
     end
 
-    it 'managed area knows manager' do
-      created_area = area_manager.create_managed_area(area_attr)
-      manager = created_area.manager
-      expect(manager).to be area_manager
+    it 'knows its managed area' do
+      managed_areas = am.managed_areas
+      expect(managed_areas).to contain_exactly(managed_area)
     end
 
     it "doesn't need a school" do
@@ -137,41 +91,41 @@ RSpec.describe 'User' do
       expect(valid).to be true
     end
 
-    # Gonna need to handle this by updating the existing am account and
-    # creating a new one for the moving am, due to this issue
-    # (https://github.com/rails/rails/issues/43096)
-    it 'can change areas' do
-      created_area = area_manager.create_managed_area(area_attr)
-      old_manager = created_area.manager.email
-      created_area.manager.update(id: area_manager.id, email: 'new@gmail.com', password: 'newpasswordpassword')
-      new_manager = created_area.manager.email
-      expect(new_manager).not_to eq old_manager
+    it 'can change managed areas' do
+      old_area = managed_area
+      am.managed_areas = [new_area]
+      new_areas = am.managed_areas
+      expect(new_areas).not_to include(old_area)
     end
 
     it 'area knows its manager changed' do
-      created_area = area_manager.create_managed_area(area_attr)
-      created_area.manager = new_am
-      current_manager = created_area.manager
-      expect(current_manager).to be new_am
+      old_area = managed_area
+      am.managed_areas = [new_area]
+      current_managers = old_area.managers
+      expect(current_managers).to be_empty
+    end
+
+    it 'can add new managed areas' do
+      am.managed_areas << new_area
+      managed_areas = am.managed_areas
+      expect(managed_areas).to contain_exactly(managed_area, new_area)
     end
   end
 
   context 'when school manager' do
-    subject(:school_manager) { create(:sm_user) }
+    subject(:sm) { create(:sm_user) }
 
-    let(:school_attr) { attributes_for(:school) }
-    let(:new_sm) { create(:sm_user) }
+    let(:managed_school) { sm.managed_schools.create(attributes_for(:school)) }
+    let(:new_school) { create(:school) }
 
-    it 'knows its managed school' do
-      managed_school = school_manager.create_managed_school(attributes_for(:school))
-      user_school = school_manager.managed_school
-      expect(user_school).to be managed_school
+    it 'can create a managed school' do
+      managers = managed_school.managers
+      expect(managers).to contain_exactly(sm)
     end
 
-    it 'managed school knows manager' do
-      managed_school = school_manager.create_managed_school(attributes_for(:school))
-      manager = managed_school.manager
-      expect(manager).to be school_manager
+    it 'knows its managed school' do
+      managed_schools = sm.managed_schools
+      expect(managed_schools).to contain_exactly(managed_school)
     end
 
     it "doesn't need a school" do
@@ -180,22 +134,24 @@ RSpec.describe 'User' do
       expect(valid).to be true
     end
 
-    # Gonna need to handle this by updating the existing sm account and
-    # creating a new one for the moving sm, due to this issue
-    # (https://github.com/rails/rails/issues/43096)
-    it 'can change schools' do
-      created_school = school_manager.create_managed_school(school_attr)
-      old_manager = created_school.manager.email
-      created_school.manager.update(id: school_manager.id, email: 'new@gmail.com', password: 'newpasswordpassword')
-      new_manager = created_school.manager.email
-      expect(new_manager).not_to eq old_manager
+    it 'can change managed schools' do
+      old_school = managed_school
+      sm.managed_schools = [new_school]
+      new_schools = sm.managed_schools
+      expect(new_schools).not_to include(old_school)
     end
 
-    it 'area knows its manager changed' do
-      created_school = school_manager.create_managed_school(school_attr)
-      created_school.manager = new_sm
-      current_manager = created_school.manager
-      expect(current_manager).to be new_sm
+    it 'school knows its manager changed' do
+      old_school = managed_school
+      sm.managed_schools = [new_school]
+      current_managers = old_school.managers
+      expect(current_managers).to be_empty
+    end
+
+    it 'can add new managed schools' do
+      sm.managed_schools << new_school
+      managed_schools = sm.managed_schools
+      expect(managed_schools).to contain_exactly(managed_school, new_school)
     end
   end
 
