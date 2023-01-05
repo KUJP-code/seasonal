@@ -1,54 +1,98 @@
-# # frozen_string_literal: true
-# # This file should contain all the record creation needed to seed the database with its default values.
-# # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-# #
-# # Examples:
-# #
-# #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-# #   Character.create(name: "Luke", movie: movies.first)
+# frozen_string_literal: true
+# This file should contain all the record creation needed to seed the database with its default values.
+# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 
-# 5.times do |i|
-#   am = User.create(
-#     email: Faker::Internet.unique.email,
-#     password: Faker::Internet.password(min_length: 10),
-#     role: :area_manager    
-#   )
 
-#   area = am.create_managed_area(
-#     name: Faker::Address.city
-#   )
+5.times do |i|
+  am = User.create(
+    email: Faker::Internet.unique.email,
+    password: Faker::Internet.password(min_length: 10),
+    role: :area_manager    
+  )
 
-#   sm = User.create(
-#     email: Faker::Internet.unique.email,
-#     password: Faker::Internet.password(min_length: 10),
-#     role: :school_manager   
-#   )
+  area = am.managed_areas.create(
+    name: Faker::Address.city
+  )
 
-#   school = sm.create_managed_school(
-#     name: Faker::Address.city,
-#     address: Faker::Address.full_address,
-#     phone: Faker::PhoneNumber.phone_number,
-#     area: area
-#   )
+  sm = User.create(
+    email: Faker::Internet.unique.email,
+    password: Faker::Internet.password(min_length: 10),
+    role: :school_manager   
+  )
 
-#   school.users.create([
-#     {
-#       email: Faker::Internet.unique.email,
-#       password: Faker::Internet.password(min_length: 10)
-#     },
-#     {
-#       email: Faker::Internet.unique.email,
-#       password: Faker::Internet.password(min_length: 10)
-#     },
-#     {
-#       email: Faker::Internet.unique.email,
-#       password: Faker::Internet.password(min_length: 10)
-#     }
-#   ])
+  school = sm.managed_schools.create(
+    name: Faker::Address.city,
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number,
+    area: area
+  )
 
-# end
+  school.users.create([
+    {
+      email: Faker::Internet.unique.email,
+      password: Faker::Internet.password(min_length: 10)
+    },
+    {
+      email: Faker::Internet.unique.email,
+      password: Faker::Internet.password(min_length: 10)
+    },
+    {
+      email: Faker::Internet.unique.email,
+      password: Faker::Internet.password(min_length: 10)
+    }
+  ])
 
-# p 'Created 5 areas and their schools/3 customers/AMs/SMs'
+  school.users.customers.each do |customer|
+    customer.children.create([
+      {
+        birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
+        allergies: 'peanuts',
+        school: customer.school
+      },
+      {
+        birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
+        allergies: 'peanuts',
+        school: customer.school
+      }
+    ])
+  end
+
+  event = school.events.create(
+    name: Faker::JapaneseMedia::StudioGhibli.movie,
+    description: Faker::JapaneseMedia::StudioGhibli.quote,
+    start_date: Faker::Time.forward(days: 5),
+    end_date: Faker::Date.between(from: 10.days.from_now, to: 15.days.from_now)
+  )
+
+  event.time_slots.create([
+    {
+      name: Faker::Games::LeagueOfLegends.champion,
+      start_time: Faker::Time.forward(days: 5),
+      end_time: Faker::Date.between(from: 10.days.from_now, to: 15.days.from_now),
+      description: Faker::Lorem.sentence(word_count: 10),
+      cost: 8000
+    },
+    {
+      name: Faker::Games::LeagueOfLegends.champion,
+      start_time: Faker::Time.forward(days: 5),
+      end_time: Faker::Date.between(from: 10.days.from_now, to: 15.days.from_now),
+      description: Faker::Lorem.sentence(word_count: 10),
+      cost: 8000
+    }
+  ])
+end
+
+Child.all.each do |child|
+  child.registrations.create(registerable: TimeSlot.find(rand(1..10)), cost: 8000)
+end
+
+puts 'Created 5 areas and their schools,
+3 customers,
+2 children for each,
+AMs/SMs,
+an event for each school,
+2 time slots for each,
+a time slot registration for each child'
 
 User.create([
   {
@@ -73,4 +117,4 @@ User.create([
   }
 ])
 
-p 'Created my test accounts'
+puts 'Created my test accounts'
