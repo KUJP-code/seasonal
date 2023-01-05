@@ -5,20 +5,26 @@ require 'rails_helper'
 RSpec.describe Registration do
   let(:child) { create(:child) }
   let(:time_slot) { create(:time_slot) }
+  let(:option) { create(:option) }
   let(:registration) { child.registrations.create(registerable: time_slot) }
 
   context 'when valid' do
-    let(:valid_registration) { build(:registration) }
+    it 'saves when registering for time slot' do
+      slot_registration = create(:slot_registration)
+      valid = slot_registration.save!
+      expect(valid).to be true
+    end
 
-    it 'saves' do
-      valid = valid_registration.save!
+    it 'saves when registering for option' do
+      option_registration = create(:option_registration)
+      valid = option_registration.save!
       expect(valid).to be true
     end
   end
 
   context 'with child' do
     it 'knows its child' do
-      child_registration = create(:registration, child: child)
+      child_registration = create(:registration, child: child, registerable: time_slot)
       registration_child = child_registration.child
       expect(registration_child).to eq child
     end
@@ -60,6 +66,43 @@ RSpec.describe Registration do
         slot_area = time_slot.area
         expect(registration_area).to eq slot_area
       end
+    end
+  end
+
+  context 'with option' do
+    it 'knows its option' do
+      registration.registerable = option
+      registration_option = registration.registerable
+      expect(registration_option).to eq option
+    end
+
+    context 'with time slot' do
+      it 'knows the time slot the option applies to' do
+      end
+    end
+
+    context 'with event' do
+      it 'knows the event the option applies to' do
+      end
+    end
+  end
+
+  context 'with scopes' do
+    before do
+      create(:option_registration)
+      create(:slot_registration)
+    end
+
+    it 'knows which registrations are for time slots' do
+      slot_registrations = described_class.all.slot_registrations
+      reg_returned = slot_registrations.length
+      expect(reg_returned).to be 1
+    end
+
+    it 'knows which registrations are for options' do
+      option_registrations = described_class.all.option_registrations
+      reg_returned = option_registrations.length
+      expect(reg_returned).to be 1
     end
   end
 end

@@ -9,4 +9,8 @@ class Registration < ApplicationRecord
   delegate :area, to: :event
   delegate :school, to: :registerable
   delegate :parent, to: :child
+
+  # Set scopes for registerable type
+  scope :slot_registrations, -> { where(registerable_type: 'TimeSlot') }
+  scope :option_registrations, -> { where(registerable_type: 'Option') }
 end

@@ -116,7 +116,7 @@ RSpec.describe Child do
   context 'with registrations' do
     let(:event) { create(:event, school: child.school) }
     let(:time_slot) { create(:time_slot, event: event) }
-    let(:registration) { create(:registration, child: child, registerable: time_slot) }
+    let(:registration) { create(:slot_registration, child: child, registerable: time_slot) }
 
     it 'knows its registered time slot' do
       regsitered_slot = registration.registerable
@@ -135,7 +135,14 @@ RSpec.describe Child do
       expect(slot_cost).not_to eq 0
     end
 
-    context 'with time_slots' do
+    it 'deletes its registrations when deleted' do
+      registration
+      expect { child.destroy }.to \
+        change(Registration, :count)
+        .by(-1)
+    end
+
+    context 'with time_slots through registrations' do
       it "knows which time slots it's attending" do
         time_slot.registrations.create(child: child, cost: time_slot.cost)
         attending_list = child.time_slots
@@ -157,6 +164,21 @@ RSpec.describe Child do
         diff_school_slot.registrations.create(child: child)
         diff_school_events = child.diff_school_events
         expect(diff_school_events).to contain_exactly(diff_school_event)
+      end
+    end
+
+    context 'with options through registrations' do
+      subject(:option) { create(:option) }
+
+      it 'knows its registered options' do
+        child.registrations.create(registerable: option)
+        child_options = child.options
+        expect(child_options).to include(option)
+      end
+
+      it "doesn't destroy options when destroyed" do
+        child.registrations.create(registerable: option)
+        expect { child.destroy }.not_to change(Option, :count)
       end
     end
   end

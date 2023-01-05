@@ -10,6 +10,9 @@ class Child < ApplicationRecord
   has_many :time_slots, through: :registrations,
                         source: :registerable,
                         source_type: 'TimeSlot'
+  has_many :options, through: :registrations,
+                     source: :registerable,
+                     source_type: 'Option'
   has_many :events, through: :time_slots
 
   # Map level integer in db to a string

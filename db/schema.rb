@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_04_151639) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_05_055131) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,6 +51,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_04_151639) do
     t.bigint "manager_id", null: false
     t.index ["manageable_type", "manageable_id"], name: "index_managements_on_manageable"
     t.index ["manager_id"], name: "index_managements_on_manager_id"
+  end
+
+  create_table "options", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.integer "cost"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "registrations", force: :cascade do |t|
