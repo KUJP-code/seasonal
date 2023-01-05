@@ -5,6 +5,8 @@ require 'rails_helper'
 RSpec.describe Option do
   subject(:option) { create(:option) }
 
+  let(:event) { create(:event) }
+
   context 'when valid' do
     it 'saves' do
       valid_option = build(:option)
@@ -82,22 +84,43 @@ RSpec.describe Option do
     end
   end
 
-  context 'with time slots' do
-    it '' do
+  context 'with time slot' do
+    let(:slot) { create(:time_slot) }
+
+    it "knows the time slot it's an option for" do
+      slot_opt = slot.options.create(attributes_for(:option))
+      opt_slot = slot_opt.time_slot
+      expect(opt_slot).to eq slot
     end
 
-    context 'with events' do
-      it '' do
+    context 'with event' do
+      it "knows the event it's an option for" do
+        event.time_slots << slot
+        slot_opt = slot.options.create(attributes_for(:option))
+        opt_event = slot_opt.event
+        expect(opt_event).to eq event
       end
     end
 
-    context 'with schools' do
-      it '' do
+    context 'with school' do
+      it "knows the school it's an option for" do
+        event_school = event.school
+        event.time_slots << slot
+        slot_opt = slot.options.create(attributes_for(:option))
+        opt_school = slot_opt.school
+        expect(opt_school).to eq event_school
       end
     end
 
-    context 'with areas' do
-      it '' do
+    context 'with area' do
+      let(:area) { create(:area) }
+
+      it "knows the area it's an option for" do
+        # This is an abomination, but better than infinite variables
+        area.schools.create(attributes_for(:school)).events.create(attributes_for(:event)).time_slots << slot
+        slot_opt = slot.options.create(attributes_for(:option))
+        opt_area = slot_opt.area
+        expect(opt_area).to eq area
       end
     end
   end

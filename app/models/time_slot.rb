@@ -7,6 +7,7 @@ class TimeSlot < ApplicationRecord
   delegate :school, to: :event
   delegate :area, to: :event
 
+  has_many :options, dependent: :destroy
   has_many :registrations, as: :registerable,
                            dependent: :destroy
   has_many :children, through: :registrations

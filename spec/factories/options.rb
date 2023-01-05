@@ -5,5 +5,6 @@ FactoryBot.define do
     name { Faker::Book.title }
     description { Faker::Lorem.sentence(word_count: 10) }
     cost { 4000 }
+    time_slot { create(:time_slot) }
   end
 end

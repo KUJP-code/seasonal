@@ -121,6 +121,10 @@ RSpec.describe TimeSlot do
       expect(slot_registrations).to contain_exactly(registration)
     end
 
+    xit 'destroys its registrations when destroyed' do
+      
+    end
+
     context 'with children' do
       it 'knows which children are attending' do
         registration
@@ -138,6 +142,20 @@ RSpec.describe TimeSlot do
       school_slot = event.time_slots.create(attributes_for(:time_slot))
       slot_school = school_slot.school
       expect(slot_school).to eq school
+    end
+  end
+
+  context 'with options' do
+    xit 'knows its available options' do
+      
+    end
+
+    xit 'knows its registered options' do
+      
+    end
+
+    xit 'destroys its options when destroyed' do
+      
     end
   end
 end

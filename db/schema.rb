@@ -57,8 +57,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_05_055131) do
     t.string "name"
     t.string "description"
     t.integer "cost"
+    t.bigint "time_slot_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["time_slot_id"], name: "index_options_on_time_slot_id"
   end
 
   create_table "registrations", force: :cascade do |t|
@@ -113,6 +115,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_05_055131) do
   add_foreign_key "children", "users", column: "parent_id"
   add_foreign_key "events", "schools"
   add_foreign_key "managements", "users", column: "manager_id"
+  add_foreign_key "options", "time_slots"
   add_foreign_key "registrations", "children"
   add_foreign_key "schools", "areas"
   add_foreign_key "time_slots", "events"
