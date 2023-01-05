@@ -15,7 +15,7 @@ class CreateChildren < ActiveRecord::Migration[7.0]
                                column: :parent_id
                                
     add_reference :children, :school,
-                             null: false,
+                             null: true,
                              index: true,
                              foreign_key: true
   end
