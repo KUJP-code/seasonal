@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Registration do
   let(:child) { create(:child) }
   let(:time_slot) { create(:time_slot) }
-  let(:option) { create(:option) }
+  let(:option) { create(:option, time_slot: time_slot) }
   let(:registration) { child.registrations.create(registerable: time_slot) }
 
   context 'when valid' do
@@ -78,11 +78,18 @@ RSpec.describe Registration do
 
     context 'with time slot' do
       it 'knows the time slot the option applies to' do
+        registration.registerable = option
+        option_slot = registration.registerable.time_slot
+        expect(option_slot).to eq time_slot
       end
     end
 
     context 'with event' do
       it 'knows the event the option applies to' do
+        registration.registerable = option
+        slot_event = time_slot.event
+        option_event = registration.registerable.event
+        expect(option_event).to eq slot_event
       end
     end
   end

@@ -8,6 +8,8 @@ class Area < ApplicationRecord
   has_many :children, through: :schools
   has_many :events, through: :schools
   has_many :time_slots, through: :events
+  has_many :options, through: :time_slots
+  has_many :option_registrations, through: :time_slots
   has_many :registrations, through: :time_slots
   has_many :managements, as: :manageable,
                          dependent: :destroy

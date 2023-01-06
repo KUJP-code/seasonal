@@ -67,6 +67,8 @@ RSpec.describe Area do
 
   context 'with schools' do
     let(:school) { create(:school, area: area) }
+    let(:event) { create(:event, school: school) }
+    let(:time_slot) { event.time_slots.create(attributes_for(:time_slot)) }
 
     it 'knows its schools' do
       area_schools = area.schools
@@ -101,13 +103,25 @@ RSpec.describe Area do
     end
 
     context 'with registrations' do
-      let(:event) { create(:event, school: school) }
-      let(:time_slot) { event.time_slots.create(attributes_for(:time_slot)) }
-
       it 'knows its registrations' do
         registration = time_slot.registrations.create(attributes_for(:registration))
         area_registrations = area.registrations
         expect(area_registrations).to contain_exactly(registration)
+      end
+
+      it 'knows its option registrations' do
+        option = time_slot.options.create(attributes_for(:option))
+        area_opt_reg = option.registrations.create(child: create(:child))
+        area_opt_registrations = area.option_registrations
+        expect(area_opt_registrations).to contain_exactly(area_opt_reg)
+      end
+    end
+
+    context 'with options through time slots' do
+      it 'knows its available options' do
+        option = time_slot.options.create(attributes_for(:option))
+        area_options = area.options
+        expect(area_options).to contain_exactly(option)
       end
     end
   end

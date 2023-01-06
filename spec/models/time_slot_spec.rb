@@ -92,7 +92,7 @@ RSpec.describe TimeSlot do
   context 'with scopes' do
     # Can't test past scope because of db validations
     it "knows today's time slots" do
-      current_slot = create(:time_slot, start_time: 1.hour.from_now, end_time: 2.hours.from_now, event: event)
+      current_slot = create(:time_slot, start_time: 1.minute.from_now, end_time: 2.minutes.from_now, event: event)
       todays_slots = event.time_slots.todays_slots
       expect(todays_slots).to contain_exactly(current_slot)
     end
@@ -121,8 +121,11 @@ RSpec.describe TimeSlot do
       expect(slot_registrations).to contain_exactly(registration)
     end
 
-    xit 'destroys its registrations when destroyed' do
-      
+    it 'destroys its registrations when destroyed' do
+      registration
+      expect { time_slot.destroy }.to \
+        change(Registration, :count)
+        .by(-1)
     end
 
     context 'with children' do
@@ -146,16 +149,27 @@ RSpec.describe TimeSlot do
   end
 
   context 'with options' do
-    xit 'knows its available options' do
-      
+    subject(:option) { time_slot.options.create(attributes_for(:option)) }
+
+    it 'knows its available options' do
+      slot_options = time_slot.options
+      expect(slot_options).to contain_exactly(option)
     end
 
-    xit 'knows its registered options' do
-      
+    it 'destroys its options when destroyed' do
+      option
+      expect { time_slot.destroy }.to \
+        change(Option, :count)
+        .by(-1)
     end
 
-    xit 'destroys its options when destroyed' do
-      
+    context 'with registered options' do
+      let(:option_registration) { option.registrations.create(child: create(:child)) }
+
+      it 'knows its registered options' do
+        option_registrations = time_slot.option_registrations
+        expect(option_registrations).to contain_exactly(option_registration)
+      end
     end
   end
 end

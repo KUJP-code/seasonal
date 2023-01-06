@@ -115,31 +115,49 @@ RSpec.describe Child do
 
   context 'with registrations' do
     let(:event) { create(:event, school: child.school) }
-    let(:time_slot) { create(:time_slot, event: event) }
-    let(:registration) { create(:slot_registration, child: child, registerable: time_slot) }
+    let(:time_slot) { event.time_slots.create(attributes_for(:time_slot)) }
+    let(:option) { time_slot.options.create(attributes_for(:option)) }
 
-    it 'knows its registered time slot' do
-      regsitered_slot = registration.registerable
+    it 'knows its registered time slots' do
+      slot_reg = time_slot.registrations.create(attributes_for(:registration))
+      regsitered_slot = slot_reg.registerable
       expect(regsitered_slot).to eq time_slot
     end
 
+    it 'knows its registered options' do
+      opt_reg = option.registrations.create(attributes_for(:registration))
+      registered_opt = opt_reg.registerable
+      expect(registered_opt).to eq option
+    end
+
     it 'registration cost matches time slot cost' do
-      reg_cost = registration.cost
+      slot_reg = time_slot.registrations.create(attributes_for(:slot_registration))
+      reg_cost = slot_reg.cost
       slot_cost = time_slot.cost
       expect(reg_cost).to eq slot_cost
     end
 
     it 'registration cost can be discounted without affecting slot cost' do
-      registration.cost = 0
+      slot_reg = time_slot.registrations.create(attributes_for(:slot_registration))
+      slot_reg.cost = 0
       slot_cost = time_slot.cost
-      expect(slot_cost).not_to eq 0
+      expect(slot_cost).to eq 8000
     end
 
     it 'deletes its registrations when deleted' do
-      registration
+      time_slot.registrations.create(attributes_for(:registration, child: child))
+      option.registrations.create(attributes_for(:registration, child: child))
       expect { child.destroy }.to \
         change(Registration, :count)
-        .by(-1)
+        .by(-2)
+    end
+
+    it 'deletes option registrations for that slot when slot registration is deleted' do
+      slot_reg = time_slot.registrations.create(attributes_for(:registration, child: child))
+      option.registrations.create(attributes_for(:registration, child: child))
+      expect { slot_reg.destroy }.to \
+        change(Registration, :count)
+        .by(-2)
     end
 
     context 'with time_slots through registrations' do

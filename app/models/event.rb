@@ -7,6 +7,8 @@ class Event < ApplicationRecord
   delegate :area, to: :school
 
   has_many :time_slots, dependent: :destroy
+  has_many :options, through: :time_slots
+  has_many :option_registrations, through: :time_slots
   has_many :registrations, through: :time_slots
   has_many :children, through: :registrations
 

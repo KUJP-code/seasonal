@@ -101,42 +101,49 @@ RSpec.describe Event do
   end
 
   context 'with time slots' do
-    let(:ts) { [create(:time_slot, event: event), create(:time_slot, event: event)] }
+    let(:slot) { event.time_slots.create(attributes_for(:time_slot)) }
 
     it 'knows its time slots' do
       event_slots = event.time_slots
-      expect(event_slots).to match_array(ts)
+      expect(event_slots).to contain_exactly(slot)
     end
 
     context 'with registrations' do
-      let(:registrations) { [create(:registration, registerable: ts[0]), create(:registration, registerable: ts[1])] }
-
-      it 'knows its registrations' do
+      it 'knows its time slot registrations' do
+        registration = slot.registrations.create(attributes_for(:registration))
         event_registrations = event.registrations
-        expect(event_registrations).to match_array(registrations)
+        expect(event_registrations).to contain_exactly(registration)
+      end
+
+      it 'knows its option registrations' do
+        option = slot.options.create(attributes_for(:option))
+        event_opt_reg = option.registrations.create(child: create(:child))
+        event_opt_registrations = event.option_registrations
+        expect(event_opt_registrations).to contain_exactly(event_opt_reg)
       end
     end
 
     context 'with children through registrations' do
-      let(:child) { create(:child, school: event.school) }
-
-      before do
-        ts.each do |slot|
-          slot.registrations.create(child: child, cost: slot.cost)
-        end
-      end
-
       it 'knows which children are attending' do
+        child = create(:child, school: event.school)
+        child.registrations.create(registerable: slot)
         event_children = event.children
         expect(event_children).to include(child)
       end
 
-      # TODO: must be a cleaner way to write this
       it 'knows which attending children are from other schools' do
         diff_school_child = create(:child)
-        ts[0].registrations.create(child: diff_school_child)
+        diff_school_child.registrations.create(registerable: slot)
         foreign_kids = event.diff_school_attendees
         expect(foreign_kids).to contain_exactly(diff_school_child)
+      end
+    end
+
+    context 'with options through time slots' do
+      it 'knows its available options' do
+        option = slot.options.create(attributes_for(:option))
+        event_options = event.options
+        expect(event_options).to contain_exactly(option)
       end
     end
   end

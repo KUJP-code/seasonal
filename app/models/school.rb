@@ -12,6 +12,8 @@ class School < ApplicationRecord
   has_many :children, dependent: nil
   has_many :events, dependent: :destroy
   has_many :time_slots, through: :events
+  has_many :options, through: :time_slots
+  has_many :option_registrations, through: :time_slots
   has_many :registrations, through: :time_slots
 
   validates :name, :address, :phone, presence: true
