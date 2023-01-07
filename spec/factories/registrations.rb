@@ -2,8 +2,6 @@
 
 FactoryBot.define do
   factory :registration do
-    child { create(:child) }
-
     trait :option do
       registerable { create(:option) }
       cost { registerable.cost }

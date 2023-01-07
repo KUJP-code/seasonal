@@ -17,6 +17,44 @@ RSpec.describe 'User' do
       role = user.role
       expect(role).to eq 'customer'
     end
+
+    it 'saves with a + in phone number' do
+      valid_user.phone = '+815834653453'
+      plus_valid = valid_user.save!
+      expect(plus_valid).to be true
+    end
+
+    it 'saves with spaces in phone number' do
+      valid_user.phone = '+8158 3465 3453'
+      space_valid = valid_user.save!
+      expect(space_valid).to be true
+    end
+  end
+
+  context 'when required fields missing' do
+    it 'Japanese name missing' do
+      valid_user.ja_name = nil
+      valid = valid_user.save
+      expect(valid).to be false
+    end
+
+    it 'English name missing' do
+      valid_user.en_name = nil
+      valid = valid_user.save
+      expect(valid).to be false
+    end
+
+    it 'username missing' do
+      valid_user.username = nil
+      valid = valid_user.save
+      expect(valid).to be false
+    end
+
+    it 'phone number missing' do
+      valid_user.phone = nil
+      valid = valid_user.save
+      expect(valid).to be false
+    end
   end
 
   context 'when password is invalid' do
@@ -37,6 +75,34 @@ RSpec.describe 'User' do
     it 'rejects users with no email' do
       no_email = build(:user, email: 'nil')
       valid = no_email.save
+      expect(valid).to be false
+    end
+  end
+
+  context 'when phone number invalid' do
+    it "doesn't accept letters" do
+      not_numbers = build(:user, phone: '79ug9723A')
+      valid = not_numbers.save
+      expect(valid).to be false
+    end
+
+    it "doesn't accept disallowed symbols" do
+      illegal_symbols = build(:user, phone: '79%*9723#')
+      valid = illegal_symbols.save
+      expect(valid).to be false
+    end
+  end
+
+  context 'when names in wrong language' do
+    it 'rejects Japanese name in English' do
+      valid_user.ja_name = "B'rett-Tan ner"
+      valid = valid_user.save
+      expect(valid).to be false
+    end
+
+    it 'rejects English name in Japanese' do
+      valid_user.en_name = 'サクラ田中'
+      valid = valid_user.save
       expect(valid).to be false
     end
   end

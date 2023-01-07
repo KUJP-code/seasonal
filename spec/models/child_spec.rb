@@ -17,14 +17,39 @@ RSpec.describe Child do
       expect(lvl).to eq 'unknown'
     end
 
+    it 'saves category as internal by default' do
+      category = child.category
+      expect(category).to eq 'internal'
+    end
+
     it 'can change its level' do
-      child.level = 'sky_hi'
+      child.level = :sky_high
       lvl = child.level
-      expect(lvl).to eq 'sky_hi'
+      expect(lvl).to eq 'sky_high'
     end
   end
 
   context 'when invalid' do
+    context 'when required fields missing' do
+      it 'Japanese name missing' do
+        valid_child.ja_name = nil
+        valid = valid_child.save
+        expect(valid).to be false
+      end
+
+      it 'English name missing' do
+        valid_child.en_name = nil
+        valid = valid_child.save
+        expect(valid).to be false
+      end
+
+      it 'photo permission missing' do
+        valid_child.post_photos = nil
+        valid = valid_child.save
+        expect(valid).to be false
+      end
+    end
+
     context 'when birthday invalid' do
       it 'rejects children who are too old' do
         old_child = build(:child, birthday: 20.years.ago)
@@ -35,6 +60,20 @@ RSpec.describe Child do
       it 'rejects children who are too young' do
         young_child = build(:child, birthday: 1.year.ago)
         valid = young_child.save
+        expect(valid).to be false
+      end
+    end
+
+    context 'when names in wrong language' do
+      it 'rejects Japanese name in English' do
+        valid_child.ja_name = "B'rett-Tan ner"
+        valid = valid_child.save
+        expect(valid).to be false
+      end
+
+      it 'rejects English name in Japanese' do
+        valid_child.en_name = 'サクラ田中'
+        valid = valid_child.save
         expect(valid).to be false
       end
     end

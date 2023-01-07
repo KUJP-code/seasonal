@@ -110,7 +110,7 @@ RSpec.describe Event do
 
     context 'with registrations' do
       it 'knows its time slot registrations' do
-        registration = slot.registrations.create(attributes_for(:registration))
+        registration = slot.registrations.create(child: create(:child))
         event_registrations = event.registrations
         expect(event_registrations).to contain_exactly(registration)
       end

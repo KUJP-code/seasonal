@@ -104,7 +104,7 @@ RSpec.describe Area do
 
     context 'with registrations' do
       it 'knows its registrations' do
-        registration = time_slot.registrations.create(attributes_for(:registration))
+        registration = create(:child).registrations.create(registerable: time_slot)
         area_registrations = area.registrations
         expect(area_registrations).to contain_exactly(registration)
       end

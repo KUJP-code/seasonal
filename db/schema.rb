@@ -21,15 +21,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_05_055131) do
   end
 
   create_table "children", force: :cascade do |t|
+    t.string "ja_name"
+    t.string "en_name"
+    t.integer "category", default: 0
     t.date "birthday"
     t.integer "level", default: 0
     t.string "allergies"
+    t.bigint "ssid"
+    t.string "ele_school_name"
+    t.boolean "post_photos"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "parent_id"
     t.bigint "school_id"
+    t.index ["birthday"], name: "index_children_on_birthday"
     t.index ["parent_id"], name: "index_children_on_parent_id"
     t.index ["school_id"], name: "index_children_on_school_id"
+    t.index ["ssid"], name: "index_children_on_ssid", unique: true
   end
 
   create_table "events", force: :cascade do |t|
@@ -102,8 +110,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_05_055131) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.bigint "school_id"
+    t.string "ja_name"
+    t.string "en_name"
+    t.string "username"
     t.integer "role", default: 0
+    t.string "address"
+    t.string "phone"
+    t.bigint "school_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true

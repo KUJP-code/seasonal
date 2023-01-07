@@ -54,7 +54,7 @@ RSpec.describe Option do
   end
 
   context 'with registrations' do
-    subject(:op_reg) { option.registrations.create(attributes_for(:registration)) }
+    subject(:op_reg) { create(:child).registrations.create(registerable: option) }
 
     it 'knows its registrations' do
       option_registrations = option.registrations

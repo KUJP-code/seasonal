@@ -2,12 +2,13 @@
 
 FactoryBot.define do
   factory :user do
-    id { |n| n }
-    # TODO: Add these back in when the fields are added
-    # name { Faker::Name.name }
-    # username { Faker::Internet.unique.username }
+    ja_name { Faker::Name.name }
+    en_name { "B'rett-Tan ner" }
+    username { Faker::Internet.unique.username }
     email { Faker::Internet.unique.email }
     password { Faker::Internet.password(min_length: 10) }
+    address { Faker::Address.full_address }
+    phone { Faker::PhoneNumber.phone_number }
 
     trait :customer do
       role { 0 }

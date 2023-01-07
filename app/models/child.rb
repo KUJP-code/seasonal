@@ -15,20 +15,39 @@ class Child < ApplicationRecord
                      source_type: 'Option'
   has_many :events, through: :time_slots
 
-  # Map level integer in db to a string
+  # Map level integer in table to a level
   enum :level, unknown: 0,
                kindy: 1,
-               land_lo: 2,
-               land_hi: 3,
-               sky_lo: 4,
-               sky_hi: 5,
-               galaxy_lo: 6,
-               galaxy_hi: 7,
+               land_low: 2,
+               land_high: 3,
+               sky_low: 4,
+               sky_high: 5,
+               galaxy_low: 6,
+               galaxy_high: 7,
                keep_up: 8,
                specialist: 9,
                tech_up: 10
 
+  # Map category int in table to a category
+  enum :category, internal: 0,
+                  reservation: 1,
+                  external: 2
+
+  # Validations
+  validates :ja_name, :en_name, :post_photos, presence: true
+
+  validates :ja_name, format: { with: /[一-龠]+|[ぁ-ゔ]+|[ァ-ヴー]+|[々〆〤ヶ]+/u }
+  validates :en_name, format: { with: /[A-Za-z '-]/ }
+
   validates :birthday, comparison: { greater_than: 13.years.ago, less_than: 2.years.ago }
+  validates :ssid, uniqueness: true
+
+  # Scopes for broad levels
+  scope :elementary, -> { where(level: [2, 3, 4, 5, 6, 7, 8, 9, 10]) }
+  scope :evening_only, -> { where(level: [8, 9, 10]) }
+  scope :land, -> { where(level: [2, 3]) }
+  scope :sky, -> { where(level: [4, 5]) }
+  scope :galaxy, -> { where(level: [5, 6]) }
 
   # TODO: Do this with ActiveRecord, not select
   def diff_school_events

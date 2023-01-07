@@ -16,6 +16,7 @@ class School < ApplicationRecord
   has_many :option_registrations, through: :time_slots
   has_many :registrations, through: :time_slots
 
+  # Validations
   validates :name, :address, :phone, presence: true
   validates :phone, format: { with: /\A[0-9 \-+x.)(]+\Z/, message: I18n.t('schools.validations.phone') }
   validate :managers, :school_manager?
