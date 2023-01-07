@@ -82,17 +82,29 @@
   ])
 end
 
+puts 'Created 5 areas and their schools,
+3 customers for each school,
+2 children for each customer,
+AMs/SMs for each area/school,
+an event for each school and
+2 time slots for each event'
+
+TimeSlot.all.each do |slot|
+  slot.options.create(name: Faker::Book.title, description: Faker::Lorem.sentence(word_count: 10), cost: 4000)
+end
+
+puts 'Created an option for each time slot'
+
 Child.all.each do |child|
   child.registrations.create(registerable: TimeSlot.find(rand(1..10)), cost: 8000)
 end
 
-puts 'Created 5 areas and their schools,
-3 customers,
-2 children for each,
-AMs/SMs,
-an event for each school,
-2 time slots for each,
-a time slot registration for each child'
+Child.all.each do |child|
+  child.registrations.create(registerable: Option.find(rand(1..10)), cost: 4000)
+end
+
+puts 'Created a time slot registration for each child and
+an option registration for each child'
 
 User.create([
   {
