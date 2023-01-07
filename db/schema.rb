@@ -26,7 +26,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_05_055131) do
     t.string "allergies"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "parent_id", null: false
+    t.bigint "parent_id"
     t.bigint "school_id"
     t.index ["parent_id"], name: "index_children_on_parent_id"
     t.index ["school_id"], name: "index_children_on_school_id"
@@ -102,10 +102,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_05_055131) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.bigint "school_id"
+    t.integer "role", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "role", default: 0
-    t.bigint "school_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["school_id"], name: "index_users_on_school_id"

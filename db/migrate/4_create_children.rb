@@ -9,7 +9,7 @@ class CreateChildren < ActiveRecord::Migration[7.0]
     end
 
     add_reference :children, :parent,
-                             null: false,
+                             null: true,
                              index: true
     add_foreign_key :children, :users,
                                column: :parent_id

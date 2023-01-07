@@ -3,8 +3,8 @@
 # Represents a child, or student, enrolled at a school and/or attending an event
 # Must have a parent, and a school
 class Child < ApplicationRecord
-  belongs_to :parent, class_name: 'User'
-  belongs_to :school
+  belongs_to :parent, class_name: 'User', optional: true
+  belongs_to :school, optional: true
   delegate :area, to: :school
   has_many :registrations, dependent: :destroy
   has_many :time_slots, through: :registrations,
