@@ -31,79 +31,89 @@ RSpec.describe 'User' do
     end
   end
 
-  context 'when required fields missing' do
-    it 'Japanese name missing' do
-      valid_user.ja_name = nil
-      valid = valid_user.save
+  context 'when invalid' do
+    it 'rejects duplicate usernames' do
+      username = valid_user.username
+      valid_user.save
+      dup_username = build(:user, username: username)
+      valid = dup_username.save
       expect(valid).to be false
     end
 
-    it 'English name missing' do
-      valid_user.en_name = nil
-      valid = valid_user.save
-      expect(valid).to be false
+    context 'when required fields missing' do
+      it 'Japanese name missing' do
+        valid_user.ja_name = nil
+        valid = valid_user.save
+        expect(valid).to be false
+      end
+  
+      it 'English name missing' do
+        valid_user.en_name = nil
+        valid = valid_user.save
+        expect(valid).to be false
+      end
+  
+      it 'username missing' do
+        valid_user.username = nil
+        valid = valid_user.save
+        expect(valid).to be false
+      end
+  
+      it 'phone number missing' do
+        valid_user.phone = nil
+        valid = valid_user.save
+        expect(valid).to be false
+      end
     end
-
-    it 'username missing' do
-      valid_user.username = nil
-      valid = valid_user.save
-      expect(valid).to be false
+  
+    context 'when password is invalid' do
+      it 'rejects passwords shorter than 10 characters' do
+        short_pass = build(:user, password: 'short')
+        valid = short_pass.save
+        expect(valid).to be false
+      end
+  
+      it 'rejects users with no password' do
+        no_pass = build(:user, password: 'nil')
+        valid = no_pass.save
+        expect(valid).to be false
+      end
     end
-
-    it 'phone number missing' do
-      valid_user.phone = nil
-      valid = valid_user.save
-      expect(valid).to be false
+  
+    context 'when email is invalid' do
+      it 'rejects users with no email' do
+        no_email = build(:user, email: 'nil')
+        valid = no_email.save
+        expect(valid).to be false
+      end
     end
-  end
-
-  context 'when password is invalid' do
-    it 'rejects passwords shorter than 10 characters' do
-      short_pass = build(:user, password: 'short')
-      valid = short_pass.save
-      expect(valid).to be false
+  
+    context 'when phone number invalid' do
+      it "doesn't accept letters" do
+        not_numbers = build(:user, phone: '79ug9723A')
+        valid = not_numbers.save
+        expect(valid).to be false
+      end
+  
+      it "doesn't accept disallowed symbols" do
+        illegal_symbols = build(:user, phone: '79%*9723#')
+        valid = illegal_symbols.save
+        expect(valid).to be false
+      end
     end
-
-    it 'rejects users with no password' do
-      no_pass = build(:user, password: 'nil')
-      valid = no_pass.save
-      expect(valid).to be false
-    end
-  end
-
-  context 'when email is invalid' do
-    it 'rejects users with no email' do
-      no_email = build(:user, email: 'nil')
-      valid = no_email.save
-      expect(valid).to be false
-    end
-  end
-
-  context 'when phone number invalid' do
-    it "doesn't accept letters" do
-      not_numbers = build(:user, phone: '79ug9723A')
-      valid = not_numbers.save
-      expect(valid).to be false
-    end
-
-    it "doesn't accept disallowed symbols" do
-      illegal_symbols = build(:user, phone: '79%*9723#')
-      valid = illegal_symbols.save
-      expect(valid).to be false
-    end
-  end
-
-  context 'when names in wrong language' do
-    it 'rejects Japanese name in English' do
-      valid_user.ja_name = "B'rett-Tan ner"
-      valid = valid_user.save
-      expect(valid).to be false
-    end
-
-    it 'rejects English name in Japanese' do
-      valid_user.en_name = 'サクラ田中'
-      valid = valid_user.save
-      expect(valid).to be false
+  
+    context 'when names in wrong language' do
+      it 'rejects Japanese name in English' do
+        valid_user.ja_name = "B'rett-Tan ner"
+        valid = valid_user.save
+        expect(valid).to be false
+      end
+  
+      it 'rejects English name in Japanese' do
+        valid_user.en_name = 'サクラ田中'
+        valid = valid_user.save
+        expect(valid).to be false
+      end
     end
   end
 

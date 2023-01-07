@@ -5,8 +5,13 @@
 
 5.times do |i|
   am = User.create(
+    ja_name: Faker::Name.name,
+    en_name: "B'rett-Tan ner",
+    username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
     password: Faker::Internet.password(min_length: 10),
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number,
     role: :area_manager    
   )
 
@@ -15,8 +20,13 @@
   )
 
   sm = User.create(
+    ja_name: Faker::Name.name,
+    en_name: "B'rett-Tan ner",
+    username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
     password: Faker::Internet.password(min_length: 10),
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number,
     role: :school_manager   
   )
 
@@ -29,32 +39,45 @@
 
   school.users.create([
     {
-      email: Faker::Internet.unique.email,
-      password: Faker::Internet.password(min_length: 10)
+    ja_name: Faker::Name.name,
+    en_name: "B'rett-Tan ner",
+    username: Faker::Internet.unique.username,
+    email: Faker::Internet.unique.email,
+    password: Faker::Internet.password(min_length: 10),
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number,
     },
     {
-      email: Faker::Internet.unique.email,
-      password: Faker::Internet.password(min_length: 10)
+    ja_name: Faker::Name.name,
+    en_name: "B'rett-Tan ner",
+    username: Faker::Internet.unique.username,
+    email: Faker::Internet.unique.email,
+    password: Faker::Internet.password(min_length: 10),
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number,
     },
     {
-      email: Faker::Internet.unique.email,
-      password: Faker::Internet.password(min_length: 10)
+    ja_name: Faker::Name.name,
+    en_name: "B'rett-Tan ner",
+    username: Faker::Internet.unique.username,
+    email: Faker::Internet.unique.email,
+    password: Faker::Internet.password(min_length: 10),
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number,
     }
   ])
 
   school.users.customers.each do |customer|
-    customer.children.create([
-      {
+    customer.children.create(
+        ja_name: Faker::Name.name,
+        en_name: "B'rett-Tan ner",
         birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
+        ssid: i,
+        ele_school_name: Faker::GreekPhilosophers.name,
+        post_photos: true,
         allergies: 'peanuts',
         school: customer.school
-      },
-      {
-        birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
-        allergies: 'peanuts',
-        school: customer.school
-      }
-    ])
+      )
   end
 
   event = school.events.create(
@@ -84,7 +107,7 @@ end
 
 puts 'Created 5 areas and their schools,
 3 customers for each school,
-2 children for each customer,
+1 child for each customer,
 AMs/SMs for each area/school,
 an event for each school and
 2 time slots for each event'
