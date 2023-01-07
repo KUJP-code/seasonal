@@ -1,7 +1,8 @@
 class CreateChildren < ActiveRecord::Migration[7.0]
   def change
     create_table :children do |t|
-      t.string :ja_name
+      t.string :ja_first_name
+      t.string :ja_family_name
       t.string :en_name
       t.integer :category, default: 0
       t.date :birthday, index: true

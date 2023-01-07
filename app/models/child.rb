@@ -34,9 +34,9 @@ class Child < ApplicationRecord
                   external: 2
 
   # Validations
-  validates :ja_name, :en_name, :post_photos, presence: true
+  validates :ja_first_name, :ja_family_name, :en_name, :post_photos, presence: true
 
-  validates :ja_name, format: { with: /[一-龠]+|[ぁ-ゔ]+|[ァ-ヴー]+|[々〆〤ヶ]+/u }
+  validates :ja_first_name, :ja_family_name, format: { with: /[一-龠]+|[ぁ-ゔ]+|[ァ-ヴー]+|[々〆〤ヶ]+/u }
   validates :en_name, format: { with: /[A-Za-z '-]/ }
 
   validates :birthday, comparison: { greater_than: 13.years.ago, less_than: 2.years.ago }

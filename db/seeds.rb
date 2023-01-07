@@ -5,7 +5,8 @@
 
 5.times do |i|
   am = User.create(
-    ja_name: Faker::Name.name,
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
     en_name: "B'rett-Tan ner",
     username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
@@ -20,7 +21,8 @@
   )
 
   sm = User.create(
-    ja_name: Faker::Name.name,
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
     en_name: "B'rett-Tan ner",
     username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
@@ -39,7 +41,8 @@
 
   school.users.create([
     {
-    ja_name: Faker::Name.name,
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
     en_name: "B'rett-Tan ner",
     username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
@@ -48,7 +51,8 @@
     phone: Faker::PhoneNumber.phone_number,
     },
     {
-    ja_name: Faker::Name.name,
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
     en_name: "B'rett-Tan ner",
     username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
@@ -57,7 +61,8 @@
     phone: Faker::PhoneNumber.phone_number,
     },
     {
-    ja_name: Faker::Name.name,
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
     en_name: "B'rett-Tan ner",
     username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
@@ -69,7 +74,8 @@
 
   school.users.customers.each do |customer|
     customer.children.create(
-        ja_name: Faker::Name.name,
+        ja_first_name: Faker::Name.first_name,
+        ja_family_name: Faker::Name.last_name,
         en_name: "B'rett-Tan ner",
         birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
         ssid: i,

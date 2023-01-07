@@ -31,8 +31,14 @@ RSpec.describe Child do
 
   context 'when invalid' do
     context 'when required fields missing' do
-      it 'Japanese name missing' do
-        valid_child.ja_name = nil
+      it 'Japanese first name missing' do
+        valid_child.ja_first_name = nil
+        valid = valid_child.save
+        expect(valid).to be false
+      end
+
+      it 'Japanese family name missing' do
+        valid_child.ja_family_name = nil
         valid = valid_child.save
         expect(valid).to be false
       end
@@ -65,8 +71,14 @@ RSpec.describe Child do
     end
 
     context 'when names in wrong language' do
-      it 'rejects Japanese name in English' do
-        valid_child.ja_name = "B'rett-Tan ner"
+      it 'rejects Japanese first name in English' do
+        valid_child.ja_first_name = "B'rett-Tan ner"
+        valid = valid_child.save
+        expect(valid).to be false
+      end
+
+      it 'rejects Japanese family name in English' do
+        valid_child.ja_family_name = "B'rett-Tan ner"
         valid = valid_child.save
         expect(valid).to be false
       end

@@ -2,7 +2,8 @@
 
 FactoryBot.define do
   factory :child do
-    ja_name { Faker::Name.name }
+    ja_first_name { Faker::Name.first_name }
+    ja_family_name { Faker::Name.last_name }
     en_name { "B'rett-Tan ner" }
     birthday { Faker::Date.birthday(min_age: 2, max_age: 13) }
     ssid { |n| n }

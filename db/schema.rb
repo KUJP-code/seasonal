@@ -21,7 +21,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_05_055131) do
   end
 
   create_table "children", force: :cascade do |t|
-    t.string "ja_name"
+    t.string "ja_first_name"
+    t.string "ja_family_name"
     t.string "en_name"
     t.integer "category", default: 0
     t.date "birthday"
@@ -110,7 +111,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_05_055131) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.string "ja_name"
+    t.string "ja_first_name"
+    t.string "ja_family_name"
     t.string "en_name"
     t.string "username"
     t.integer "role", default: 0
