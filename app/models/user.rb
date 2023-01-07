@@ -30,6 +30,7 @@ class User < ApplicationRecord
 
   validates :ja_name, format: { with: /[一-龠]+|[ぁ-ゔ]+|[ァ-ヴー]+|[々〆〤ヶ]+/u }
   validates :en_name, format: { with: /[A-Za-z '-]/ }
+  validates :username, uniqueness: true
 
   validates :phone, format: { with: /\A[0-9 \-+x.)(]+\Z/, message: I18n.t('schools.validations.phone') }
 
