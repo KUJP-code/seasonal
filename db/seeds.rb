@@ -7,6 +7,7 @@
   am = User.create(
     ja_first_name: Faker::Name.first_name,
     ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
     en_name: "B'rett-Tan ner",
     username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
@@ -23,6 +24,7 @@
   sm = User.create(
     ja_first_name: Faker::Name.first_name,
     ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
     en_name: "B'rett-Tan ner",
     username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
@@ -43,6 +45,7 @@
     {
     ja_first_name: Faker::Name.first_name,
     ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
     en_name: "B'rett-Tan ner",
     username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
@@ -53,6 +56,7 @@
     {
     ja_first_name: Faker::Name.first_name,
     ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
     en_name: "B'rett-Tan ner",
     username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
@@ -63,6 +67,7 @@
     {
     ja_first_name: Faker::Name.first_name,
     ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
     en_name: "B'rett-Tan ner",
     username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
@@ -76,7 +81,8 @@
     customer.children.create(
         ja_first_name: Faker::Name.first_name,
         ja_family_name: Faker::Name.last_name,
-        en_name: "B'rett-Tan ner",
+        katakana_name: Faker::Name.name.kana,
+    en_name: "B'rett-Tan ner",
         birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
         ssid: i,
         ele_school_name: Faker::GreekPhilosophers.name,
@@ -99,14 +105,16 @@
       start_time: Faker::Time.forward(days: 5),
       end_time: Faker::Date.between(from: 10.days.from_now, to: 15.days.from_now),
       description: Faker::Lorem.sentence(word_count: 10),
-      cost: 8000
+      cost: 8000,
+      registration_deadline: 4.days.from_now
     },
     {
       name: Faker::Games::LeagueOfLegends.champion,
       start_time: Faker::Time.forward(days: 5),
       end_time: Faker::Date.between(from: 10.days.from_now, to: 15.days.from_now),
       description: Faker::Lorem.sentence(word_count: 10),
-      cost: 8000
+      cost: 8000,
+      registration_deadline: 3.days.from_now
     }
   ])
 end
