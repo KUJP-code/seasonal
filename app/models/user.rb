@@ -26,9 +26,10 @@ class User < ApplicationRecord
   has_many :events, through: :time_slots
 
   # Validations
-  validates :ja_first_name, :ja_family_name, :en_name, :username, :phone, presence: true
+  validates :ja_first_name, :ja_family_name, :katakana_name, :en_name, :username, :phone, presence: true
 
   validates :ja_first_name, :ja_family_name, format: { with: /[一-龠]+|[ぁ-ゔ]+|[ァ-ヴー]+|[々〆〤ヶ]+/u }
+  validates :katakana_name, format: { with: /[ァ-ヴー]/u }
   validates :en_name, format: { with: /[A-Za-z '-]/ }
   validates :username, uniqueness: true
 

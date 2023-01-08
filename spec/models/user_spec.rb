@@ -53,6 +53,12 @@ RSpec.describe 'User' do
         expect(valid).to be false
       end
 
+      it 'Katakana name missing' do
+        valid_user.katakana_name = nil
+        valid = valid_user.save
+        expect(valid).to be false
+      end
+
       it 'English name missing' do
         valid_user.en_name = nil
         valid = valid_user.save
@@ -117,6 +123,24 @@ RSpec.describe 'User' do
 
       it 'rejects Japanese family name in English' do
         valid_user.ja_family_name = "B'rett-Tan ner"
+        valid = valid_user.save
+        expect(valid).to be false
+      end
+
+      it 'rejects Katakana name in Kanji' do
+        valid_user.katakana_name = '吉田'
+        valid = valid_user.save
+        expect(valid).to be false
+      end
+
+      it 'rejects Katakana name in Hiragana' do
+        valid_user.katakana_name = 'ゆじいたどり'
+        valid = valid_user.save
+        expect(valid).to be false
+      end
+
+      it 'rejects Katakana name in English' do
+        valid_user.katakana_name = "B'rett-Tan ner"
         valid = valid_user.save
         expect(valid).to be false
       end

@@ -110,6 +110,8 @@ GEM
       railties (>= 5.0.0)
     faker (3.0.0)
       i18n (>= 1.8.11, < 2)
+    faker_japanese (0.2.5)
+      faker
     globalid (1.0.0)
       activesupport (>= 5.0)
     i18n (1.12.0)
@@ -275,6 +277,7 @@ DEPENDENCIES
   devise-i18n
   factory_bot_rails
   faker
+  faker_japanese
   importmap-rails
   jbuilder
   pg (~> 1.1)

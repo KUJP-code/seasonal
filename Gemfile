@@ -59,6 +59,7 @@ gem 'devise-i18n'
 group :development, :test do
   # Use Faker to generate test data
   gem 'faker'
+  gem 'faker_japanese'
 
   # Capybara for integration testing
   gem 'capybara'
