@@ -23,6 +23,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_05_055131) do
   create_table "children", force: :cascade do |t|
     t.string "ja_first_name"
     t.string "ja_family_name"
+    t.string "katakana_name"
     t.string "en_name"
     t.integer "category", default: 0
     t.date "birthday"
@@ -31,6 +32,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_05_055131) do
     t.bigint "ssid"
     t.string "ele_school_name"
     t.boolean "post_photos"
+    t.boolean "needs_hat"
+    t.boolean "received_hat"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "parent_id"
@@ -77,6 +80,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_05_055131) do
     t.bigint "child_id", null: false
     t.string "registerable_type", null: false
     t.bigint "registerable_id", null: false
+    t.boolean "paid", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["child_id"], name: "index_registrations_on_child_id"
@@ -98,7 +102,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_05_055131) do
     t.datetime "start_time"
     t.datetime "end_time"
     t.string "description"
+    t.integer "max_attendees"
     t.integer "cost"
+    t.datetime "registration_deadline"
     t.bigint "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -113,6 +119,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_05_055131) do
     t.datetime "remember_created_at"
     t.string "ja_first_name"
     t.string "ja_family_name"
+    t.string "katakana_name"
     t.string "en_name"
     t.string "username"
     t.integer "role", default: 0

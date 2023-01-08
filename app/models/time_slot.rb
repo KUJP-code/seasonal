@@ -14,11 +14,13 @@ class TimeSlot < ApplicationRecord
                            dependent: :destroy
   has_many :children, through: :registrations
 
-  validates :name, :start_time, :end_time, :description, :cost, presence: true
+  # Validations
+  validates :name, :start_time, :end_time, :description, :cost, :registration_deadline, presence: true
 
   validates :start_time, comparison: { greater_than_or_equal_to: Time.zone.today.midnight, less_than: :end_time }
   validates :end_time, comparison: { greater_than_or_equal_to: Time.zone.today.midnight }
   validates_comparison_of :end_time, greater_than: :start_time
+  validates :registration_deadline, comparison: { less_than_or_equal_to: :start_time, greater_than: Time.zone.now }
 
   validates :description, length: { minimum: 10 }
 

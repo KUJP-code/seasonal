@@ -3,6 +3,7 @@ class CreateChildren < ActiveRecord::Migration[7.0]
     create_table :children do |t|
       t.string :ja_first_name
       t.string :ja_family_name
+      t.string :katakana_name
       t.string :en_name
       t.integer :category, default: 0
       t.date :birthday, index: true
@@ -11,6 +12,8 @@ class CreateChildren < ActiveRecord::Migration[7.0]
       t.bigint :ssid
       t.string :ele_school_name
       t.boolean :post_photos
+      t.boolean :needs_hat
+      t.boolean :received_hat
 
       t.timestamps
     end

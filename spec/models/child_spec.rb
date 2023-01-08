@@ -43,6 +43,12 @@ RSpec.describe Child do
         expect(valid).to be false
       end
 
+      it 'Katakana name missing' do
+        valid_child.katakana_name = nil
+        valid = valid_child.save
+        expect(valid).to be false
+      end
+
       it 'English name missing' do
         valid_child.en_name = nil
         valid = valid_child.save
@@ -79,6 +85,24 @@ RSpec.describe Child do
 
       it 'rejects Japanese family name in English' do
         valid_child.ja_family_name = "B'rett-Tan ner"
+        valid = valid_child.save
+        expect(valid).to be false
+      end
+
+      it 'rejects Katakana name in Kanji' do
+        valid_child.katakana_name = '吉田'
+        valid = valid_child.save
+        expect(valid).to be false
+      end
+
+      it 'rejects Katakana name in Hiragana' do
+        valid_child.katakana_name = 'ゆじいたどり'
+        valid = valid_child.save
+        expect(valid).to be false
+      end
+
+      it 'rejects Katakana name in English' do
+        valid_child.katakana_name = "B'rett-Tan ner"
         valid = valid_child.save
         expect(valid).to be false
       end
