@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Adjustment do
   let(:child) { create(:child) }
   let(:time_slot) { create(:time_slot) }
-  let(:slot_registration) { time_slot.registrations.create(child: child) }
+  let(:slot_registration) { time_slot.registrations.create(child: child, cost: 8000) }
   let(:valid_adjustment) { slot_registration.adjustments.build(attributes_for(:adjustment)) }
 
   context 'when valid' do
@@ -14,11 +14,37 @@ RSpec.describe Adjustment do
       expect(valid).to be true
     end
 
+    context 'when invalid' do
+      it 'no change in cost' do
+        valid_adjustment.change = 0
+        valid = valid_adjustment.save
+        expect(valid).to be false
+      end
+
+      it 'change is positive' do
+        valid_adjustment.change = 4000
+        valid = valid_adjustment.save
+        expect(valid).to be false
+      end
+
+      it 'magnitude of change is greater than registration cost' do
+        valid_adjustment.change = -10_000
+        valid = valid_adjustment.save
+        expect(valid).to be false
+      end
+
+      it 'no reason given' do
+        valid_adjustment.reason = nil
+        valid = valid_adjustment.save
+        expect(valid).to be false
+      end
+    end
+
     context 'with option registration' do
       let(:option) { create(:option) }
 
       it 'saves' do
-        option_registration = create(:option, time_slot: time_slot).registrations.create(child: child)
+        option_registration = create(:option, time_slot: time_slot).registrations.create(child: child, cost: 4000)
         valid_adjustment = option_registration.adjustments.build(attributes_for(:adjustment))
         valid = valid_adjustment.save!
         expect(valid).to be true

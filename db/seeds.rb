@@ -9,7 +9,6 @@
     ja_family_name: Faker::Name.last_name,
     katakana_name: Faker::Name.name.kana,
     en_name: "B'rett-Tan ner",
-    username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
     password: Faker::Internet.password(min_length: 10),
     address: Faker::Address.full_address,
@@ -26,7 +25,6 @@
     ja_family_name: Faker::Name.last_name,
     katakana_name: Faker::Name.name.kana,
     en_name: "B'rett-Tan ner",
-    username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
     password: Faker::Internet.password(min_length: 10),
     address: Faker::Address.full_address,
@@ -47,7 +45,6 @@
     ja_family_name: Faker::Name.last_name,
     katakana_name: Faker::Name.name.kana,
     en_name: "B'rett-Tan ner",
-    username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
     password: Faker::Internet.password(min_length: 10),
     address: Faker::Address.full_address,
@@ -58,7 +55,6 @@
     ja_family_name: Faker::Name.last_name,
     katakana_name: Faker::Name.name.kana,
     en_name: "B'rett-Tan ner",
-    username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
     password: Faker::Internet.password(min_length: 10),
     address: Faker::Address.full_address,
@@ -69,7 +65,6 @@
     ja_family_name: Faker::Name.last_name,
     katakana_name: Faker::Name.name.kana,
     en_name: "B'rett-Tan ner",
-    username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
     password: Faker::Internet.password(min_length: 10),
     address: Faker::Address.full_address,
@@ -132,16 +127,21 @@ end
 
 puts 'Created an option for each time slot'
 
-Child.all.each do |child|
-  child.registrations.create(registerable: TimeSlot.find(rand(1..10)), cost: 8000)
+TimeSlot.all.each do |slot|
+  Child.all.each do |child|
+    child.registrations.create!(registerable: slot, cost: slot.cost)
+  end
 end
 
-Child.all.each do |child|
-  child.registrations.create(registerable: Option.find(rand(1..10)), cost: 4000)
+puts 'Created a time slot registration for each child'
+
+Option.all.each do |option|
+  Child.all.each do |child|
+    child.registrations.create!(registerable: option, cost: option.cost)
+  end
 end
 
-puts 'Created a time slot registration for each child and
-an option registration for each child'
+puts 'Created an option registration for each child'
 
 User.create([
   {
