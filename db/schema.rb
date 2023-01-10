@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_10_050241) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_10_074517) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "adjustments", force: :cascade do |t|
+    t.integer "change"
+    t.string "reason"
+    t.boolean "email_sent"
+    t.bigint "registration_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["registration_id"], name: "index_adjustments_on_registration_id"
+  end
 
   create_table "areas", force: :cascade do |t|
     t.string "name"
@@ -157,6 +167,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_10_050241) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "adjustments", "registrations"
   add_foreign_key "children", "schools"
   add_foreign_key "children", "users", column: "parent_id"
   add_foreign_key "events", "schools"

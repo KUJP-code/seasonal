@@ -14,6 +14,8 @@ class Registration < ApplicationRecord
   delegate :school, to: :registerable
   delegate :parent, to: :child
 
+  has_many :adjustments, dependent: :destroy
+
   # Set scopes for registerable type
   scope :slot_registrations, -> { where(registerable_type: 'TimeSlot') }
   scope :option_registrations, -> { where(registerable_type: 'Option') }
