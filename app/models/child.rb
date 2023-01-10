@@ -15,6 +15,9 @@ class Child < ApplicationRecord
                      source_type: 'Option'
   has_many :events, through: :time_slots
 
+  # Track changes with PaperTrail
+  has_paper_trail
+
   # Map level integer in table to a level
   enum :level, unknown: 0,
                kindy: 1,

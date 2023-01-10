@@ -53,6 +53,9 @@ gem 'bootsnap', require: false
 # Use Devise for authentication
 gem 'devise'
 
+# Use PaperTrail for backup/reversion of certain models
+gem 'paper_trail'
+
 # Localize Devise views so I can read my own app
 gem 'devise-i18n'
 

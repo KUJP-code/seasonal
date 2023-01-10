@@ -25,6 +25,9 @@ class User < ApplicationRecord
                         source_type: 'TimeSlot'
   has_many :events, through: :time_slots
 
+  # Track changes with PaperTrail
+  has_paper_trail
+
   # Validations
   validates :ja_first_name, :ja_family_name, :katakana_name, :en_name, :username, :phone, presence: true
 

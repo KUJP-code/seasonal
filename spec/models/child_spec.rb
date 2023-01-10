@@ -27,6 +27,23 @@ RSpec.describe Child do
       lvl = child.level
       expect(lvl).to eq 'sky_high'
     end
+
+    with_versioning do
+      it 'creates a paper trail on create' do
+        valid_child.save
+        expect(valid_child).to be_versioned
+      end
+
+      it 'creates a paper trail on update' do
+        child.update(en_name: 'Brittaney')
+        expect(child).to be_versioned
+      end
+
+      it 'creates a paper trail on destroy' do
+        child.destroy
+        expect(child).to be_versioned
+      end
+    end
   end
 
   context 'when invalid' do

@@ -29,6 +29,23 @@ RSpec.describe 'User' do
       space_valid = valid_user.save!
       expect(space_valid).to be true
     end
+
+    with_versioning do
+      it 'creates a paper trail on create' do
+        valid_user.save
+        expect(valid_user).to be_versioned
+      end
+
+      it 'creates a paper trail on update' do
+        user.update(en_name: 'Brittaney')
+        expect(user).to be_versioned
+      end
+
+      it 'creates a paper trail on destroy' do
+        user.destroy
+        expect(user).to be_versioned
+      end
+    end
   end
 
   context 'when invalid' do

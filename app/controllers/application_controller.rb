@@ -2,7 +2,8 @@
 
 # Everything here applies to and is accessible from the whole app
 class ApplicationController < ActionController::Base
-  before_action :switch_locale
+  # Make sure we're in the right language and know who's making changes
+  before_action :switch_locale, :set_paper_trail_whodunnit
 
   private
 
