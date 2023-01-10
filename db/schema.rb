@@ -80,6 +80,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_10_050241) do
     t.bigint "child_id", null: false
     t.string "registerable_type", null: false
     t.bigint "registerable_id", null: false
+    t.datetime "billing_date"
+    t.boolean "confirmed", default: false
     t.boolean "paid", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
