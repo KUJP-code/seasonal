@@ -133,7 +133,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_10_050241) do
     t.string "ja_family_name"
     t.string "katakana_name"
     t.string "en_name"
-    t.string "username"
     t.integer "role", default: 0
     t.string "address"
     t.string "phone"
@@ -143,7 +142,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_10_050241) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["school_id"], name: "index_users_on_school_id"
-    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   create_table "versions", force: :cascade do |t|

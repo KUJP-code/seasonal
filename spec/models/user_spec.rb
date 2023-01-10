@@ -65,14 +65,6 @@ RSpec.describe 'User' do
   end
 
   context 'when invalid' do
-    it 'rejects duplicate usernames' do
-      username = valid_user.username
-      valid_user.save
-      dup_username = build(:user, username: username)
-      valid = dup_username.save
-      expect(valid).to be false
-    end
-
     context 'when required fields missing' do
       it 'Japanese first name missing' do
         valid_user.ja_first_name = nil
@@ -94,12 +86,6 @@ RSpec.describe 'User' do
 
       it 'English name missing' do
         valid_user.en_name = nil
-        valid = valid_user.save
-        expect(valid).to be false
-      end
-
-      it 'username missing' do
-        valid_user.username = nil
         valid = valid_user.save
         expect(valid).to be false
       end
