@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_10_032157) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_10_050241) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -87,6 +87,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_10_032157) do
     t.index ["registerable_type", "registerable_id"], name: "index_registrations_on_registerable"
   end
 
+  create_table "regular_schedules", force: :cascade do |t|
+    t.boolean "monday", default: false
+    t.boolean "tuesday", default: false
+    t.boolean "wednesday", default: false
+    t.boolean "thursday", default: false
+    t.boolean "friday", default: false
+    t.bigint "child_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["child_id"], name: "index_regular_schedules_on_child_id"
+  end
+
   create_table "schools", force: :cascade do |t|
     t.string "name"
     t.string "address"
@@ -151,6 +163,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_10_032157) do
   add_foreign_key "managements", "users", column: "manager_id"
   add_foreign_key "options", "time_slots"
   add_foreign_key "registrations", "children"
+  add_foreign_key "regular_schedules", "children"
   add_foreign_key "schools", "areas"
   add_foreign_key "time_slots", "events"
   add_foreign_key "users", "schools"

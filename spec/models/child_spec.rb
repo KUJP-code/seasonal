@@ -306,4 +306,20 @@ RSpec.describe Child do
       end
     end
   end
+
+  context 'with regular schedule' do
+    it 'knows its schedule' do
+      schedule = child.create_regular_schedule(attributes_for(:regular_schedule))
+      child_schedule = child.regular_schedule
+      expect(child_schedule).to eq schedule
+    end
+
+    it 'can find all children who attend on a given day' do
+      child.create_regular_schedule(monday: true)
+      fri_child = create(:child, ssid: 2)
+      fri_child.create_regular_schedule(friday: true)
+      friday_children = described_class.attend_friday
+      expect(friday_children).to contain_exactly(fri_child)
+    end
+  end
 end

@@ -3,9 +3,12 @@
 # Represents a child, or student, enrolled at a school and/or attending an event
 # Must have a parent, and a school
 class Child < ApplicationRecord
+  # List associations to other models
   belongs_to :parent, class_name: 'User', optional: true
   belongs_to :school, optional: true
+  has_one :regular_schedule, dependent: :destroy
   delegate :area, to: :school
+
   has_many :registrations, dependent: :destroy
   has_many :time_slots, through: :registrations,
                         source: :registerable,
@@ -52,6 +55,13 @@ class Child < ApplicationRecord
   scope :land, -> { where(level: [2, 3]) }
   scope :sky, -> { where(level: [4, 5]) }
   scope :galaxy, -> { where(level: [5, 6]) }
+
+  # Scopes for children who attend certain days
+  scope :attend_monday, -> { joins(:regular_schedule).where('regular_schedule.monday' => true) }
+  scope :attend_tuesday, -> { joins(:regular_schedule).where('regular_schedule.tuesday' => true) }
+  scope :attend_wednesday, -> { joins(:regular_schedule).where('regular_schedule.wednesday' => true) }
+  scope :attend_thursday, -> { joins(:regular_schedule).where('regular_schedule.thursday' => true) }
+  scope :attend_friday, -> { joins(:regular_schedule).where('regular_schedule.friday' => true) }
 
   # TODO: Do this with ActiveRecord, not select
   def diff_school_events
