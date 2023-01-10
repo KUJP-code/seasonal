@@ -43,6 +43,20 @@ RSpec.describe Child do
         child.destroy
         expect(child).to be_versioned
       end
+
+      it 'can be restored to previous version' do
+        old_name = child.en_name
+        child.update(en_name: 'Brittaney')
+        child.paper_trail.previous_version.save
+        reverted_name = child.reload.en_name
+        expect(old_name).to eq reverted_name
+      end
+
+      it 'can be restored after destruction (if password specified)' do
+        child.destroy
+        restored = child.versions.last.reify.save!
+        expect(restored).to be true
+      end
     end
   end
 

@@ -45,6 +45,22 @@ RSpec.describe 'User' do
         user.destroy
         expect(user).to be_versioned
       end
+
+      it 'can be restored to previous version' do
+        old_name = user.en_name
+        user.update(en_name: 'Brittaney')
+        user.paper_trail.previous_version.save
+        reverted_name = user.reload.en_name
+        expect(old_name).to eq reverted_name
+      end
+
+      it 'can be restored after destruction (if password specified)' do
+        user.destroy
+        restored_version = user.versions.last.reify
+        restored_version.password = 'temp_password'
+        restored = restored_version.save!
+        expect(restored).to be true
+      end
     end
   end
 
