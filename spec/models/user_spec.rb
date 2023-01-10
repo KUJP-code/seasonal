@@ -284,8 +284,9 @@ RSpec.describe 'User' do
 
     it 'destroys all children when destroyed' do
       user.children << child
-      user.destroy
-      expect(Child.all).to be_empty
+      expect { user.destroy }.to \
+        change(Child, :count)
+        .by(-1)
     end
 
     context 'with registrations' do
