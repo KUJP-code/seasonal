@@ -24,7 +24,7 @@ class TimeSlot < ApplicationRecord
 
   validates :description, length: { minimum: 10 }
 
-  validates :cost, comparison: { greater_than_or_equal_to: 0, less_than: 50_000 }
+  validates :cost, numericality: { greater_than_or_equal_to: 0, less_than: 50_000, only_integer: true }
 
   # Set scopes for time slot status
   scope :past_slots, -> { where('end_time < ?', Time.zone.today.midnight) }

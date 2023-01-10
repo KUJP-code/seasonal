@@ -9,7 +9,7 @@ class Adjustment < ApplicationRecord
 
   # Validations
   validates :reason, :change, presence: true
-  validates :change, comparison: { less_than: 0, other_than: nil, greater_than: :reg_adj_cost }
+  validates :change, numericality: { less_than: 0, greater_than: :reg_adj_cost, only_integer: true }
 
   private
 
