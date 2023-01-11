@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_10_074517) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_10_141900) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,6 +52,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_10_074517) do
     t.index ["parent_id"], name: "index_children_on_parent_id"
     t.index ["school_id"], name: "index_children_on_school_id"
     t.index ["ssid"], name: "index_children_on_ssid", unique: true
+  end
+
+  create_table "coupons", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.string "description"
+    t.decimal "discount", precision: 3, scale: 2
+    t.boolean "combinable", default: false
+    t.string "couponable_type", null: false
+    t.bigint "couponable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["couponable_type", "couponable_id"], name: "index_coupons_on_couponable"
   end
 
   create_table "events", force: :cascade do |t|
