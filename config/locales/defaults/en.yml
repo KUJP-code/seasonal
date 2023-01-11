@@ -1,12 +1,12 @@
 en:
   nav_bar: 
-    child_list: 'Children'
-    customers: 'Customers'
-    logout: 'Sign Out'
-    profile: 'My Profile'
-    schools: 'Schools'
+    child_list: "Children"
+    customers: "Customers"
+    logout: "Sign Out"
+    profile: "My Profile"
+    schools: "Schools"
   roles:
-    admin: 'admin'
-    area_manager: 'area manager'
-    customer: 'customer'
-    school_manager: 'school manager'
+    admin: "admin"
+    area_manager: "area manager"
+    customer: "customer"
+    school_manager: "school manager"

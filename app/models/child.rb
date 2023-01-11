@@ -63,8 +63,13 @@ class Child < ApplicationRecord
   scope :attend_thursday, -> { joins(:regular_schedule).where('regular_schedule.thursday' => true) }
   scope :attend_friday, -> { joins(:regular_schedule).where('regular_schedule.friday' => true) }
 
+  # Model methods
   # TODO: Do this with ActiveRecord, not select
   def diff_school_events
     events.reject { |event| event.school == school }
+  end
+
+  def ja_name
+    "#{ja_family_name} #{ja_first_name}"
   end
 end

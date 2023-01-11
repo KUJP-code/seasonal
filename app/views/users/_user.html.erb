@@ -1,27 +1,27 @@
 <div class="user_partial">
-    <%# TODO: Link will be their name once they have one %>
     <div class="key_info">
-        <h2><%= link_to user.email, user_path(user) %></h2>        
+        <h2><%= link_to user.ja_name, user_path(user) %></h2>        
         <h4><%= t(".roles.#{user.role}") unless user.customer? %></h4>
     </div>
 
     <% if user.customer? %>
         <div class="children">
-            <h4><%= t(".children") %></h4>
-            <%# TODO: these will all be links once children exist %>
+            <h4><%= t(".children") if user.children.count > 1 %></h4>
+            <h4><%= t(".child") if user.children.count == 1 %></h4>
+
             <ul>
-                <li class="user_child">Child 1</li>
-                <li class="user_child">Child 2</li>
-                <li class="user_child">Child 3</li>
-                <li class="user_child">Child 4</li>                
+            <% user.children.each do |child| %>
+                <li><%= link_to child.ja_name, child_path(child) %></li>
+            <% end %>             
             </ul>
+
         </div>
     <% end %>
 
     <% if user.customer? || current_user.admin? %>
         <div class="user_options">
             <%= link_to t(".edit"), edit_user_path(user) %>
-            <%= link_to t('.delete'), user_path(user), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm')} unless current_user.customer? %>
+            <%= link_to t('.delete'), user_path(user), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm')} %>
         </div>
     <% end %>
 </div>

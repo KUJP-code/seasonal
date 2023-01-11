@@ -10,6 +10,7 @@ ja:
       failure: "ユーザーを更新できませんでした"
     user:
       children: "子供達:"
+      child: "子供:"
       delete: "ユーザーを削除"
       delete_confirm: "ユーザーを削除してもよろしいですか?"
       edit: "編集情報"

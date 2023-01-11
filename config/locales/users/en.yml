@@ -10,6 +10,7 @@ en:
       failure: "Couldn't update user"
     user:
       children: "Children:"
+      child: "Child:"
       delete: "Delete User"
       delete_confirm: "Are you sure you want to delete this user?"
       edit: "Edit User"
