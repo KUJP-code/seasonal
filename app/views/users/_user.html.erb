@@ -6,8 +6,7 @@
 
     <% if user.customer? %>
         <div class="children">
-            <h4><%= t(".children") if user.children.count > 1 %></h4>
-            <h4><%= t(".child") if user.children.count == 1 %></h4>
+            <h4><%= t(".children") %></h4>
 
             <ul>
             <% user.children.each do |child| %>

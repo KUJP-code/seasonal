@@ -10,8 +10,9 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
     redirect to '/errors/permission' if current_user.customer? && current_user != @user
+
+    @user = User.find(params[:id])
   end
 
   def edit
