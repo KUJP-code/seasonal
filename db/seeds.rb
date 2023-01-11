@@ -4,7 +4,7 @@
 
 
 5.times do |i|
-  am = User.create(
+  am = User.create!(
     ja_first_name: Faker::Name.first_name,
     ja_family_name: Faker::Name.last_name,
     katakana_name: Faker::Name.name.kana,
@@ -16,11 +16,11 @@
     role: :area_manager    
   )
 
-  area = am.managed_areas.create(
+  area = am.managed_areas.create!(
     name: Faker::Address.city
   )
 
-  sm = User.create(
+  sm = User.create!(
     ja_first_name: Faker::Name.first_name,
     ja_family_name: Faker::Name.last_name,
     katakana_name: Faker::Name.name.kana,
@@ -32,14 +32,14 @@
     role: :school_manager   
   )
 
-  school = sm.managed_schools.create(
+  school = sm.managed_schools.create!(
     name: Faker::Address.city,
     address: Faker::Address.full_address,
     phone: Faker::PhoneNumber.phone_number,
     area: area
   )
 
-  school.users.create([
+  school.users.create!([
     {
     ja_first_name: Faker::Name.first_name,
     ja_family_name: Faker::Name.last_name,
@@ -72,14 +72,14 @@
     }
   ])
 
-  school.users.customers.each do |customer|
-    customer.children.create(
+  school.users.customers.each_with_index do |customer, index|
+    customer.children.create!(
         ja_first_name: Faker::Name.first_name,
         ja_family_name: Faker::Name.last_name,
         katakana_name: Faker::Name.name.kana,
-    en_name: "B'rett-Tan ner",
+        en_name: "B'rett-Tan ner",
         birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
-        ssid: i,
+        ssid: Faker::Number.unique.number,
         ele_school_name: Faker::GreekPhilosophers.name,
         post_photos: true,
         allergies: 'peanuts',
@@ -87,29 +87,29 @@
       )
   end
 
-  event = school.events.create(
+  event = school.events.create!(
     name: Faker::JapaneseMedia::StudioGhibli.movie,
     description: Faker::JapaneseMedia::StudioGhibli.quote,
     start_date: Faker::Time.forward(days: 5),
     end_date: Faker::Date.between(from: 10.days.from_now, to: 15.days.from_now)
   )
 
-  event.time_slots.create([
+  event.time_slots.create!([
     {
       name: Faker::Games::LeagueOfLegends.champion,
-      start_time: Faker::Time.forward(days: 5),
+      start_time: 5.days.from_now,
       end_time: Faker::Date.between(from: 10.days.from_now, to: 15.days.from_now),
       description: Faker::Lorem.sentence(word_count: 10),
       cost: 8000,
-      registration_deadline: 4.days.from_now
+      registration_deadline: 2.days.from_now
     },
     {
       name: Faker::Games::LeagueOfLegends.champion,
-      start_time: Faker::Time.forward(days: 5),
+      start_time: 5.days.from_now,
       end_time: Faker::Date.between(from: 10.days.from_now, to: 15.days.from_now),
       description: Faker::Lorem.sentence(word_count: 10),
       cost: 8000,
-      registration_deadline: 3.days.from_now
+      registration_deadline: 2.days.from_now
     }
   ])
 end
@@ -122,7 +122,7 @@ an event for each school and
 2 time slots for each event'
 
 TimeSlot.all.each do |slot|
-  slot.options.create(name: Faker::Book.title, description: Faker::Lorem.sentence(word_count: 10), cost: 4000)
+  slot.options.create!(name: Faker::Book.title, description: Faker::Lorem.sentence(word_count: 10), cost: 4000)
 end
 
 puts 'Created an option for each time slot'
@@ -143,26 +143,83 @@ end
 
 puts 'Created an option registration for each child'
 
-User.create([
+Child.all.each do |child|
+  child.create_regular_schedule(
+    monday: [true, false].sample,
+    tuesday: [true, false].sample,
+    wednesday: [true, false].sample,
+    thursday: [true, false].sample,
+    friday: [true, false].sample
+  )
+end
+
+puts 'Created a regular schedule for each child'
+
+Event.all.each do |event|
+  event.registrations.last.adjustments.create!(
+    change: -3000,
+    reason: 'testing adjustments from seed file'    
+  )
+end
+
+puts 'Applied an adjustment to the latest registration for each event'
+
+TimeSlot.all.each do |slot|
+  slot.coupons.create(
+    code: Faker::Code.asin,
+    name: Faker::Games::LeagueOfLegends.champion,
+    description: Faker::Games::LeagueOfLegends.quote,
+    discount: 0.33,
+    combinable: false
+  )
+end
+
+puts 'Added coupons for each time slot of whatever the last created event was'
+
+User.create!([
   {
     email: 'admin@gmail.com',
     password: 'adminadminadmin',
-    role: :admin
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
+    en_name: 'Brett Tanner',
+    role: :admin,
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number
   },
   {
     email: 'am@gmail.com',
     password: 'ampasswordampassword',
-    role: :area_manager
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
+    en_name: 'Workon Saturday',
+    role: :area_manager,
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number
   },
   {
     email: 'sm@gmail.com',
     password: 'smpasswordsmpassword',
-    role: :school_manager
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
+    en_name: 'Minoru Yoshida',
+    role: :school_manager,
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number
   },
   {
     email: 'customer@gmail.com',
     password: 'customerpassword',
-    role: :customer
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
+    en_name: 'Lucky Lastname',
+    role: :customer,
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number
   }
 ])
 

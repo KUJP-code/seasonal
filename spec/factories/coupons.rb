@@ -2,10 +2,10 @@
 
 FactoryBot.define do
   factory :coupon do
-    code { 'KU33' }
+    code { Faker::Code.asin }
     name { Faker::Games::LeagueOfLegends.champion }
     description { Faker::Games::LeagueOfLegends.quote }
-    discount { '0.33' }
+    discount { 0.33 }
     combinable { false }
 
     trait :slot do
