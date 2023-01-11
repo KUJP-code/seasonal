@@ -51,12 +51,18 @@ class User < ApplicationRecord
   scope :admins, -> { where(role: :admin) }
 
   # Scopes for User#index to display to each role
-  scope :admin_index, -> { order(updated_at: :desc).limit(20) }
-  scope :sm_index, ->(sm) { where(school: sm.managed_schools).order(updated_at: :desc).limit(20) }
-  scope :am_index, ->(am) { where(school: School.where(area: am.managed_areas)).order(updated_at: :desc).limit(20) }
+  scope :admin_index, -> { order(updated_at: :desc).limit(12) }
+  scope :sm_index, ->(sm) { where(school: sm.managed_schools).order(updated_at: :desc).limit(12) }
+  scope :am_index, ->(am) { where(school: School.where(area: am.managed_areas)).order(updated_at: :desc).limit(12) }
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  # Public methods
+  # Concatenates the two Japanese names for easier use
+  def ja_name
+    "#{ja_family_name} #{ja_first_name}"
+  end
 end
