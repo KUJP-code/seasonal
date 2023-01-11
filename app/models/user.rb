@@ -23,6 +23,9 @@ class User < ApplicationRecord
   has_many :time_slots, through: :registrations,
                         source: :registerable,
                         source_type: 'TimeSlot'
+  has_many :registered_options, through: :registrations,
+                                source: :registerable,
+                                source_type: 'Option'
   has_many :events, through: :time_slots
 
   # Track changes with PaperTrail
@@ -51,9 +54,33 @@ class User < ApplicationRecord
   scope :admins, -> { where(role: :admin) }
 
   # Scopes for User#index to display to each role
-  scope :admin_index, -> { order(updated_at: :desc).limit(12).includes(:children) }
-  scope :sm_index, ->(sm) { where(school: sm.managed_schools).order(updated_at: :desc).limit(12).includes(:children) }
-  scope :am_index, ->(am) { where(school: School.where(area: am.managed_areas)).order(updated_at: :desc).limit(12).includes(:children) }
+  scope :admin_index, -> { order(updated_at: :desc).limit(12).includes(:children, :school) }
+
+  scope :sm_index, lambda { |sm|
+    where(school: sm.managed_schools)
+      .order(updated_at: :desc)
+      .limit(12)
+      .includes(:children, :school)
+  }
+  scope :am_index, lambda { |am|
+    where(school: School.where(area: am.managed_areas))
+      .order(updated_at: :desc)
+      .limit(12)
+      .includes(:children, :school)
+  }
+
+  # Scope for User#show
+  scope :user_show, lambda { |param_id|
+    where(id: param_id).includes(:children,
+                                 :events,
+                                 :registrations,
+                                 :time_slots,
+                                 :registered_options,
+                                 :managed_schools,
+                                 :managed_areas,
+                                 :school)
+                       .first
+  }
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
