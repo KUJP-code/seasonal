@@ -44,11 +44,16 @@ class User < ApplicationRecord
               admin: 3,
               default: :customer
 
-  # Create scopes for each role
+  # Scopes for each role
   scope :customers, -> { where(role: :customer) }
   scope :area_managers, -> { where(role: :area_manager) }
   scope :school_managers, -> { where(role: :school_manager) }
   scope :admins, -> { where(role: :admin) }
+
+  # Scopes for User#index to display to each role
+  scope :admin_index, -> { order(updated_at: :desc).limit(20) }
+  scope :sm_index, ->(sm) { where(school: sm.managed_schools).order(updated_at: :desc).limit(20) }
+  scope :am_index, ->(am) { where(school: School.where(area: am.managed_areas)).order(updated_at: :desc).limit(20) }
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
