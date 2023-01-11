@@ -223,4 +223,7 @@ User.create!([
   }
 ])
 
+User.school_managers.last.managed_schools << School.last
+User.area_managers.last.managed_areas << Area.last
+
 puts 'Created my test accounts'
