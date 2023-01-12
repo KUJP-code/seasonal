@@ -10,6 +10,7 @@ class Child < ApplicationRecord
   delegate :area, to: :school
 
   has_many :registrations, dependent: :destroy
+  accepts_nested_attributes_for :registrations
   has_many :time_slots, through: :registrations,
                         source: :registerable,
                         source_type: 'TimeSlot'
