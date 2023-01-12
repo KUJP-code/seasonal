@@ -18,7 +18,7 @@ Rails.application.routes.draw do
       resources :users
 
       # Ensures just the locale also goes to root
-      get '/:locale', to: 'users#index'
+      get '/:locale', to: 'users#profile'
     end
     get '/current_event', to: 'welcomes#current_event'
     get '/errors/permission', to: 'errors#permission'
@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   authenticated :user do
-    root to: 'users#index', as: :authenticated_root
+    root to: 'users#profile', as: :authenticated_root
   end
   root to: redirect('/auth/sign_in')
 end
