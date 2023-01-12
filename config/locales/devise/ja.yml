@@ -1,0 +1,6 @@
+ja:
+  devise:
+    shared:
+      links:
+        forgot_password: "パスワードをお忘れですか？"
+        log_in: "ログイン"

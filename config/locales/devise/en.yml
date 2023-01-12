@@ -1,0 +1,6 @@
+en:
+  devise:
+    shared:
+      links:
+        forgot_password: "Forgot your password?"
+        log_in: "Log in"
