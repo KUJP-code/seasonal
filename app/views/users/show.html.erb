@@ -4,7 +4,7 @@
     <% if @user.children? %>
         <h2><%= t('.event') %></h2>
         <div id="event_container">
-            <% @user.events.each do |event| %>
+            <% @user.school.events.future_events.each do |event| %>
                 <%= render event %>
             <% end %>
         </div>
