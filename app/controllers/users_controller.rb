@@ -18,8 +18,24 @@ class UsersController < ApplicationController
     redirect_to '/errors/permission' if current_user.customer? && current_user != @user
   end
 
+  def new
+    @user = User.new
+  end
+
   def edit
     @user = User.find(params[:id])
+  end
+
+  def create
+    @user = User.new(user_params)
+
+    if @user.save!
+      flash[:notice] = t('.success')
+      redirect_to user_path(@user)
+    else
+      flash.now[:alert] = t('.failure')
+      render '/auth/sign_up', status: :unprocessable_entity
+    end
   end
 
   def update

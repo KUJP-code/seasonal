@@ -3,17 +3,20 @@ en:
     event:
       dates: "From %{start_date} to %{end_date}"
   users:
+    create:
+      failure: "Couldn't create %{name}"
+      success: "Successfully created %{name}"
     destroy:
-      success: "Successfully deleted user"
       failure: "Couldn't delete user"
+      success: "Successfully deleted user"
     show:  
       event: "Events"
       managed_areas: "Managed Areas"
       managed_schools: "Managed Schools"
       time_slot: "Time Slots"
     update:
-      success: "Successfully updated user"
       failure: "Couldn't update user"
+      success: "Successfully updated user"
     user:
       children: "Children:"
       child: "Child:"

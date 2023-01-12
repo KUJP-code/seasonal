@@ -3,17 +3,20 @@ ja:
     event:
       dates: "%{start_date}から %{end_date}まで"
   users:
+    create:
+      failure: "%{name}を作成できませんでした"
+      success: "%{name}の作成に成功"
     destroy:
-      success: "ユーザーを削除しました"
       failure: "ユーザーを削除できませんでした"
+      success: "ユーザーを削除しました"
     show:
       event: "イベント"
       managed_areas: "管理区域"
       managed_schools: "運営する学校"
       time_slot: "タイムスロット"
     update:
-      success: "ユーザーが正常に更新されました"
       failure: "ユーザーを更新できませんでした"
+      success: "ユーザーが正常に更新されました"
     user:
       children: "子供達:"
       child: "子供:"

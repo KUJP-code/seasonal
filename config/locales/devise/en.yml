@@ -1,5 +1,17 @@
 en:
   devise:
+    registrations:
+      new:
+        account_information: "Account Information"
+        address: "Address"
+        en_name: "English Name"
+        ja_family_name: "Japanese Family Name"
+        ja_first_name: "Japanese First Name"
+        katakana_name: "Name in Katakana"
+        min_length: "%{length} characters minimum"
+        personal_information: "Personal Information"
+        phone: "Phone Number"
+        school: "School"
     shared:
       links:
         forgot_password: "Forgot your password?"

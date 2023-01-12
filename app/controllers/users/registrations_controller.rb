@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
+# Allows my additional fields for sign_ups
 class Users::RegistrationsController < Devise::RegistrationsController
-  # before_action :configure_sign_up_params, only: [:create]
+  before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
@@ -10,9 +11,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    super
+  end
 
   # GET /resource/edit
   # def edit
@@ -41,9 +42,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # protected
 
   # If you have extra params to permit, append them to the sanitizer.
-  # def configure_sign_up_params
-  #   devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute])
-  # end
+  def configure_sign_up_params
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[ja_first_name
+                                                         ja_family_name
+                                                         katakana_name en_name role address
+                                                         phone school_id])
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_account_update_params
