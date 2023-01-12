@@ -121,6 +121,73 @@ AMs/SMs for each area/school,
 an event for each school and
 2 time slots for each event'
 
+User.create!([
+  {
+    email: 'admin@gmail.com',
+    password: 'adminadminadmin',
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
+    en_name: 'Brett Tanner',
+    role: :admin,
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number
+  },
+  {
+    email: 'am@gmail.com',
+    password: 'ampasswordampassword',
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
+    en_name: 'Workon Saturday',
+    role: :area_manager,
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number
+  },
+  {
+    email: 'sm@gmail.com',
+    password: 'smpasswordsmpassword',
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
+    en_name: 'Minoru Yoshida',
+    role: :school_manager,
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number
+  },
+  {
+    email: 'customer@gmail.com',
+    password: 'customerpassword',
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
+    en_name: 'Lucky Lastname',
+    role: :customer,
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number
+  }
+])
+
+User.school_managers.last.managed_schools << School.last
+User.area_managers.last.managed_areas << Area.last
+User.area_managers.last.managed_areas << Area.first
+
+test_customer = User.customers.last
+test_customer.children.create!(
+  ja_first_name: Faker::Name.first_name,
+  ja_family_name: Faker::Name.last_name,
+  katakana_name: Faker::Name.name.kana,
+  en_name: "B'rett-Tan ner",
+  birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
+  ssid: Faker::Number.unique.number,
+  ele_school_name: Faker::GreekPhilosophers.name,
+  post_photos: true,
+  allergies: 'peanuts',
+  school: test_customer.school
+)
+
+puts 'Created my test accounts'
+
 TimeSlot.all.each do |slot|
   slot.options.create!(name: Faker::Book.title, description: Faker::Lorem.sentence(word_count: 10), cost: 4000)
 end
@@ -175,56 +242,3 @@ TimeSlot.all.each do |slot|
 end
 
 puts 'Added coupons for each time slot of whatever the last created event was'
-
-User.create!([
-  {
-    email: 'admin@gmail.com',
-    password: 'adminadminadmin',
-    ja_first_name: Faker::Name.first_name,
-    ja_family_name: Faker::Name.last_name,
-    katakana_name: Faker::Name.name.kana,
-    en_name: 'Brett Tanner',
-    role: :admin,
-    address: Faker::Address.full_address,
-    phone: Faker::PhoneNumber.phone_number
-  },
-  {
-    email: 'am@gmail.com',
-    password: 'ampasswordampassword',
-    ja_first_name: Faker::Name.first_name,
-    ja_family_name: Faker::Name.last_name,
-    katakana_name: Faker::Name.name.kana,
-    en_name: 'Workon Saturday',
-    role: :area_manager,
-    address: Faker::Address.full_address,
-    phone: Faker::PhoneNumber.phone_number
-  },
-  {
-    email: 'sm@gmail.com',
-    password: 'smpasswordsmpassword',
-    ja_first_name: Faker::Name.first_name,
-    ja_family_name: Faker::Name.last_name,
-    katakana_name: Faker::Name.name.kana,
-    en_name: 'Minoru Yoshida',
-    role: :school_manager,
-    address: Faker::Address.full_address,
-    phone: Faker::PhoneNumber.phone_number
-  },
-  {
-    email: 'customer@gmail.com',
-    password: 'customerpassword',
-    ja_first_name: Faker::Name.first_name,
-    ja_family_name: Faker::Name.last_name,
-    katakana_name: Faker::Name.name.kana,
-    en_name: 'Lucky Lastname',
-    role: :customer,
-    address: Faker::Address.full_address,
-    phone: Faker::PhoneNumber.phone_number
-  }
-])
-
-User.school_managers.last.managed_schools << School.last
-User.area_managers.last.managed_areas << Area.last
-User.area_managers.last.managed_areas << Area.first
-
-puts 'Created my test accounts'
