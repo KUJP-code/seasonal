@@ -6,7 +6,7 @@ class Area < ApplicationRecord
   has_many :schools, dependent: nil
   has_many :users, through: :schools
   has_many :children, through: :schools
-  has_many :events, through: :schools
+  has_many :events, -> { distinct }, through: :schools
   has_many :time_slots, through: :events
   has_many :options, through: :time_slots
   has_many :option_registrations, through: :time_slots

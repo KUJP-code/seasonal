@@ -26,7 +26,7 @@ class User < ApplicationRecord
   has_many :registered_options, through: :registrations,
                                 source: :registerable,
                                 source_type: 'Option'
-  has_many :events, through: :time_slots
+  has_many :events, -> { distinct }, through: :time_slots
 
   # Track changes with PaperTrail
   has_paper_trail
