@@ -1,0 +1,11 @@
+<%= link_to event_path(event) do %>
+    <div class="event">
+        <h3><%= event.name %></h3>
+        <p>
+            <%= t('.dates', start_date: event.start_date, end_date: event.end_date) %>
+        </p>
+        <p>
+            <%= event.description %>
+        </p>
+    </div>
+<% end %>

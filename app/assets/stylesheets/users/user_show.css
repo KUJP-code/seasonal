@@ -2,14 +2,89 @@
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    gap: 1vw;
+    text-align: center;
+    gap: 2vw;
     padding: 1vw;
 }
 
-#user_show #event_container {
-    width: 90%;
+#user_show #event_container,
+#user_show #time_slot_container,
+#user_show .event,
+#user_show .time_slot,
+#user_show .user_partial,
+#user_show #area_container,
+#user_show #school_container {
+    display: flex;
     border-radius: 1vw;
     padding: 1vw;
     box-shadow: var(--container-shadow);
-    text-align: center;
+}
+
+#user_show #event_container,
+#user_show #time_slot_container,
+#user_show .user_partial,
+#user_show #area_container,
+#user_show #school_container {
+    width: 90vw;
+    gap: 3vw;
+    padding: 1vw;
+}
+
+#user_show #event_container,
+#user_show #time_slot_container {
+    flex-flow: row nowrap;
+    align-items: stretch;
+    overflow-x: scroll;
+}
+
+#user_show #event_container>a,
+#user_show #time_slot_container>a,
+#user_show .event,
+#user_show .time_slot {
+    flex: 0 0 30vw;
+}
+
+#user_show #event_container>a,
+#user_show #time_slot_container>a {
+    display: flex;
+    align-items: stretch;
+}
+
+#user_show .event,
+#user_show .time_slot {
+    flex-flow: column nowrap;
+}
+
+#user_show #area_container,
+#user_show #school_container {
+    justify-content: center;
+}
+
+#user_show #event_container {
+    height: 30vh;
+}
+
+#user_show #time_slot_container {
+    height: 50vh;
+}
+
+#user_show .time_slot {
+    gap: 1vw;
+}
+
+#user_show .time_slot ul {
+    list-style-type: none;
+}
+
+#user_show .time_slot li {
+    display: flex;
+    justify-content: center;
+    gap: 1vw;
+}
+
+#user_show .area {
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 1vw;
+    gap: 1vw;
 }

@@ -1,10 +1,16 @@
 en:
+  events:
+    event:
+      dates: "From %{start_date} to %{end_date}"
   users:
     destroy:
       success: "Successfully deleted user"
       failure: "Couldn't delete user"
     show:  
-      event: "Event"
+      event: "Events"
+      managed_areas: "Managed Areas"
+      managed_schools: "Managed Schools"
+      time_slot: "Time Slots"
     update:
       success: "Successfully updated user"
       failure: "Couldn't update user"
@@ -19,6 +25,5 @@ en:
         area_manager: "Area Manager"
         customer: "Customer"
         school_manager: "School Manager"
-        # area_manager: "%{area} Area Manager"
-        # school_manager: "School Manager at %{school}"
+      school: "School"
     

@@ -1,0 +1,6 @@
+ja:
+  time_slots:
+    time_slot:
+      reg_for_slot: "この時間枠に登録する"
+      delete: "消去"
+      delete_confirm: "この登録を削除してもよろしいですか?"

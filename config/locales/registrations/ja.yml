@@ -1,0 +1,8 @@
+ja:
+  registrations:
+    create:
+      failure: ""
+      success: "%{registerable}"
+    destroy:
+      failure: ""
+      success: "%{registerable}"

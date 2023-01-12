@@ -1,0 +1,8 @@
+en:
+  registrations:
+    create:
+      failure: "Failed to register"
+      success: "Successfully registered for %{registerable}"
+    destroy:
+      failure: "Failed to delete registration"
+      success: "Successfully deleted registration for %{registerable}"

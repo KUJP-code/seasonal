@@ -1,10 +1,33 @@
 <main id="user_show">
     <%= render @user %>
 
-    <% if @user.customer? %>
+    <% if @user.children? %>
+        <h2><%= t('.event') %></h2>
         <div id="event_container">
-            <h2><%= t('.event') %></h2>
-            <%# Show each event each child is registered for and their registration status %>
+            <% @user.events.each do |event| %>
+                <%= render event %>
+            <% end %>
+        </div>
+
+        <h2><%= t('.time_slot') %></h2>
+        <div id="time_slot_container">
+            <% @user.time_slots.each do |slot| %>
+                <%= render slot, children: @user.children %>
+            <% end %>
+        </div>
+    <% end %>
+
+    <% if @user.area_manager? %>
+        <h2><%= t('.managed_areas') %></h2>
+        <div id="area_container">
+            <%= render @user.managed_areas %>
+        </div>
+    <% end %>
+
+    <% if @user.school_manager? %>
+        <h2><%= t('.managed_schools') %></h2>
+        <div id="school_container">
+            <%= render @user.managed_schools %>
         </div>
     <% end %>
 </main>

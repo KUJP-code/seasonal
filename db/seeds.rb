@@ -164,7 +164,8 @@ User.create!([
     en_name: 'Lucky Lastname',
     role: :customer,
     address: Faker::Address.full_address,
-    phone: Faker::PhoneNumber.phone_number
+    phone: Faker::PhoneNumber.phone_number,
+    school: School.last
   }
 ])
 

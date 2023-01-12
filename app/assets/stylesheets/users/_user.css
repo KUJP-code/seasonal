@@ -38,15 +38,3 @@
 .user_partial .user_options {
     flex: 0 0 auto;
 }
-
-/* For the User#show view */
-
-#user_show .user_partial {
-    width: 90%;
-}
-
-/* For the User#index view */
-
-#user_index .user_partial {
-    height: max(150px, 15vw);
-}

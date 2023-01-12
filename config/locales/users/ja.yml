@@ -1,10 +1,16 @@
 ja:
+  events:
+    event:
+      dates: "%{start_date}から %{end_date}まで"
   users:
     destroy:
       success: "ユーザーを削除しました"
       failure: "ユーザーを削除できませんでした"
     show:
       event: "イベント"
+      managed_areas: "管理区域"
+      managed_schools: "運営する学校"
+      time_slot: "タイムスロット"
     update:
       success: "ユーザーが正常に更新されました"
       failure: "ユーザーを更新できませんでした"
@@ -19,6 +25,5 @@ ja:
         area_manager: "エリアマネージャー"
         customer: "お客様"
         school_manager: "学校マネージャー"
-        # area_manager: "%{area}エリアマネージャー"
-        # school_manager: "%{school}校長"
+      school: "学校"
     

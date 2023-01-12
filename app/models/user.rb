@@ -93,4 +93,10 @@ class User < ApplicationRecord
   def ja_name
     "#{ja_family_name} #{ja_first_name}"
   end
+
+  def children?
+    return false if children.empty?
+
+    true
+  end
 end

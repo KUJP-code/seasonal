@@ -1,0 +1,28 @@
+<div class="time_slot">
+    <h3><%= link_to time_slot.name, time_slot_path(time_slot) %></h3>
+    <%= time_slot.description %>
+
+    <% unless children.empty? %>
+        <ul>
+            <% children.each do |child|  %>
+                <li>
+                    <%= link_to child.ja_name, child_path(child) %>
+
+                    <% unless child.registrations.where(registerable: time_slot).exists? %>
+                        <%= form_with model: Registration.new do |f| %>
+                            <%= f.hidden_field :cost, value: time_slot.cost %>
+                            <%= f.hidden_field :child_id, value: child.id %>
+                            <%= f.hidden_field :registerable_id, value: time_slot.id %>
+                            <%= f.hidden_field :registerable_type, value: 'TimeSlot' %>
+                            <%= f.submit t('.reg_for_slot') %>
+                        <% end %>
+                    <% end %>
+
+                    <% if child.registrations.where(registerable: time_slot).exists? %>
+                        <%= link_to t('.delete'), registration_path(child.registrations.where(registerable: time_slot).first), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm')} %>
+                    <% end %>
+                </li>
+            <% end %>
+        </ul>
+    <% end %>
+</div>
