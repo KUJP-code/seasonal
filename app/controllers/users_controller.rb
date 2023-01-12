@@ -9,10 +9,13 @@ class UsersController < ApplicationController
     @users = User.am_index(current_user) if current_user.area_manager?
   end
 
-  def show
-    redirect to '/errors/permission' if current_user.customer? && current_user != @user
+  def profile
+    redirect_to user_path(current_user)
+  end
 
-    @user = User.find(params[:id])
+  def show
+    @user = User.user_show(params[:id])
+    redirect_to '/errors/permission' if current_user.customer? && current_user != @user
   end
 
   def edit
@@ -45,17 +48,14 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:id, :email, :password, :password_confirmation)
-  end
-
-  def admin_users
-  end
-
-  def sm_users(school_manager)
-    
-  end
-
-  def am_users(area_manager)
-    
+    params.require(:user).permit(:id, :email, :password, :password_confirmation,
+                                 :ja_first_name, :ja_family_name,
+                                 :katakana_name, :en_name, :role, :address,
+                                 :phone, :school_id, child_attributes:
+                                 %i[id ja_first_name ja_family_name
+                                    katakana_name en_name category birthday
+                                    level allergies ssid ele_school_name
+                                    post_photos needs_hat received_hat
+                                    parent_id school_id])
   end
 end
