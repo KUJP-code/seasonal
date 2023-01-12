@@ -19,9 +19,9 @@ class Event < ApplicationRecord
   validates_comparison_of :end_date, greater_than_or_equal_to: :start_date
 
   # Set scopes for event status
-  scope :past_events, -> { where('end_date < ?', Time.zone.today) }
-  scope :current_events, -> { where('start_date <= ? and end_date >= ?', Time.zone.today, Time.zone.today) }
-  scope :future_events, -> { where('start_date > ?', Time.zone.today) }
+  scope :past_events, -> { where('end_date < ?', Time.zone.today).order(start_date: :desc) }
+  scope :current_events, -> { where('start_date <= ? and end_date >= ?', Time.zone.today, Time.zone.today)}
+  scope :future_events, -> { where('start_date > ?', Time.zone.today).order(start_date: :asc) }
 
   # TODO: Do this with ActiveRecord, not select
   def diff_school_attendees
