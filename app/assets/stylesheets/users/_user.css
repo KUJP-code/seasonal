@@ -1,6 +1,6 @@
 /* For all User partials */
 
-.user_partial {
+.user {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
@@ -14,12 +14,12 @@
     box-shadow: var(--container-shadow);
 }
 
-.user_partial .children,
-.user_partial .key_info {
+.user .children,
+.user .key_info {
     flex: 1 1 auto;
 }
 
-.user_partial .key_info {
+.user .key_info {
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
@@ -28,13 +28,13 @@
     overflow: clip;
 }
 
-.user_partial ul {
+.user ul {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
     gap: max(20px, 2vw);
 }
 
-.user_partial .user_options {
+.user .user_options {
     flex: 0 0 auto;
 }
