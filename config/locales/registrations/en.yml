@@ -6,3 +6,5 @@ en:
     destroy:
       failure: "Failed to delete registration"
       success: "Successfully deleted registration for %{registerable}"
+    registration:
+      reg_for_slot: "Register"

@@ -21,6 +21,7 @@
     --ku-orange: #ef8200;
     --ku-orange-hover: #fb961b;
     --main-heading-size: min(4vh, 4vw);
+    --sub-heading-size: min(3vh, 3vw);
     font-size: min(2.5vh, 2.5vw);
 }
 

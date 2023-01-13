@@ -1,0 +1,10 @@
+<div class="registration">
+    <%= form_with model: Registration.new do |f| %>
+        <%= link_to child.ja_name, child_path(child) %>
+        <%= f.hidden_field :cost, value: time_slot.cost %>
+        <%= f.hidden_field :child_id, value: child.id %>
+        <%= f.hidden_field :registerable_id, value: time_slot.id %>
+        <%= f.hidden_field :registerable_type, value: 'TimeSlot' %>
+        <%= f.submit t('.reg_for_slot') %>
+    <% end %>
+</div>

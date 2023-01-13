@@ -1,0 +1,8 @@
+.event {
+    display: flex;
+    flex-flow: column nowrap;
+    overflow-y: scroll;
+    border-radius: 1vw;
+    padding: 1vw;
+    box-shadow: var(--container-shadow);
+}

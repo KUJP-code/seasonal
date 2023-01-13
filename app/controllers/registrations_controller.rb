@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-# Handles flow of information for Registrations
+# Controls flow of information for Registrations
 class RegistrationsController < ApplicationController
   def create
     @registration = Registration.new(reg_params)
 
-    if @registration.save!
+    if @registration.save
       flash[:notice] = t('.success', registerable: @registration.registerable.name)
       redirect_back_or_to child_path(@registration.child)
     else

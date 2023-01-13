@@ -6,3 +6,5 @@ ja:
     destroy:
       failure: ""
       success: "%{registerable}"
+    registration:
+      reg_for_slot: "この時間枠に登録する"

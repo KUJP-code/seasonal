@@ -4,28 +4,25 @@
     <h5><%= t('.times', time: time_slot.times) %></h5>
 
     <p><%= time_slot.description %></p>
+    <p><%= t('.reg_count', num_kids: time_slot.children.distinct.size) %></p>
 
-    <% unless children.empty? %>
-        <ul>
-            <% children.each do |child|  %>
-                <li>
-                    <%= link_to child.ja_name, child_path(child) %>
+    <div class="slot_registrations">
+        <% unless children.empty? %>
+            <% children.each do |child| %>
+                <% registration = child.registrations.where(registerable: time_slot).first %>
 
-                    <% unless child.registrations.where(registerable: time_slot).exists? %>
-                        <%= form_with model: Registration.new do |f| %>
-                            <%= f.hidden_field :cost, value: time_slot.cost %>
-                            <%= f.hidden_field :child_id, value: child.id %>
-                            <%= f.hidden_field :registerable_id, value: time_slot.id %>
-                            <%= f.hidden_field :registerable_type, value: 'TimeSlot' %>
-                            <%= f.submit t('.reg_for_slot') %>
-                        <% end %>
-                    <% end %>
+                <% unless registration.present? %>
+                    <%= render Registration.new, child: child, time_slot: time_slot %>
+                <% end %>
 
-                    <% if child.registrations.where(registerable: time_slot).exists? %>
-                        <%= link_to t('.delete'), registration_path(child.registrations.where(registerable: time_slot).first), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm')} %>
-                    <% end %>
-                </li>
+                <% if registration.present? %>
+                    <div class="registration">
+                        <%= link_to child.ja_name, child_path(child) %>
+                        <%= link_to t('.delete'), registration_path(registration), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm')}, class: 'delete_button' %>
+                    </div>
+                    <%= render registration.registerable.options, child: child %>
+                <% end %>
             <% end %>
-        </ul>
-    <% end %>
+        <% end %>
+    </div>
 </div>

@@ -2,4 +2,44 @@
     display: flex;
     flex-flow: column nowrap;
     overflow-y: scroll;
+    border-radius: 1vw;
+    gap: 1vw;
+    padding: 1vw;
+    box-shadow: var(--container-shadow);
+}
+
+.time_slot .slot_registrations {
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 1vw;
+}
+
+.time_slot .registration {
+    font-size: var(--sub-heading-size);
+    font-weight: bold;
+    padding: 1vw;
+    background-color: darkgray;
+}
+
+.time_slot .option {
+    padding: 1vw;
+    background-color: lightgrey;
+}
+
+.time_slot .delete_button,
+.time_slot input {
+    background-color: var(--ku-orange);
+    border: 1px outset var(--ku-orange-hover);
+    border-radius: 0.5vw;
+    padding: 0.5vw;
+}
+
+.time_slot .delete_button:hover,
+.time_slot input:hover {
+    background-color: var(--ku-orange-hover);
+}
+
+.time_slot .delete_button:active,
+.time_slot input:active {
+    border-style: inset;
 }

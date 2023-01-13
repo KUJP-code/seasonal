@@ -17,9 +17,6 @@
 /* Styles for all shadowed containers */
 #user_show #event_container,
 #user_show #time_slot_container,
-#user_show .event,
-#user_show .time_slot,
-#user_show .user,
 #user_show #area_container,
 #user_show #school_container {
     display: flex;
@@ -39,10 +36,11 @@
     padding: 1vw;
 }
 
-/* Scroll time slot container on x-axis */
+/* Rules for event and time slot containers */
 #user_show #event_container,
 #user_show #time_slot_container {
     flex-flow: row nowrap;
+    justify-content: flex-start;
     align-items: stretch;
     overflow-x: scroll;
 }
@@ -52,12 +50,6 @@
 #user_show .event,
 #user_show .time_slot {
     flex: 0 0 30vw;
-}
-
-/* Flex direction for cards */
-#user_show .event,
-#user_show .time_slot {
-    flex-flow: column nowrap;
 }
 
 /* Area and school container styles */
@@ -72,20 +64,6 @@
 
 #user_show #time_slot_container {
     height: 50vh;
-}
-
-#user_show .time_slot {
-    gap: 1vw;
-}
-
-#user_show .time_slot ul {
-    list-style-type: none;
-}
-
-#user_show .time_slot li {
-    display: flex;
-    justify-content: center;
-    gap: 1vw;
 }
 
 #user_show .area {

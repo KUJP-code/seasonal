@@ -2,7 +2,7 @@ en:
   time_slots:
     time_slot:
       date: "Date: %{date}"
-      delete: "Delete"
+      delete: "Delete Registration"
       delete_confirm: "Are you sure you want to delete this registration?"
-      reg_for_slot: "Register for this time slot"
+      reg_count: "%{num_kids} children registered"
       times: "Time: %{time}"
