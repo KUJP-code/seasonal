@@ -1,0 +1,7 @@
+en:
+  events:
+    event:
+      reg_count: "%{num_kids} children registered"
+      title: "%{name} at %{school}"
+    show:
+      time_slot: "%{event} Time Slots"

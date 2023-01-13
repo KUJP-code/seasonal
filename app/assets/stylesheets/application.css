@@ -17,9 +17,10 @@
 :root {
     font-family: Arial, Helvetica, sans-serif;
     box-sizing: border-box;
+    --container-shadow: 0px 0.5vw 0.5vw grey;
     --ku-orange: #ef8200;
     --ku-orange-hover: #fb961b;
-    --container-shadow: 0px 0.5vw 0.5vw grey;
+    --main-heading-size: min(4vh, 4vw);
     font-size: min(2.5vh, 2.5vw);
 }
 

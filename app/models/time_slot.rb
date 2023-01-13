@@ -36,4 +36,13 @@ class TimeSlot < ApplicationRecord
           Time.zone.tomorrow.midnight)
   }
   scope :future_slots, -> { where('start_time >= ?', Time.zone.tomorrow.midnight) }
+
+  # These convert the start/end datetimes into something more useful for display
+  def date
+    start_time.to_date.to_s
+  end
+
+  def times
+    "#{start_time.strftime('%I:%M%p')} - #{end_time.strftime('%I:%M%p')}"
+  end
 end

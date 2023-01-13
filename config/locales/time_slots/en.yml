@@ -1,6 +1,8 @@
 en:
   time_slots:
     time_slot:
-      reg_for_slot: "Register for this time slot"
+      date: "Date: %{date}"
       delete: "Delete"
       delete_confirm: "Are you sure you want to delete this registration?"
+      reg_for_slot: "Register for this time slot"
+      times: "Time: %{time}"

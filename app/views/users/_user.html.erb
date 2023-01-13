@@ -1,6 +1,6 @@
 <div class="user">
     <div class="key_info">
-        <h2><%= link_to user.ja_name, user_path(user) %></h2>        
+        <h3><%= link_to user.ja_name, user_path(user) %>        </h3>
         <h4><%= t(".roles.#{user.role}") unless user.customer? %></h4>
         <h4><%= "#{t(".school")}: #{user.school.name}" unless user.school.nil? %></h4>
     </div>

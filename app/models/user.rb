@@ -70,7 +70,7 @@ class User < ApplicationRecord
       .includes(:children, :school)
   }
 
-  # Scope for User#show
+  # Scope for User#show TODO: Optimise properly once the view is finalised
   scope :user_show, lambda { |param_id|
     where(id: param_id).includes(:children,
                                  :events,

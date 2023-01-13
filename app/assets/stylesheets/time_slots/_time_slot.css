@@ -1,0 +1,5 @@
+.time_slot {
+    display: flex;
+    flex-flow: column nowrap;
+    overflow-y: scroll;
+}

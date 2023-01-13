@@ -1,11 +1,19 @@
-<%= link_to event_path(event) do %>
-    <div class="event">
-        <h3><%= event.name %></h3>
-        <p>
-            <%= t('.dates', start_date: event.start_date, end_date: event.end_date) %>
-        </p>
-        <p>
-            <%= event.description %>
-        </p>
-    </div>
-<% end %>
+<div class="event">
+    <h3><%= t('.title', name: event.name, school: event.school.name) %></h3>
+    <p>
+        <%= t('.dates', start_date: event.start_date, end_date: event.end_date) %>
+    </p>
+    <p>
+        <%= event.description %>
+    </p>
+    <p>
+        <%= t('.reg_count', num_kids: event.children.distinct.size) %>
+    </p>
+
+    <% unless current_user.customer? %>
+        <div id="event_management">
+            <%= link_to t('.edit'), edit_event_path(event) %>
+            <%= link_to t('.delete'), event_path(event), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm')}%>
+        </div>
+    <% end %>
+</div>

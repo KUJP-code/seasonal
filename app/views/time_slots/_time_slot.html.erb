@@ -1,6 +1,9 @@
 <div class="time_slot">
     <h3><%= link_to time_slot.name, time_slot_path(time_slot) %></h3>
-    <%= time_slot.description %>
+    <h5><%= t('.date', date: time_slot.date) %></h5>
+    <h5><%= t('.times', time: time_slot.times) %></h5>
+
+    <p><%= time_slot.description %></p>
 
     <% unless children.empty? %>
         <ul>
