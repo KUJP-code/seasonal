@@ -4,6 +4,6 @@
     <h2><%= t('.time_slot', event: @event.name) %></h2>
     <div id="time_slot_container">
         <%= render @event.time_slots, children: current_user.children if current_user.customer? %>
-        <%= render @event.time_slots, children: @event.children unless current_user.customer? %>
+        <%= render @event.time_slots, children: @event.possible_children unless current_user.customer? %>
     </div>
 </main>

@@ -18,13 +18,19 @@ class Event < ApplicationRecord
   validates :end_date, comparison: { greater_than_or_equal_to: Time.zone.today }
   validates_comparison_of :end_date, greater_than_or_equal_to: :start_date
 
-  # Set scopes for event status
+  # Scopes for event time
   scope :past_events, -> { where('end_date < ?', Time.zone.today).order(start_date: :desc) }
-  scope :current_events, -> { where('start_date <= ? and end_date >= ?', Time.zone.today, Time.zone.today)}
+  scope :current_events, -> { where('start_date <= ? and end_date >= ?', Time.zone.today, Time.zone.today) }
   scope :future_events, -> { where('start_date > ?', Time.zone.today).order(start_date: :asc) }
 
-  # TODO: Do this with ActiveRecord, not select
-  def diff_school_attendees
-    children.reject { |child| child.school == school }
+  # List children attending from other schools
+  def diff_school_children
+    children.where.not(school: school).distinct
+  end
+
+  # List all children at the event's school,
+  # plus those attending from different schools
+  def possible_children
+    children.where.not(school: school).or(Child.where(school: school)).distinct
   end
 end
