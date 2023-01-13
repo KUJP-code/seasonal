@@ -1,0 +1,70 @@
+/* Styles for the main element */
+#event_show {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    text-align: center;
+    gap: 2vw;
+    padding: 1vw;
+}
+
+/* Set size for section headings */
+#event_show .event h3,
+#event_show>h2 {
+    font-size: var(--main-heading-size);
+}
+
+/* Styles for all outer containers */
+#event_show #time_slot_container,
+#event_show .event {
+    width: 90vw;
+    gap: 3vw;
+    padding: 1vw;
+}
+
+/* Styles for all shadowed containers */
+#event_show #time_slot_container,
+#event_show .event,
+#event_show .time_slot {
+    display: flex;
+    border-radius: 1vw;
+    padding: 1vw;
+    box-shadow: var(--container-shadow);
+}
+
+/* Scroll time slot container on x-axis */
+#event_show #time_slot_container {
+    flex-flow: row nowrap;
+    align-items: stretch;
+    overflow-x: scroll;
+}
+
+/* Set size for time slot cards */
+#event_show .event,
+#event_show .time_slot {
+    flex: 0 0 30vw;
+}
+
+/* Flex direction for cards */
+#event_show .event,
+#event_show .time_slot {
+    flex-flow: column nowrap;
+}
+
+#event_show #time_slot_container {
+    height: 50vh;
+}
+
+#event_show .time_slot {
+    gap: 1vw;
+}
+
+#event_show .time_slot ul {
+    list-style-type: none;
+}
+
+#event_show .time_slot li {
+    display: flex;
+    justify-content: center;
+    gap: 1vw;
+}

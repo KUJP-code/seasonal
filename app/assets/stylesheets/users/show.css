@@ -1,3 +1,4 @@
+/* Styles for the main element */
 #user_show {
     display: flex;
     flex-flow: column nowrap;
@@ -7,6 +8,13 @@
     padding: 1vw;
 }
 
+/* Set size for section headings */
+#user_show .user h3,
+#user_show>h2 {
+    font-size: var(--main-heading-size);
+}
+
+/* Styles for all shadowed containers */
 #user_show #event_container,
 #user_show #time_slot_container,
 #user_show .event,
@@ -20,6 +28,7 @@
     box-shadow: var(--container-shadow);
 }
 
+/* Styles for all outer containers */
 #user_show #event_container,
 #user_show #time_slot_container,
 #user_show .user,
@@ -30,6 +39,7 @@
     padding: 1vw;
 }
 
+/* Scroll time slot container on x-axis */
 #user_show #event_container,
 #user_show #time_slot_container {
     flex-flow: row nowrap;
@@ -37,24 +47,20 @@
     overflow-x: scroll;
 }
 
+/* Set size for event/time slot link/cards */
 #user_show #event_container>a,
-#user_show #time_slot_container>a,
 #user_show .event,
 #user_show .time_slot {
     flex: 0 0 30vw;
 }
 
-#user_show #event_container>a,
-#user_show #time_slot_container>a {
-    display: flex;
-    align-items: stretch;
-}
-
+/* Flex direction for cards */
 #user_show .event,
 #user_show .time_slot {
     flex-flow: column nowrap;
 }
 
+/* Area and school container styles */
 #user_show #area_container,
 #user_show #school_container {
     justify-content: center;
