@@ -1,5 +1,5 @@
 <div class="event">
-    <h3><%= t('.title', name: event.name, school: event.school.name) %></h3>
+    <h3><%= link_to t('.title', name: event.name, school: event.school.name), event_path(event) %></h3>
     <p>
         <%= t('.dates', start_date: event.start_date, end_date: event.end_date) %>
     </p>

@@ -5,9 +5,7 @@
         <h2><%= t('.event') %></h2>
         <div id="event_container">
             <% @user.school.events.future_events.each do |event| %>
-                <%= link_to event_path(event) do %>
-                    <%= render event %>
-                <% end %>
+                <%= render event %>
             <% end %>
         </div>
 
