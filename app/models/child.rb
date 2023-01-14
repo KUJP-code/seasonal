@@ -65,9 +65,8 @@ class Child < ApplicationRecord
   scope :attend_friday, -> { joins(:regular_schedule).where('regular_schedule.friday' => true) }
 
   # Model methods
-  # TODO: Do this with ActiveRecord, not select
   def diff_school_events
-    events.reject { |event| event.school == school }
+    events.where.not(school: school).distinct
   end
 
   def ja_name
