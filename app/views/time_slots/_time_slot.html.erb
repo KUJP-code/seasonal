@@ -8,20 +8,8 @@
 
     <div class="slot_registrations">
         <% unless children.empty? %>
-            <% children.each do |child| %>
-                <% registration = child.registrations.find_by(registerable: time_slot) %>
-
-                <% unless registration.present? %>
-                    <%= render Registration.new, child: child, time_slot: time_slot %>
-                <% end %>
-
-                <% if registration.present? %>
-                    <div class="registration">
-                        <%= link_to child.ja_name, child_path(child) %>
-                        <%= link_to t('.delete'), registration_path(registration), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm')}, class: 'delete_button' %>
-                    </div>
-                    <%= render registration.registerable.options, child: child %>
-                <% end %>
+            <% children.each do |c| %>
+                <%= render Registration.new, child: c, time_slot: time_slot %>
             <% end %>
         <% end %>
     </div>

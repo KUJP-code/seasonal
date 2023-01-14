@@ -1,10 +1,23 @@
-<div class="registration">
-    <%= form_with model: Registration.new do |f| %>
+<% existing_registration = child.registrations.find_by(registerable: time_slot) %>
+
+<% if existing_registration == nil %>
+    <div class="registration">
+        <%= form_with model: Registration.new do |f| %>
+            <%= link_to child.ja_name, child_path(child) %>
+            <%= f.hidden_field :cost, value: time_slot.cost %>
+            <%= f.hidden_field :child_id, value: child.id %>
+            <%= f.hidden_field :registerable_id, value: time_slot.id %>
+            <%= f.hidden_field :registerable_type, value: 'TimeSlot' %>
+            <%= f.submit t('.reg_for_slot') %>
+        <% end %>
+    </div>
+<% end %>
+
+<% unless existing_registration == nil %>
+    <div class="registration">
         <%= link_to child.ja_name, child_path(child) %>
-        <%= f.hidden_field :cost, value: time_slot.cost %>
-        <%= f.hidden_field :child_id, value: child.id %>
-        <%= f.hidden_field :registerable_id, value: time_slot.id %>
-        <%= f.hidden_field :registerable_type, value: 'TimeSlot' %>
-        <%= f.submit t('.reg_for_slot') %>
-    <% end %>
-</div>
+        <%= link_to t('.delete'), registration_path(existing_registration), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm')}, class: 'delete_button' %>
+    </div>
+    <%= render existing_registration.registerable.options, child: child %>
+<% end %>
+                
