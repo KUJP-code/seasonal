@@ -6,8 +6,8 @@ class RegistrationsController < ApplicationController
     @registration = Registration.new(reg_params)
 
     if @registration.save
-      flash[:notice] = t('.success', registerable: @registration.registerable.name)
-      redirect_back_or_to child_path(@registration.child)
+      flash.now[:notice] = t('.success', registerable: @registration.registerable.name)
+      render @registration, locals: { child: @registration.child, time_slot: @registration.registerable }
     else
       flash.now[:alert] = t('.failure')
     end
@@ -17,8 +17,8 @@ class RegistrationsController < ApplicationController
     @registration = Registration.find(params[:id])
 
     if @registration.destroy
-      flash[:notice] = t('.success', registerable: @registration.registerable.name)
-      redirect_back_or_to child_path(@registration.child)
+      flash.now[:notice] = t('.success', registerable: @registration.registerable.name)
+      render @registration, locals: { child: @registration.child, time_slot: @registration.registerable }
     else
       flash.now[:alert] = t('.failure')
     end

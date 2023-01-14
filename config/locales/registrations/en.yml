@@ -7,4 +7,6 @@ en:
       failure: "Failed to delete registration"
       success: "Successfully deleted registration for %{registerable}"
     registration:
+      delete: "Delete Registration"
+      delete_confirm: "Are you sure you want to delete %{child}'s registration for %{slot}?"
       reg_for_slot: "Register"
