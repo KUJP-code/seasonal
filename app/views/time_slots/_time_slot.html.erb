@@ -9,7 +9,7 @@
     <div class="slot_registrations">
         <% unless children.empty? %>
             <% children.each do |child| %>
-                <% registration = child.registrations.where(registerable: time_slot).first %>
+                <% registration = child.registrations.find_by(registerable: time_slot) %>
 
                 <% unless registration.present? %>
                     <%= render Registration.new, child: child, time_slot: time_slot %>
