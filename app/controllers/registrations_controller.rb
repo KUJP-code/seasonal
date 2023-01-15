@@ -13,6 +13,17 @@ class RegistrationsController < ApplicationController
     end
   end
 
+  def update
+    @registration = Registration.find(params[:id])
+
+    if @registration.update(reg_params)
+      flash.now[:notice] = t('.success')
+      render @registration, locals: { child: @registration.child, time_slot: @registration.registerable }
+    else
+      flash.now[:alert] = t('failure')
+    end
+  end
+
   def destroy
     @registration = Registration.find(params[:id])
 

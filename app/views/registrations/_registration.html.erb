@@ -19,6 +19,20 @@
     <%= turbo_frame_tag "child#{child.id}_slot#{time_slot.id}" do %>
         <div class="registration">
             <%= link_to child.ja_name, child_path(child) %>
+            <%= form_with model: existing_registration do |f| %>  
+                <% if current_user.customer? %>              
+                    <%= f.date_field :billing_date, disabled: true %>
+                    <%= f.check_box :confirmed, disabled: true %>
+                    <%= f.check_box :paid, disabled: true %>
+                    <%= f.number_field :cost, disabled: true %>
+                <% else %>
+                    <%= f.date_field :billing_date %>
+                    <%= f.check_box :confirmed %>
+                    <%= f.check_box :paid %>
+                    <%= f.number_field :cost %>
+                    <%= f.submit %>
+                <% end %>
+            <% end %>
             <%= link_to t('.delete'), registration_path(existing_registration), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm', child: child.ja_name, slot: time_slot.name)}, class: 'delete_button' %>
         </div>
         <%= render existing_registration.registerable.options, child: child %>
