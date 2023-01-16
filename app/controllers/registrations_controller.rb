@@ -10,7 +10,7 @@ class RegistrationsController < ApplicationController
       if @registration.registerable_type == 'TimeSlot'
         render @registration, locals: { child: @registration.child, time_slot: @registration.registerable }
       else
-        render 'options/_option', locals: { child: @registration.child, option: @registration.registerable }
+        render @registration.registerable, locals: { child: @registration.child }
       end
     else
       flash.now[:alert] = t('.failure')
@@ -25,7 +25,7 @@ class RegistrationsController < ApplicationController
       if @registration.registerable_type == 'TimeSlot'
         render @registration, locals: { child: @registration.child, time_slot: @registration.registerable }
       else
-        render 'options/_option', locals: { child: @registration.child, option: @registration.registerable }
+        render @registration.registerable, locals: { child: @registration.child }
       end
     else
       flash.now[:alert] = t('failure')
@@ -40,7 +40,7 @@ class RegistrationsController < ApplicationController
       if @registration.registerable_type == 'TimeSlot'
         render @registration, locals: { child: @registration.child, time_slot: @registration.registerable }
       else
-        render 'options/_option', locals: { child: @registration.child, option: @registration.registerable }
+        render @registration.registerable, locals: { child: @registration.child }
       end
     else
       flash.now[:alert] = t('.failure')
