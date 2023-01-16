@@ -1,0 +1,24 @@
+.registration_options_container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+}
+
+.registration_form {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    gap: 1vw;
+    padding: 1vw;
+    font-size: var(--font-size);
+}
+
+.registration_form input {
+    width: 25%;
+    text-align: center;
+}
+
+.registration_form #registration_billing_date {
+    width: 50%;
+}
+

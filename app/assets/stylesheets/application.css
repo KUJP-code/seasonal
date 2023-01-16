@@ -99,3 +99,19 @@ a {
 #nav_bar a:first-child:hover {
     background-image: url("logo.png");
 }
+
+.button {
+    background-color: var(--ku-orange);
+    border: 1px outset var(--ku-orange-hover);
+    border-radius: 0.5vw;
+    padding: 0.5vw;
+}
+
+.button:hover{
+    background-color: var(--ku-orange-hover);
+}
+
+.button:active,
+input:active {
+    border-style: inset;
+}
