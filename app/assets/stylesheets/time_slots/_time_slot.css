@@ -13,10 +13,3 @@
     flex-flow: column nowrap;
     padding: 1vw;
 }
-
-.time_slot .registration {
-    font-size: var(--sub-heading-size);
-    font-weight: bold;
-    padding: 1vw;
-    background-color: darkgray;
-}
