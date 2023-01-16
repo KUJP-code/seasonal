@@ -7,7 +7,7 @@
         <%= event.description %>
     </p>
     <p>
-        <%= t('.reg_count', num_kids: event.children.distinct.size) %>
+        <%= link_to t('.reg_count', num_kids: event.children.distinct.size), registrations_path(type: 'Event', id: event.id) %>
     </p>
 
     <% unless current_user.customer? %>

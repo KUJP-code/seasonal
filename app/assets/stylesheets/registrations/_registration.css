@@ -3,6 +3,7 @@
     font-weight: bold;
     padding: 1vw;
     background-color: darkgray;
+    text-align: center;
 }
 .registration_form {
     display: flex;
@@ -44,4 +45,5 @@
     justify-self: center;
     width: 100%;
     font-size: var(--secondary-heading-size);
+    text-align: center;
 }

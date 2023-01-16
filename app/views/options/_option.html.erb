@@ -1,4 +1,5 @@
 <div class="option">
+    <%# TODO: This line right here shouldn't need to exist, find a better way to use it from a bunch of different views %>
     <% opt_registration = child.registrations.find_by(registerable: option) %>
 
     <% if opt_registration.nil? %>

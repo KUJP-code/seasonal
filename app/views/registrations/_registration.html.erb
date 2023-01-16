@@ -1,3 +1,4 @@
+<%# TODO: This line right here shouldn't need to exist, find a better way to use it from a bunch of different views %>
 <% slot_registration = child.registrations.find_by(registerable: time_slot) %>
 
 <% if slot_registration.nil? %>

@@ -1,0 +1,5 @@
+<main id="registration_index">
+    <% @registrations.each do |r| %>
+        <%= render r, child: r.child, time_slot: r.registerable %>
+    <% end %>
+</main>

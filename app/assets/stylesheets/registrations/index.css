@@ -1,0 +1,6 @@
+#registration_index {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1vw;
+    background-color: rgb(36, 36, 60);
+}

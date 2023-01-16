@@ -2,6 +2,15 @@
 
 # Controls flow of information for Registrations
 class RegistrationsController < ApplicationController
+  def index
+    if params[:type] == 'Event'
+      slots = Event.find(params[:id]).time_slots
+      @registrations = Registration.where(registerable: slots, registerable_type: 'TimeSlot')
+    else
+      @registrations = Registration.where(registerable_id: params[:id], registerable_type: 'TimeSlot')
+    end
+  end
+
   def create
     @registration = Registration.new(reg_params)
 
