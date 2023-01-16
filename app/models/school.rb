@@ -9,6 +9,7 @@ class School < ApplicationRecord
                          dependent: :destroy
   has_many :managers, through: :managements
   has_many :users, dependent: :restrict_with_exception
+  delegate :customers, to: :users
   has_many :children, dependent: nil
   has_many :events, dependent: :destroy
   has_many :time_slots, through: :events
