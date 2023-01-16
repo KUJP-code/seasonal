@@ -1,6 +1,6 @@
-<% existing_registration = child.registrations.find_by(registerable: time_slot) %>
+<% slot_registration = child.registrations.find_by(registerable: time_slot) %>
 
-<% if existing_registration == nil %>
+<% if slot_registration.nil? %>
     <%= turbo_frame_tag "child#{child.id}_slot#{time_slot.id}" do %>
         <div class="registration">
             <%= form_with model: Registration.new do |f| %>
@@ -9,33 +9,38 @@
                 <%= f.hidden_field :child_id, value: child.id %>
                 <%= f.hidden_field :registerable_id, value: time_slot.id %>
                 <%= f.hidden_field :registerable_type, value: 'TimeSlot' %>
-                <%= f.submit t('.reg_for_slot') %>
+                <%= f.submit t('.register'), class: 'button' %>
             <% end %>
         </div>
     <% end %>
 <% end %>
 
-<% unless existing_registration == nil %>
+<% unless slot_registration.nil? %>
     <%= turbo_frame_tag "child#{child.id}_slot#{time_slot.id}" do %>
         <div class="registration">
             <%= link_to child.ja_name, child_path(child) %>
-            <%= form_with model: existing_registration do |f| %>  
+
+            <%= form_with model: slot_registration, class: 'registration_form' do |f| %>  
                 <% if current_user.customer? %>              
                     <%= f.date_field :billing_date, disabled: true %>
                     <%= f.check_box :confirmed, disabled: true %>
                     <%= f.check_box :paid, disabled: true %>
-                    <%= f.number_field :cost, disabled: true %>
+                    <%= f.number_field :cost, disabled: true, value: slot_registration.adjusted_cost %>
                 <% else %>
                     <%= f.date_field :billing_date %>
                     <%= f.check_box :confirmed %>
                     <%= f.check_box :paid %>
-                    <%= f.number_field :cost %>
-                    <%= f.submit %>
+                    <%= f.number_field :cost, value: slot_registration.adjusted_cost %>
+                    <%= f.submit t('.update'), class: 'button' %>
                 <% end %>
             <% end %>
-            <%= link_to t('.delete'), registration_path(existing_registration), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm', child: child.ja_name, slot: time_slot.name)}, class: 'delete_button' %>
+
+            <%= link_to t('.delete'), registration_path(slot_registration), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm', child: child.ja_name, slot: time_slot.name)}, class: 'button' %>
         </div>
-        <%= render existing_registration.registerable.options, child: child %>
+
+        <div class="registration_options_container">
+            <%= render slot_registration.registerable.options, child: child %>
+        </div>
     <% end %>
 <% end %>
                 

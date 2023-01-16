@@ -7,7 +7,11 @@ class RegistrationsController < ApplicationController
 
     if @registration.save
       flash.now[:notice] = t('.success', registerable: @registration.registerable.name)
-      render @registration, locals: { child: @registration.child, time_slot: @registration.registerable }
+      if @registration.registerable_type == 'TimeSlot'
+        render @registration, locals: { child: @registration.child, time_slot: @registration.registerable }
+      else
+        render 'options/_option', locals: { child: @registration.child, option: @registration.registerable }
+      end
     else
       flash.now[:alert] = t('.failure')
     end
@@ -18,7 +22,11 @@ class RegistrationsController < ApplicationController
 
     if @registration.update(reg_params)
       flash.now[:notice] = t('.success')
-      render @registration, locals: { child: @registration.child, time_slot: @registration.registerable }
+      if @registration.registerable_type == 'TimeSlot'
+        render @registration, locals: { child: @registration.child, time_slot: @registration.registerable }
+      else
+        render 'options/_option', locals: { child: @registration.child, option: @registration.registerable }
+      end
     else
       flash.now[:alert] = t('failure')
     end
@@ -29,7 +37,11 @@ class RegistrationsController < ApplicationController
 
     if @registration.destroy
       flash.now[:notice] = t('.success', registerable: @registration.registerable.name)
-      render @registration, locals: { child: @registration.child, time_slot: @registration.registerable }
+      if @registration.registerable_type == 'TimeSlot'
+        render @registration, locals: { child: @registration.child, time_slot: @registration.registerable }
+      else
+        render 'options/_option', locals: { child: @registration.child, option: @registration.registerable }
+      end
     else
       flash.now[:alert] = t('.failure')
     end

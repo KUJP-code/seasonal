@@ -190,10 +190,10 @@ test_customer.children.create!(
 puts 'Created my test accounts'
 
 TimeSlot.all.each do |slot|
-  slot.options.create!(name: Faker::Book.title, description: Faker::Lorem.sentence(word_count: 10), cost: 4000)
+  5.times { |i| slot.options.create!(name: Faker::Book.title, description: Faker::Lorem.sentence(word_count: 10), cost: 4000) }
 end
 
-puts 'Created an option for each time slot'
+puts 'Created 5 options for each time slot'
 
 TimeSlot.all.each do |slot|
   Child.all.each do |child|

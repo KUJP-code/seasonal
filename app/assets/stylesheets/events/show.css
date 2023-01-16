@@ -18,8 +18,9 @@
 #event_show #time_slot_container,
 #event_show .event {
     width: 90vw;
-    gap: 3vw;
+    gap: 1vw;
     padding: 1vw;
+    justify-content: center;
 }
 
 /* Styles for all shadowed containers */
@@ -36,27 +37,16 @@
 #event_show #time_slot_container {
     flex-flow: row nowrap;
     align-items: stretch;
-    overflow-x: scroll;
-}
-
-/* Set size for time slot cards */
-#event_show .event,
-#event_show .time_slot {
-    flex: 0 0 30vw;
-}
-
-/* Flex direction for cards */
-#event_show .event,
-#event_show .time_slot {
-    flex-flow: column nowrap;
 }
 
 #event_show #time_slot_container {
-    height: 50vh;
+    height: 80vh;
 }
 
 #event_show .time_slot {
     gap: 1vw;
+    flex: 0 0 43vw;
+    flex-flow: column nowrap;
 }
 
 #event_show .time_slot ul {

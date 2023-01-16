@@ -2,16 +2,14 @@
     <%= render @user %>
 
     <% if @user.children? %>
-        <h2><%= t('.event') %></h2>
-        <div id="event_container">
-            <% @user.school.events.future_events.each do |event| %>
-                <%= render event %>
-            <% end %>
-        </div>
+        <h2><%= t('.next_event') %></h2>
+        <% @user.school.events.future_events.limit(1).order(updated_at: :desc).each do |event| %>
+            <%= render event %>
+        <% end %>
 
-        <h2><%= t('.time_slot') %></h2>
+        <h2><%= t('.upcoming_registrations') %></h2>
         <div id="time_slot_container">
-            <% @user.time_slots.each do |slot| %>
+            <% @user.time_slots.limit(2).order(start_time: :desc).each do |slot| %>
                 <%= render slot, children: @user.children %>
             <% end %>
         </div>

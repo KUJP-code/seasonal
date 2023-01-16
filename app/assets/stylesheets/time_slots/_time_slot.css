@@ -8,6 +8,22 @@
     box-shadow: var(--container-shadow);
 }
 
+.time_slot .button {
+    background-color: var(--ku-orange);
+    border: 1px outset var(--ku-orange-hover);
+    border-radius: 0.5vw;
+    padding: 0.5vw;
+}
+
+.time_slot .button:hover{
+    background-color: var(--ku-orange-hover);
+}
+
+.time_slot .button:active,
+.time_slot input:active {
+    border-style: inset;
+}
+
 .time_slot .slot_registrations {
     display: flex;
     flex-flow: column nowrap;
@@ -21,25 +37,32 @@
     background-color: darkgray;
 }
 
+.time_slot .registration_form {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    gap: 1vw;
+    padding: 1vw;
+    font-size: var(--font-size);
+}
+
+.time_slot .registration_form input {
+    width: 25%;
+    text-align: center;
+}
+
+.time_slot .registration_form #registration_billing_date {
+    width: 50%;
+}
+
+.time_slot .registration_options_container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+}
+
 .time_slot .option {
+    flex: auto;
     padding: 1vw;
     background-color: lightgrey;
-}
-
-.time_slot .delete_button,
-.time_slot input {
-    background-color: var(--ku-orange);
-    border: 1px outset var(--ku-orange-hover);
-    border-radius: 0.5vw;
-    padding: 0.5vw;
-}
-
-.time_slot .delete_button:hover,
-.time_slot input:hover {
-    background-color: var(--ku-orange-hover);
-}
-
-.time_slot .delete_button:active,
-.time_slot input:active {
-    border-style: inset;
 }

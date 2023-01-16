@@ -15,7 +15,7 @@
 }
 
 /* Styles for all shadowed containers */
-#user_show #event_container,
+#user_show .event,
 #user_show #time_slot_container,
 #user_show #area_container,
 #user_show #school_container {
@@ -26,30 +26,20 @@
 }
 
 /* Styles for all outer containers */
-#user_show #event_container,
+#user_show .event,
 #user_show #time_slot_container,
 #user_show .user,
 #user_show #area_container,
 #user_show #school_container {
     width: 90vw;
-    gap: 3vw;
-    padding: 1vw;
+    gap: 1vw;
 }
 
 /* Rules for event and time slot containers */
-#user_show #event_container,
 #user_show #time_slot_container {
     flex-flow: row nowrap;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: stretch;
-    overflow-x: scroll;
-}
-
-/* Set size for event/time slot link/cards */
-#user_show #event_container>a,
-#user_show .event,
-#user_show .time_slot {
-    flex: 0 0 30vw;
 }
 
 /* Area and school container styles */
@@ -58,12 +48,20 @@
     justify-content: center;
 }
 
-#user_show #event_container {
-    height: 30vh;
+#user_show .event {
+    height: 42vh;
+}
+
+#user_show .event {
+    flex: 0 0 100%;
 }
 
 #user_show #time_slot_container {
-    height: 50vh;
+    height: 80vh;
+}
+
+#user_show .time_slot {
+    flex: 0 0 43vw;
 }
 
 #user_show .area {
