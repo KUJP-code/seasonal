@@ -7,10 +7,10 @@
 .registration_form {
     display: flex;
     flex-flow: row nowrap;
-    justify-content: space-between;
+    justify-content: space-around;
     gap: 1vw;
     padding: 1vw;
-    width: 100%;
+    width: 95%;
     font-size: var(--font-size);
     text-align: center;
 }
