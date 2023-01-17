@@ -1,9 +1,8 @@
-<div class="option">
-    <%# TODO: This line right here shouldn't need to exist, find a better way to use it from a bunch of different views %>
-    <% opt_registration = child.registrations.find_by(registerable: option) %>
+<% opt_registration = child.registrations.find_by(registerable: option) %>
 
-    <% if opt_registration.nil? %>
-        <%= turbo_frame_tag "child#{child.id}_opt#{option.id}" do %>
+<% if opt_registration.nil? %>
+    <%= turbo_frame_tag "child#{child.id}_opt#{option.id}" do %>
+        <div class="option">
             <%= form_with model: Registration.new do |f| %>
                 <%= option.name %>
                 <%= f.hidden_field :cost, value: option.cost %>
@@ -12,13 +11,15 @@
                 <%= f.hidden_field :registerable_type, value: 'Option' %>
                 <%= f.submit t('.reg_for_opt'), class: 'button' %>
             <% end %>
-        <% end %>
+        </div>
     <% end %>
+<% end %>
 
-    <% unless opt_registration.nil? %>
-        <%= turbo_frame_tag "child#{child.id}_opt#{option.id}" do %>
+<% unless opt_registration.nil? %>
+    <%= turbo_frame_tag "child#{child.id}_opt#{option.id}" do %>
+        <div class="option">
             <%= option.name %>
             <%= link_to t('.delete'), registration_path(opt_registration), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm')}, class: 'button' %>
-        <% end %>
+        </div>
     <% end %>
-</div>
+<% end %>

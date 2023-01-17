@@ -16,11 +16,8 @@ class RegistrationsController < ApplicationController
 
     if @registration.save
       flash.now[:notice] = t('.success', registerable: @registration.registerable.name)
-      if @registration.slot_registration?
-        render @registration
-      else
-        render @registration.registerable, locals: { child: @registration.child }
-      end
+      render @registration if @registration.slot_registration?
+      render @registration.registerable, locals: { child: @registration.child } unless @registration.slot_registration?
     else
       flash.now[:alert] = t('.failure')
     end
@@ -31,11 +28,8 @@ class RegistrationsController < ApplicationController
 
     if @registration.update(reg_params)
       flash.now[:notice] = t('.success')
-      if @registration.slot_registration?
-        render @registration
-      else
-        render @registration.registerable, locals: { child: @registration.child }
-      end
+      render @registration if @registration.slot_registration?
+      render @registration.registerable, locals: { child: @registration.child } unless @registration.slot_registration?
     else
       flash.now[:alert] = t('failure')
     end
