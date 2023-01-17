@@ -9,11 +9,12 @@ en:
     destroy:
       failure: "Couldn't delete user"
       success: "Successfully deleted user"
-    show:  
+    show:
+      all_registrations: "All registrations"
       event: "Events"
       managed_areas: "Managed Areas"
       managed_schools: "Managed Schools"
-      time_slot: "Time Slots"
+      upcoming_registrations: "Upcoming Registrations"
     update:
       failure: "Couldn't update user"
       success: "Successfully updated user"

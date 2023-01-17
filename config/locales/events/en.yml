@@ -4,4 +4,5 @@ en:
       reg_count: "%{num_kids} children registered"
       title: "%{name} at %{school}"
     show:
-      time_slot: "%{event} Time Slots"
+      all_slots: "See all time slots for %{event}"
+      upcoming_slots: "%{event} Upcoming Time Slots"

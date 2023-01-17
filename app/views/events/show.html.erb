@@ -1,7 +1,8 @@
 <main id="event_show">
     <%= render @event %>
     
-    <h2><%= t('.time_slot', event: @event.name) %></h2>
+    <h2><%= t('.upcoming_slots', event: @event.name) %></h2>
+    <h3><%= link_to t('.all_slots', event: @event.name), time_slots_path(id: @event.id), class: 'button' %></h3>
     <div id="time_slot_container">
         <%= render @event.time_slots.order(start_time: :desc).limit(2), children: current_user.children if current_user.customer? %>
         <%= render @event.time_slots.order(start_time: :desc).limit(2), children: @event.possible_children unless current_user.customer? %>

@@ -8,6 +8,7 @@
         <% end %>
 
         <h2><%= t('.upcoming_registrations') %></h2>
+        <%= link_to t('.all_registrations'), registrations_path(id: @user.id, type: 'User'), class: 'button' %>
         <div id="time_slot_container">
             <% @user.time_slots.distinct.limit(2).order(start_time: :desc).each do |slot| %>
                 <%= render slot, children: @user.children %>
