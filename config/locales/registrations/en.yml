@@ -9,5 +9,6 @@ en:
     registration:
       delete: "Delete"
       delete_confirm: "Are you sure you want to delete %{child}'s registration for %{slot}?"
-      register: "Register"
       update: "Update"
+    unregistered:
+      register: "Register"

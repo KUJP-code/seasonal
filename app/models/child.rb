@@ -72,4 +72,8 @@ class Child < ApplicationRecord
   def ja_name
     "#{ja_family_name} #{ja_first_name}"
   end
+
+  def registered?(registerable)
+    !registrations.find_by(registerable: registerable).nil?
+  end
 end

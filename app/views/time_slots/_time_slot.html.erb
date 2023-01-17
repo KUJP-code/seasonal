@@ -7,9 +7,11 @@
     <p><%= link_to t('.reg_count', num_kids: time_slot.children.distinct.size), registrations_path(type: 'TimeSlot', id: time_slot.id) %></p>
 
     <div class="slot_registrations">
-        <% unless children.empty? %>
-            <% children.each do |c| %>
-                <%= render Registration.new, child: c, time_slot: time_slot %>
+        <% children.each do |c| %>
+            <% if c.registered?(time_slot) %>
+                <%= render c.registrations.find_by(registerable: time_slot) %>
+            <% else %>
+                <%= render 'registrations/unregistered', child: c, slot: time_slot %>
             <% end %>
         <% end %>
     </div>

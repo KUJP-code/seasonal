@@ -266,6 +266,12 @@ RSpec.describe Child do
         .by(-2)
     end
 
+    it "knows if it's registered for a registerable" do
+      child.registrations.create(registerable: time_slot)
+      registered = child.registered?(time_slot)
+      expect(registered).to be true
+    end
+
     context 'with time_slots through registrations' do
       it "knows which time slots it's attending" do
         time_slot.registrations.create(child: child, cost: time_slot.cost)

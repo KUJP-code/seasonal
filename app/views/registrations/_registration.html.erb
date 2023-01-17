@@ -1,72 +1,71 @@
-<%# TODO: This line right here shouldn't need to exist, find a better way to use it from a bunch of different views %>
-<% slot_registration = child.registrations.find_by(registerable: time_slot) %>
+<%# Local variables %>
+<% child = registration.child %>
+<% slot = registration.registerable %>
 
-<% if slot_registration.nil? %>
-    <%= turbo_frame_tag "child#{child.id}_slot#{time_slot.id}" do %>
-        <div class="registration">
-            <%= form_with model: Registration.new do |f| %>
-                <%= link_to child.ja_name, child_path(child) %>
-                <%= f.hidden_field :cost, value: time_slot.cost %>
-                <%= f.hidden_field :child_id, value: child.id %>
-                <%= f.hidden_field :registerable_id, value: time_slot.id %>
-                <%= f.hidden_field :registerable_type, value: 'TimeSlot' %>
-                <%= f.submit t('.register'), class: 'button' %>
-            <% end %>
-        </div>
-    <% end %>
-<% end %>
+<%# Content %>
+<%= turbo_frame_tag "child#{child.id}_slot#{slot.id}" do %>
+    <div class="registration">
+        <%= link_to child.ja_name, child_path(child) %>
 
-<% unless slot_registration.nil? %>
-    <%= turbo_frame_tag "child#{child.id}_slot#{time_slot.id}" do %>
-        <div class="registration">
-            <%= link_to child.ja_name, child_path(child) %>
-
-            <%= form_with model: slot_registration, class: 'registration_form' do |f| %>
-                <% if current_user.customer? %>              
-                    <div class="field date">
-                        <%= f.label :billing_date, t('.billing_date') %>
-                        <%= f.date_field :billing_date, disabled: true %>
-                    </div>
-                    <div class="field check_box">
-                        <%= f.label :confirmed, t('.con') %>
-                        <%= f.check_box :confirmed, disabled: true %>
-                    </div>
-                    <div class="field check_box">
-                        <%= f.label :paid, t('.paid') %>
-                        <%= f.check_box :paid, disabled: true %>
-                    </div>
+        <%= form_with model: registration, class: 'registration_form' do |f| %>
+            <% if current_user.customer? %>              
+                <div class="field date">
+                    <%= f.label :billing_date, t('.billing_date') %>
+                    <%= f.date_field :billing_date, disabled: true %>
+                </div>
+                <div class="field check_box">
+                    <%= f.label :confirmed, t('.con') %>
+                    <%= f.check_box :confirmed, disabled: true %>
+                </div>
+                <div class="field check_box">
+                    <%= f.label :paid, t('.paid') %>
+                    <%= f.check_box :paid, disabled: true %>
+                </div>
+                <% if registration.cost == registration.adjusted_cost %>
                     <div class="field cost">
                         <%= f.label :cost, t('.cost') %>
-                        <%= f.number_field :cost, disabled: true, value: slot_registration.adjusted_cost %>
+                        <%= f.number_field :cost, disabled: true %>
                     </div>
                 <% else %>
-                    <div class="field date">
-                        <%= f.label :billing_date, t('.billing_date') %>
-                        <%= f.date_field :billing_date %>
+                    <div class="field cost">
+                        <p><%= t('.adjusted_cost') %></p>
+                        <p><%= registration.adjusted_cost %></p>
                     </div>
-                    <div class="field check_box">
-                        <%= f.label :confirmed, t('.con') %>
-                        <%= f.check_box :confirmed %>
-                    </div>
-                    <div class="field check_box">
-                        <%= f.label :paid, t('.paid') %>
-                        <%= f.check_box :paid %>
-                    </div>
+                <% end %>
+            <% else %>
+                <div class="field date">
+                    <%= f.label :billing_date, t('.billing_date') %>
+                    <%= f.date_field :billing_date %>
+                </div>
+                <div class="field check_box">
+                    <%= f.label :confirmed, t('.con') %>
+                    <%= f.check_box :confirmed %>
+                </div>
+                <div class="field check_box">
+                    <%= f.label :paid, t('.paid') %>
+                    <%= f.check_box :paid %>
+                </div>
+                <% if registration.cost == registration.adjusted_cost %>
                     <div class="field cost">
                         <%= f.label :cost, t('.cost') %>
-                        <%= f.number_field :cost, value: slot_registration.adjusted_cost %>
+                        <%= f.number_field :cost, disabled: true %>
                     </div>
-                    <%= f.submit t('.update'), class: 'button' %>
+                <% else %>
+                    <div class="field cost">
+                        <%= f.label :cost, t('.adjusted_cost') %>
+                        <%= f.number_field :cost, disabled: true, value: registration.adjusted_cost %>
+                    </div>
                 <% end %>
+                <%= f.submit t('.update'), class: 'button' %>
             <% end %>
+        <% end %>
 
-            <%= link_to t('.delete'), registration_path(slot_registration), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm', child: child.ja_name, slot: time_slot.name)}, class: 'button' %>
-        </div>
+        <%= link_to t('.delete'), registration_path(registration), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm', child: child.ja_name, slot: slot.name)}, class: 'button' %>
+    </div>
 
-        <div class="registration_options_container">
-            <h5><%= t('.options') %></h5>
-            <%= render slot_registration.registerable.options, child: child %>
-        </div>
-    <% end %>
+    <div class="registration_options_container">
+        <h5><%= t('.options') %></h5>
+        <%= render slot.options, child: child %>
+    </div>
 <% end %>
                 

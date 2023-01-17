@@ -17,7 +17,7 @@ class RegistrationsController < ApplicationController
     if @registration.save
       flash.now[:notice] = t('.success', registerable: @registration.registerable.name)
       if @registration.registerable_type == 'TimeSlot'
-        render @registration, locals: { child: @registration.child, time_slot: @registration.registerable }
+        render @registration
       else
         render @registration.registerable, locals: { child: @registration.child }
       end
@@ -32,7 +32,7 @@ class RegistrationsController < ApplicationController
     if @registration.update(reg_params)
       flash.now[:notice] = t('.success')
       if @registration.registerable_type == 'TimeSlot'
-        render @registration, locals: { child: @registration.child, time_slot: @registration.registerable }
+        render @registration
       else
         render @registration.registerable, locals: { child: @registration.child }
       end
@@ -47,7 +47,7 @@ class RegistrationsController < ApplicationController
     if @registration.destroy
       flash.now[:notice] = t('.success', registerable: @registration.registerable.name)
       if @registration.registerable_type == 'TimeSlot'
-        render @registration, locals: { child: @registration.child, time_slot: @registration.registerable }
+        render :_unregistered, locals: { child: @registration.child, slot: @registration.registerable }
       else
         render @registration.registerable, locals: { child: @registration.child }
       end
