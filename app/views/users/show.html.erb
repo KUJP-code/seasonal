@@ -9,7 +9,7 @@
 
         <h2><%= t('.upcoming_registrations') %></h2>
         <div id="time_slot_container">
-            <% @user.time_slots.limit(2).order(start_time: :desc).each do |slot| %>
+            <% @user.time_slots.distinct.limit(2).order(start_time: :desc).each do |slot| %>
                 <%= render slot, children: @user.children %>
             <% end %>
         </div>
