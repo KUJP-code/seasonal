@@ -28,13 +28,17 @@ class Registration < ApplicationRecord
     cost + total_adjustments
   end
 
-  private
+  def f_billing_date
+    billing_date.strftime('%Y/%m/%d')
+  end
 
   def slot_registration?
     return true if registerable_type == 'TimeSlot'
 
     false
   end
+
+  private
 
   def destroy_registered_options
     child = self.child

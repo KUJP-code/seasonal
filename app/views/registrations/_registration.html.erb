@@ -7,32 +7,46 @@
     <div class="registration">
         <%= link_to child.ja_name, child_path(child) %>
 
-        <%= form_with model: registration, class: 'registration_form' do |f| %>
-            <% if current_user.customer? %>              
+        <% if current_user.customer? %>              
+            <div class="registration_form">
                 <div class="field date">
-                    <%= f.label :billing_date, t('.billing_date') %>
-                    <%= f.date_field :billing_date, disabled: true %>
+                    <p><%= t('.billing_date') %></p>
+                    <% if registration.billing_date %>
+                        <p><%= registration.f_billing_date %></p>
+                    <% else %>
+                        <p><%= t('.not_set') %></p>
+                    <% end %>
                 </div>
                 <div class="field check_box">
-                    <%= f.label :confirmed, t('.con') %>
-                    <%= f.check_box :confirmed, disabled: true %>
+                    <p><%= t('.con') %></p>
+                    <% if registration.confirmed %>
+                        <p>✓</p>
+                    <% else %>
+                        <p>✖</p>
+                    <% end%>
                 </div>
                 <div class="field check_box">
-                    <%= f.label :paid, t('.paid') %>
-                    <%= f.check_box :paid, disabled: true %>
+                    <p><%= t('.paid') %></p>
+                    <% if registration.paid %>
+                        <p>✓</p>
+                    <% else %>
+                        <p>✖</p>
+                    <% end %>
                 </div>
                 <% if registration.cost == registration.adjusted_cost %>
                     <div class="field cost">
-                        <%= f.label :cost, t('.cost') %>
-                        <%= f.number_field :cost, disabled: true %>
+                        <p><%= t('.cost') %></p>
+                        <p><%= registration.cost %></p>
                     </div>
                 <% else %>
                     <div class="field cost">
-                        <p><%= t('.adjusted_cost') %></p>
+                        <p><%= t('.adj_cost') %></p>
                         <p><%= registration.adjusted_cost %></p>
                     </div>
                 <% end %>
-            <% else %>
+            </div>
+        <% else %>
+            <%= form_with model: registration, class: 'registration_form' do |f| %>
                 <div class="field date">
                     <%= f.label :billing_date, t('.billing_date') %>
                     <%= f.date_field :billing_date %>
@@ -47,16 +61,19 @@
                 </div>
                 <% if registration.cost == registration.adjusted_cost %>
                     <div class="field cost">
-                        <%= f.label :cost, t('.cost') %>
-                        <%= f.number_field :cost, disabled: true %>
+                        <%= t('.cost') %>
+                        <%= registration.cost %>
                     </div>
                 <% else %>
                     <div class="field cost">
-                        <%= f.label :cost, t('.adjusted_cost') %>
-                        <%= f.number_field :cost, disabled: true, value: registration.adjusted_cost %>
+                        <%= t('.adj_cost') %>
+                        <%= registration.adjusted_cost %>
                     </div>
                 <% end %>
                 <%= f.submit t('.update'), class: 'button' %>
+                <% unless registration.cost == registration.adjusted_cost %>
+                    <%= link_to t('.view_adj'), adjustments_path(id: registration.id), class: 'button' %>
+                <% end %>
             <% end %>
         <% end %>
 
