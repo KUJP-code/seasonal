@@ -101,10 +101,17 @@ a {
 }
 
 .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
     background-color: var(--ku-orange);
     border: 1px outset var(--ku-orange-hover);
     border-radius: 0.5vw;
     padding: 0.5vw;
+    text-align: center;
+    font-weight: bold;
 }
 
 .button:hover{

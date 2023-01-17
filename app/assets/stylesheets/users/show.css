@@ -57,11 +57,12 @@
 }
 
 #user_show #time_slot_container {
-    height: 80vh;
+    height: fit-content;
 }
 
 #user_show .time_slot {
     flex: 0 0 43vw;
+    height: fit-content;
 }
 
 #user_show .area {

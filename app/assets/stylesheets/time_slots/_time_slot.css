@@ -1,7 +1,6 @@
 .time_slot {
     display: flex;
     flex-flow: column nowrap;
-    overflow-y: scroll;
     border-radius: 1vw;
     gap: 1vw;
     padding: 1vw;

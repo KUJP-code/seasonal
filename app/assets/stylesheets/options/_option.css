@@ -1,5 +1,20 @@
 .option {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1vw;
     flex: auto;
     padding: 1vw;
     background-color: lightgrey;
+}
+
+.option form {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1vw;
+    flex: auto;
+    padding: 1vw;
 }
