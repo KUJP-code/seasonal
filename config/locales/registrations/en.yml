@@ -6,6 +6,8 @@ en:
     destroy:
       failure: "Failed to delete registration"
       success: "Successfully deleted registration for %{registerable}"
+    index:
+      reg_for: "Registrations for %{source} at %{school}"
     registration:
       delete: "Delete"
       delete_confirm: "Are you sure you want to delete %{child}'s registration for %{slot}?"

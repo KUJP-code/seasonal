@@ -69,7 +69,7 @@ class Child < ApplicationRecord
     events.where.not(school: school).distinct
   end
 
-  def ja_name
+  def name
     "#{ja_family_name} #{ja_first_name}"
   end
 

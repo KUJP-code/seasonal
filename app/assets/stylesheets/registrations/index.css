@@ -2,5 +2,11 @@
     display: flex;
     flex-flow: column nowrap;
     gap: 1vw;
+    text-align: center;
     background-color: rgb(36, 36, 60);
+}
+
+#registration_index>h1 {
+    color: white;
+    padding: 2vw;
 }

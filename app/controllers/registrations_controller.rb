@@ -62,12 +62,6 @@ class RegistrationsController < ApplicationController
       @source = Child.find(params[:id])
     when 'User'
       @source = User.find(params[:id])
-    when 'School'
-      @source = School.find(params[:id])
-    when 'Area'
-      @source = Area.find(params[:id])
-    else
-      render 'errors/unexpected_param'
     end
   end
 

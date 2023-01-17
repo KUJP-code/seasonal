@@ -90,7 +90,7 @@ class User < ApplicationRecord
 
   # Public methods
   # Concatenates the two Japanese names for easier use
-  def ja_name
+  def name
     "#{ja_family_name} #{ja_first_name}"
   end
 

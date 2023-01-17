@@ -1,4 +1,6 @@
 <main id="registration_index">
+    <h1><%= t('.reg_for', source: @source.name, school: @source.school.name) %></h1>
+
     <% @registrations.each do |r| %>
         <%= render r, child: r.child, time_slot: r.registerable %>
     <% end %>
