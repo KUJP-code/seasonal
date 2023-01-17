@@ -2,13 +2,10 @@
 
 # Controls flow of information for Registrations
 class RegistrationsController < ApplicationController
+  before_action :source, only: [:index]
+
   def index
-    if params[:type] == 'Event'
-      slots = Event.find(params[:id]).time_slots
-      @registrations = Registration.where(registerable: slots, registerable_type: 'TimeSlot')
-    else
-      @registrations = Registration.where(registerable_id: params[:id], registerable_type: 'TimeSlot')
-    end
+    @registrations = @source.registrations.where(registerable_type: 'TimeSlot')
   end
 
   def create
@@ -51,6 +48,25 @@ class RegistrationsController < ApplicationController
   end
 
   private
+
+  def source
+    case params[:type]
+    when 'Event'
+      @source = Event.find(params[:id])
+    when 'TimeSlot'
+      @source = TimeSlot.find(params[:id])
+    when 'Child'
+      @source = Child.find(params[:id])
+    when 'User'
+      @source = User.find(params[:id])
+    when 'School'
+      @source = School.find(params[:id])
+    when 'Area'
+      @source = Area.find(params[:id])
+    else
+      render 'errors/unexpected_param'
+    end
+  end
 
   def reg_params
     params.require(:registration).permit(:id, :cost, :child_id,
