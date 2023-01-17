@@ -13,11 +13,9 @@
   </head>
 
   <body>
-    <% flash.each do |type, msg| %>
-      <div class=<%= type %>>
-        <%= msg %>
-      </div>
-    <% end %>
+    <turbo-frame id="flash">
+      <%= render 'shared/flash' %>
+    </turbo-frame>
 
     <% if user_signed_in? %>
       <div id="nav_bar">

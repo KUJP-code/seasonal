@@ -25,8 +25,7 @@ class RegistrationsController < ApplicationController
 
     if @registration.update(reg_params)
       flash.now[:notice] = t('.success')
-      render @registration if @registration.slot_registration?
-      render @registration.registerable, locals: { child: @registration.child } unless @registration.slot_registration?
+      render_flash
     else
       flash.now[:alert] = t('failure')
     end
@@ -48,6 +47,10 @@ class RegistrationsController < ApplicationController
   end
 
   private
+
+  def render_flash
+    render turbo_stream: turbo_stream.update('flash', partial: 'shared/flash')
+  end
 
   def source
     case params[:type]

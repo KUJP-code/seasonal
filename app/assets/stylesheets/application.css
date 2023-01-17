@@ -43,11 +43,17 @@ a {
     color: black;
 }
 
+#flash {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
 .alert,
 .notice {
     text-align: center;
     font-weight: bold;
-    padding: 1vw;
+    padding: 3vh;
 }
 
 .alert {
