@@ -4,9 +4,8 @@
 class UsersController < ApplicationController
   def index
     return redirect_to :no_permission if current_user.customer?
-    @users = User.admin_index if current_user.admin?
-    @users = User.sm_index(current_user) if current_user.school_manager?
-    @users = User.am_index(current_user) if current_user.area_manager?
+
+    @users = index_for_role
   end
 
   def profile
@@ -66,6 +65,12 @@ class UsersController < ApplicationController
 
   def delete_admin?
     @user.admin? && User.admins.size <= 1
+  end
+
+  def index_for_role
+    return User.admin_index if current_user.admin?
+    return User.sm_index(current_user) if current_user.school_manager?
+    return User.am_index(current_user) if current_user.area_manager?
   end
 
   def user_params
