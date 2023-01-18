@@ -16,6 +16,8 @@ class User < ApplicationRecord
   has_many :managed_areas, through: :managements,
                            source: :manageable,
                            source_type: 'Area'
+  has_many :area_schools, through: :managed_areas,
+                          source: :schools
   has_many :children, dependent: :destroy,
                       foreign_key: :parent_id,
                       inverse_of: :parent

@@ -12,6 +12,7 @@ class SchoolsController < ApplicationController
 
   def index_for_role
     return School.all if current_user.admin?
-    return current_user.managed_schools if current_user.area_manager? || current_user.school_manager?
+    return current_user.managed_schools if current_user.school_manager?
+    return current_user.area_schools if current_user.area_manager?
   end
 end
