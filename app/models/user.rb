@@ -22,7 +22,7 @@ class User < ApplicationRecord
                           source: :schools
   has_many :area_children, through: :area_schools,
                            source: :children
-  has_many :children, dependent: :destroy,
+  has_many :children, dependent: nil,
                       foreign_key: :parent_id,
                       inverse_of: :parent
   accepts_nested_attributes_for :children
@@ -34,6 +34,9 @@ class User < ApplicationRecord
                                 source: :registerable,
                                 source_type: 'Option'
   has_many :events, -> { distinct }, through: :time_slots
+
+  # Make sure children are deleted when Parent is
+  before_destroy :destroy_children
 
   # Track changes with PaperTrail
   has_paper_trail
@@ -110,5 +113,11 @@ class User < ApplicationRecord
   # Concatenates the two Japanese names for easier use
   def name
     "#{ja_family_name} #{ja_first_name}"
+  end
+
+  private
+
+  def destroy_children
+    children.destroy_all
   end
 end
