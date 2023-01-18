@@ -55,7 +55,7 @@ class User < ApplicationRecord
   scope :admins, -> { where(role: :admin) }
 
   # Scopes for User#index to display to each role
-  scope :admin_index, -> { order(updated_at: :desc).limit(12).includes(:children, :school) }
+  scope :admin_index, -> { order(updated_at: :desc).includes(:children, :school) }
 
   scope :sm_index, lambda { |sm|
     where(school: sm.managed_schools)
