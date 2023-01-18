@@ -66,7 +66,7 @@ class UsersController < ApplicationController
     @child = Child.find(params[:child_id])
     @parent = User.find(params[:parent_id])
 
-    # redirect_to :child_theft if @child.parent_id.nil?
+    redirect_to :child_theft unless @child.parent_id.nil?
     if @parent.children << @child
       respond_to do |format|
         flash.now[:notice] = t('.success')
