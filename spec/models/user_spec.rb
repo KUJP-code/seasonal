@@ -30,6 +30,12 @@ RSpec.describe 'User' do
       expect(space_valid).to be true
     end
 
+    it 'knows if it is staff member' do
+      users = [create(:am_user), create(:sm_user), create(:admin_user)]
+      staff = users.all?(&:staff?)
+      expect(staff).to be true
+    end
+
     with_versioning do
       it 'creates a paper trail on create' do
         valid_user.save

@@ -52,6 +52,7 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     return redirect_to :required_user if delete_admin?
+    return redirect_to :no_permission if current_user.customer?
 
     if @user.destroy
       flash[:notice] = t('.success')
