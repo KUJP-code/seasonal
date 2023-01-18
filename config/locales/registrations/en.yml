@@ -2,15 +2,17 @@ en:
   registrations:
     create:
       failure: "Failed to register"
-      success: "Successfully registered for %{registerable}"
+      success: "Registered %{child} for %{target}"
     destroy:
       failure: "Failed to delete registration"
-      success: "Successfully deleted registration for %{registerable}"
+      success: "Deleted %{child}'s registration for %{target}"
     index:
       reg_for: "Registrations for %{source} at %{school}"
     registration:
       delete: "Delete"
       delete_confirm: "Are you sure you want to delete %{child}'s registration for %{slot}?"
       update: "Update"
+    update:
+      success: "Updated %{child}'s registration for %{target}"
     unregistered:
       register: "Register"

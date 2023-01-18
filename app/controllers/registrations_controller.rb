@@ -11,12 +11,13 @@ class RegistrationsController < ApplicationController
   def create
     @registration = Registration.new(reg_params)
 
-    if @registration.save
-      flash.now[:notice] = t('.success', registerable: @registration.registerable.name)
-      render @registration if @registration.slot_registration?
-      render @registration.registerable, locals: { child: @registration.child } unless @registration.slot_registration?
-    else
-      flash.now[:alert] = t('.failure')
+    respond_to do |format|
+      if @registration.save
+        flash_success
+        format.turbo_stream
+      else
+        flash_failure
+      end
     end
   end
 
@@ -24,29 +25,35 @@ class RegistrationsController < ApplicationController
     @registration = Registration.find(params[:id])
 
     if @registration.update(reg_params)
-      flash.now[:notice] = t('.success')
-      render_flash
+      flash_success
     else
-      flash.now[:alert] = t('failure')
+      flash_failure
     end
+    render_flash
   end
 
   def destroy
     @registration = Registration.find(params[:id])
 
-    if @registration.destroy
-      flash.now[:notice] = t('.success', registerable: @registration.registerable.name)
-      if @registration.slot_registration?
-        render :_unregistered, locals: { child: @registration.child, slot: @registration.registerable }
+    respond_to do |format|
+      if @registration.destroy
+        flash_success
+        format.turbo_stream
       else
-        render @registration.registerable, locals: { child: @registration.child }
+        flash_failure
       end
-    else
-      flash.now[:alert] = t('.failure')
     end
   end
 
   private
+
+  def flash_failure
+    flash.now[:alert] = t('.failure', target: @registration.registerable.name, child: @registration.child.name)
+  end
+
+  def flash_success
+    flash.now[:notice] = t('.success', target: @registration.registerable.name, child: @registration.child.name)
+  end
 
   def render_flash
     render turbo_stream: turbo_stream.update('flash', partial: 'shared/flash')
