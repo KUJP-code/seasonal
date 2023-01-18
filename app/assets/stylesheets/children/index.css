@@ -1,17 +1,16 @@
-#school_index {
+#children_index {
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
     align-items: stretch;
 }
 
-#school_index>.school.header {
-    font-weight: bold;
+#children_index>.child.header {
     background-color: darkgray;
     top: 9vh;
     position: sticky;
 }
 
-#school_index .school {
+#children_index .child {
     background-color: lightgray;
 }

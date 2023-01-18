@@ -2,6 +2,10 @@
 
 # Control flow of data for Children
 class ChildrenController < ApplicationController
+  def index
+    @children = index_for_role
+  end
+
   private
 
   def child_params
@@ -14,5 +18,11 @@ class ChildrenController < ApplicationController
                                     cost child_id registerable_type
                                     registerable_id
                                   ])
+  end
+
+  def index_for_role
+    return Child.all if current_user.admin?
+    return current_user.school_children if current_user.school_manager?
+    return current_user.area_children if current_user.area_manager?
   end
 end

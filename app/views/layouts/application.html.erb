@@ -22,7 +22,7 @@
         <%= link_to "", root_path %>
 
         <% unless current_user.customer? %>
-          <%= link_to t("nav_bar.children") %>
+          <%= link_to t("nav_bar.children"), children_path %>
           <%= link_to t("nav_bar.customers"), users_path %>
           <%= link_to t("nav_bar.schools"), schools_path %>
         <% end %>

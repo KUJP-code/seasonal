@@ -1,0 +1,11 @@
+.child {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+
+.child p {
+    flex-basis: 12.5vw;
+}

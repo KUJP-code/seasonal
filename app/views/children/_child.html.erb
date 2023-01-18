@@ -1,0 +1,10 @@
+<div class="child">
+    <p class="ssid"><%= link_to child.ssid, child_path(child) %></p>
+    <p class="name"><%= link_to child.name, child_path(child) %></p>
+    <p class="katakana"><%= link_to child.katakana_name, child_path(child) %></p>
+    <p class="en"><%= link_to child.en_name, child_path(child) %></p>
+    <p class="category"><%= child.category %></p>
+    <p class="level"><%= child.level %></p>
+    <p class="parent"><%= link_to child.parent.name, user_path(child.parent) %></p>
+    <p class="school"><%= link_to child.school.name, school_path(child.school) %></p>
+</div>

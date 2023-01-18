@@ -1,3 +1,14 @@
 <main id="children_index">
-    <% render @children %>
+    <div class="child header">
+        <p class="ssid"><%= t('.ssid') %></p>
+        <p class="name"><%= t('.name') %></p>
+        <p class="katakana"><%=t('.katakana') %></p>
+        <p class="en"><%= t('.en') %></p>
+        <p class="category"><%= t('.category') %></p>
+        <p class="level"><%= t('.level') %></p>
+        <p class="parent"><%= t('.parent') %></p>
+        <p class="school"><%= t('.school') %></p>
+    </div>
+
+    <%= render @children %>
 </main>
