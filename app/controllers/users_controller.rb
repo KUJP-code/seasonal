@@ -3,7 +3,7 @@
 # Controls flow of info for Users resource
 class UsersController < ApplicationController
   def index
-    redirect_to '/errors/permission' if current_user.customer?
+    return redirect_to :no_permission if current_user.customer?
     @users = User.admin_index if current_user.admin?
     @users = User.sm_index(current_user) if current_user.school_manager?
     @users = User.am_index(current_user) if current_user.area_manager?
@@ -15,7 +15,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.user_show(params[:id])
-    redirect_to '/errors/permission' if current_user.customer? && current_user != @user
+    return redirect_to :no_permission if current_user.customer? && current_user != @user
   end
 
   def new
@@ -52,6 +52,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
+    return redirect_to :required_user if delete_admin?
 
     if @user.destroy
       flash[:notice] = t('.success')
@@ -62,6 +63,10 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def delete_admin?
+    @user.admin? && User.admins.size <= 1
+  end
 
   def user_params
     params.require(:user).permit(:id, :email, :password, :password_confirmation,
