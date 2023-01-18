@@ -23,8 +23,10 @@ Rails.application.routes.draw do
       get '/:locale', to: 'users#profile'
     end
     get '/current_event', to: 'welcomes#current_event'
+    get 'errors/child_theft', to: 'errors#child_theft', as: :child_theft
     get '/errors/permission', to: 'errors#permission', as: :no_permission
     get 'errors/required_user', to: 'errors#required_user', as: :required_user
+    get 'user/add_child', to: 'users#add_child', as: :add_child
   end
 
   # Defines the root path route ("/")

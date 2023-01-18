@@ -1,0 +1,48 @@
+#add_child {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+    gap: 1vw;
+}
+
+#add_child_form {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    gap: 1vw;
+}
+
+#add_child_form .field {
+    display: flex;
+    flex-flow: column wrap;
+    gap: 1vw;
+}
+
+#child_results {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+#child_results .child.header {
+    background-color: darkgray;
+    font-weight: bold;
+}
+
+#child_results .child {
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: lightgray;
+}
+
+#child_results .child p {
+    flex-basis: 12.5%;
+}
+
+#child_results .button {
+    margin-top: 1vw;
+    align-self: center;
+}
+
+#add_child_form input {
+    text-align: center;
+}

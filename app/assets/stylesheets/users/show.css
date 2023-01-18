@@ -18,7 +18,8 @@
 #user_show .event,
 #user_show #time_slot_container,
 #user_show #area_container,
-#user_show #school_container {
+#user_show #school_container,
+#user_show #add_child_container {
     display: flex;
     border-radius: 1vw;
     padding: 1vw;
@@ -30,21 +31,16 @@
 #user_show #time_slot_container,
 #user_show .user,
 #user_show #area_container,
-#user_show #school_container {
+#user_show #school_container,
+#user_show #add_child_container  {
     width: 90vw;
     gap: 1vw;
 }
 
-/* Rules for event and time slot containers */
-#user_show #time_slot_container {
-    flex-flow: row nowrap;
-    justify-content: center;
-    align-items: stretch;
-}
-
 /* Area and school container styles */
 #user_show #area_container,
-#user_show #school_container {
+#user_show #school_container,
+#user_show #add_child_container  {
     justify-content: center;
 }
 
@@ -58,10 +54,13 @@
 
 #user_show #time_slot_container {
     height: fit-content;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: stretch;
 }
 
 #user_show .time_slot {
-    flex: 0 0 43vw;
+    flex: 0 1 43vw;
     height: fit-content;
 }
 
@@ -70,4 +69,9 @@
     flex-flow: column nowrap;
     padding: 1vw;
     gap: 1vw;
+}
+
+#user_show #add_child_container {
+    flex-flow: column nowrap;
+    align-items: stretch;
 }

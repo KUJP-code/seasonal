@@ -29,4 +29,9 @@
             <%= render @user.managed_schools %>
         </div>
     <% end %>
+
+    <h2><%= t('.add_children') %></h2>
+    <div id="add_child_container">
+        <%= render 'add_child', user: @user %>
+    </div>
 </main>

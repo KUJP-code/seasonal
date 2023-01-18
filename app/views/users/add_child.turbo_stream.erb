@@ -1,0 +1,7 @@
+<%# Update flash message %>
+<%= turbo_stream.update "flash", partial: "shared/flash" %>
+
+<%# TODO: Update children in User#show %>
+
+<%# Inform user child has been added %>
+<%= turbo_stream.update "add_child", partial: "users/add_child", locals: { user: @parent }%>

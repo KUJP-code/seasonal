@@ -1,0 +1,31 @@
+<%= turbo_frame_tag "add_child" do %>
+    <%= form_with url: children_path, method: :get, id: 'add_child_form' do |f| %>
+        <%= f.hidden_field :user_id, value: user.id %>
+        <div class="field">
+            <%= f.label :ssid, t('.ssid')  %>
+            <%= f.search_field :ssid %>
+        </div>
+        <div class="field">
+            <%= f.label :bday, t('.bday')  %>
+            <%= f.date_field :bday %>
+        </div>
+        <%= f.submit t('.find_child'), class: 'button' %>
+    <% end %>
+
+    <div id="child_results">
+        <% if @child %>
+            <div class="child header">
+                <p class="ssid"><%= t('.ssid') %></p>
+                <p class="name"><%= t('.name') %></p>
+                <p class="katakana"><%=t('.katakana') %></p>
+                <p class="en"><%= t('.en') %></p>
+                <p class="category"><%= t('.category') %></p>
+                <p class="level"><%= t('.level') %></p>
+                <p class="parent"><%= t('.parent') %></p>
+                <p class="school"><%= t('.school') %></p>
+            </div>
+            <%= render @child %>
+            <%= link_to t('.add_child'), add_child_path(child_id: @child.id, parent_id: user.id, format: :turbo_stream), class: 'button' %>
+        <% end %>
+    </div>
+<% end %>

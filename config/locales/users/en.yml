@@ -3,6 +3,8 @@ en:
     event:
       dates: "From %{start_date} to %{end_date}"
   users:
+    add_child:
+      find_child: "Find Child"
     create:
       failure: "Couldn't create %{name}"
       success: "Successfully created %{name}"

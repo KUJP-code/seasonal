@@ -1,4 +1,4 @@
-.child {
+#children_index .child {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
@@ -6,6 +6,6 @@
     text-align: center;
 }
 
-.child p {
+#children_index .child p {
     flex-basis: 12.5vw;
 }

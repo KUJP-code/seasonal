@@ -3,7 +3,15 @@
 # Control flow of data for Children
 class ChildrenController < ApplicationController
   def index
+    if params[:commit] == 'Find Child'
+      @child = search_result
+      return render 'users/_add_child', locals: { user: User.find(params[:user_id]) }
+    end
     @children = index_for_role
+  end
+
+  def show
+    @child = Child.find(params[:id]) unless params[:id].nil?
   end
 
   private
@@ -18,6 +26,10 @@ class ChildrenController < ApplicationController
                                     cost child_id registerable_type
                                     registerable_id
                                   ])
+  end
+
+  def search_result
+    Child.find_by(ssid: params[:ssid], birthday: params[:bday])
   end
 
   def index_for_role

@@ -62,6 +62,21 @@ class UsersController < ApplicationController
     end
   end
 
+  def add_child
+    @child = Child.find(params[:child_id])
+    @parent = User.find(params[:parent_id])
+
+    # redirect_to :child_theft if @child.parent_id.nil?
+    if @parent.children << @child
+      respond_to do |format|
+        flash.now[:notice] = t('.success')
+        format.turbo_stream
+      end
+    else
+      flash.now[:alert] = t('.failure')
+    end
+  end
+
   private
 
   def delete_admin?
