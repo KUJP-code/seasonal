@@ -1,0 +1,12 @@
+#school_index {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.school.header {
+    background-color: darkgray;
+    top: 9vh;
+    position: sticky;
+}

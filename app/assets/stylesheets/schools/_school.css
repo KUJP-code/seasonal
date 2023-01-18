@@ -1,0 +1,22 @@
+.school {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    background-color: lightgray;
+}
+
+.school>.address {
+    flex-basis: 30vw;
+}
+
+.school>.area,
+.school>.name,
+.school>.phone {
+    flex-basis: 20vw;
+}
+
+.school>.children {
+    flex-basis: 10vw;
+}

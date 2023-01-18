@@ -26,7 +26,7 @@
           <%= link_to t("nav_bar.customers"), users_path %>
           
           <% unless current_user.school_manager? %>
-            <%= link_to t("nav_bar.schools") %>
+            <%= link_to t("nav_bar.schools"), schools_path %>
           <% end %>
         <% end %>
 

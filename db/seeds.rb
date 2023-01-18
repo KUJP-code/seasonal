@@ -45,8 +45,7 @@ User.create!([
     en_name: 'Lucky Lastname',
     role: :customer,
     address: Faker::Address.full_address,
-    phone: Faker::PhoneNumber.phone_number,
-    school: School.last
+    phone: Faker::PhoneNumber.phone_number
   }
 ])
 
@@ -73,7 +72,15 @@ School.all.each do |school|
   school.managers << sm
 end
 
-puts 'Added 2 schools and made SM the manager'
+20.times do |i|
+  area.schools.create!(
+    name: Faker::Address.city,
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number
+  )
+end
+
+puts 'Added 2 schools and made SM the manager, then added 20 more managerless schools so I can test scrolling the index'
 
 School.all.each do |school|
   2.times do |i|
