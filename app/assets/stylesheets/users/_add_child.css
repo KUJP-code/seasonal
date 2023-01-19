@@ -38,7 +38,13 @@
     flex-basis: 12.5%;
 }
 
-#child_results .button {
+#child_results #add_form {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+
+#child_results input.button {
     margin-top: 1vw;
     align-self: center;
 }

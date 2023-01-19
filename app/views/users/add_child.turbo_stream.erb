@@ -1,7 +1,11 @@
 <%# Update flash message %>
 <%= turbo_stream.update "flash", partial: "shared/flash" %>
 
-<%# TODO: Update children in User#show %>
+<%# TODO: Update children in _user %>
+
+
+<%# TODO: Update children in _time_slot partials %>
+
 
 <%# Inform user child has been added %>
-<%= turbo_stream.update "add_child", partial: "users/add_child", locals: { user: @parent }%>
+<%= turbo_stream.update "add_child", partial: "users/add_child", locals: { parent: @parent }%>

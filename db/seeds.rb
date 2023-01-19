@@ -120,6 +120,20 @@ end
 
 puts 'Gave each customer 2 children'
 
+Child.create!(
+  ja_first_name: Faker::Name.first_name,
+  ja_family_name: Faker::Name.last_name,
+  katakana_name: Faker::Name.name.kana,
+  en_name: "B'rett-Tan ner",
+  birthday: 'Wed, 20 Feb 2020',
+  ssid: 1,
+  ele_school_name: Faker::GreekPhilosophers.name,
+  post_photos: true,
+  allergies: 'peanuts'
+)
+
+puts "Created an orphaned child to test adding parent's children with"
+
 School.all.each do |school|
   2.times do |i|
     school.events.create!(

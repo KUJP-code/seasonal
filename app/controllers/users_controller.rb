@@ -29,10 +29,10 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save!
-      flash[:notice] = t('.success')
+      flash_success
       redirect_to user_path(@user)
     else
-      flash.now[:alert] = t('.failure')
+      flash_failure
       render '/auth/sign_up', status: :unprocessable_entity
     end
   end
@@ -41,10 +41,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     if @user.update(user_params)
-      flash[:notice] = t('.success')
+      flash_success
       redirect_to user_path(@user)
     else
-      flash.now[:alert] = t('.failure')
+      flash_failure
       render :edit, status: :unprocessable_entity
     end
   end
@@ -55,25 +55,22 @@ class UsersController < ApplicationController
     return redirect_to :no_permission if current_user.customer?
 
     if @user.destroy
-      flash[:notice] = t('.success')
+      flash_success
       redirect_to users_path
     else
-      flash.now[:alert] = t('.failure')
+      flash_failure
     end
   end
 
   def add_child
     @child = Child.find(params[:child_id])
-    @parent = User.find(params[:parent_id])
+    return redirect_to :child_theft unless @child.parent_id.nil?
 
-    redirect_to :child_theft unless @child.parent_id.nil?
-    if @parent.children << @child
-      respond_to do |format|
-        flash.now[:notice] = t('.success')
-        format.turbo_stream
-      end
-    else
-      flash.now[:alert] = t('.failure')
+    @parent = User.find(params[:parent_id])
+    @parent.children << @child
+    respond_to do |format|
+      flash_success
+      format.turbo_stream
     end
   end
 
@@ -81,6 +78,14 @@ class UsersController < ApplicationController
 
   def delete_admin?
     @user.admin? && User.admins.size <= 1
+  end
+
+  def flash_failure
+    flash.now[:alert] = t('.failure')
+  end
+
+  def flash_success
+    flash.now[:notice] = t('.success')
   end
 
   def index_for_role

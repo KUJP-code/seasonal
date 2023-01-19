@@ -5,7 +5,7 @@ class ChildrenController < ApplicationController
   def index
     if params[:commit] == 'Find Child'
       @child = search_result
-      return render 'users/_add_child', locals: { user: User.find(params[:user_id]) }
+      return render 'users/_add_child', locals: { parent: User.find(params[:parent_id]) }
     end
     @children = index_for_role
   end

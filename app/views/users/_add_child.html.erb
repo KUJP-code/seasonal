@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "add_child" do %>
     <%= form_with url: children_path, method: :get, id: 'add_child_form' do |f| %>
-        <%= f.hidden_field :user_id, value: user.id %>
+        <%= f.hidden_field :parent_id, value: parent.id %>
         <div class="field">
             <%= f.label :ssid, t('.ssid')  %>
             <%= f.search_field :ssid %>
@@ -24,8 +24,21 @@
                 <p class="parent"><%= t('.parent') %></p>
                 <p class="school"><%= t('.school') %></p>
             </div>
+
             <%= render @child %>
-            <%= link_to t('.add_child'), add_child_path(child_id: @child.id, parent_id: user.id, format: :turbo_stream), class: 'button' %>
+
+            <% if @child.parent_id.nil? %>
+                <%= form_with url: add_child_path, id: "add_form" do |f| %>
+                    <%= f.hidden_field :child_id, value: @child.id %>
+                    <%= f.hidden_field :parent_id, value: parent.id %>
+                    <%= f.submit t('.add_child'), class: 'button' %>
+                <% end %>
+            <% end %>
+
+            <% unless @child.parent_id.nil? %>
+                <%= t('.child_claimed', school: parent.school.name) %>
+            <% end %>
+
         <% end %>
     </div>
 <% end %>

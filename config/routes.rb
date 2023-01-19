@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     get 'errors/child_theft', to: 'errors#child_theft', as: :child_theft
     get '/errors/permission', to: 'errors#permission', as: :no_permission
     get 'errors/required_user', to: 'errors#required_user', as: :required_user
-    get 'user/add_child', to: 'users#add_child', as: :add_child
+    post 'user/add_child', to: 'users#add_child', as: :add_child
   end
 
   # Defines the root path route ("/")
