@@ -1,10 +1,12 @@
 <%# Update flash message %>
 <%= turbo_stream.update "flash", partial: "shared/flash" %>
 
-<%# TODO: Update children in _user %>
+<%# Update children in _user (append) %>
+<%= turbo_stream.append "user#{@parent.id}_children" do %>
+    <li><%= link_to @child.name, child_path(@child) %></li>
+<% end %>
 
-
-<%# TODO: Update children in _time_slot partials %>
+<%# TODO: Update children in _time_slot partials (append) %>
 
 
 <%# Inform user child has been added %>
