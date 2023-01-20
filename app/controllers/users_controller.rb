@@ -74,6 +74,17 @@ class UsersController < ApplicationController
     end
   end
 
+  def remove_child
+    @child = Child.find(params[:child_id])
+    @parent = User.find(params[:parent_id])
+    @parent.children.delete(@child)
+
+    respond_to do |format|
+      flash_success
+      format.turbo_stream
+    end
+  end
+
   private
 
   def delete_admin?

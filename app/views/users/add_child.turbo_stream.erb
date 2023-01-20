@@ -3,10 +3,20 @@
 
 <%# Update children in _user %>
 <%= turbo_stream.append "user#{@parent.id}_children" do %>
-    <li><%= link_to @child.name, child_path(@child) %></li>
+    <li id="<%= "user#{@parent.id}_child#{@child.id}" %>">
+        <%= link_to @child.name, child_path(@child) %>
+
+        <% if current_user.admin? %>
+            <%= form_with url: remove_child_path do |f| %>
+                <%= f.hidden_field :child_id, value: @child.id %>
+                <%= f.hidden_field :parent_id, value: @parent.id %>
+                <%= f.submit t('.remove_child'), class: 'button' %>
+            <% end %>
+        <% end %>
+    </li>
 <% end %>
 
-<%# Update children in _time_slot partials %>
+<%# Update children in _time_slots %>
 <% @parent.time_slots.distinct.each do |slot| %>
     <% if @child.registered?(slot) %>
         <%= turbo_stream.append "slot#{slot.id}_reg", Registration.find_by(child: @child, registerable: slot) %>

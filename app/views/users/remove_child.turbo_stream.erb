@@ -1,0 +1,10 @@
+<%# Update flash message %>
+<%= turbo_stream.update "flash", partial: "shared/flash" %>
+
+<%# Remove child from _user %>
+<%= turbo_stream.remove "user#{@parent.id}_child#{@child.id}" %>
+
+<%# Remove child's regsitrations from _time_slots %>
+<% @parent.time_slots.distinct.each do |slot| %>
+    <%= turbo_stream.remove "child#{@child.id}_slot#{slot.id}" %>
+<% end %>

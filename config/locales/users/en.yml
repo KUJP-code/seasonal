@@ -6,6 +6,7 @@ en:
     add_child:
       add_child: "Add Child"
       find_child: "Find Child"
+      remove_child: "Remove Child"
     create:
       failure: "Couldn't create %{name}"
       success: "Successfully created %{name}"
@@ -27,6 +28,7 @@ en:
       delete: "Delete User"
       delete_confirm: "Are you sure you want to delete this user?"
       edit: "Edit User"
+      remove_child: "Remove Child"
       roles:
         admin: "Admin"
         area_manager: "Area Manager"
