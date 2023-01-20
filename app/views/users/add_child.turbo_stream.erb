@@ -1,13 +1,19 @@
 <%# Update flash message %>
 <%= turbo_stream.update "flash", partial: "shared/flash" %>
 
-<%# Update children in _user (append) %>
+<%# Update children in _user %>
 <%= turbo_stream.append "user#{@parent.id}_children" do %>
     <li><%= link_to @child.name, child_path(@child) %></li>
 <% end %>
 
-<%# TODO: Update children in _time_slot partials (append) %>
-
+<%# Update children in _time_slot partials %>
+<% @parent.time_slots.distinct.each do |slot| %>
+    <% if @child.registered?(slot) %>
+        <%= turbo_stream.append "slot#{slot.id}_reg", Registration.find_by(child: @child, registerable: slot) %>
+    <% else %>
+        <%= turbo_stream.append "slot#{slot.id}_reg", partial: 'registrations/unregistered', locals: { child: @child, slot: slot } %>
+    <% end %>
+<% end %>
 
 <%# Inform user child has been added %>
-<%= turbo_stream.update "add_child", partial: "users/add_child", locals: { parent: @parent }%>
+<%= turbo_stream.update "add_child", partial: "users/add_child", locals: { parent: @parent } %>
