@@ -56,35 +56,60 @@ customer = User.customers.last
 
 puts 'Created my test accounts'
 
-area = am.managed_areas.create!(name: Faker::Address.city)
+area = am.managed_areas.create!(name: "Kanagawa")
 
 puts 'Gave AM an area to manage'
 
-2.times do |i|
-  area.schools.create!(
-    name: Faker::Address.city,
-    address: Faker::Address.full_address,
-    phone: Faker::PhoneNumber.phone_number
-  )
-end
+
+area.schools.create!([
+  {
+    name: "大倉山",
+    address: "〒222-0032 神奈川県横浜市港北区大豆戸町80",
+    phone: '0120378056'
+  },
+  {
+    name: "武蔵小杉",
+    address: "〒211-0016 神奈川県川崎市中原区市ノ坪232",
+    phone: '0120378056'
+  },
+  {
+    name: "溝の口",
+    address: "〒213-0002 神奈川県川崎市高津区二子３丁目３３−20 カーサ・フォーチュナー",
+    phone: '0120378056'
+  }
+])
+
+School.first.managers << User.create!(
+  email: 'yoshi@ku.jp',
+  password: 'smpasswordsmpassword',
+  ja_first_name: 'みの',
+  ja_family_name: 'よし',
+  katakana_name: 'ミノヨシ',
+  en_name: 'Mino Yoshi',
+  role: :school_manager,
+  address: Faker::Address.full_address,
+  phone: Faker::PhoneNumber.phone_number
+)
+
+School.find(2).managers << User.create!(
+  email: 'marinara@ku.jp',
+  password: 'smpasswordsmpassword',
+  ja_first_name: 'まりなら',
+  ja_family_name: 'よ',
+  katakana_name: 'マリナらヨ',
+  en_name: 'Marinara Yo',
+  role: :school_manager,
+  address: Faker::Address.full_address,
+  phone: Faker::PhoneNumber.phone_number
+)
+
+School.last.managers << sm
+
+puts 'Added 3 schools and gave each a manager'
 
 School.all.each do |school|
-  school.managers << sm
-end
-
-20.times do |i|
-  area.schools.create!(
-    name: Faker::Address.city,
-    address: Faker::Address.full_address,
-    phone: Faker::PhoneNumber.phone_number
-  )
-end
-
-puts 'Added 2 schools and made SM the manager, then added 20 more managerless schools so I can test scrolling the index'
-
-School.all.each do |school|
-  2.times do |i|
-    school.customers.create!(
+  school.customers.create!([
+    {
       ja_first_name: Faker::Name.first_name,
       ja_family_name: Faker::Name.last_name,
       katakana_name: Faker::Name.name.kana,
@@ -93,17 +118,27 @@ School.all.each do |school|
       password: Faker::Internet.password(min_length: 10),
       address: Faker::Address.full_address,
       phone: Faker::PhoneNumber.phone_number
-    )
-  end
+    },
+    {
+      ja_first_name: Faker::Name.first_name,
+      ja_family_name: Faker::Name.last_name,
+      katakana_name: Faker::Name.name.kana,
+      en_name: "B'rett-Tan ner",
+      email: Faker::Internet.unique.email,
+      password: Faker::Internet.password(min_length: 10),
+      address: Faker::Address.full_address,
+      phone: Faker::PhoneNumber.phone_number
+    }
+  ])
 end
 
 School.last.users << customer
 
 puts 'Added 2 Faker customers to each school, plus my test customer to the last one'
 
-User.customers.each do |customer|
-  2.times do |i|
-    customer.children.create!(
+User.customers.each do |customer_user|
+  customer_user.children.create!([
+    {
       ja_first_name: Faker::Name.first_name,
       ja_family_name: Faker::Name.last_name,
       katakana_name: Faker::Name.name.kana,
@@ -113,9 +148,21 @@ User.customers.each do |customer|
       ele_school_name: Faker::GreekPhilosophers.name,
       post_photos: true,
       allergies: 'peanuts',
-      school: customer.school
-    )
-  end
+      school: customer_user.school
+    },
+    {
+      ja_first_name: Faker::Name.first_name,
+      ja_family_name: Faker::Name.last_name,
+      katakana_name: Faker::Name.name.kana,
+      en_name: "B'rett-Tan ner",
+      birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
+      ssid: Faker::Number.unique.number,
+      ele_school_name: Faker::GreekPhilosophers.name,
+      post_photos: true,
+      allergies: 'peanuts',
+      school: customer_user.school
+    }
+  ])
 end
 
 puts 'Gave each customer 2 children'
@@ -134,39 +181,216 @@ Child.create!(
 
 puts "Created an orphaned child to test adding parent's children with"
 
+choco_descrip = 'Make chocolate, play chocolate related games and learn English!'
+
 School.all.each do |school|
-  2.times do |i|
-    school.events.create!(
-      name: Faker::JapaneseMedia::StudioGhibli.movie,
-      description: Faker::JapaneseMedia::StudioGhibli.quote,
-      start_date: Faker::Time.forward(days: 5),
-      end_date: Faker::Date.between(from: 10.days.from_now, to: 15.days.from_now)
-    )
-  end
+    school.events.create!([
+      {
+        name: 'Chocolate Day 2023',
+        description: choco_descrip,
+        start_date: 'February 18 2023',
+        end_date: 'February 18 2023'
+      },
+      {
+        name: 'Spring School 2023',
+        description: 'See the sakura and celebrate spring with KU!',
+        start_date: 'March 16 2023',
+        end_date: 'April 4 2023'
+      }
+    ])
 end
 
-puts 'Created 2 events at each school'
+puts 'Created choco day and spring school at each school'
 
-Event.all.each do |event|
-  3.times do |i|
-    event.time_slots.create(
-      name: Faker::Games::LeagueOfLegends.champion,
-      start_time: 5.days.from_now,
-      end_time: Faker::Date.between(from: 10.days.from_now, to: 15.days.from_now),
-      description: Faker::Lorem.sentence(word_count: 10),
+Event.where(name: 'Chocolate Day 2023').each do |event|
+  event.time_slots.create([
+    {
+      name: 'Chocolate Day 9am',
+      start_time: '18 Feb 2023 09:00 JST +09:00',
+      end_time: '18 Feb 2023 11:00 JST +09:00',
+      description: choco_descrip,
       cost: 8000,
-      registration_deadline: 2.days.from_now
-    )
-  end
+      registration_deadline: '16 Feb 2023'
+    },
+    {
+      name: 'Chocolate Day 11am',
+      start_time: '18 Feb 2023 11:00 JST +09:00',
+      end_time: '18 Feb 2023 12:00 JST +09:00',
+      description: choco_descrip,
+      cost: 8000,
+      registration_deadline: '16 Feb 2023'
+    },
+    {
+      name: 'Chocolate Day 2pm',
+      start_time: '18 Feb 2023 14:00 JST +09:00',
+      end_time: '18 Feb 2023 16:00 JST +09:00',
+      description: choco_descrip,
+      cost: 8000,
+      registration_deadline: '16 Feb 2023'
+    },
+    {
+      name: 'Chocolate Day 4pm',
+      start_time: '18 Feb 2023 16:00 JST +09:00',
+      end_time: '18 Feb 2023 18:00 JST +09:00',
+      description: choco_descrip,
+      cost: 8000,
+      registration_deadline: '16 Feb 2023'
+    }
+  ])
 end
 
-puts 'Created 3 time slots for each event'
+puts 'Created time slots for choco day'
+
+Event.where(name: 'Spring School 2023').each do |event|
+  event.time_slots.create([
+    {
+      name: 'Paint a Puzzle',
+      start_time: '16 Mar 2023 09:00 JST +09:00',
+      end_time: '16 Mar 2023 13:00 JST +09:00',
+      description: 'Paint your own jigsaw puzzle!',
+      cost: 8000,
+      registration_deadline: '14 Mar 2023'
+    },
+    {
+      name: 'Butterfly Finger Puppet',
+      start_time: '17 Mar 2023 9:00 JST +09:00',
+      end_time: '17 Mar 2023 13:00 JST +09:00',
+      description: 'Make a cute butterfly puppet to take home and enjoy!',
+      cost: 8000,
+      registration_deadline: '15 Mar 2023'
+    },
+    {
+      name: 'Magic Day',
+      start_time: '20 Mar 2023 9:00 JST +09:00',
+      end_time: '20 Mar 2023 13:00 JST +09:00',
+      description: 'Learn magic tricks that will dazzle your family!',
+      cost: 8000,
+      registration_deadline: '18 Mar 2023'
+    },
+    {
+      name: 'Vegetable Stamps',
+      start_time: '22 Mar 2023 9:00 JST +09:00',
+      end_time: '22 Mar 2023 13:00 JST +09:00',
+      description: 'Create some beautiful (and healthy) artwork!',
+      cost: 8000,
+      registration_deadline: '20 Mar 2023'
+    },
+    {
+      name: 'Spider Web Race',
+      start_time: '23 Mar 2023 9:00 JST +09:00',
+      end_time: '23 Mar 2023 13:00 JST +09:00',
+      description: 'Race out of a sticky situation!',
+      cost: 8000,
+      registration_deadline: '21 Mar 2023'
+    },
+    {
+      name: 'Easter Egg Craft',
+      start_time: '24 Mar 2023 9:00 JST +09:00',
+      end_time: '24 Mar 2023 13:00 JST +09:00',
+      description: 'Create your own special Easter Egg! No eating though!',
+      cost: 8000,
+      registration_deadline: '22 Mar 2023'
+    },
+    {
+      name: 'Cherry Blossom Picnic',
+      start_time: '27 Mar 2023 9:00 JST +09:00',
+      end_time: '27 Mar 2023 13:00 JST +09:00',
+      description: 'Enjoy a nice picnic under the cherry blossoms!',
+      cost: 8000,
+      registration_deadline: '25 Mar 2023'
+    },
+    {
+      name: 'Cute Grass Head',
+      start_time: '28 Mar 2023 9:00 JST +09:00',
+      end_time: '28 Mar 2023 13:00 JST +09:00',
+      description: "Make your own little friend, in case you're ever stranded on a deserted island!",
+      cost: 8000,
+      registration_deadline: '26 Mar 2023'
+    },
+    {
+      name: 'Photo Frame',
+      start_time: '29 Mar 2023 9:00 JST +09:00',
+      end_time: '29 Mar 2023 13:00 JST +09:00',
+      description: 'Make a special photo frame to store your most precious memories!',
+      cost: 8000,
+      registration_deadline: '27 Mar 2023'
+    },
+    {
+      name: 'Marble Pencil Holder',
+      start_time: '30 Mar 2023 9:00 JST +09:00',
+      end_time: '30 Mar 2023 13:00 JST +09:00',
+      description: "Don't like holding pencils? Make something to do it for you!",
+      cost: 8000,
+      registration_deadline: '28 Mar 2023'
+    },
+    {
+      name: 'Spring Terrarium',
+      start_time: '31 Mar 2023 9:00 JST +09:00',
+      end_time: '31 Mar 2023 13:00 JST +09:00',
+      description: 'Create your own personal ecosystem to rule over!',
+      cost: 8000,
+      registration_deadline: '29 Mar 2023'
+    },
+    {
+      name: 'Ninja Master',
+      start_time: '3 Apr 2023 9:00 JST +09:00',
+      end_time: '3 Apr 2023 13:00 JST +09:00',
+      description: 'Become a ninja master!',
+      cost: 8000,
+      registration_deadline: '1 Apr 2023'
+    },
+    {
+      name: 'DIY Tic-Tac-Toe',
+      start_time: '4 Apr 2023 9:00 JST +09:00',
+      end_time: '4 Apr 2023 13:00 JST +09:00',
+      description: 'Make a game, then play it!',
+      cost: 8000,
+      registration_deadline: '2 Apr 2023'
+    },
+    {
+      name: 'Colorful Sand Art',
+      start_time: '5 Apr 2023 9:00 JST +09:00',
+      end_time: '5 Apr 2023 13:00 JST +09:00',
+      description: 'Create art with a wave of nostalgia!',
+      cost: 8000,
+      registration_deadline: '3 Apr 2023'
+    }
+  ])
+end
+
+puts 'Created time slots for spring school'
 
 TimeSlot.all.each do |slot|
-  6.times { |i| slot.options.create!(name: Faker::Book.title, description: Faker::Lorem.sentence(word_count: 10), cost: 4000) }
+  slot.options.create!([
+    {
+      name: 'Photo Service',
+      description: 'Get lots of photos to commemorate all the fun your child had!',
+      cost: 1100
+    },
+    {
+      name: 'Lunch',
+      description: 'Give your child a delicious bento from the nearest conbini',
+      cost: 1000
+    },
+    {
+      name: 'Attend PM',
+      description: 'Get the real KU experience with a full day of fun!',
+      cost: 3000
+    },
+    {
+      name: 'PM Snack',
+      description: "Top up your child's energy in the afternoon!",
+      cost: 600
+    },
+    {
+      name: 'Photo Service',
+      description: 'Get lots of photos to commemorate all the fun your child had!',
+      cost: 1100
+    }
+  ])
 end
 
-puts 'Created 6 options for each time slot'
+puts 'Created standard options for each time slot'
 
 School.all.each do |school|
   school.time_slots.each do |slot|
@@ -176,21 +400,13 @@ School.all.each do |school|
   end
 end
 
-puts 'Registered children for each event at their school'
+puts 'Registered children for each time slot at each event at their school'
 
 TimeSlot.all.each do |slot|
   Child.where.not(school: slot.school).order('RANDOM()').first.registrations.create(registerable: slot, cost: slot.cost)
 end
 
 puts 'Registered a child from a different school for each time slot'
-
-Option.all.each do |option|
-  Child.where(school: option.school).each do |child|
-    child.registrations.create!(registerable: option, cost: option.cost)
-  end
-end
-
-puts 'Registered each child for every option at their school'
 
 Child.all.each do |child|
   child.create_regular_schedule(
