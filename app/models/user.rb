@@ -15,11 +15,15 @@ class User < ApplicationRecord
                              source_type: 'School'
   has_many :school_children, through: :managed_schools,
                              source: :children
+  has_many :school_events, through: :managed_schools,
+                           source: :events
   has_many :managed_areas, through: :managements,
                            source: :manageable,
                            source_type: 'Area'
   has_many :area_schools, through: :managed_areas,
                           source: :schools
+  has_many :area_events, through: :area_schools,
+                         source: :events
   has_many :area_children, through: :area_schools,
                            source: :children
   has_many :children, dependent: nil,

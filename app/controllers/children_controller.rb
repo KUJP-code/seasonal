@@ -58,7 +58,7 @@ class ChildrenController < ApplicationController
 
   def index_for_role
     return Child.all if current_user.admin?
-    return current_user.school_children if current_user.school_manager?
     return current_user.area_children if current_user.area_manager?
+    return current_user.school_children if current_user.school_manager?
   end
 end
