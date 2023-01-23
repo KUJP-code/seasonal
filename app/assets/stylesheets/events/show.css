@@ -21,7 +21,6 @@
     width: 90vw;
     gap: 1vw;
     padding: 1vw;
-    justify-content: center;
 }
 
 /* Styles for all shadowed containers */
@@ -34,18 +33,18 @@
     box-shadow: var(--container-shadow);
 }
 
-/* Scroll time slot container on x-axis */
-#event_show #time_slot_container {
-    flex-flow: row nowrap;
-    align-items: stretch;
+#event_show .event {
+    justify-content: center;
 }
 
 #event_show #time_slot_container {
+    flex-flow: row nowrap;
     height: fit-content;
+    overflow-x: scroll;
 }
 
 #event_show .time_slot {
-    flex: 0 0 43vw;
+    flex: 0 0 30vw;
     height: fit-content;
 }
 

@@ -3,14 +3,14 @@
 
     <% if @user.children? %>
         <h2><%= t('.next_event') %></h2>
-        <% @user.school.events.limit(1).order(updated_at: :desc).each do |event| %>
+        <% @user.school.events.limit(1).order(updated_at: :asc).each do |event| %>
             <%= render event %>
         <% end %>
 
         <h2><%= t('.upcoming_registrations') %></h2>
         <%= link_to t('.all_registrations'), registrations_path(id: @user.id, type: 'User'), class: 'button' %>
         <div id="time_slot_container">
-            <% @user.time_slots.distinct.order(start_time: :desc).limit(5).each do |slot| %>
+            <% @user.time_slots.distinct.order(start_time: :asc).limit(5).each do |slot| %>
                 <%= render slot, children: @user.children %>
             <% end %>
         </div>

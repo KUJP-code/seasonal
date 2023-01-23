@@ -61,7 +61,7 @@
 }
 
 #user_show .time_slot {
-    width: 30vw;
+    flex: 0 0 30vw;
     height: fit-content;
 }
 
