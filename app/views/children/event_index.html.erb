@@ -17,6 +17,14 @@
     </div>
 
     <div id="event_children">
-        <%= render partial: 'event_child', collection: @children, locals: { event: @source } || t('.no_reg') %>
+        <h3><%= t('.attending') %></h3>
+        <%= turbo_frame_tag "attending_event#{@source.id}" do %>
+            <%= render partial: 'event_child', collection: @attending, locals: { event: @source } || t('.no_reg') %>
+        <% end %>
+
+        <h3><%= t('not_attending') %></h3>
+        <%= turbo_frame_tag "not_attending_event#{@source.id}" do %>       
+            <%= render partial: 'event_child', collection: @not_attending, locals: { event: @source } || t('.all_reg') %>
+        <% end %>
     </div>
 </main>

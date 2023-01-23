@@ -7,7 +7,8 @@ class ChildrenController < ApplicationController
 
     if params[:source]
       @source = find_source
-      @children = @source.possible_children.distinct
+      child_list
+
       return render "#{@source.class.name.downcase}_index"
     end
 
@@ -19,6 +20,11 @@ class ChildrenController < ApplicationController
   end
 
   private
+
+  def child_list
+    @attending = @source.children.distinct
+    @not_attending = @source.school.children.reject { |c| @attending.include?(c) }
+  end
 
   def child_params
     params.require(:child).permit(:id, :ja_first_name, :ja_family_name,

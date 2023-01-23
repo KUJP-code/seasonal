@@ -20,10 +20,10 @@
     --container-shadow: 0px 0.5vw 0.5vw grey;
     --ku-orange: #ef8200;
     --ku-orange-hover: #fb961b;
-    --main-heading-size: min(4vh, 4vw);
-    --sub-heading-size: 20px;
-    --content-size: 16px;
-    font-size: 16px;
+    --main-heading-size: min(4vw, 32px);
+    --sub-heading-size: min(2vw, 20px);
+    --content-size: min(1.5vw, 16px);
+    font-size: min(1.5vw, 16px);
 }
 
 h1,

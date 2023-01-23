@@ -58,6 +58,14 @@
 
 #event_children_index #event_children {
     font-size: var(--content-size);
+    width: fit-content;
+    background-color: var(--ku-orange);
+}
+
+#event_children_index #event_children h3 {
+    padding: 1vw;
+    color: white;
+    font-size: var(--sub-heading-size);
 }
 
 #event_children_index .event_child {
