@@ -2,9 +2,11 @@ en:
   registrations:
     create:
       failure: "Failed to register"
+      reg_count: "%{num_kids} children registered"
       success: "Registered %{child} for %{target}"
     destroy:
       failure: "Failed to delete registration"
+      reg_count: "%{num_kids} children registered"
       success: "Deleted %{child}'s registration for %{target}"
     index:
       reg_for: "Registrations for %{source} at %{school}"
