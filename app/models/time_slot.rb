@@ -45,4 +45,10 @@ class TimeSlot < ApplicationRecord
   def times
     "#{start_time.strftime('%I:%M%p')} - #{end_time.strftime('%I:%M%p')}"
   end
+
+  # List all children at the slot's school,
+  # plus those attending from different schools
+  def possible_children
+    children.where.not(school: school).or(Child.where(school: school)).distinct
+  end
 end

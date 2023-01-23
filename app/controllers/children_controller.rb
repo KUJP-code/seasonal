@@ -7,7 +7,7 @@ class ChildrenController < ApplicationController
 
     if params[:source]
       @source = find_source
-      @children = @source.children.distinct
+      @children = @source.possible_children.distinct
       return render "#{@source.class.name.downcase}_index"
     end
 
