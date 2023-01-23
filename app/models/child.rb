@@ -74,6 +74,6 @@ class Child < ApplicationRecord
   end
 
   def registered?(registerable)
-    !registrations.find_by(registerable: registerable).nil?
+    registrations.find_by(registerable: registerable)
   end
 end

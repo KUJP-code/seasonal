@@ -1,12 +1,6 @@
 <%= turbo_frame_tag "child#{child.id}_slot#{slot.id}" do %>
     <div class="registration">
-        <%= form_with model: Registration.new do |f| %>
-            <%= link_to child.name, child_path(child) %>
-            <%= f.hidden_field :cost, value: slot.cost %>
-            <%= f.hidden_field :child_id, value: child.id %>
-            <%= f.hidden_field :registerable_id, value: slot.id %>
-            <%= f.hidden_field :registerable_type, value: 'TimeSlot' %>
-            <%= f.submit t('.register'), class: 'button' %>
-        <% end %>
+        <%= link_to child.name, child_path(child) %>
+        <%= render 'registrations/register_button', registerable: slot, child: child, type: 'TimeSlot' %>
     </div>
 <% end %>

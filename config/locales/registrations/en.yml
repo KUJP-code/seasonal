@@ -8,6 +8,8 @@ en:
       success: "Deleted %{child}'s registration for %{target}"
     index:
       reg_for: "Registrations for %{source} at %{school}"
+    register_button:
+      register: "Register"
     registration:
       delete: "Delete"
       delete_confirm: "Are you sure you want to delete %{child}'s registration for %{slot}?"

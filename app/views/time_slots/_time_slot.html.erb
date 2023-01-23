@@ -4,7 +4,7 @@
     <h5><%= t('.times', time: time_slot.times) %></h5>
 
     <p><%= time_slot.description %></p>
-    <p><%= link_to t('.reg_count', num_kids: time_slot.children.distinct.size), registrations_path(type: 'TimeSlot', id: time_slot.id) %></p>
+    <p><%= link_to t('.reg_count', num_kids: time_slot.children.distinct.size), children_path(source: 'TimeSlot', id: time_slot.id) %></p>
 
     <div class="slot_registrations">
         <%= turbo_frame_tag "slot#{time_slot.id}_reg" do %>

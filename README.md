@@ -22,7 +22,7 @@ When you get around to the bits which use callbacks again, remember after_commit
 ## Look as much like the google sheet as possible **For demo**
     - Print index within attendance numbers of kids next to them
     - Make much more compact, like a spreadsheet
-        - Non essential stuff like contact info you cna click on the kid for
+        - Non essential stuff like contact info you can click on the kid for
         - On the event attendance index have the kids and what time slot they're attending
         - Final column is total cost for attending
         - need a breakdown of costs for the event

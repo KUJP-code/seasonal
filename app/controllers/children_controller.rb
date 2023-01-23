@@ -3,10 +3,14 @@
 # Control flow of data for Children
 class ChildrenController < ApplicationController
   def index
-    if params[:commit] == 'Find Child'
-      @child = search_result
-      return render 'users/_add_child', locals: { parent: User.find(params[:parent_id]) }
+    return find_child if params[:commit] == 'Find Child'
+
+    if params[:source]
+      @source = find_source
+      @children = @source.children.distinct
+      return render "#{@source.class.name.downcase}_index"
     end
+
     @children = index_for_role
   end
 
@@ -28,8 +32,22 @@ class ChildrenController < ApplicationController
                                   ])
   end
 
+  def find_child
+    @child = search_result
+    render 'users/_add_child', locals: { parent: User.find(params[:parent_id]) }
+  end
+
   def search_result
     Child.find_by(ssid: params[:ssid], birthday: params[:bday])
+  end
+
+  def find_source
+    case params[:source]
+    when 'Event'
+      Event.find(params[:id])
+    when 'TimeSlot'
+      TimeSlot.find(params[:id])
+    end
   end
 
   def index_for_role

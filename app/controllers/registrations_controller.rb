@@ -61,10 +61,6 @@ class RegistrationsController < ApplicationController
 
   def source
     case params[:type]
-    when 'Event'
-      @source = Event.find(params[:id])
-    when 'TimeSlot'
-      @source = TimeSlot.find(params[:id])
     when 'Child'
       @source = Child.find(params[:id])
     when 'User'

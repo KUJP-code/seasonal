@@ -1,0 +1,20 @@
+<main id="event_children_index">
+    <div class="event_child header">
+        <div class="child_info">
+            <p class="order"><%= t('.order') %></p>
+            <p class="name"><%= t('.name') %></p>
+            <p class="en"><%= t('.en') %></p>
+        </div>
+        <% @source.time_slots.each do |slot| %>
+            <div class="slot">
+                <p class="slot_name"><%= link_to slot.name, time_slot_path(slot) %></p>
+                <div class="attendance">
+                    <p class="morning"><%= t('.morning') %></p>
+                    <p class="afternoon"><%= t('.afternoon') %></p>
+                </div>
+            </div>
+        <% end %>
+    </div>
+
+    <%= render partial: 'event_child', collection: @children, locals: { event: @source } || t('.no_reg') %>
+</main>
