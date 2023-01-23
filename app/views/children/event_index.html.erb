@@ -1,6 +1,6 @@
 <main id="event_children_index">
     <div class="event_child header">
-        <div class="child_info">
+        <div class="child_info header">
             <p class="order"><%= t('.order') %></p>
             <p class="name"><%= t('.name') %></p>
             <p class="en"><%= t('.en') %></p>
@@ -16,5 +16,7 @@
         <% end %>
     </div>
 
-    <%= render partial: 'event_child', collection: @children, locals: { event: @source } || t('.no_reg') %>
+    <div id="event_children">
+        <%= render partial: 'event_child', collection: @children, locals: { event: @source } || t('.no_reg') %>
+    </div>
 </main>

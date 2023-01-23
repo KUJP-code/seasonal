@@ -1,5 +1,6 @@
 /* Styles for the main element */
 #user_show {
+    margin-top: 9vh;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;

@@ -1,10 +1,10 @@
 #user_index {
+    margin-top: 9vh;
     display: grid;
     align-items: center;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1vw;
     padding: 1vw;
-    margin-top: 1vw;
 }
 
 
