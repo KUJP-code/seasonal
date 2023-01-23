@@ -19,6 +19,15 @@
 
     <% pm = @registration.registerable.options.find_by(name: 'Attend PM') %>
     <%= turbo_stream.replace "child#{@registration.child_id}_Option#{pm.id}_mini", partial: 'registrations/register_button', locals: { child: @registration.child, registerable: pm } %>
+
+<%# Remove child from attending list if you destroyed their last registration %>
+<%# TODO: Optimise, too many queries just for this %>
+    <% event = @registration.event %>
+    <% child = @registration.child %>
+    <% unless event.children.include?(child) %>
+        <%= turbo_stream.remove "child#{child.id}" %>
+        <%= turbo_stream.append "not_attending#{event.id}", partial: 'children/event_child', locals: { event: event, event_child: child, event_child_iteration: 'New' } %>
+    <% end %>
 <% end %>
 
 

@@ -20,7 +20,19 @@
 
 <%# For Child#index %>
 <%# Update slot registration if changed %>
-<%= turbo_stream.replace "child#{@registration.child_id}_#{@registration.registerable_type}#{@registration.registerable_id}_mini", partial: 'registrations/delete_button', locals: { registration: @registration } if @registration.slot_registration? %>
+<% if @registration.slot_registration? %>
+    <%= turbo_stream.replace "child#{@registration.child_id}_#{@registration.registerable_type}#{@registration.registerable_id}_mini", partial: 'registrations/delete_button', locals: { registration: @registration } %>
+
+    <%# TODO: Add child to attending list if previously not attending %>
+    <% child = @registration.child %>
+    <% event = @registration.event %>
+    <% event_slots = event.time_slots %>
+    <% if child.registrations.where(registerable: event_slots).size == 1 %>
+        <%= turbo_stream.remove "child#{child.id}" %>
+        <%= turbo_stream.append "attending#{event.id}", partial: 'children/event_child', locals: { event: event, event_child: child, event_child_iteration: 'New' } %>
+    <% end %>
+<% end %>
+
 
 <%# Update option registration if changed %>
 <%= turbo_stream.replace "child#{@registration.child_id}_#{@registration.registerable_type}#{@registration.registerable_id}_mini", partial: 'registrations/delete_button', locals: { registration: @registration } unless @registration.slot_registration? %>
