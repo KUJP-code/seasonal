@@ -10,6 +10,7 @@ class RegistrationsController < ApplicationController
 
   def create
     @registration = Registration.new(reg_params)
+    return flash_failure if registered?
 
     respond_to do |format|
       if @registration.save
@@ -57,6 +58,12 @@ class RegistrationsController < ApplicationController
 
   def render_flash
     render turbo_stream: turbo_stream.update('flash', partial: 'shared/flash')
+  end
+
+  def registered?
+    Registration.find_by(child_id: @registration.child_id,
+                         registerable_id: @registration.registerable_id,
+                         registerable_type: @registration.registerable_type)
   end
 
   def source

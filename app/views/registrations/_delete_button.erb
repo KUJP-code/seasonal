@@ -1,3 +1,3 @@
-<%= turbo_frame_tag "child#{registration.child_id}_slot#{registration.registerable_id}_mini" do %>
+<%= turbo_frame_tag "child#{registration.child_id}_#{registration.registerable_type}#{registration.registerable_id}_mini" do %>
     <%= link_to t('.delete'), registration_path(registration), data: { turbo_method: :delete }, class: 'button' %>
 <% end %>

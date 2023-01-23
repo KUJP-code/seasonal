@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "child#{child.id}_slot#{registerable.id}_mini" do %>
+<%= turbo_frame_tag "child#{child.id}_#{registerable.class.name}#{registerable.id}_mini" do %>
     <%= form_with model: Registration.new do |f| %>
         <%= f.hidden_field :cost, value: registerable.cost %>
         <%= f.hidden_field :child_id, value: child.id %>
