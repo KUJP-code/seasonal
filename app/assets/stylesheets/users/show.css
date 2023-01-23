@@ -56,12 +56,12 @@
 #user_show #time_slot_container {
     height: fit-content;
     flex-flow: row nowrap;
-    justify-content: center;
     align-items: stretch;
+    overflow-x: scroll;
 }
 
 #user_show .time_slot {
-    flex: 0 1 43vw;
+    width: 30vw;
     height: fit-content;
 }
 

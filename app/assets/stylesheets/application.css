@@ -124,6 +124,7 @@ a {
     border-radius: 0.5vw;
     padding: 0.5vw;
     text-align: center;
+    font-size: var(--content-size);
     font-weight: bold;
 }
 

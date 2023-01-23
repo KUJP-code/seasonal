@@ -6,6 +6,7 @@
     font-size: var(--sub-heading-size);
     font-weight: bold;
     padding: 1vw;
+    gap: 1vw;
     background-color: darkgray;
     text-align: center;
 }
@@ -34,18 +35,13 @@
     width: 10%;
 }
 
-.registration_form .cost,
-.registration_form .button {
-    width: 15%;
-}
-
 .registration_options_container {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
     align-items: center;
-    gap: 1vw;
-    padding: 1vw;
+    gap: 0.5vw;
+    padding: 0.5vw;
     background-color: lightgray;
 }
 
