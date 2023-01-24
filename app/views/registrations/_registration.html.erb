@@ -37,16 +37,16 @@
         <% else %>
             <%= form_with model: registration, class: 'registration_form' do |f| %>
                 <div class="field date">
-                    <%= f.label :billing_date, t('.billing_date') %>
-                    <%= f.date_field :billing_date %>
+                    <%= f.label :billing_date, t('.billing_date'), for: "reg#{registration.id}_billing_date" %>
+                    <%= f.date_field :billing_date, id: "reg#{registration.id}_billing_date" %>
                 </div>
                 <div class="field check_box">
-                    <%= f.label :confirmed, t('.con') %>
-                    <%= f.check_box :confirmed %>
+                    <%= f.label :confirmed, t('.con'), for: "reg#{registration.id}_confirmed" %>
+                    <%= f.check_box :confirmed, id: "reg#{registration.id}_confirmed" %>
                 </div>
                 <div class="field check_box">
-                    <%= f.label :paid, t('.paid') %>
-                    <%= f.check_box :paid %>
+                    <%= f.label :paid, t('.paid'), for: "reg#{registration.id}_paid" %>
+                    <%= f.check_box :paid, id: "reg#{registration.id}_paid" %>
                 </div>
                 <%= f.submit t('.update'), class: 'button' %>
             <% end %>
