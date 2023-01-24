@@ -22,10 +22,15 @@
     --ku-orange-hover: #fb961b;
     --ku-dark-accent: #d45e69;
     --ku-background: #80b4cf;
+    --ku-dark-background: #1487b8;
     --main-heading-size: min(4vw, 32px);
     --sub-heading-size: min(1.5vw, 20px);
     --content-size: min(1.5vw, 16px);
     font-size: min(1.5vw, 16px);
+}
+
+body {
+    background-color: var(--ku-background);
 }
 
 h1,

@@ -58,6 +58,7 @@
     flex-flow: row nowrap;
     align-items: stretch;
     overflow-x: scroll;
+    background-color: var(--ku-dark-background);
 }
 
 #user_show .time_slot {
@@ -75,4 +76,5 @@
 #user_show #add_child_container {
     flex-flow: column nowrap;
     align-items: stretch;
+    background-color: var(--ku-dark-background);
 }

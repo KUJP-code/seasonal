@@ -7,7 +7,6 @@
     padding: 1vw;
 }
 
-
 #user_index .user {
-    height: max(150px, 15vw);
+    height: 300px;
 }

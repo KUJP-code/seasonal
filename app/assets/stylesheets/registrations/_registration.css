@@ -7,7 +7,7 @@
     font-weight: bold;
     padding: 1vw;
     gap: 1vw;
-    background-color: darkgray;
+    background-color: var(--ku-dark-background);
     text-align: center;
 }
 .registration_form {
@@ -42,7 +42,7 @@
     align-items: center;
     gap: 0.5vw;
     padding: 0.5vw;
-    background-color: lightgray;
+    background-color: var(--ku-background);
 }
 
 .registration_options_container h5 {

@@ -11,11 +11,13 @@
     border-radius: 1vw;
     text-align: center;
     box-shadow: var(--container-shadow);
+    background-color: var(--ku-dark-background);
 }
 
 .user .children,
 .user .key_info {
     flex: 1 1 auto;
+    gap: 0.5vw;
 }
 
 .user .key_info {
@@ -31,7 +33,15 @@
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    gap: max(20px, 2vw);
+}
+
+.user ul li {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 1vw;
+    gap: 1vw;
 }
 
 .user .user_options {

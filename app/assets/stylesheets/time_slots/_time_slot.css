@@ -5,6 +5,7 @@
     gap: 1vw;
     padding: 1vw;
     box-shadow: var(--container-shadow);
+    background: linear-gradient(var(--ku-orange), var(--ku-dark-accent));
 }
 
 .time_slot .slot_registrations {

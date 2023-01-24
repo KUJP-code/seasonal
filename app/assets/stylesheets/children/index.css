@@ -15,3 +15,7 @@
 #children_index .child {
     background-color: lightgray;
 }
+
+#children_index .child p {
+    flex-basis: 12.5vw;
+}

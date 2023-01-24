@@ -1,11 +1,8 @@
-#children_index .child {
+.child {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
     align-items: center;
     text-align: center;
-}
-
-#children_index .child p {
-    flex-basis: 12.5vw;
+    background-color: var(--ku-dark-background);
 }

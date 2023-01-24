@@ -3,6 +3,7 @@
     flex-flow: column nowrap;
     align-items: stretch;
     gap: 1vw;
+    background-color: var(--ku-dark-background);
 }
 
 #add_child_form {
