@@ -4,4 +4,5 @@
     <p class="phone"><%= school.phone %></p>
     <p class="area"><%= link_to school.area.name, area_path(school.area) %></p>
     <p class="children"><%= school.children.size %></p>
+    <p class="edit"><%= link_to t('.edit'), edit_school_path(school), class: 'button' if current_user.admin? || current_user.area_manager? %></p>
 </div>

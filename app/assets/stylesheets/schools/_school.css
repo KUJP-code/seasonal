@@ -13,9 +13,9 @@
 .school>.area,
 .school>.name,
 .school>.phone {
-    flex-basis: 20vw;
+    flex-basis: 18vw;
 }
 
 .school>.children {
-    flex-basis: 10vw;
+    flex-basis: 8vw;
 }

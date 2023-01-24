@@ -52,6 +52,7 @@
 #event_children_index .event_child.header {
     position: sticky;
     z-index: 2;
+    min-width: 100vw;
     background-color: darkgray;
     width: fit-content;
 }
@@ -59,6 +60,7 @@
 #event_children_index #event_children {
     font-size: var(--content-size);
     width: fit-content;
+    min-width: 100vw;
     background-color: var(--ku-orange);
 }
 

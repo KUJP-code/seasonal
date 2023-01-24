@@ -1,9 +1,20 @@
 .event {
     display: flex;
     flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1vw;
     overflow-y: scroll;
     border-radius: 1vw;
     padding: 1vw;
     box-shadow: var(--container-shadow);
     background-color: var(--ku-dark-background);
+}
+
+.event .event_management {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1vw;
 }

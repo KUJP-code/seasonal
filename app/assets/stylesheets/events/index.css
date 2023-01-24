@@ -1,3 +1,12 @@
 #event_index {
     margin-top: 9vh;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 2vh;
+    gap: 2vh;
+}
+
+#event_index .event {
+    width: 80vw;
 }

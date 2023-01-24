@@ -7,12 +7,22 @@
 }
 
 #school_index>.school.header {
-    font-weight: bold;
-    background-color: darkgray;
     top: 9vh;
     position: sticky;
+    font-size: var(--sub-heading-size);
+    font-weight: bold;
+    padding: 1vw;
+    background-color: var(--ku-dark-background);
 }
 
 #school_index .school {
-    background-color: lightgray;
+    padding: 1vw;
+}
+
+#school_index .school:nth-child(even) {
+    background-color: var(--ku-background);
+}
+
+#school_index .school:nth-child(odd) {
+    background-color: var(--ku-dark-background);
 }

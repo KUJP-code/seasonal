@@ -13,10 +13,29 @@
     gap: 1vw;
 }
 
+#add_child_form .field,
+#add_child_form .button {
+    font-size: 24px;
+}
+
+#add_child_form input:not(.button) {
+    border-radius: 1vw;
+    border: none;
+    padding: 5px;
+    text-align: center;
+    background-color: var(--ku-orange-hover);
+}
+
+#add_child_form input:not(.button):focus-visible {
+    outline: none;
+    box-shadow: 0.5vw 1vw 1vw var(--ku-dark-accent);
+}
+
 #add_child_form .field {
     display: flex;
     flex-flow: column wrap;
     gap: 1vw;
+    font-size: 24px;
 }
 
 #child_results {
@@ -45,7 +64,7 @@
     justify-content: center;
 }
 
-#child_results input.button {
+#child_results .button {
     margin-top: 1vw;
     align-self: center;
 }

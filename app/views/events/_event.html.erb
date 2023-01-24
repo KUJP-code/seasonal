@@ -13,9 +13,9 @@
     </p>
 
     <% unless current_user.customer? %>
-        <div id="event_management">
-            <%= link_to t('.edit'), edit_event_path(event) %>
-            <%= link_to t('.delete'), event_path(event), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm')}%>
+        <div class="event_management">
+            <%= link_to t('.edit'), edit_event_path(event), class: 'button' %>
+            <%= link_to t('.delete'), event_path(event), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm')}, class: 'button' %>
         </div>
     <% end %>
 </div>
