@@ -1,0 +1,113 @@
+#login,
+#sign_up {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--ku-background);
+}
+
+#new_user .button,
+#new_user .field {
+    font-size: 24px;
+}
+
+#login #new_user,
+#sign_up #new_user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2vw;
+    gap: 2vw;
+    border-radius: 2vw;
+    background: linear-gradient(var(--ku-orange), var(--ku-dark-accent));
+    text-align: center;
+}
+
+#login #new_user {
+    flex-flow: column nowrap;
+    width: max(300px, 35vw);
+    height: max(400px, 60vh);
+    padding: 2vw;
+    gap: 2vw;
+}
+
+#sign_up #new_user {
+    flex-flow: row wrap;
+    width: 90vw;
+    height: 90vh;
+    overflow-y: scroll;
+    padding: 1vw;
+    gap: 1vw;
+}
+
+#new_user h2 {
+    font-size: 36px;
+}
+
+#new_user h3 {
+    font-size: 26px;
+}
+
+#sign_up #new_user h2,
+#sign_up #new_user h3 {
+    flex: 1 0 100%;
+}
+
+#new_user .field {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5vw;
+}
+
+#sign_up #new_user .field {
+    flex: 1 1 30%;
+}
+
+#sign_up #new_user .field.password {
+    margin-top: 20px;
+}
+
+#new_user .field em {
+    font-size: 12px;
+}
+
+#new_user input:not(.button),
+select#user_school_id {
+    border-radius: 1vw;
+    border: none;
+    padding: 5px;
+    text-align: center;
+    background-color: var(--ku-orange-hover);
+}
+
+#new_user input:not(.button):focus-visible {
+    outline: none;
+    box-shadow: 0.5vw 1vw 1vw var(--ku-dark-accent);
+}
+
+#new_user .field.remember {
+    flex-flow: row nowrap;
+    gap: 1vw;
+}
+
+#sign_up #new_user .field.school,
+#sign_up #new_user .actions {
+    flex: 1 1 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#sign_up #new_user .field.school {
+    flex-flow: row nowrap;
+}
+
+#sign_up #new_user .actions {
+    flex-flow: column wrap;
+    gap: 1vw;
+}

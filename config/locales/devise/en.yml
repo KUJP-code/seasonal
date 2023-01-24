@@ -12,6 +12,9 @@ en:
         personal_information: "Personal Information"
         phone: "Phone Number"
         school: "School"
+    sessions:
+      new:
+        login: "Log In"
     shared:
       links:
         forgot_password: "Forgot your password?"
