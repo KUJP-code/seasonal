@@ -41,6 +41,7 @@
     flex-flow: row nowrap;
     height: fit-content;
     overflow-x: scroll;
+    background: var(--ku-dark-background);
 }
 
 #event_show .time_slot {

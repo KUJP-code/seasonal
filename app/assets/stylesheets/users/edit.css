@@ -22,9 +22,9 @@
     background: var(--ku-dark-background);
 }
 
-#user_edit form.edit_user input:not(.button),
-#user_edit form.edit_user select,
-#user_edit form.edit_user textarea {
+form.edit_user input:not(.button),
+form.edit_user select,
+form.edit_user textarea {
     border-radius: 1vw;
     border: none;
     padding: 5px;
@@ -32,18 +32,17 @@
     background-color: var(--ku-orange-hover);
 }
 
-#user_edit form.edit_user input:not(.button):focus-visible {
+.edit_user input:not(.button):focus-visible {
     outline: none;
     box-shadow: 0.5vw 1vw 1vw var(--ku-dark-accent);
 }
 
-#user_edit .button,
-#user_edit .field {
+.edit_user .button,
+.edit_user .field {
     font-size: 24px;
 }
 
-
-#user_edit .field {
+.edit_user .field {
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
@@ -51,22 +50,22 @@
     gap: 0.5vw;
 }
 
-#user_edit form.edit_user h2,
-#user_edit form.edit_user h3 {
+.edit_user h2,
+.edit_user h3 {
     flex-basis: 100%;
     text-align: center;
 }
 
-form.edit_user h2 {
+.edit_user h2 {
     font-size: 36px;
 }
 
-form.edit_user h3 {
+.edit_user h3 {
     font-size: 26px;
 }
 
-#user_edit .user_fields,
-#user_edit .child_fields_wrapper {
+.edit_user .user_fields,
+.edit_user .child_fields_wrapper {
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
@@ -77,9 +76,9 @@ form.edit_user h3 {
     border-radius: 2vw;
 }
 
-#user_edit .personal_info,
-#user_edit .account_info,
-#user_edit .school_info {
+.edit_user .personal_info,
+.edit_user .account_info,
+.edit_user .school_info {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
@@ -87,7 +86,7 @@ form.edit_user h3 {
     gap: 1vw;
 }
 
-#user_edit form.edit_user .actions {
+.edit_user .actions {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
