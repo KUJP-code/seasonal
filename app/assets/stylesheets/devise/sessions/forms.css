@@ -23,21 +23,19 @@
     border-radius: 2vw;
     background: linear-gradient(var(--ku-orange), var(--ku-dark-accent));
     text-align: center;
+    overflow: scroll;
 }
 
 #login #new_user {
     flex-flow: column nowrap;
-    width: max(300px, 35vw);
-    height: max(400px, 60vh);
-    padding: 2vw;
-    gap: 2vw;
+    width: max(300px, 45vw);
+    height: max(400px, 90vh);
 }
 
 #sign_up #new_user {
     flex-flow: row wrap;
     width: 90vw;
     height: 90vh;
-    overflow-y: scroll;
     padding: 1vw;
     gap: 1vw;
 }
