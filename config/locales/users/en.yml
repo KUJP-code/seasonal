@@ -7,12 +7,18 @@ en:
       add_child: "Add Child"
       find_child: "Find Child"
       remove_child: "Remove Child"
+    child_fields:
+      external: "External"
+      internal: "Internal"
+      reservation: "Reservation"
     create:
       failure: "Couldn't create %{name}"
       success: "Successfully created %{name}"
     destroy:
       failure: "Couldn't delete user"
       success: "Successfully deleted user"
+    edit:
+      update_all: "Update All"
     show:
       all_registrations: "All registrations"
       event: "Events"

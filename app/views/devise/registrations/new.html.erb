@@ -6,6 +6,7 @@
     <%= render "devise/shared/error_messages", resource: resource %>
   
     <h3><%= t('.account_information') %></h3>
+    
     <div class="field">
       <%= f.label :email %><br />
       <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
@@ -46,7 +47,7 @@
   
     <div class="field">
       <%= f.label :address, t('.address') %><br />
-      <%= f.text_field :address, autocomplete: "address" %>
+      <%= f.text_area :address, autocomplete: "address" %>
     </div>
   
     <div class="field">

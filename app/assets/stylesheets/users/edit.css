@@ -1,0 +1,96 @@
+#user_edit {
+    margin-top: 9vh;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    padding: 1vw;
+}
+
+#user_edit form.edit_user {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: stretch;
+    width: 94vw;
+    height: fit-content;
+    overflow: scroll;
+    padding: 2vw;
+    gap: 1vw;
+    border-radius: 2vw;
+    box-shadow: var(--container-shadow);
+    background: var(--ku-dark-background);
+}
+
+#user_edit form.edit_user input:not(.button),
+#user_edit form.edit_user select,
+#user_edit form.edit_user textarea {
+    border-radius: 1vw;
+    border: none;
+    padding: 5px;
+    text-align: center;
+    background-color: var(--ku-orange-hover);
+}
+
+#user_edit form.edit_user input:not(.button):focus-visible {
+    outline: none;
+    box-shadow: 0.5vw 1vw 1vw var(--ku-dark-accent);
+}
+
+#user_edit .button,
+#user_edit .field {
+    font-size: 24px;
+}
+
+
+#user_edit .field {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5vw;
+}
+
+#user_edit form.edit_user h2,
+#user_edit form.edit_user h3 {
+    flex-basis: 100%;
+    text-align: center;
+}
+
+form.edit_user h2 {
+    font-size: 36px;
+}
+
+form.edit_user h3 {
+    font-size: 26px;
+}
+
+#user_edit .user_fields,
+#user_edit .child_fields_wrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--ku-background);
+    gap: 2vw;
+    padding: 1vw;
+    border-radius: 2vw;
+}
+
+#user_edit .personal_info,
+#user_edit .account_info,
+#user_edit .school_info {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    padding: 1vw;
+    gap: 1vw;
+}
+
+#user_edit form.edit_user .actions {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2vw;
+}

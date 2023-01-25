@@ -1,5 +1,7 @@
 <main id="user_show">
-    <%= render @user %>
+    <%= turbo_frame_tag "user#{@user.id}" do %>
+        <%= render @user %>
+    <% end %>
 
     <% if @user.children? %>
         <h2><%= t('.next_event') %></h2>

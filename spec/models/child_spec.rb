@@ -22,6 +22,12 @@ RSpec.describe Child do
       expect(category).to eq 'internal'
     end
 
+    it 'saves without ssid' do
+      valid_child.ssid = nil
+      valid = valid_child.save!
+      expect(valid).to be true
+    end
+
     it 'can change its level' do
       child.level = :sky_high
       lvl = child.level
@@ -267,9 +273,9 @@ RSpec.describe Child do
     end
 
     it "knows if it's registered for a registerable" do
-      child.registrations.create(registerable: time_slot)
+      reg = child.registrations.create(registerable: time_slot)
       registered = child.registered?(time_slot)
-      expect(registered).to be true
+      expect(registered).to eq reg
     end
 
     context 'with time_slots through registrations' do

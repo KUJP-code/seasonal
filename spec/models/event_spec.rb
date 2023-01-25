@@ -134,7 +134,7 @@ RSpec.describe Event do
       it 'knows which attending children are from other schools' do
         diff_school_child = create(:child)
         diff_school_child.registrations.create(registerable: slot)
-        foreign_kids = event.diff_school_attendees
+        foreign_kids = event.diff_school_children
         expect(foreign_kids).to contain_exactly(diff_school_child)
       end
     end
