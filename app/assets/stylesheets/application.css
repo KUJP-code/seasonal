@@ -126,17 +126,28 @@ a {
     align-items: center;
     width: fit-content;
     height: fit-content;
-    background: linear-gradient(var(--ku-orange), var(--ku-dark-accent));
-    border: 1px outset var(--ku-orange-hover);
     border-radius: 1vw;
     padding: 0.5vw;
     text-align: center;
     font-size: var(--content-size);
     font-weight: bold;
+    background: linear-gradient(var(--ku-orange), var(--ku-dark-accent));
+    border: 1px outset var(--ku-orange);
 }
 
-.button:hover{
+.button:hover {
     background: linear-gradient(var(--ku-orange-hover), var(--ku-dark-accent));
+    border: 1px inset var(--ku-orange);
+}
+
+.button.attending {
+    background: linear-gradient(lightgreen, green);
+    border: 1px outset green;
+}
+
+.button.attending:hover {
+    background: linear-gradient(red, darkred);
+    border: 1px inset darkred;
 }
 
 .button:active,
