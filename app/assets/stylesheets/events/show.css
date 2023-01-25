@@ -1,3 +1,71 @@
+/* Styles for .user div */
+/* For User#show partials */
+
+#user_show .user {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    padding: 1vw;
+    gap: 1vw;
+    overflow-y: scroll;
+    border-radius: 1vw;
+    text-align: center;
+    box-shadow: var(--container-shadow);
+    background-color: var(--ku-dark-background);
+}
+
+#user_show .user .children,
+#user_show .user .key_info {
+    flex: 1 1 auto;
+    gap: 0.5vw;
+}
+
+#user_show .user .key_info {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    overflow: clip;
+}
+
+#user_show .user ul {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+#user_show .user ul li {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 1vw;
+    gap: 1vw;
+}
+
+#user_show .user .user_options {
+    flex: 0 0 auto;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    gap: 1vw;
+}
+
+/* When editing in place */
+
+.user form.edit_user {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: stretch;
+    height: fit-content;
+    overflow: scroll;
+    padding: 2vw;
+    gap: 1vw;
+}
+
 /* Styles for the main element */
 #event_show {
     margin-top: 9vh;

@@ -21,20 +21,28 @@ en:
       update_all: "Update All"
     show:
       all_registrations: "All registrations"
+      children: "Children:"
+      child: "Child:"
+      delete: "Delete User"
+      delete_confirm: "Are you sure you want to delete this user?"
+      edit: "Edit User"
       event: "Events"
+      remove_child: "Remove Child"
+      roles:
+        admin: "Admin"
+        area_manager: "Area Manager"
+        customer: "Customer"
+        school_manager: "School Manager"
       managed_areas: "Managed Areas"
       managed_schools: "Managed Schools"
+      school: "School"
       upcoming_registrations: "Upcoming Registrations"
     update:
       failure: "Couldn't update user"
       success: "Successfully updated user"
     user:
       children: "Children:"
-      child: "Child:"
-      delete: "Delete User"
-      delete_confirm: "Are you sure you want to delete this user?"
       edit: "Edit User"
-      remove_child: "Remove Child"
       roles:
         admin: "Admin"
         area_manager: "Area Manager"

@@ -1,42 +1,23 @@
 <div class="user">
-    <%= turbo_frame_tag "user#{user.id}" do %>
-        <div class="key_info">
-            <h3><%= link_to user.name, user_path(user), data: { turbo_frame: '_top' } %></h3>
-            <h4><%= t(".roles.#{user.role}") unless user.customer? %></h4>
-            <h4><%= "#{t(".school")}: #{user.school.name}" unless user.school.nil? %></h4>
-        </div>
-
-        <% if user.customer? %>
-            <div class="children">
-                <h4><%= t(".children") if user.children.size > 1 %></h4>
-                <h4><%= t(".child") if user.children.size == 1 %></h4>
-
-                <ul>
-                    <%= turbo_frame_tag "user#{user.id}_children" do %>
-                        <% user.children.each do |child| %>
-                            <li id="<%= "user#{user.id}_child#{child.id}" %>">
-                                <%= link_to child.name, child_path(child), data: { turbo_frame: '_top' } %>
-
-                                <% if current_user.admin? %>
-                                    <%= form_with url: remove_child_path do |f| %>
-                                        <%= f.hidden_field :child_id, value: child.id %>
-                                        <%= f.hidden_field :parent_id, value: user.id %>
-                                        <%= f.submit t('.remove_child'), class: 'button', data: { turbo_frame: '_top' } %>
-                                    <% end %>
-                                <% end %>
-                            </li>
-                        <% end %>             
-                    <% end %>
-                </ul>
-
-            </div>
-        <% end %>
-
-        <% if current_user.staff? %>
-            <div class="user_options">
-                <%= link_to t(".edit"), edit_user_path(user), class: 'button' %>
-                <%= link_to t('.delete'), user_path(user), data: { turbo_method: :delete, turbo_confirm: t('.delete_confirm'), turbo_frame: '_top' }, class: 'button' %>
-            </div>
-        <% end %>
+    <p class="name"><%= link_to user.name, user_path(user) %></p>
+    <p class="katakana"><%= link_to user.katakana_name, user_path(user) %></p>
+    <p class="en"><%= link_to user.en_name, user_path(user) %></p>
+    <p class="email"><%= user.email %></p>
+    <p class="phone"><%= user.phone %></p>
+    <p class="address"><%= user.address %></p>
+    <% if user.school.nil? %>
+        <p class="school"><%= t('.no_school') %></p>
+    <% else %>
+        <p class="school"><%= user.school.name %></p>
     <% end %>
+    <p class="edit"><%= link_to t('.edit_user'), edit_user_path(user), class: 'button' if current_user.staff? %></p>
+
+    <div class="user_children">
+        <h4><%= t('.children') if user.children.size > 1 %></h3>
+        <h4><%= t('.child') if user.children.size == 1 %></h3>
+        <h4><%= t('.no_children') if user.children.empty? %></h3>
+        <% user.children.each do |child| %>
+            <%= link_to child.name, child_path(child) %>
+        <% end %>
+    </div>
 </div>

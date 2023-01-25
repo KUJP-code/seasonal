@@ -1,3 +1,14 @@
 <main id="user_index">
+    <div class="user header">
+        <p class="name"><%= t('.name') %></p>
+        <p class="katakana"><%=t('.katakana') %></p>
+        <p class="en"><%= t('.en') %></p>
+        <p class="email"><%= t('.email') %></p>
+        <p class="phone"><%= t('.phone') %></p>
+        <p class="address"><%= t('.address') %></p>
+        <p class="school"><%= t('.school') %></p>
+        <p class="edit"><%= t('.edit_info') %></p>
+    </div>
+
     <%= render @users %>
 </main>

@@ -73,7 +73,7 @@
     
             <div class="actions">
                 <%= button_tag "Add Child", data: {action: "fields#add"}, class: 'button' %>
-                <%= f.submit t('.update_all'), class: 'button' %>
+                <%= f.submit t('.update_all'), class: 'button', data: { turbo_frame: '_top' } %>
             </div>
         <% end %>
     <% end %>
