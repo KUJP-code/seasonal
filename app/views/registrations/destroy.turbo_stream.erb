@@ -24,7 +24,7 @@
 <% end %>
 
 <%# Update option registration if changed %>
-<%= turbo_stream.replace "child#{@registration.child_id}_opt#{@registration.registerable_id}", partial: "options/option", locals: { child: @registration.child, option: @registration.registerable } unless @registration.slot_registration? %>
+<%= turbo_stream.replace "child#{@registration.child_id}_opt#{@registration.registerable_id}", partial: "options/option", locals: { child: @registration.child, option: @registration.registerable, paid: false } unless @registration.slot_registration? %>
 
 
 
