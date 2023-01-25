@@ -1,19 +1,39 @@
 <% opt_registration = child.registrations.find_by(registerable: option) %>
 
-<% if opt_registration.nil? %>
-    <%= turbo_frame_tag "child#{child.id}_opt#{option.id}" do %>
-        <div class="option">
-            <%= option.name %>
-            <%= render 'registrations/register_button', registerable: option, child: child, type: 'Option' %>
-        </div>
+<% if paid %>
+    <% if opt_registration.nil? %>
+        <%= turbo_frame_tag "child#{child.id}_opt#{option.id}" do %>
+            <div class="option">
+                <%= option.name %>
+                <p>✖</p>
+            </div>
+        <% end %>
     <% end %>
-<% end %>
 
-<% unless opt_registration.nil? %>
-    <%= turbo_frame_tag "child#{child.id}_opt#{option.id}" do %>
-        <div class="option">
-            <%= option.name %>
-            <%= render 'registrations/delete_button', registration: opt_registration, child: child %>
-        </div>
+    <% unless opt_registration.nil? %>
+        <%= turbo_frame_tag "child#{child.id}_opt#{option.id}" do %>
+            <div class="option">
+                <%= option.name %>
+                <p>✓</p>
+            </div>
+        <% end %>
+    <% end %>
+<% else %>
+    <% if opt_registration.nil? %>
+        <%= turbo_frame_tag "child#{child.id}_opt#{option.id}" do %>
+            <div class="option">
+                <%= option.name %>
+                <%= render 'registrations/register_button', registerable: option, child: child, type: 'Option' %>
+            </div>
+        <% end %>
+    <% end %>
+
+    <% unless opt_registration.nil? %>
+        <%= turbo_frame_tag "child#{child.id}_opt#{option.id}" do %>
+            <div class="option">
+                <%= option.name %>
+                <%= render 'registrations/delete_button', registration: opt_registration, child: child %>
+            </div>
+        <% end %>
     <% end %>
 <% end %>
