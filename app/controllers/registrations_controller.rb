@@ -6,6 +6,7 @@ class RegistrationsController < ApplicationController
 
   def index
     @registrations = @source.registrations.where(registerable_type: 'TimeSlot')
+    @slots = @source.time_slots.distinct
   end
 
   def create

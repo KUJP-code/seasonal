@@ -1,7 +1,8 @@
 <main id="registration_index">
     <h1><%= t('.reg_for', source: @source.name, school: @source.school.name) %></h1>
 
-    <% @registrations.each do |r| %>
-        <%= render r, child: r.child, time_slot: r.registerable %>
+    <% @slots.order(start_time: :asc).each do |slot| %>
+        <h2><%= link_to t('.reg_for', source: slot.name, school: slot.school.name), time_slot_path(slot) %></h2>
+        <%= render @registrations.where(registerable: slot) %>
     <% end %>
 </main>

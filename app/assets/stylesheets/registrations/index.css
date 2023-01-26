@@ -7,7 +7,8 @@
     background-color: rgb(36, 36, 60);
 }
 
-#registration_index>h1 {
+#registration_index>h1,
+#registration_index>h2 a {
     color: white;
     padding: 2vw;
 }
