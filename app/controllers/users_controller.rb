@@ -109,7 +109,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(:id, :email, :password, :password_confirmation,
                                  :ja_first_name, :ja_family_name,
                                  :katakana_name, :en_name, :role, :address,
-                                 :phone, :school_id, child_attributes:
+                                 :phone, :school_id, children_attributes:
                                  %i[id ja_first_name ja_family_name
                                     katakana_name en_name category birthday
                                     level allergies ssid ele_school_name
