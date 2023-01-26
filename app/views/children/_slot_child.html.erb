@@ -1,0 +1,26 @@
+<%= turbo_frame_tag "child#{slot_child.id}" do %>
+    <div class="slot_child">
+        <div class="child_info">
+            <% if slot_child_iteration == 'New' %>
+                <p class="order"><%= slot_child_iteration %></p>
+            <% else %>
+                <p class="order"><%= slot_child_iteration.index + 1 %></p>
+            <% end %>
+            <p class="name"><%= link_to slot_child.name, child_path(slot_child) %></p>
+            <p class="en"><%= link_to slot_child.en_name, child_path(slot_child) %></p>
+        </div>
+        
+        <div class="options">
+            <p class="arrival"><%= '9:00' %></p>
+            <% slot.options.each do |opt| %>
+                <div class="opt">
+                    <% if slot_child.registered?(opt) %>
+                        <%= render 'registrations/delete_button', registration: slot_child.registered?(opt) %>
+                    <% else %>
+                        <%= render 'registrations/register_button', child: slot_child, registerable: opt %>
+                    <% end %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+<% end %>

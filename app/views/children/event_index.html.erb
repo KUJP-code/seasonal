@@ -5,9 +5,10 @@
             <p class="name"><%= t('.name') %></p>
             <p class="en"><%= t('.en') %></p>
         </div>
-        <% @source.time_slots.each do |slot| %>
+
+        <% @source.time_slots.pluck(:name, :id).each do |slot| %>
             <div class="slot">
-                <p class="slot_name"><%= link_to slot.name, time_slot_path(slot) %></p>
+                <p class="slot_name"><%= link_to slot[0], time_slot_path(slot[1]) %></p>
                 <div class="attendance">
                     <p class="morning"><%= t('.morning') %></p>
                     <p class="afternoon"><%= t('.afternoon') %></p>
@@ -19,12 +20,12 @@
     <div id="event_children">
         <h3><%= t('.attending') %></h3>
         <%= turbo_frame_tag "attending#{@source.id}" do %>
-            <%= render partial: 'event_child', collection: @attending, locals: { event: @source } || t('.no_reg') %>
+            <%= render partial: 'children/event_child', collection: @attending, locals: { event: @source } || t('.no_reg') %>
         <% end %>
 
         <h3><%= t('not_attending') %></h3>
         <%= turbo_frame_tag "not_attending#{@source.id}" do %>       
-            <%= render partial: 'event_child', collection: @not_attending, locals: { event: @source } || t('.all_reg') %>
+            <%= render partial: 'children/event_child', collection: @not_attending, locals: { event: @source } || t('.all_reg') %>
         <% end %>
     </div>
 </main>

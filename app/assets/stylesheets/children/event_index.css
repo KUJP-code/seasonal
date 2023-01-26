@@ -33,10 +33,6 @@
     width: max(100px, 10vw);
 }
 
-#event_children_index .event_child.header {
-    top: 9vh;
-}
-
 #event_children_index .child_info.header {
     z-index: 2;
 }
@@ -47,6 +43,7 @@
     z-index: 1;
     background-color: darkgray;
     align-self: stretch;
+    top: 9vh;
 }
 
 #event_children_index .event_child.header {

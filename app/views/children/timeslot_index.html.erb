@@ -1,0 +1,32 @@
+<main id="slot_children_index">
+    <div class="slot_child header">
+        <div class="child_info">
+            <p class="level_count"><%= t('.level_count', ele: @attending.elementary.size, kindy: @attending.kindy.size) %></p>
+
+            <div class="personal_details">
+                <p class="order"><%= t('.order') %></p>
+                <p class="name"><%= t('.name') %></p>
+                <p class="en"><%= t('.en') %></p>
+            </div>
+        </div>
+
+        <div class="options">
+            <p class="arrival"><%= t('.arrival') %></p>
+            <% @source.options.pluck(:name).each do |opt| %>
+                <p class="opt"><%= opt %></p>
+            <% end %>
+        </div>
+    </div>
+
+    <div class="slot_children">
+        <h3><%= t('.attending') %></h3>
+        <%= turbo_frame_tag "attending#{@source.id}" do %>
+            <%= render partial: 'children/slot_child', collection: @attending, locals: { slot: @source } || t('.no_reg') %>
+        <% end %>
+
+        <h3><%= t('not_attending') %></h3>
+        <%= turbo_frame_tag "not_attending#{@source.id}" do %>       
+            <%= render partial: 'children/slot_child', collection: @not_attending, locals: { slot: @source } || t('.all_reg') %>
+        <% end %>
+    </div>
+</main>

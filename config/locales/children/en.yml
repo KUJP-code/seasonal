@@ -3,3 +3,5 @@ en:
     event_child:
       reg_for_opt: "Register"
       register: "Register"
+    timeslot_index:
+      level_count: "Elementary: %{ele}, Kindy: %{kindy}"

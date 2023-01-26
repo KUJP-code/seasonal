@@ -140,12 +140,12 @@ a {
     border: 1px inset var(--ku-orange);
 }
 
-.button.attending {
+.button.registered {
     background: linear-gradient(lightgreen, green);
     border: 1px outset green;
 }
 
-.button.attending:hover {
+.button.registered:hover {
     background: linear-gradient(red, darkred);
     border: 1px inset darkred;
 }

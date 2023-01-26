@@ -113,7 +113,7 @@ School.all.each do |school|
       ja_first_name: Faker::Name.first_name,
       ja_family_name: Faker::Name.last_name,
       katakana_name: Faker::Name.name.kana,
-      en_name: "B'rett-Tan ner",
+      en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
       email: Faker::Internet.unique.email,
       password: Faker::Internet.password(min_length: 10),
       address: Faker::Address.full_address,
@@ -123,7 +123,7 @@ School.all.each do |school|
       ja_first_name: Faker::Name.first_name,
       ja_family_name: Faker::Name.last_name,
       katakana_name: Faker::Name.name.kana,
-      en_name: "B'rett-Tan ner",
+      en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
       email: Faker::Internet.unique.email,
       password: Faker::Internet.password(min_length: 10),
       address: Faker::Address.full_address,
@@ -142,7 +142,7 @@ User.customers.each do |customer_user|
       ja_first_name: Faker::Name.first_name,
       ja_family_name: Faker::Name.last_name,
       katakana_name: Faker::Name.name.kana,
-      en_name: "B'rett-Tan ner",
+      en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
       birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
       ssid: Faker::Number.unique.number,
       ele_school_name: Faker::GreekPhilosophers.name,
@@ -156,7 +156,7 @@ User.customers.each do |customer_user|
       ja_first_name: Faker::Name.first_name,
       ja_family_name: Faker::Name.last_name,
       katakana_name: Faker::Name.name.kana,
-      en_name: "B'rett-Tan ner",
+      en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
       birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
       ssid: Faker::Number.unique.number,
       ele_school_name: Faker::GreekPhilosophers.name,
@@ -175,7 +175,7 @@ Child.create!(
   ja_first_name: Faker::Name.first_name,
   ja_family_name: Faker::Name.last_name,
   katakana_name: Faker::Name.name.kana,
-  en_name: "B'rett-Tan ner",
+  en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
   birthday: 'Wed, 20 Feb 2020',
   ssid: 1,
   ele_school_name: Faker::GreekPhilosophers.name,
@@ -387,9 +387,9 @@ TimeSlot.all.each do |slot|
       cost: 600
     },
     {
-      name: 'Photo Service',
-      description: 'Get lots of photos to commemorate all the fun your child had!',
-      cost: 1100
+      name: 'Commemorative Badge',
+      description: 'Remember all the fun you had with this shiny badge!',
+      cost: 100
     }
   ])
 end

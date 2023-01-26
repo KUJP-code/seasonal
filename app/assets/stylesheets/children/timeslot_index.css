@@ -1,0 +1,78 @@
+#slot_children_index {
+    margin-top: 9vh;
+    width: fit-content;
+    font-size: var(--sub-heading-size);
+}
+
+#slot_children_index h3 {
+    background: var(--ku-orange);
+    padding: 1vw;
+}
+
+.child_info,
+.options  {
+    flex: auto;
+}
+
+.child_info,
+.options,
+.personal_details {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    align-items: stretch;
+    text-align: center;
+}
+
+.slot_child.header {
+    position: sticky;
+    top: 9vh;
+    z-index: 2;
+    background: var(--ku-dark-background);
+    font-weight: bold;
+}
+
+.header .child_info {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.child_info .level_count {
+    flex-basis: 100%;
+}
+
+.child_info .personal_details {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.slot_child {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    min-width: 98vw;
+    width: fit-content;
+    padding: 1vw;
+}
+
+.slot_child .arrival,
+.slot_child .order {
+    width: 5vw;
+}
+
+.slot_child .name,
+.slot_child .en,
+.slot_child .level {
+    width: 15vw;
+}
+
+.slot_child .arrival,
+.slot_child .opt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slot_child .opt {
+    width: 10vw;
+}
