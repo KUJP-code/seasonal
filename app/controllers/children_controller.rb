@@ -23,7 +23,7 @@ class ChildrenController < ApplicationController
 
   def child_list
     @attending = @source.children.distinct
-    @not_attending = @source.school.children.reject { |c| @attending.include?(c) }
+    @not_attending = @source.school.children.where.not(id: @attending.ids)
   end
 
   def child_params
