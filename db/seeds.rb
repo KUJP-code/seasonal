@@ -148,6 +148,8 @@ User.customers.each do |customer_user|
       ele_school_name: Faker::GreekPhilosophers.name,
       post_photos: true,
       allergies: 'peanuts',
+      level: 'kindy',
+      category: 'external',
       school: customer_user.school
     },
     {
@@ -160,6 +162,8 @@ User.customers.each do |customer_user|
       ele_school_name: Faker::GreekPhilosophers.name,
       post_photos: true,
       allergies: 'peanuts',
+      level: 'land_high',
+      category: 'reservation',
       school: customer_user.school
     }
   ])
