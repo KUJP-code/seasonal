@@ -41,7 +41,7 @@ class Child < ApplicationRecord
                   external: 2
 
   # Validations
-  validates :ja_first_name, :ja_family_name, :katakana_name, :en_name, :post_photos, presence: true
+  validates :ja_first_name, :ja_family_name, :katakana_name, :en_name, presence: true
 
   validates :ja_first_name, :ja_family_name, format: { with: /[一-龠]+|[ぁ-ゔ]+|[ァ-ヴー]+|[々〆〤ヶ]+/u }
   validates :katakana_name, format: { with: /[ァ-ヴー]/u }
