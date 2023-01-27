@@ -6,7 +6,7 @@ export default class extends Controller {
   static values = {
     wrapperSelector: {
       type: String,
-      default: '.child_fields_wrapper'
+      default: '.fields_wrapper'
     }
   }
 

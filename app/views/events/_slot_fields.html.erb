@@ -1,0 +1,43 @@
+<div class="fields_wrapper" data-new-record="<%= f.object.new_record? %>">
+    <%= f.options[:child_index] %>
+    <%= f.hidden_field :event_id %>
+
+    <h2><%= t('.slot_info') %></h2>
+
+    <div class="field">
+        <%= f.label :name, t('.name') %><br />
+        <%= f.text_field :name %>
+    </div>
+
+    <div class="field">
+        <%= f.label :start_time, t('.start_time') %><br />
+        <%= f.datetime_field :start_time %>
+    </div>
+        
+    <div class="field">
+        <%= f.label :end_time, t('.end_time') %><br />
+        <%= f.datetime_field :end_time %>
+    </div>
+        
+    <div class="field">
+        <%= f.label :description, t('.description') %><br />
+        <%= f.text_area :description %>
+    </div>
+
+    <div class="field">
+        <%= f.label :max_attendees, t('.max_attendees') %><br />
+        <%= f.number_field :max_attendees %>
+    </div>
+
+    <div class="field">
+        <%= f.label :cost, t('.cost') %><br />
+        <%= f.number_field :cost %>
+    </div>
+
+    <div class="field">
+        <%= f.label :registration_deadline, t('.registration_deadline') %><br />
+        <%= f.date_field :registration_deadline %>
+    </div>
+
+    <%= button_tag t('.remove_slot'), data: { action: "fields#remove" }, class: 'button' %>
+</div>

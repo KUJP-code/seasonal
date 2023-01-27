@@ -1,0 +1,43 @@
+<%= form_with model: @event, data: { controller: :fields }, class: 'event_form' do |f| %>
+    <div class="event_fields">
+        <div class="field">
+            <%= f.label :name, t('.name') %><br />
+            <%= f.text_field :name %>
+        </div>
+        <div class="field">
+            <%= f.label :description, t('.description') %><br />
+            <%= f.text_area :description %>
+        </div>
+        <div class="field">
+            <%= f.label :start_date, t('.start_date') %><br />
+            <%= f.date_field :start_date %>
+        </div>
+        <div class="field">
+            <%= f.label :end_date, t('.end_date') %><br />
+            <%= f.date_field :end_date %>
+        </div>
+        <div class="field">
+            <%= f.label :school_id, t('.school') %><br />
+            <%= f.collection_select :school_id, School.order(:name), :id, :name %>
+        </div>
+    </div>
+
+    <div class="time_slots">
+        <template data-fields-target="template">
+            <%= f.fields_for :time_slots, TimeSlot.new(event_id: @event.id), child_index: 'CHILD' do |slot_f| %>
+                <%= render 'events/slot_fields', f: slot_f %>
+            <% end %>
+        </template>
+        
+        <%= f.fields_for :time_slots do |slot_f| %>
+            <%= render 'events/slot_fields', f: slot_f %>
+        <% end %>
+        
+        <div data-fields-target="target"></div>
+    </div>
+
+    <div class="actions">
+        <%= button_tag t('.add_time_slot'), data: { action: "fields#add" }, class: 'button' %>
+        <%= f.submit class: 'button' %>
+    </div>
+<% end %>

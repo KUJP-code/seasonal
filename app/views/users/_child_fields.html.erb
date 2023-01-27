@@ -1,14 +1,17 @@
-<div class="child_fields_wrapper" data-new-record="<%= f.object.new_record? %>">
+<div class="fields_wrapper" data-new-record="<%= f.object.new_record? %>">
     <%= f.hidden_field :parent_id %>
     <%= f.hidden_field :ssid %>
 
     <h2><%= t('.child_info') %></h2>
+
     <div class="personal_info">
         <h3><%= t('.personal_information') %></h3>
+
         <div class="field">
             <%= f.label :ja_first_name, t('.ja_first_name') %><br />
             <%= f.text_field :ja_first_name, autocomplete: "first_name" %>
         </div>
+
         <div class="field">
             <%= f.label :ja_family_name, t('.ja_family_name') %><br />
             <%= f.text_field :ja_family_name, autocomplete: "family-name" %>
@@ -23,14 +26,17 @@
             <%= f.label :en_name, t('.en_name') %><br />
             <%= f.text_field :en_name, autocomplete: "english-name" %>
         </div>
+
         <div class="field">
             <%= f.label :birthday, t('.birthday') %><br />
             <%= f.date_field :birthday, autocomplete: "birth-date" %>
         </div>
+
         <div class="field">
             <%= f.label :allergies, t('.allergies') %><br />
             <%= f.text_area :allergies %>
         </div>
+
         <div class="field">
             <%= f.label :ele_school_name, t('.ele_school_name') %><br />
             <%= f.text_field :ele_school_name %>
@@ -39,27 +45,33 @@
 
     <div class="school_info">
         <h3><%= t('.school_information') %></h3>
+
         <div class="field school">
             <%= f.label :school, t('.school') %><br />
             <%= f.collection_select :school_id, School.order(:name), :id, :name %>
         </div>
+
         <div class="field">
             <%= f.label :category, t('.category') %><br />
             <%= f.select :category, [["#{t('.internal')}", "internal"], ["#{t('.reservation')}", "reservation"], ["#{t('.external')}", "external"]] %>
         </div>
+
         <% if current_user.staff? %>
             <div class="field">
                 <%= f.label :level, t('.level') %><br />
                 <%= f.select :level, [["Unknown", "unknown"], ["Kindy", "kindy"], ["Land Low", "land_low"], ["Land High", "land_high"], ["Sky Low", "sky_low"], ["Sky High", "sky_high"], ["Galaxy Low", "galaxy_low"], ["Galaxy High", "galaxy_high"], ["Keep Up", "keep_up"], ["Specialist", "specialist"], ["Tech Up", "tech_up"]] %>
             </div>
+
             <div class="field">
                 <%= f.label :post_photos, t('.post_photos') %><br />
                 <%= f.check_box :post_photos %>
             </div>
+
             <div class="field">
                 <%= f.label :needs_hat, t('.needs_hat') %><br />
                 <%= f.check_box :needs_hat %>
             </div>
+
             <div class="field">
                 <%= f.label :received_hat, t('.received_hat') %><br />
                 <%= f.check_box :received_hat %>
@@ -67,5 +79,5 @@
         <% end %>
     </div>
 
-    <%= button_tag "Remove Child", data: {action: "fields#remove"}, class: 'button' %>
+    <%= button_tag t('.remove_child'), data: {action: "fields#remove"}, class: 'button' %>
 </div>

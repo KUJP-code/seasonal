@@ -29,7 +29,7 @@ class User < ApplicationRecord
   has_many :children, dependent: nil,
                       foreign_key: :parent_id,
                       inverse_of: :parent
-  accepts_nested_attributes_for :children
+  accepts_nested_attributes_for :children, allow_destroy: true
   has_many :registrations, through: :children
   has_many :time_slots, through: :registrations,
                         source: :registerable,
