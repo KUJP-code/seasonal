@@ -30,18 +30,16 @@
 
 
 <%# For Child#index %>
-<%# Update slot registration if changed %>
-<% if @registration.slot_registration? %>
-    <%= turbo_stream.replace "child#{@registration.child_id}_#{@registration.registerable_type}#{@registration.registerable_id}_mini", partial: 'registrations/delete_button', locals: { registration: @registration } %>
+<%# Update event_child partial if their registration changes %>
+<%= turbo_stream.replace "event_child#{@registration.child_id}", partial: 'children/event_child', locals: { event_child: @registration.child, event_child_iteration: 'Changed', event: @registration.event } %>
 
-    <%# Add child to attending list if previously not attending %>
-    <%# TODO: Optimise %>
-    <% if child.registrations.where(registerable: event_slots).size == 1 %>
-        <%= turbo_stream.remove "child#{child.id}" %>
-        <%= turbo_stream.append "attending#{event.id}", partial: 'children/event_child', locals: { event: event, event_child: child, event_child_iteration: 'New' } %>
-    <% end %>
+<%# Update slot_child partial if their registration changes %>
+<% unless @registration.slot_registration? %>
+    <%= turbo_stream.replace "slot_child#{@registration.child_id}", partial: 'children/slot_child', locals: { slot_child: @registration.child, slot_child_iteration: 'Changed', slot: @registration.registerable.time_slot } %>
 <% end %>
 
-
-<%# Update option registration if changed %>
-<%= turbo_stream.replace "child#{@registration.child_id}_#{@registration.registerable_type}#{@registration.registerable_id}_mini", partial: 'registrations/delete_button', locals: { registration: @registration } unless @registration.slot_registration? %>
+<%# Add child to attending list if previously not attending %>
+<% if child.registrations.where(registerable: event_slots).size == 1 %>
+    <%= turbo_stream.remove "child#{child.id}" %>
+    <%= turbo_stream.append "attending#{event.id}", partial: 'children/event_child', locals: { event: event, event_child: child, event_child_iteration: 'Changed' } %>
+<% end %>

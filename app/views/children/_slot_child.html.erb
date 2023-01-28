@@ -1,7 +1,7 @@
-<%= turbo_frame_tag "child#{slot_child.id}" do %>
+<%= turbo_frame_tag "slot_child#{slot_child.id}" do %>
     <div class="slot_child">
         <div class="child_info">
-            <% if slot_child_iteration == 'New' %>
+            <% if slot_child_iteration == 'Changed' %>
                 <p class="order"><%= slot_child_iteration %></p>
             <% else %>
                 <p class="order"><%= slot_child_iteration.index + 1 %></p>

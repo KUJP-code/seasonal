@@ -1,13 +1,13 @@
-<%= turbo_frame_tag "child#{event_child.id}" do %>
+<%= turbo_frame_tag "event_child#{event_child.id}" do %>
     <div class="event_child">
         <div class="child_info">
-            <% if event_child_iteration == 'New' %>
+            <% if event_child_iteration == 'Changed' %>
                 <p class="order"><%= event_child_iteration %></p>
             <% else %>
                 <p class="order"><%= event_child_iteration.index + 1 %></p>
             <% end %>
-            <p class="name"><%= event_child.name %></p>
-            <p class="en"><%= event_child.en_name %></p>
+            <p class="name"><%= link_to event_child.name, child_path(event_child) %></p>
+            <p class="en"><%= link_to event_child.en_name, child_path(event_child) %></p>
         </div>
         
         <% event.time_slots.each do |slot| %>

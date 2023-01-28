@@ -25,12 +25,9 @@
     width: 5vw;
 }
 
-#event_children_index .name {
-    width: max(100px, 10vw);
-}
-
+#event_children_index .name,
 #event_children_index .en {
-    width: max(100px, 10vw);
+    width: 10vw;
 }
 
 #event_children_index .child_info.header {

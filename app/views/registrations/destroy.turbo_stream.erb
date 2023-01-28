@@ -29,22 +29,16 @@
 
 
 <%# For Child#index %>
-<%# Update slot registration, and its attend PM option, if changed %>
-<% if @registration.slot_registration? %>
-    <%= turbo_stream.replace "child#{@registration.child_id}_#{@registration.registerable_type}#{@registration.registerable_id}_mini", partial: 'registrations/register_button', locals: { child: @registration.child, registerable: @registration.registerable } %>
+<%# Update event_child partial if their registration changes %>
+<%= turbo_stream.replace "event_child#{@registration.child_id}", partial: 'children/event_child', locals: { event_child: @registration.child, event_child_iteration: 'Changed', event: @registration.event } %>
 
-    <% pm = @registration.registerable.options.find_by(name: 'Attend PM') %>
-    <%= turbo_stream.replace "child#{@registration.child_id}_Option#{pm.id}_mini", partial: 'registrations/register_button', locals: { child: @registration.child, registerable: pm } %>
-
-<%# Remove child from attending list if you destroyed their last registration %>
-<%# TODO: Optimise, too many queries just for this %>
-    <% unless event.children.include?(child) %>
-        <%= turbo_stream.remove "child#{child.id}" %>
-        <%= turbo_stream.append "not_attending#{event.id}", partial: 'children/event_child', locals: { event: event, event_child: child, event_child_iteration: 'New' } %>
-    <% end %>
+<%# Update slot_child partial if their registration changes %>
+<% unless @registration.slot_registration? %>
+    <%= turbo_stream.replace "slot_child#{@registration.child_id}", partial: 'children/slot_child', locals: { slot_child: @registration.child, slot_child_iteration: 'Changed', slot: @registration.registerable.time_slot } %>
 <% end %>
 
-
-
-<%# Update option registration if changed %>
-<%= turbo_stream.replace "child#{@registration.child_id}_#{@registration.registerable_type}#{@registration.registerable_id}_mini", partial: 'registrations/register_button', locals: { child: @registration.child, registerable: @registration.registerable } unless @registration.slot_registration? %>
+<%# Remove child from attending list if you destroyed their last registration %>
+<% unless event.children.include?(child) %>
+    <%= turbo_stream.remove "child#{child.id}" %>
+    <%= turbo_stream.append "not_attending#{event.id}", partial: 'children/event_child', locals: { event: event, event_child: child, event_child_iteration: 'New' } %>
+<% end %>
