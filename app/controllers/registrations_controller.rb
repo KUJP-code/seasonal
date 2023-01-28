@@ -14,7 +14,7 @@ class RegistrationsController < ApplicationController
     return redirect_to :reg_error if registered? || overbooked?
 
     respond_to do |format|
-      if @registration.save && !
+      if @registration.save
         flash_success
         format.turbo_stream
       else
@@ -61,6 +61,8 @@ class RegistrationsController < ApplicationController
     return false unless @registration.slot_registration?
 
     slot = @registration.registerable
+    return false if slot.max_attendees.nil?
+
     slot.children.ids.size >= slot.max_attendees
   end
 
