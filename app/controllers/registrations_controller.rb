@@ -2,10 +2,9 @@
 
 # Controls flow of information for Registrations
 class RegistrationsController < ApplicationController
-  before_action :source, only: [:index]
-
   def index
-    @registrations = @source.registrations.where(registerable_type: 'TimeSlot')
+    @source = params[:source].constantize.find(params[:id])
+    @registrations = @source.slot_registrations
     @slots = @source.time_slots.distinct
   end
 
@@ -74,15 +73,6 @@ class RegistrationsController < ApplicationController
     Registration.find_by(child_id: @registration.child_id,
                          registerable_id: @registration.registerable_id,
                          registerable_type: @registration.registerable_type)
-  end
-
-  def source
-    case params[:type]
-    when 'Child'
-      @source = Child.find(params[:id])
-    when 'User'
-      @source = User.find(params[:id])
-    end
   end
 
   def reg_params

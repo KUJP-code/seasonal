@@ -65,15 +65,23 @@ class Child < ApplicationRecord
   scope :attend_friday, -> { joins(:regular_schedule).where('regular_schedule.friday' => true) }
 
   # Model methods
-  def diff_school_events
-    events.where.not(school: school).distinct
-  end
-
   def name
     "#{ja_family_name} #{ja_first_name}"
   end
 
+  def diff_school_events
+    events.where.not(school: school).distinct
+  end
+
+  def opt_registrations
+    registrations.where(registerable_type: 'Option')
+  end
+
   def registered?(registerable)
     registrations.find_by(registerable: registerable)
+  end
+
+  def slot_registrations
+    registrations.where(registerable_type: 'TimeSlot')
   end
 end

@@ -102,11 +102,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   # Public methods
-  # Checks if User is a member of staff
-  def staff?
-    admin? || area_manager? || school_manager?
-  end
-
   # Checks if User has children
   def children?
     return false if children.empty?
@@ -117,6 +112,19 @@ class User < ApplicationRecord
   # Concatenates the two Japanese names for easier use
   def name
     "#{ja_family_name} #{ja_first_name}"
+  end
+
+  def opt_registrations
+    registrations.where(registerable_type: 'Option')
+  end
+
+  def slot_registrations
+    registrations.where(registerable_type: 'TimeSlot')
+  end
+
+  # Checks if User is a member of staff
+  def staff?
+    admin? || area_manager? || school_manager?
   end
 
   private

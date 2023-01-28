@@ -48,12 +48,7 @@ class ChildrenController < ApplicationController
   end
 
   def find_source
-    case params[:source]
-    when 'Event'
-      Event.find(params[:id])
-    when 'TimeSlot'
-      TimeSlot.find(params[:id])
-    end
+    params[:source].constantize.find(params[:id])
   end
 
   def index_for_role
