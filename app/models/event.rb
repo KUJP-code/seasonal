@@ -7,7 +7,8 @@ class Event < ApplicationRecord
   delegate :area, to: :school
 
   has_many :time_slots, dependent: :destroy
-  accepts_nested_attributes_for :time_slots, allow_destroy: true
+  accepts_nested_attributes_for :time_slots, allow_destroy: true,
+                                             reject_if: :all_blank
   has_many :options, through: :time_slots
   has_many :option_registrations, through: :time_slots
   has_many :registrations, through: :time_slots

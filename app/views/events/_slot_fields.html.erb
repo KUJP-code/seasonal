@@ -1,5 +1,4 @@
 <div class="fields_wrapper" data-new-record="<%= f.object.new_record? %>">
-    <%= f.options[:child_index] %>
     <%= f.hidden_field :event_id %>
 
     <h2><%= t('.slot_info') %></h2>
@@ -39,5 +38,12 @@
         <%= f.date_field :registration_deadline %>
     </div>
 
-    <%= button_tag t('.remove_slot'), data: { action: "fields#remove" }, class: 'button' %>
+    <% unless f.object.new_record? %>
+        <div class="field">
+            <%= f.label :_destroy, t('.destroy') %><br />
+            <%= f.check_box :_destroy %>
+        </div>
+    <% end %>
+
+    <%= button_tag t('.remove_slot'), data: { action: "fields#remove" }, class: 'button' if f.object.new_record? %>
 </div>
