@@ -24,7 +24,8 @@ Rails.application.routes.draw do
     end
     get '/current_event', to: 'welcomes#current_event'
     get 'errors/child_theft', to: 'errors#child_theft', as: :child_theft
-    get '/errors/permission', to: 'errors#permission', as: :no_permission
+    get 'errors/permission', to: 'errors#permission', as: :no_permission
+    get 'errors/registration_error', to: 'errors#registration_error', as: :reg_error
     get 'errors/required_user', to: 'errors#required_user', as: :required_user
     post 'user/add_child', to: 'users#add_child', as: :add_child
     post 'user/remove_child', to: 'users#remove_child', as: :remove_child

@@ -11,10 +11,10 @@ class RegistrationsController < ApplicationController
 
   def create
     @registration = Registration.new(reg_params)
-    return flash_failure if registered?
+    return redirect_to :reg_error if registered? || overbooked?
 
     respond_to do |format|
-      if @registration.save
+      if @registration.save && !
         flash_success
         format.turbo_stream
       else
@@ -55,6 +55,13 @@ class RegistrationsController < ApplicationController
 
   def flash_success
     flash.now[:notice] = t('.success', target: @registration.registerable.name, child: @registration.child.name)
+  end
+
+  def overbooked?
+    return false unless @registration.slot_registration?
+
+    slot = @registration.registerable
+    slot.children.ids.size >= slot.max_attendees
   end
 
   def render_flash

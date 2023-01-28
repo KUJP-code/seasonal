@@ -1,2 +1,4 @@
 <%# TODO: provide a translation for this whole message and figure out how to interpolate the role/name %>
-<h2>Sorry <%= @user.ja_name %>, <%= t("roles.#{@user.role}") %>s don't have permission to access this page</h2>
+<main id="error">
+    <h2>Sorry <%= @user.ja_name %>, <%= t("roles.#{@user.role}") %>s don't have permission to access this page</h2>
+</main>
