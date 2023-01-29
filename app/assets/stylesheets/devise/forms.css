@@ -74,7 +74,8 @@
 }
 
 #new_user input:not(.button),
-select#user_school_id {
+select#user_school_id,
+textarea#user_address {
     border-radius: 1vw;
     border: none;
     padding: 5px;

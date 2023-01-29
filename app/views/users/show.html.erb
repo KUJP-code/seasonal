@@ -33,12 +33,15 @@
                 </div>
             <% end %>
 
-            <% if current_user.staff? %>
-                <div class="user_options">
-                    <%= link_to t(".edit"), edit_user_path(@user), class: 'button' %>
-                    <%= link_to t('.delete'), user_path(@user), data: { turbo_method: :delete, turbo_confirm: t('.delete_confirm'), turbo_frame: '_top' }, class: 'button' %>
-                </div>
-            <% end %>
+            <div class="user_options">
+                <% if current_user.staff? || current_user == @user %>
+                    <%= link_to t(".edit/add_child"), edit_user_path(@user), class: 'button' %>
+                <% end %>
+                
+                <% if current_user.staff? %>
+                        <%= link_to t('.delete'), user_path(@user), data: { turbo_method: :delete, turbo_confirm: t('.delete_confirm'), turbo_frame: '_top' }, class: 'button' %>
+                <% end %>
+            </div>
         <% end %>
     </div>
 
@@ -68,6 +71,14 @@
     <% if @user.school_manager? %>
         <h2><%= t('.managed_schools') %></h2>
         <div id="school_container">
+            <div class="school header">
+                <p class="name"><%= t('.name') %></p>
+                <p class="address"><%= t('.address') %></p>
+                <p class="phone"><%= t('.phone') %></p>
+                <p class="area"><%= t('.area') %></p>
+                <p class="children"><%= t('.children') %></p>
+                <p class="edit"><%= t('.edit') if current_user.admin? || current_user.area_manager? %></p>
+            </div>
             <%= render @user.managed_schools %>
         </div>
     <% end %>

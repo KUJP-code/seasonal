@@ -76,6 +76,6 @@ class EventsController < ApplicationController
     return current_user.area_events if current_user.area_manager?
     return current_user.school_events if current_user.school_manager?
 
-    current_user.events
+    current_user.school.events
   end
 end

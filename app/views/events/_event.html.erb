@@ -7,8 +7,14 @@
         <%= event.description %>
     </p>
     <p>
-        <%= turbo_frame_tag "event#{event.id}_reg_count" do %>
-            <%= link_to t('.reg_count', num_kids: event.children.distinct.size), children_path(source: 'Event', id: event.id) %>
+        <% if current_user.staff? %>
+            <%= turbo_frame_tag "event#{event.id}_reg_count" do %>
+                <%= link_to t('.reg_count', num_kids: event.children.distinct.size), children_path(source: 'Event', id: event.id) %>
+            <% end %>
+        <% else %>
+            <%= turbo_frame_tag "event#{event.id}_reg_count" do %>
+                <%= t('.reg_count', num_kids: event.children.distinct.size) %>
+            <% end %>
         <% end %>
     </p>
 

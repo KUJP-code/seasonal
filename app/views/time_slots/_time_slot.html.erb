@@ -4,9 +4,17 @@
     <h5><%= t('.times', time: time_slot.times) %></h5>
 
     <p><%= time_slot.description %></p>
-    <%= turbo_frame_tag "slot#{time_slot.id}reg_count" do %>
-        <%= link_to t('.reg_count', num_kids: time_slot.children.distinct.size), children_path(source: 'TimeSlot', id: time_slot.id), data: { turbo_frame: '_top' } %>
-    <% end %>
+    <p>
+        <% if current_user.staff? %>
+            <%= turbo_frame_tag "event#{time_slot.id}_reg_count" do %>
+                <%= link_to t('.reg_count', num_kids: time_slot.children.distinct.size), children_path(source: 'TimeSlot', id: time_slot.id) %>
+            <% end %>
+        <% else %>
+            <%= turbo_frame_tag "time_slot#{time_slot.id}_reg_count" do %>
+                <%= t('.reg_count', num_kids: time_slot.children.distinct.size) %>
+            <% end %>
+        <% end %>
+    </p>
 
     <div class="slot_registrations">
         <%= turbo_frame_tag "slot#{time_slot.id}_reg" do %>

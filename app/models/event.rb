@@ -33,6 +33,6 @@ class Event < ApplicationRecord
   # List all children at the event's school,
   # plus those attending from different schools
   def possible_children
-    children.where.not(school: school).or(Child.where(school: school)).distinct
+    children.where.not(school: school).distinct + (Child.where(school: school))
   end
 end
