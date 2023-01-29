@@ -3,7 +3,7 @@
 # Controls flow of information for Registrations
 class RegistrationsController < ApplicationController
   def index
-    @source = params[:source].constantize.find(params[:id])
+    @source = check_source
     @registrations = @source.slot_registrations
     @slots = @source.time_slots.distinct
   end
@@ -47,6 +47,14 @@ class RegistrationsController < ApplicationController
   end
 
   private
+
+  def check_source
+    if %w[Child User].include? params[:source]
+      params[:source].constantize.find(params[:id])
+    else
+      raise StandardError, "unexpected source request: #{params[:source]}"
+    end
+  end
 
   def flash_failure
     flash.now[:alert] = t('.failure', target: @registration.registerable.name, child: @registration.child.name)

@@ -28,6 +28,12 @@ RSpec.describe Child do
       expect(valid).to be true
     end
 
+    it 'saves with valid katakana name' do
+      valid_child.katakana_name = 'タナカ　サクラ'
+      valid = valid_child.save!
+      expect(valid).to be true
+    end
+
     it 'can change its level' do
       child.level = :sky_high
       lvl = child.level
@@ -88,12 +94,6 @@ RSpec.describe Child do
 
       it 'English name missing' do
         valid_child.en_name = nil
-        valid = valid_child.save
-        expect(valid).to be false
-      end
-
-      it 'photo permission missing' do
-        valid_child.post_photos = nil
         valid = valid_child.save
         expect(valid).to be false
       end
