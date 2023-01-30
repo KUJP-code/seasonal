@@ -13,23 +13,11 @@
         <% event.time_slots.each do |slot| %>
             <div class="slot">
                 <div class="attendance">
-                    <div class="morning">
-                        <% if event_child.registered?(slot) %>
-                            <%= render 'registrations/delete_button', registration: event_child.registered?(slot) %>
-                        <% else %>
-                            <%= render 'registrations/register_button', child: event_child, registerable: slot %>
-                        <% end %>
-                    </div>
-
-                    <div class="afternoon">
-                        <% afternoon = slot.options.find_by(name: 'Attend PM') %>
-                        <% if event_child.registered?(afternoon) %>
-                            <%= render 'registrations/delete_button', registration: event_child.registered?(afternoon) %>
-                        <% end %>
-                        <% unless event_child.registered?(afternoon) %>
-                            <%= render 'registrations/register_button', child: event_child, registerable: afternoon %>
-                        <% end %>
-                    </div>
+                    <% if event_child.registered?(slot) %>
+                        <%= render 'registrations/delete_button', registration: event_child.registered?(slot) %>
+                    <% else %>
+                        <%= render 'registrations/register_button', child: event_child, registerable: slot %>
+                    <% end %>
                 </div>
             </div>
         <% end %>

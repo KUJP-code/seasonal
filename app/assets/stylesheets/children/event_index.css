@@ -88,11 +88,6 @@
 #event_children_index .slot .attendance {
     height: 24px;
     display: flex;
-}
-
-#event_children_index .slot .attendance .morning,
-#event_children_index .slot .attendance .afternoon {
-    flex: 1 1 50%;
-    display: flex;
     justify-content: center;
+    align-items: center;
 }

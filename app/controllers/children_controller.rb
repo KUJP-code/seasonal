@@ -3,15 +3,18 @@
 # Control flow of data for Children
 class ChildrenController < ApplicationController
   def index
+    # Find a child to add
     return find_child if params[:commit] == 'Find Child'
 
+    # List children attending an event or time slot
     if params[:source]
       @source = find_source
-      child_list
+      @attending = @source.children.distinct
 
       return render "#{@source.class.name.downcase}_index"
     end
 
+    # By default, see the list of children current user is responsible for
     @children = index_for_role
   end
 
@@ -20,11 +23,6 @@ class ChildrenController < ApplicationController
   end
 
   private
-
-  def child_list
-    @attending = @source.children.distinct
-    @not_attending = @source.school.children.where.not(id: @attending.ids)
-  end
 
   def child_params
     params.require(:child).permit(:id, :ja_first_name, :ja_family_name,

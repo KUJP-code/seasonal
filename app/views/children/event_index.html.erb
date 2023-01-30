@@ -9,23 +9,11 @@
         <% @source.time_slots.select(:name, :id).each do |slot| %>
             <div class="slot">
                 <p class="slot_name"><%= link_to slot.name, children_path(id: slot.id, source: 'TimeSlot') %></p>
-                <div class="attendance">
-                    <p class="morning"><%= t('.morning') %></p>
-                    <p class="afternoon"><%= t('.afternoon') %></p>
-                </div>
             </div>
         <% end %>
     </div>
 
     <div id="event_children">
-        <h3><%= t('.attending') %></h3>
-        <%= turbo_frame_tag "attending#{@source.id}" do %>
-            <%= render partial: 'children/event_child', collection: @attending, locals: { event: @source } || t('.no_reg') %>
-        <% end %>
-
-        <h3><%= t('not_attending') %></h3>
-        <%= turbo_frame_tag "not_attending#{@source.id}" do %>       
-            <%= render partial: 'children/event_child', collection: @not_attending, locals: { event: @source } || t('.all_reg') %>
-        <% end %>
+        <%= render partial: 'children/event_child', collection: @attending, locals: { event: @source } || t('.no_reg') %>
     </div>
 </main>
