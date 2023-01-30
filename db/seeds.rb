@@ -491,11 +491,33 @@ puts 'Created time slots for spring school'
 
 Event.where(name: 'Spring School 2023').each do |event|
   event.time_slots.each do |slot|
-    slot.options.create!(
-        name: 'Commemorative Badge',
-        description: 'Remember all the fun you had with this shiny badge!',
+    slot.options.create!([
+      {
+        name: 'Meal',
+        description: 'Top up on energy through the day!',
         cost: 100
-      )
+      },
+      {
+        name: 'Arrive 30min early',
+        description: 'Be at KU longer, for even more fun!',
+        cost: 100
+      },
+      {
+        name: 'Arrive 1hr early',
+        description: 'Be at KU longer, for even more fun!',
+        cost: 100
+      },
+      {
+        name: 'Leave 30min late',
+        description: 'Be at KU longer, for even more fun!',
+        cost: 100
+      },
+      {
+        name: 'Leave 1hr late',
+        description: 'Be at KU longer, for even more fun!',
+        cost: 100
+      },
+      ])
   end
 end
 
