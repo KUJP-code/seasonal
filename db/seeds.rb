@@ -245,6 +245,18 @@ end
 
 puts 'Created time slots for choco day'
 
+Event.where(name: 'Chocolate Day 2023').each do |event|
+  event.time_slots.each do |slot|
+    slot.options.create!(
+        name: 'Commemorative Badge',
+        description: 'Remember all the fun you had with this shiny badge!',
+        cost: 100
+      )
+  end
+end
+
+puts 'Created options for chocolate day'
+
 Event.where(name: 'Spring School 2023').each do |event|
   event.time_slots.create([
     {
@@ -252,6 +264,14 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '16 Mar 2023 09:00 JST +09:00',
       end_time: '16 Mar 2023 13:00 JST +09:00',
       description: 'Paint your own jigsaw puzzle!',
+      cost: 8000,
+      registration_deadline: '14 Mar 2023'
+    },
+    {
+      name: '16 March Afternoon',
+      start_time: '16 Mar 2023 13:00 JST +09:00',
+      end_time: '16 Mar 2023 18:00 JST +09:00',
+      description: 'Continue the fun in the afternoon!',
       cost: 8000,
       registration_deadline: '14 Mar 2023'
     },
@@ -264,10 +284,26 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '15 Mar 2023'
     },
     {
+      name: '17 March Afternoon',
+      start_time: '17 Mar 2023 13:00 JST +09:00',
+      end_time: '17 Mar 2023 18:00 JST +09:00',
+      description: 'Continue the fun in the afternoon!',
+      cost: 8000,
+      registration_deadline: '15 Mar 2023'
+    },
+    {
       name: 'Magic Day',
       start_time: '20 Mar 2023 9:00 JST +09:00',
       end_time: '20 Mar 2023 13:00 JST +09:00',
       description: 'Learn magic tricks that will dazzle your family!',
+      cost: 8000,
+      registration_deadline: '18 Mar 2023'
+    },
+    {
+      name: '18 March Afternoon',
+      start_time: '20 Mar 2023 13:00 JST +09:00',
+      end_time: '20 Mar 2023 18:00 JST +09:00',
+      description: 'Continue the fun in the afternoon!',
       cost: 8000,
       registration_deadline: '18 Mar 2023'
     },
@@ -280,9 +316,25 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '20 Mar 2023'
     },
     {
+      name: '19 March Afternoon',
+      start_time: '22 Mar 2023 13:00 JST +09:00',
+      end_time: '22 Mar 2023 18:00 JST +09:00',
+      description: 'Continue the fun in the afternoon!',
+      cost: 8000,
+      registration_deadline: '20 Mar 2023'
+    },
+    {
       name: 'Spider Web Race',
       start_time: '23 Mar 2023 9:00 JST +09:00',
       end_time: '23 Mar 2023 13:00 JST +09:00',
+      description: 'Race out of a sticky situation!',
+      cost: 8000,
+      registration_deadline: '21 Mar 2023'
+    },
+    {
+      name: '20 March Afternoon',
+      start_time: '23 Mar 2023 13:00 JST +09:00',
+      end_time: '23 Mar 2023 18:00 JST +09:00',
       description: 'Race out of a sticky situation!',
       cost: 8000,
       registration_deadline: '21 Mar 2023'
@@ -296,9 +348,25 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '22 Mar 2023'
     },
     {
+      name: '21 March Afternoon',
+      start_time: '24 Mar 2023 13:00 JST +09:00',
+      end_time: '24 Mar 2023 18:00 JST +09:00',
+      description: 'Create your own special Easter Egg! No eating though!',
+      cost: 8000,
+      registration_deadline: '22 Mar 2023'
+    },
+    {
       name: 'Cherry Blossom Picnic',
       start_time: '27 Mar 2023 9:00 JST +09:00',
       end_time: '27 Mar 2023 13:00 JST +09:00',
+      description: 'Enjoy a nice picnic under the cherry blossoms!',
+      cost: 8000,
+      registration_deadline: '25 Mar 2023'
+    },
+    {
+      name: '27 March Afternoon',
+      start_time: '27 Mar 2023 13:00 JST +09:00',
+      end_time: '27 Mar 2023 18:00 JST +09:00',
       description: 'Enjoy a nice picnic under the cherry blossoms!',
       cost: 8000,
       registration_deadline: '25 Mar 2023'
@@ -312,9 +380,25 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '26 Mar 2023'
     },
     {
+      name: '28 March Afternoon',
+      start_time: '28 Mar 2023 13:00 JST +09:00',
+      end_time: '28 Mar 2023 18:00 JST +09:00',
+      description: "Make your own little friend, in case you're ever stranded on a deserted island!",
+      cost: 8000,
+      registration_deadline: '26 Mar 2023'
+    },
+    {
       name: 'Photo Frame',
       start_time: '29 Mar 2023 9:00 JST +09:00',
       end_time: '29 Mar 2023 13:00 JST +09:00',
+      description: 'Make a special photo frame to store your most precious memories!',
+      cost: 8000,
+      registration_deadline: '27 Mar 2023'
+    },
+    {
+      name: '29 March Afternoon',
+      start_time: '29 Mar 2023 13:00 JST +09:00',
+      end_time: '29 Mar 2023 18:00 JST +09:00',
       description: 'Make a special photo frame to store your most precious memories!',
       cost: 8000,
       registration_deadline: '27 Mar 2023'
@@ -328,9 +412,25 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '28 Mar 2023'
     },
     {
+      name: '30 March Afternoon',
+      start_time: '30 Mar 2023 13:00 JST +09:00',
+      end_time: '30 Mar 2023 18:00 JST +09:00',
+      description: "Don't like holding pencils? Make something to do it for you!",
+      cost: 8000,
+      registration_deadline: '28 Mar 2023'
+    },
+    {
       name: 'Spring Terrarium',
       start_time: '31 Mar 2023 9:00 JST +09:00',
       end_time: '31 Mar 2023 13:00 JST +09:00',
+      description: 'Create your own personal ecosystem to rule over!',
+      cost: 8000,
+      registration_deadline: '29 Mar 2023'
+    },
+    {
+      name: '31 March Afternoon',
+      start_time: '31 Mar 2023 13:00 JST +09:00',
+      end_time: '31 Mar 2023 18:00 JST +09:00',
       description: 'Create your own personal ecosystem to rule over!',
       cost: 8000,
       registration_deadline: '29 Mar 2023'
@@ -344,9 +444,25 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '1 Apr 2023'
     },
     {
+      name: '3 April Afternoon',
+      start_time: '3 Apr 2023 13:00 JST +09:00',
+      end_time: '3 Apr 2023 18:00 JST +09:00',
+      description: 'Become a ninja master!',
+      cost: 8000,
+      registration_deadline: '1 Apr 2023'
+    },
+    {
       name: 'DIY Tic-Tac-Toe',
       start_time: '4 Apr 2023 9:00 JST +09:00',
       end_time: '4 Apr 2023 13:00 JST +09:00',
+      description: 'Make a game, then play it!',
+      cost: 8000,
+      registration_deadline: '2 Apr 2023'
+    },
+    {
+      name: '4 April Afternoon',
+      start_time: '4 Apr 2023 13:00 JST +09:00',
+      end_time: '4 Apr 2023 18:00 JST +09:00',
       description: 'Make a game, then play it!',
       cost: 8000,
       registration_deadline: '2 Apr 2023'
@@ -358,43 +474,32 @@ Event.where(name: 'Spring School 2023').each do |event|
       description: 'Create art with a wave of nostalgia!',
       cost: 8000,
       registration_deadline: '3 Apr 2023'
+    },
+    {
+      name: '5 April Afternoon',
+      start_time: '5 Apr 2023 13:00 JST +09:00',
+      end_time: '5 Apr 2023 18:00 JST +09:00',
+      description: 'Create art with a wave of nostalgia!',
+      cost: 8000,
+      registration_deadline: '3 Apr 2023'
     }
   ])
 end
 
 puts 'Created time slots for spring school'
 
-TimeSlot.all.each do |slot|
-  slot.options.create!([
-    {
-      name: 'Photo Service',
-      description: 'Get lots of photos to commemorate all the fun your child had!',
-      cost: 1100
-    },
-    {
-      name: 'Lunch',
-      description: 'Give your child a delicious bento from the nearest conbini',
-      cost: 1000
-    },
-    {
-      name: 'Attend PM',
-      description: 'Get the real KU experience with a full day of fun!',
-      cost: 3000
-    },
-    {
-      name: 'PM Snack',
-      description: "Top up your child's energy in the afternoon!",
-      cost: 600
-    },
-    {
-      name: 'Commemorative Badge',
-      description: 'Remember all the fun you had with this shiny badge!',
-      cost: 100
-    }
-  ])
+
+Event.where(name: 'Spring School 2023').each do |event|
+  event.time_slots.each do |slot|
+    slot.options.create!(
+        name: 'Commemorative Badge',
+        description: 'Remember all the fun you had with this shiny badge!',
+        cost: 100
+      )
+  end
 end
 
-puts 'Created standard options for each time slot'
+puts 'Created options for spring school'
 
 School.all.each do |school|
   school.time_slots.each do |slot|
