@@ -1,6 +1,5 @@
 <div class="fields_wrapper" data-new-record="<%= f.object.new_record? %>">
     <%= f.hidden_field :parent_id %>
-    <%= f.hidden_field :ssid %>
 
     <h2><%= t('.child_info') %></h2>
 
@@ -75,6 +74,11 @@
             <div class="field">
                 <%= f.label :received_hat, t('.received_hat') %><br />
                 <%= f.check_box :received_hat %>
+            </div>
+
+            <div class="field">
+                <%= f.label :ssid, t('.ssid') %><br />
+                <%= f.number_field :ssid %>
             </div>
         <% end %>
     </div>

@@ -47,8 +47,8 @@ class Child < ApplicationRecord
   validates :katakana_name, format: { with: /[ァ-ヴー]/u }
   validates :en_name, format: { with: /[A-Za-z '-]/ }
 
-  validates :birthday, comparison: { greater_than: 13.years.ago, less_than: 2.years.ago }
-  validates :ssid, uniqueness: true
+  validates :birthday, comparison: { greater_than: 15.years.ago, less_than: 1.year.ago }
+  validates :ssid, uniqueness: { allow_blank: true }
 
   # Scopes for broad levels
   scope :elementary, -> { where(level: [2, 3, 4, 5, 6, 7, 8, 9, 10]) }
