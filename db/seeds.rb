@@ -190,10 +190,10 @@ choco_descrip = 'Make chocolate, play chocolate related games and learn English!
 School.all.each do |school|
     school.events.create!([
       {
-        name: 'Chocolate Day 2023',
+        name: 'Chocolate Day 2024',
         description: choco_descrip,
-        start_date: 'February 18 2023',
-        end_date: 'February 18 2023'
+        start_date: 'February 18 2024',
+        end_date: 'February 18 2024'
       },
       {
         name: 'Spring School 2023',
@@ -210,35 +210,35 @@ Event.where(name: 'Chocolate Day 2023').each do |event|
   event.time_slots.create([
     {
       name: 'Chocolate Day 9am',
-      start_time: '18 Feb 2023 09:00 JST +09:00',
-      end_time: '18 Feb 2023 11:00 JST +09:00',
+      start_time: '18 Feb 2024 09:00 JST +09:00',
+      end_time: '18 Feb 2024 11:00 JST +09:00',
       description: choco_descrip,
       cost: 8000,
-      registration_deadline: '16 Feb 2023'
+      registration_deadline: '16 Feb 2024'
     },
     {
       name: 'Chocolate Day 11am',
-      start_time: '18 Feb 2023 11:00 JST +09:00',
-      end_time: '18 Feb 2023 12:00 JST +09:00',
+      start_time: '18 Feb 2024 11:00 JST +09:00',
+      end_time: '18 Feb 2024 12:00 JST +09:00',
       description: choco_descrip,
       cost: 8000,
-      registration_deadline: '16 Feb 2023'
+      registration_deadline: '16 Feb 2024'
     },
     {
       name: 'Chocolate Day 2pm',
-      start_time: '18 Feb 2023 14:00 JST +09:00',
-      end_time: '18 Feb 2023 16:00 JST +09:00',
+      start_time: '18 Feb 2024 14:00 JST +09:00',
+      end_time: '18 Feb 2024 16:00 JST +09:00',
       description: choco_descrip,
       cost: 8000,
-      registration_deadline: '16 Feb 2023'
+      registration_deadline: '16 Feb 2024'
     },
     {
       name: 'Chocolate Day 4pm',
-      start_time: '18 Feb 2023 16:00 JST +09:00',
-      end_time: '18 Feb 2023 18:00 JST +09:00',
+      start_time: '18 Feb 2024 16:00 JST +09:00',
+      end_time: '18 Feb 2024 18:00 JST +09:00',
       description: choco_descrip,
       cost: 8000,
-      registration_deadline: '16 Feb 2023'
+      registration_deadline: '16 Feb 2024'
     }
   ])
 end
@@ -268,7 +268,7 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '14 Mar 2023'
     },
     {
-      name: '16 March Afternoon',
+      name: 'Paint a Puzzle PM',
       start_time: '16 Mar 2023 13:00 JST +09:00',
       end_time: '16 Mar 2023 18:00 JST +09:00',
       description: 'Continue the fun in the afternoon!',
@@ -284,7 +284,7 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '15 Mar 2023'
     },
     {
-      name: '17 March Afternoon',
+      name: 'Butterfly Finger Puppet PM',
       start_time: '17 Mar 2023 13:00 JST +09:00',
       end_time: '17 Mar 2023 18:00 JST +09:00',
       description: 'Continue the fun in the afternoon!',
@@ -300,7 +300,7 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '18 Mar 2023'
     },
     {
-      name: '18 March Afternoon',
+      name: 'Magic Day PM',
       start_time: '20 Mar 2023 13:00 JST +09:00',
       end_time: '20 Mar 2023 18:00 JST +09:00',
       description: 'Continue the fun in the afternoon!',
@@ -316,7 +316,7 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '20 Mar 2023'
     },
     {
-      name: '19 March Afternoon',
+      name: 'Vegetable Stamps PM',
       start_time: '22 Mar 2023 13:00 JST +09:00',
       end_time: '22 Mar 2023 18:00 JST +09:00',
       description: 'Continue the fun in the afternoon!',
@@ -332,7 +332,7 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '21 Mar 2023'
     },
     {
-      name: '20 March Afternoon',
+      name: 'Spider Web Race PM',
       start_time: '23 Mar 2023 13:00 JST +09:00',
       end_time: '23 Mar 2023 18:00 JST +09:00',
       description: 'Race out of a sticky situation!',
@@ -348,7 +348,7 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '22 Mar 2023'
     },
     {
-      name: '21 March Afternoon',
+      name: 'Easter Egg Craft PM',
       start_time: '24 Mar 2023 13:00 JST +09:00',
       end_time: '24 Mar 2023 18:00 JST +09:00',
       description: 'Create your own special Easter Egg! No eating though!',
@@ -364,7 +364,7 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '25 Mar 2023'
     },
     {
-      name: '27 March Afternoon',
+      name: 'Cherry Blossom Picnic PM',
       start_time: '27 Mar 2023 13:00 JST +09:00',
       end_time: '27 Mar 2023 18:00 JST +09:00',
       description: 'Enjoy a nice picnic under the cherry blossoms!',
@@ -380,7 +380,7 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '26 Mar 2023'
     },
     {
-      name: '28 March Afternoon',
+      name: 'Cute Grass Head PM',
       start_time: '28 Mar 2023 13:00 JST +09:00',
       end_time: '28 Mar 2023 18:00 JST +09:00',
       description: "Make your own little friend, in case you're ever stranded on a deserted island!",
@@ -396,7 +396,7 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '27 Mar 2023'
     },
     {
-      name: '29 March Afternoon',
+      name: 'Photo Frame PM',
       start_time: '29 Mar 2023 13:00 JST +09:00',
       end_time: '29 Mar 2023 18:00 JST +09:00',
       description: 'Make a special photo frame to store your most precious memories!',
@@ -412,7 +412,7 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '28 Mar 2023'
     },
     {
-      name: '30 March Afternoon',
+      name: 'Marble Pencil Holder PM',
       start_time: '30 Mar 2023 13:00 JST +09:00',
       end_time: '30 Mar 2023 18:00 JST +09:00',
       description: "Don't like holding pencils? Make something to do it for you!",
@@ -428,7 +428,7 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '29 Mar 2023'
     },
     {
-      name: '31 March Afternoon',
+      name: 'Spring Terrarium PM',
       start_time: '31 Mar 2023 13:00 JST +09:00',
       end_time: '31 Mar 2023 18:00 JST +09:00',
       description: 'Create your own personal ecosystem to rule over!',
@@ -444,7 +444,7 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '1 Apr 2023'
     },
     {
-      name: '3 April Afternoon',
+      name: 'Ninja Master PM',
       start_time: '3 Apr 2023 13:00 JST +09:00',
       end_time: '3 Apr 2023 18:00 JST +09:00',
       description: 'Become a ninja master!',
@@ -460,7 +460,7 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '2 Apr 2023'
     },
     {
-      name: '4 April Afternoon',
+      name: 'DIY Tic-Tac-Toe PM',
       start_time: '4 Apr 2023 13:00 JST +09:00',
       end_time: '4 Apr 2023 18:00 JST +09:00',
       description: 'Make a game, then play it!',
@@ -476,7 +476,7 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '3 Apr 2023'
     },
     {
-      name: '5 April Afternoon',
+      name: 'Colorful Sand Art PM',
       start_time: '5 Apr 2023 13:00 JST +09:00',
       end_time: '5 Apr 2023 18:00 JST +09:00',
       description: 'Create art with a wave of nostalgia!',
@@ -551,23 +551,23 @@ end
 
 puts 'Created a random regular schedule for each child'
 
-Event.all.each do |event|
-  event.registrations.last.adjustments.create!(
-    change: -3000,
-    reason: 'testing adjustments from seed file'    
-  )
-end
+# Event.all.each do |event|
+#   event.registrations.last.adjustments.create!(
+#     change: -3000,
+#     reason: 'testing adjustments from seed file'    
+#   )
+# end
 
-puts 'Applied an adjustment to the latest registration for each event'
+# puts 'Applied an adjustment to the latest registration for each event'
 
-TimeSlot.all.each do |slot|
-  slot.coupons.create(
-    code: Faker::Code.asin,
-    name: Faker::Games::LeagueOfLegends.champion,
-    description: Faker::Games::LeagueOfLegends.quote,
-    discount: 0.33,
-    combinable: false
-  )
-end
+# TimeSlot.all.each do |slot|
+#   slot.coupons.create(
+#     code: Faker::Code.asin,
+#     name: Faker::Games::LeagueOfLegends.champion,
+#     description: Faker::Games::LeagueOfLegends.quote,
+#     discount: 0.33,
+#     combinable: false
+#   )
+# end
 
-puts 'Added a coupon for each time slot'
+# puts 'Added a coupon for each time slot'

@@ -1,4 +1,5 @@
 <div class="time_slot">
+    <%= image_tag("#{time_slot.name.downcase.gsub(' ', '_').gsub('_pm', '')}.jpg") %>
     <h3><%= link_to t('.title', name: time_slot.name, school: time_slot.school.name), time_slot_path(time_slot) %></h3>
     <h5><%= t('.date', date: time_slot.date) %></h5>
     <h5><%= t('.times', time: time_slot.times) %></h5>

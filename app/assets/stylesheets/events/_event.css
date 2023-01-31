@@ -18,3 +18,7 @@
     align-items: center;
     gap: 1vw;
 }
+
+.event>img {
+    width: 90%;
+}

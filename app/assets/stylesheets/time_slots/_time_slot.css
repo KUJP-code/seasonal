@@ -1,6 +1,7 @@
 .time_slot {
     display: flex;
     flex-flow: column nowrap;
+    align-items: center;
     border-radius: 1vw;
     gap: 1vw;
     padding: 1vw;
@@ -12,4 +13,8 @@
     display: flex;
     flex-flow: column nowrap;
     padding: 1vw;
+}
+
+.time_slot>img {
+    width: 90%;
 }
