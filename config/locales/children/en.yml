@@ -3,5 +3,19 @@ en:
     event_child:
       reg_for_opt: "Register"
       register: "Register"
+    show:
+      allergies: "Allergies:"
+      bday: "Birthday:"
+      category: "Category:"
+      ele_school: "Elementary School:"
+      en: "English Name:"
+      got_hat: "Received Hat:"
+      level: "Level:"
+      kana: "Katakana Name:"
+      need_hat: "Needs Hat:"
+      no_school: "No school assigned"
+      parent: "Parent:"
+      photos: "Photos OK:"
+      school: "School:"
     timeslot_index:
       level_count: "Elementary: %{ele}, Kindy: %{kindy}"

@@ -1,0 +1,50 @@
+<main id="child_show">
+    <div class="child">
+        <h1><%= @child.name %></h1>
+        <h3>SSID: <%= @child.ssid %></h3>
+        <h3><%= link_to "#{t('.parent')} #{@parent.name}", user_path(@parent) %></h3>
+
+
+        <div class="personal_info">
+            <p><%= "#{t('.kana')} #{@child.katakana_name}" %></p>
+            <p><%= "#{t('.en')} #{@child.en_name}" %></p>
+            <p><%= "#{t('.bday')} #{@child.birthday}" %></p>
+            <p><%= "#{t('.allergies')} #{@child.allergies}" %></p>
+        </div>
+
+        <div class="staff_info">
+            <p>
+                <%= "#{t('.photos')} ✓" if @child.post_photos %>
+                <%= "#{t('.photos')} ✖" unless @child.post_photos %>
+            </p>
+
+            <p>
+                <%= "#{t('.need_hat')} ✓" if @child.needs_hat %>            
+                <%= "#{t('.need_hat')} ✖" unless @child.needs_hat %>
+            </p>
+
+            <p>
+                <%= "#{t('.got_hat')} ✓" if @child.received_hat %>
+                <%= "#{t('.got_hat')} ✖" unless @child.received_hat %>
+            </p>
+        </div>
+
+        <div class="school_info">
+            <p>
+                <%= t(".no_school") if @school.nil? %>
+                <%= "#{t(".school")} #{@school.name}" unless @school.nil? %>
+            </p>
+            <p><%= "#{t('.category')} #{@child.category.capitalize}" %></p>
+            <p><%= "#{t('.level')} #{@child.level.titleize}" %></p>
+            <p><%= "#{t('.ele_school')} #{@child.ele_school_name}" %></p>
+        </div>
+    </div>
+
+    <h2><%= t('.next_event') %></h2>
+    <%= render @next_event, partial: 'events/event' %>
+
+    <h2><%= t('.upcoming_slots') %></h2>
+    <div id="time_slot_container">
+        <%= render partial: 'time_slots/time_slot', collection: @slots, locals: { children: [@child] } %>
+    </div>
+</main>

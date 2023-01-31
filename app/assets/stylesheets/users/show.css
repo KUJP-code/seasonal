@@ -10,7 +10,7 @@
 }
 
 /* Set size for section headings */
-#user_show .user h3,
+#user_show .user h1,
 #user_show>h2 {
     font-size: var(--main-heading-size);
 }

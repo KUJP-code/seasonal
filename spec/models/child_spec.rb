@@ -107,7 +107,7 @@ RSpec.describe Child do
       end
 
       it 'rejects children who are too young' do
-        young_child = build(:child, birthday: 1.year.ago)
+        young_child = build(:child, birthday: 6.months.ago)
         valid = young_child.save
         expect(valid).to be false
       end

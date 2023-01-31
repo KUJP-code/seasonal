@@ -22,6 +22,11 @@ class School < ApplicationRecord
   validates :phone, format: { with: /\A[0-9 \-+x.)(]+\Z/, message: I18n.t('schools.validations.phone') }
   validate :managers, :school_manager?
 
+  # Instance methods
+  def next_event
+    events.order(start_date: :asc).limit(1).first
+  end
+
   private
 
   def school_manager?

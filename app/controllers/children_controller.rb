@@ -15,11 +15,12 @@ class ChildrenController < ApplicationController
     end
 
     # By default, see the list of children current user is responsible for
-    @children = index_for_role
+    @children = role_index
   end
 
   def show
-    @child = Child.find(params[:id]) unless params[:id].nil?
+    @child = Child.find(params[:id])
+    role_show
   end
 
   private
@@ -36,9 +37,26 @@ class ChildrenController < ApplicationController
                                   ])
   end
 
+  def customer_show
+    @slots = @next_event.time_slots.limit(5)
+  end
+
   def find_child
     @child = search_result
     render 'users/_add_child', locals: { parent: User.find(params[:parent_id]) }
+  end
+
+  def role_show
+    @parent = @child.parent
+    @school = @child.school
+    @next_event = @school.next_event
+    return staff_show if current_user.staff?
+
+    customer_show
+  end
+
+  def staff_show
+    @slots = @next_event.time_slots
   end
 
   def search_result
@@ -49,7 +67,7 @@ class ChildrenController < ApplicationController
     params[:source].constantize.find(params[:id])
   end
 
-  def index_for_role
+  def role_index
     return Child.all if current_user.admin?
     return current_user.area_children if current_user.area_manager?
     return current_user.school_children if current_user.school_manager?

@@ -29,13 +29,13 @@ class TimeSlot < ApplicationRecord
   validates :cost, numericality: { greater_than_or_equal_to: 0, less_than: 50_000, only_integer: true }
 
   # Set scopes for time slot status
-  scope :past_slots, -> { where('end_time < ?', Time.zone.today.midnight) }
+  scope :past_slots, -> { where('end_time < ?', Time.zone.now) }
   scope :todays_slots, lambda {
     where('start_time > ? and end_time < ?',
           Time.zone.today.midnight,
           Time.zone.tomorrow.midnight)
   }
-  scope :future_slots, -> { where('start_time >= ?', Time.zone.tomorrow.midnight) }
+  scope :future_slots, -> { where('start_time >= ?', Time.zone.now) }
 
   # These convert the start/end datetimes into something more useful for display
   def date
