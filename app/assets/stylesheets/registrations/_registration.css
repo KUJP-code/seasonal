@@ -38,7 +38,7 @@
 .registration_options_container {
     display: flex;
     flex-flow: row wrap;
-    justify-content: center;
+    justify-content: stretch;
     align-items: center;
     gap: 0.5vw;
     padding: 0.5vw;

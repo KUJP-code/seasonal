@@ -2,7 +2,7 @@
 
 <% if paid %>
     <% if opt_registration.nil? %>
-        <%= turbo_frame_tag "child#{child.id}_opt#{option.id}" do %>
+        <%= turbo_frame_tag "child#{child.id}_opt#{option.id}", class: 'option' do %>
             <div class="option">
                 <%= option.name %>
                 <p>✖</p>
@@ -11,7 +11,7 @@
     <% end %>
 
     <% unless opt_registration.nil? %>
-        <%= turbo_frame_tag "child#{child.id}_opt#{option.id}" do %>
+        <%= turbo_frame_tag "child#{child.id}_opt#{option.id}", class: 'option' do %>
             <div class="option">
                 <%= option.name %>
                 <p>✓</p>
@@ -20,7 +20,7 @@
     <% end %>
 <% else %>
     <% if opt_registration.nil? %>
-        <%= turbo_frame_tag "child#{child.id}_opt#{option.id}" do %>
+        <%= turbo_frame_tag "child#{child.id}_opt#{option.id}", class: 'option' do %>
             <div class="option">
                 <%= option.name %>
                 <%= render 'registrations/register_button', registerable: option, child: child, type: 'Option' %>
@@ -29,7 +29,7 @@
     <% end %>
 
     <% unless opt_registration.nil? %>
-        <%= turbo_frame_tag "child#{child.id}_opt#{option.id}" do %>
+        <%= turbo_frame_tag "child#{child.id}_opt#{option.id}", class: 'option' do %>
             <div class="option">
                 <%= option.name %>
                 <%= render 'registrations/delete_button', registration: opt_registration, child: child %>
