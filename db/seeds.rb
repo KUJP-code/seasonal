@@ -206,8 +206,8 @@ end
 
 puts 'Created choco day and spring school at each school'
 
-Event.where(name: 'Chocolate Day 2023').each do |event|
-  event.time_slots.create([
+Event.where(name: 'Chocolate Day 2024').each do |event|
+  event.time_slots.create!([
     {
       name: 'Chocolate Day 9am',
       start_time: '18 Feb 2024 09:00 JST +09:00',
