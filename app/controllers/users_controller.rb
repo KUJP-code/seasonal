@@ -66,8 +66,7 @@ class UsersController < ApplicationController
     @child = Child.find(params[:child_id])
     return redirect_to :child_theft unless @child.parent_id.nil?
 
-    @parent = User.find(params[:parent_id])
-    @parent.children << @child
+    update_child
     respond_to do |format|
       flash_success
       format.turbo_stream
@@ -105,11 +104,18 @@ class UsersController < ApplicationController
     return User.am_index(current_user) if current_user.area_manager?
   end
 
+  def update_child
+    @parent = User.find(params[:parent_id])
+    @parent.children << @child
+    @child.school = @parent.school
+    @child.save
+  end
+
   def user_params
     params.require(:user).permit(:id, :email, :password, :password_confirmation,
                                  :ja_first_name, :ja_family_name,
-                                 :katakana_name, :en_name, :role, :address,
-                                 :phone, :school_id, children_attributes:
+                                 :katakana_name, :role, :prefecture, :address, :postcode, :phone, :school_id,
+                                 children_attributes:
                                  %i[id ja_first_name ja_family_name
                                     katakana_name en_name category birthday
                                     level allergies ssid ele_school_name
