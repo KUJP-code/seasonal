@@ -4,7 +4,7 @@ class CreateOptions < ActiveRecord::Migration[7.0]
       t.string :name
       t.string :description
       t.integer :cost
-      t.references :time_slot, null: false, foreign_key: true
+      t.references :optionable, null: false, polymorphic: true
 
       t.timestamps
     end

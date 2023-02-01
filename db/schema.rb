@@ -92,10 +92,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_10_141900) do
     t.string "name"
     t.string "description"
     t.integer "cost"
-    t.bigint "time_slot_id", null: false
+    t.string "optionable_type", null: false
+    t.bigint "optionable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["time_slot_id"], name: "index_options_on_time_slot_id"
+    t.index ["optionable_type", "optionable_id"], name: "index_options_on_optionable"
   end
 
   create_table "registrations", force: :cascade do |t|
@@ -188,7 +189,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_10_141900) do
   add_foreign_key "children", "users", column: "parent_id"
   add_foreign_key "events", "schools"
   add_foreign_key "managements", "users", column: "manager_id"
-  add_foreign_key "options", "time_slots"
   add_foreign_key "registrations", "children"
   add_foreign_key "regular_schedules", "children"
   add_foreign_key "schools", "areas"

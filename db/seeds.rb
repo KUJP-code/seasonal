@@ -499,6 +499,16 @@ end
 puts 'Created time slots for spring school'
 
 
+Event.all.each do |event|
+  event.options.create(
+    name: 'Photo Service',
+    description: "Capture your children's treasured memories!",
+    cost: 3000
+  )
+end
+
+puts 'Added the photo service option to each event'
+
 Event.where(name: 'Spring School 2023').each do |event|
   event.time_slots.each do |slot|
     slot.options.create!([

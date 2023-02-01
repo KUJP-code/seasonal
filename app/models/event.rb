@@ -9,7 +9,10 @@ class Event < ApplicationRecord
   has_many :time_slots, dependent: :destroy
   accepts_nested_attributes_for :time_slots, allow_destroy: true,
                                              reject_if: :all_blank
-  has_many :options, through: :time_slots
+  has_many :options, as: :optionable,
+                     dependent: :destroy
+  has_many :slot_options, through: :time_slots,
+                          source: :options
   has_many :option_registrations, through: :time_slots
   has_many :registrations, through: :time_slots
   has_many :children, through: :registrations
@@ -33,6 +36,6 @@ class Event < ApplicationRecord
   # List all children at the event's school,
   # plus those attending from different schools
   def possible_children
-    children.where.not(school: school).distinct + (Child.where(school: school))
+    children.where.not(school: school).distinct + Child.where(school: school)
   end
 end

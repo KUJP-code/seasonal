@@ -13,6 +13,29 @@
         <% end %>
     </p>
 
+    <div class="options_container">
+        <h3><%= t('.event_options') %></h3>
+        <% if current_user.staff? %>
+            <% event.children.distinct.each do |c| %>
+                <div class="option">
+                    <p class="name">
+                        <%= c.name %>
+                    </p>
+                    <%= render event.options, child: c, paid: false %>
+                </div>
+            <% end %>
+        <% else %>
+            <% current_user.children.each do |c| %>
+                <div class="option">
+                    <p class="name">
+                        <%= c.name %>
+                    </p>
+                    <%= render event.options, child: c, paid: false %>
+                </div>
+            <% end %>
+        <% end %>
+    </div>
+
     <% unless current_user.customer? %>
         <div class="event_management">
             <%= link_to t('.edit'), edit_event_path(event), class: 'button' %>
