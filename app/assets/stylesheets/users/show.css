@@ -56,9 +56,9 @@
 
 #user_show #time_slot_container {
     height: fit-content;
-    flex-flow: row nowrap;
+    flex-flow: column nowrap;
     align-items: stretch;
-    overflow-x: scroll;
+    overflow: scroll;
     background-color: var(--ku-dark-background);
 }
 

@@ -142,10 +142,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_10_141900) do
     t.integer "max_attendees"
     t.integer "cost"
     t.datetime "registration_deadline"
+    t.boolean "morning", default: false
     t.bigint "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_time_slots_on_event_id"
+    t.index ["morning"], name: "index_time_slots_on_morning"
   end
 
   create_table "users", force: :cascade do |t|

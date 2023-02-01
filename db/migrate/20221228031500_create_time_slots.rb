@@ -8,9 +8,12 @@ class CreateTimeSlots < ActiveRecord::Migration[7.0]
       t.integer :max_attendees
       t.integer :cost
       t.datetime :registration_deadline
+      t.boolean :morning, default: false
       t.references :event, null: false, foreign_key: true
 
       t.timestamps
     end
+
+    add_index :time_slots, :morning
   end
 end

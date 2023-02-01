@@ -5,14 +5,15 @@
     justify-content: center;
     font-size: var(--sub-heading-size);
     font-weight: bold;
-    padding: 1vw;
-    gap: 1vw;
+    padding: 0.5vw;
+    gap: 0.5vw;
     margin-top: 1.5vw;
     margin-bottom: 1.5vw;
     border-radius: 1vw;
     background-color: var(--ku-dark-background);
     text-align: center;
 }
+
 .registration_form {
     display: flex;
     flex-flow: row nowrap;
@@ -42,9 +43,8 @@
     display: flex;
     flex-flow: row wrap;
     justify-content: stretch;
+    border-radius: 1vw;
     align-items: center;
-    gap: 0.5vw;
-    padding: 0.5vw;
     background-color: var(--ku-background);
 }
 
@@ -53,4 +53,8 @@
     width: 100%;
     font-size: var(--secondary-heading-size);
     text-align: center;
+}
+
+.registration_options_container .option {
+    width: 100%;
 }

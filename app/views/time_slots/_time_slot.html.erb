@@ -1,10 +1,6 @@
 <div class="time_slot">
-    <%= image_tag("#{time_slot.name.downcase.gsub(' ', '_').gsub('_pm', '')}.jpg") %>
-    <h3><%= link_to t('.title', name: time_slot.name, school: time_slot.school.name), time_slot_path(time_slot) %></h3>
-    <h5><%= t('.date', date: time_slot.date) %></h5>
-    <h5><%= t('.times', time: time_slot.times) %></h5>
-
-    <p><%= time_slot.description %></p>
+    <%= link_to image_tag("#{time_slot.name.downcase.gsub(' ', '_').gsub('_pm', '')}.jpg"), time_slot_path(time_slot) %>
+    <h2><%= time_slot.description %></h2>
     <p>
         <% if current_user.staff? %>
             <%= turbo_frame_tag "event#{time_slot.id}_reg_count" do %>
@@ -18,14 +14,35 @@
     </p>
 
     <div class="slot_registrations">
-        <%= turbo_frame_tag "slot#{time_slot.id}_reg" do %>
-            <% children.each do |c| %>
-                <% if c.registered?(time_slot) %>
-                    <%= render c.registrations.find_by(registerable: time_slot) %>
-                <% else %>
-                    <%= render 'registrations/unregistered', child: c, slot: time_slot %>
+        <div class="am_reg">
+            <h3><%= t('.am_reg') %></h3>
+
+            <%= turbo_frame_tag "slot#{time_slot.id}_reg" do %>
+                <% children.each do |c| %>
+                    <% if c.registered?(time_slot) %>
+                        <%= render c.registrations.find_by(registerable: time_slot) %>
+                    <% else %>
+                        <%= render 'registrations/unregistered', child: c, slot: time_slot %>
+                    <% end %>
                 <% end %>
             <% end %>
+        </div>
+
+
+        <% pm_slot = TimeSlot.find_by(name: "#{time_slot.name} PM") %>
+        <% if pm_slot %>
+            <div class="pm_reg">
+                <h3><%= t('.pm_reg') %></h3>
+                <%= turbo_frame_tag "slot#{pm_slot.id}_reg" do %>
+                    <% children.each do |c| %>
+                        <% if c.registered?(pm_slot) %>
+                            <%= render c.registrations.find_by(registerable: pm_slot) %>
+                        <% else %>
+                            <%= render 'registrations/unregistered', child: c, slot: pm_slot %>
+                        <% end %>
+                    <% end %>
+                <% end %>
+            </div>
         <% end %>
     </div>
 </div>

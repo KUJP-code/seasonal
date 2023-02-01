@@ -19,7 +19,13 @@
     gap: 1vw;
 }
 
-.event>img {
+.event a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.event img {
     width: 90%;
     border-radius: 2vw;
 }

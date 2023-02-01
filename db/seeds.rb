@@ -210,6 +210,7 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
   event.time_slots.create!([
     {
       name: 'Chocolate Day 9am',
+      morning: true,
       start_time: '18 Feb 2024 09:00 JST +09:00',
       end_time: '18 Feb 2024 11:00 JST +09:00',
       description: choco_descrip,
@@ -218,6 +219,7 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
     },
     {
       name: 'Chocolate Day 11am',
+      morning: true,
       start_time: '18 Feb 2024 11:00 JST +09:00',
       end_time: '18 Feb 2024 12:00 JST +09:00',
       description: choco_descrip,
@@ -226,6 +228,7 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
     },
     {
       name: 'Chocolate Day 2pm',
+      morning: true,
       start_time: '18 Feb 2024 14:00 JST +09:00',
       end_time: '18 Feb 2024 16:00 JST +09:00',
       description: choco_descrip,
@@ -234,6 +237,7 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
     },
     {
       name: 'Chocolate Day 4pm',
+      morning: true,
       start_time: '18 Feb 2024 16:00 JST +09:00',
       end_time: '18 Feb 2024 18:00 JST +09:00',
       description: choco_descrip,
@@ -261,6 +265,7 @@ Event.where(name: 'Spring School 2023').each do |event|
   event.time_slots.create!([
     {
       name: 'Paint a Puzzle',
+      morning: true,
       start_time: '16 Mar 2023 09:00 JST +09:00',
       end_time: '16 Mar 2023 13:00 JST +09:00',
       description: 'Paint your own jigsaw puzzle!',
@@ -277,6 +282,7 @@ Event.where(name: 'Spring School 2023').each do |event|
     },
     {
       name: 'Butterfly Finger Puppet',
+      morning: true,
       start_time: '17 Mar 2023 9:00 JST +09:00',
       end_time: '17 Mar 2023 13:00 JST +09:00',
       description: 'Make a cute butterfly puppet to take home and enjoy!',
@@ -293,6 +299,7 @@ Event.where(name: 'Spring School 2023').each do |event|
     },
     {
       name: 'Magic Day',
+      morning: true,
       start_time: '20 Mar 2023 9:00 JST +09:00',
       end_time: '20 Mar 2023 13:00 JST +09:00',
       description: 'Learn magic tricks that will dazzle your family!',
@@ -309,6 +316,7 @@ Event.where(name: 'Spring School 2023').each do |event|
     },
     {
       name: 'Vegetable Stamps',
+      morning: true,
       start_time: '22 Mar 2023 9:00 JST +09:00',
       end_time: '22 Mar 2023 13:00 JST +09:00',
       description: 'Create some beautiful (and healthy) artwork!',
@@ -325,6 +333,7 @@ Event.where(name: 'Spring School 2023').each do |event|
     },
     {
       name: 'Spider Web Race',
+      morning: true,
       start_time: '23 Mar 2023 9:00 JST +09:00',
       end_time: '23 Mar 2023 13:00 JST +09:00',
       description: 'Race out of a sticky situation!',
@@ -341,6 +350,7 @@ Event.where(name: 'Spring School 2023').each do |event|
     },
     {
       name: 'Easter Egg Craft',
+      morning: true,
       start_time: '24 Mar 2023 9:00 JST +09:00',
       end_time: '24 Mar 2023 13:00 JST +09:00',
       description: 'Create your own special Easter Egg! No eating though!',
@@ -357,6 +367,7 @@ Event.where(name: 'Spring School 2023').each do |event|
     },
     {
       name: 'Cherry Blossom Picnic',
+      morning: true,
       start_time: '27 Mar 2023 9:00 JST +09:00',
       end_time: '27 Mar 2023 13:00 JST +09:00',
       description: 'Enjoy a nice picnic under the cherry blossoms!',
@@ -373,6 +384,7 @@ Event.where(name: 'Spring School 2023').each do |event|
     },
     {
       name: 'Cute Grass Head',
+      morning: true,
       start_time: '28 Mar 2023 9:00 JST +09:00',
       end_time: '28 Mar 2023 13:00 JST +09:00',
       description: "Make your own little friend, in case you're ever stranded on a deserted island!",
@@ -389,6 +401,7 @@ Event.where(name: 'Spring School 2023').each do |event|
     },
     {
       name: 'Photo Frame',
+      morning: true,
       start_time: '29 Mar 2023 9:00 JST +09:00',
       end_time: '29 Mar 2023 13:00 JST +09:00',
       description: 'Make a special photo frame to store your most precious memories!',
@@ -405,6 +418,7 @@ Event.where(name: 'Spring School 2023').each do |event|
     },
     {
       name: 'Marble Pencil Holder',
+      morning: true,
       start_time: '30 Mar 2023 9:00 JST +09:00',
       end_time: '30 Mar 2023 13:00 JST +09:00',
       description: "Don't like holding pencils? Make something to do it for you!",
@@ -421,6 +435,7 @@ Event.where(name: 'Spring School 2023').each do |event|
     },
     {
       name: 'Spring Terrarium',
+      morning: true,
       start_time: '31 Mar 2023 9:00 JST +09:00',
       end_time: '31 Mar 2023 13:00 JST +09:00',
       description: 'Create your own personal ecosystem to rule over!',
@@ -437,6 +452,7 @@ Event.where(name: 'Spring School 2023').each do |event|
     },
     {
       name: 'Ninja Master',
+      morning: true,
       start_time: '3 Apr 2023 9:00 JST +09:00',
       end_time: '3 Apr 2023 13:00 JST +09:00',
       description: 'Become a ninja master!',
@@ -453,6 +469,7 @@ Event.where(name: 'Spring School 2023').each do |event|
     },
     {
       name: 'DIY Tic-Tac-Toe',
+      morning: true,
       start_time: '4 Apr 2023 9:00 JST +09:00',
       end_time: '4 Apr 2023 13:00 JST +09:00',
       description: 'Make a game, then play it!',
@@ -469,6 +486,7 @@ Event.where(name: 'Spring School 2023').each do |event|
     },
     {
       name: 'Colorful Sand Art',
+      morning: true,
       start_time: '5 Apr 2023 9:00 JST +09:00',
       end_time: '5 Apr 2023 13:00 JST +09:00',
       description: 'Create art with a wave of nostalgia!',
@@ -532,12 +550,6 @@ School.all.each do |school|
 end
 
 puts 'Registered children for each time slot at each event at their school'
-
-TimeSlot.all.each do |slot|
-  Child.where.not(school: slot.school).order('RANDOM()').first.registrations.create(registerable: slot, cost: slot.cost)
-end
-
-puts 'Registered a child from a different school for each time slot'
 
 Child.all.each do |child|
   child.create_regular_schedule(

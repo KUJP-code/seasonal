@@ -3,7 +3,7 @@
     flex-flow: row nowrap;
     align-items: stretch;
     justify-content: center;
-    gap: 10vw;
+    gap: 1vw;
     background-color: var(--ku-dark-background);
 }
 
@@ -14,6 +14,7 @@
     align-items: center;
     justify-content: center;
     gap: 1vw;
+    flex-basis: 48%;
     background-color: var(--ku-background);
     border-radius: 1vw;
     padding: 1vw;
@@ -74,22 +75,6 @@
     width: 80vw;
 }
 
-#child_results .child.header {
-    background-color: var(--ku-orange);
-    font-weight: bold;
-}
-
-#child_results .child {
-    display: flex;
-    flex-flow: row nowrap;
-    background-color: var(--ku-background);
-    padding: 1vw;
-}
-
-#child_results .child p {
-    flex-basis: 12.5%;
-}
-
 #child_results #add_form {
     display: flex;
     flex-flow: row nowrap;
@@ -108,7 +93,7 @@
 #child_results .child {
     display: flex;
     flex-flow: row nowrap;
-    background-color: var(--ku-background);
+    background-color: var(--ku-dark-background);
     padding: 1vw;
 }
 
@@ -117,6 +102,7 @@
 }
 
 #child_results #add_form {
+    margin-top: 1vw;
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
