@@ -43,6 +43,7 @@ class ChildrenController < ApplicationController
       redirect_to child_path(@child)
     else
       flash_failure
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -54,6 +55,7 @@ class ChildrenController < ApplicationController
       redirect_to child_path(@child)
     else
       flash_failure
+      render :edit, status: :unprocessable_entity
     end
   end
 

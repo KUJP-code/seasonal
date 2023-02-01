@@ -9,6 +9,7 @@ en:
       personal_info: "Personal Information"
       reservation: "Reservation"
       school_info: "School Information"
+      unable_to_save: "Couldn't save %{child} due to the following errors:"
     show:
       allergies: "Allergies:"
       bday: "Birthday:"

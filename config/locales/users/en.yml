@@ -19,6 +19,8 @@ en:
       success: "Successfully deleted user"
     edit:
       update_all: "Update All"
+    form:
+      update_all: "Update All"
     show:
       all_registrations: "All registrations"
       children: "Children:"

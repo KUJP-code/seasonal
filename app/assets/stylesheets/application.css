@@ -33,6 +33,18 @@ body {
     background-color: var(--ku-background);
 }
 
+main {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    padding: 1vw;
+    gap: 1vw;
+    margin-top: 9vh;
+    background: var(--ku-background);
+    min-height: 91vh;
+}
+
 h1,
 h2,
 h3,
@@ -118,6 +130,15 @@ a {
 
 #nav_bar a:first-child:hover {
     background-image: url("logo.png");
+}
+
+form>.errors {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: var(--sub-heading-size);
 }
 
 .button {
