@@ -15,6 +15,17 @@ class Option < ApplicationRecord
   has_many :coupons, as: :couponable,
                      dependent: :destroy
 
+  enum :category, regular: 0,
+                  arrival: 1,
+                  departure: 2,
+                  default: :regular
+
   validates :name, :description, :cost, presence: true
   validates :cost, numericality: { greater_than_or_equal_to: 0, less_than: 50_000, only_integer: true }
+
+  # Scopes
+  # For category of option
+  scope :regular, -> { where(category: :regular) }
+  scope :arrival, -> { where(category: :arrival) }
+  scope :departure, -> { where(category: :departure) }
 end

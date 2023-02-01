@@ -45,9 +45,59 @@
             <% else %>
                 <%= render 'registrations/delete_button', registration: registration %>
 
+<%# FIXME: this mess with arrival/departure options %>
                 <div class="registration_options_container">
                     <h5><%= t('.options') %></h5>
-                    <%= render slot.options, child: child, paid: false %>
+                    <%= render partial: 'options/option', collection: slot.options.regular, locals: { child: child, paid: false } %>
+
+<%# FIXME: arrival/dept registrations are not actually mutually exclusive rn, you can even register for the same one multiple times %>
+                    <% unless slot.options.arrival.empty? %>
+                        <div class="arrival option">
+                            <% if child.registrations.find_by(registerable: slot.options.arrival) %>
+                                <%= form_with model: Registration.new do |f| %>
+                                <%# FIXME: this is hardcoded for presentation %>
+                                    <%= f.hidden_field :cost, value: 1000  %>
+                                    <%= f.hidden_field :child_id, value: child.id %>
+                                    <%= f.collection_select :registerable_id, slot.options.departure, :id, :name, default: child.registrations.find_by(registerable: slot.options.arrival).registerable.name %>
+                                    <%= f.hidden_field :registerable_type, value: 'Option' %>
+                                    <%= f.submit t('.register'), class: 'button' %>
+                                <% end %>
+                            <% else %>
+                                <%= form_with model: Registration.new do |f| %>
+                                <%# FIXME: this is hardcoded for presentation %>
+                                    <%= f.hidden_field :cost, value: 1000  %>
+                                    <%= f.hidden_field :child_id, value: child.id %>
+                                    <%= f.collection_select :registerable_id, slot.options.arrival, :id, :name %>
+                                    <%= f.hidden_field :registerable_type, value: 'Option' %>
+                                    <%= f.submit t('.register'), class: 'button' %>
+                                <% end %>
+                            <% end %>
+                        </div>
+                    <% end %>
+
+                    <% unless slot.options.departure.empty? %>
+                        <div class="arrival option">
+                            <% if child.registrations.find_by(registerable: slot.options.arrival) %>
+                                <%= form_with model: Registration.new do |f| %>
+                                <%# FIXME: this is hardcoded for presentation %>
+                                    <%= f.hidden_field :cost, value: 1000  %>
+                                    <%= f.hidden_field :child_id, value: child.id %>
+                                    <%= f.collection_select :registerable_id, slot.options.departure, :id, :name, default: child.registrations.find_by(registerable: slot.options.arrival).registerable.name %>
+                                    <%= f.hidden_field :registerable_type, value: 'Option' %>
+                                    <%= f.submit t('.register'), class: 'button' %>
+                                <% end %>
+                            <% else %>
+                                <%= form_with model: Registration.new do |f| %>
+                                <%# FIXME: this is hardcoded for presentation %>
+                                    <%= f.hidden_field :cost, value: 1000  %>
+                                    <%= f.hidden_field :child_id, value: child.id %>
+                                    <%= f.collection_select :registerable_id, slot.options.departure, :id, :name %>
+                                    <%= f.hidden_field :registerable_type, value: 'Option' %>
+                                    <%= f.submit t('.register'), class: 'button' %>
+                                <% end %>
+                            <% end %>
+                        </div>
+                    <% end %>
                 </div>
             <% end %>
         <% else %>
@@ -71,7 +121,7 @@
 
             <div class="registration_options_container">
                 <h5><%= t('.options') %></h5>
-                <%= render slot.options, child: child, paid: false %>
+                <%= render partial: 'options/option', collection: slot.options.regular, locals: { child: child, paid: false } %>
             </div>
         <% end %>
     </div>

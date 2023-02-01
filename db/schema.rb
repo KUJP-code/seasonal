@@ -92,6 +92,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_10_141900) do
     t.string "name"
     t.string "description"
     t.integer "cost"
+    t.integer "category", default: 0
+    t.integer "modifier"
     t.string "optionable_type", null: false
     t.bigint "optionable_id", null: false
     t.datetime "created_at", null: false

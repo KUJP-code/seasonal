@@ -509,6 +509,8 @@ end
 
 puts 'Added the photo service option to each event'
 
+
+
 Event.where(name: 'Spring School 2023').each do |event|
   event.time_slots.each do |slot|
     slot.options.create!([
@@ -519,25 +521,33 @@ Event.where(name: 'Spring School 2023').each do |event|
       },
       {
         name: 'Arrive 30min early',
+        category: :arrival,
+        modifier: -30,
         description: 'Be at KU longer, for even more fun!',
         cost: 100
       },
       {
         name: 'Arrive 1hr early',
+        category: :arrival,
+        modifier: -60,
         description: 'Be at KU longer, for even more fun!',
         cost: 100
       },
       {
         name: 'Leave 30min late',
+        category: :departure,
+        modifier: +30,
         description: 'Be at KU longer, for even more fun!',
         cost: 100
       },
       {
         name: 'Leave 1hr late',
+        category: :departure,
+        modifier: +60,
         description: 'Be at KU longer, for even more fun!',
         cost: 100
       },
-      ])
+    ])
   end
 end
 
