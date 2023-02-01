@@ -39,15 +39,20 @@
       <%= f.label :katakana_name, t('.katakana_name') %><br />
       <%= f.text_field :katakana_name, autocomplete: "kana-name" %>
     </div>
-  
+
     <div class="field">
-      <%= f.label :en_name, t('.en_name') %><br />
-      <%= f.text_field :en_name, autocomplete: "english-name" %>
+      <%= f.label :prefecture, t('.prefecture') %><br />
+      <%= f.select :prefecture, %w[東京都 大阪 神奈川県] %>
     </div>
-  
+
     <div class="field">
       <%= f.label :address, t('.address') %><br />
       <%= f.text_area :address, autocomplete: "address" %>
+    </div>
+  
+    <div class="field">
+      <%= f.label :postcode, t('.postcode') %><br />
+      <%= f.number_field :postcode, autocomplete: "postcode" %>
     </div>
   
     <div class="field">

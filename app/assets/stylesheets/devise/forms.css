@@ -1,10 +1,11 @@
 #login,
 #sign_up {
+    margin: 0;
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 96vh;
     background-color: var(--ku-background);
 }
 
@@ -74,8 +75,8 @@
 }
 
 #new_user input:not(.button),
-select#user_school_id,
-textarea#user_address {
+select,
+textarea {
     border-radius: 1vw;
     border: none;
     padding: 5px;
@@ -93,7 +94,6 @@ textarea#user_address {
     gap: 1vw;
 }
 
-#sign_up #new_user .field.school,
 #sign_up #new_user .actions {
     flex: 1 1 100%;
     display: flex;
@@ -106,6 +106,7 @@ textarea#user_address {
     flex-flow: row nowrap;
 }
 
+#sign_up #new_user .field.school,
 #sign_up #new_user .actions {
     flex-flow: column wrap;
     gap: 1vw;

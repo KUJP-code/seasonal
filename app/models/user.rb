@@ -46,11 +46,10 @@ class User < ApplicationRecord
   has_paper_trail
 
   # Validations
-  validates :ja_first_name, :ja_family_name, :katakana_name, :en_name, :phone, presence: true
+  validates :ja_first_name, :ja_family_name, :katakana_name, :phone, presence: true
 
   validates :ja_first_name, :ja_family_name, format: { with: /\A[一-龠]+|[ぁ-ゔ]+|[ァ-ヴー]+|[々〆〤ヶ]+\z/u }
   validates :katakana_name, format: { with: /[ァ-ヴー]/u }
-  validates :en_name, format: { with: /[A-Za-z '-]/ }
 
   validates :phone, format: { with: /\A[0-9 \-+x.)(]+\Z/, message: I18n.t('schools.validations.phone') }
 

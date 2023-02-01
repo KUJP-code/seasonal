@@ -36,8 +36,9 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
       t.string :ja_first_name
       t.string :ja_family_name
       t.string :katakana_name
-      t.string :en_name
       t.integer :role, default: 0
+      t.integer :postcode
+      t.string :prefecture
       t.string :address
       t.string :phone
 

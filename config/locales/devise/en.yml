@@ -4,7 +4,6 @@ en:
       new:
         account_information: "Account Information"
         address: "Address"
-        en_name: "English Name"
         ja_family_name: "Japanese Family Name"
         ja_first_name: "Japanese First Name"
         katakana_name: "Name in Katakana"

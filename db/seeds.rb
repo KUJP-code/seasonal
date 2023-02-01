@@ -9,7 +9,6 @@ User.create!([
     ja_first_name: Faker::Name.first_name,
     ja_family_name: Faker::Name.last_name,
     katakana_name: Faker::Name.name.kana,
-    en_name: 'Brett Tanner',
     role: :admin,
     address: Faker::Address.full_address,
     phone: Faker::PhoneNumber.phone_number
@@ -20,7 +19,6 @@ User.create!([
     ja_first_name: Faker::Name.first_name,
     ja_family_name: Faker::Name.last_name,
     katakana_name: Faker::Name.name.kana,
-    en_name: 'Workon Saturday',
     role: :area_manager,
     address: Faker::Address.full_address,
     phone: Faker::PhoneNumber.phone_number
@@ -31,7 +29,6 @@ User.create!([
     ja_first_name: Faker::Name.first_name,
     ja_family_name: Faker::Name.last_name,
     katakana_name: Faker::Name.name.kana,
-    en_name: 'Minoru Yoshida',
     role: :school_manager,
     address: Faker::Address.full_address,
     phone: Faker::PhoneNumber.phone_number
@@ -42,7 +39,6 @@ User.create!([
     ja_first_name: Faker::Name.first_name,
     ja_family_name: Faker::Name.last_name,
     katakana_name: Faker::Name.name.kana,
-    en_name: 'Lucky Lastname',
     role: :customer,
     address: Faker::Address.full_address,
     phone: Faker::PhoneNumber.phone_number
@@ -85,7 +81,6 @@ School.first.managers << User.create!(
   ja_first_name: 'みの',
   ja_family_name: 'よし',
   katakana_name: 'ミノヨシ',
-  en_name: 'Mino Yoshi',
   role: :school_manager,
   address: Faker::Address.full_address,
   phone: Faker::PhoneNumber.phone_number
@@ -97,7 +92,6 @@ School.find(2).managers << User.create!(
   ja_first_name: 'まりなら',
   ja_family_name: 'よ',
   katakana_name: 'マリナらヨ',
-  en_name: 'Marinara Yo',
   role: :school_manager,
   address: Faker::Address.full_address,
   phone: Faker::PhoneNumber.phone_number
@@ -113,7 +107,6 @@ School.all.each do |school|
       ja_first_name: Faker::Name.first_name,
       ja_family_name: Faker::Name.last_name,
       katakana_name: Faker::Name.name.kana,
-      en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
       email: Faker::Internet.unique.email,
       password: Faker::Internet.password(min_length: 10),
       address: Faker::Address.full_address,
@@ -123,7 +116,6 @@ School.all.each do |school|
       ja_first_name: Faker::Name.first_name,
       ja_family_name: Faker::Name.last_name,
       katakana_name: Faker::Name.name.kana,
-      en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
       email: Faker::Internet.unique.email,
       password: Faker::Internet.password(min_length: 10),
       address: Faker::Address.full_address,

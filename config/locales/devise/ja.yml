@@ -4,7 +4,6 @@ ja:
       new:
         account_information: "口座情報"
         address: "住所"
-        en_name: "英語名"
         ja_family_name: "姓"
         ja_first_name: "名"
         katakana_name: "カナ"

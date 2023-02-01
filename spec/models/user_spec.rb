@@ -43,7 +43,7 @@ RSpec.describe 'User' do
       end
 
       it 'creates a paper trail on update' do
-        user.update(en_name: 'Brittaney')
+        user.update(ja_first_name: '吉田丸山')
         expect(user).to be_versioned
       end
 
@@ -53,10 +53,10 @@ RSpec.describe 'User' do
       end
 
       it 'can be restored to previous version' do
-        old_name = user.en_name
-        user.update(en_name: 'Brittaney')
+        old_name = user.ja_first_name
+        user.update(ja_first_name: '吉田丸山')
         user.paper_trail.previous_version.save
-        reverted_name = user.reload.en_name
+        reverted_name = user.reload.ja_first_name
         expect(old_name).to eq reverted_name
       end
 
@@ -86,12 +86,6 @@ RSpec.describe 'User' do
 
       it 'Katakana name missing' do
         valid_user.katakana_name = nil
-        valid = valid_user.save
-        expect(valid).to be false
-      end
-
-      it 'English name missing' do
-        valid_user.en_name = nil
         valid = valid_user.save
         expect(valid).to be false
       end
@@ -166,12 +160,6 @@ RSpec.describe 'User' do
 
       it 'rejects Katakana name in English' do
         valid_user.katakana_name = "B'rett-Tan ner"
-        valid = valid_user.save
-        expect(valid).to be false
-      end
-
-      it 'rejects English name in Japanese' do
-        valid_user.en_name = 'サクラ田中'
         valid = valid_user.save
         expect(valid).to be false
       end
