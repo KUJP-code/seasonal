@@ -7,6 +7,9 @@
     font-weight: bold;
     padding: 1vw;
     gap: 1vw;
+    margin-top: 1.5vw;
+    margin-bottom: 1.5vw;
+    border-radius: 1vw;
     background-color: var(--ku-dark-background);
     text-align: center;
 }
