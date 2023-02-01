@@ -6,19 +6,19 @@
     background-color: var(--ku-dark-background);
 }
 
-#add_child_form {
-    display: flex;
-    flex-flow: column wrap;
-    align-items: center;
-    gap: 1vw;
+#add_child .button {
+    margin-top: 1vw;
+    align-self: center;
 }
 
-#add_child_form .field,
-#add_child_form .button {
+#add_child .field,
+#add_child .button {
     font-size: 24px;
 }
 
-#add_child_form input:not(.button) {
+#add_child input:not(.button),
+#add_child select,
+#add_child textarea {
     border-radius: 1vw;
     border: none;
     padding: 5px;
@@ -26,16 +26,34 @@
     background-color: var(--ku-orange-hover);
 }
 
-#add_child_form input:not(.button):focus-visible {
+#add_child input:not(.button):focus-visible {
     outline: none;
     box-shadow: 0.5vw 1vw 1vw var(--ku-dark-accent);
 }
 
-#add_child_form .field {
+#add_child .field {
     display: flex;
     flex-flow: column wrap;
     gap: 1vw;
     font-size: 24px;
+}
+
+
+#add_child input {
+    text-align: center;
+}
+
+
+
+
+/* For claiming an existing child */
+
+
+#claim_child_form {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    gap: 1vw;
 }
 
 #child_results {
@@ -64,18 +82,68 @@
     flex-flow: row nowrap;
     justify-content: center;
 }
-
-#child_results .button {
-    margin-top: 1vw;
-    align-self: center;
+#child_results {
+    display: flex;
+    flex-flow: column nowrap;
 }
 
-#add_child_form input {
-    text-align: center;
+#child_results .child.header {
+    background-color: var(--ku-orange);
+    font-weight: bold;
+}
+
+#child_results .child {
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: var(--ku-background);
+    padding: 1vw;
+}
+
+#child_results .child p {
+    flex-basis: 12.5%;
+}
+
+#child_results #add_form {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
 }
 
 #child_results .success {
     background-color: lightgreen;
     color: darkgreen;
     font-weight: bold;
+}
+
+
+
+
+/* For adding a new child */
+
+#add_child .child_form {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2vw;
+    padding: 1vw;
+}
+
+#add_child .child_form h3 {
+    width: 100%;
+    font-size: var(--main-heading-size);
+}
+
+#add_child .child_form .button {
+    width: 100%;
+}
+
+#add_child .child_form .personal_info,
+#add_child .child_form .school_info {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1vw;
+    padding: 1vw;
 }

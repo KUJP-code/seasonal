@@ -23,6 +23,40 @@ class ChildrenController < ApplicationController
     role_show
   end
 
+  def new
+    if params[:parent]
+      @child = Child.new(parent_id: params[:parent])
+    else
+      @child = Child.new
+    end
+  end
+
+  def edit
+    @child = Child.find(params[:id])
+  end
+
+  def create
+    @child = Child.new(child_params)
+
+    if @child.save
+      flash_success
+      redirect_to child_path(@child)
+    else
+      flash_failure
+    end
+  end
+
+  def update
+    @child = Child.find(params[:id])
+
+    if @child.update(child_params)
+      flash_success
+      redirect_to child_path(@child)
+    else
+      flash_failure
+    end
+  end
+
   private
 
   def child_params
@@ -44,6 +78,14 @@ class ChildrenController < ApplicationController
   def find_child
     @child = search_result
     render 'users/_add_child', locals: { parent: User.find(params[:parent_id]) }
+  end
+
+  def flash_failure
+    flash.now[:alert] = t('.failure')
+  end
+
+  def flash_success
+    flash.now[:notice] = t('.success')
   end
 
   def role_show

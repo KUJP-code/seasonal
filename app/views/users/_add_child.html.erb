@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "add_child" do %>
-    <%= form_with url: children_path, method: :get, id: 'add_child_form' do |f| %>
+    <%= form_with url: children_path, method: :get, id: 'claim_child_form' do |f| %>
         <%= f.hidden_field :parent_id, value: parent.id %>
         <div class="field">
             <%= f.label :ssid, t('.ssid')  %>
@@ -35,9 +35,10 @@
             <% end %>
 
             <% unless @child.parent_id.nil? %>
-                <p class="success"><%= t('.child_claimed', school: parent.school.name) %></p>
+                <p class="success"><%= t('.child_claimed') %></p>
             <% end %>
 
         <% end %>
     </div>
+    <%= link_to t('.add_new_child'), new_child_path(parent: parent.id), class: 'button' %>
 <% end %>
