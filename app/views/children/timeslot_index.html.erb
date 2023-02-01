@@ -19,14 +19,6 @@
     </div>
 
     <div class="slot_children">
-        <h3><%= t('.attending') %></h3>
-        <%= turbo_frame_tag "attending#{@source.id}" do %>
-            <%= render partial: 'children/slot_child', collection: @attending, locals: { slot: @source } || t('.no_reg') %>
-        <% end %>
-
-        <h3><%= t('not_attending') %></h3>
-        <%= turbo_frame_tag "not_attending#{@source.id}" do %>       
-            <%= render partial: 'children/slot_child', collection: @not_attending, locals: { slot: @source } || t('.all_reg') %>
-        <% end %>
+        <%= render partial: 'children/slot_child', collection: @attending, locals: { slot: @source } || t('.no_reg') %>
     </div>
 </main>
