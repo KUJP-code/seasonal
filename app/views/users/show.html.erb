@@ -48,7 +48,7 @@
 
     <% if @user.children? %>
         <h2><%= t('.next_event') %></h2>
-        <% @user.school.events.limit(1).order(updated_at: :asc).each do |event| %>
+        <% @user.school.events.order(start_date: :asc).limit(1).each do |event| %>
             <%= render event %>
         <% end %>
 
