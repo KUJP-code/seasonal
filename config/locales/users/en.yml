@@ -4,7 +4,7 @@ en:
       dates: "From %{start_date} to %{end_date}"
   users:
     add_child:
-      add_child: "Add Child"
+      claim_child: "Claim Child"
       find_child: "Find Child"
       remove_child: "Remove Child"
     child_fields:

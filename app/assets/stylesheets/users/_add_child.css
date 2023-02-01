@@ -1,13 +1,25 @@
 #add_child {
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: row nowrap;
     align-items: stretch;
-    gap: 1vw;
+    justify-content: center;
+    gap: 10vw;
     background-color: var(--ku-dark-background);
 }
 
+#add_child .find_child,
+#add_child .add_new_child {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1vw;
+    background-color: var(--ku-background);
+    border-radius: 1vw;
+    padding: 1vw;
+}
+
 #add_child .button {
-    margin-top: 1vw;
     align-self: center;
 }
 
@@ -59,6 +71,7 @@
 #child_results {
     display: flex;
     flex-flow: column nowrap;
+    width: 80vw;
 }
 
 #child_results .child.header {

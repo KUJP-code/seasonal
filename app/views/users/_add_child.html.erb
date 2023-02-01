@@ -1,44 +1,49 @@
 <%= turbo_frame_tag "add_child" do %>
-    <%= form_with url: children_path, method: :get, id: 'claim_child_form' do |f| %>
-        <%= f.hidden_field :parent_id, value: parent.id %>
-        <div class="field">
-            <%= f.label :ssid, t('.ssid')  %>
-            <%= f.search_field :ssid %>
-        </div>
-        <div class="field">
-            <%= f.label :bday, t('.bday')  %>
-            <%= f.date_field :bday %>
-        </div>
-        <%= f.submit t('.find_child'), class: 'button' %>
-    <% end %>
-
-    <div id="child_results">
+    <div class="find_child">
+        <%= form_with url: children_path, method: :get, id: 'claim_child_form' do |f| %>
+            <%= f.hidden_field :parent_id, value: parent.id %>
+            <div class="field">
+                <%= f.label :ssid, t('.ssid')  %>
+                <%= f.search_field :ssid %>
+            </div>
+            <div class="field">
+                <%= f.label :bday, t('.bday')  %>
+                <%= f.date_field :bday %>
+            </div>
+            <%= f.submit t('.find_child'), class: 'button' %>
+        <% end %>
         <% if @child %>
-            <div class="child header">
-                <p class="ssid"><%= t('.ssid') %></p>
-                <p class="name"><%= t('.name') %></p>
-                <p class="katakana"><%=t('.katakana') %></p>
-            </div>
-
-            <div class="child">
-                <p class="ssid"><%= @child.ssid %></p>
-                <p class="name"><%= @child.name %></p>
-                <p class="katakana"><%= @child.katakana_name %></p>
-            </div>
-
-            <% if @child.parent_id.nil? %>
-                <%= form_with url: add_child_path, id: "add_form" do |f| %>
-                    <%= f.hidden_field :child_id, value: @child.id %>
-                    <%= f.hidden_field :parent_id, value: parent.id %>
-                    <%= f.submit t('.add_child'), class: 'button' %>
+            <div id="child_results">
+                <div class="child header">
+                    <p class="ssid"><%= t('.ssid') %></p>
+                    <p class="name"><%= t('.name') %></p>
+                    <p class="katakana"><%=t('.katakana') %></p>
+                </div>
+        
+                <div class="child">
+                    <p class="ssid"><%= @child.ssid %></p>
+                    <p class="name"><%= @child.name %></p>
+                    <p class="katakana"><%= @child.katakana_name %></p>
+                </div>
+        
+                <% if @child.parent_id.nil? %>
+                    <%= form_with url: add_child_path, id: "add_form" do |f| %>
+                        <%= f.hidden_field :child_id, value: @child.id %>
+                        <%= f.hidden_field :parent_id, value: parent.id %>
+                        <%= f.submit t('.claim_child'), class: 'button' %>
+                    <% end %>
                 <% end %>
-            <% end %>
-
-            <% unless @child.parent_id.nil? %>
-                <p class="success"><%= t('.child_claimed') %></p>
-            <% end %>
-
+        
+                <% unless @child.parent_id.nil? %>
+                    <p class="success"><%= t('.child_claimed') %></p>
+                <% end %>
+            </div>
         <% end %>
     </div>
-    <%= link_to t('.add_new_child'), new_child_path(parent: parent.id), class: 'button' %>
+
+    <% unless @child %>
+        <div class="add_new_child">
+            <%= link_to t('.add_new_child'), new_child_path(parent: parent.id), class: 'button' %>
+        </div>
+    <% end %>
 <% end %>
