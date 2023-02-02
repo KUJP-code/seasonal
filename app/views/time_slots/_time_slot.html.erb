@@ -1,17 +1,19 @@
 <div class="time_slot">
-    <%= link_to image_tag("#{time_slot.name.downcase.gsub(' ', '_').gsub('_pm', '')}.jpg"), time_slot_path(time_slot) %>
-    <h2><%= time_slot.description %></h2>
-    <p>
-        <% if current_user.staff? %>
-            <%= turbo_frame_tag "event#{time_slot.id}_reg_count" do %>
-                <%= link_to t('.reg_count', num_kids: time_slot.children.distinct.size), children_path(source: 'TimeSlot', id: time_slot.id) %>
+    <div class="slot_details">
+        <%= link_to image_tag("#{time_slot.name.downcase.gsub(' ', '_').gsub('_pm', '')}.jpg"), time_slot_path(time_slot) %>
+        <h2><%= time_slot.description %></h2>
+        <p>
+            <% if current_user.staff? %>
+                <%= turbo_frame_tag "event#{time_slot.id}_reg_count" do %>
+                    <%= link_to t('.reg_count', num_kids: time_slot.children.distinct.size), children_path(source: 'TimeSlot', id: time_slot.id) %>
+                <% end %>
+            <% else %>
+                <%= turbo_frame_tag "time_slot#{time_slot.id}_reg_count" do %>
+                    <%= t('.reg_count', num_kids: time_slot.children.distinct.size) %>
+                <% end %>
             <% end %>
-        <% else %>
-            <%= turbo_frame_tag "time_slot#{time_slot.id}_reg_count" do %>
-                <%= t('.reg_count', num_kids: time_slot.children.distinct.size) %>
-            <% end %>
-        <% end %>
-    </p>
+        </p>
+    </div>
 
     <div class="slot_registrations">
         <div class="am_reg">
