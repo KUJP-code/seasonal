@@ -24,11 +24,11 @@ class ChildrenController < ApplicationController
   end
 
   def new
-    if params[:parent]
-      @child = Child.new(parent_id: params[:parent])
-    else
-      @child = Child.new
-    end
+    @child = if params[:parent]
+               Child.new(parent_id: params[:parent])
+             else
+               Child.new
+             end
   end
 
   def edit

@@ -64,8 +64,11 @@ group :development, :test do
   gem 'faker'
   gem 'faker_japanese'
 
-  # Capybara for integration testing
+  # Capybara for system/feature testing
   gem 'capybara'
+
+  # Selenium for browser based tests
+  gem 'selenium-webdriver'
 
   # Byebug for debugging
   gem 'byebug', platform: :mri
