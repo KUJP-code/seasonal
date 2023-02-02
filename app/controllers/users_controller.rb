@@ -68,7 +68,7 @@ class UsersController < ApplicationController
 
     update_child
     flash_success
-    redirect_to user_path(@child.parent)
+    redirect_to child_path(@child)
   end
 
   def remove_child

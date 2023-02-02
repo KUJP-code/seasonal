@@ -109,8 +109,8 @@
 }
 
 #child_results .success {
-    background-color: lightgreen;
-    color: darkgreen;
+    background-color: lightpink;
+    color: red;
     font-weight: bold;
 }
 
