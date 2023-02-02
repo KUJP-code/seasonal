@@ -30,7 +30,7 @@
                     <%= form_with url: add_child_path, id: "add_form" do |f| %>
                         <%= f.hidden_field :child_id, value: @child.id %>
                         <%= f.hidden_field :parent_id, value: parent.id %>
-                        <%= f.submit t('.claim_child'), class: 'button' %>
+                        <%= f.submit t('.claim_child'), class: 'button', data: { turbo_frame: '_top' } %>
                     <% end %>
                 <% end %>
         

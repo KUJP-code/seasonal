@@ -67,10 +67,8 @@ class UsersController < ApplicationController
     return redirect_to :child_theft unless @child.parent_id.nil?
 
     update_child
-    respond_to do |format|
-      flash_success
-      format.turbo_stream
-    end
+    flash_success
+    redirect_to user_path(@child.parent)
   end
 
   def remove_child
@@ -78,10 +76,8 @@ class UsersController < ApplicationController
     @parent = User.find(params[:parent_id])
     @parent.children.delete(@child)
 
-    respond_to do |format|
-      flash_success
-      format.turbo_stream
-    end
+    flash_success
+    redirect_to user_path(@parent)
   end
 
   private
