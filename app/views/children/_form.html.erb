@@ -62,7 +62,7 @@
 
             <div class="field">
                 <%= f.label :category, t('.category') %><br />
-                <%= f.select :category, [["#{t('.internal')}", "internal"], ["#{t('.reservation')}", "reservation"], ["#{t('.external')}", "external"]] %>
+                <%= f.select :category, [["#{t('.external')}", "external"], ["#{t('.internal')}", "internal"], ["#{t('.reservation')}", "reservation"]], selected: "#{t('.external')}" %>
             </div>
 
             <% if current_user.staff? %>
