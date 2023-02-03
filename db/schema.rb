@@ -163,7 +163,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_10_141900) do
     t.string "ja_family_name"
     t.string "katakana_name"
     t.integer "role", default: 0
-    t.integer "postcode"
+    t.string "postcode"
     t.string "prefecture"
     t.string "address"
     t.string "phone"
