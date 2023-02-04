@@ -17,6 +17,8 @@ class Event < ApplicationRecord
   has_many :registrations, through: :time_slots
   has_many :children, through: :registrations
 
+  has_many_attached :images
+
   validates :name, :description, :start_date, :end_date, presence: true
 
   validates :start_date, comparison: { greater_than_or_equal_to: Time.zone.today, less_than_or_equal_to: :end_date }

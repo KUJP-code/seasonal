@@ -17,6 +17,8 @@ class TimeSlot < ApplicationRecord
   has_many :coupons, as: :couponable,
                      dependent: :destroy
 
+  has_many_attached :images
+
   # Validations
   validates :name, :start_time, :end_time, :description, :cost, :registration_deadline, presence: true
 

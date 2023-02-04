@@ -237,9 +237,10 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
       registration_deadline: '16 Feb 2024'
     }
   ])
+  event.images.attach(io: File.open('app/assets/images/chocolate_day_2024.jpg'), filename: 'logo.jpg', content_type: 'image/jpg')
 end
 
-puts 'Created time slots for choco day'
+puts 'Created time slots for choco day, and added images to each event'
 
 Event.where(name: 'Chocolate Day 2024').each do |event|
   event.time_slots.each do |slot|
@@ -248,10 +249,11 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
         description: 'Remember all the fun you had with this shiny badge!',
         cost: 100
       )
+    slot.images.attach(io: File.open("app/assets/images/#{slot.name.downcase.gsub(' ', '_').gsub('_pm', '')}.jpg"), filename: 'logo.jpg', content_type: 'image/jpg')
   end
 end
 
-puts 'Created options for chocolate day'
+puts 'Created options for chocolate day, added images to time slots'
 
 Event.where(name: 'Spring School 2023').each do |event|
   event.time_slots.create!([
@@ -494,9 +496,10 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '3 Apr 2023'
     }
   ])
+  event.images.attach(io: File.open('app/assets/images/spring_school_2023.jpg'), filename: 'logo.jpg', content_type: 'image/jpg')
 end
 
-puts 'Created time slots for spring school'
+puts 'Created time slots for spring school, and added images to the events'
 
 
 Event.all.each do |event|
@@ -548,10 +551,11 @@ Event.where(name: 'Spring School 2023').each do |event|
         cost: 100
       },
     ])
+    slot.images.attach(io: File.open("app/assets/images/#{slot.name.downcase.gsub(' ', '_').gsub('_pm', '')}.jpg"), filename: 'logo.jpg', content_type: 'image/jpg')
   end
 end
 
-puts 'Created options for spring school'
+puts 'Created options for spring school, and added images to slots'
 
 School.all.each do |school|
   school.time_slots.each do |slot|

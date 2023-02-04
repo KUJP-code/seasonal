@@ -1,6 +1,6 @@
 <div class="event">
-    <%= link_to image_tag("#{event.name.downcase.gsub(' ', '_')}.jpg"), event_path(event) %>
-    <h2><%= event.description %></h2>
+    <%= link_to image_tag(url_for(event.images.first)), event_path(event) unless event.images.empty? %>
+    <h2><%= link_to event.description, event_path(event) %></h2>
     <p>
         <% if current_user.staff? %>
             <%= turbo_frame_tag "event#{event.id}_reg_count" do %>
