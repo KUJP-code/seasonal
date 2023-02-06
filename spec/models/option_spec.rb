@@ -89,7 +89,7 @@ RSpec.describe Option do
 
     it "knows the time slot it's an option for" do
       slot_opt = slot.options.create(attributes_for(:option))
-      opt_slot = slot_opt.time_slot
+      opt_slot = slot_opt.optionable
       expect(opt_slot).to eq slot
     end
 

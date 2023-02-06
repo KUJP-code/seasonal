@@ -68,7 +68,7 @@ class ChildrenController < ApplicationController
                                   :ele_school_name, :post_photos, :needs_hat,
                                   :received_hat, :parent_id, :school_id,
                                   registrations_attributes: %i[
-                                    cost child_id registerable_type
+                                    child_id registerable_type
                                     registerable_id
                                   ])
   end

@@ -13,12 +13,6 @@ RSpec.describe TimeSlot do
       valid = valid_time_slot.save!
       expect(valid).to be true
     end
-
-    it 'allows zero-cost time slots' do
-      valid_time_slot.cost = 0
-      valid = valid_time_slot.save!
-      expect(valid).to be true
-    end
   end
 
   context 'when invalid' do
@@ -81,24 +75,6 @@ RSpec.describe TimeSlot do
     it 'with short description' do
       short_description = build(:time_slot, description: '123456789')
       valid = short_description.save
-      expect(valid).to be false
-    end
-
-    it 'without cost' do
-      no_cost = build(:time_slot, cost: nil)
-      valid = no_cost.save
-      expect(valid).to be false
-    end
-
-    it 'with negative cost' do
-      neg_cost = build(:time_slot, cost: -1000)
-      valid = neg_cost.save
-      expect(valid).to be false
-    end
-
-    it 'with absurd cost' do
-      absurd_cost = build(:time_slot, cost: 50_000)
-      valid = absurd_cost.save
       expect(valid).to be false
     end
   end

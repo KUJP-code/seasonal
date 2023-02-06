@@ -20,14 +20,6 @@ class Registration < ApplicationRecord
   scope :slot_registrations, -> { where(registerable_type: 'TimeSlot') }
   scope :option_registrations, -> { where(registerable_type: 'Option') }
 
-  # Calculate the cost after adjustments, if any
-  def adjusted_cost
-    return cost if adjustments.empty?
-
-    total_adjustments = adjustments.sum(:change)
-    cost + total_adjustments
-  end
-
   def f_billing_date
     billing_date.strftime('%Y/%m/%d')
   end

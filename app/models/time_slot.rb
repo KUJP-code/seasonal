@@ -20,7 +20,7 @@ class TimeSlot < ApplicationRecord
   has_many_attached :images
 
   # Validations
-  validates :name, :start_time, :end_time, :description, :cost, :registration_deadline, presence: true
+  validates :name, :start_time, :end_time, :description, :registration_deadline, presence: true
 
   validates :start_time, comparison: { greater_than_or_equal_to: Time.zone.today.midnight, less_than: :end_time }
   validates :end_time, comparison: { greater_than_or_equal_to: Time.zone.today.midnight }
@@ -28,8 +28,6 @@ class TimeSlot < ApplicationRecord
   validates :registration_deadline, comparison: { less_than_or_equal_to: :start_time, greater_than: Time.zone.now }
 
   validates :description, length: { minimum: 10 }
-
-  validates :cost, numericality: { greater_than_or_equal_to: 0, less_than: 50_000, only_integer: true }
 
   # Set scopes for time slot status
   scope :past_slots, -> { where('end_time < ?', Time.zone.now) }

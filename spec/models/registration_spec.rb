@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Registration do
   let(:child) { create(:child) }
-  let(:time_slot) { create(:time_slot, cost: 8000) }
-  let(:option) { create(:option, time_slot: time_slot, cost: 4000) }
+  let(:time_slot) { create(:time_slot) }
+  let(:option) { create(:option, optionable: time_slot, cost: 4000) }
   let(:registration) { child.registrations.create(registerable: time_slot) }
 
   context 'when valid' do
@@ -79,7 +79,7 @@ RSpec.describe Registration do
     context 'with time slot' do
       it 'knows the time slot the option applies to' do
         registration.registerable = option
-        option_slot = registration.registerable.time_slot
+        option_slot = registration.registerable.optionable
         expect(option_slot).to eq time_slot
       end
     end
@@ -110,24 +110,6 @@ RSpec.describe Registration do
       option_registrations = described_class.all.option_registrations
       reg_returned = option_registrations.length
       expect(reg_returned).to be 1
-    end
-  end
-
-  context 'with adjustments' do
-    it 'time slot can have its cost decreased' do
-      slot_reg = time_slot.registrations.create!(attributes_for(:registration, child: child, cost: 8000))
-      slot_reg.adjustments.create(change: -2000, reason: 'testtesttest')
-      slot_cost = slot_reg.cost
-      adjusted_cost = slot_reg.adjusted_cost
-      expect(adjusted_cost).to be < slot_cost
-    end
-
-    it 'option can have its cost decreased' do
-      opt_reg = option.registrations.create!(attributes_for(:registration, child: child, cost: 4000))
-      opt_reg.adjustments.create(change: -2000, reason: 'testtesttest')
-      opt_cost = opt_reg.cost
-      adjusted_cost = opt_reg.adjusted_cost
-      expect(adjusted_cost).to be < opt_cost
     end
   end
 end

@@ -131,7 +131,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
   end
 
   create_table "registrations", force: :cascade do |t|
-    t.integer "cost"
     t.bigint "child_id", null: false
     t.string "registerable_type", null: false
     t.bigint "registerable_id", null: false
@@ -172,7 +171,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
     t.datetime "end_time"
     t.string "description"
     t.integer "max_attendees"
-    t.integer "cost"
     t.datetime "registration_deadline"
     t.boolean "morning", default: false
     t.bigint "event_id", null: false

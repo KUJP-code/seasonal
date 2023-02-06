@@ -142,7 +142,7 @@ RSpec.describe Event do
     context 'with options through time slots' do
       it 'knows its available options' do
         option = slot.options.create(attributes_for(:option))
-        event_options = event.options
+        event_options = event.slot_options
         expect(event_options).to contain_exactly(option)
       end
     end

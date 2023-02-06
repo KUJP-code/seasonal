@@ -242,20 +242,6 @@ RSpec.describe Child do
       expect(registered_opt).to eq option
     end
 
-    it 'registration cost matches time slot cost' do
-      slot_reg = time_slot.registrations.create(attributes_for(:slot_registration))
-      reg_cost = slot_reg.cost
-      slot_cost = time_slot.cost
-      expect(reg_cost).to eq slot_cost
-    end
-
-    it 'registration cost can be discounted without affecting slot cost' do
-      slot_reg = time_slot.registrations.create(attributes_for(:slot_registration))
-      slot_reg.cost = 0
-      slot_cost = time_slot.cost
-      expect(slot_cost).to eq 8000
-    end
-
     it 'deletes its registrations when deleted' do
       time_slot.registrations.create(attributes_for(:registration, child: child))
       option.registrations.create(attributes_for(:registration, child: child))
@@ -280,7 +266,7 @@ RSpec.describe Child do
 
     context 'with time_slots through registrations' do
       it "knows which time slots it's attending" do
-        time_slot.registrations.create(child: child, cost: time_slot.cost)
+        time_slot.registrations.create(child: child)
         attending_list = child.time_slots
         expect(attending_list).to include(time_slot)
       end
@@ -288,7 +274,7 @@ RSpec.describe Child do
 
     context 'with events through time slots' do
       it "knows which events it's attending" do
-        child.registrations.create(registerable: time_slot, cost: time_slot.cost)
+        child.registrations.create(registerable: time_slot)
         child_events = child.events
         expect(child_events).to include(event)
       end

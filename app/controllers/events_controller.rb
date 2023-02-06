@@ -60,7 +60,7 @@ class EventsController < ApplicationController
     params.require(:event).permit(:id, :name, :description, :start_date,
                                   :end_date, :school_id, time_slots_attributes:
                                   %i[id name start_time end_time description
-                                     max_attendees cost registration_deadline event_id _destroy])
+                                     max_attendees registration_deadline event_id _destroy])
   end
 
   def flash_failure

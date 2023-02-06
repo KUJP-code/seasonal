@@ -84,7 +84,7 @@ class RegistrationsController < ApplicationController
   end
 
   def reg_params
-    params.require(:registration).permit(:id, :cost, :child_id,
+    params.require(:registration).permit(:id, :child_id,
                                          :registerable_id, :registerable_type,
                                          :billing_date, :confirmed, :paid)
   end
