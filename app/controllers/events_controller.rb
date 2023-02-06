@@ -72,7 +72,7 @@ class EventsController < ApplicationController
   end
 
   def index_for_role
-    return Event.all if current_user.admin?
+    return Event.all.order(start_date: :asc) if current_user.admin?
     return current_user.area_events if current_user.area_manager?
     return current_user.school_events if current_user.school_manager?
 
