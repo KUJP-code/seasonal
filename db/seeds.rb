@@ -139,7 +139,8 @@ User.customers.each do |customer_user|
       ssid: Faker::Number.unique.number,
       ele_school_name: Faker::GreekPhilosophers.name,
       post_photos: true,
-      allergies: 'peanuts',
+      allergies: true,
+      allergy_details: 'peanuts',
       level: 'kindy',
       category: 'external',
       school: customer_user.school
@@ -153,7 +154,8 @@ User.customers.each do |customer_user|
       ssid: Faker::Number.unique.number,
       ele_school_name: Faker::GreekPhilosophers.name,
       post_photos: true,
-      allergies: 'peanuts',
+      allergies: true,
+      allergy_details: 'peanuts',
       level: 'land_high',
       category: 'reservation',
       school: customer_user.school
@@ -172,7 +174,8 @@ Child.create!(
   ssid: 1,
   ele_school_name: Faker::GreekPhilosophers.name,
   post_photos: true,
-  allergies: 'peanuts'
+  allergies: true,
+  allergy_details: 'peanuts'
 )
 
 puts "Created an orphaned child to test adding parent's children with"
