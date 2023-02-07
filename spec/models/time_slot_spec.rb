@@ -94,6 +94,36 @@ RSpec.describe TimeSlot do
       future_slots = event.time_slots.future_slots
       expect(future_slots).to contain_exactly(future_slot)
     end
+
+    it 'knows morning slots' do
+      time_slot.update(morning: true)
+      morning_slots = described_class.all.morning
+      expect(morning_slots).to contain_exactly time_slot
+    end
+
+    it 'knows afternoon slots' do
+      time_slot.update(morning: false)
+      afternoon_slots = described_class.all.afternoon
+      expect(afternoon_slots).to contain_exactly time_slot
+    end
+  end
+
+  context 'with morning' do
+    let(:morning) { create(:time_slot, morning: true) }
+
+    before do
+      time_slot.update(morning_slot_id: morning.id)
+    end
+
+    it 'knows its morning' do
+      morning_slot = time_slot.morning_slot
+      expect(morning_slot).to eq morning
+    end
+
+    it 'morning knows it' do
+      morning_afternoon = morning.afternoon_slot
+      expect(morning_afternoon).to eq time_slot
+    end
   end
 
   context 'with event' do

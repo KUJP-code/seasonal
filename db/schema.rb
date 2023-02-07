@@ -176,8 +176,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
     t.bigint "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "morning_slot_id"
     t.index ["event_id"], name: "index_time_slots_on_event_id"
     t.index ["morning"], name: "index_time_slots_on_morning"
+    t.index ["morning_slot_id"], name: "index_time_slots_on_morning_slot_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -224,5 +226,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
   add_foreign_key "regular_schedules", "children"
   add_foreign_key "schools", "areas"
   add_foreign_key "time_slots", "events"
+  add_foreign_key "time_slots", "time_slots", column: "morning_slot_id"
   add_foreign_key "users", "schools"
 end

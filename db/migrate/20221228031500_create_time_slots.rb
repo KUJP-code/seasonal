@@ -13,6 +13,11 @@ class CreateTimeSlots < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
+    add_reference :time_slots, :morning_slot,
+                               null: true
+    add_foreign_key :time_slots, :time_slots,
+                                 column: :morning_slot_id
+
     add_index :time_slots, :morning
   end
 end

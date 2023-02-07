@@ -17,6 +17,12 @@ class TimeSlot < ApplicationRecord
   has_many :coupons, as: :couponable,
                      dependent: :destroy
 
+  belongs_to :morning_slot, class_name: 'TimeSlot', optional: true
+  has_one :afternoon_slot, class_name: 'TimeSlot',
+                           foreign_key: :morning_slot_id,
+                           dependent: :destroy,
+                           inverse_of: :morning_slot
+
   has_many_attached :images
 
   # Validations

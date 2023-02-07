@@ -10,13 +10,14 @@
             <p class="en"><%= link_to event_child.en_name, child_path(event_child) %></p>
         </div>
         
-        <% event.time_slots.each do |slot| %>
+        <% event.time_slots.morning.each do |slot| %>
             <div class="slot">
+                <%= slot.name %>
                 <div class="attendance">
                     <% if event_child.registered?(slot) %>
-                        <%= render 'registrations/delete_button', registration: event_child.registered?(slot) %>
+                        <p>✓</p>
                     <% else %>
-                        <%= render 'registrations/register_button', child: event_child, registerable: slot %>
+                        <p>𐄂</p>
                     <% end %>
                 </div>
             </div>

@@ -6,9 +6,10 @@
             <p class="en"><%= t('.en') %></p>
         </div>
 
-        <% @source.time_slots.select(:name, :id).each do |slot| %>
+
+        <% @source.time_slots.morning.size.times do |i| %>
             <div class="slot">
-                <p class="slot_name"><%= link_to slot.name, children_path(id: slot.id, source: 'TimeSlot') %></p>
+                <%= "Day #{i}" %>
             </div>
         <% end %>
     </div>
