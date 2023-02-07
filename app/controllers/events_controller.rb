@@ -8,6 +8,8 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
+    @slots = @event.time_slots
+    role_show
   end
 
   def new
@@ -77,5 +79,14 @@ class EventsController < ApplicationController
     return current_user.school_events if current_user.school_manager?
 
     current_user.school.events
+  end
+
+  def role_show
+    if current_user.staff?
+      @children = @event.possible_children
+    else
+      @children = current_user.children
+      @registered_slots = current_user.time_slots.where(event: @event).morning.distinct
+    end
   end
 end

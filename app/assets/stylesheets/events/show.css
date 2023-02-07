@@ -9,15 +9,9 @@
     padding: 1vw;
 }
 
-/* Set size for section headings */
-#event_show .event h3,
-#event_show>h2 {
-    font-size: var(--main-heading-size);
-}
-
 /* Styles for all outer containers */
 #event_show #time_slot_container,
-#event_show .event {
+#event_show .slot_selection {
     width: 90vw;
     gap: 1vw;
     padding: 1vw;
@@ -25,19 +19,52 @@
 
 /* Styles for all shadowed containers */
 #event_show #time_slot_container,
-#event_show .event,
+#event_show .slot_selection,
 #event_show .time_slot {
-    display: flex;
     border-radius: 1vw;
     padding: 1vw;
     box-shadow: var(--container-shadow);
 }
 
-#event_show .event {
+#event_show .slot_selection {
+    display: flex;
+    flex-flow: row wrap;
     justify-content: center;
+    align-items: center;
+    background: var(--ku-dark-background);
+}
+
+#event_show .slot_selection h2 {
+    width: 100%;
+}
+
+#event_show .slot_selection a,
+#event_show .slot_selection img {
+    flex: 0 1 20vw;
+    border-radius: 2vw;
+}
+
+#event_show .slot_selection a {
+    display: flex;
+    padding: 0.5vw;
+}
+
+#event_show .slot_selection a.attending {
+    background: greenyellow;
+}
+
+#event_show .slot_selection a.not_attending {
+    background: red;
+}
+
+#event_show .slot_selection img {
+    flex: 1 1 20vw;
+    max-inline-size: 100%;
+    block-size: auto;
 }
 
 #event_show #time_slot_container {
+    display: flex;
     flex-flow: column nowrap;
     height: fit-content;
     overflow-x: scroll;
@@ -56,4 +83,20 @@
     display: flex;
     justify-content: center;
     gap: 1vw;
+}
+
+#event_show #price_summary {
+    position: sticky;
+    bottom: 1vw;
+    left: 1vw;
+    right: 1vw;
+    width: 95vw;
+    padding: 1vw;
+    z-index: 10;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    background: var(--near-white);
+    border-radius: 1vw;
 }

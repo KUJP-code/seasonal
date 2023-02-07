@@ -24,6 +24,8 @@
     --ku-background: #80b4cf;
     --ku-dark-background: #1487b8;
     --main-heading-size: min(4vw, 32px);
+    --near-black: #222222;
+    --near-white: #F2F2F2;
     --sub-heading-size: min(1.5vw, 20px);
     --content-size: min(1.5vw, 16px);
     font-size: min(1.5vw, 16px);
@@ -110,7 +112,7 @@ a {
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: white;
+    color: var(--near-white);
     font-weight: bold;
     height: 100%;
 }

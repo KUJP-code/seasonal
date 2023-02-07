@@ -5,4 +5,5 @@ en:
       title: "%{name} at %{school}"
     show:
       all_slots: "See all time slots for %{event}"
+      confirm_registrations: "Confirm Registrations"
       upcoming_slots: "%{event} Upcoming Time Slots"
