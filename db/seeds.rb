@@ -265,25 +265,11 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '14 Mar 2023'
     },
     {
-      name: 'Paint a Puzzle PM',
-      start_time: '16 Mar 2023 13:00 JST +09:00',
-      end_time: '16 Mar 2023 18:00 JST +09:00',
-      description: 'Continue the fun in the afternoon!',
-      registration_deadline: '14 Mar 2023'
-    },
-    {
       name: 'Butterfly Finger Puppet',
       morning: true,
       start_time: '17 Mar 2023 9:00 JST +09:00',
       end_time: '17 Mar 2023 13:00 JST +09:00',
       description: 'Make a cute butterfly puppet to take home and enjoy!',
-      registration_deadline: '15 Mar 2023'
-    },
-    {
-      name: 'Butterfly Finger Puppet PM',
-      start_time: '17 Mar 2023 13:00 JST +09:00',
-      end_time: '17 Mar 2023 18:00 JST +09:00',
-      description: 'Continue the fun in the afternoon!',
       registration_deadline: '15 Mar 2023'
     },
     {
@@ -295,13 +281,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '18 Mar 2023'
     },
     {
-      name: 'Magic Day PM',
-      start_time: '20 Mar 2023 13:00 JST +09:00',
-      end_time: '20 Mar 2023 18:00 JST +09:00',
-      description: 'Continue the fun in the afternoon!',
-      registration_deadline: '18 Mar 2023'
-    },
-    {
       name: 'Vegetable Stamps',
       morning: true,
       start_time: '22 Mar 2023 9:00 JST +09:00',
@@ -310,24 +289,10 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '20 Mar 2023'
     },
     {
-      name: 'Vegetable Stamps PM',
-      start_time: '22 Mar 2023 13:00 JST +09:00',
-      end_time: '22 Mar 2023 18:00 JST +09:00',
-      description: 'Continue the fun in the afternoon!',
-      registration_deadline: '20 Mar 2023'
-    },
-    {
       name: 'Spider Web Race',
       morning: true,
       start_time: '23 Mar 2023 9:00 JST +09:00',
       end_time: '23 Mar 2023 13:00 JST +09:00',
-      description: 'Race out of a sticky situation!',
-      registration_deadline: '21 Mar 2023'
-    },
-    {
-      name: 'Spider Web Race PM',
-      start_time: '23 Mar 2023 13:00 JST +09:00',
-      end_time: '23 Mar 2023 18:00 JST +09:00',
       description: 'Race out of a sticky situation!',
       registration_deadline: '21 Mar 2023'
     },
@@ -340,24 +305,10 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '22 Mar 2023'
     },
     {
-      name: 'Easter Egg Craft PM',
-      start_time: '24 Mar 2023 13:00 JST +09:00',
-      end_time: '24 Mar 2023 18:00 JST +09:00',
-      description: 'Create your own special Easter Egg! No eating though!',
-      registration_deadline: '22 Mar 2023'
-    },
-    {
       name: 'Cherry Blossom Picnic',
       morning: true,
       start_time: '27 Mar 2023 9:00 JST +09:00',
       end_time: '27 Mar 2023 13:00 JST +09:00',
-      description: 'Enjoy a nice picnic under the cherry blossoms!',
-      registration_deadline: '25 Mar 2023'
-    },
-    {
-      name: 'Cherry Blossom Picnic PM',
-      start_time: '27 Mar 2023 13:00 JST +09:00',
-      end_time: '27 Mar 2023 18:00 JST +09:00',
       description: 'Enjoy a nice picnic under the cherry blossoms!',
       registration_deadline: '25 Mar 2023'
     },
@@ -370,24 +321,10 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '26 Mar 2023'
     },
     {
-      name: 'Cute Grass Head PM',
-      start_time: '28 Mar 2023 13:00 JST +09:00',
-      end_time: '28 Mar 2023 18:00 JST +09:00',
-      description: "Make your own little friend, in case you're ever stranded on a deserted island!",
-      registration_deadline: '26 Mar 2023'
-    },
-    {
       name: 'Photo Frame',
       morning: true,
       start_time: '29 Mar 2023 9:00 JST +09:00',
       end_time: '29 Mar 2023 13:00 JST +09:00',
-      description: 'Make a special photo frame to store your most precious memories!',
-      registration_deadline: '27 Mar 2023'
-    },
-    {
-      name: 'Photo Frame PM',
-      start_time: '29 Mar 2023 13:00 JST +09:00',
-      end_time: '29 Mar 2023 18:00 JST +09:00',
       description: 'Make a special photo frame to store your most precious memories!',
       registration_deadline: '27 Mar 2023'
     },
@@ -400,24 +337,10 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '28 Mar 2023'
     },
     {
-      name: 'Marble Pencil Holder PM',
-      start_time: '30 Mar 2023 13:00 JST +09:00',
-      end_time: '30 Mar 2023 18:00 JST +09:00',
-      description: "Don't like holding pencils? Make something to do it for you!",
-      registration_deadline: '28 Mar 2023'
-    },
-    {
       name: 'Spring Terrarium',
       morning: true,
       start_time: '31 Mar 2023 9:00 JST +09:00',
       end_time: '31 Mar 2023 13:00 JST +09:00',
-      description: 'Create your own personal ecosystem to rule over!',
-      registration_deadline: '29 Mar 2023'
-    },
-    {
-      name: 'Spring Terrarium PM',
-      start_time: '31 Mar 2023 13:00 JST +09:00',
-      end_time: '31 Mar 2023 18:00 JST +09:00',
       description: 'Create your own personal ecosystem to rule over!',
       registration_deadline: '29 Mar 2023'
     },
@@ -430,24 +353,10 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '1 Apr 2023'
     },
     {
-      name: 'Ninja Master PM',
-      start_time: '3 Apr 2023 13:00 JST +09:00',
-      end_time: '3 Apr 2023 18:00 JST +09:00',
-      description: 'Become a ninja master!',
-      registration_deadline: '1 Apr 2023'
-    },
-    {
       name: 'DIY Tic-Tac-Toe',
       morning: true,
       start_time: '4 Apr 2023 9:00 JST +09:00',
       end_time: '4 Apr 2023 13:00 JST +09:00',
-      description: 'Make a game, then play it!',
-      registration_deadline: '2 Apr 2023'
-    },
-    {
-      name: 'DIY Tic-Tac-Toe PM',
-      start_time: '4 Apr 2023 13:00 JST +09:00',
-      end_time: '4 Apr 2023 18:00 JST +09:00',
       description: 'Make a game, then play it!',
       registration_deadline: '2 Apr 2023'
     },
@@ -458,19 +367,132 @@ Event.where(name: 'Spring School 2023').each do |event|
       end_time: '5 Apr 2023 13:00 JST +09:00',
       description: 'Create art with a wave of nostalgia!',
       registration_deadline: '3 Apr 2023'
+    }
+  ])
+  event.images.attach(io: File.open('app/assets/images/spring_school_2023.jpg'), filename: 'logo.jpg', content_type: 'image/jpg')
+end
+
+puts 'Created morning time slots for spring school, and added images to the events'
+
+Event.where(name: 'Spring School 2023').each do |event|
+  event.time_slots.create!([
+    {
+      name: 'Paint a Puzzle',
+      morning_slot: TimeSlot.find_by(name: 'Paint a Puzzle', morning: true, event_id: event.id),
+      start_time: '16 Mar 2023 13:00 JST +09:00',
+      end_time: '16 Mar 2023 18:00 JST +09:00',
+      description: 'Continue the fun in the afternoon!',
+      registration_deadline: '14 Mar 2023'
     },
     {
-      name: 'Colorful Sand Art PM',
+      name: 'Butterfly Finger Puppet',
+      morning_slot: TimeSlot.find_by(name: 'Butterfly Finger Puppet', morning: true, event_id: event.id),
+      start_time: '17 Mar 2023 13:00 JST +09:00',
+      end_time: '17 Mar 2023 18:00 JST +09:00',
+      description: 'Continue the fun in the afternoon!',
+      registration_deadline: '15 Mar 2023'
+    },
+    {
+      name: 'Magic Day',
+      morning_slot: TimeSlot.find_by(name: 'Magic Day', morning: true, event_id: event.id),
+      start_time: '20 Mar 2023 13:00 JST +09:00',
+      end_time: '20 Mar 2023 18:00 JST +09:00',
+      description: 'Continue the fun in the afternoon!',
+      registration_deadline: '18 Mar 2023'
+    },
+    {
+      name: 'Vegetable Stamps',
+      morning_slot: TimeSlot.find_by(name: 'Vegetable Stamps', morning: true, event_id: event.id),
+      start_time: '22 Mar 2023 13:00 JST +09:00',
+      end_time: '22 Mar 2023 18:00 JST +09:00',
+      description: 'Continue the fun in the afternoon!',
+      registration_deadline: '20 Mar 2023'
+    },
+    {
+      name: 'Spider Web Race',
+      morning_slot: TimeSlot.find_by(name: 'Spider Web Race', morning: true, event_id: event.id),
+      start_time: '23 Mar 2023 13:00 JST +09:00',
+      end_time: '23 Mar 2023 18:00 JST +09:00',
+      description: 'Race out of a sticky situation!',
+      registration_deadline: '21 Mar 2023'
+    },
+    {
+      name: 'Easter Egg Craft',
+      morning_slot: TimeSlot.find_by(name: 'Easter Egg Craft', morning: true, event_id: event.id),
+      start_time: '24 Mar 2023 13:00 JST +09:00',
+      end_time: '24 Mar 2023 18:00 JST +09:00',
+      description: 'Create your own special Easter Egg! No eating though!',
+      registration_deadline: '22 Mar 2023'
+    },
+    {
+      name: 'Cherry Blossom Picnic',
+      morning_slot: TimeSlot.find_by(name: 'Cherry Blossom Picnic', morning: true, event_id: event.id),
+      start_time: '27 Mar 2023 13:00 JST +09:00',
+      end_time: '27 Mar 2023 18:00 JST +09:00',
+      description: 'Enjoy a nice picnic under the cherry blossoms!',
+      registration_deadline: '25 Mar 2023'
+    },
+    {
+      name: 'Cute Grass Head',
+      morning_slot: TimeSlot.find_by(name: 'Cherry Blossom Picnic', morning: true, event_id: event.id),
+      start_time: '28 Mar 2023 13:00 JST +09:00',
+      end_time: '28 Mar 2023 18:00 JST +09:00',
+      description: "Make your own little friend, in case you're ever stranded on a deserted island!",
+      registration_deadline: '26 Mar 2023'
+    },
+    {
+      name: 'Photo Frame',
+      morning_slot: TimeSlot.find_by(name: 'Photo Frame', morning: true, event_id: event.id),
+      start_time: '29 Mar 2023 13:00 JST +09:00',
+      end_time: '29 Mar 2023 18:00 JST +09:00',
+      description: 'Make a special photo frame to store your most precious memories!',
+      registration_deadline: '27 Mar 2023'
+    },
+    {
+      name: 'Marble Pencil Holder',
+      morning_slot: TimeSlot.find_by(name: 'Marble Pencil Holder', morning: true, event_id: event.id),
+      start_time: '30 Mar 2023 13:00 JST +09:00',
+      end_time: '30 Mar 2023 18:00 JST +09:00',
+      description: "Don't like holding pencils? Make something to do it for you!",
+      registration_deadline: '28 Mar 2023'
+    },
+    {
+      name: 'Spring Terrarium',
+      morning_slot: TimeSlot.find_by(name: 'Spring Terrarium', morning: true, event_id: event.id),
+      start_time: '31 Mar 2023 13:00 JST +09:00',
+      end_time: '31 Mar 2023 18:00 JST +09:00',
+      description: 'Create your own personal ecosystem to rule over!',
+      registration_deadline: '29 Mar 2023'
+    },
+    {
+      name: 'Ninja Master',
+      morning_slot: TimeSlot.find_by(name: 'Ninja Master', morning: true, event_id: event.id),
+      start_time: '3 Apr 2023 13:00 JST +09:00',
+      end_time: '3 Apr 2023 18:00 JST +09:00',
+      description: 'Become a ninja master!',
+      registration_deadline: '1 Apr 2023'
+    },
+    {
+      name: 'DIY Tic-Tac-Toe',
+      morning_slot: TimeSlot.find_by(name: 'DIY Tic-Tac-Toe', morning: true, event_id: event.id),
+      start_time: '4 Apr 2023 13:00 JST +09:00',
+      end_time: '4 Apr 2023 18:00 JST +09:00',
+      description: 'Make a game, then play it!',
+      registration_deadline: '2 Apr 2023'
+    },
+    {
+      name: 'Colorful Sand Art',
+      morning_slot: TimeSlot.find_by(name: 'Colorful Sand Art', morning: true, event_id: event.id),
       start_time: '5 Apr 2023 13:00 JST +09:00',
       end_time: '5 Apr 2023 18:00 JST +09:00',
       description: 'Create art with a wave of nostalgia!',
       registration_deadline: '3 Apr 2023'
     }
   ])
-  event.images.attach(io: File.open('app/assets/images/spring_school_2023.jpg'), filename: 'logo.jpg', content_type: 'image/jpg')
 end
 
-puts 'Created time slots for spring school, and added images to the events'
+
+puts 'Create afternoon time slots for spring school'
 
 
 Event.all.each do |event|

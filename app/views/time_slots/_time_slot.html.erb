@@ -31,7 +31,7 @@
         </div>
 
 
-        <% pm_slot = TimeSlot.find_by(name: "#{time_slot.name} PM") %>
+        <% pm_slot = time_slot.afternoon_slot %>
         <% if pm_slot %>
             <div class="pm_reg">
                 <h3><%= t('.pm_reg') %></h3>
