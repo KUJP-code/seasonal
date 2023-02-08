@@ -1,24 +1,69 @@
 <%= turbo_frame_tag "event_child#{event_child.id}" do %>
     <div class="event_child">
         <div class="child_info">
-            <% if event_child_iteration == 'Changed' %>
-                <p class="order"><%= event_child_iteration %></p>
-            <% else %>
-                <p class="order"><%= event_child_iteration.index + 1 %></p>
-            <% end %>
+            <p class="order"><%= event_child_iteration.index + 1 %></p>
             <p class="name"><%= link_to event_child.name, child_path(event_child) %></p>
             <p class="en"><%= link_to event_child.en_name, child_path(event_child) %></p>
+            <p class="cost">
+                <%= 'xxxxxxyen' %>
+                <%= button_tag t('.breakdown'), class: 'button' %>
+            </p>
         </div>
         
-        <% event.time_slots.morning.each do |slot| %>
+        <div class="secondary_info">
+            <p class="reg_days"><%= event_child.regular_schedule.days %></p>
+            <% if event_child.allergies == true %>
+                <p class="allergy">✓</p>
+            <% else %>
+                <p class="allergy">𐄂</p>
+            <% end %>
+            <p class="allergy_details"><%= event_child.allergy_details %></p>
+            <% if event_child.post_photos == true %>
+                <p class="photo">✓</p>
+            <% else %>
+                <p class="photo">𐄂</p>
+            <% end %>
+        </div>
+
+        <% event_child.time_slots.where(event: event).morning.each do |slot| %>
             <div class="slot">
-                <%= slot.name %>
+                <p class="slot_name"><%= slot.name %></p>
+
                 <div class="attendance">
-                    <% if event_child.registered?(slot) %>
-                        <p>✓</p>
-                    <% else %>
-                        <p>𐄂</p>
-                    <% end %>
+                    <div class="morning">
+                        <h5><%= t('.morning') %></h5>
+                        <% if event_child.registered?(slot) %>
+                            <p>✓</p>
+                        <% else %>
+                            <p>𐄂</p>
+                        <% end %>
+                    </div>
+
+                    <div class="afternoon">
+                        <h5><%= t('.afternoon') %></h5>
+                        <% if event_child.registered?(slot.afternoon_slot) %>
+                            <p>✓</p>
+                        <% else %>
+                            <p>𐄂</p>
+                        <% end %>
+                    </div>
+                </div>
+
+                <div class="details">
+                    <p class="times">
+                        <%= "#{event_child.arrival_time(slot)} ~ #{event_child.departure_time(slot)}" %>
+                        <%= "#{event_child.arrival_time(slot.afternoon_slot)} ~ #{event_child.departure_time(slot.afternoon_slot)}" if slot.afternoon_slot %>
+                    </p>
+                    <p class="meals">
+                        <h5><%= t('.meals') %></h5>
+                        <% if event_child.options.meal.where(optionable: slot).empty? %>
+                            <%= t('.no_meals') %>
+                        <% else %>
+                            <% event_child.options.meal.where(optionable: slot).each do |meal| %>
+                                <%= meal.name %>
+                            <% end %>
+                        <% end %>
+                    </p>
                 </div>
             </div>
         <% end %>

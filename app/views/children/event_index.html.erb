@@ -1,15 +1,22 @@
 <main id="event_children_index">
     <div class="event_child header">
         <div class="child_info header">
-            <p class="order"><%= t('.order') %></p>
+            <p class="order"></p>
             <p class="name"><%= t('.name') %></p>
             <p class="en"><%= t('.en') %></p>
+            <p class="cost"><%= t('.cost') %></p>
         </div>
 
+        <div class="secondary_info">
+            <p class="reg_days"><%= t('.reg_days') %></p>
+            <p class="allergy"><%= t('.allergy') %></p>
+            <p class="allergy_details"><%= t('.allergy_details') %></p>
+            <p class="photo"><%= t('.photo_ok') %></p>
+        </div>
 
         <% @source.time_slots.morning.size.times do |i| %>
             <div class="slot">
-                <%= "Day #{i}" %>
+                <%= "Day #{i + 1}" %>
             </div>
         <% end %>
     </div>

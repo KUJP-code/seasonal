@@ -1,6 +1,9 @@
 #event_children_index {
+    width: 100vw;
+    height: 91vh;
     display: flex;
     flex-flow: column nowrap;
+    align-items: flex-start;
     margin-top: 9vh;
     font-size: var(--sub-heading-size);
 }
@@ -17,35 +20,27 @@
     font-weight: bold;
 }
 
-#event_children_index .slot {
+#event_children_index {
     width: max(200px, 15vw);
 }
 
 #event_children_index .order {
-    width: 5vw;
+    width: 3vw;
 }
 
 #event_children_index .name,
-#event_children_index .en {
-    width: 10vw;
-}
-
-#event_children_index .child_info.header {
-    z-index: 2;
+#event_children_index .en,
+#event_children_index .cost {
+    width: 8vw;
 }
 
 #event_children_index .child_info {
-    position: sticky;
-    left: 0;
-    z-index: 1;
     background-color: darkgray;
     align-self: stretch;
     top: 9vh;
 }
 
 #event_children_index .event_child.header {
-    position: sticky;
-    z-index: 2;
     min-width: 100vw;
     background-color: darkgray;
     width: fit-content;
@@ -69,13 +64,24 @@
     width: fit-content;
 }
 
+#event_children_index .secondary_info {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+
+#event_children_index .secondary_info p {
+    width: 8vw;
+}
+
 #event_children_index .slot {
     width: 15vw;
     display: flex;
     flex-flow: column nowrap;
-    align-items: stretch;
-    padding: 1vw;
-    gap: 1vw;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5vw;
+    gap: 0.5vw;
 }
 
 #event_children_index .slot_name {

@@ -65,12 +65,26 @@ class Child < ApplicationRecord
   scope :attend_friday, -> { joins(:regular_schedule).where('regular_schedule.friday' => true) }
 
   # Model methods
-  def name
-    "#{ja_family_name} #{ja_first_name}"
+  def arrival_time(slot)
+    arr_opt = options.find_by(optionable: slot, category: :arrival)
+    return slot.start_time.strftime('%I:%M%p') if arr_opt.nil?
+
+    (slot.start_time + arr_opt.modifier.minutes).strftime('%I:%M%p')
+  end
+
+  def departure_time(slot)
+    dep_opt = options.find_by(optionable: slot, category: :departure)
+    return slot.end_time.strftime('%I:%M%p') if dep_opt.nil?
+
+    (slot.end_time + dep_opt.modifier.minutes).strftime('%I:%M%p')
   end
 
   def diff_school_events
     events.where.not(school: school).distinct
+  end
+
+  def name
+    "#{ja_family_name} #{ja_first_name}"
   end
 
   def opt_registrations

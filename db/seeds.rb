@@ -434,7 +434,7 @@ Event.where(name: 'Spring School 2023').each do |event|
     },
     {
       name: 'Cute Grass Head',
-      morning_slot: TimeSlot.find_by(name: 'Cherry Blossom Picnic', morning: true, event_id: event.id),
+      morning_slot: TimeSlot.find_by(name: 'Cute Grass Head', morning: true, event_id: event.id),
       start_time: '28 Mar 2023 13:00 JST +09:00',
       end_time: '28 Mar 2023 18:00 JST +09:00',
       description: "Make your own little friend, in case you're ever stranded on a deserted island!",
@@ -511,11 +511,6 @@ Event.where(name: 'Spring School 2023').each do |event|
   event.time_slots.each do |slot|
     slot.options.create!([
       {
-        name: 'Meal',
-        description: 'Top up on energy through the day!',
-        cost: 100
-      },
-      {
         name: 'Arrive 30min early',
         category: :arrival,
         modifier: -30,
@@ -545,6 +540,22 @@ Event.where(name: 'Spring School 2023').each do |event|
       },
     ])
     slot.images.attach(io: File.open("app/assets/images/#{slot.name.downcase.gsub(' ', '_').gsub('_pm', '')}.jpg"), filename: 'logo.jpg', content_type: 'image/jpg')
+  end
+  event.time_slots.morning.each do |m_slot|
+    m_slot.options.create!(
+    name: '昼',
+    description: 'Top up on energy through the day!',
+    category: :meal,
+    cost: 100
+    )
+  end
+  event.time_slots.afternoon.each do |a_slot|
+    a_slot.options.create!(
+    name: '晩',
+    description: 'Top up on energy through the day!',
+    category: :meal,
+    cost: 100
+    )
   end
 end
 
