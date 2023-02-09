@@ -180,6 +180,37 @@ Child.create!(
 
 puts "Created an orphaned child to test adding parent's children with"
 
+PriceList.create!([
+  {
+    name: 'Spring Test',
+    category: :member,
+    courses: {
+      1 => 4_216,
+      5 => 18_700,
+      10 => 33_000,
+      15 => 49_500,
+      20 => 66_000,
+      25 => 82_500,
+      30 => 99_000
+    }
+  },
+  {
+    name: 'Spring Test',
+    category: :non_member,
+    courses: {
+      1 => 6_600,
+      5 => 30_000,
+      10 => 55_000,
+      15 => 80_000,
+      20 => 100_000,
+      25 => 120_000,
+      30 => 140_000
+    }
+  }
+])
+
+puts 'Created a member and non-member price list for testing'
+
 choco_descrip = 'Make chocolate, play chocolate related games and learn English!'
 
 School.all.each do |school|
@@ -188,13 +219,17 @@ School.all.each do |school|
         name: 'Chocolate Day 2024',
         description: choco_descrip,
         start_date: 'February 18 2024',
-        end_date: 'February 18 2024'
+        end_date: 'February 18 2024',
+        member_price_id: 1,
+        non_member_price_id: 2
       },
       {
         name: 'Spring School 2023',
         description: 'See the sakura and celebrate spring with KU!',
         start_date: 'March 16 2023',
-        end_date: 'April 4 2023'
+        end_date: 'April 4 2023',
+        member_price_id: 1,
+        non_member_price_id: 2
       }
     ])
 end

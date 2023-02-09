@@ -95,10 +95,6 @@ RSpec.describe Invoice do
       event_invoices = event.invoices
       expect(event_invoices).to contain_exactly(invoice)
     end
-
-    context 'with courses through event' do
-      # TODO: write tests once I implement courses
-    end
   end
 
   context 'with registrations' do

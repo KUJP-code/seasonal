@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :price_lists
   resources :invoices
   scope '(/:locale)', locale: /ja|en/ do
     devise_for :users, path: 'auth', controllers: {
