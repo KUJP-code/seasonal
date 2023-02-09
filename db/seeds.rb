@@ -562,9 +562,19 @@ end
 puts 'Created options for spring school, and added images to slots'
 
 School.all.each do |school|
+  school.customers.each do |customer|
+    school.events.each do |event|
+      customer.invoices.create!(event: event, total_cost: 10_000)
+    end
+  end
+end
+
+puts 'Created invoices for each parent/event combo at each school'
+
+School.all.each do |school|
   school.time_slots.each do |slot|
     school.children.each do |child|
-      child.registrations.create!(registerable: slot)
+      child.registrations.create!(registerable: slot, invoice: Invoice.find_by(parent: child.parent, event: slot.event))
     end
   end
 end

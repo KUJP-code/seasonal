@@ -107,6 +107,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
     t.index ["school_id"], name: "index_events_on_school_id"
   end
 
+  create_table "invoices", force: :cascade do |t|
+    t.integer "total_cost"
+    t.datetime "billing_date"
+    t.boolean "in_ss", default: false
+    t.boolean "paid", default: false
+    t.boolean "email_sent", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "parent_id", null: false
+    t.bigint "event_id", null: false
+    t.index ["event_id"], name: "index_invoices_on_event_id"
+    t.index ["parent_id"], name: "index_invoices_on_parent_id"
+  end
+
   create_table "managements", force: :cascade do |t|
     t.string "manageable_type", null: false
     t.bigint "manageable_id", null: false
@@ -134,12 +148,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
     t.bigint "child_id", null: false
     t.string "registerable_type", null: false
     t.bigint "registerable_id", null: false
-    t.datetime "billing_date"
-    t.boolean "confirmed", default: false
-    t.boolean "paid", default: false
+    t.bigint "invoice_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["child_id"], name: "index_registrations_on_child_id"
+    t.index ["invoice_id"], name: "index_registrations_on_invoice_id"
     t.index ["registerable_type", "registerable_id"], name: "index_registrations_on_registerable"
   end
 
@@ -221,8 +234,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
   add_foreign_key "children", "schools"
   add_foreign_key "children", "users", column: "parent_id"
   add_foreign_key "events", "schools"
+  add_foreign_key "invoices", "events"
+  add_foreign_key "invoices", "users", column: "parent_id"
   add_foreign_key "managements", "users", column: "manager_id"
   add_foreign_key "registrations", "children"
+  add_foreign_key "registrations", "invoices"
   add_foreign_key "regular_schedules", "children"
   add_foreign_key "schools", "areas"
   add_foreign_key "time_slots", "events"

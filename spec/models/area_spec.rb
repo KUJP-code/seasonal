@@ -104,14 +104,14 @@ RSpec.describe Area do
 
     context 'with registrations' do
       it 'knows its registrations' do
-        registration = create(:child).registrations.create(registerable: time_slot)
+        registration = create(:child).registrations.create(registerable: time_slot, invoice: create(:invoice))
         area_registrations = area.registrations
         expect(area_registrations).to contain_exactly(registration)
       end
 
       it 'knows its option registrations' do
         option = time_slot.options.create(attributes_for(:option))
-        area_opt_reg = option.registrations.create(child: create(:child))
+        area_opt_reg = option.registrations.create(child: create(:child), invoice: create(:invoice))
         area_opt_registrations = area.option_registrations
         expect(area_opt_registrations).to contain_exactly(area_opt_reg)
       end

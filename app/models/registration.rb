@@ -9,6 +9,7 @@ class Registration < ApplicationRecord
   # List associations
   belongs_to :child
   belongs_to :registerable, polymorphic: true
+  belongs_to :invoice
   delegate :event, to: :registerable
   delegate :area, to: :event
   delegate :school, to: :registerable

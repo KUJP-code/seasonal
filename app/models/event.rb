@@ -16,6 +16,7 @@ class Event < ApplicationRecord
   has_many :option_registrations, through: :time_slots
   has_many :registrations, through: :time_slots
   has_many :children, through: :registrations
+  has_many :invoices, dependent: :destroy
 
   has_many_attached :images
 

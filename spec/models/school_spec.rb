@@ -204,14 +204,14 @@ RSpec.describe School do
 
     context 'with registrations' do
       it 'knows its time slot registrations' do
-        registration = create(:child).registrations.create(registerable: time_slot)
+        registration = create(:child).registrations.create(registerable: time_slot, invoice: create(:invoice))
         school_registrations = school.registrations
         expect(school_registrations).to contain_exactly(registration)
       end
 
       it 'knows its option registrations' do
         option = time_slot.options.create(attributes_for(:option))
-        school_opt_reg = option.registrations.create(child: create(:child))
+        school_opt_reg = option.registrations.create(child: create(:child), invoice: create(:invoice))
         school_opt_registrations = school.option_registrations
         expect(school_opt_registrations).to contain_exactly(school_opt_reg)
       end

@@ -231,42 +231,42 @@ RSpec.describe Child do
     let(:option) { time_slot.options.create(attributes_for(:option)) }
 
     it 'knows its registered time slots' do
-      slot_reg = time_slot.registrations.create(attributes_for(:registration))
+      slot_reg = time_slot.registrations.create(attributes_for(:registration, invoice: create(:invoice)))
       regsitered_slot = slot_reg.registerable
       expect(regsitered_slot).to eq time_slot
     end
 
     it 'knows its registered options' do
-      opt_reg = option.registrations.create(attributes_for(:registration))
+      opt_reg = option.registrations.create(attributes_for(:registration, invoice: create(:invoice)))
       registered_opt = opt_reg.registerable
       expect(registered_opt).to eq option
     end
 
     it 'deletes its registrations when deleted' do
-      time_slot.registrations.create(attributes_for(:registration, child: child))
-      option.registrations.create(attributes_for(:registration, child: child))
+      child.registrations.create!(registerable: time_slot, invoice: create(:invoice))
+      child.registrations.create!(registerable: option, invoice: create(:invoice))
       expect { child.destroy }.to \
         change(Registration, :count)
         .by(-2)
     end
 
     it 'deletes option registrations for that slot when slot registration is deleted' do
-      slot_reg = time_slot.registrations.create(attributes_for(:registration, child: child))
-      option.registrations.create(attributes_for(:registration, child: child))
+      slot_reg = child.registrations.create!(registerable: time_slot, invoice: create(:invoice))
+      child.registrations.create!(registerable: option, invoice: create(:invoice))
       expect { slot_reg.destroy }.to \
         change(Registration, :count)
         .by(-2)
     end
 
     it "knows if it's registered for a registerable" do
-      reg = child.registrations.create(registerable: time_slot)
+      reg = child.registrations.create(registerable: time_slot, invoice: create(:invoice))
       registered = child.registered?(time_slot)
       expect(registered).to eq reg
     end
 
     context 'with time_slots through registrations' do
       it "knows which time slots it's attending" do
-        time_slot.registrations.create(child: child)
+        time_slot.registrations.create(child: child, invoice: create(:invoice))
         attending_list = child.time_slots
         expect(attending_list).to include(time_slot)
       end
@@ -274,7 +274,7 @@ RSpec.describe Child do
 
     context 'with events through time slots' do
       it "knows which events it's attending" do
-        child.registrations.create(registerable: time_slot)
+        child.registrations.create(registerable: time_slot, invoice: create(:invoice))
         child_events = child.events
         expect(child_events).to include(event)
       end
@@ -283,7 +283,7 @@ RSpec.describe Child do
       it "knows which events it's attending at different schools" do
         diff_school_event = create(:event)
         diff_school_slot = create(:time_slot, event: diff_school_event)
-        diff_school_slot.registrations.create(child: child)
+        diff_school_slot.registrations.create(child: child, invoice: create(:invoice))
         diff_school_events = child.diff_school_events
         expect(diff_school_events).to contain_exactly(diff_school_event)
       end
@@ -293,13 +293,13 @@ RSpec.describe Child do
       subject(:option) { create(:option) }
 
       it 'knows its registered options' do
-        child.registrations.create(registerable: option)
+        child.registrations.create(registerable: option, invoice: create(:invoice))
         child_options = child.options
         expect(child_options).to include(option)
       end
 
       it "doesn't destroy options when destroyed" do
-        child.registrations.create(registerable: option)
+        child.registrations.create(registerable: option, invoice: create(:invoice))
         expect { child.destroy }.not_to change(Option, :count)
       end
     end

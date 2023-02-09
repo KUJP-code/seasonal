@@ -10,13 +10,13 @@ RSpec.describe Registration do
 
   context 'when valid' do
     it 'saves when registering for time slot' do
-      slot_registration = child.registrations.build(registerable: time_slot)
+      slot_registration = child.registrations.build(registerable: time_slot, invoice: create(:invoice))
       valid = slot_registration.save!
       expect(valid).to be true
     end
 
     it 'saves when registering for option' do
-      opt_registration = child.registrations.build(registerable: option)
+      opt_registration = child.registrations.build(registerable: option, invoice: create(:invoice))
       valid = opt_registration.save!
       expect(valid).to be true
     end
@@ -96,8 +96,8 @@ RSpec.describe Registration do
 
   context 'with scopes' do
     before do
-      child.registrations.create(registerable: time_slot)
-      child.registrations.create(registerable: option)
+      child.registrations.create(registerable: time_slot, invoice: create(:invoice))
+      child.registrations.create(registerable: option, invoice: create(:invoice))
     end
 
     it 'knows which registrations are for time slots' do

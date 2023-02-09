@@ -136,7 +136,7 @@ RSpec.describe TimeSlot do
 
   context 'with registrations' do
     let(:child) { create(:child) }
-    let(:registration) { time_slot.registrations.create(child: child) }
+    let(:registration) { time_slot.registrations.create(child: child, invoice: create(:invoice)) }
 
     it 'knows its registrations' do
       slot_registrations = time_slot.registrations
@@ -186,7 +186,7 @@ RSpec.describe TimeSlot do
     end
 
     context 'with registered options' do
-      let(:option_registration) { option.registrations.create(child: create(:child)) }
+      let(:option_registration) { option.registrations.create(child: create(:child), invoice: create(:invoice)) }
 
       it 'knows its registered options' do
         option_registrations = time_slot.option_registrations

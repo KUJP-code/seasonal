@@ -110,14 +110,14 @@ RSpec.describe Event do
 
     context 'with registrations' do
       it 'knows its time slot registrations' do
-        registration = slot.registrations.create(child: create(:child))
+        registration = slot.registrations.create(child: create(:child), invoice: create(:invoice))
         event_registrations = event.registrations
         expect(event_registrations).to contain_exactly(registration)
       end
 
       it 'knows its option registrations' do
         option = slot.options.create(attributes_for(:option))
-        event_opt_reg = option.registrations.create(child: create(:child))
+        event_opt_reg = option.registrations.create(child: create(:child), invoice: create(:invoice))
         event_opt_registrations = event.option_registrations
         expect(event_opt_registrations).to contain_exactly(event_opt_reg)
       end
@@ -126,14 +126,14 @@ RSpec.describe Event do
     context 'with children through registrations' do
       it 'knows which children are attending' do
         child = create(:child, school: event.school)
-        child.registrations.create(registerable: slot)
+        child.registrations.create(registerable: slot, invoice: create(:invoice))
         event_children = event.children
         expect(event_children).to include(child)
       end
 
       it 'knows which attending children are from other schools' do
         diff_school_child = create(:child)
-        diff_school_child.registrations.create(registerable: slot)
+        diff_school_child.registrations.create(registerable: slot, invoice: create(:invoice))
         foreign_kids = event.diff_school_children
         expect(foreign_kids).to contain_exactly(diff_school_child)
       end

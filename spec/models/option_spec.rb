@@ -54,7 +54,7 @@ RSpec.describe Option do
   end
 
   context 'with registrations' do
-    subject(:op_reg) { create(:child).registrations.create(registerable: option) }
+    subject(:op_reg) { create(:child).registrations.create(registerable: option, invoice: create(:invoice)) }
 
     it 'knows its registrations' do
       option_registrations = option.registrations
@@ -72,7 +72,7 @@ RSpec.describe Option do
       let(:child) { create(:child) }
 
       it 'knows its children' do
-        child.registrations.create(registerable: option)
+        child.registrations.create(registerable: option, invoice: create(:invoice))
         option_children = option.children
         expect(option_children).to include(child)
       end

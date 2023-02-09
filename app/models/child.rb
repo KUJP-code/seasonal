@@ -18,6 +18,7 @@ class Child < ApplicationRecord
                      source: :registerable,
                      source_type: 'Option'
   has_many :events, -> { distinct }, through: :time_slots
+  has_many :invoices, through: :parent
 
   # Track changes with PaperTrail
   has_paper_trail
