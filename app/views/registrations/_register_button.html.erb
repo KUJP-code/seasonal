@@ -1,5 +1,4 @@
 <%= form_with model: Registration.new do |f| %>
-    <%= f.hidden_field :cost, value: registerable.cost unless registerable.class.name == 'TimeSlot' %>
     <%= f.hidden_field :child_id, value: child.id %>
     <%= f.hidden_field :registerable_id, value: registerable.id %>
     <%= f.hidden_field :registerable_type, value: registerable.class.name %>
