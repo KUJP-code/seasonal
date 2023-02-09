@@ -37,7 +37,7 @@ class User < ApplicationRecord
   has_many :registered_options, through: :registrations,
                                 source: :registerable,
                                 source_type: 'Option'
-  has_many :events, -> { distinct }, through: :time_slots
+  has_many :events, -> { order(start_date: :asc).distinct }, through: :time_slots
   has_many :invoices, dependent: :destroy,
                       foreign_key: :parent_id,
                       inverse_of: :parent

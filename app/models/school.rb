@@ -11,7 +11,8 @@ class School < ApplicationRecord
   has_many :users, dependent: :restrict_with_exception
   delegate :customers, to: :users
   has_many :children, dependent: nil
-  has_many :events, dependent: :destroy
+  has_many :events, -> { order(start_date: :asc) }, dependent: :destroy,
+                                                    inverse_of: :school
   has_many :time_slots, through: :events
   has_many :options, through: :time_slots
   has_many :option_registrations, through: :time_slots
