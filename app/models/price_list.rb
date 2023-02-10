@@ -11,10 +11,6 @@ class PriceList < ApplicationRecord
                                foreign_key: :non_member_price_id,
                                inverse_of: :non_member_price
 
-  enum :category, member: 0,
-                  non_member: 1,
-                  default: :non_member
-
   validates :courses, presence: true
 
   # Public methods

@@ -183,7 +183,6 @@ puts "Created an orphaned child to test adding parent's children with"
 PriceList.create!([
   {
     name: 'Spring Test',
-    category: :member,
     courses: {
       1 => 4_216,
       5 => 18_700,
@@ -196,7 +195,6 @@ PriceList.create!([
   },
   {
     name: 'Spring Test',
-    category: :non_member,
     courses: {
       1 => 6_600,
       5 => 30_000,
