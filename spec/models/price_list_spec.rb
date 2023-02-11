@@ -29,7 +29,6 @@ RSpec.describe PriceList do
   end
 
   context 'with events' do
-    let(:non_member_price) { create(:non_member_price) }
     let(:events) { create_list(:event, 2, member_price_id: member_price.id) }
 
     it 'knows its events' do

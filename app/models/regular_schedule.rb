@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Controls data for a child's usual schedule
 class RegularSchedule < ApplicationRecord
   belongs_to :child
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Allows my additional fields for sign_ups
 module Users
+  # Allows my additional fields for sign_ups
   class RegistrationsController < Devise::RegistrationsController
     before_action :configure_sign_up_params, only: [:create]
     # before_action :configure_account_update_params, only: [:update]

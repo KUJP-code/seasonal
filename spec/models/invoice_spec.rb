@@ -3,7 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Invoice do
-  subject(:invoice) { create(:invoice) }
+  subject(:invoice) { create(:invoice, event: event) }
+
+  let(:event) { create(:event, member_price: create(:member_price), non_member_price: create(:non_member_price)) }
 
   context 'when valid' do
     it 'saves' do
@@ -23,12 +25,6 @@ RSpec.describe Invoice do
     it 'no parent' do
       no_parent = build(:invoice, parent: nil)
       valid = no_parent.save
-      expect(valid).to be false
-    end
-
-    it 'no total cost' do
-      no_cost = build(:invoice, total_cost: nil)
-      valid = no_cost.save
       expect(valid).to be false
     end
 
@@ -108,6 +104,103 @@ RSpec.describe Invoice do
       reg = create(:option_registration, invoice: invoice)
       reg_invoice = reg.invoice
       expect(reg_invoice).to eq invoice
+    end
+  end
+
+  context 'when calculating total cost' do
+    let(:slot) { create(:time_slot, event: event) }
+    let(:parent) { create(:customer_user) }
+    let(:member_child) { create(:child, category: :internal) }
+    let(:non_member_child) { create(:child, category: :external) }
+
+    # Simplify creating registrations for member/non_member kids
+    def register(member_num, non_member_num)
+      create_list(:slot_registration, member_num, invoice: invoice, registerable: slot, child: member_child)
+      create_list(:slot_registration, non_member_num, invoice: invoice, registerable: slot, child: non_member_child)
+    end
+
+    context 'when for member child' do
+      before do
+        invoice.update!(parent: parent)
+        parent.children << member_child
+      end
+
+      it 'calculates cost when breakpoint is matched' do
+        register(5, 0)
+        invoice.calc_cost
+        total_cost = invoice.total_cost
+        expect(total_cost).to be 18_700
+      end
+
+      it 'calculates cost when not on breakpoint' do
+        register(7, 0)
+        invoice.calc_cost
+        total_cost = invoice.total_cost
+        expect(total_cost).to be 27_132
+      end
+
+      it 'calculates registrations much larger than course table anticipates' do
+        register(69, 0)
+        invoice.calc_cost
+        total_cost = invoice.total_cost
+        expect(total_cost).to be 233_564
+      end
+    end
+
+    context 'when for non-member child' do
+      before do
+        invoice.update!(parent: parent)
+        parent.children << non_member_child
+      end
+
+      it 'calculates cost when breakpoint is matched' do
+        register(0, 5)
+        invoice.calc_cost
+        total_cost = invoice.total_cost
+        expect(total_cost).to be 30_000
+      end
+
+      it 'calculates cost when not on breakpoint' do
+        register(0, 7)
+        invoice.calc_cost
+        total_cost = invoice.total_cost
+        expect(total_cost).to be 43_200
+      end
+
+      it 'calculates registrations much larger than course table anticipates' do
+        register(0, 69)
+        invoice.calc_cost
+        total_cost = invoice.total_cost
+        expect(total_cost).to be 336_400
+      end
+    end
+
+    context 'when for both member and non-member child' do
+      before do
+        invoice.update!(parent: parent)
+        parent.update!(children: [member_child, non_member_child])
+      end
+
+      it 'calculates cost when breakpoint is matched' do
+        register(5, 5)
+        invoice.calc_cost
+        total_cost = invoice.total_cost
+        expect(total_cost).to be 48_700
+      end
+
+      it 'calculates cost when not on breakpoint' do
+        register(7, 7)
+        invoice.calc_cost
+        total_cost = invoice.total_cost
+        expect(total_cost).to be 70_332
+      end
+
+      it 'calculates registrations much larger than course table anticipates' do
+        register(69, 69)
+        invoice.calc_cost
+        total_cost = invoice.total_cost
+        expect(total_cost).to be 569_964
+      end
     end
   end
 end

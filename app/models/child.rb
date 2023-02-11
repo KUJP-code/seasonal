@@ -37,9 +37,13 @@ class Child < ApplicationRecord
                tech_up: 10
 
   # Map category int in table to a category
+  # TODO: check this being different from db default is fine.
+  # Logic for them being different was for direct imports from SS we want
+  # internal default, but when creating in app we want external default
   enum :category, internal: 0,
                   reservation: 1,
-                  external: 2
+                  external: 2,
+                  default: :external
 
   # Validations
   validates :ja_first_name, :ja_family_name, :katakana_name, :en_name, presence: true
@@ -82,6 +86,13 @@ class Child < ApplicationRecord
 
   def diff_school_events
     events.where.not(school: school).distinct
+  end
+
+  # Checks which price list the child uses
+  def member?
+    return false if category == 'external'
+
+    true
   end
 
   def name
