@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :option do
     name { Faker::Book.title }
     description { Faker::Lorem.sentence(word_count: 10) }
-    cost { 4000 }
+    cost { 1000 }
     optionable { create(:time_slot) }
   end
 end

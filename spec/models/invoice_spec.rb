@@ -108,15 +108,22 @@ RSpec.describe Invoice do
   end
 
   context 'when calculating total cost' do
-    let(:slot) { create(:time_slot, event: event) }
     let(:parent) { create(:customer_user) }
     let(:member_child) { create(:child, category: :internal) }
     let(:non_member_child) { create(:child, category: :external) }
 
     # Simplify creating registrations for member/non_member kids
-    def register(member_num, non_member_num)
-      create_list(:slot_registration, member_num, invoice: invoice, registerable: slot, child: member_child)
-      create_list(:slot_registration, non_member_num, invoice: invoice, registerable: slot, child: non_member_child)
+    def register(type, member_num, non_member_num)
+      case type
+      when :slot
+        slot = create(:time_slot)
+        create_list(:slot_registration, member_num, invoice: invoice, registerable: slot, child: member_child)
+        create_list(:slot_registration, non_member_num, invoice: invoice, registerable: slot, child: non_member_child)
+      when :option
+        option = create(:option)
+        create_list(:option_registration, member_num + non_member_num,
+                    invoice: invoice, registerable: option, child: non_member_child)
+      end
     end
 
     context 'when for member child' do
@@ -126,21 +133,21 @@ RSpec.describe Invoice do
       end
 
       it 'calculates cost when breakpoint is matched' do
-        register(5, 0)
+        register(:slot, 5, 0)
         invoice.calc_cost
         total_cost = invoice.total_cost
         expect(total_cost).to be 18_700
       end
 
       it 'calculates cost when not on breakpoint' do
-        register(7, 0)
+        register(:slot, 7, 0)
         invoice.calc_cost
         total_cost = invoice.total_cost
         expect(total_cost).to be 27_132
       end
 
       it 'calculates registrations much larger than course table anticipates' do
-        register(69, 0)
+        register(:slot, 69, 0)
         invoice.calc_cost
         total_cost = invoice.total_cost
         expect(total_cost).to be 233_564
@@ -154,21 +161,21 @@ RSpec.describe Invoice do
       end
 
       it 'calculates cost when breakpoint is matched' do
-        register(0, 5)
+        register(:slot, 0, 5)
         invoice.calc_cost
         total_cost = invoice.total_cost
         expect(total_cost).to be 30_000
       end
 
       it 'calculates cost when not on breakpoint' do
-        register(0, 7)
+        register(:slot, 0, 7)
         invoice.calc_cost
         total_cost = invoice.total_cost
         expect(total_cost).to be 43_200
       end
 
       it 'calculates registrations much larger than course table anticipates' do
-        register(0, 69)
+        register(:slot, 0, 69)
         invoice.calc_cost
         total_cost = invoice.total_cost
         expect(total_cost).to be 336_400
@@ -182,24 +189,66 @@ RSpec.describe Invoice do
       end
 
       it 'calculates cost when breakpoint is matched' do
-        register(5, 5)
+        register(:slot, 5, 5)
         invoice.calc_cost
         total_cost = invoice.total_cost
         expect(total_cost).to be 48_700
       end
 
       it 'calculates cost when not on breakpoint' do
-        register(7, 7)
+        register(:slot, 7, 7)
         invoice.calc_cost
         total_cost = invoice.total_cost
         expect(total_cost).to be 70_332
       end
 
       it 'calculates registrations much larger than course table anticipates' do
-        register(69, 69)
+        register(:slot, 69, 69)
         invoice.calc_cost
         total_cost = invoice.total_cost
         expect(total_cost).to be 569_964
+      end
+    end
+
+    context 'when options are selected' do
+      before do
+        invoice.update!(parent: parent)
+        parent.children << non_member_child
+      end
+
+      it 'includes options from member child' do
+        register(:slot, 0, 5)
+        register(:option, 10, 0)
+        invoice.calc_cost
+        total_cost = invoice.total_cost
+        expect(total_cost).to be 40_000
+      end
+
+      it 'includes options from non member child' do
+        register(:slot, 0, 5)
+        register(:option, 0, 7)
+        invoice.calc_cost
+        total_cost = invoice.total_cost
+        expect(total_cost).to be 37_000
+      end
+
+      it 'includes options from both children' do
+        register(:slot, 0, 5)
+        register(:option, 5, 7)
+        invoice.calc_cost
+        total_cost = invoice.total_cost
+        expect(total_cost).to be 42_000
+      end
+    end
+
+    context 'when adjustments are applied' do
+      before do
+        invoice.update!(parent: parent)
+        parent.children << non_member_child
+      end
+
+      it 'includes adjustments in the calculation' do
+        
       end
     end
   end

@@ -16,30 +16,40 @@ class Invoice < ApplicationRecord
     course_cost = parent.children.reduce(0) do |memo, child|
       memo + child_cost(child)
     end
-    update_cost(course_cost)
+    option_cost = opt_regs.reduce(0) { |sum, reg| reg.registerable.cost + sum }
+    update_cost(course_cost + option_cost)
+  end
+
+  def opt_regs
+    registrations.where(registerable_type: 'Option')
+  end
+
+  def slot_regs
+    registrations.where(registerable_type: 'TimeSlot')
   end
 
   private
 
+  # Calculates cost per child
   def child_cost(child)
     courses = if child.member?
                 event.member_price.courses
               else
                 event.non_member_price.courses
               end
-    num_regs = registrations.where(child: child).size.to_s
+    num_regs = slot_regs.where(child: child).size.to_s
     return courses[num_regs] unless courses[num_regs].nil?
 
-    find_cheapest(num_regs.to_i, courses)
+    best_course(num_regs.to_i, courses)
   end
 
   # Recursively finds the next largest course for the number of registrations
-  def find_cheapest(num_regs, courses)
+  def best_course(num_regs, courses)
     max_course = courses.keys.last
-    return courses[max_course] + find_cheapest(num_regs - max_course.to_i, courses) if num_regs > max_course.to_i + 5
+    return courses[max_course] + best_course(num_regs - max_course.to_i, courses) if num_regs > max_course.to_i + 5
 
     key = nearest_five(num_regs)
-    return courses[key.to_s] + find_cheapest(num_regs - key, courses) unless num_regs < 5
+    return courses[key.to_s] + best_course(num_regs - key, courses) unless num_regs < 5
 
     courses['1'] * num_regs
   end
