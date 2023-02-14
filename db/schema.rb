@@ -45,11 +45,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
   create_table "adjustments", force: :cascade do |t|
     t.integer "change"
     t.string "reason"
-    t.boolean "email_sent"
-    t.bigint "registration_id", null: false
+    t.bigint "invoice_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["registration_id"], name: "index_adjustments_on_registration_id"
+    t.index ["invoice_id"], name: "index_adjustments_on_invoice_id"
   end
 
   create_table "areas", force: :cascade do |t|
@@ -242,7 +241,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "adjustments", "registrations"
+  add_foreign_key "adjustments", "invoices"
   add_foreign_key "children", "schools"
   add_foreign_key "children", "users", column: "parent_id"
   add_foreign_key "events", "price_lists", column: "member_price_id"

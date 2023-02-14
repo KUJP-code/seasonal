@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :adjustment do
-    change { -2000 }
+    invoice
+    change { -5000 }
     reason { Faker::Lorem.sentence(word_count: 10) }
-    email_sent { false }
   end
 end

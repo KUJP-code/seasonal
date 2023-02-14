@@ -597,7 +597,7 @@ puts 'Created options for spring school, and added images to slots'
 School.all.each do |school|
   school.customers.each do |customer|
     school.events.each do |event|
-      customer.invoices.create!(event: event, total_cost: 10_000)
+      invoice = customer.invoices.create!(event: event, total_cost: 0)
     end
   end
 end
@@ -614,6 +614,10 @@ end
 
 puts 'Registered children for each time slot at each event at their school'
 
+Invoice.all.each { |invoice| invoice.calc_cost }
+
+puts 'Calculated invoice costs now that children are registered'
+
 Child.all.each do |child|
   child.create_regular_schedule(
     monday: [true, false].sample,
@@ -626,14 +630,14 @@ end
 
 puts 'Created a random regular schedule for each child'
 
-# Event.all.each do |event|
-#   event.registrations.last.adjustments.create!(
-#     change: -3000,
-#     reason: 'testing adjustments from seed file'    
-#   )
-# end
+User.all.customers.each do |customer|
+  customer.invoices.last.adjustments.create!(
+    change: -3000,
+    reason: 'Testing adjustments from seed file'    
+  )
+end
 
-# puts 'Applied an adjustment to the latest registration for each event'
+puts 'Applied an adjustment to the last invoice for each user'
 
 # TimeSlot.all.each do |slot|
 #   slot.coupons.create(

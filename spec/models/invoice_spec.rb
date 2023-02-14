@@ -241,15 +241,31 @@ RSpec.describe Invoice do
       end
     end
 
-    context 'when adjustments are applied' do
+    context 'when adjustments are present' do
       before do
         invoice.update!(parent: parent)
         parent.children << non_member_child
       end
 
-      it 'includes adjustments in the calculation' do
-        
+      it 'invoice knows its adjustments' do
+        adjustment = create(:adjustment, invoice: invoice)
+        invoice_adjustments = invoice.adjustments
+        expect(invoice_adjustments).to contain_exactly(adjustment)
       end
+
+      it 'includes adjustments in the calculation' do
+        register(:slot, 0, 5)
+        create(:adjustment, invoice: invoice, change: -5_000)
+        invoice.calc_cost
+        cost = invoice.total_cost
+        expect(cost).to be 25_000
+      end
+    end
+  end
+
+  context 'when generating cost breakdown' do
+    xit 'creates a human readable breakdown' do
+      
     end
   end
 end

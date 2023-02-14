@@ -8,6 +8,10 @@ class Invoice < ApplicationRecord
 
   has_many :registrations, dependent: :destroy
   accepts_nested_attributes_for :registrations
+  has_many :adjustments, dependent: :destroy
+
+  # Track changes with Paper Trail
+  has_paper_trail
 
   # Validations
   validates :total_cost, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
@@ -17,7 +21,8 @@ class Invoice < ApplicationRecord
       memo + child_cost(child)
     end
     option_cost = opt_regs.reduce(0) { |sum, reg| reg.registerable.cost + sum }
-    update_cost(course_cost + option_cost)
+    adjustment_change = adjustments.reduce(0) { |sum, adj| adj.change + sum }
+    update_cost(course_cost + option_cost + adjustment_change)
   end
 
   def opt_regs
