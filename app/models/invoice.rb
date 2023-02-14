@@ -17,12 +17,47 @@ class Invoice < ApplicationRecord
   validates :total_cost, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   def calc_cost
-    course_cost = parent.children.reduce(0) do |memo, child|
-      memo + child_cost(child)
+    # The plus is necessary to make sure it's not a frozen string
+    @breakdown = +"Invoice##{id}\nCustomer: #{parent.name}\nEvent: #{event.name}\n"
+
+    children_cost = parent.children.reduce(0) do |memo, child|
+      reg_cost = child_cost(child)
+
+      child_regs = slot_regs.where(child: child)
+      @breakdown << "Your course cost for #{child.name} is #{reg_cost}yen for #{child_regs.size} registrations.\n"
+
+      @breakdown << "Event Options:\n"
+      event.options.each do |e_opt|
+        @breakdown << " - #{e_opt.name} for #{e_opt.cost}\n" if child.registered?(e_opt)
+      end
+
+      @breakdown << "Registered for:\n"
+
+      child_regs.each do |reg|
+        @breakdown << "- #{reg.registerable.name}\n"
+
+        child_opt_regs = opt_regs.where(child: child).where.not(registerable: event.options)
+        next if child_opt_regs.size.zero?
+
+        @breakdown << " Options:\n"
+        child_opt_regs.each do |opt_reg|
+          opt = opt_reg.registerable
+          @breakdown << "   - #{opt.name} for #{opt.cost}yen\n"
+        end
+      end
+
+      opt_cost = opt_regs.where(child: child).reduce(0) { |sum, reg| reg.registerable.cost + sum }
+
+      memo + reg_cost + opt_cost
     end
-    option_cost = opt_regs.reduce(0) { |sum, reg| reg.registerable.cost + sum }
     adjustment_change = adjustments.reduce(0) { |sum, adj| adj.change + sum }
-    update_cost(course_cost + option_cost + adjustment_change)
+    adjustments.each do |adjustment|
+      @breakdown << "An adjustment of #{adjustment.change} was applied because #{adjustment.reason}\n"
+    end
+
+    calculated_cost = children_cost + adjustment_change
+    @breakdown << "Your final total is #{calculated_cost}"
+    update_cost(calculated_cost)
   end
 
   def opt_regs
@@ -67,6 +102,7 @@ class Invoice < ApplicationRecord
 
   def update_cost(new_cost)
     self.total_cost = new_cost
+    self.summary = @breakdown
     save
   end
 end

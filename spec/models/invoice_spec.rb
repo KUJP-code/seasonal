@@ -114,13 +114,14 @@ RSpec.describe Invoice do
 
     # Simplify creating registrations for member/non_member kids
     def register(type, member_num, non_member_num)
+      slot = create(:time_slot)
+
       case type
       when :slot
-        slot = create(:time_slot)
         create_list(:slot_registration, member_num, invoice: invoice, registerable: slot, child: member_child)
         create_list(:slot_registration, non_member_num, invoice: invoice, registerable: slot, child: non_member_child)
       when :option
-        option = create(:option)
+        option = create(:option, optionable: slot)
         create_list(:option_registration, member_num + non_member_num,
                     invoice: invoice, registerable: option, child: non_member_child)
       end
@@ -261,11 +262,56 @@ RSpec.describe Invoice do
         expect(cost).to be 25_000
       end
     end
-  end
 
-  context 'when generating cost breakdown' do
-    xit 'creates a human readable breakdown' do
-      
+    context 'when generating cost breakdown' do
+      let(:time_slot) { create(:time_slot) }
+
+      before do
+        invoice.update!(parent: parent)
+        parent.update!(children: [member_child, non_member_child])
+        e_opt = create(:option, name: 'Test', cost: 1000)
+        event.options << e_opt
+        invoice.registrations.create!(child: member_child, registerable: time_slot)
+        invoice.registrations.create!(child: member_child, registerable: create(:option, optionable: time_slot))
+        invoice.registrations.create!(child: member_child, registerable: e_opt)
+        invoice.calc_cost
+      end
+
+      it 'gives invoice number, customer name and event' do
+        summary = invoice.summary
+        key_info = "Invoice##{invoice.id}\nCustomer: #{parent.name}\nEvent: #{event.name}\n"
+        expect(summary).to include(key_info)
+      end
+
+      it 'lists event options' do
+        summary = invoice.summary
+        e_opt_info = " - Test for 1000\n"
+        expect(summary).to include(e_opt_info)
+      end
+
+      it 'gives cost per child' do
+        summary = invoice.summary
+        child_cost_info = "Your course cost for #{member_child.name} is 4216yen for 1 registrations.\n"
+        expect(summary).to include(child_cost_info)
+      end
+
+      it 'lists registered slots' do
+        summary = invoice.summary
+        slot_list = "Registered for:\n- #{time_slot.name}\n"
+        expect(summary).to include(slot_list)
+      end
+
+      it 'lists registered slot options' do
+        summary = invoice.summary
+        slot_option_info = "   - #{time_slot.options.first.name} for #{time_slot.options.first.cost}yen\n"
+        expect(summary).to include(slot_option_info)
+      end
+
+      it 'gives a total cost' do
+        summary = invoice.summary
+        final_cost = 'Your final total is 6216'
+        expect(summary).to include(final_cost)
+      end
     end
   end
 end
