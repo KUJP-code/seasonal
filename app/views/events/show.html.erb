@@ -1,35 +1,21 @@
-<main id="event_show" data-controller="cart slot_select">
-    <div class="slot_selection">
-    <h2><%= t('.slot_select') %></h2>
-        <% @slots.morning.each do |slot| %>
-                <% if current_user.children.any? { |child| child.registered?(slot) } %>
-                    <%= link_to '', class: 'slot_link attending' do %>
-                        <%= image_tag(url_for(slot.images.first)) unless slot.images.empty? %>
-                        <h2><%= slot.name if slot.images.empty? %></h2>
-                    <% end %>
-                <% else %>
-                    <%= link_to '', class: 'slot_link not_attending' do %>
-                        <%= image_tag(url_for(slot.images.first)) unless slot.images.empty? %>
-                        <h2><%= slot.name if slot.images.empty? %></h2>
-                    <% end %>
-                <% end %>
-        <% end %>
-    </div>
+<main id="event_show">
     
-    <h2><%= t('.upcoming_slots', event: @event.name) %></h2>
-    <h3><%= link_to t('.all_slots', event: @event.name), time_slots_path(id: @event.id), class: 'button' %></h3>
-    <div id="time_slot_container">
-        <%= render partial: 'time_slots/time_slot', collection: @registered_slots, locals: { children: @children }%>
-    </div>
-
-    <div id="price_summary">
+    <%= render partial: 'time_slots/add_slot', collection: @event_slots %>
+    
+    <div id="price_bar">
         <%# TODO: Leave the details for later, just a scaffold %>
 
         <%= button_tag t('.cost_breakdown'), class: 'button' %>
         <h2 id="total_cost">Cost goes here</h2>
         
-        <%= form_with model: @event do |f| %>
-            <%= f.submit t('.confirm_registrations'), class: 'button' %>
+        <% if @invoice.nil? %>
+            <%= form_with model: Invoice.new do |f| %>
+                <%= f.submit class: 'button' %>
+            <% end %>
+        <% else %>
+            <%= form_with model: @invoice do |f| %>
+                <%= f.submit class: 'button' %>
+            <% end %>
         <% end %>
     </div>
 </main>

@@ -6,7 +6,6 @@
     align-items: center;
     border-radius: 1vw;
     padding: 1vw;
-    width: 88vw;
     box-shadow: var(--container-shadow);
     background: linear-gradient(var(--ku-orange), var(--ku-dark-accent));
     font-size: var(--sub-heading-size);
@@ -26,9 +25,4 @@
 
 .time_slot .slot_details {
     width: 45%;
-}
-
-.time_slot img {
-    width: 100%;
-    border-radius: 2vw;
 }
