@@ -23,7 +23,7 @@ class TimeSlot < ApplicationRecord
                            dependent: :destroy,
                            inverse_of: :morning_slot
 
-  has_many_attached :images
+  has_one_attached :image
 
   # Validations
   validates :name, :start_time, :end_time, :description, :registration_deadline, presence: true

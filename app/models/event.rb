@@ -22,7 +22,7 @@ class Event < ApplicationRecord
   has_many :children, through: :registrations
   has_many :invoices, dependent: :destroy
 
-  has_many_attached :images
+  has_one_attached :image
 
   validates :name, :description, :start_date, :end_date, presence: true
 
