@@ -23,9 +23,6 @@ class Invoice < ApplicationRecord
     adjustments = calc_adjustments
 
     calculated_cost = course_cost + adjustments
-
-    puts @breakdown
-
     update_cost(calculated_cost)
   end
 
@@ -102,7 +99,7 @@ class Invoice < ApplicationRecord
   def pointless_price(num_regs, courses)
     days = children.find_by(level: :kindy).full_days(event)
     connection_cost = days * (courses['1'] + 184)
-    @breakdown << "スポット#{days}回(13:30~18:30): #{connection_cost}yen\n"
+    @breakdown << "スポット1回(13:30~18:30) x #{days}: #{connection_cost}yen\n"
     connection_cost + spot_use(num_regs - days, courses)
   end
 
