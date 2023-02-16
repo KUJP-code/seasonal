@@ -45,9 +45,9 @@ class Invoice < ApplicationRecord
     @breakdown << "- #{course}回コース: #{cost}円\n" unless cost.nil?
     return cost + best_price(num_regs - course, courses) unless num_regs < 5
 
-    spot_cost = courses['1'] * num_regs
-    @breakdown << "スポット1回 x #{num_regs}: #{spot_cost}円\n" unless spot_cost.zero?
-    spot_cost
+    return spot_use(num_regs, courses) unless niche_case?
+
+    pointless_price(num_regs, courses) if niche_case?
   end
 
   def calc_adjustments
@@ -62,8 +62,7 @@ class Invoice < ApplicationRecord
                   else
                     mixed_children
                   end
-    course_cost += pointless_price if niche_case?
-    @breakdown.prepend("Total course cost is #{course_cost} for #{slot_regs.size} registrations\n")
+    @breakdown.prepend("Total course cost is #{course_cost}yen for #{slot_regs.size} registrations\n")
     course_cost
   end
 
@@ -100,15 +99,21 @@ class Invoice < ApplicationRecord
 
   # Calculates how many times we need to apply the dumb 184 yen increase
   # This does not deal with the even less likely case of there being two kindy kids registered for one full day each
-  def pointless_price
+  def pointless_price(num_regs, courses)
     days = children.find_by(level: :kindy).full_days(event)
-    connection_cost = days * 184
+    connection_cost = days * (courses['1'] + 184)
     @breakdown << "スポット#{days}回(13:30~18:30): #{connection_cost}yen\n"
-    connection_cost
+    connection_cost + spot_use(num_regs - days, courses)
   end
 
   def slot_regs
     registrations.where(registerable_type: 'TimeSlot')
+  end
+
+  def spot_use(num_regs, courses)
+    spot_cost = num_regs * courses['1']
+    @breakdown << "スポット1回(午前・15:00~18:30) x #{num_regs}: #{spot_cost}円\n" unless spot_cost.zero?
+    spot_cost
   end
 
   # Finds the nearest multiple of 5 to the passed integer
