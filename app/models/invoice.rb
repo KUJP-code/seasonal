@@ -23,6 +23,9 @@ class Invoice < ApplicationRecord
     adjustments = calc_adjustments
 
     calculated_cost = course_cost + adjustments
+
+    puts @breakdown
+
     update_cost(calculated_cost)
   end
 
@@ -48,9 +51,6 @@ class Invoice < ApplicationRecord
   end
 
   def calc_adjustments
-    pp = pointless_price if niche_case?
-    return pp unless pp.nil?
-
     0
   end
 
@@ -62,7 +62,8 @@ class Invoice < ApplicationRecord
                   else
                     mixed_children
                   end
-    @breakdown.prepend("Total course cost is #{course_cost} for #{slot_regs.size}\n")
+    course_cost += pointless_price if niche_case?
+    @breakdown.prepend("Total course cost is #{course_cost} for #{slot_regs.size} registrations\n")
     course_cost
   end
 
@@ -100,8 +101,9 @@ class Invoice < ApplicationRecord
   # Calculates how many times we need to apply the dumb 184 yen increase
   # This does not deal with the even less likely case of there being two kindy kids registered for one full day each
   def pointless_price
-    connection_cost = children.find_by(level: :kindy).full_days(event) * 184
-    @breakdown << "#{connection_cost}yen adjustment applied because your child is a member kindergartener who is attending more than 0 but less than 2 full days"
+    days = children.find_by(level: :kindy).full_days(event)
+    connection_cost = days * 184
+    @breakdown << "スポット#{days}回(13:30~18:30): #{connection_cost}yen\n"
     connection_cost
   end
 
