@@ -16,99 +16,97 @@ class Invoice < ApplicationRecord
   # Validations
   validates :total_cost, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
-  # TODO: this works but is a monstrosity, clean it up/separate out into
-  # smaller methods which can maybe be called independently
   def calc_cost
-    # The plus is necessary to make sure it's not a frozen string
-    @breakdown = +"Invoice##{id}\nCustomer: #{parent.name}\nEvent: #{event.name}\n"
+    @breakdown = +''
+    course_cost = calc_course_cost
 
-    children_cost = parent.children.reduce(0) do |memo, child|
-      # Calculates the cost of the child's slot regs using courses and 
-      # adds to summary
-      child_reg_cost = child_cost(child)
+    adjustments = calc_adjustments
 
-      child_slot_regs = slot_regs.where(child: child)
-      @breakdown << "Course cost for #{child.name} is #{child_reg_cost}yen for #{child_slot_regs.size} registrations.\n"
-
-      # Calculates the total option cost and adds it to summary
-      child_opt_cost = opt_regs.where(child: child).reduce(0) { |sum, reg| reg.registerable.cost + sum }
-      @breakdown << "Total option cost for #{child.name} is #{child_opt_cost}yen\n"
-
-      # Adds registered event options to summary if present, else add them
-      # with an x
-      @breakdown << "Event Options:\n"
-      event.options.each do |e_opt|
-        @breakdown << if child.registered?(e_opt)
-                        " - #{e_opt.name} for #{e_opt.cost}\n"
-                      else
-                        " - #{e_opt.name}: 𐄂\n"
-                      end
-      end
-
-      # Adds slot regs to the summary
-      @breakdown << "Registered for:\n"
-
-      child_slot_regs.each do |reg|
-        @breakdown << "- #{reg.registerable.name}\n"
-
-        # Adds options for that slot to the summary if any
-        child_opt_regs = opt_regs.where(child: child, registerable: reg.registerable.options)
-        next if child_opt_regs.size.zero?
-
-        @breakdown << " Options:\n"
-        child_opt_regs.each do |opt_reg|
-          opt = opt_reg.registerable
-          @breakdown << "   - #{opt.name} for #{opt.cost}yen\n"
-        end
-      end
-
-      memo + child_reg_cost + child_opt_cost
-    end
-
-    # Calculate change due to adjustments and add to summary
-    adjustment_change = adjustments.reduce(0) { |sum, adj| adj.change + sum }
-    adjustments.each do |adjustment|
-      @breakdown << "An adjustment of #{adjustment.change} was applied because #{adjustment.reason}\n"
-    end
-
-    # Calculate total cost and add to summary
-    calculated_cost = children_cost + adjustment_change
-    @breakdown << "Your final total is #{calculated_cost}"
+    calculated_cost = course_cost + adjustments
     update_cost(calculated_cost)
+  end
+
+  private
+
+  # Recursively finds the next largest course for given number of registrations
+  # The 30 and 35 can be hardcoded since I'm told the number of courses
+  # doesn't change
+  def best_price(num_regs, courses)
+    if num_regs >= 35
+      @breakdown << "- 30回コース: #{courses['30']}円\n"
+      return courses['30'] + best_price(num_regs - 30, courses)
+    end
+
+    course = nearest_five(num_regs)
+    cost = courses[course.to_s]
+    @breakdown << "- #{course}回コース: #{cost}円\n" unless cost.nil?
+    return cost + best_price(num_regs - course, courses) unless num_regs < 5
+
+    spot_cost = courses['1'] * num_regs
+    @breakdown << "スポット1回 x #{num_regs}: #{spot_cost}円\n" unless spot_cost.zero?
+    spot_cost
+  end
+
+  def calc_adjustments
+    pp = pointless_price if niche_case?
+    return pp unless pp.nil?
+
+    0
+  end
+
+  def calc_course_cost
+    course_cost = if children.all?(&:member?)
+                    best_price(slot_regs.size, member_prices)
+                  elsif children.none?(&:member?)
+                    best_price(slot_regs.size, non_member_prices)
+                  else
+                    mixed_children
+                  end
+    @breakdown.prepend("Total course cost is #{course_cost} for #{slot_regs.size}\n")
+    course_cost
+  end
+
+  def member_prices
+    event.member_prices.courses
+  end
+
+  def mixed_children
+    member_children = children.select(&:member?)
+    member_regs = registrations.where(child: member_children).size
+    @breakdown << "For member children\n"
+    member_cost = best_price(member_regs, member_prices)
+
+    non_member_children = children.reject(&:member?)
+    non_member_regs = registrations.where(child: non_member_children).size
+    @breakdown << "For non-member children\n"
+    non_member_cost = best_price(non_member_regs, non_member_prices)
+
+    member_cost + non_member_cost
+  end
+
+  # Decides if we need to apply the dumb 184 yen increase
+  def niche_case?
+    slot_regs.size < 5 && children.any? { |c| c.kindy? && c.full_days(event).positive? }
+  end
+
+  def non_member_prices
+    event.non_member_prices.courses
   end
 
   def opt_regs
     registrations.where(registerable_type: 'Option')
   end
 
+  # Calculates how many times we need to apply the dumb 184 yen increase
+  # This does not deal with the even less likely case of there being two kindy kids registered for one full day each
+  def pointless_price
+    connection_cost = children.find_by(level: :kindy).full_days(event) * 184
+    @breakdown << "#{connection_cost}yen adjustment applied because your child is a member kindergartener who is attending more than 0 but less than 2 full days"
+    connection_cost
+  end
+
   def slot_regs
     registrations.where(registerable_type: 'TimeSlot')
-  end
-
-  private
-
-  # Calculates cost per child
-  def child_cost(child)
-    courses = if child.member?
-                event.member_price.courses
-              else
-                event.non_member_price.courses
-              end
-    num_regs = slot_regs.where(child: child).size.to_s
-    return courses[num_regs] unless courses[num_regs].nil?
-
-    best_course(num_regs.to_i, courses)
-  end
-
-  # Recursively finds the next largest course for given number of registrations
-  def best_course(num_regs, courses)
-    max_course = courses.keys.last
-    return courses[max_course] + best_course(num_regs - max_course.to_i, courses) if num_regs > max_course.to_i + 5
-
-    key = nearest_five(num_regs)
-    return courses[key.to_s] + best_course(num_regs - key, courses) unless num_regs < 5
-
-    courses['1'] * num_regs
   end
 
   # Finds the nearest multiple of 5 to the passed integer

@@ -88,6 +88,10 @@ class Child < ApplicationRecord
     events.where.not(school: school).distinct
   end
 
+  def full_days(event)
+    time_slots.where(morning: true, event: event).count { |slot| registered?(slot.afternoon_slot) }
+  end
+
   def kindy?
     return true if level == 'kindy'
 
@@ -110,7 +114,9 @@ class Child < ApplicationRecord
   end
 
   def registered?(registerable)
-    registrations.find_by(registerable: registerable)
+    return true if registrations.find_by(registerable: registerable)
+
+    false
   end
 
   def slot_registrations
