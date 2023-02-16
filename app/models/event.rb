@@ -5,10 +5,10 @@
 class Event < ApplicationRecord
   belongs_to :school
   delegate :area, to: :school
-  belongs_to :member_price, class_name: 'PriceList',
-                            optional: true
-  belongs_to :non_member_price, class_name: 'PriceList',
-                                optional: true
+  belongs_to :member_prices, class_name: 'PriceList',
+                             optional: true
+  belongs_to :non_member_prices, class_name: 'PriceList',
+                                 optional: true
 
   has_many :time_slots, dependent: :destroy
   accepts_nested_attributes_for :time_slots, allow_destroy: true,

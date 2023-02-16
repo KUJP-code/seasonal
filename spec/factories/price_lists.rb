@@ -15,7 +15,7 @@ FactoryBot.define do
       }
     end
 
-    factory :member_price do
+    factory :member_prices do
       courses do
         {
           1 => 4_216,
@@ -29,7 +29,7 @@ FactoryBot.define do
       end
     end
 
-    factory :non_member_price do
+    factory :non_member_prices do
       courses do
         {
           1 => 6_600,

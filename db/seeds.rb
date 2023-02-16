@@ -218,16 +218,16 @@ School.all.each do |school|
         description: choco_descrip,
         start_date: 'February 18 2024',
         end_date: 'February 18 2024',
-        member_price_id: 1,
-        non_member_price_id: 2
+        member_prices_id: 1,
+        non_member_prices_id: 2
       },
       {
         name: 'Spring School 2023',
         description: 'See the sakura and celebrate spring with KU!',
         start_date: 'March 16 2023',
         end_date: 'April 4 2023',
-        member_price_id: 1,
-        non_member_price_id: 2
+        member_prices_id: 1,
+        non_member_prices_id: 2
       }
     ])
 end
@@ -614,9 +614,10 @@ end
 
 puts 'Registered children for each time slot at each event at their school'
 
-Invoice.all.each { |invoice| invoice.calc_cost }
+# TODO: add back in once done re-working
+# Invoice.all.each { |invoice| invoice.calc_cost }
 
-puts 'Calculated invoice costs now that children are registered'
+# puts 'Calculated invoice costs now that children are registered'
 
 Child.all.each do |child|
   child.create_regular_schedule(
@@ -630,14 +631,16 @@ end
 
 puts 'Created a random regular schedule for each child'
 
-User.all.customers.each do |customer|
-  customer.invoices.last.adjustments.create!(
-    change: -3000,
-    reason: 'Testing adjustments from seed file'    
-  )
-end
+# TODO: add back in once done re-working invoices
 
-puts 'Applied an adjustment to the last invoice for each user'
+# User.all.customers.each do |customer|
+#   customer.invoices.last.adjustments.create!(
+#     change: -3000,
+#     reason: 'Testing adjustments from seed file'    
+#   )
+# end
+
+# puts 'Applied an adjustment to the last invoice for each user'
 
 # TimeSlot.all.each do |slot|
 #   slot.coupons.create(

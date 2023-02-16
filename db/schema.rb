@@ -103,10 +103,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
     t.bigint "school_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "member_price_id"
-    t.bigint "non_member_price_id"
-    t.index ["member_price_id"], name: "index_events_on_member_price_id"
-    t.index ["non_member_price_id"], name: "index_events_on_non_member_price_id"
+    t.bigint "member_prices_id"
+    t.bigint "non_member_prices_id"
+    t.index ["member_prices_id"], name: "index_events_on_member_prices_id"
+    t.index ["non_member_prices_id"], name: "index_events_on_non_member_prices_id"
     t.index ["school_id"], name: "index_events_on_school_id"
   end
 
@@ -244,8 +244,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
   add_foreign_key "adjustments", "invoices"
   add_foreign_key "children", "schools"
   add_foreign_key "children", "users", column: "parent_id"
-  add_foreign_key "events", "price_lists", column: "member_price_id"
-  add_foreign_key "events", "price_lists", column: "non_member_price_id"
+  add_foreign_key "events", "price_lists", column: "member_prices_id"
+  add_foreign_key "events", "price_lists", column: "non_member_prices_id"
   add_foreign_key "events", "schools"
   add_foreign_key "invoices", "events"
   add_foreign_key "invoices", "users", column: "parent_id"

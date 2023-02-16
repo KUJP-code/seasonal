@@ -10,13 +10,13 @@ class CreateEvents < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    add_reference :events, :member_price,
+    add_reference :events, :member_prices,
                            null: true
     add_foreign_key :events, :price_lists,
-                              column: :member_price_id
-    add_reference :events, :non_member_price,
+                              column: :member_prices_id
+    add_reference :events, :non_member_prices,
                            null: true
     add_foreign_key :events, :price_lists,
-                             column: :non_member_price_id
+                             column: :non_member_prices_id
   end
 end
