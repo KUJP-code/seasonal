@@ -338,7 +338,7 @@ RSpec.describe Invoice do
         parent.update!(children: children)
       end
 
-      xit 'includes options from both children' do
+      it 'includes options from both children' do
         register(5, 5)
         invoice.calc_cost
         total_cost = invoice.total_cost
@@ -358,13 +358,13 @@ RSpec.describe Invoice do
         parent.children << non_member_child
       end
 
-      xit 'invoice knows its adjustments' do
+      it 'invoice knows its adjustments' do
         adjustment = create(:adjustment, invoice: invoice)
         invoice_adjustments = invoice.adjustments
         expect(invoice_adjustments).to contain_exactly(adjustment)
       end
 
-      xit 'includes adjustments in the calculation' do
+      it 'includes adjustments in the calculation' do
         register(5)
         create(:adjustment, invoice: invoice, change: -5_000)
         invoice.calc_cost
@@ -390,39 +390,33 @@ RSpec.describe Invoice do
         invoice.calc_cost
       end
 
-      xit 'gives invoice number, customer name and event' do
+      it 'gives invoice number, customer name and event' do
         summary = invoice.summary
-        key_info = "Invoice##{invoice.id}\nCustomer: #{parent.name}\nEvent: #{event.name}\n"
+        key_info = "Invoice: #{invoice.id}\nCustomer: #{parent.name}\nFor #{event.name} at #{event.school.name}\n"
         expect(summary).to include(key_info)
       end
 
-      xit 'lists event options' do
+      it 'lists event options' do
         summary = invoice.summary
-        e_opt_info = " - Test for 1000\n"
+        e_opt_info = "- Test: 1000yen\n"
         expect(summary).to include(e_opt_info)
       end
 
-      xit 'gives cost per child' do
+      it 'lists registered slots' do
         summary = invoice.summary
-        child_cost_info = "Course cost for #{children[0].name} is 4216yen for 1 registrations.\n"
-        expect(summary).to include(child_cost_info)
-      end
-
-      xit 'lists registered slots' do
-        summary = invoice.summary
-        slot_list = "Registered for:\n- #{slot.name}\n"
+        slot_list = "- #{slot.name}\n"
         expect(summary).to include(slot_list)
       end
 
-      xit 'lists registered slot options' do
+      it 'lists registered slot options' do
         summary = invoice.summary
-        slot_option_info = "   - #{slot.options.first.name} for #{slot.options.first.cost}yen\n"
+        slot_option_info = " - #{slot.options.first.name}: #{slot.options.first.cost}\n"
         expect(summary).to include(slot_option_info)
       end
 
-      xit 'gives a total cost' do
+      it 'gives a total cost' do
         summary = invoice.summary
-        final_cost = 'Your final total is 6216'
+        final_cost = "\nFinal cost is 6216"
         expect(summary).to include(final_cost)
       end
     end

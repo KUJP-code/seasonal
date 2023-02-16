@@ -8,6 +8,12 @@ class Invoice < ApplicationRecord
 
   has_many :registrations, dependent: :destroy
   accepts_nested_attributes_for :registrations
+  has_many :time_slots, through: :registrations,
+                        source: :registerable,
+                        source_type: 'TimeSlot'
+  has_many :options, through: :registrations,
+                     source: :registerable,
+                     source_type: 'Option'
   has_many :adjustments, dependent: :destroy
 
   # Track changes with Paper Trail
@@ -19,10 +25,11 @@ class Invoice < ApplicationRecord
   def calc_cost
     @breakdown = +''
     course_cost = calc_course_cost
-
+    option_cost = calc_option_cost
     adjustments = calc_adjustments
+    generate_details
 
-    calculated_cost = course_cost + adjustments
+    calculated_cost = course_cost + adjustments + option_cost
     update_cost(calculated_cost)
   end
 
@@ -48,7 +55,11 @@ class Invoice < ApplicationRecord
   end
 
   def calc_adjustments
-    0
+    adj_cost = adjustments.reduce(0) { |sum, adj| sum + adj.change }
+    adjustments.each do |adj|
+      @breakdown << "Adjustment of #{adj.change} applied because #{adj.reason}\n"
+    end
+    adj_cost
   end
 
   def calc_course_cost
@@ -59,8 +70,17 @@ class Invoice < ApplicationRecord
                   else
                     mixed_children
                   end
-    @breakdown.prepend("Total course cost is #{course_cost}yen for #{slot_regs.size} registrations\n")
+    @breakdown.prepend("Course cost is #{course_cost}yen for #{slot_regs.size} registrations\n")
     course_cost
+  end
+
+  def calc_option_cost
+    opt_cost = options.reduce(0) { |sum, opt| sum + opt.cost }
+    @breakdown << "Option cost is #{opt_cost} for #{options.size} options\n"
+    options.group(:name).sum(:cost).each do |name, cost|
+      @breakdown << "- #{name} x #{options.where(name: name).count}: #{cost}yen\n"
+    end
+    opt_cost
   end
 
   def member_prices
@@ -69,12 +89,12 @@ class Invoice < ApplicationRecord
 
   def mixed_children
     member_children = children.select(&:member?)
-    member_regs = registrations.where(child: member_children).size
+    member_regs = slot_regs.where(child: member_children).size
     @breakdown << "For member children\n"
     member_cost = best_price(member_regs, member_prices)
 
     non_member_children = children.reject(&:member?)
-    non_member_regs = registrations.where(child: non_member_children).size
+    non_member_regs = slot_regs.where(child: non_member_children).size
     @breakdown << "For non-member children\n"
     non_member_cost = best_price(non_member_regs, non_member_prices)
 
@@ -92,6 +112,30 @@ class Invoice < ApplicationRecord
 
   def opt_regs
     registrations.where(registerable_type: 'Option')
+  end
+
+  def generate_details
+    @breakdown.prepend("Invoice: #{id}\nCustomer: #{parent.name}\nFor #{event.name} at #{event.school.name}\n")
+    @breakdown << "\nInvoice details:\n"
+
+    e_opt_regs = opt_regs.where(registerable: event.options)
+    unless e_opt_regs.size.zero?
+      @breakdown << "Event Options:\n"
+      event.options.each do |opt|
+        @breakdown << "- #{opt.name}: #{opt.cost}yen\n"
+      end
+    end
+
+    children.each do |child|
+      @breakdown << "Registrations for #{child.name}\n"
+      slot_regs.where(child: child).includes(registerable: :options).find_each do |slot_reg|
+        slot = slot_reg.registerable
+        @breakdown << "- #{slot.name}\n"
+        slot.options.each do |opt|
+          @breakdown << " - #{opt.name}: #{opt.cost}\n" if child.registered?(opt)
+        end
+      end
+    end
   end
 
   # Calculates how many times we need to apply the dumb 184 yen increase
@@ -122,6 +166,7 @@ class Invoice < ApplicationRecord
   # Updates total cost and summary once calculated/generated
   def update_cost(new_cost)
     self.total_cost = new_cost
+    @breakdown << "\nFinal cost is #{new_cost}yen"
     self.summary = @breakdown
     save
   end

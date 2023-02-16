@@ -3,6 +3,4 @@
 
 # Optimisation Notes
 ## Cost Calculation
-- Split the individual stuff like registrations and options/adjustments out into separate methods that can be called on their own to minimise processing needed if only one reg is updated for examples
-    - Or create mini versions used by callbacks on the relevant model
-- Make everything you need (instance?) variables at the start of calc_cost 
+- See if you can make the mini calculations independent of the main one, so they can be called by hooks on other models and only modify/calculate the bit necessary
