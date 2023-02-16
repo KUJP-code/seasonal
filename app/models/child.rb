@@ -88,6 +88,12 @@ class Child < ApplicationRecord
     events.where.not(school: school).distinct
   end
 
+  def kindy?
+    return true if level == 'kindy'
+
+    false
+  end
+
   # Checks which price list the child uses
   def member?
     return false if category == 'external'
