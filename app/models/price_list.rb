@@ -4,12 +4,12 @@
 class PriceList < ApplicationRecord
   has_many :member_events, dependent: nil,
                            class_name: 'Event',
-                           foreign_key: :member_price_id,
-                           inverse_of: :member_price
+                           foreign_key: :member_prices_id,
+                           inverse_of: :member_prices
   has_many :non_member_events, dependent: nil,
                                class_name: 'Event',
-                               foreign_key: :non_member_price_id,
-                               inverse_of: :non_member_price
+                               foreign_key: :non_member_prices_id,
+                               inverse_of: :non_member_prices
 
   validates :courses, presence: true
 

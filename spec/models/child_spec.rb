@@ -261,7 +261,7 @@ RSpec.describe Child do
     it "knows if it's registered for a registerable" do
       reg = child.registrations.create(registerable: time_slot, invoice: create(:invoice))
       registered = child.registered?(time_slot)
-      expect(registered).to eq reg
+      expect(registered).to be true
     end
 
     context 'with time_slots through registrations' do
