@@ -51,6 +51,8 @@ class User < ApplicationRecord
   # Validations
   validates :ja_first_name, :ja_family_name, :katakana_name, :phone, presence: true
 
+  validates :email, confirmation: true
+
   validates :ja_first_name, :ja_family_name, format: { with: /\A[一-龠]+|[ぁ-ゔ]+|[ァ-ヴー]+|[々〆〤ヶ]+\z/u }
   validates :katakana_name, format: { with: /[ァ-ヴー]/u }
 

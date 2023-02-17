@@ -7,18 +7,23 @@
   
     <h3><%= t('.account_information') %></h3>
     
-    <div class="field">
+    <div class="field confirmed">
       <%= f.label :email %><br />
       <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
     </div>
-  
-    <div class="field password">
+
+    <div class="field confirmed">
       <%= f.label :password %>
       <%= f.password_field :password, autocomplete: "new-password" %>
       <em><%= t('.min_length', length: @minimum_password_length) %></em>
     </div>
+
+    <div class="field confirmed">
+      <%= f.label :email_confirmation %><br />
+      <%= f.email_field :email_confirmation, autofocus: true, autocomplete: "email" %>
+    </div>
   
-    <div class="field">
+    <div class="field confirmed">
       <%= f.label :password_confirmation %><br />
       <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
     </div>

@@ -15,10 +15,10 @@ RSpec.describe 'Signup', feature: true do
     }
   end
 
-  it 'New user signs up' do
-    visit '/auth/sign_up'
+  def fill_sign_up_info
     within('#new_user') do
       fill_in 'user_email', with: new_user[:email]
+      fill_in 'user_email_confirmation', with: new_user[:email]
       fill_in 'user_password', with: new_user[:password]
       fill_in 'user_password_confirmation', with: new_user[:password]
       fill_in 'user_ja_first_name', with: new_user[:ja_first_name]
@@ -29,6 +29,11 @@ RSpec.describe 'Signup', feature: true do
       fill_in 'user_postcode', with: new_user[:postcode]
       fill_in 'user_phone', with: new_user[:phone]
     end
+  end
+
+  it 'New user signs up' do
+    visit '/auth/sign_up'
+    fill_sign_up_info
     click_button 'Sign up'
 
     expect(page).to have_text('My Profile')
