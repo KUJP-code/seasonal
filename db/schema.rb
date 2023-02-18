@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_18_042750) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -133,6 +133,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
     t.bigint "manager_id", null: false
     t.index ["manageable_type", "manageable_id"], name: "index_managements_on_manageable"
     t.index ["manager_id"], name: "index_managements_on_manager_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.string "link"
+    t.string "message"
+    t.boolean "read", default: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "options", force: :cascade do |t|
@@ -258,6 +268,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
   add_foreign_key "invoices", "events"
   add_foreign_key "invoices", "users", column: "parent_id"
   add_foreign_key "managements", "users", column: "manager_id"
+  add_foreign_key "notifications", "users"
   add_foreign_key "registrations", "children"
   add_foreign_key "registrations", "invoices"
   add_foreign_key "regular_schedules", "children"

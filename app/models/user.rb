@@ -41,6 +41,8 @@ class User < ApplicationRecord
   has_many :invoices, dependent: :destroy,
                       foreign_key: :parent_id,
                       inverse_of: :parent
+  has_many :notifications, -> { order(created_at: :desc) }, dependent: :destroy,
+                                                           inverse_of: :user
 
   # Make sure children are deleted when Parent is
   before_destroy :destroy_children
