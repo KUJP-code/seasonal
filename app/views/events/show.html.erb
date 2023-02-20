@@ -1,5 +1,22 @@
 <main id="event_show">
+
+    <div class="wrap-collapsible"> 
+        <input id="collapsible" class="toggle" type="checkbox"> 
+        <label for="collapsible" class="lbl-toggle button"><%= t('.price_lists') %></label>
+
+        <div class="collapsible-content">
+            <div class="content-inner">
+                <p>    
+                    <%= render @member_prices, title: 'member_prices' %>
+                    <%= render @non_member_prices, title: 'non_member_prices' %>
+                </p>
+            </div>
+        </div>
+    </div>
     
+
+
+
     <%= render partial: 'time_slots/add_slot', collection: @event_slots %>
     
     <div id="price_bar">

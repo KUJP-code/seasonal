@@ -1,0 +1,19 @@
+.price_list {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.price_list tr:nth-child(odd) {
+    background-color: var(--ku-dark-background);
+}
+
+.price_list tr:nth-child(even) {
+    background-color: var(--ku-background);
+}
+
+.price_list th,
+.price_list td {
+    padding: 1vw;
+}

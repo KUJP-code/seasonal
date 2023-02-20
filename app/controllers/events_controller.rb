@@ -8,9 +8,8 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
-    @invoice = Invoice.find_by(event: @event, parent: current_user)
+    user_specific_info
     @event_slots = @event.time_slots.morning.with_attached_image.includes(afternoon_slot: :options).includes(:options)
-    @children = current_user.children.includes(:time_slots, :registrations)
   end
 
   def new
@@ -59,6 +58,18 @@ class EventsController < ApplicationController
 
   private
 
+  def price_lists
+    child_membership = current_user.children.map(&:member?)
+    if child_membership.all?(true)
+      @member_prices = @event.member_prices
+    elsif child_membership.all?(false)
+      @non_member_prices = @event.non_member_prices
+    else
+      @member_prices = @event.member_prices
+      @non_member_prices = @event.non_member_prices
+    end
+  end
+
   def event_params
     params.require(:event).permit(:id, :name, :description, :start_date,
                                   :end_date, :school_id, time_slots_attributes:
@@ -72,6 +83,12 @@ class EventsController < ApplicationController
 
   def flash_success
     flash.now[:notice] = t('.success')
+  end
+
+  def user_specific_info
+    price_lists
+    @invoice = Invoice.find_by(event: @event, parent: current_user)
+    @children = current_user.children.includes(:time_slots, :registrations)
   end
 
   def index_for_role
