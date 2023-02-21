@@ -5,6 +5,7 @@ en:
     logout: "Sign Out"
     profile: "My Profile"
     schools: "Schools"
+  register: "Register"
   roles:
     admin: "admin"
     area_manager: "area manager"

@@ -107,14 +107,14 @@
     gap: 0.5vw;
 }
 
-#event_show .time_slot .add_reg.title {
-    flex: 1 1 58%;
+#event_show .time_slot .morning .add_reg:nth-child(2) {
+    flex: 1 1 55%;
     flex-flow: column nowrap;
     align-items: center;
     justify-content: center;
 }
 
-#event_show .time_slot .afternoon .add_reg.title {
+#event_show .time_slot .afternoon .add_reg:first-child {
     flex: 1 1 100%;
 }
 
