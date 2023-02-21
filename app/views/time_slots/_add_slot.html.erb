@@ -17,17 +17,19 @@
             </div>
             <div class="afternoon">
                 <% afternoon_slot = add_slot.afternoon_slot %>
-                <div class="add_reg title">
-                    <h4><%= t('.afternoon_options') %></h4>
-                    <%# TODO: This will add a registration to the invoice form for the afternoon slot %>
-                    <%= button_tag t('.register'), class: 'button' %>
-                </div>
-                <% afternoon_slot.options.each do |opt| %>
-                    <div class="add_reg">
-                        <p><%= opt.name %></p>
-                        <%# TODO: This will add a registration to the invoice form for the option %>
-                        <%= button_tag '✖', class: 'button' %>
+                <% unless afternoon_slot.nil? %>
+                    <div class="add_reg title">
+                        <h4><%= t('.afternoon_options') %></h4>
+                        <%# TODO: This will add a registration to the invoice form for the afternoon slot %>
+                        <%= button_tag t('.register'), class: 'button' %>
                     </div>
+                    <% afternoon_slot.options.each do |opt| %>
+                        <div class="add_reg">
+                            <p><%= opt.name %></p>
+                            <%# TODO: This will add a registration to the invoice form for the option %>
+                            <%= button_tag '✖', class: 'button' %>
+                        </div>
+                    <% end %>
                 <% end %>
             </div>
         </div>
