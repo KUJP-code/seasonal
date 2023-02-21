@@ -7,7 +7,16 @@ class Invoice < ApplicationRecord
   belongs_to :event
 
   has_many :registrations, dependent: :destroy
-  accepts_nested_attributes_for :registrations
+  has_many :slot_regs, -> { where(registerable_type: 'TimeSlot') },
+                       class_name: 'Registration',
+                       dependent: :destroy,
+                       inverse_of: :invoice
+  accepts_nested_attributes_for :slot_regs
+  has_many :opt_regs, -> { where(registerable_type: 'Option') },
+                      class_name: 'Registration',
+                      dependent: :destroy,
+                      inverse_of: :invoice
+  accepts_nested_attributes_for :opt_regs
   has_many :time_slots, through: :registrations,
                         source: :registerable,
                         source_type: 'TimeSlot'
@@ -110,10 +119,6 @@ class Invoice < ApplicationRecord
     event.non_member_prices.courses
   end
 
-  def opt_regs
-    registrations.where(registerable_type: 'Option')
-  end
-
   def generate_details
     @breakdown.prepend("Invoice: #{id}\nCustomer: #{parent.name}\nFor #{event.name} at #{event.school.name}\n")
     @breakdown << "\nInvoice details:\n"
@@ -145,10 +150,6 @@ class Invoice < ApplicationRecord
     connection_cost = days * (courses['1'] + 184)
     @breakdown << "スポット1回(13:30~18:30) x #{days}: #{connection_cost}yen\n"
     connection_cost + spot_use(num_regs - days, courses)
-  end
-
-  def slot_regs
-    registrations.where(registerable_type: 'TimeSlot')
   end
 
   def spot_use(num_regs, courses)
