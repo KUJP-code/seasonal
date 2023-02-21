@@ -1,4 +1,4 @@
-<main id="event_show">
+<main id="event_show" data-controller="invoice price" data-action="register:toggle@window->invoice#add">
 
     <div class="wrap-collapsible"> 
         <input id="collapsible" class="toggle" type="checkbox"> 
@@ -7,32 +7,62 @@
         <div class="collapsible-content">
             <div class="content-inner">
                 <p>    
-                    <%= render @member_prices, title: 'member_prices' %>
-                    <%= render @non_member_prices, title: 'non_member_prices' %>
+                    <div class="price_list" data-price-target="memberPrice">
+                        <%= render @member_prices, title: 'member_prices' unless @member_prices.nil? %>
+                    </div>
+                    <div class="price_list" data-price-target="nonMemberPrice">
+                        <%= render @non_member_prices, title: 'non_member_prices' unless @non_member_prices.nil? %>
+                    </div>
                 </p>
             </div>
         </div>
     </div>
     
 
-
-
-    <%= render partial: 'time_slots/add_slot', collection: @event_slots %>
+    <% @children.each do |child| %>
+        <h2><%= t('.regs_for', child: child.name) %></h2>
+        <%= render partial: 'time_slots/add_slot', collection: @event_slots, locals: { child: child.id } %>
+    <% end %>
     
-    <div id="price_bar">
-        <%# TODO: Leave the details for later, just a scaffold %>
 
+    <div id="price_bar">
         <%= button_tag t('.cost_breakdown'), class: 'button' %>
-        <h2 id="total_cost">Cost goes here</h2>
-        
-        <% if @invoice.nil? %>
-            <%= form_with model: Invoice.new do |f| %>
-                <%= f.submit class: 'button' %>
-            <% end %>
-        <% else %>
-            <%= form_with model: @invoice do |f| %>
-                <%= f.submit class: 'button' %>
-            <% end %>
+
+        <h3 id="total_cost">Cost goes here</h3>
+
+        <%= form_with model: @invoice || Invoice.new do |f| %>
+            <div class="slot_regs" data-invoice-target="slotRegs" data-price-target="slotRegs">
+                <%= f.fields_for :slot_regs do |slot_f| %>
+                    <%= slot_f.hidden_field :id %>
+                    <%= slot_f.hidden_field :child_id %>
+                    <%= slot_f.hidden_field :registerable_id %>
+                    <%= slot_f.hidden_field :registerable_type %>
+                <% end %>
+            </div>
+
+            <div class="opt_regs" data-invoice-target="optRegs" data-price-target="optRegs">
+                <%= f.fields_for :opt_regs do |opt_f| %>
+                    <%= opt_f.hidden_field :id %>
+                    <%= opt_f.hidden_field :child_id %>
+                    <%= opt_f.hidden_field :registerable_id %>
+                    <%= opt_f.hidden_field :registerable_type %>
+                <% end %>
+            </div>
+
+            <template data-invoice-target="template">
+                <%= f.fields_for :registrations, Registration.new, child_index: 'REG' do |reg_f| %>
+                    <div class="fields_wrapper" data-new-record="<%= reg_f.object.new_record? %>">
+                        <%= reg_f.hidden_field :child_id, value: 'child_id' %>
+                        <%= reg_f.hidden_field :registerable_id, value: 'reg_id' %>
+                        <%= reg_f.hidden_field :registerable_type, value: 'reg_type' %>
+                        <div class="opt_cost" data-invoice-target="optCost"></div>
+                    </div>
+                <% end %>
+            </template>
+
+            <div data-invoice-target="target"></div>
+
+            <%= f.submit class: 'button' %>
         <% end %>
     </div>
 </main>

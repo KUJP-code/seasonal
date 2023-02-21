@@ -2,27 +2,48 @@
             <p class="date"><%= add_slot.date %></p>
             <div class="morning">
                 <%= link_to image_tag(url_for(add_slot.image)), time_slot_path(add_slot) %>
-                <div class="add_reg" data-controller="register">
-                    <h4><%= add_slot.name %></h4>
-                    <button class="button" data-register-target="button" data-action="click->register#toggle"><%= t('register') %></button>
+                <div class="add_reg" 
+                     data-controller="register"
+                     data-register-id-value=<%= add_slot.id %>
+                     data-register-type-value="TimeSlot"
+                     data-register-child-value=<%= child %>>
+                    <h4 data-register-target="name"><%= add_slot.name %></h4>
+                    <button class="button" 
+                        data-register-target="button" data-action="click->register#toggle"><%= t('register') %></button>
                 </div>
                 <% add_slot.options.each do |opt| %>
-                    <div class="add_reg" data-controller="register">
-                        <p><%= opt.name %></p>
-                        <button class="button" data-register-target="button" data-action="click->register#toggle">✖</button>                    
-                        </div>
+                    <div class="add_reg" 
+                         data-controller="register"
+                         data-register-id-value=<%= opt.id %>
+                         data-register-type-value="Option"
+                         data-register-child-value=<%= child %>
+                         data-register-cost-value=<%= opt.cost %>>
+                        <p data-register-target="name"><%= opt.name %></p>
+                        <button class="button" 
+                            data-register-target="button" data-action="click->register#toggle">✖</button>               
+                    </div>
                 <% end %>
             </div>
             <div class="afternoon">
                 <% afternoon_slot = add_slot.afternoon_slot %>
                 <% unless afternoon_slot.nil? %>
-                    <div class="add_reg" data-controller="register">
-                        <h4><%= t('.afternoon_options') %></h4>
-                        <button class="button" data-register-target="button" data-action="click->register#toggle"><%= t('register') %></button>
+                    <div class="add_reg" 
+                         data-controller="register"
+                         data-register-id-value=<%= afternoon_slot.id %>
+                         data-register-type-value="TimeSlot"
+                         data-register-child-value=<%= child %>>
+                        <h4 data-register-target="name"><%= t('.afternoon_options') %></h4>
+                        <button 
+                            class="button" data-register-target="button" data-action="click->register#toggle"><%= t('register') %></button>
                     </div>
                     <% afternoon_slot.options.each do |opt| %>
-                        <div class="add_reg" data-controller="register">
-                            <p><%= opt.name %></p>                            
+                        <div class="add_reg" 
+                             data-controller="register"
+                             data-register-id-value=<%= opt.id %>
+                             data-register-type-value="Option"
+                             data-register-child-value=<%= child %>
+                             data-register-cost-value=<%= opt.cost %>>
+                            <p data-register-target="name"><%= opt.name %></p>                            
                             <button class="button" data-register-target="button" data-action="click->register#toggle">✖</button>
                         </div>
                     <% end %>

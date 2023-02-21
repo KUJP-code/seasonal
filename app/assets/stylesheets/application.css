@@ -177,3 +177,7 @@ form>.errors {
 input:active {
     border-style: inset;
 }
+
+.hidden {
+    display: none;
+}

@@ -9,6 +9,10 @@
     padding: 1vw;
 }
 
+#event_show h2 {
+    width: 100%;
+}
+
 /* Styles for all shadowed containers */
 #event_show .time_slot {
     width: max(30vw, 300px);

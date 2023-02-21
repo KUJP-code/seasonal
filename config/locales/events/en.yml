@@ -6,4 +6,5 @@ en:
     show:
       all_slots: "See all time slots for %{event}"
       confirm_registrations: "Confirm Registrations"
+      regs_for: "Registrations for %{child}"
       upcoming_slots: "%{event} Upcoming Time Slots"
