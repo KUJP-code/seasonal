@@ -6,5 +6,8 @@ en:
     show:
       all_slots: "See all time slots for %{event}"
       confirm_registrations: "Confirm Registrations"
+      member: "Member"
+      non_member: "Non Member"
       regs_for: "Registrations for %{child}"
+      total_cost: "Total Cost"
       upcoming_slots: "%{event} Upcoming Time Slots"

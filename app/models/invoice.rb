@@ -143,6 +143,12 @@ class Invoice < ApplicationRecord
     end
   end
 
+  # Finds the nearest multiple of 5 to the passed integer
+  # Because courses are in multiples of 5, other than spot use
+  def nearest_five(num)
+    (num / 5).floor(0) * 5
+  end
+
   # Calculates how many times we need to apply the dumb 184 yen increase
   # This does not deal with the even less likely case of there being two kindy kids registered for one full day each
   def pointless_price(num_regs, courses)
@@ -156,12 +162,6 @@ class Invoice < ApplicationRecord
     spot_cost = num_regs * courses['1']
     @breakdown << "スポット1回(午前・15:00~18:30) x #{num_regs}: #{spot_cost}円\n" unless spot_cost.zero?
     spot_cost
-  end
-
-  # Finds the nearest multiple of 5 to the passed integer
-  # Because courses are in multiples of 5, other than spot use
-  def nearest_five(num)
-    (num / 5).floor(0) * 5
   end
 
   # Updates total cost and summary once calculated/generated
