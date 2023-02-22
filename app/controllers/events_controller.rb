@@ -60,15 +60,8 @@ class EventsController < ApplicationController
   private
 
   def price_lists
-    child_membership = current_user.children.map(&:member?)
-    if child_membership.all?(true)
-      @member_prices = @event.member_prices
-    elsif child_membership.all?(false)
-      @non_member_prices = @event.non_member_prices
-    else
-      @member_prices = @event.member_prices
-      @non_member_prices = @event.non_member_prices
-    end
+    @member_prices = @event.member_prices
+    @non_member_prices = @event.non_member_prices
   end
 
   def event_params

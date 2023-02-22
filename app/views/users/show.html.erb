@@ -7,7 +7,7 @@
                 <h4><%= "#{t(".school")}: #{@user.school.name}" unless @user.school.nil? %></h4>
             </div>
 
-            <% if @user.customer? %>
+            <% if @user.customer? && !@user.children.nil? %>
                 <div class="children">
                     <h4><%= t(".children") if @user.children.size > 1 %></h4>
                     <h4><%= t(".child") if @user.children.size == 1 %></h4>
@@ -46,7 +46,7 @@
     </div>
 
 
-    <% if @user.children? %>
+    <% if @user.children? && !@user.school.nil? %>
         <h2><%= t('.next_event') %></h2>
         <% @user.school.events.order(start_date: :asc).limit(1).each do |event| %>
             <%= render event %>
