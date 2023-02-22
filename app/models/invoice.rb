@@ -11,12 +11,12 @@ class Invoice < ApplicationRecord
                        class_name: 'Registration',
                        dependent: :destroy,
                        inverse_of: :invoice
-  accepts_nested_attributes_for :slot_regs
+  accepts_nested_attributes_for :slot_regs, allow_destroy: true
   has_many :opt_regs, -> { where(registerable_type: 'Option') },
                       class_name: 'Registration',
                       dependent: :destroy,
                       inverse_of: :invoice
-  accepts_nested_attributes_for :opt_regs
+  accepts_nested_attributes_for :opt_regs, allow_destroy: true
   has_many :time_slots, through: :registrations,
                         source: :registerable,
                         source_type: 'TimeSlot'

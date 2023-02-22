@@ -9,7 +9,13 @@
                      data-register-child-value=<%= child %>>
                     <h4 data-register-target="name"><%= add_slot.name %></h4>
                     <button class="button" 
-                        data-register-target="button" data-action="click->register#toggle"><%= t('register') %></button>
+                        data-register-target="button" data-action="click->register#toggle"><%= 
+                        if registered
+                            t('unregister')
+                        else
+                            t('register')
+                        end
+                        %></button>
                 </div>
                 <% add_slot.options.each do |opt| %>
                     <div class="add_reg" 
@@ -20,7 +26,13 @@
                          data-register-cost-value=<%= opt.cost %>>
                         <p data-register-target="name"><%= opt.name %></p>
                         <button class="button" 
-                            data-register-target="button" data-action="click->register#toggle">✖</button>               
+                            data-register-target="button" data-action="click->register#toggle"><%= 
+                        if registered
+                            '✓'
+                        else
+                            '✖'
+                        end
+                        %></button>               
                     </div>
                 <% end %>
             </div>
@@ -32,9 +44,17 @@
                          data-register-id-value=<%= afternoon_slot.id %>
                          data-register-type-value="TimeSlot"
                          data-register-child-value=<%= child %>>
-                        <h4 data-register-target="name"><%= t('.afternoon_options') %></h4>
+
+                        <h4 data-register-target="name"><%= t('.afternoon') %></h4>
+
                         <button 
-                            class="button" data-register-target="button" data-action="click->register#toggle"><%= t('register') %></button>
+                            class="button" data-register-target="button" data-action="click->register#toggle"><%= 
+                            if registered
+                                t('unregister')
+                            else
+                                t('register')
+                            end
+                            %></button>
                     </div>
                     <% afternoon_slot.options.each do |opt| %>
                         <div class="add_reg" 
@@ -44,7 +64,13 @@
                              data-register-child-value=<%= child %>
                              data-register-cost-value=<%= opt.cost %>>
                             <p data-register-target="name"><%= opt.name %></p>                            
-                            <button class="button" data-register-target="button" data-action="click->register#toggle">✖</button>
+                            <button class="button" data-register-target="button" data-action="click->register#toggle"><%= 
+                            if registered
+                                '✓'
+                            else
+                                '✖'
+                            end
+                            %></button>
                         </div>
                     <% end %>
                 <% end %>

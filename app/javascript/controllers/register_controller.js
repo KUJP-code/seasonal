@@ -5,22 +5,21 @@ export default class extends Controller {
 
   static targets = ['button', 'name']
   static values = {
-    id: Number,
-    type: String,
-    child: Number,
-    cost: Number
+    child: String,
+    cost: String,
+    id: String,
+    type: String
 }
 
   toggle (e) {
     e.preventDefault()
 
+    const child = this.childValue
     const content = this.buttonTarget.innerHTML
+    const cost = this.costValue
     const id = this.idValue
     const type = this.typeValue
-    const child = this.childValue
-    const cost = this.costValue
 
-    console.log(content)
 
     switch (content) {
         case 'Register':
@@ -43,6 +42,6 @@ export default class extends Controller {
             break;
     }
 
-    this.dispatch('toggle', { detail: { id: id, type: type, child: child, cost: cost } })
+    this.dispatch('toggle', { detail: { child: child, content: content, cost: cost, id: id, type: type } })
   }
 }

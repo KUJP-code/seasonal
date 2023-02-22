@@ -33,9 +33,9 @@ class InvoicesController < ApplicationController
   def invoice_params
     params.require(:invoice).permit(
       :id, :total_cost, :billing_date, :summary, :in_ss, :paid, :email_sent,
-      slot_regs_attributes: %i[id child_id invoice_id registerable_id
+      slot_regs_attributes: %i[id child_id _destroy invoice_id registerable_id
                                registerable_type],
-      opt_regs_attributes: %i[id child_id invoice_id registerable_id
+      opt_regs_attributes: %i[id child_id _destroy invoice_id registerable_id
                               registerable_type]
     )
   end

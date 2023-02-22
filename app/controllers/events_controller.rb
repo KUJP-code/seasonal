@@ -10,6 +10,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     user_specific_info
     @event_slots = @event.time_slots.morning.with_attached_image.includes(afternoon_slot: :options).includes(:options)
+    @options = @event.options + @event.slot_options
   end
 
   def new
