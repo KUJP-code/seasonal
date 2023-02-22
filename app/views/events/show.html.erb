@@ -42,6 +42,20 @@
                             <% end %>
                         </table>
                     </div>
+
+                    <div class="children">
+                        <h3><%= t('.children') %></h3>
+                        <% @children.each do |child| %>
+                            <div class="child" data-price-target="child">
+                                <p><%= child.name %>:</p>
+                                <% if child.member? %>
+                                    <p><%= t('.member') %></p>
+                                <% else %>
+                                    <p><%= t('.non_member') %></p>
+                                <% end %>
+                            </div>
+                        <% end %>
+                    </div>
                 </p>
             </div>
         </div>
@@ -75,21 +89,30 @@
                     <%= opt_f.hidden_field :child_id %>
                     <%= opt_f.hidden_field :registerable_id %>
                     <%= opt_f.hidden_field :registerable_type %>
+                    <div class="opt_cost hidden" data-price-target="optCost"><%=  %></div>
                 <% end %>
             </div>
 
-            <template data-invoice-target="template">
+            <template data-invoice-target="slotTemplate">
                 <%= f.fields_for :registrations, Registration.new, child_index: 'REG' do |reg_f| %>
                     <div class="fields_wrapper" data-new-record="<%= reg_f.object.new_record? %>">
-                        <%= reg_f.hidden_field :child_id, value: 'child_id' %>
-                        <%= reg_f.hidden_field :registerable_id, value: 'reg_id' %>
-                        <%= reg_f.hidden_field :registerable_type, value: 'reg_type' %>
-                        <div class="opt_cost" data-invoice-target="optCost"></div>
+                        <%= reg_f.hidden_field :child_id, value: 'CHILD' %>
+                        <%= reg_f.hidden_field :registerable_id, value: 'ID' %>
+                        <%= reg_f.hidden_field :registerable_type, value: 'TimeSlot' %>
                     </div>
                 <% end %>
             </template>
 
-            <div data-invoice-target="target"></div>
+            <template data-invoice-target="optTemplate">
+                <%= f.fields_for :registrations, Registration.new, child_index: 'REG' do |reg_f| %>
+                    <div class="fields_wrapper" data-new-record="<%= reg_f.object.new_record? %>">
+                        <%= reg_f.hidden_field :child_id, value: 'CHILD' %>
+                        <%= reg_f.hidden_field :registerable_id, value: 'ID' %>
+                        <%= reg_f.hidden_field :registerable_type, value: 'Option' %>
+                        <div class="opt_cost hidden" data-price-target="optCost">cost</div>
+                    </div>
+                <% end %>
+            </template>
 
             <%= f.submit class: 'button' %>
         <% end %>
