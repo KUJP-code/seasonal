@@ -10,13 +10,19 @@ export default class extends Controller {
   ]
 
   add (child, cost, id, type) {
+    const wrapper = document.getElementById(id.concat(child))
 
-    if (type === 'TimeSlot') {
-      const content = this.slotTemplateTarget.innerHTML.replace(/REG_INDEX/g, new Date().getTime().toString()).replace(/###/g, id.concat(child)).replace(/NEW_CHILD_ID/g, child).replace(/NEW_REGISTERABLE_ID/g, id)
-      this.slotTargetTarget.insertAdjacentHTML('beforebegin', content)
+    if (wrapper) {
+      const destroy = wrapper.querySelector("input[name*='_destroy']")
+      destroy.value = '0'
     } else {
-      const content = this.optTemplateTarget.innerHTML.replace(/REG_INDEX/g, new Date().getTime().toString()).replace(/###/g, id.concat(child)).replace(/NEW_CHILD_ID/g, child).replace(/NEW_REGISTERABLE_ID/g, id).replace(/NEW_COST/g, cost)
-      this.optTargetTarget.insertAdjacentHTML('beforebegin', content)
+      if (type === 'TimeSlot') {
+        const content = this.slotTemplateTarget.innerHTML.replace(/REG_INDEX/g, new Date().getTime().toString()).replace(/###/g, id.concat(child)).replace(/NEW_CHILD_ID/g, child).replace(/NEW_REGISTERABLE_ID/g, id)
+        this.slotTargetTarget.insertAdjacentHTML('beforebegin', content)
+      } else {
+        const content = this.optTemplateTarget.innerHTML.replace(/REG_INDEX/g, new Date().getTime().toString()).replace(/###/g, id.concat(child)).replace(/NEW_CHILD_ID/g, child).replace(/NEW_REGISTERABLE_ID/g, id).replace(/NEW_COST/g, cost)
+        this.optTargetTarget.insertAdjacentHTML('beforebegin', content)
+      }
     }
   }
 
@@ -41,9 +47,8 @@ export default class extends Controller {
     if (wrapper.dataset.newRecord === 'true') {
       wrapper.remove()
     } else {
-      // TODO: need to add this field, and probably also enable destroy on invoice controller
-      const input = wrapper.querySelector("input[name*='_destroy']")
-      input.value = '1'
+      const destroy = wrapper.querySelector("input[name*='_destroy']")
+      destroy.value = '1'
     }
   }
 }
