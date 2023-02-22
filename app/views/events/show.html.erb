@@ -70,6 +70,31 @@
     <% @children.each do |child| %>
         <h2><%= t('.regs_for', child: child.name) %></h2>
 
+        <% unless @event.options.empty? %>
+            <h2><%= t('.event_options') %></h2>
+
+            <% @event.options.each do |opt| %>
+                <div class="event_option"
+                    data-controller="register"
+                    data-register-id-value=<%= opt.id %>
+                    data-register-type-value="Option"
+                    data-register-child-value=<%= child.id %>
+                    data-register-cost-value=<%= opt.cost %>>
+
+                    <h4 data-register-target="name"><%= opt.name %></h4>
+
+                    <button class="button <%= 'registered' if child.registered?(opt) %>" 
+                        data-register-target="button" data-action="click->register#toggle"><%= 
+                        if child.registered?(opt)
+                            t('unregister')
+                        else
+                            t('register')
+                        end
+                        %></button>
+                </div>
+            <% end %>
+        <% end %>
+
 <%# TODO: these aren't supposed to produce n + 1 queries but they do %>
         <h2><%= t('.unregistered_slots') %></h2>
         <%= render partial: 'time_slots/add_slot', collection: @event_slots.select { |slot| slot.registrations.where(child: child).size.zero? }, locals: { child: child, registered: false } %>
@@ -114,7 +139,7 @@
                         <%= opt_f.hidden_field :child_id %>
                         <%= opt_f.hidden_field :registerable_id %>
                         <%= opt_f.hidden_field :registerable_type %>
-                        <div class="opt_cost hidden" data-price-target="optCost"><%= @options.find { |opt| opt.id == opt_f.object.registerable_id }.cost %></div>
+                        <div class="opt_cost hidden registered" data-price-target="optCost"><%= @options.find { |opt| opt.id == opt_f.object.registerable_id }.cost %></div>
                     </div>
                 <% end %>
                 <div data-invoice-target="optTarget"></div>
@@ -136,7 +161,7 @@
                         <%= reg_f.hidden_field :child_id, value: 'NEW_CHILD_ID' %>
                         <%= reg_f.hidden_field :registerable_id, value: 'NEW_REGISTERABLE_ID' %>
                         <%= reg_f.hidden_field :registerable_type, value: 'Option' %>
-                        <div class="opt_cost hidden" data-price-target="optCost">NEW_COST</div>
+                        <div class="opt_cost hidden registered" data-price-target="optCost">NEW_COST</div>
                     </div>
                 <% end %>
             </template>

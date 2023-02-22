@@ -17,6 +17,12 @@ export default class extends Controller {
       const destroy = wrapper.querySelector("input[name*='_destroy']")
       destroy.value = '0'
       wrapper.classList.add(`child${child}`)
+      if (type === 'Option') {
+        const cost = wrapper.querySelector('.opt_cost.hidden')
+        console.log(cost)
+        cost.classList.add('registered')
+        console.log(cost)
+      }
     } else {
       // For newly created registrations
       if (type === 'TimeSlot') {
@@ -41,11 +47,11 @@ export default class extends Controller {
     if (content === 'Register' || content === '✖') {
       this.add(child, cost, id, type)
     } else {
-      this.remove(child, id)
+      this.remove(child, id, type)
     }
   }
 
-  remove (child, id) {
+  remove (child, id, type) {
 
     const wrapper = document.getElementById(id.concat(child))
 
@@ -57,6 +63,11 @@ export default class extends Controller {
       const destroy = wrapper.querySelector("input[name*='_destroy']")
       destroy.value = '1'
       wrapper.classList.remove(`child${child}`)
+      if (type === 'Option') {
+        const cost = wrapper.querySelector('.opt_cost.hidden')
+        cost.classList.remove('registered')
+        console.log(cost)
+      }
     }
 
     this.dispatch('remove')

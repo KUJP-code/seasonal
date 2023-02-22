@@ -18,7 +18,7 @@ export default class extends Controller {
   calculate() {
     const courseCost = (this.childTargets.every(this.isMember) ? this.sameMembership(true) : (this.childTargets.every(this.notMember) ? this.sameMembership(false) : this.mixedMembership()));
 
-    const optionCost = this.optCostTargets.reduce(
+    const optionCost = this.optCostTargets.filter(cost => cost.classList.contains('registered')).reduce(
       (sum, option) => sum + parseInt(option.innerHTML),
       0
     )

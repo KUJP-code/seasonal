@@ -120,6 +120,19 @@
     margin-bottom: 0; 
 }
 
+#event_show .event_option {
+    flex: 0 0 auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 1vw;
+    padding: 1vw;
+    box-shadow: var(--container-shadow);
+    background: var(--near-white);
+    font-size: var(--sub-heading-size);
+}
+
 #event_show .time_slot .add_reg {
     flex: 1 1 auto;
     display: flex;
