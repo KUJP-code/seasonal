@@ -651,6 +651,98 @@ end
 
 puts 'Applied an adjustment to the last invoice for each user'
 
+non_member = User.create!(
+    email: 'non_member@gmail.com',
+    password: 'nonmembernon',
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
+    role: :customer,
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.phone_number,
+    school: School.all.first
+)
+
+non_member.children.create!([
+  {
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
+    en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
+    birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
+    ssid: Faker::Number.unique.number,
+    ele_school_name: Faker::GreekPhilosophers.name,
+    post_photos: true,
+    allergies: true,
+    allergy_details: 'peanuts',
+    level: 'kindy',
+    category: 'external',
+    school: non_member.school
+  },
+  {
+    ja_first_name: Faker::Name.first_name,
+    ja_family_name: Faker::Name.last_name,
+    katakana_name: Faker::Name.name.kana,
+    en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
+    birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
+    ssid: Faker::Number.unique.number,
+    ele_school_name: Faker::GreekPhilosophers.name,
+    post_photos: true,
+    allergies: true,
+    allergy_details: 'peanuts',
+    level: 'land_high',
+    category: 'external',
+    school: non_member.school
+  }
+])
+
+member = User.create!(
+  email: 'member@gmail.com',
+  password: 'membermembermember',
+  ja_first_name: Faker::Name.first_name,
+  ja_family_name: Faker::Name.last_name,
+  katakana_name: Faker::Name.name.kana,
+  role: :customer,
+  address: Faker::Address.full_address,
+  phone: Faker::PhoneNumber.phone_number,
+  school: School.all.first
+)
+
+member.children.create!([
+{
+  ja_first_name: Faker::Name.first_name,
+  ja_family_name: Faker::Name.last_name,
+  katakana_name: Faker::Name.name.kana,
+  en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
+  birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
+  ssid: Faker::Number.unique.number,
+  ele_school_name: Faker::GreekPhilosophers.name,
+  post_photos: true,
+  allergies: true,
+  allergy_details: 'peanuts',
+  level: 'kindy',
+  category: 'internal',
+  school: member.school
+},
+{
+  ja_first_name: Faker::Name.first_name,
+  ja_family_name: Faker::Name.last_name,
+  katakana_name: Faker::Name.name.kana,
+  en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
+  birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
+  ssid: Faker::Number.unique.number,
+  ele_school_name: Faker::GreekPhilosophers.name,
+  post_photos: true,
+  allergies: true,
+  allergy_details: 'peanuts',
+  level: 'land_high',
+  category: 'internal',
+  school: member.school
+}
+])
+
+puts 'Created test users for only member children and only non-member children'
+
 # TODO: add back in once coupons are properly implemented
 # TimeSlot.all.each do |slot|
 #   slot.coupons.create(
