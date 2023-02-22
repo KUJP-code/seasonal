@@ -120,7 +120,7 @@
         <%= form_with model: @invoice || Invoice.new do |f| %>
             <div class="slot_regs" data-price-target="slotRegs">
                 <%= f.fields_for :slot_regs do |slot_f| %>
-                    <div class="slot_reg <%= "child#{slot_f.object.child_id}" %>" id=<%= "#{slot_f.object.registerable_id}#{slot_f.object.child_id}" %>>
+                    <div class="slot_reg <%= "child#{slot_f.object.child_id}" %>" id=<%= "slot#{slot_f.object.registerable_id}child#{slot_f.object.child_id}" %>>
                         <%= slot_f.hidden_field :_destroy, value: 0 %>
                         <%= slot_f.hidden_field :id %>
                         <%= slot_f.hidden_field :child_id %>
@@ -133,7 +133,7 @@
 
             <div class="opt_regs" data-price-target="optRegs">
                 <%= f.fields_for :opt_regs do |opt_f| %>
-                    <div class="opt_reg <%= "child#{opt_f.object.child_id}" %>" id=<%= "#{opt_f.object.registerable_id}#{opt_f.object.child_id}" %>>
+                    <div class="opt_reg <%= "child#{opt_f.object.child_id}" %>" id=<%= "opt#{opt_f.object.registerable_id}child#{opt_f.object.child_id}" %>>
                         <%= opt_f.hidden_field :_destroy, value: 0 %>
                         <%= opt_f.hidden_field :id %>
                         <%= opt_f.hidden_field :child_id %>

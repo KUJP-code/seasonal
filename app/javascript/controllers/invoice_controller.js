@@ -10,7 +10,7 @@ export default class extends Controller {
   ]
 
   add (child, cost, id, type) {
-    const wrapper = document.getElementById(id.concat(child))
+    const wrapper = (type === 'TimeSlot') ? document.getElementById(`slot${id}`.concat(`child${child}`)) : document.getElementById(`opt${id}`.concat(`child${child}`))
 
     if (wrapper) {
       // For existing registrations
@@ -19,17 +19,15 @@ export default class extends Controller {
       wrapper.classList.add(`child${child}`)
       if (type === 'Option') {
         const cost = wrapper.querySelector('.opt_cost.hidden')
-        console.log(cost)
         cost.classList.add('registered')
-        console.log(cost)
       }
     } else {
       // For newly created registrations
       if (type === 'TimeSlot') {
-        const content = this.slotTemplateTarget.innerHTML.replace(/REG_INDEX/g, new Date().getTime().toString()).replace(/NEW_ID/g, id.concat(child)).replace(/NEW_CLASS/, `child${child}`).replace(/NEW_CHILD_ID/g, child).replace(/NEW_REGISTERABLE_ID/g, id)
+        const content = this.slotTemplateTarget.innerHTML.replace(/REG_INDEX/g, new Date().getTime().toString()).replace(/NEW_ID/g, `slot${id}`.concat(`child${child}`)).replace(/NEW_CLASS/, `child${child}`).replace(/NEW_CHILD_ID/g, child).replace(/NEW_REGISTERABLE_ID/g, id)
         this.slotTargetTarget.insertAdjacentHTML('beforebegin', content)
       } else {
-        const content = this.optTemplateTarget.innerHTML.replace(/REG_INDEX/g, new Date().getTime().toString()).replace(/NEW_ID/g, id.concat(child)).replace(/NEW_CLASS/, `child${child}`).replace(/NEW_CHILD_ID/g, child).replace(/NEW_REGISTERABLE_ID/g, id).replace(/NEW_COST/g, cost)
+        const content = this.optTemplateTarget.innerHTML.replace(/REG_INDEX/g, new Date().getTime().toString()).replace(/NEW_ID/g, `opt${id}`.concat(`child${child}`)).replace(/NEW_CLASS/, `child${child}`).replace(/NEW_CHILD_ID/g, child).replace(/NEW_REGISTERABLE_ID/g, id).replace(/NEW_COST/g, cost)
         this.optTargetTarget.insertAdjacentHTML('beforebegin', content)
       }
     }
@@ -53,7 +51,8 @@ export default class extends Controller {
 
   remove (child, id, type) {
 
-    const wrapper = document.getElementById(id.concat(child))
+
+    const wrapper = (type === 'TimeSlot') ? document.getElementById(`slot${id}`.concat(`child${child}`)) : document.getElementById(`opt${id}`.concat(`child${child}`))
 
     if (wrapper.dataset.newRecord === 'true') {
       // For newly created registrations
@@ -66,7 +65,6 @@ export default class extends Controller {
       if (type === 'Option') {
         const cost = wrapper.querySelector('.opt_cost.hidden')
         cost.classList.remove('registered')
-        console.log(cost)
       }
     }
 
