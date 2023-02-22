@@ -99,10 +99,8 @@
         <h2><%= t('.unregistered_slots') %></h2>
         <%= render partial: 'time_slots/add_slot', collection: @event_slots.select { |slot| slot.registrations.where(child: child).size.zero? }, locals: { child: child, registered: false } %>
 
-
-<%# TODO: these aren't supposed to produce n + 1 queries but they do %>
         <h2><%= t('.registered_slots') %></h2>
-        <%= render partial: 'time_slots/add_slot', collection: @event_slots.reject { |slot| slot.registrations.where(child: child).size.zero? }, locals: { child: child, registered: true } %>
+        <%= render partial: 'time_slots/add_slot', collection: @invoice_slots.where('registrations.child_id = ?', child.id), locals: { child: child, registered: true } %>
 
     <% end %>
     
