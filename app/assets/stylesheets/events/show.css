@@ -97,23 +97,30 @@
     padding: .5rem 1rem;
 }
 
-#event_show .children {
+#event_show #children,
+#event_show #adjustments {
     display: flex;
     flex-flow: column wrap;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
     border-radius: 1vw;
     padding: 1vw;
     gap: 1vw;
     background: var(--ku-dark-background);
 }
 
-#event_show .children .child {
+#event_show .children .child,
+#event_show #adjustments .adjustment {
+    flex: 1 1 auto;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
     align-items: center;
     gap: 1vw;
+}
+
+#event_show #adjustments .adjustment p {
+    flex-basis: 45%;
 }
 
 .collapsible-content p { 

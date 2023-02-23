@@ -47,7 +47,7 @@
                         </div>
                     <% end %>
 
-                    <div class="children">
+                    <div id="children">
                         <h3><%= t('.children') %></h3>
                         <% @children.each do |child| %>
                             <div class="child" data-price-target="child">
@@ -61,6 +61,22 @@
                             </div>
                         <% end %>
                     </div>
+
+                    <% unless @invoice.nil? %>
+                        <div id="adjustments">
+                            <h3><%= t('.adjustments') %></h3>
+                            <div class="adjustment">
+                                <p><%= t('.change') %></p>
+                                <p><%= t('.reason') %></p>
+                            </div>
+                            <% @invoice.adjustments.each do |adj| %>
+                                <div class="adjustment">
+                                    <p data-price-target="adjChange"><%= adj.change %></p>
+                                    <p><%= adj.reason %></p>
+                                </div>
+                            <% end %>
+                        </div>
+                    <% end %>
                 </p>
             </div>
         </div>
@@ -95,12 +111,12 @@
             <% end %>
         <% end %>
 
-<%# TODO: these aren't supposed to produce n + 1 queries but they do %>
+<%# TODO: this isn't supposed to produce n + 1 queries but it does %>
         <h2><%= t('.unregistered_slots') %></h2>
         <%= render partial: 'time_slots/add_slot', collection: @event_slots.select { |slot| slot.registrations.where(child: child).size.zero? }, locals: { child: child, registered: false } %>
 
         <h2><%= t('.registered_slots') %></h2>
-        <%= render partial: 'time_slots/add_slot', collection: @invoice_slots.where('registrations.child_id = ?', child.id), locals: { child: child, registered: true } %>
+        <%= render partial: 'time_slots/add_slot', collection: @event.time_slots.joins(:registrations).where('registrations.child_id = ?', child.id), locals: { child: child, registered: true } %>
 
     <% end %>
     

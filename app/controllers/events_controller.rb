@@ -82,7 +82,6 @@ class EventsController < ApplicationController
   def user_specific_info
     price_lists
     @invoice = Invoice.find_by(event: @event, parent: current_user)
-    @invoice_slots = @invoice.time_slots.morning
     @children = current_user.children.includes(:time_slots, :registrations)
   end
 

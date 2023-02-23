@@ -7,6 +7,7 @@ export default class extends Controller {
     'slotRegs',
     'optRegs',
     'optCost',
+    'adjChange',
     'finalCost']
 
   static values = {
@@ -23,7 +24,14 @@ export default class extends Controller {
       0
     )
 
-    const finalCost = optionCost + courseCost
+    const adjustmentChange = (this.hasAdjChangeTarget) ? this.adjChangeTargets.reduce(
+      (sum, change) => sum + parseInt(change.innerHTML),
+      0
+    ) : 0
+
+    console.log(adjustmentChange)
+
+    const finalCost = optionCost + courseCost + adjustmentChange
     this.finalCostTarget.innerHTML = `Total Cost: ${finalCost}円`
   }
 
