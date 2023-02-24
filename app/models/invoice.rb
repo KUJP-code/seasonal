@@ -144,7 +144,7 @@ class Invoice < ApplicationRecord
         slot = slot_reg.registerable
         @breakdown << "<div class='slot_regs'><p>#{slot.name}</p>"
         slot.options.each do |opt|
-          @breakdown << "<p> - #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if child.registered?(opt)
+          @breakdown << "<p> - #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if registrations.find_by(child: child, registerable: opt)
         end
         @breakdown << '</div>'
       end
