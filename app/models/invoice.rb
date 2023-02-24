@@ -49,13 +49,13 @@ class Invoice < ApplicationRecord
   # doesn't change
   def best_price(num_regs, courses)
     if num_regs >= 35
-      @breakdown << "- 30回コース: #{courses['30']}円\n"
+      @breakdown << "<p>- 30回コース: #{courses['30']}円</p>"
       return courses['30'] + best_price(num_regs - 30, courses)
     end
 
     course = nearest_five(num_regs)
     cost = courses[course.to_s]
-    @breakdown << "- #{course}回コース: #{cost}円\n" unless cost.nil?
+    @breakdown << "<p>- #{course}回コース: #{cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" unless cost.nil?
     return cost + best_price(num_regs - course, courses) unless num_regs < 5
 
     return spot_use(num_regs, courses) unless niche_case?
@@ -66,7 +66,7 @@ class Invoice < ApplicationRecord
   def calc_adjustments
     adj_cost = adjustments.reduce(0) { |sum, adj| sum + adj.change }
     adjustments.each do |adj|
-      @breakdown << "Adjustment of #{adj.change} applied because #{adj.reason}\n"
+      @breakdown << "<p>Adjustment of #{adj.change.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 applied because #{adj.reason}</p>"
     end
     adj_cost
   end
@@ -79,15 +79,18 @@ class Invoice < ApplicationRecord
                   else
                     mixed_children
                   end
-    @breakdown.prepend("Course cost is #{course_cost}yen for #{slot_regs.size} registrations\n")
+    @breakdown.prepend(
+      "<h3>Course cost:</h3>
+      <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{slot_regs.size} registrations</p>")
     course_cost
   end
 
   def calc_option_cost
     opt_cost = options.reduce(0) { |sum, opt| sum + opt.cost }
-    @breakdown << "Option cost is #{opt_cost} for #{options.size} options\n"
+    @breakdown << "<h3>Option cost:</h3>
+                   <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{options.size} options</p>"
     options.group(:name).sum(:cost).each do |name, cost|
-      @breakdown << "- #{name} x #{options.where(name: name).count}: #{cost}yen\n"
+      @breakdown << "<p>- #{name} x #{options.where(name: name).count}: #{cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
     end
     opt_cost
   end
@@ -99,18 +102,18 @@ class Invoice < ApplicationRecord
   def mixed_children
     member_children = children.select(&:member?)
     member_regs = slot_regs.where(child: member_children).size
-    @breakdown << "For member children\n"
+    @breakdown << '<p>For member children</p>'
     member_cost = best_price(member_regs, member_prices)
 
     non_member_children = children.reject(&:member?)
     non_member_regs = slot_regs.where(child: non_member_children).size
-    @breakdown << "For non-member children\n"
+    @breakdown << '<p>For non-member children</p>'
     non_member_cost = best_price(non_member_regs, non_member_prices)
 
     member_cost + non_member_cost
   end
 
-  # Decides if we need to apply the dumb 184 yen increase
+  # Decides if we need to apply the dumb 184 円 increase
   def niche_case?
     slot_regs.size < 5 && children.any? { |c| c.kindy? && c.full_days(event).positive? }
   end
@@ -120,27 +123,33 @@ class Invoice < ApplicationRecord
   end
 
   def generate_details
-    @breakdown.prepend("Invoice: #{id}\nCustomer: #{parent.name}\nFor #{event.name} at #{event.school.name}\n")
-    @breakdown << "\nInvoice details:\n"
+    @breakdown.prepend(
+      "<div id='key_info'><h1>Invoice: #{id}</h1>
+      <h2>Customer: #{parent.name}</h2>
+      <h2>For #{event.name} at #{event.school.name}</h2>"
+    )
+    @breakdown << "</div><div id='details'><h1>Invoice details:</h1>"
 
     e_opt_regs = opt_regs.where(registerable: event.options)
     unless e_opt_regs.size.zero?
-      @breakdown << "Event Options:\n"
+      @breakdown << '<h2>Event Options:</h2>'
       event.options.each do |opt|
-        @breakdown << "- #{opt.name}: #{opt.cost}yen\n"
+        @breakdown << "<p>- #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
       end
     end
 
     children.each do |child|
-      @breakdown << "Registrations for #{child.name}\n"
+      @breakdown << "<h2>Registrations for #{child.name}</h2>"
       slot_regs.where(child: child).includes(registerable: :options).find_each do |slot_reg|
         slot = slot_reg.registerable
-        @breakdown << "- #{slot.name}\n"
+        @breakdown << "<div class='slot_regs'><p>#{slot.name}</p>"
         slot.options.each do |opt|
-          @breakdown << " - #{opt.name}: #{opt.cost}\n" if child.registered?(opt)
+          @breakdown << "<p> - #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if child.registered?(opt)
         end
+        @breakdown << '</div>'
       end
     end
+    @breakdown << '</div>'
   end
 
   # Finds the nearest multiple of 5 to the passed integer
@@ -149,25 +158,25 @@ class Invoice < ApplicationRecord
     (num / 5).floor(0) * 5
   end
 
-  # Calculates how many times we need to apply the dumb 184 yen increase
+  # Calculates how many times we need to apply the dumb 184円 increase
   # This does not deal with the even less likely case of there being two kindy kids registered for one full day each
   def pointless_price(num_regs, courses)
     days = children.find_by(level: :kindy).full_days(event)
     connection_cost = days * (courses['1'] + 184)
-    @breakdown << "スポット1回(13:30~18:30) x #{days}: #{connection_cost}yen\n"
+    @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{connection_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
     connection_cost + spot_use(num_regs - days, courses)
   end
 
   def spot_use(num_regs, courses)
     spot_cost = num_regs * courses['1']
-    @breakdown << "スポット1回(午前・15:00~18:30) x #{num_regs}: #{spot_cost}円\n" unless spot_cost.zero?
+    @breakdown << "<p>スポット1回(午前・15:00~18:30) x #{num_regs}: #{spot_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" unless spot_cost.zero?
     spot_cost
   end
 
   # Updates total cost and summary once calculated/generated
   def update_cost(new_cost)
     self.total_cost = new_cost
-    @breakdown << "\nFinal cost is #{new_cost}yen"
+    @breakdown << "<h2 id='final_cost'>Final cost is #{new_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</h2>"
     self.summary = @breakdown
     save
   end
