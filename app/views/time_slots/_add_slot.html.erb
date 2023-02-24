@@ -3,6 +3,8 @@
 <div class="time_slot">
             <p class="date"><%= add_slot.date %></p>
             <div class="morning">
+                <% registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == add_slot.id } %>
+
                 <%= link_to image_tag(url_for(add_slot.image)), time_slot_path(add_slot) %>
                 <div class="add_reg" 
                      data-controller="register"
@@ -20,6 +22,8 @@
                         %></button>
                 </div>
                 <% add_slot.options.each do |opt| %>
+                    <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
+
                     <div class="add_reg" 
                          data-controller="register"
                          data-register-id-value=<%= opt.id %>
@@ -27,9 +31,9 @@
                          data-register-child-value=<%= child.id %>
                          data-register-cost-value=<%= opt.cost %>>
                         <p data-register-target="name"><%= opt.name %></p>
-                        <button class="button <%= 'registered' if child.registered?(opt) %>" 
+                        <button class="button <%= 'registered' if opt_registered %>" 
                             data-register-target="button" data-action="click->register#toggle"><%= 
-                        if child.registered?(opt)
+                        if opt_registered
                             '✓'
                         else
                             '✖'
@@ -40,7 +44,10 @@
             </div>
             <div class="afternoon">
                 <% afternoon_slot = add_slot.afternoon_slot %>
+
                 <% unless afternoon_slot.nil? %>
+                    <% aft_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == afternoon_slot.id } %>
+
                     <div class="add_reg" 
                          data-controller="register"
                          data-register-id-value=<%= afternoon_slot.id %>
@@ -50,8 +57,8 @@
                         <h4 data-register-target="name"><%= t('.afternoon') %></h4>
 
                         <button 
-                            class="button <%= 'registered' if child.registered?(afternoon_slot) %>" data-register-target="button" data-action="click->register#toggle"><%= 
-                            if child.registered?(afternoon_slot)
+                            class="button <%= 'registered' if aft_registered %>" data-register-target="button" data-action="click->register#toggle"><%= 
+                            if aft_registered
                                 t('unregister')
                             else
                                 t('register')
@@ -59,6 +66,8 @@
                             %></button>
                     </div>
                     <% afternoon_slot.options.each do |opt| %>
+                        <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
+
                         <div class="add_reg"
                              data-controller="register"
                              data-register-id-value=<%= opt.id %>
@@ -66,8 +75,8 @@
                              data-register-child-value=<%= child.id %>
                              data-register-cost-value=<%= opt.cost %>>
                             <p data-register-target="name"><%= opt.name %></p>                            
-                            <button class="button <%= 'registered' if child.registered?(opt) %>" data-register-target="button" data-action="click->register#toggle"><%= 
-                            if child.registered?(opt)
+                            <button class="button <%= 'registered' if opt_registered %>" data-register-target="button" data-action="click->register#toggle"><%= 
+                            if opt_registered
                                 '✓'
                             else
                                 '✖'
