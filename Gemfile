@@ -59,6 +59,10 @@ gem 'paper_trail'
 # Localize Devise views so I can read my own app
 gem 'devise-i18n'
 
+# Make using AWS easier with their SDK
+gem 'aws-sdk-rails', '~> 3'
+gem 'aws-sdk-s3', '~> 1'
+
 group :development, :test do
   # Use Faker to generate test data
   gem 'faker'
