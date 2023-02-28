@@ -61,22 +61,6 @@
                             </div>
                         <% end %>
                     </div>
-
-                    <% unless @invoice.nil? %>
-                        <div id="adjustments">
-                            <h3><%= t('.adjustments') %></h3>
-                            <div class="adjustment">
-                                <p><%= t('.change') %></p>
-                                <p><%= t('.reason') %></p>
-                            </div>
-                            <% @invoice.adjustments.each do |adj| %>
-                                <div class="adjustment">
-                                    <p data-price-target="adjChange"><%= adj.change %></p>
-                                    <p><%= adj.reason %></p>
-                                </div>
-                            <% end %>
-                        </div>
-                    <% end %>
                 </p>
             </div>
         </div>
@@ -131,7 +115,32 @@
     <% end %>
     
 
-    <div id="price_bar">
+    <div id="price_bar" data-controller="popup">
+        <%= button_tag t('.cost_summary'), class: 'button', data: { action: "click->popup#toggle" } %>
+
+        <div id="cost_summary" class="hidden" data-popup-target="popup">
+            <div class="card">
+                <%= button_tag '✖', class: 'button', data: { action: "click->popup#toggle" } %>
+                <h1><%= t('.invoice_summary') %></h1>
+
+                <p data-price-target="summary">Make a change to view your summary</p>
+
+                <% unless @invoice.nil? %>
+                    <h3><%= t('.adjustments') %></h3>
+                    <div class="adjustment">
+                        <p><%= t('.change') %></p>
+                        <p><%= t('.reason') %></p>
+                    </div>
+                    <% @invoice.adjustments.each do |adj| %>
+                        <div class="adjustment">
+                            <p data-price-target="adjChange"><%= adj.change %></p>
+                            <p><%= adj.reason %></p>
+                        </div>
+                    <% end %>
+                <% end %>
+            </div>
+        </div>
+
         <h3 id="total_cost" data-price-target="finalCost"><%=
         if @invoice.nil?
             "#{t('.total_cost')}: 0円"

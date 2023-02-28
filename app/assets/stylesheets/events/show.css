@@ -97,8 +97,7 @@
     padding: .5rem 1rem;
 }
 
-#event_show #children,
-#event_show #adjustments {
+#event_show #children{
     display: flex;
     flex-flow: column wrap;
     justify-content: center;
@@ -110,7 +109,7 @@
 }
 
 #event_show .children .child,
-#event_show #adjustments .adjustment {
+#event_show .adjustment {
     flex: 1 1 auto;
     display: flex;
     flex-flow: row wrap;
@@ -119,8 +118,12 @@
     gap: 1vw;
 }
 
-#event_show #adjustments .adjustment p {
-    flex-basis: 45%;
+#event_show .adjustment p:first-child {
+    width: 10vw;
+}
+
+#event_show .adjustment p:last-child {
+    width: 30vw;
 }
 
 .collapsible-content p { 
@@ -199,4 +202,35 @@
     align-items: center;
     background: var(--near-white);
     border-radius: 1vw;
+}
+
+#event_show #price_bar #cost_summary {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(128, 128, 128, 0.7);
+}
+
+#event_show #price_bar #cost_summary:not(.hidden) {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#event_show #price_bar #cost_summary .card {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2vw;
+    padding: 2vw;
+    gap: 1vw;
+    background: var(--near-white);
+}
+
+#event_show #price_bar #cost_summary .card>.button {
+    align-self: flex-end;
 }

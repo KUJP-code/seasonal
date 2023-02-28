@@ -8,6 +8,7 @@ export default class extends Controller {
     'optRegs',
     'optCost',
     'adjChange',
+    'summary',
     'finalCost']
 
   static values = {
@@ -15,14 +16,18 @@ export default class extends Controller {
     nonMemberPrice: Object
   }
 
-  // Base function called when fields added to English form
+  // Base function called when fields added to form
   calculate() {
+    this.summaryTarget.innerHTML = ''
+
     const courseCost = (this.childTargets.every(this.isMember) ? this.sameMembership(true) : (this.childTargets.every(this.notMember) ? this.sameMembership(false) : this.mixedMembership()));
 
     const optionCost = this.optCostTargets.filter(cost => cost.classList.contains('registered')).reduce(
       (sum, option) => sum + parseInt(option.innerHTML),
       0
     )
+
+    this.summaryTarget.innerHTML += `<p>Option cost is ${optionCost} for ${this.optCostTargets.length} options</p>`
 
     const adjustmentChange = (this.hasAdjChangeTarget) ? this.adjChangeTargets.reduce(
       (sum, change) => sum + parseInt(change.innerHTML),
@@ -87,8 +92,15 @@ export default class extends Controller {
       (sum, id) => sum + this.slotRegsTarget.querySelectorAll(`.child${id}`).length,
       0
     )
-    
-    const combinedCost = this.bestCourses(memberRegs, this.memberPrice) + this.bestCourses(nonMemberRegs, this.nonMemberPrice)
+
+    const memberCost = this.bestCourses(memberRegs, this.memberPrice)
+    const nonMemberCost = this.bestCourses(nonMemberRegs, this.nonMemberPrice)
+    const combinedCost =  memberCost + nonMemberCost
+
+    this.summaryTarget.innerHTML += `<p>Cost for member registrations is ${memberCost} for ${memberRegs} registrations</p>`
+    this.summaryTarget.innerHTML += `<p>Cost for non-member registrations is ${nonMemberCost} for ${nonMemberRegs} registrations</p>`
+    this.summaryTarget.innerHTML += `<p>Total registration cost is ${combinedCost} for ${memberRegs + nonMemberRegs} registrations</p>`
+
     return combinedCost
   }
 
@@ -121,7 +133,9 @@ export default class extends Controller {
       0
     )
 
-    return this.bestCourses(numRegs, courses)
+    const courseCost = this.bestCourses(numRegs, courses)
+    this.summaryTarget.innerHTML += `Course cost is ${courseCost} for ${numRegs} registrations\n`
+    return courseCost
   }
 
   // Calculates cost from spot use when less than 5 courses
