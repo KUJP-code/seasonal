@@ -1,6 +1,12 @@
+<% content_for :head do %>
+  <script defer src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+<% end %>
+
 <main id="sign_up">
   
-  <%= form_for(resource, as: resource_name, url: user_registration_path) do |f| %>
+  <%= form_for(resource, as: resource_name, url: user_registration_path, html: { class: 'h-adr' }) do |f| %>
+    <span class="p-country-name" style="display:none;">Japan</span>
+
     <h2><%= t('.sign_up') %></h2>
 
     <%= render "devise/shared/error_messages", resource: resource %>
@@ -46,18 +52,18 @@
     </div>
 
     <div class="field">
+      <%= f.label :postcode, '〒' %><br />
+      <%= f.text_field :postcode, class: 'p-postal-code', size: 8, maxlength: 8, autocomplete: "postcode" %>
+    </div>
+
+    <div class="field">
       <%= f.label :prefecture, t('.prefecture') %><br />
-      <%= f.select :prefecture, %w[東京都 大阪 神奈川県] %>
+      <%= f.text_field :prefecture, class: 'p-region' %>
     </div>
 
     <div class="field">
       <%= f.label :address, t('.address') %><br />
-      <%= f.text_area :address, autocomplete: "address" %>
-    </div>
-  
-    <div class="field">
-      <%= f.label :postcode, t('.postcode') %><br />
-      <%= f.text_field :postcode, autocomplete: "postcode" %>
+      <%= f.text_area :address, class: 'p-locality p-street-address p-extended-address', autocomplete: "address" %>
     </div>
   
     <div class="field">
