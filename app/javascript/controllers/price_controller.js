@@ -34,8 +34,6 @@ export default class extends Controller {
       0
     ) : 0
 
-    console.log(adjustmentChange)
-
     const finalCost = optionCost + courseCost + adjustmentChange
     this.finalCostTarget.innerHTML = `Total Cost: ${finalCost}円`
   }

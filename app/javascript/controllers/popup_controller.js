@@ -5,6 +5,12 @@ export default class extends Controller {
     'popup'
   ]
 
+  listen(e) {
+    if (e.detail.id === this.element.querySelector('.add_reg').dataset.registerIdValue) {
+      this.toggle()
+    }
+  }
+
   toggle() {
     this.popupTarget.classList.toggle('hidden');
   }

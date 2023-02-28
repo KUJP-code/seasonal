@@ -1,8 +1,7 @@
-<%# TODO: If slot is not registered for, hide the options and they're all set to unregistered. Otherwise you will have to do the current check for each %>
-
 <div class="time_slot">
             <p class="date"><%= add_slot.date %></p>
-            <div class="morning">
+            <div class="morning" data-controller="popup"
+            data-action="register:toggle->popup#listen">
                 <% registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == add_slot.id } %>
 
                 <%= link_to image_tag(url_for(add_slot.image)), time_slot_path(add_slot) %>
@@ -21,28 +20,30 @@
                         end
                         %></button>
                 </div>
-                <% add_slot.options.each do |opt| %>
-                    <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
-
-                    <div class="add_reg" 
-                         data-controller="register"
-                         data-register-id-value=<%= opt.id %>
-                         data-register-type-value="Option"
-                         data-register-child-value=<%= child.id %>
-                         data-register-cost-value=<%= opt.cost %>>
-                        <p data-register-target="name"><%= opt.name %></p>
-                        <button class="button <%= 'registered' if opt_registered %>" 
-                            data-register-target="button" data-action="click->register#toggle"><%= 
-                        if opt_registered
-                            '✓'
-                        else
-                            '✖'
-                        end
-                        %></button>               
-                    </div>
-                <% end %>
+                <div class="options<%= ' hidden' unless registered %>" data-popup-target="popup">
+                    <% add_slot.options.each do |opt| %>
+                        <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
+                        <div class="add_reg"
+                             data-controller="register"
+                             data-register-id-value=<%= opt.id %>
+                             data-register-type-value="Option"
+                             data-register-child-value=<%= child.id %>
+                             data-register-cost-value=<%= opt.cost %>>
+                            <p data-register-target="name"><%= opt.name %></p>
+                            <button class="button <%= 'registered' if opt_registered %>"
+                                data-register-target="button" data-action="click->register#toggle"><%=
+                            if opt_registered
+                                '✓'
+                            else
+                                '✖'
+                            end
+                            %></button>
+                        </div>
+                    <% end %>
+                </div>
             </div>
-            <div class="afternoon">
+            <div class="afternoon" data-controller="popup"
+            data-action="register:toggle->popup#listen">
                 <% afternoon_slot = add_slot.afternoon_slot %>
 
                 <% unless afternoon_slot.nil? %>
@@ -65,25 +66,27 @@
                             end
                             %></button>
                     </div>
-                    <% afternoon_slot.options.each do |opt| %>
-                        <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
-
-                        <div class="add_reg"
-                             data-controller="register"
-                             data-register-id-value=<%= opt.id %>
-                             data-register-type-value="Option"
-                             data-register-child-value=<%= child.id %>
-                             data-register-cost-value=<%= opt.cost %>>
-                            <p data-register-target="name"><%= opt.name %></p>                            
-                            <button class="button <%= 'registered' if opt_registered %>" data-register-target="button" data-action="click->register#toggle"><%= 
-                            if opt_registered
-                                '✓'
-                            else
-                                '✖'
-                            end
-                            %></button>
-                        </div>
-                    <% end %>
+                    <div class="options<%= ' hidden' unless aft_registered %>" data-popup-target="popup">
+                        <% afternoon_slot.options.each do |opt| %>
+                            <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
+                            <div class="add_reg"
+                                 data-controller="register"
+                                 data-controller="register"
+                                 data-register-id-value=<%= opt.id %>
+                                 data-register-type-value="Option"
+                                 data-register-child-value=<%= child.id %>
+                                 data-register-cost-value=<%= opt.cost %>>
+                                <p data-register-target="name"><%= opt.name %></p>
+                                <button class="button <%= 'registered' if opt_registered %>" data-register-target="button" data-action="click->register#toggle"><%=
+                                if opt_registered
+                                    '✓'
+                                else
+                                    '✖'
+                                end
+                                %></button>
+                            </div>
+                        <% end %>
+                    </div>
                 <% end %>
             </div>
         </div>

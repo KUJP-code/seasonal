@@ -143,6 +143,11 @@
     font-size: var(--sub-heading-size);
 }
 
+#event_show .time_slot .morning:first-child {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
 #event_show .time_slot .add_reg {
     flex: 1 1 auto;
     display: flex;
@@ -152,7 +157,11 @@
     gap: 0.5vw;
 }
 
-#event_show .time_slot .morning .add_reg:nth-child(2) {
+#event_show .time_slot .add_reg.hidden {
+    display: none;
+}
+
+#event_show .time_slot .morning:first-child {
     flex: 1 1 55%;
     flex-flow: column nowrap;
     align-items: center;
