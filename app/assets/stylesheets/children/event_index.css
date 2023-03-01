@@ -33,17 +33,17 @@
 #event_children_index table td,
 #event_children_index table th {
     border: 1px solid black;
-    padding: 1vw;
+    padding: 0.5vw;
 }
 
 #event_children_index table thead:first-child th {
     background: var(--ku-orange-hover);
     color: var(--near-white);
     font-size: 16px;
-    padding: 2vw;
+    padding: 1vw;
     position: sticky;
     top: 9vh;
-    z-index: 1;
+    z-index: 2;
 }
 
 #event_children_index table thead th:first-child {
@@ -56,7 +56,7 @@
 #event_children_index table thead th:nth-child(3), 
 #event_children_index table thead th:nth-child(4) {
     position: sticky;
-    z-index: 2;
+    z-index: 3;
 }
 
 
@@ -74,16 +74,16 @@
 }
 
 #event_children_index table th.ja_name {
-    left: 5vw;
-    min-width: 15vw;
+    left: 3vw;
+    min-width: 8vw;
 }
 
 #event_children_index table th.en_name {
-    left: 24vw;
-    min-width: 15vw;
+    left: 13vw;
+    min-width: 8vw;
 }
 
 #event_children_index table th.ssid {
-    left: 43vw;
-    min-width: 15vw;
+    left: 23vw;
+    min-width: 3vw;
 }
