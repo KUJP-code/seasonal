@@ -1,99 +1,89 @@
 #event_children_index {
-    width: 100vw;
-    height: 91vh;
-    display: flex;
-    flex-flow: column nowrap;
     align-items: flex-start;
-    margin-top: 9vh;
     font-size: var(--sub-heading-size);
+    padding-left: 0;
 }
 
-#event_children_index .child_info,
-#event_children_index .event_child.header,
-#event_children_index .event_child,
-#event_children_index .slot .attendance {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    gap: 0.5vw;
+#event_children_index h1 {
+    align-self: center;
+    color: var(--near-white);
+}
+
+#event_children_index thead tr:first-child {
+    background: var(--ku-background);
+}
+
+#event_children_index tr:nth-child(odd) td,
+#event_children_index tr:nth-child(odd) th {
+    background: white;
+}
+
+#event_children_index tr:nth-child(even) td,
+#event_children_index tr:nth-child(even) th {
+    background: var(--near-white);
+}
+
+#event_children_index table {
     text-align: center;
-    font-weight: bold;
+    table-layout: fixed;
+    white-space: nowrap;
+    border-spacing: 0;
 }
 
-#event_children_index {
-    width: max(200px, 15vw);
-}
-
-#event_children_index .order {
-    width: 3vw;
-}
-
-#event_children_index .name,
-#event_children_index .en,
-#event_children_index .cost {
-    width: 8vw;
-}
-
-#event_children_index .child_info {
-    background-color: darkgray;
-    align-self: stretch;
-    top: 9vh;
-}
-
-#event_children_index .event_child.header {
-    min-width: 100vw;
-    background-color: darkgray;
-    width: fit-content;
-}
-
-#event_children_index #event_children {
-    font-size: var(--content-size);
-    width: fit-content;
-    min-width: 100vw;
-    background-color: var(--ku-orange);
-}
-
-#event_children_index #event_children h3 {
+#event_children_index table td,
+#event_children_index table th {
+    border: 1px solid black;
     padding: 1vw;
-    color: white;
-    font-size: var(--sub-heading-size);
 }
 
-#event_children_index .event_child {
-    background-color: lightgray;
-    width: fit-content;
+#event_children_index table thead:first-child th {
+    background: var(--ku-orange-hover);
+    color: var(--near-white);
+    font-size: 16px;
+    padding: 2vw;
+    position: sticky;
+    top: 9vh;
+    z-index: 1;
 }
 
-#event_children_index .secondary_info {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
+#event_children_index table thead th:first-child {
+    background: var(--ku-background);
+    border: none;
 }
 
-#event_children_index .secondary_info p {
-    width: 8vw;
+#event_children_index table thead th:nth-child(1),
+#event_children_index table thead th:nth-child(2), 
+#event_children_index table thead th:nth-child(3), 
+#event_children_index table thead th:nth-child(4) {
+    position: sticky;
+    z-index: 2;
 }
 
-#event_children_index .slot {
-    width: 15vw;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    padding: 0.5vw;
-    gap: 0.5vw;
+
+#event_children_index table th.order,
+#event_children_index table th.ja_name, 
+#event_children_index table th.en_name, 
+#event_children_index table th.ssid {
+    position: sticky;
+    z-index: 1;
 }
 
-#event_children_index .slot_name {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 48px;
+#event_children_index table th.order {
+    left: 0;
+    min-width: 1vw;
 }
 
-#event_children_index .slot .attendance {
-    height: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#event_children_index table th.ja_name {
+    left: 5vw;
+    min-width: 15vw;
+}
+
+#event_children_index table th.en_name {
+    left: 24vw;
+    min-width: 15vw;
+}
+
+#event_children_index table th.ssid {
+    left: 43vw;
+    min-width: 15vw;
 }

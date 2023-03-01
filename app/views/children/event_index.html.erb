@@ -1,27 +1,36 @@
 <main id="event_children_index">
-    <div class="event_child header">
-        <div class="child_info header">
-            <p class="order"></p>
-            <p class="name"><%= t('.name') %></p>
-            <p class="en"><%= t('.en') %></p>
-            <p class="cost"><%= t('.cost') %></p>
-        </div>
+    <h1><%= @source.name %></h1>
 
-        <div class="secondary_info">
-            <p class="reg_days"><%= t('.reg_days') %></p>
-            <p class="allergy"><%= t('.allergy') %></p>
-            <p class="allergy_details"><%= t('.allergy_details') %></p>
-            <p class="photo"><%= t('.photo_ok') %></p>
-        </div>
+    <table>
+        <% num_rows = @source.time_slots.morning.size %>
+        
+        <thead>
+            <tr>
+                <th class="order"></th>
+                <th class="ja_name">Name (日本語)</th>
+                <th class="en_name">Name (英語)</th>
+                <th class="ssid">SSID</th>
+                <th><%= t('.cost') %></th>
+                <th><%= t('.reg_days') %></th>
+                <th><%= t('.allergy') %></th>
+                <th><%= t('.allergy_details') %></th>
+                <th><%= t('.photo_ok') %></th>
+                <% num_rows.times do |i| %>
+                    <th><%= "Day #{i + 1}" %></th>
+                <% end %>
+            </tr>
+        </thead>
 
-        <% @source.time_slots.morning.size.times do |i| %>
-            <div class="slot">
-                <%= "Day #{i + 1}" %>
-            </div>
+        <% 40.times do |i| %>
+            <tr>
+                <th class="order"><%= i + 1 %></th>
+                <th class="ja_name"><%= i %></th>
+                <th class="en_name"><%= i %></th>
+                <th class="ssid"><%= i %></th>
+                <% (num_rows + 5).times do |i| %>
+                    <td><%= "#{i} long text filler lorem ipsum hahahahaha" %></td>
+                <% end %>
+            </tr>
         <% end %>
-    </div>
-
-    <div id="event_children">
-        <%= render partial: 'children/event_child', collection: @attending, locals: { event: @source } || t('.no_reg') %>
-    </div>
+    </table>
 </main>
