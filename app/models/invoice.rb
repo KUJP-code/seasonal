@@ -42,6 +42,10 @@ class Invoice < ApplicationRecord
     update_cost(calculated_cost)
   end
 
+  def f_bill_date
+    billing_date.strftime('%Y/%m/%d')
+  end
+
   private
 
   # Recursively finds the next largest course for given number of registrations

@@ -597,7 +597,7 @@ puts 'Created options for spring school, and added images to slots'
 School.all.each do |school|
   school.customers.each do |customer|
     school.events.each do |event|
-      invoice = customer.invoices.create!(event: event, total_cost: 0)
+      invoice = customer.invoices.create!(event: event, total_cost: 0, billing_date: 1.year.from_now)
     end
   end
 end

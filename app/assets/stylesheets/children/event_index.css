@@ -36,7 +36,7 @@
     padding: 0.5vw;
 }
 
-#event_children_index table thead:first-child th {
+#event_children_index table thead:first-child tr:first-child th {
     background: var(--ku-orange-hover);
     color: var(--near-white);
     font-size: 16px;
@@ -46,15 +46,25 @@
     z-index: 2;
 }
 
-#event_children_index table thead th:first-child {
+#event_children_index table thead:first-child tr:nth-child(2) th {
+    background: var(--ku-orange-hover);
+    color: var(--near-white);
+    font-size: 16px;
+    padding: 1vw;
+    position: sticky;
+    top: 13.5vh;
+    z-index: 2;
+}
+
+#event_children_index table thead tr:first-child th:first-child {
     background: var(--ku-background);
     border: none;
 }
 
-#event_children_index table thead th:nth-child(1),
-#event_children_index table thead th:nth-child(2), 
-#event_children_index table thead th:nth-child(3), 
-#event_children_index table thead th:nth-child(4) {
+#event_children_index table th#order_header,
+#event_children_index table th#ja_header, 
+#event_children_index table th#en_header, 
+#event_children_index table th#ssid_header {
     position: sticky;
     z-index: 3;
 }

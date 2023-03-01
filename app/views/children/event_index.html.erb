@@ -2,35 +2,34 @@
     <h1><%= @source.name %></h1>
 
     <table>
-        <% num_rows = @source.time_slots.morning.size %>
+        <% cols = @source.time_slots.morning.size %>
         
         <thead>
             <tr>
-                <th class="order"></th>
-                <th class="ja_name">Name (日本語)</th>
-                <th class="en_name">Name (英語)</th>
-                <th class="ssid">SSID</th>
-                <th><%= t('.cost') %></th>
-                <th><%= t('.reg_days') %></th>
-                <th><%= t('.allergy') %></th>
-                <th><%= t('.allergy_details') %></th>
-                <th><%= t('.photo_ok') %></th>
-                <% num_rows.times do |i| %>
-                    <th><%= "Day #{i + 1}" %></th>
+                <th rowspan="2" id="order_header" class="order"></th>
+                <th rowspan="2" id="ja_header" class="ja_name">Name (日本語)</th>
+                <th rowspan="2" id="en_header" class="en_name">Name (英語)</th>
+                <th rowspan="2" id="ssid_header" class="ssid">SSID</th>
+                <th rowspan="2"><%= t('.cost') %></th>
+                <th rowspan="2"><%= t('.summary') %></th>
+                <th rowspan="2"><%= t('.billing_date') %></th>
+                <th rowspan="2"><%= t('.send_email') %></th>
+                <th rowspan="2"><%= t('.reg_days') %></th>
+                <th rowspan="2"><%= t('.allergy') %></th>
+                <th rowspan="2"><%= t('.allergy_details') %></th>
+                <th rowspan="2"><%= t('.photo_ok') %></th>
+                <% cols.times do |i| %>
+                    <th colspan="2"><%= "Day #{i + 1}" %></th>
+                <% end %>
+            </tr>
+            <tr>
+                <% cols.times do |i| %>
+                    <th>午前 / 午後</th>
+                    <th>昼 / 晩</th>
                 <% end %>
             </tr>
         </thead>
 
-        <% 40.times do |i| %>
-            <tr>
-                <th class="order"><%= i + 1 %></th>
-                <th class="ja_name"><%= i %></th>
-                <th class="en_name"><%= i %></th>
-                <th class="ssid"><%= i %></th>
-                <% (num_rows + 5).times do |i| %>
-                    <td><%= "#{i} long text filler lorem ipsum hahahahaha" %></td>
-                <% end %>
-            </tr>
-        <% end %>
+        <%= render partial: 'children/event_child', collection: @children, locals: { cols: cols, event: @source } %>
     </table>
 </main>

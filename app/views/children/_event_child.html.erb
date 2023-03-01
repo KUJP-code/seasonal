@@ -1,69 +1,78 @@
-    <div class="event_child">
-        <div class="child_info">
-            <p class="order"><%= event_child_iteration.index + 1 %></p>
-            <p class="name"><%= link_to event_child.name, child_path(event_child) %></p>
-            <p class="en"><%= link_to event_child.en_name, child_path(event_child) %></p>
-            <p class="cost">
-                <%= 'xxxxxxyen' %>
-                <%= button_tag t('.breakdown'), class: 'button' %>
-            </p>
-        </div>
-        
-        <div class="secondary_info">
-            <p class="reg_days"><%= event_child.regular_schedule.days %></p>
-            <% if event_child.allergies == true %>
-                <p class="allergy">✓</p>
-            <% else %>
-                <p class="allergy">𐄂</p>
-            <% end %>
-            <p class="allergy_details"><%= event_child.allergy_details %></p>
-            <% if event_child.post_photos == true %>
-                <p class="photo">✓</p>
-            <% else %>
-                <p class="photo">𐄂</p>
-            <% end %>
-        </div>
+<% event_slots = event_child.time_slots.select { |slot| slot.event_id == event.id && slot.morning }.sort_by { |slot| slot.start_time } %>
+<% event_opts = event_child.options.select { |opt| event_slots.map { |slot| slot.id}.include?(opt.optionable_id) } %>
 
-        <% event_child.time_slots.where(event: event).morning.each do |slot| %>
-            <div class="slot">
-                <p class="slot_name"><%= slot.name %></p>
-
-                <div class="attendance">
-                    <div class="morning">
-                        <h5><%= t('.morning') %></h5>
-                        <% if event_child.registered?(slot) %>
-                            <p>✓</p>
-                        <% else %>
-                            <p>𐄂</p>
-                        <% end %>
-                    </div>
-
-                    <div class="afternoon">
-                        <h5><%= t('.afternoon') %></h5>
-                        <% if event_child.registered?(slot.afternoon_slot) %>
-                            <p>✓</p>
-                        <% else %>
-                            <p>𐄂</p>
-                        <% end %>
-                    </div>
-                </div>
-
-                <div class="details">
-                    <p class="times">
-                        <%= "#{event_child.arrival_time(slot)} ~ #{event_child.departure_time(slot)}" %>
-                        <%= "#{event_child.arrival_time(slot.afternoon_slot)} ~ #{event_child.departure_time(slot.afternoon_slot)}" if slot.afternoon_slot %>
-                    </p>
-                    <p class="meals">
-                        <h5><%= t('.meals') %></h5>
-                        <% if event_child.options.meal.where(optionable: slot).empty? %>
-                            <%= t('.no_meals') %>
-                        <% else %>
-                            <% event_child.options.meal.where(optionable: slot).each do |meal| %>
-                                <%= meal.name %>
-                            <% end %>
-                        <% end %>
-                    </p>
-                </div>
-            </div>
+<tr>
+    <th rowspan="2" class="order"><%= event_child_iteration.index + 1 %></th>
+    <th rowspan="2" class="ja_name"><%= link_to event_child.name, child_path(event_child) %></th>
+    <th rowspan="2" class="en_name"><%= link_to event_child.en_name, child_path(event_child) %></th>
+    <th rowspan="2" class="ssid"><%= link_to event_child.ssid, child_path(event_child) %></th>
+    <td rowspan="2">
+        <%= number_to_currency(event_child.invoices.reduce(0) { |sum, invoice| sum + invoice.total_cost }, unit: '円', precision: 0, locale: :ja) %>
+    </td>
+    <td rowspan="2"><%= button_tag t('.view_summary'), class: 'button' %></td>
+    <td rowspan="2"><%= event_child.invoices.last.f_bill_date %></td>
+    <td rowspan="2"><%= button_tag t('.send_email'), class: 'button' %></td>
+    <td rowspan="2"><%= event_child.regular_schedule.days %></td>
+    <td rowspan="2"><%= 
+        if event_child.allergies 
+            '✓'
+        else
+            '𐄂'
+        end
+    %></td>
+    <td rowspan="2"><%= event_child.allergy_details %></td>
+    <td rowspan="2"><%= 
+    if event_child.post_photos 
+            '✓'
+        else
+            '𐄂'
+        end 
+    %></td>
+    <% cols.times do |i| %>
+        <% slot = event_slots[i] %>
+        <% if slot.nil? %>
+            <td colspan="2"></td>
+        <% else %>
+            <td colspan="2"><%= "#{slot.name} (#{slot.start_time.strftime('%m月%d日')})" %></td>
         <% end %>
-    </div>
+    <% end %>
+</tr>
+<tr>
+    <% cols.times do |i| %>
+        <% slot = event_slots[i] %>
+        <% if slot.nil? %>
+            <td></td>
+            <td></td>
+        <% else %>
+            <td><%=
+                if event_slots.include?(slot)
+                    '✓'
+                else
+                    '𐄂'
+                end
+                %>/<%= 
+                # FIXME: causing N+1 queries
+                if event_slots.include?(slot.afternoon_slot)
+                    '✓'
+                else
+                    '𐄂'
+                end
+            %></td>
+            <td><%=
+                # FIXME: should be giving me a plus
+                if event_opts.include?(slot.options.find_by(name: '昼'))
+                '✓'
+                else
+                    '𐄂'
+                end
+                %>/<%= 
+                # FIXME: should be giving me a plus
+                if event_opts.include?(slot.options.find_by(name: '晩'))
+                    '✓'
+                else
+                    '𐄂'
+                end
+            %></td>
+        <% end %>
+    <% end %>
+</tr>

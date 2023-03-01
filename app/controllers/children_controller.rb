@@ -9,7 +9,7 @@ class ChildrenController < ApplicationController
     # List children attending an event or time slot
     if params[:source]
       @source = find_source
-      @children = @source.children.distinct
+      @children = @source.children.distinct.includes(:invoices, :regular_schedule, :registrations, :time_slots, :options)
 
       return render "#{@source.class.name.downcase}_index"
     end
