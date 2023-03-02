@@ -56,3 +56,52 @@
     z-index: 2;
 }
 
+#slot_children_index table th#arrival_header,
+#slot_children_index table th#level_header, 
+#slot_children_index table th#name_header,
+#slot_children_index table th#allergy_header,
+#slot_children_index table th#photos_header,
+#slot_children_index table th#depart_header {
+    position: sticky;
+    z-index: 3;
+}
+
+#slot_children_index table th.arrival,
+#slot_children_index table th.level, 
+#slot_children_index table th.name,
+#slot_children_index table th.allergy,
+#slot_children_index table th.photos,
+#slot_children_index table th.depart {
+    position: sticky;
+    z-index: 1;
+}
+
+#slot_children_index table th.arrival {
+    left: 0;
+    min-width: 6vw;
+}
+
+#slot_children_index table th.level {
+    left: 8vw;
+    min-width: 13vw;
+}
+
+#slot_children_index table th.name {
+    left: 23vw;
+    min-width: 13vw;
+}
+
+#slot_children_index table th.allergy {
+    left: 38vw;
+    min-width: 8vw;
+}
+
+#slot_children_index table th.photos {
+    left: 48vw;
+    min-width: 6vw;
+}
+
+#slot_children_index table th.depart {
+    left: 56vw;
+    min-width: 6vw;
+}
