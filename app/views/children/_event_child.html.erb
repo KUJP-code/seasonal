@@ -1,5 +1,7 @@
+<%# TODO: Probably shouldn't need these filters, do it in the controller %>
 <% event_slots = event_child.time_slots.select { |slot| slot.event_id == event.id && slot.morning }.sort_by { |slot| slot.start_time } %>
 <% event_opts = event_child.options.select { |opt| event_slots.map { |slot| slot.id}.include?(opt.optionable_id) } %>
+<% event_invoices = event_child.invoices.select { |invoice| invoice.event_id == event.id } %>
 
 <tr>
     <th rowspan="2" class="order"><%= event_child_iteration.index + 1 %></th>
@@ -7,10 +9,20 @@
     <th rowspan="2" class="en_name"><%= link_to event_child.en_name, child_path(event_child) %></th>
     <th rowspan="2" class="ssid"><%= link_to event_child.ssid, child_path(event_child) %></th>
     <td rowspan="2">
-        <%= number_to_currency(event_child.invoices.reduce(0) { |sum, invoice| sum + invoice.total_cost }, unit: '円', precision: 0, locale: :ja) %>
+        <%= number_to_currency(event_invoices.reduce(0) { |sum, invoice| sum + invoice.total_cost }, unit: '円', precision: 0, locale: :ja) %>
     </td>
-    <td rowspan="2"><%= button_tag t('.view_summary'), class: 'button' %></td>
-    <td rowspan="2"><%= event_child.invoices.last.f_bill_date %></td>
+    <td rowspan="2" data-controller="popup">
+        <%= button_tag t('.view_summary'), class: 'button', data: { action: "click->popup#toggle" } %>
+        <div class="hidden cost_summary" data-popup-target="popup">
+            <% event_invoices.each do |invoice| %>
+                <div class="card">
+                    <%= button_tag '✖', class: 'button', data: { action: "click->popup#toggle" } %>
+                    <%= sanitize invoice.summary, tags: %w[h1 h2 h3 div p], attributes: %w[class id] %>
+                </div>
+            <% end %>
+        </div>
+    </td>
+    <td rowspan="2"><%= event_invoices.last.f_bill_date %></td>
     <td rowspan="2"><%= button_tag t('.send_email'), class: 'button' %></td>
     <td rowspan="2"><%= event_child.regular_schedule.days %></td>
     <td rowspan="2"><%= 

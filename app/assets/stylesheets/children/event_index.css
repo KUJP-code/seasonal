@@ -4,7 +4,7 @@
     padding-left: 0;
 }
 
-#event_children_index h1 {
+#event_children_index>h1 {
     align-self: center;
     color: var(--near-white);
 }
@@ -96,4 +96,41 @@
 #event_children_index table th.ssid {
     left: 23vw;
     min-width: 3vw;
+}
+
+#event_children_index .cost_summary {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(128, 128, 128, 0.7);
+    z-index: 5;
+}
+
+#event_children_index .cost_summary:not(.hidden) {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#event_children_index .cost_summary .card {
+    max-height: 90vh;
+    width: 60vw;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 2vw;
+    padding: 2vw;
+    gap: 1vw;
+    background: var(--near-white);
+    overflow: scroll;
+}
+
+/* FIXME: the way the button is positioned is very hacky */
+#event_children_index .cost_summary .card>.button {
+    align-self: flex-end;
+    margin-bottom: -5vh;
 }
