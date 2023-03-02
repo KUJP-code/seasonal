@@ -544,6 +544,13 @@ Event.where(name: 'Spring School 2023').each do |event|
   event.time_slots.each do |slot|
     slot.options.create!([
       {
+        name: 'Arrive on time',
+        category: :arrival,
+        modifier: 0,
+        description: 'Be normal!',
+        cost: 0
+      },
+      {
         name: 'Arrive 30min early',
         category: :arrival,
         modifier: -30,
@@ -556,6 +563,13 @@ Event.where(name: 'Spring School 2023').each do |event|
         modifier: -60,
         description: 'Be at KU longer, for even more fun!',
         cost: 100
+      },
+      {
+        name: 'Leave on time',
+        category: :departure,
+        modifier: 0,
+        description: 'Be normal!',
+        cost: 0
       },
       {
         name: 'Leave 30min late',
