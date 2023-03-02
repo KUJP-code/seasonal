@@ -18,8 +18,8 @@ export default class extends Controller {
     const content = this.buttonTarget.innerHTML
     const cost = this.costValue
     const id = this.idValue
+    const siblings = getSiblings(this.element)
     const type = this.typeValue
-
 
     switch (content) {
         case 'Register':
@@ -42,6 +42,24 @@ export default class extends Controller {
             break;
     }
 
-    this.dispatch('toggle', { detail: { child: child, content: content, cost: cost, id: id, type: type } })
+    this.dispatch('toggle', { detail: { child: child, content: content, cost: cost, id: id, siblings: siblings, type: type } })
   }
 }
+
+// Gets me the other options when a radio button is checked
+var getSiblings = function (elem) {
+
+	// Setup siblings array and get the first sibling
+	var siblings = [];
+	var sibling = elem.parentNode.firstChild;
+
+	// Loop through each sibling and push to the array
+	while (sibling) {
+		if (sibling.tagName === 'DIV' && sibling !== elem) {
+			siblings.push(sibling);
+		}
+		sibling = sibling.nextSibling
+	}
+
+	return siblings;
+};

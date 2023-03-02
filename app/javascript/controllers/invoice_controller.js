@@ -32,6 +32,8 @@ export default class extends Controller {
       }
     }
 
+    console.log('added')
+
     this.dispatch('add')
   }
 
@@ -40,18 +42,30 @@ export default class extends Controller {
     const content = e.detail.content
     const cost = e.detail.cost
     const id = e.detail.id
+    const siblings = e.detail.siblings
     const type = e.detail.type
 
     if (content === 'Register' || content === '✖') {
       this.add(child, cost, id, type)
+    } if (content === '') {
+      this.radio(child, cost, id, siblings, type)
     } else {
       this.remove(child, id, type)
     }
   }
 
+  radio (child, cost, id, siblings, type) {
+    siblings.forEach(sibling => {
+      const child = sibling.dataset.registerChildValue
+      const id = sibling.dataset.registerIdValue
+
+      this.remove(child, id, 'Option')
+    });
+
+    this.add(child, cost, id, type)
+  }
+
   remove (child, id, type) {
-
-
     const wrapper = (type === 'TimeSlot') ? document.getElementById(`slot${id}`.concat(`child${child}`)) : document.getElementById(`opt${id}`.concat(`child${child}`))
 
     if (wrapper.dataset.newRecord === 'true') {
@@ -67,6 +81,8 @@ export default class extends Controller {
         cost.classList.remove('registered')
       }
     }
+
+    console.log('removed')
 
     this.dispatch('remove')
   }
