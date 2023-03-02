@@ -169,23 +169,13 @@ class Invoice < ApplicationRecord
   # Calculates how many times we need to apply the dumb 184円 increase
   # This does not deal with the even less likely case of there being two kindy kids registered for one full day each
   def pointless_price(courses)
-
-    p 'pointless price'
-
     days = children.find_by(level: :kindy).full_days(event, time_slots.ids)
-
-    p days
-
     connection_cost = days * (courses['1'] + 184)
     @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{(courses['1'] + 184).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
     connection_cost
   end
 
   def spot_use(num_regs, courses)
-
-    p 'spot use'
-    p num_regs
-
     spot_cost = num_regs * courses['1']
     @breakdown << "<p>スポット1回(午前・15:00~18:30) x #{num_regs}: #{spot_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" unless spot_cost.zero?
     spot_cost
