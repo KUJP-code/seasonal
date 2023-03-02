@@ -1,77 +1,58 @@
 #slot_children_index {
-    margin-top: 9vh;
-    width: fit-content;
-    font-size: var(--sub-heading-size);
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-left: 0;
 }
 
-#slot_children_index h3 {
-    background: var(--ku-orange);
-    padding: 1vw;
+#slot_children_index>h1 {
+    align-self: center;
+    color: var(--near-white);
 }
 
-.options  {
-    flex: auto;
+#slot_children_index thead tr:first-child {
+    background: var(--ku-background);
 }
 
-.child_info,
-.options,
-.personal_details {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-around;
-    align-items: stretch;
+#slot_children_index tr:nth-child(odd) td,
+#slot_children_index tr:nth-child(odd) th {
+    background: white;
+}
+
+#slot_children_index tr:nth-child(even) td,
+#slot_children_index tr:nth-child(even) th {
+    background: var(--near-white);
+}
+
+#slot_children_index table {
     text-align: center;
+    table-layout: fixed;
+    white-space: nowrap;
+    border-spacing: 0;
 }
 
-.slot_child.header {
+#slot_children_index table td,
+#slot_children_index table th {
+    border: 1px solid black;
+    padding: 0.5vw;
+}
+
+#slot_children_index table thead:first-child tr:first-child th {
+    background: var(--ku-orange-hover);
+    color: var(--near-white);
+    font-size: 16px;
+    padding: 1vw;
     position: sticky;
     top: 9vh;
     z-index: 2;
-    background: var(--ku-dark-background);
-    font-weight: bold;
 }
 
-.header .child_info {
-    display: flex;
-    flex-flow: column nowrap;
-}
-
-.child_info .level_count {
-    flex-basis: 100%;
-}
-
-.child_info .personal_details {
-    display: flex;
-    flex-flow: row nowrap;
-}
-
-.slot_child {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    min-width: 98vw;
-    width: fit-content;
+#slot_children_index table thead:first-child tr:nth-child(2) th {
+    background: var(--ku-orange-hover);
+    color: var(--near-white);
+    font-size: 16px;
     padding: 1vw;
+    position: sticky;
+    top: 13.5vh;
+    z-index: 2;
 }
 
-.slot_child .arrival,
-.slot_child .order {
-    width: 5vw;
-}
-
-.slot_child .name,
-.slot_child .en,
-.slot_child .level {
-    width: 15vw;
-}
-
-.slot_child .arrival,
-.slot_child .opt {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.slot_child .opt {
-    width: 10vw;
-}

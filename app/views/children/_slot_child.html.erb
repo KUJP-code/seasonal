@@ -1,20 +1,38 @@
-    <div class="slot_child">
-        <div class="child_info">
-            <p class="order"><%= slot_child_iteration.index + 1 %></p>
-            <p class="name"><%= link_to slot_child.name, child_path(slot_child) %></p>
-            <p class="en"><%= link_to slot_child.en_name, child_path(slot_child) %></p>
-        </div>
-        
-        <div class="options">
-            <p class="arrival"><%= '9:00' %></p>
-            <% slot.options.each do |opt| %>
-                <div class="opt">
-                    <% if slot_child.registered?(opt) %>
-                        <%= render 'registrations/delete_button', registration: slot_child.registered?(opt) %>
-                    <% else %>
-                        <%= render 'registrations/register_button', child: slot_child, registerable: opt %>
-                    <% end %>
-                </div>
-            <% end %>
-        </div>
-    </div>
+<% arrival_option = slot_child.options.select{ |opt| opt.arrival? && opt.optionable_id == slot.id && opt.optionable_type == 'TimeSlot' }.first %>
+<% depart_option = slot_child.options.select{ |opt| opt.departure? && opt.optionable_id == slot.id && opt.optionable_type == 'TimeSlot' }.first %>
+
+<tr>
+    <th class="arrival"><%= 
+        if arrival_option.nil?
+            slot.f_start_time
+        else
+            (slot.start_time + arrival_option.modifier.minutes).strftime('%I:%M%p')
+        end
+     %></th>
+    <th class="level"><%= slot_child.level.capitalize.gsub(/\d+/, ' \0 ') %></th>
+    <th class="name"><%= "#{slot_child.name} (#{slot_child.en_name})" %></th>
+    <th class="allergy"><%= slot_child.allergy_details %></th>
+    <th class="photos"><%= 
+        if slot_child.post_photos 
+            '✓'
+        else
+            '𐄂'
+        end 
+    %></th>
+        <th class="depart"><%= 
+        if depart_option.nil?
+            slot.f_end_time
+        else
+            (slot.end_time + depart_option.modifier.minutes).strftime('%I:%M%p')
+        end
+    %></th>
+    <% options.each do |opt| %>
+        <td><%= 
+            if slot_child.options.include?(opt)
+                '✓'
+            else
+                '𐄂'
+            end
+        %></td>
+    <% end %>
+</tr>

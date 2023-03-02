@@ -8,8 +8,7 @@ class ChildrenController < ApplicationController
 
     # List children attending an event or time slot
     if params[:source]
-      @source = find_source
-      @children = @source.children.distinct.includes(:invoices, :regular_schedule, :registrations, :time_slots, :options)
+      find_source
 
       return render "#{@source.class.name.downcase}_index"
     end
@@ -107,8 +106,24 @@ class ChildrenController < ApplicationController
     Child.find_by(ssid: params[:ssid], birthday: params[:bday])
   end
 
+  def find_children
+    case params[:source]
+    when 'Event'
+      @children = @source.children.distinct.includes(
+        :invoices, :regular_schedule, :registrations, :time_slots, :options
+      )
+    when 'TimeSlot'
+      @children = @source.children.distinct.includes(options: :registrations)
+    else
+      render status: :unprocessable_entity
+    end
+  end
+
   def find_source
-    params[:source].constantize.find(params[:id])
+    @source = params[:source].constantize.find(params[:id])
+    @children = find_children
+
+    @source
   end
 
   def role_index

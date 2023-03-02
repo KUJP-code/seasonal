@@ -54,8 +54,16 @@ class TimeSlot < ApplicationRecord
     start_time.to_date.to_s
   end
 
+  def f_end_time
+    end_time.strftime('%I:%M%p')
+  end
+
+  def f_start_time
+    start_time.strftime('%I:%M%p')
+  end
+
   def times
-    "#{start_time.strftime('%I:%M%p')} - #{end_time.strftime('%I:%M%p')}"
+    "#{f_start_time} - #{f_end_time}"
   end
 
   # List all children at the slot's school,

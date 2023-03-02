@@ -1,6 +1,6 @@
 #event_children_index {
+    justify-content: flex-start;
     align-items: flex-start;
-    font-size: var(--sub-heading-size);
     padding-left: 0;
 }
 

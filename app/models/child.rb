@@ -26,12 +26,12 @@ class Child < ApplicationRecord
   # Map level integer in table to a level
   enum :level, unknown: 0,
                kindy: 1,
-               land_low: 2,
-               land_high: 3,
-               sky_low: 4,
-               sky_high: 5,
-               galaxy_low: 6,
-               galaxy_high: 7,
+               land1: 2,
+               land2: 3,
+               sky1: 4,
+               sky2: 5,
+               galaxy1: 6,
+               galaxy2: 7,
                keep_up: 8,
                specialist: 9,
                tech_up: 10

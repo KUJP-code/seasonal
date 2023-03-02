@@ -45,7 +45,7 @@
         <% if slot.nil? %>
             <td colspan="2"></td>
         <% else %>
-            <td colspan="2"><%= "#{slot.name} (#{slot.start_time.strftime('%m月%d日')})" %></td>
+            <td colspan="2"><%= link_to "#{slot.name} (#{slot.start_time.strftime('%m月%d日')})", children_path(id: slot.id, source: 'TimeSlot') %></td>
         <% end %>
     <% end %>
 </tr>
