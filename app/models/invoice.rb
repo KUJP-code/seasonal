@@ -51,7 +51,9 @@ class Invoice < ApplicationRecord
   # Recursively finds the next largest course for given number of registrations
   # The 30 and 35 can be hardcoded since I'm told the number of courses
   # doesn't change
-  def best_price(num_regs, courses)
+  def best_price(num_regs, courses, member: false)
+    return 0 if num_regs.zero?
+
     if num_regs >= 35
       @breakdown << "<p>- 30回コース: #{courses['30']}円</p>"
       return courses['30'] + best_price(num_regs - 30, courses)
@@ -62,9 +64,9 @@ class Invoice < ApplicationRecord
     @breakdown << "<p>- #{course}回コース: #{cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" unless cost.nil?
     return cost + best_price(num_regs - course, courses) unless num_regs < 5
 
-    return spot_use(num_regs, courses) unless niche_case?
+    return spot_use(num_regs, courses) unless niche_case? && member
 
-    pointless_price(num_regs, courses) if niche_case?
+    pointless_price(courses) if niche_case?
   end
 
   def calc_adjustments
@@ -90,6 +92,8 @@ class Invoice < ApplicationRecord
   end
 
   def calc_option_cost
+    return 0 if opt_regs.size.zero?
+
     opt_cost = options.reduce(0) { |sum, opt| sum + opt.cost }
     @breakdown << "<h3>Option cost:</h3>
                    <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{options.size} options</p>"
@@ -97,33 +101,6 @@ class Invoice < ApplicationRecord
       @breakdown << "<p>- #{name} x #{options.where(name: name).count}: #{cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
     end
     opt_cost
-  end
-
-  def member_prices
-    event.member_prices.courses
-  end
-
-  def mixed_children
-    member_children = children.select(&:member?)
-    member_regs = slot_regs.where(child: member_children).size
-    @breakdown << '<p>For member children</p>'
-    member_cost = best_price(member_regs, member_prices)
-
-    non_member_children = children.reject(&:member?)
-    non_member_regs = slot_regs.where(child: non_member_children).size
-    @breakdown << '<p>For non-member children</p>'
-    non_member_cost = best_price(non_member_regs, non_member_prices)
-
-    member_cost + non_member_cost
-  end
-
-  # Decides if we need to apply the dumb 184 円 increase
-  def niche_case?
-    slot_regs.size < 5 && children.any? { |c| c.kindy? && c.full_days(event).positive? }
-  end
-
-  def non_member_prices
-    event.non_member_prices.courses
   end
 
   def generate_details
@@ -156,6 +133,33 @@ class Invoice < ApplicationRecord
     @breakdown << '</div>'
   end
 
+  def member_prices
+    event.member_prices.courses
+  end
+
+  def mixed_children
+    member_children = children.select(&:member?)
+    member_regs = slot_regs.where(child: member_children).size
+    @breakdown << '<p>For member children</p>'
+    member_cost = best_price(member_regs, member_prices, member: true)
+
+    non_member_children = children.reject(&:member?)
+    non_member_regs = slot_regs.where(child: non_member_children).size
+    @breakdown << '<p>For non-member children</p>'
+    non_member_cost = best_price(non_member_regs, non_member_prices)
+
+    member_cost + non_member_cost
+  end
+
+  # Decides if we need to apply the dumb 184 円 increase
+  def niche_case?
+    slot_regs.size < 5 && children.any? { |c| c.kindy? && c.full_days(event, time_slots.ids).positive? }
+  end
+
+  def non_member_prices
+    event.non_member_prices.courses
+  end
+
   # Finds the nearest multiple of 5 to the passed integer
   # Because courses are in multiples of 5, other than spot use
   def nearest_five(num)
@@ -164,14 +168,24 @@ class Invoice < ApplicationRecord
 
   # Calculates how many times we need to apply the dumb 184円 increase
   # This does not deal with the even less likely case of there being two kindy kids registered for one full day each
-  def pointless_price(num_regs, courses)
-    days = children.find_by(level: :kindy).full_days(event)
+  def pointless_price(courses)
+
+    p 'pointless price'
+
+    days = children.find_by(level: :kindy).full_days(event, time_slots.ids)
+
+    p days
+
     connection_cost = days * (courses['1'] + 184)
-    @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{connection_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
-    connection_cost + spot_use(num_regs - days, courses)
+    @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{(courses['1'] + 184).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
+    connection_cost
   end
 
   def spot_use(num_regs, courses)
+
+    p 'spot use'
+    p num_regs
+
     spot_cost = num_regs * courses['1']
     @breakdown << "<p>スポット1回(午前・15:00~18:30) x #{num_regs}: #{spot_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" unless spot_cost.zero?
     spot_cost

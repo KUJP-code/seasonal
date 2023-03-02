@@ -88,8 +88,13 @@ class Child < ApplicationRecord
     events.where.not(school: school).distinct
   end
 
-  def full_days(event)
-    time_slots.where(morning: true, event: event).count { |slot| registered?(slot.afternoon_slot) }
+  def full_days(event, invoice_slot_ids)
+    full_days = time_slots.where(id: invoice_slot_ids, morning: true, event: event).distinct
+    full_days.each do |slot|
+      puts slot.name
+    end
+    
+    full_days.count { |slot| registered?(slot.afternoon_slot) }
   end
 
   def kindy?
