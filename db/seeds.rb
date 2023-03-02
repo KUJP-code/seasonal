@@ -156,7 +156,7 @@ User.customers.each do |customer_user|
       post_photos: true,
       allergies: true,
       allergy_details: 'peanuts',
-      level: 'land_high',
+      level: 'land2',
       category: 'reservation',
       school: customer_user.school
     }
@@ -597,7 +597,11 @@ puts 'Created options for spring school, and added images to slots'
 School.all.each do |school|
   school.customers.each do |customer|
     school.events.each do |event|
-      invoice = customer.invoices.create!(event: event, total_cost: 0, billing_date: 1.year.from_now)
+      customer.invoices.create!(
+        event: event,
+        total_cost: 0,
+        billing_date: 1.year.from_now
+      )
     end
   end
 end
@@ -625,10 +629,6 @@ Child.all.each do |child|
 end
 
 puts "Registered kids for first option for each event/slot they're attending"
-
-Invoice.all.each { |invoice| invoice.calc_cost }
-
-puts 'Calculated invoice costs now that children are registered'
 
 Child.all.each do |child|
   child.create_regular_schedule(
@@ -690,7 +690,7 @@ non_member.children.create!([
     post_photos: true,
     allergies: true,
     allergy_details: 'peanuts',
-    level: 'land_high',
+    level: 'land2',
     category: 'external',
     school: non_member.school
   }
@@ -735,13 +735,32 @@ member.children.create!([
   post_photos: true,
   allergies: true,
   allergy_details: 'peanuts',
-  level: 'land_high',
+  level: 'land2',
   category: 'internal',
   school: member.school
 }
 ])
 
 puts 'Created test users for only member children and only non-member children'
+
+School.all.each do |school|
+  school.customers.each do |customer|
+    school.events.each do |event|
+      customer.invoices.create!(
+        event: event,
+        total_cost: 0,
+        billing_date: 6.months.from_now,
+        paid: true
+      )
+    end
+  end
+end
+
+puts 'Created paid invoices for each parent/event combo at each school'
+
+Invoice.all.each { |invoice| invoice.calc_cost }
+
+puts 'Calculated invoice costs now all are created'
 
 # TODO: add back in once coupons are properly implemented
 # TimeSlot.all.each do |slot|

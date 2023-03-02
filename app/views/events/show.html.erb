@@ -1,8 +1,25 @@
+<% inactive_invoices = @all_invoices - [@invoice] %>
+
 <main id="event_show" 
       data-controller="invoice price"
       data-action="register:toggle->invoice#change invoice:add@window->price#calculate invoice:remove@window->price#calculate"
       data-price-member-price-value=<%= @member_prices.courses.to_json unless @member_prices.nil? %>
       data-price-non-member-price-value=<%= @non_member_prices.courses.to_json unless @non_member_prices.nil? %>>
+
+    <div id="invoices">
+        <% @all_invoices.each do |invoice| %>
+            <div class="invoice <%= 'active' if invoice.id == @invoice.id %>">
+                <%= link_to "Invoice ##{invoice.id}", event_path(id: @event, invoice: invoice.id), class: "button #{'paid' if invoice.paid}" %>
+                <%=
+                    if invoice.paid
+                        t('.paid')
+                    else
+                        t('.unpaid')
+                    end
+                %>
+            </div>
+        <% end %>
+    </div>
 
     <div class="wrap-collapsible"> 
         <input id="collapsible" class="toggle" type="checkbox"> 
@@ -69,13 +86,9 @@
 
     <% @children.each do |child| %>
         <%# Variables here for neatness %>
-        <% registered_slots = @event.time_slots.morning.joins(:registrations).where(registrations: { child_id: child.id }).with_attached_image.includes(afternoon_slot: :options).includes(:options) %>
+        <% registered_slots = @event.time_slots.morning.joins(:registrations).where(registrations: { child_id: child.id, invoice_id: @all_invoices.ids }).with_attached_image.includes(afternoon_slot: :options).includes(:options) %>
         <% unregistered_slots = @event.time_slots.morning.where.not(id: registered_slots.ids).with_attached_image.includes(afternoon_slot: :options).includes(:options) %>
-        <% if @invoice
-            registrations = @invoice.registrations
-        else
-            registrations = []
-        end %>
+        <% registrations = @invoice.registrations %>
 
         <h2><%= t('.regs_for', child: child.name) %></h2>
 
@@ -84,6 +97,7 @@
 
             <% @event.options.each do |opt| %>
                 <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
+                <% on_other_invoice = inactive_invoices.any? { |invoice| invoice.registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id }} %>
 
                 <div class="event_option"
                     data-controller="register"
@@ -94,23 +108,28 @@
 
                     <h4 data-register-target="name"><%= opt.name %></h4>
 
-                    <button class="button <%= 'registered' if opt_registered %>" 
-                        data-register-target="button" data-action="click->register#toggle"><%= 
-                        if opt_registered
-                            t('unregister')
-                        else
-                            t('register')
-                        end
+                    <% if on_other_invoice %>
+                        <% other_invoice = inactive_invoices.find { |invoice| invoice.registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id }} %>
+                        <p><%= link_to "On Invoice##{other_invoice.id}", event_path(id: @event.id, invoice: other_invoice.id) %></p>
+                    <% else %>
+                        <button class="button <%= 'registered' if opt_registered %>" 
+                            data-register-target="button" data-action="click->register#toggle"><%= 
+                            if opt_registered
+                                t('unregister')
+                            else
+                                t('register')
+                            end
                         %></button>
+                    <% end %>
                 </div>
             <% end %>
         <% end %>
 
         <h2><%= t('.unregistered_slots') %></h2>
-        <%= render partial: 'time_slots/add_slot', collection: unregistered_slots, locals: { child: child, registrations: registrations } %>
+        <%= render partial: 'time_slots/add_slot', collection: unregistered_slots, locals: { child: child, registrations: registrations, inactive_invoices: inactive_invoices, event: @event } %>
 
         <h2><%= t('.registered_slots') %></h2>
-        <%= render partial: 'time_slots/add_slot', collection: registered_slots, locals: { child: child, registrations: registrations } %>
+        <%= render partial: 'time_slots/add_slot', collection: registered_slots, locals: { child: child, registrations: registrations, inactive_invoices: inactive_invoices, event: @event } %>
 
     <% end %>
     
@@ -141,14 +160,7 @@
             </div>
         </div>
 
-        <h3 id="total_cost" data-price-target="finalCost"><%=
-        if @invoice.nil?
-            "#{t('.total_cost')}: 0円"
-        else
-            "#{t('.total_cost')}: #{@invoice.total_cost}円"
-        end
-        %>
-        </h3>
+        <h3 id="total_cost" data-price-target="finalCost"><%="#{t('.total_cost')}: #{@invoice.total_cost}円"%></h3>
 
         <%= form_with model: @invoice || Invoice.new do |f| %>
             <div class="slot_regs" data-price-target="slotRegs">

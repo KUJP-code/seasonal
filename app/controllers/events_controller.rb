@@ -71,6 +71,17 @@ class EventsController < ApplicationController
                                      max_attendees registration_deadline event_id _destroy])
   end
 
+  def find_invoices
+    @all_invoices = current_user.invoices.where(event: @event).order(updated_at: :desc).includes(:registrations)
+    @invoice = if params[:invoice]
+                 Invoice.find(params[:invoice])
+               elsif @all_invoices.size.zero?
+                 Invoice.new(event: @event, parent: current_user, total_cost: 0)
+               else
+                 @all_invoices.first
+               end
+  end
+
   def flash_failure
     flash.now[:alert] = t('.failure')
   end
@@ -81,7 +92,7 @@ class EventsController < ApplicationController
 
   def user_specific_info
     price_lists
-    @invoice = Invoice.find_by(event: @event, parent: current_user)
+    find_invoices
     @children = current_user.children.includes(:time_slots, :registrations)
   end
 

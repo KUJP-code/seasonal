@@ -13,6 +13,35 @@
     width: 100%;
 }
 
+#event_show #invoices {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 2vw;
+}
+
+#event_show #invoices .invoice {
+    padding: 1vw;
+}
+
+#event_show #invoices .invoice.active {
+    box-shadow: 0px 0px 5px 5px var(--ku-orange);
+}
+
+#event_show #invoices .button.paid {
+    background: gray;
+    color: var(--near-white);
+    border: 1px outset gray;
+}
+
+#event_show #invoices .button.paid:hover {
+    background: gainsboro;
+    color: black;
+}
+
+#event_show #invoices .button.paid:active {
+    border-style: inset;
+}
+
 /* Styles for all shadowed containers */
 #event_show .time_slot {
     width: max(30vw, 300px);
@@ -138,6 +167,7 @@
     align-items: center;
     border-radius: 1vw;
     padding: 1vw;
+    gap: 1vw;
     box-shadow: var(--container-shadow);
     background: var(--near-white);
     font-size: var(--sub-heading-size);
