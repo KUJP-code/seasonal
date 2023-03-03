@@ -43,12 +43,18 @@ export default class extends Controller {
     const siblings = e.detail.siblings
     const type = e.detail.type
 
-    if (content === 'Register' || content === '✖') {
-      this.add(child, cost, id, type)
-    } if (content === '') {
-      this.radio(child, cost, id, siblings, type)
-    } else {
-      this.remove(child, id, type)
+    switch (content) {
+      case 'Register':
+      case '✖':
+        this.add(child, cost, id, type)
+        break;
+      case 'Unregister':
+      case '✓':
+        this.remove(child, id, type)
+        break;
+      default:
+        this.radio(child, cost, id, siblings, type)
+        break;
     }
   }
 
