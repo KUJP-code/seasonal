@@ -35,9 +35,10 @@ RSpec.describe Child do
     end
 
     it 'can change its level' do
-      child.level = :sky_high
+      child.level = :sky1
+      child.update!(level: :sky2)
       lvl = child.level
-      expect(lvl).to eq 'sky_high'
+      expect(lvl).to eq 'sky2'
     end
 
     with_versioning do

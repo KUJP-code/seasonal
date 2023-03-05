@@ -24,8 +24,6 @@ RSpec.describe 'Signup', feature: true do
       fill_in 'user_ja_first_name', with: new_user[:ja_first_name]
       fill_in 'user_ja_family_name', with: new_user[:ja_family_name]
       fill_in 'user_katakana_name', with: new_user[:katakana_name]
-      select '東京都', from: 'user_prefecture'
-      fill_in 'user_address', with: new_user[:address]
       fill_in 'user_postcode', with: new_user[:postcode]
       fill_in 'user_phone', with: new_user[:phone]
     end
