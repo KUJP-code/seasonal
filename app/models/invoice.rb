@@ -8,14 +8,14 @@ class Invoice < ApplicationRecord
 
   has_many :registrations, dependent: :destroy
   has_many :slot_regs, -> { where(registerable_type: 'TimeSlot') },
-                       class_name: 'Registration',
-                       dependent: :destroy,
-                       inverse_of: :invoice
+           class_name: 'Registration',
+           dependent: :destroy,
+           inverse_of: :invoice
   accepts_nested_attributes_for :slot_regs, allow_destroy: true
   has_many :opt_regs, -> { where(registerable_type: 'Option') },
-                      class_name: 'Registration',
-                      dependent: :destroy,
-                      inverse_of: :invoice
+           class_name: 'Registration',
+           dependent: :destroy,
+           inverse_of: :invoice
   accepts_nested_attributes_for :opt_regs, allow_destroy: true
   has_many :time_slots, through: :registrations,
                         source: :registerable,
@@ -66,7 +66,7 @@ class Invoice < ApplicationRecord
 
     return spot_use(num_regs, courses) unless niche_case? && member
 
-    pointless_price(courses) if niche_case?
+    pointless_price(num_regs, courses) if niche_case?
   end
 
   def calc_adjustments
@@ -79,7 +79,7 @@ class Invoice < ApplicationRecord
 
   def calc_course_cost
     course_cost = if children.all?(&:member?)
-                    best_price(slot_regs.size, member_prices)
+                    best_price(slot_regs.size, member_prices, member: true)
                   elsif children.none?(&:member?)
                     best_price(slot_regs.size, non_member_prices)
                   else
@@ -87,7 +87,8 @@ class Invoice < ApplicationRecord
                   end
     @breakdown.prepend(
       "<h3>Course cost:</h3>
-      <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{slot_regs.size} registrations</p>")
+      <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{slot_regs.size} registrations</p>"
+    )
     course_cost
   end
 
@@ -122,10 +123,16 @@ class Invoice < ApplicationRecord
     children.each do |child|
       @breakdown << "<h2>Registrations for #{child.name}</h2>"
       slot_regs.where(child: child).includes(registerable: :options).find_each do |slot_reg|
+        next unless slot_reg.registerable.morning
+
         slot = slot_reg.registerable
         @breakdown << "<div class='slot_regs'><p>#{slot.name}</p>"
         slot.options.each do |opt|
-          @breakdown << "<p> - #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if registrations.find_by(child: child, registerable: opt)
+          next unless registrations.find_by(
+            child: child, registerable: opt
+          )
+
+          @breakdown << "<p> - #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
         end
         @breakdown << '</div>'
       end
@@ -168,16 +175,19 @@ class Invoice < ApplicationRecord
 
   # Calculates how many times we need to apply the dumb 184円 increase
   # This does not deal with the even less likely case of there being two kindy kids registered for one full day each
-  def pointless_price(courses)
+  def pointless_price(num_regs, courses)
     days = children.find_by(level: :kindy).full_days(event, time_slots.ids)
-    connection_cost = days * (courses['1'] + 184)
+    extension_cost = days * (courses['1'] + 184)
     @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{(courses['1'] + 184).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
-    connection_cost
+    spot_cost = spot_use(num_regs - days, courses)
+    extension_cost + spot_cost
   end
 
   def spot_use(num_regs, courses)
     spot_cost = num_regs * courses['1']
-    @breakdown << "<p>スポット1回(午前・15:00~18:30) x #{num_regs}: #{spot_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" unless spot_cost.zero?
+    unless spot_cost.zero?
+      @breakdown << "<p>スポット1回(午前・15:00~18:30) x #{num_regs}: #{spot_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
+    end
     spot_cost
   end
 
