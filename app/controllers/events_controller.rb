@@ -8,6 +8,7 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
+    @child = Child.find(params[:child])
     user_specific_info
     @event_slots = @event.time_slots.morning.with_attached_image.includes(afternoon_slot: :options).includes(:options)
     @options = @event.options + @event.slot_options
@@ -26,7 +27,7 @@ class EventsController < ApplicationController
 
     if @event.save
       flash_success
-      redirect_to event_path(@event)
+      redirect_to events_path
     else
       flash_failure
       render :new, status: :unprocessable_entity
@@ -59,27 +60,11 @@ class EventsController < ApplicationController
 
   private
 
-  def price_lists
-    @member_prices = @event.member_prices
-    @non_member_prices = @event.non_member_prices
-  end
-
   def event_params
     params.require(:event).permit(:id, :name, :description, :start_date,
                                   :end_date, :school_id, time_slots_attributes:
                                   %i[id name start_time end_time description
                                      max_attendees registration_deadline event_id _destroy])
-  end
-
-  def find_invoices
-    @all_invoices = current_user.invoices.where(event: @event).order(updated_at: :desc).includes(:registrations)
-    @invoice = if params[:invoice]
-                 Invoice.find(params[:invoice])
-               elsif @all_invoices.size.zero?
-                 Invoice.new(event: @event, parent: current_user, total_cost: 0)
-               else
-                 @all_invoices.first
-               end
   end
 
   def flash_failure
@@ -91,9 +76,11 @@ class EventsController < ApplicationController
   end
 
   def user_specific_info
-    price_lists
-    find_invoices
-    @children = current_user.children.includes(:time_slots, :registrations)
+    @member_prices = @event.member_prices
+    @non_member_prices = @event.non_member_prices
+    @children = current_user.children
+    @all_invoices = current_user.invoices.where(event: @event).order(updated_at: :desc).includes(:registrations)
+    @all_invoices = [Invoice.new] if @all_invoices.empty?
   end
 
   def index_for_role

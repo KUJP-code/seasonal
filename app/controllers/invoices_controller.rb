@@ -10,13 +10,12 @@ class InvoicesController < ApplicationController
     @invoice = Invoice.find(params[:id])
 
     if @invoice.update(invoice_params)
-      # TODO: make sure this actually updates the cost later
       @invoice.calc_cost
       flash_success
       redirect_to invoice_path(@invoice)
     else
       flash_failure
-      render event_path(@invoice.event), status: :unprocessable_entity
+      render :new, status: :unprocessable_entity
     end
   end
 

@@ -13,33 +13,18 @@
     width: 100%;
 }
 
-#event_show #invoices {
+#event_show #children {
     display: flex;
     flex-flow: row wrap;
     gap: 2vw;
 }
 
-#event_show #invoices .invoice {
+#event_show #children .child {
     padding: 1vw;
 }
 
-#event_show #invoices .invoice.active {
+#event_show #children .child.active {
     box-shadow: 0px 0px 5px 5px var(--ku-orange);
-}
-
-#event_show #invoices .button.paid {
-    background: gray;
-    color: var(--near-white);
-    border: 1px outset gray;
-}
-
-#event_show #invoices .button.paid:hover {
-    background: gainsboro;
-    color: black;
-}
-
-#event_show #invoices .button.paid:active {
-    border-style: inset;
 }
 
 /* Styles for all shadowed containers */
@@ -124,17 +109,6 @@
     border-bottom-left-radius: 7px;
     border-bottom-right-radius: 7px;
     padding: .5rem 1rem;
-}
-
-#event_show #children{
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    align-items: stretch;
-    border-radius: 1vw;
-    padding: 1vw;
-    gap: 1vw;
-    background: var(--ku-dark-background);
 }
 
 #event_show .children .child,
