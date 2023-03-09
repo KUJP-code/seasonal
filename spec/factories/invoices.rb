@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :invoice do
     total_cost { 10_000 }
     billing_date { nil }
-    parent { create(:customer_user) }
+    child { create(:child) }
     event { create(:event) }
   end
 end

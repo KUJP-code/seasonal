@@ -321,4 +321,12 @@ RSpec.describe Child do
       expect(friday_children).to contain_exactly(fri_child)
     end
   end
+
+  context 'with invoices' do
+    it 'knows its invoices' do
+      invoices = child.invoices.create([attributes_for(:invoice), attributes_for(:invoice)])
+      child_invoices = child.invoices
+      expect(child_invoices).to match_array(invoices)
+    end
+  end
 end

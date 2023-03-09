@@ -609,9 +609,9 @@ end
 puts 'Created options for spring school, and added images to slots'
 
 School.all.each do |school|
-  school.customers.each do |customer|
+  Child.all.each do |child|
     school.events.each do |event|
-      customer.invoices.create!(
+      child.invoices.create!(
         event: event,
         total_cost: 0,
         billing_date: 1.year.from_now
@@ -620,12 +620,12 @@ School.all.each do |school|
   end
 end
 
-puts 'Created invoices for each parent/event combo at each school'
+puts 'Created invoices for each child/event combo at each school'
 
 School.all.each do |school|
   school.time_slots.each do |slot|
     school.children.each do |child|
-      child.registrations.create!(registerable: slot, invoice: Invoice.find_by(parent: child.parent, event: slot.event))
+      child.registrations.create!(registerable: slot, invoice: Invoice.find_by(child: child, event: slot.event))
     end
   end
 end
@@ -634,11 +634,11 @@ puts 'Registered children for each time slot at each event at their school'
 
 Child.all.each do |child|
   child.time_slots.each do |slot|
-    child.registrations.create!(registerable: slot.options.first, invoice: Invoice.find_by(parent: child.parent, event: slot.event))
+    child.registrations.create!(registerable: slot.options.first, invoice: Invoice.find_by(child: child, event: slot.event))
   end
 
   child.events.each do |event|
-    child.registrations.create!(registerable: event.options.first, invoice: Invoice.find_by(parent: child.parent, event: event))
+    child.registrations.create!(registerable: event.options.first, invoice: Invoice.find_by(child: child, event: event))
   end
 end
 
@@ -656,8 +656,8 @@ end
 
 puts 'Created a random regular schedule for each child'
 
-User.all.customers.each do |customer|
-  customer.invoices.last.adjustments.create!(
+Child.all.each do |child|
+  child.invoices.last.adjustments.create!(
     change: -3000,
     reason: 'Testing adjustments from seed file'    
   )
@@ -758,19 +758,19 @@ member.children.create!([
 puts 'Created test users for only member children and only non-member children'
 
 School.all.each do |school|
-  school.customers.each do |customer|
+  Child.all.each do |child|
     school.events.each do |event|
-      customer.invoices.create!(
+      child.invoices.create!(
         event: event,
         total_cost: 0,
         billing_date: 6.months.from_now,
-        paid: true
+        in_ss: true
       )
     end
   end
 end
 
-puts 'Created paid invoices for each parent/event combo at each school'
+puts 'Created invoices that have been entered into the SS for each child/event combo at each school'
 
 Invoice.all.each { |invoice| invoice.calc_cost }
 

@@ -4,18 +4,17 @@ class CreateInvoices < ActiveRecord::Migration[7.0]
       t.integer :total_cost
       t.datetime :billing_date
       t.string :summary
+      t.string :email_template
       t.boolean :in_ss, default: false
-      t.boolean :paid, default: false
-      t.boolean :email_sent, default: false
+      t.datetime :seen_at, default: nil
 
       t.timestamps
     end
 
-    add_reference :invoices, :parent,
+    add_reference :invoices, :child,
                              null: false,
                              index: true
-    add_foreign_key :invoices, :users,
-                               column: :parent_id
+    add_foreign_key :invoices, :children
     
     add_reference :invoices, :event,
                              null: false,

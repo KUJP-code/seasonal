@@ -302,16 +302,16 @@ RSpec.describe 'User' do
         .by(-1)
     end
 
-    context 'with registrations' do
-      it 'knows its childrens registrations' do
+    context 'with registrations through children' do
+      it "knows its children's registrations" do
         child_registration = child.registrations.create(registerable: time_slot, invoice: create(:invoice))
         user_registrations = user.registrations
         expect(user_registrations).to contain_exactly(child_registration)
       end
     end
 
-    context 'with events' do
-      it 'knows its childrens registered events' do
+    context 'with events through children' do
+      it "knows its children's registered events" do
         child_registration = child.registrations.create(registerable: time_slot, invoice: create(:invoice))
         registration_event = child_registration.event
         user_events = user.events
@@ -319,11 +319,19 @@ RSpec.describe 'User' do
       end
     end
 
-    context 'with time slots' do
-      it 'knows the time slots its children are attending' do
+    context 'with time slots through children' do
+      it "knows its children's time slots" do
         child.registrations.create(registerable: time_slot, invoice: create(:invoice))
         user_slots = user.time_slots
         expect(user_slots).to contain_exactly(time_slot)
+      end
+    end
+
+    context 'with invoices through children' do
+      it "knows its children's invoices" do
+        invoice = child.invoices.create(total_cost: 0)
+        child_invoices = child.invoices
+        expect(child_invoices).to contain_exactly(invoice)
       end
     end
   end

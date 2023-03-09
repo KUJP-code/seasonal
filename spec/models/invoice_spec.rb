@@ -22,9 +22,9 @@ RSpec.describe Invoice do
       expect(valid).to be false
     end
 
-    it 'no parent' do
-      no_parent = build(:invoice, parent: nil)
-      valid = no_parent.save
+    it 'no child' do
+      no_child = build(:invoice, child: nil)
+      valid = no_child.save
       expect(valid).to be false
     end
 
@@ -41,38 +41,21 @@ RSpec.describe Invoice do
     end
   end
 
-  context 'with parent' do
-    let(:parent) { create(:customer_user) }
+  context 'with child' do
+    let(:child) { create(:child, parent: create(:customer_user)) }
 
-    it 'knows its parent' do
-      invoice = build(:invoice, parent: parent)
-      invoice_parent = invoice.parent
-      expect(invoice_parent).to eq parent
+    it 'knows its child' do
+      invoice = child.invoices.create(attributes_for(:invoice))
+      invoice_child = invoice.child
+      expect(invoice_child).to eq child
     end
 
-    it 'parent knows it' do
-      invoice = parent.invoices.create!(attributes_for(:invoice))
-      parent_invoices = parent.invoices
-      expect(parent_invoices).to contain_exactly(invoice)
-    end
-
-    context 'with children through parent' do
-      let(:children) { create_list(:child, 2) }
-
-      before do
-        parent.children = children
-      end
-
-      it 'knows its children' do
-        invoice = parent.invoices.create!(attributes_for(:invoice))
-        invoice_children = invoice.children
-        expect(invoice_children).to match_array(children)
-      end
-
-      it 'children know it' do
-        invoice = parent.invoices.create!(attributes_for(:invoice))
-        child_invoices = children.first.invoices
-        expect(child_invoices).to contain_exactly invoice
+    context 'with parent through child' do
+      it 'knows its parent' do
+        parent = child.parent
+        invoice = child.invoices.create(attributes_for(:invoice))
+        invoice_parent = invoice.parent
+        expect(invoice_parent).to eq parent
       end
     end
   end
@@ -108,7 +91,6 @@ RSpec.describe Invoice do
   end
 
   context 'when calculating total cost' do
-    let(:parent) { create(:customer_user) }
     let(:slot) { create(:time_slot, event: invoice.event, morning: true) }
 
     context 'when for member child' do
@@ -119,8 +101,7 @@ RSpec.describe Invoice do
       end
 
       before do
-        invoice.update!(parent: parent)
-        parent.children << member_child
+        invoice.update!(child: member_child)
       end
 
       it 'calculates cost when breakpoint is matched' do
@@ -153,8 +134,7 @@ RSpec.describe Invoice do
       end
 
       before do
-        invoice.update!(parent: parent)
-        parent.children << non_member_child
+        invoice.update!(child: non_member_child)
       end
 
       it 'calculates cost when breakpoint is matched' do
@@ -179,170 +159,56 @@ RSpec.describe Invoice do
       end
     end
 
-    context 'when for both member and non-member child' do
-      let(:children) { [create(:child, category: :internal), create(:child, category: :external)] }
-
-      def register(member_num, non_num)
-        create_list(:slot_registration, member_num, invoice: invoice, registerable: slot, child: children[0])
-        create_list(:slot_registration, non_num, invoice: invoice, registerable: slot, child: children[1])
-      end
-
-      before do
-        invoice.update!(parent: parent)
-        parent.update!(children: children)
-      end
-
-      it 'calculates cost when breakpoint is matched' do
-        register(5, 5)
-        invoice.calc_cost
-        total_cost = invoice.total_cost
-        expect(total_cost).to be 48_700
-      end
-
-      it 'calculates cost when not on breakpoint' do
-        register(9, 6)
-        invoice.calc_cost
-        total_cost = invoice.total_cost
-        expect(total_cost).to be 72_164
-      end
-
-      it 'calculates registrations much larger than course table anticipates' do
-        register(67, 71)
-        invoice.calc_cost
-        total_cost = invoice.total_cost
-        expect(total_cost).to be 566_732
-      end
-    end
-
-    # Since both in same category, registrations should be combined into
-    # a single course
-    context 'when for two member children' do
-      let(:children) { create_list(:child, 2, category: :internal) }
-
-      def register(num)
-        parent.children.each do |child|
-          create_list(:slot_registration, num, invoice: invoice, registerable: slot, child: child)
-        end
-      end
-
-      before do
-        invoice.update!(parent: parent)
-        parent.update!(children: children)
-      end
-
-      it 'calculates cost when breakpoint is matched' do
-        register(5)
-        invoice.calc_cost
-        total_cost = invoice.total_cost
-        expect(total_cost).to be 33_000
-      end
-
-      it 'calculates cost when not on breakpoint' do
-        register(7)
-        invoice.calc_cost
-        total_cost = invoice.total_cost
-        expect(total_cost).to be 49_864
-      end
-
-      it 'calculates registrations much larger than course table anticipates' do
-        register(69)
-        invoice.calc_cost
-        total_cost = invoice.total_cost
-        expect(total_cost).to be 458_148
-      end
-    end
-
-    # Registrations from children in same category should be combined when
-    # calculating course cost
-    context 'when for two member children and two non-member children' do
-      let(:children) do
-        [create(:child, category: :internal),
-         create(:child, category: :internal),
-         create(:child, category: :external),
-         create(:child, category: :external)]
-      end
-
-      def register(member_num, non_num)
-        parent.children.slice(0..1).each do |child|
-          create_list(:slot_registration, member_num, invoice: invoice, registerable: slot, child: child)
-        end
-        parent.children.slice(2..3).each do |child|
-          create_list(:slot_registration, non_num, invoice: invoice, registerable: slot, child: child)
-        end
-      end
-
-      before do
-        invoice.update!(parent: parent)
-        parent.update!(children: children)
-      end
-
-      it 'calculates cost when breakpoint is matched' do
-        register(5, 5)
-        invoice.calc_cost
-        total_cost = invoice.total_cost
-        expect(total_cost).to be 88_000
-      end
-
-      it 'calculates cost when not on breakpoint' do
-        register(7, 7)
-        invoice.calc_cost
-        total_cost = invoice.total_cost
-        expect(total_cost).to be 131_264
-      end
-
-      it 'calculates registrations much larger than course table anticipates' do
-        register(35, 35)
-        invoice.calc_cost
-        total_cost = invoice.total_cost
-        expect(total_cost).to be 566_000
-      end
-    end
-
     context 'when member child attending for only 1 or 2 full days' do
       let(:kindy_member) { create(:child, category: :internal, level: :kindy) }
-      let(:afternoon_slot) { slot.create_afternoon_slot(attributes_for(:time_slot, event: event)) }
 
       def register(num)
-        create_list(:slot_registration, num, invoice: invoice, registerable: slot, child: kindy_member)
-        create_list(:slot_registration, num, invoice: invoice, registerable: afternoon_slot, child: kindy_member)
-        # To check count with a block works
-        create_list(:slot_registration, 2, invoice: invoice, registerable: create(:time_slot), child: kindy_member)
+        num.times do
+          morning_slot = create(:time_slot, morning: true, event: event)
+          kindy_member.registrations.create!(invoice: invoice, registerable: morning_slot)
+
+          afternoon_slot = morning_slot.create_afternoon_slot(attributes_for(:time_slot, event: event))
+          kindy_member.registrations.create!(invoice: invoice, registerable: afternoon_slot)
+        end
       end
 
       before do
-        invoice.update!(parent: parent)
-        parent.children << kindy_member
+        invoice.update!(child: kindy_member)
       end
 
-      it 'correctly applies 184 yen increase for those days' do
+      it 'correctly applies 184 yen increase for one full day' do
         register(1)
         invoice.calc_cost
         total_cost = invoice.total_cost
-        expect(total_cost).to be 17_048
+        expect(total_cost).to be 8_616
+      end
+
+      it 'correctly applies 184 yen increase for two full days' do
+        register(2)
+        invoice.calc_cost
+        total_cost = invoice.total_cost
+        expect(total_cost).to be 17_232
       end
     end
 
     context 'when options are selected' do
-      let(:children) { [create(:child, category: :internal), create(:child, category: :external)] }
-      let(:option) { create(:option, optionable: slot) }
+      let(:child) { create(:child, category: :external) }
+      let(:option) { create(:option, optionable: slot, cost: 100) }
 
       def register(slots, options)
-        children.each do |child|
-          create_list(:slot_registration, slots, invoice: invoice, registerable: slot, child: child)
-          create_list(:option_registration, options, invoice: invoice, registerable: option, child: child)
-        end
+        create_list(:slot_registration, slots, invoice: invoice, registerable: slot, child: child)
+        create_list(:option_registration, options, invoice: invoice, registerable: option, child: child)
       end
 
       before do
-        invoice.update!(parent: parent)
-        parent.update!(children: children)
+        invoice.update!(child: child)
       end
 
-      it 'includes options from both children' do
+      it 'includes options' do
         register(5, 5)
         invoice.calc_cost
         total_cost = invoice.total_cost
-        expect(total_cost).to be 58_700
+        expect(total_cost).to be 30_500
       end
     end
 
@@ -354,8 +220,7 @@ RSpec.describe Invoice do
       end
 
       before do
-        invoice.update!(parent: parent)
-        parent.children << non_member_child
+        invoice.update!(child: non_member_child)
       end
 
       it 'invoice knows its adjustments' do

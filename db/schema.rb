@@ -114,15 +114,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_18_042750) do
     t.integer "total_cost"
     t.datetime "billing_date"
     t.string "summary"
+    t.string "email_template"
     t.boolean "in_ss", default: false
-    t.boolean "paid", default: false
-    t.boolean "email_sent", default: false
+    t.datetime "seen_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "parent_id", null: false
+    t.bigint "child_id", null: false
     t.bigint "event_id", null: false
+    t.index ["child_id"], name: "index_invoices_on_child_id"
     t.index ["event_id"], name: "index_invoices_on_event_id"
-    t.index ["parent_id"], name: "index_invoices_on_parent_id"
   end
 
   create_table "managements", force: :cascade do |t|
@@ -265,8 +265,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_18_042750) do
   add_foreign_key "events", "price_lists", column: "member_prices_id"
   add_foreign_key "events", "price_lists", column: "non_member_prices_id"
   add_foreign_key "events", "schools"
+  add_foreign_key "invoices", "children"
   add_foreign_key "invoices", "events"
-  add_foreign_key "invoices", "users", column: "parent_id"
   add_foreign_key "managements", "users", column: "manager_id"
   add_foreign_key "notifications", "users"
   add_foreign_key "registrations", "children"
