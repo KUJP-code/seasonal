@@ -11,9 +11,18 @@
 
     <div id="children">
         <% @children.each do |child| %>
-            <div class="child <%= 'active' if child.id == @child.id %> ">
-                <%= link_to child.name, event_path(id: @event.id, child: child.id) %>
-            </div>
+            <%= link_to event_path(id: @event.id, child: child.id) do %>
+                <div class="child<%= ' active' if child.id == @child.id %>" <%= "data-price-target=child" if child.id == @child.id %>>
+                    <div class="hidden"><%= "#{child.id}" %></div>
+                    <p><%= child.name %></p>
+                    <p><%= child.level %></p>
+                    <% if child.member? %>
+                        <p class="membership"><%= t('.member') %></p>
+                    <% else %>
+                        <p class="membership"><%= t('.non_member') %></p>
+                    <% end %>
+                </div>
+            <% end %>
         <% end %>
     </div>
 
@@ -60,18 +69,20 @@
                         </div>
                     <% end %>
 
-                    <div id="children">
-                        <h3><%= t('.children') %></h3>
-                        <% @children.each do |child| %>
-                            <div class="child" data-price-target="child">
-                                <div class="hidden"><%= "#{child.id}" %></div>
-                                <p><%= child.name %>:</p>
-                                <% if child.member? %>
-                                    <p id="child<%= child.id %>membership"><%= t('.member') %></p>
-                                <% else %>
-                                    <p id="child<%= child.id %>membership"><%= t('.non_member') %></p>
-                                <% end %>
-                            </div>
+                    <div id="adjustments">
+                        <h3><%= t('.adjustments') %></h3>
+                        <div class="adjustment">
+                            <p><%= t('.change') %></p>
+                            <p><%= t('.reason') %></p>
+                        </div>
+
+                        <% @all_invoices.each do |invoice| %>
+                            <% invoice.adjustments.each do |adj| %>
+                                <div class="adjustment">
+                                    <p data-price-target="adjChange"><%= adj.change %></p>
+                                    <p><%= adj.reason %></p>
+                                </div>
+                            <% end %>
                         <% end %>
                     </div>
                 </p>
