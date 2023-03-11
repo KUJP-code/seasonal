@@ -14,6 +14,7 @@
             <%= link_to event_path(id: @event.id, child: child.id) do %>
                 <div class="child<%= ' active' if child.id == @child.id %>" <%= "data-price-target=child" if child.id == @child.id %>>
                     <div class="hidden"><%= "#{child.id}" %></div>
+                    <div class="hidden hat"><%= child.needs_hat %></div>
                     <p><%= child.name %></p>
                     <p class="level"><%= child.level.capitalize.gsub(/\d+/, ' \0 ') %></p>
                     <% if child.member? %>

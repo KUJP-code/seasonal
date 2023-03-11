@@ -70,8 +70,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_18_042750) do
     t.bigint "ssid"
     t.string "ele_school_name"
     t.boolean "post_photos"
-    t.boolean "needs_hat"
-    t.boolean "received_hat"
+    t.boolean "needs_hat", default: true
+    t.boolean "received_hat", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "parent_id"

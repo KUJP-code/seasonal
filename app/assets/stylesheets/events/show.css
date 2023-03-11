@@ -20,6 +20,8 @@
 }
 
 #event_show #children .child {
+    display: flex;
+    flex-flow: column nowrap;
     padding: 1vw;
 }
 

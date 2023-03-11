@@ -24,10 +24,7 @@ export default class extends Controller {
       0
     )
 
-    const adjustmentChange = (this.hasAdjChangeTarget) ? this.adjChangeTargets.reduce(
-      (sum, change) => sum + parseInt(change.innerHTML),
-      0
-    ) : 0
+    const adjustmentChange = this.calcAdjustments()
 
     const finalCost = optionCost + courseCost + adjustmentChange
     this.finalCostTarget.innerHTML = `Total Cost: ${finalCost}円`
@@ -54,20 +51,16 @@ export default class extends Controller {
     this.nonMemberPrice = this.nonMemberPriceValue
   }
 
-  // True if child is a member
-  isMember(child) {
-    const membership = child.querySelector('.membership').innerHTML
+  // Calculates total change due to adjustments
+  calcAdjustments() {
+    const generic_adjustments = (this.hasAdjChangeTarget) ? this.adjChangeTargets.reduce(
+      (sum, change) => sum + parseInt(change.innerHTML),
+      0
+    ) : 0
 
-    if (membership === 'Member') {
-      return true
-    } else {
-      return false
-    }
-  }
+    const hat_cost = this.childTarget.querySelector('.hidden.hat').innerHTML === 'true' ? 500 : 0
 
-  // Find the largest course that fits the number of registrations
-  nearestFive(num) {
-    return Math.floor(num / 5) * 5
+    return generic_adjustments + hat_cost
   }
 
   calcConnectCost(numRegs) {
@@ -94,5 +87,21 @@ export default class extends Controller {
   // Calculates cost from spot use when less than 5 courses
   spotUse(numRegs, courses) {
     return courses[1] * numRegs
+  }
+
+  // True if child is a member
+  isMember(child) {
+    const membership = child.querySelector('.membership').innerHTML
+
+    if (membership === 'Member') {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  // Find the largest course that fits the number of registrations
+  nearestFive(num) {
+    return Math.floor(num / 5) * 5
   }
 }

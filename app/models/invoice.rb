@@ -70,11 +70,16 @@ class Invoice < ApplicationRecord
   end
 
   def calc_adjustments
-    adj_cost = adjustments.reduce(0) { |sum, adj| sum + adj.change }
+    generic_adj = adjustments.reduce(0) { |sum, adj| sum + adj.change }
     adjustments.each do |adj|
       @breakdown << "<p>Adjustment of #{adj.change.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 applied because #{adj.reason}</p>"
     end
-    adj_cost
+
+    hat_adj = child.needs_hat ? hat_adjustment : 0
+
+    repeater_disc = !child.member? && child.events.distinct.size > 1 && slot_regs.size > 9 ? repeater_discount : 0
+
+    generic_adj + hat_adj + repeater_disc
   end
 
   def calc_course_cost
@@ -134,6 +139,13 @@ class Invoice < ApplicationRecord
     @breakdown << '</div>'
   end
 
+  def hat_adjustment
+    # FIXME: 500 is a placeholder value til Leroy tells me the actual figure
+    @breakdown << '<p>Adjustment of 500円 applied because first time children must purchase a hat</p>'
+
+    500
+  end
+
   def member_prices
     event.member_prices.courses
   end
@@ -161,6 +173,12 @@ class Invoice < ApplicationRecord
     @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{extension_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
     spot_cost = spot_use(num_regs - days, courses)
     extension_cost + spot_cost
+  end
+
+  def repeater_discount
+    @breakdown << '<p>Discount of -10 000円 applied because your child has previously attended an event!</p>'
+
+    -10_000
   end
 
   def spot_use(num_regs, courses)

@@ -13,8 +13,8 @@ class CreateChildren < ActiveRecord::Migration[7.0]
       t.bigint :ssid
       t.string :ele_school_name
       t.boolean :post_photos
-      t.boolean :needs_hat
-      t.boolean :received_hat
+      t.boolean :needs_hat, default: true
+      t.boolean :received_hat, default: false
 
       t.timestamps
     end
