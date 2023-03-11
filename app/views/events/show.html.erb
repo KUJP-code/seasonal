@@ -15,7 +15,7 @@
                 <div class="child<%= ' active' if child.id == @child.id %>" <%= "data-price-target=child" if child.id == @child.id %>>
                     <div class="hidden"><%= "#{child.id}" %></div>
                     <p><%= child.name %></p>
-                    <p><%= child.level %></p>
+                    <p class="level"><%= child.level.capitalize.gsub(/\d+/, ' \0 ') %></p>
                     <% if child.member? %>
                         <p class="membership"><%= t('.member') %></p>
                     <% else %>
