@@ -83,25 +83,25 @@
 
 #slot_children_index table th.level {
     left: 8vw;
-    min-width: 13vw;
+    min-width: 8vw;
 }
 
 #slot_children_index table th.name {
-    left: 23vw;
+    left: 18vw;
     min-width: 13vw;
 }
 
 #slot_children_index table th.allergy {
-    left: 38vw;
+    left: 33vw;
     min-width: 8vw;
 }
 
 #slot_children_index table th.photos {
-    left: 48vw;
+    left: 43vw;
     min-width: 6vw;
 }
 
 #slot_children_index table th.depart {
-    left: 56vw;
+    left: 51vw;
     min-width: 6vw;
 }

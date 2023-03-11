@@ -529,9 +529,10 @@ puts 'Create afternoon time slots for spring school'
 
 
 Event.all.each do |event|
-  event.options.create(
+  event.options.create!(
     name: 'Photo Service',
     description: "Capture your children's treasured memories!",
+    category: :event,
     cost: 3000
   )
 end
@@ -634,7 +635,13 @@ puts 'Registered children for each time slot at each event at their school'
 
 Child.all.each do |child|
   child.time_slots.each do |slot|
-    child.registrations.create!(registerable: slot.options.first, invoice: Invoice.find_by(child: child, event: slot.event))
+    if child.id.odd?
+      child.registrations.create!(registerable: slot.options.arrival.last, invoice: Invoice.find_by(child: child, event: slot.event)) unless slot.options.arrival.empty?
+      child.registrations.create!(registerable: slot.options.departure.last, invoice: Invoice.find_by(child: child, event: slot.event)) unless slot.options.departure.empty?
+    else
+      child.registrations.create!(registerable: slot.options.regular.last, invoice: Invoice.find_by(child: child, event: slot.event)) unless slot.options.regular.empty?
+      child.registrations.create!(registerable: slot.options.meal.last, invoice: Invoice.find_by(child: child, event: slot.event)) unless slot.options.meal.empty?
+    end
   end
 
   child.events.each do |event|

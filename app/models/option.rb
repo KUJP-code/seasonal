@@ -19,6 +19,7 @@ class Option < ApplicationRecord
                   arrival: 1,
                   departure: 2,
                   meal: 3,
+                  event: 4,
                   default: :regular
 
   validates :name, :description, :cost, presence: true
@@ -28,6 +29,7 @@ class Option < ApplicationRecord
   # For category of option
   scope :regular, -> { where.not(category: %i[arrival departure]) }
   scope :meal, -> { where(category: :meal) }
+  scope :time, -> { where(category: :arrival).or(where(category: :departure)) }
   scope :arrival, -> { where(category: :arrival) }
   scope :departure, -> { where(category: :departure) }
 end

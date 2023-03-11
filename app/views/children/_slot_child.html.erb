@@ -1,16 +1,13 @@
 <% arrival_option = slot_child.options.select{ |opt| opt.arrival? && opt.optionable_id == slot.id && opt.optionable_type == 'TimeSlot' }.first %>
+<% arrival_time = arrival_option ? slot.start_time + arrival_option.modifier.minutes : slot.start_time %>
+
 <% depart_option = slot_child.options.select{ |opt| opt.departure? && opt.optionable_id == slot.id && opt.optionable_type == 'TimeSlot' }.first %>
+<% depart_time = depart_option ? slot.end_time + depart_option.modifier.minutes : slot.end_time %>
 
 <tr>
-    <th class="arrival"><%= 
-        if arrival_option.nil?
-            slot.f_start_time
-        else
-            (slot.start_time + arrival_option.modifier.minutes).strftime('%I:%M%p')
-        end
-     %></th>
+    <th class="arrival"><%= arrival_time.strftime('%I:%M%p') unless arrival_time == slot.start_time %></th>
     <th class="level"><%= slot_child.level.capitalize.gsub(/\d+/, ' \0 ') %></th>
-    <th class="name"><%= "#{slot_child.name} (#{slot_child.en_name})" %></th>
+    <th class="name"><%= link_to "#{slot_child.name} (#{slot_child.en_name})", child_path(slot_child) %></th>
     <th class="allergy"><%= slot_child.allergy_details %></th>
     <th class="photos"><%= 
         if slot_child.post_photos 
@@ -19,20 +16,11 @@
             '𐄂'
         end 
     %></th>
-        <th class="depart"><%= 
-        if depart_option.nil?
-            slot.f_end_time
-        else
-            (slot.end_time + depart_option.modifier.minutes).strftime('%I:%M%p')
-        end
-    %></th>
+        <th class="depart"><%= depart_time.strftime('%I:%M%p') unless depart_time == slot.end_time %></th>
+    <% event_options.each do |opt| %>
+        <td><%= opt.name if slot_child.options.include?(opt) %></td>
+    <% end %>
     <% options.each do |opt| %>
-        <td><%= 
-            if slot_child.options.include?(opt)
-                '✓'
-            else
-                '𐄂'
-            end
-        %></td>
+        <td><%= opt.name if slot_child.options.include?(opt) %></td>
     <% end %>
 </tr>
