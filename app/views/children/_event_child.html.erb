@@ -22,7 +22,9 @@
             <% end %>
         </div>
     </td>
-    <td rowspan="2"><%= event_invoices.last.f_bill_date %></td>
+    <td rowspan="2"><% event_invoices.each do |invoice| %>
+        <p><%= "##{invoice.id}: #{invoice.f_bill_date}" %></p>
+    <% end %></td>
     <td rowspan="2" data-controller="popup">
         <%= button_tag t('.view_template'), class: 'button', data: { action: "click->popup#toggle" } %>
         <div class="hidden mail_template" data-popup-target="popup">
