@@ -2,6 +2,8 @@
 
 # Handles data for customer Invoices
 class Invoice < ApplicationRecord
+  include ActionView::Helpers::SanitizeHelper
+
   belongs_to :child
   delegate :parent, to: :child
   belongs_to :event
@@ -139,6 +141,15 @@ class Invoice < ApplicationRecord
     @breakdown << '</div>'
   end
 
+  # TODO: I'm guessing this will not be the final message
+  def generate_template
+    template = +''
+    template << 'Hello Dear Sir/Madam, this is the start of our email template!'
+    template << strip_tags(@breakdown)
+    template << "That's all folks! End of email"
+    self.email_template = template
+  end
+
   def hat_adjustment
     # FIXME: 500 is a placeholder value til Leroy tells me the actual figure
     @breakdown << '<p>Adjustment of 500円 applied because first time children must purchase a hat</p>'
@@ -193,6 +204,7 @@ class Invoice < ApplicationRecord
   def update_cost(new_cost)
     self.total_cost = new_cost
     @breakdown << "<h2 id='final_cost'>Final cost is #{new_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</h2>"
+    generate_template
     self.summary = @breakdown
     save
   end
