@@ -80,7 +80,11 @@ class EventsController < ApplicationController
     @non_member_prices = @event.non_member_prices
     @children = current_user.children
     @all_invoices = current_user.invoices.where(event: @event, child: @child).includes(:registrations)
-    @all_invoices = [Invoice.new(child: @child, event: @event)] if @all_invoices.empty?
+
+    return unless @all_invoices.size.zero?
+
+    Invoice.create(child: @child, event: @event, total_cost: 0)
+    @all_invoices = current_user.invoices.where(event: @event, child: @child).reload
   end
 
   def index_for_role

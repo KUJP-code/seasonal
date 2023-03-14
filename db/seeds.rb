@@ -651,6 +651,14 @@ end
 
 puts "Registered kids for first option for each event/slot they're attending"
 
+
+Invoice.all.each do |invoice|
+  invoice.calc_cost
+  invoice.update!(in_ss: true)
+end
+
+puts 'Calculated invoice costs and added to SS now all are created'
+
 Child.all.each do |child|
   child.create_regular_schedule(
     monday: [true, false].sample,
@@ -753,26 +761,8 @@ member.children.create!([
 }
 ])
 
-puts 'Created test users for only member children and only non-member children'
+puts 'Created test users for only member children and only non-member children, with no registrations'
 
-School.all.each do |school|
-  Child.all.each do |child|
-    school.events.each do |event|
-      child.invoices.create!(
-        event: event,
-        total_cost: 0,
-        billing_date: 6.months.from_now,
-        in_ss: true
-      )
-    end
-  end
-end
-
-puts 'Created invoices that have been entered into the SS for each child/event combo at each school'
-
-Invoice.all.each { |invoice| invoice.calc_cost }
-
-puts 'Calculated invoice costs now all are created'
 
 # TODO: add back in once coupons are properly implemented
 # TimeSlot.all.each do |slot|

@@ -1,7 +1,8 @@
 <% registered_slots = @event.time_slots.morning.joins(:registrations).where(registrations: { child_id: @child.id, invoice_id: @all_invoices.ids }).with_attached_image.includes(afternoon_slot: :options).includes(:options) %>
 <% unregistered_slots = @event.time_slots.morning.where.not(id: registered_slots.ids).with_attached_image.includes(afternoon_slot: :options).includes(:options) %>
 <% registrations = @all_invoices.reduce([]) { |array, invoice| array + invoice.registrations } %>
-
+<% slots_in_ss = @all_invoices.select { |invoice| invoice.in_ss }.reduce([]) { |array, invoice| array + invoice.slot_regs } %>
+<% opts_in_ss = @all_invoices.select { |invoice| invoice.in_ss }.reduce([]) { |array, invoice| array + invoice.opt_regs } %>
 
 <main id="event_show" 
       data-controller="invoice price"
@@ -95,34 +96,39 @@
         <h2><%= t('.event_options') %></h2>
 
         <% @event.options.each do |opt| %>
-            <% opt_registered = registrations.any? { |reg| reg.child_id == @child.id && reg.registerable_id == opt.id } %>
+            <% if opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
+                <div class="event_option">
+                    <p><%= "#{opt.name}: ✓" %></p>
+                </div>
+            <% else %>
+                <% opt_registered = registrations.any? { |reg| reg.child_id == @child.id && reg.registerable_id == opt.id } %>
+                <div class="event_option"
+                    data-controller="register"
+                    data-register-id-value=<%= opt.id %>
+                    data-register-type-value="Option"
+                    data-register-child-value=<%= @child.id %>
+                    data-register-cost-value=<%= opt.cost %>>
 
-            <div class="event_option"
-                data-controller="register"
-                data-register-id-value=<%= opt.id %>
-                data-register-type-value="Option"
-                data-register-child-value=<%= @child.id %>
-                data-register-cost-value=<%= opt.cost %>>
+                    <h4 data-register-target="name"><%= opt.name %></h4>
 
-                <h4 data-register-target="name"><%= opt.name %></h4>
-
-                <button class="button <%= 'registered' if opt_registered %>" 
-                    data-register-target="button" data-action="click->register#toggle"><%= 
-                    if opt_registered
-                        t('unregister')
-                    else
-                        t('register')
-                    end
-                %></button>
-            </div>
+                    <button class="button <%= 'registered' if opt_registered %>" 
+                        data-register-target="button" data-action="click->register#toggle"><%= 
+                        if opt_registered
+                            t('unregister')
+                        else
+                            t('register')
+                        end
+                    %></button>
+                </div>
+            <% end %>
         <% end %>
     <% end %>
 
     <h2><%= t('.unregistered_slots') %></h2>
-    <%= render partial: 'time_slots/add_slot', collection: unregistered_slots, locals: { child: @child, registrations: registrations, event: @event } %>
+    <%= render partial: 'time_slots/add_slot', collection: unregistered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: [], opts_in_ss: [] } %>
 
     <h2><%= t('.registered_slots') %></h2>
-    <%= render partial: 'time_slots/add_slot', collection: registered_slots, locals: { child: @child, registrations: registrations, event: @event } %>
+    <%= render partial: 'time_slots/add_slot', collection: registered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, opts_in_ss: opts_in_ss } %>
     
 
     <div id="price_bar">
