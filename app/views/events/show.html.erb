@@ -1,7 +1,7 @@
-<% child_invoices = @all_invoices.select{ |invoice| invoice.child_id == @child.id} %>
 <% registered_slots = @event.time_slots.morning.joins(:registrations).where(registrations: { child_id: @child.id, invoice_id: @all_invoices.ids }).with_attached_image.includes(afternoon_slot: :options).includes(:options) %>
 <% unregistered_slots = @event.time_slots.morning.where.not(id: registered_slots.ids).with_attached_image.includes(afternoon_slot: :options).includes(:options) %>
-<% registrations = child_invoices.reduce([]) { |array, invoice| array + invoice.registrations } %>
+<% registrations = @all_invoices.reduce([]) { |array, invoice| array + invoice.registrations } %>
+
 
 <main id="event_show" 
       data-controller="invoice price"
@@ -120,14 +120,15 @@
 
     <h2><%= t('.unregistered_slots') %></h2>
     <%= render partial: 'time_slots/add_slot', collection: unregistered_slots, locals: { child: @child, registrations: registrations, event: @event } %>
+
     <h2><%= t('.registered_slots') %></h2>
     <%= render partial: 'time_slots/add_slot', collection: registered_slots, locals: { child: @child, registrations: registrations, event: @event } %>
     
 
     <div id="price_bar">
-        <h3 id="total_cost" data-price-target="finalCost"><%="#{t('.total_cost')}: #{child_invoices.reduce(0) {|sum, i| sum + i.total_cost}}円"%></h3>
+        <h3 id="total_cost" data-price-target="finalCost"><%="#{t('.total_cost')}: #{@all_invoices.reduce(0) {|sum, i| sum + i.total_cost}}円"%></h3>
 
-        <% child_invoices.each do |invoice| %>
+        <% @all_invoices.each do |invoice| %>
             <%= form_with model: invoice do |f| %>
                 <div class="slot_regs" data-price-target="slotRegs">
                     <%= f.fields_for :slot_regs do |slot_f| %>

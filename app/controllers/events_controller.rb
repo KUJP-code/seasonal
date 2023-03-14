@@ -79,8 +79,8 @@ class EventsController < ApplicationController
     @member_prices = @event.member_prices
     @non_member_prices = @event.non_member_prices
     @children = current_user.children
-    @all_invoices = current_user.invoices.where(event: @event).order(updated_at: :desc).includes(:registrations)
-    @all_invoices = [Invoice.new] if @all_invoices.empty?
+    @all_invoices = current_user.invoices.where(event: @event, child: @child).includes(:registrations)
+    @all_invoices = [Invoice.new(child: @child, event: @event)] if @all_invoices.empty?
   end
 
   def index_for_role
