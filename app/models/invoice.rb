@@ -72,16 +72,15 @@ class Invoice < ApplicationRecord
   end
 
   def calc_adjustments
+    hat_adjustment if child.needs_hat?
+    repeater_discount if !child.member? && child.events.distinct.size > 1 && slot_regs.size > 9
+
     generic_adj = adjustments.reduce(0) { |sum, adj| sum + adj.change }
     adjustments.each do |adj|
       @breakdown << "<p>Adjustment of #{adj.change.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 applied because #{adj.reason}</p>"
     end
 
-    hat_adj = child.needs_hat ? hat_adjustment : 0
-
-    repeater_disc = !child.member? && child.events.distinct.size > 1 && slot_regs.size > 9 ? repeater_discount : 0
-
-    generic_adj + hat_adj + repeater_disc
+    generic_adj
   end
 
   def calc_course_cost
@@ -152,9 +151,12 @@ class Invoice < ApplicationRecord
 
   def hat_adjustment
     # FIXME: 500 is a placeholder value til Leroy tells me the actual figure
-    @breakdown << '<p>Adjustment of 500円 applied because first time children must purchase a hat</p>'
-
-    500
+    unless adjustments.find_by(change: 500, reason: 'because first time children must purchase a hat')
+      adjustments.create(
+        change: 500,
+        reason: 'because first time children must purchase a hat'
+      )
+    end
   end
 
   def member_prices
@@ -187,9 +189,12 @@ class Invoice < ApplicationRecord
   end
 
   def repeater_discount
-    @breakdown << '<p>Discount of -10 000円 applied because your child has previously attended an event!</p>'
-
-    -10_000
+    unless adjustments.find_by(change: -10_000, reason: 'repeater discount')
+      adjustments.create(
+        change: -10_000,
+        reason: 'repeater discount'
+      )
+    end
   end
 
   def spot_use(num_regs, courses)

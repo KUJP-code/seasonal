@@ -663,15 +663,6 @@ end
 
 puts 'Created a random regular schedule for each child'
 
-Child.all.each do |child|
-  child.invoices.last.adjustments.create!(
-    change: -3000,
-    reason: 'Testing adjustments from seed file'    
-  )
-end
-
-puts 'Applied an adjustment to the last invoice for each user'
-
 non_member = User.create!(
     email: 'non_member@gmail.com',
     password: 'nonmembernon',
