@@ -53,14 +53,10 @@ export default class extends Controller {
 
   // Calculates total change due to adjustments
   calcAdjustments() {
-    const generic_adjustments = (this.hasAdjChangeTarget) ? this.adjChangeTargets.reduce(
+    return (this.hasAdjChangeTarget) ? this.adjChangeTargets.reduce(
       (sum, change) => sum + parseInt(change.innerHTML),
       0
     ) : 0
-
-    const hat_cost = this.childTarget.querySelector('.hidden.hat').innerHTML === 'true' ? 500 : 0
-
-    return generic_adjustments + hat_cost
   }
 
   calcConnectCost(numRegs) {
