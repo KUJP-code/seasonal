@@ -216,8 +216,8 @@ School.all.each do |school|
       {
         name: 'Chocolate Day 2024',
         description: choco_descrip,
-        start_date: 'February 18 2024',
-        end_date: 'February 18 2024',
+        start_date: 'February 18 2051',
+        end_date: 'February 18 2051',
         member_prices_id: 1,
         non_member_prices_id: 2
       },
@@ -239,34 +239,34 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
     {
       name: 'Chocolate Day 9am',
       morning: true,
-      start_time: '18 Feb 2024 09:00 JST +09:00',
-      end_time: '18 Feb 2024 11:00 JST +09:00',
+      start_time: '18 Feb 2051 09:00 JST +09:00',
+      end_time: '18 Feb 2051 11:00 JST +09:00',
       description: choco_descrip,
-      registration_deadline: '16 Feb 2024'
+      registration_deadline: '16 Feb 2051'
     },
     {
       name: 'Chocolate Day 11am',
       morning: true,
-      start_time: '18 Feb 2024 11:00 JST +09:00',
-      end_time: '18 Feb 2024 12:00 JST +09:00',
+      start_time: '18 Feb 2051 11:00 JST +09:00',
+      end_time: '18 Feb 2051 12:00 JST +09:00',
       description: choco_descrip,
-      registration_deadline: '16 Feb 2024'
+      registration_deadline: '16 Feb 2051'
     },
     {
       name: 'Chocolate Day 2pm',
       morning: true,
-      start_time: '18 Feb 2024 14:00 JST +09:00',
-      end_time: '18 Feb 2024 16:00 JST +09:00',
+      start_time: '18 Feb 2051 14:00 JST +09:00',
+      end_time: '18 Feb 2051 16:00 JST +09:00',
       description: choco_descrip,
-      registration_deadline: '16 Feb 2024'
+      registration_deadline: '16 Feb 2051'
     },
     {
       name: 'Chocolate Day 4pm',
       morning: true,
-      start_time: '18 Feb 2024 16:00 JST +09:00',
-      end_time: '18 Feb 2024 18:00 JST +09:00',
+      start_time: '18 Feb 2051 16:00 JST +09:00',
+      end_time: '18 Feb 2051 18:00 JST +09:00',
       description: choco_descrip,
-      registration_deadline: '16 Feb 2024'
+      registration_deadline: '16 Feb 2051'
     }
   ])
   event.image.attach(io: File.open('app/assets/images/chocolate_day_2024.jpg'), filename: 'logo.jpg', content_type: 'image/jpg')
@@ -680,7 +680,7 @@ non_member = User.create!(
     role: :customer,
     address: Faker::Address.full_address,
     phone: Faker::PhoneNumber.phone_number,
-    school: School.all.first
+    school: School.all.find_by(name: '溝の口')
 )
 
 non_member.children.create!([
@@ -725,7 +725,7 @@ member = User.create!(
   role: :customer,
   address: Faker::Address.full_address,
   phone: Faker::PhoneNumber.phone_number,
-  school: School.all.first
+  school: School.all.find_by(name: '溝の口')
 )
 
 member.children.create!([
