@@ -55,7 +55,7 @@ class TimeSlot < ApplicationRecord
     arrival_option = child.options.find_by(category: 'arrival', optionable_id: id, optionable_type: 'TimeSlot')
 
     if arrival_option
-      (start_time + arrival_option.modifier.minutes).strftime('%I:%M%p')
+      "#{(start_time + arrival_option.modifier.minutes).strftime('%I:%M%p')} ~"
     else
       ''
     end
@@ -71,7 +71,7 @@ class TimeSlot < ApplicationRecord
     departure_option = child.options.find_by(category: 'departure', optionable_id: id, optionable_type: 'TimeSlot')
 
     if departure_option
-      (end_time + departure_option.modifier.minutes).strftime('%I:%M%p')
+      "~ #{(end_time + departure_option.modifier.minutes).strftime('%I:%M%p')}"
     else
       ''
     end
