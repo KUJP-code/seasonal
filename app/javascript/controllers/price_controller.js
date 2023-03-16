@@ -69,16 +69,17 @@ export default class extends Controller {
     const id = parseInt(this.childTarget.children[0].innerHTML)
     const level = this.childTarget.querySelector('.level').innerHTML
     
-    const cost = this.slotRegsTargets.reduce(
-      (sum, target) => sum + this.bestCourses(target.querySelectorAll(`.child${id}`).length, courses),
-      0
-    )
+    const cost = this.slotRegsTargets.reduce((sum, target) => {
+      const numRegs = target.querySelectorAll(`.child${id}`).length
+      const courseCost = this.bestCourses(numRegs, courses)
+      // If child is Kindy and has less than 5 registrations, apply the 184 yen
+      // increase to half of them so price will only decrease when finalised
+      const connectCost = (member && numRegs < 5 && level === 'Kindy') ? this.calcConnectCost(numRegs) : 0;
 
-    // If child is Kindy and has less than 5 registrations, apply the 184 yen
-    // increase to half of them so price will only decrease when finalised
-    const connect_cost = (member && numRegs < 5 && level === 'Kindy') ? this.calcConnectCost(numRegs) : 0
+      return sum + courseCost + connectCost
+    }, 0)
 
-    return cost + connect_cost
+    return cost
   }
 
   // Calculates cost from spot use when less than 5 courses
