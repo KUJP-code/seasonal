@@ -2,6 +2,18 @@
 
 # Controls flow of information for Invoices
 class InvoicesController < ApplicationController
+  def index
+    @invoices = if params[:event] && params[:user]
+                  User.find(params[:user]).invoices.where(event: Event.find(params[:event]))
+                elsif params[:event]
+                  current_user.invoices.where(event: Event.find(params[:event]))
+                elsif params[:user]
+                  User.find(params[:user]).invoices
+                else
+                  current_user.invoices
+                end
+  end
+
   def show
     @invoice = Invoice.find(params[:id])
   end
@@ -12,7 +24,7 @@ class InvoicesController < ApplicationController
     if @invoice.update(invoice_params)
       @invoice.calc_cost
       flash_success
-      redirect_to invoice_path(@invoice)
+      redirect_to invoices_path(event: @invoice.event_id, user: @invoice.child.parent_id)
     else
       flash_failure
       render :new, status: :unprocessable_entity

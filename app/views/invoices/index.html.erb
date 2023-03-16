@@ -1,0 +1,7 @@
+<main id="invoice_index">
+    <% @invoices.each do |invoice| %>
+        <div class="invoice">
+        <%= sanitize invoice.summary, tags: %w[h1 h2 h3 div p], attributes: %w[class id] %>
+    </div>
+    <% end %>
+</main>

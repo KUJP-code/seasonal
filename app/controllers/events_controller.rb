@@ -83,6 +83,7 @@ class EventsController < ApplicationController
 
     return unless @all_invoices.size.zero?
 
+    # I'm doing this in 2 lines because the view code wants an AR relation
     Invoice.create(child: @child, event: @event, total_cost: 0)
     @all_invoices = current_user.invoices.where(event: @event, child: @child).reload
   end

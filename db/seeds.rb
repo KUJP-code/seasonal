@@ -612,11 +612,19 @@ puts 'Created options for spring school, and added images to slots'
 School.all.each do |school|
   Child.all.each do |child|
     school.events.each do |event|
-      child.invoices.create!(
-        event: event,
-        total_cost: 0,
-        billing_date: 1.year.from_now
-      )
+      child.invoices.create!([
+        {
+          event: event,
+          total_cost: 0,
+          billing_date: 1.year.from_now
+        },
+        {
+          event: event,
+          total_cost: 0,
+          billing_date: 6.months.from_now,
+          in_ss: true
+        }
+      ])
     end
   end
 end
@@ -626,7 +634,11 @@ puts 'Created invoices for each child/event combo at each school'
 School.all.each do |school|
   school.time_slots.each do |slot|
     school.children.each do |child|
-      child.registrations.create!(registerable: slot, invoice: Invoice.find_by(child: child, event: slot.event))
+      if slot.id.even?
+        child.registrations.create!(registerable: slot, invoice: Invoice.find_by(child: child, event: slot.event))
+      else
+        child.registrations.create!(registerable: slot, invoice: Invoice.find_by(child: child, event: slot.event, in_ss: true))
+      end
     end
   end
 end
@@ -654,7 +666,6 @@ puts "Registered kids for first option for each event/slot they're attending"
 
 Invoice.all.each do |invoice|
   invoice.calc_cost
-  invoice.update!(in_ss: true)
 end
 
 puts 'Calculated invoice costs and added to SS now all are created'

@@ -184,7 +184,7 @@
                     <% end %>
                 </template>
 
-                <%= f.submit class: 'button' %>
+                <%= f.submit class: 'button' unless f.object.in_ss %>
             <% end %>
         <% end %>
     </div>
