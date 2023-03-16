@@ -150,10 +150,9 @@ class Invoice < ApplicationRecord
   end
 
   def hat_adjustment
-    # FIXME: 500 is a placeholder value til Leroy tells me the actual figure
-    unless adjustments.find_by(change: 500, reason: 'because first time children must purchase a hat')
+    unless adjustments.find_by(change: 1_100, reason: 'because first time children must purchase a hat')
       adjustments.create(
-        change: 500,
+        change: 1_100,
         reason: 'because first time children must purchase a hat'
       )
     end
