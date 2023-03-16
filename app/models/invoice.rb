@@ -150,7 +150,7 @@ class Invoice < ApplicationRecord
   end
 
   def hat_adjustment
-    unless adjustments.find_by(change: 1_100, reason: 'because first time children must purchase a hat')
+    unless child.invoices.where(event: event).any? { |invoice| invoice.adjustments.find_by(change: 1_100, reason: 'because first time children must purchase a hat')}
       adjustments.create(
         change: 1_100,
         reason: 'because first time children must purchase a hat'
@@ -188,7 +188,7 @@ class Invoice < ApplicationRecord
   end
 
   def repeater_discount
-    unless adjustments.find_by(change: -10_000, reason: 'repeater discount')
+    unless child.invoices.where(event: event).any? { |invoice| invoice.adjustments.find_by(change: -10_000, reason: 'repeater discount') }
       adjustments.create(
         change: -10_000,
         reason: 'repeater discount'
