@@ -48,17 +48,7 @@
 
     <% if @user.children? && !@user.school.nil? %>
         <h2><%= t('.next_event') %></h2>
-        <% @user.school.events.order(start_date: :asc).limit(1).each do |event| %>
-            <%= render event %>
-        <% end %>
-
-        <h2><%= t('.upcoming_slots') %></h2>
-        <%= link_to t('.all_registrations'), registrations_path(id: @user.id, source: 'User'), class: 'button' %>
-        <div id="time_slot_container">
-            <% @user.time_slots.where(morning: true).distinct.order(start_time: :asc).limit(5).each do |slot| %>
-                <%= render slot, partial: 'time_slots/time_slot', children: @user.children %>
-            <% end %>
-        </div>
+        <%= render Event.all.where(school: @user.school).order(start_date: :asc).first %>
     <% end %>
 
     <% if @user.area_manager? %>
