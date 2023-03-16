@@ -1,28 +1,28 @@
 #school_index {
-    margin-top: 9vh;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: flex-start;
-    align-items: stretch;
+  margin-top: 9vh;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
 }
 
 #school_index .school.header {
-    top: 9vh;
-    position: sticky;
-    font-size: var(--sub-heading-size);
-    font-weight: bold;
-    padding: 1vw;
-    background-color: var(--ku-dark-background);
+  top: 9vh;
+  position: sticky;
+  font-size: var(--sub-heading-size);
+  font-weight: bold;
+  padding: 1vw;
+  background-color: var(--ku-dark-background);
 }
 
 #school_index .school {
-    padding: 1vw;
+  padding: 1vw;
 }
 
 #school_index .school:nth-child(even) {
-    background-color: var(--ku-background);
+  background-color: var(--ku-background);
 }
 
 #school_index .school:nth-child(odd) {
-    background-color: var(--ku-dark-background);
+  background-color: var(--ku-dark-background);
 }

@@ -1,18 +1,18 @@
 /* Styles for the main element */
 #user_show {
-    margin-top: 9vh;
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    text-align: center;
-    gap: 2vw;
-    padding: 1vw;
+  margin-top: 9vh;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  text-align: center;
+  gap: 2vw;
+  padding: 1vw;
 }
 
 /* Set size for section headings */
 #user_show .user h1,
-#user_show>h2 {
-    font-size: var(--main-heading-size);
+#user_show > h2 {
+  font-size: var(--main-heading-size);
 }
 
 /* Styles for all shadowed containers */
@@ -21,11 +21,11 @@
 #user_show #area_container,
 #user_show #school_container,
 #user_show #add_child_container {
-    display: flex;
-    border-radius: 1vw;
-    padding: 1vw;
-    box-shadow: var(--container-shadow);
-    background: var(--ku-dark-background);
+  display: flex;
+  border-radius: 1vw;
+  padding: 1vw;
+  box-shadow: var(--container-shadow);
+  background: var(--ku-dark-background);
 }
 
 /* Styles for all outer containers */
@@ -34,137 +34,137 @@
 #user_show .user,
 #user_show #area_container,
 #user_show #school_container,
-#user_show #add_child_container  {
-    width: 90vw;
-    gap: 1vw;
+#user_show #add_child_container {
+  width: 90vw;
+  gap: 1vw;
 }
 
 /* Area and school container styles */
 #user_show #area_container,
 #user_show #school_container,
-#user_show #add_child_container  {
-    justify-content: center;
+#user_show #add_child_container {
+  justify-content: center;
 }
 
 #user_show .event {
-    height: 42vh;
+  height: 42vh;
 }
 
 #user_show .event {
-    flex: 0 0 100%;
+  flex: 0 0 100%;
 }
 
 #user_show #time_slot_container {
-    height: fit-content;
-    flex-flow: column nowrap;
-    align-items: stretch;
-    overflow: scroll;
-    background-color: var(--ku-dark-background);
+  height: fit-content;
+  flex-flow: column nowrap;
+  align-items: stretch;
+  overflow: scroll;
+  background-color: var(--ku-dark-background);
 }
 
 #user_show .time_slot {
-    flex: 0 0 30vw;
-    height: fit-content;
+  flex: 0 0 30vw;
+  height: fit-content;
 }
 
 #user_show .area {
-    display: flex;
-    flex-flow: column nowrap;
-    padding: 1vw;
-    gap: 1vw;
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 1vw;
+  gap: 1vw;
 }
 
 #user_show #add_child_container {
-    flex-flow: column nowrap;
-    align-items: stretch;
-    background-color: var(--ku-dark-background);
+  flex-flow: column nowrap;
+  align-items: stretch;
+  background-color: var(--ku-dark-background);
 }
 
 /* Styles for .user div */
 /* For User#show partials */
 
 #user_show .user {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: center;
-    padding: 1vw;
-    gap: 1vw;
-    border-radius: 1vw;
-    text-align: center;
-    box-shadow: var(--container-shadow);
-    background-color: var(--ku-dark-background);
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  padding: 1vw;
+  gap: 1vw;
+  border-radius: 1vw;
+  text-align: center;
+  box-shadow: var(--container-shadow);
+  background-color: var(--ku-dark-background);
 }
 
 #user_show .user .children,
 #user_show .user .key_info {
-    flex: 1 1 auto;
-    gap: 0.5vw;
+  flex: 1 1 auto;
+  gap: 0.5vw;
 }
 
 #user_show .user .key_info {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    max-width: 100%;
-    overflow: clip;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  overflow: clip;
 }
 
 #user_show .user ul {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
 }
 
 #user_show .user ul li {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
-    padding: 1vw;
-    gap: 1vw;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 1vw;
+  gap: 1vw;
 }
 
 #user_show .user .user_options {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    padding: 1vw;
-    gap: 1vw;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  padding: 1vw;
+  gap: 1vw;
 }
 
 /* When editing in place */
 
 .user form.edit_user {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: stretch;
-    height: fit-content;
-    overflow: scroll;
-    padding: 2vw;
-    gap: 1vw;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: stretch;
+  height: fit-content;
+  overflow: scroll;
+  padding: 2vw;
+  gap: 1vw;
 }
 
 #user_show #school_container {
-    flex-flow: column nowrap;
+  flex-flow: column nowrap;
 }
 
-#user_show #school_container .school>.address {
-    flex-basis: 25vw;
+#user_show #school_container .school > .address {
+  flex-basis: 25vw;
 }
 
-#user_show #school_container .school>.area,
-#user_show #school_container .school>.name,
-#user_show #school_container .school>.phone {
-    flex-basis: 10vw;
+#user_show #school_container .school > .area,
+#user_show #school_container .school > .name,
+#user_show #school_container .school > .phone {
+  flex-basis: 10vw;
 }
 
-#user_show #school_container .school>.children {
-    flex-basis: 5vw;
+#user_show #school_container .school > .children {
+  flex-basis: 5vw;
 }
 
-#user_show #school_container .school>.name {
-    font-weight: bold;
+#user_show #school_container .school > .name {
+  font-weight: bold;
 }

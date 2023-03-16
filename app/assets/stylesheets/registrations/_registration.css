@@ -1,60 +1,60 @@
 .registration {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--sub-heading-size);
-    font-weight: bold;
-    padding: 0.5vw;
-    gap: 0.5vw;
-    margin-top: 1.5vw;
-    margin-bottom: 1.5vw;
-    border-radius: 1vw;
-    background-color: var(--ku-dark-background);
-    text-align: center;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--sub-heading-size);
+  font-weight: bold;
+  padding: 0.5vw;
+  gap: 0.5vw;
+  margin-top: 1.5vw;
+  margin-bottom: 1.5vw;
+  border-radius: 1vw;
+  background-color: var(--ku-dark-background);
+  text-align: center;
 }
 
 .registration_form {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-around;
-    align-items: center;
-    gap: 1vw;
-    padding: 1vw;
-    width: 95%;
-    font-size: var(--font-size);
-    text-align: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1vw;
+  padding: 1vw;
+  width: 95%;
+  font-size: var(--font-size);
+  text-align: center;
 }
 
-.registration_form>.field {
-    display: flex;
-    flex-flow: column nowrap;
+.registration_form > .field {
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 .registration_form .field.date {
-    width: 40%;
+  width: 40%;
 }
 
 .registration_form .check_box {
-    width: 10%;
+  width: 10%;
 }
 
 .registration_options_container {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: stretch;
-    border-radius: 1vw;
-    align-items: center;
-    background-color: var(--ku-background);
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: stretch;
+  border-radius: 1vw;
+  align-items: center;
+  background-color: var(--ku-background);
 }
 
 .registration_options_container h5 {
-    justify-self: center;
-    width: 100%;
-    font-size: var(--secondary-heading-size);
-    text-align: center;
+  justify-self: center;
+  width: 100%;
+  font-size: var(--secondary-heading-size);
+  text-align: center;
 }
 
 .registration_options_container .option {
-    width: 100%;
+  width: 100%;
 }

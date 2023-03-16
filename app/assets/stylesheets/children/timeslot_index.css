@@ -1,107 +1,107 @@
 #slot_children_index {
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding-left: 0;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 0;
 }
 
-#slot_children_index>h1 {
-    align-self: center;
-    color: var(--near-white);
+#slot_children_index > h1 {
+  align-self: center;
+  color: var(--near-white);
 }
 
 #slot_children_index thead tr:first-child {
-    background: var(--ku-background);
+  background: var(--ku-background);
 }
 
 #slot_children_index tr:nth-child(odd) td,
 #slot_children_index tr:nth-child(odd) th {
-    background: white;
+  background: white;
 }
 
 #slot_children_index tr:nth-child(even) td,
 #slot_children_index tr:nth-child(even) th {
-    background: var(--near-white);
+  background: var(--near-white);
 }
 
 #slot_children_index table {
-    text-align: center;
-    table-layout: fixed;
-    white-space: nowrap;
-    border-spacing: 0;
+  text-align: center;
+  table-layout: fixed;
+  white-space: nowrap;
+  border-spacing: 0;
 }
 
 #slot_children_index table td,
 #slot_children_index table th {
-    border: 1px solid black;
-    padding: 0.5vw;
+  border: 1px solid black;
+  padding: 0.5vw;
 }
 
 #slot_children_index table thead:first-child tr:first-child th {
-    background: var(--ku-orange-hover);
-    color: var(--near-white);
-    font-size: 16px;
-    padding: 1vw;
-    position: sticky;
-    top: 9vh;
-    z-index: 2;
+  background: var(--ku-orange-hover);
+  color: var(--near-white);
+  font-size: 16px;
+  padding: 1vw;
+  position: sticky;
+  top: 9vh;
+  z-index: 2;
 }
 
 #slot_children_index table thead:first-child tr:nth-child(2) th {
-    background: var(--ku-orange-hover);
-    color: var(--near-white);
-    font-size: 16px;
-    padding: 1vw;
-    position: sticky;
-    top: 13.5vh;
-    z-index: 2;
+  background: var(--ku-orange-hover);
+  color: var(--near-white);
+  font-size: 16px;
+  padding: 1vw;
+  position: sticky;
+  top: 13.5vh;
+  z-index: 2;
 }
 
 #slot_children_index table th#arrival_header,
-#slot_children_index table th#level_header, 
+#slot_children_index table th#level_header,
 #slot_children_index table th#name_header,
 #slot_children_index table th#allergy_header,
 #slot_children_index table th#photos_header,
 #slot_children_index table th#depart_header {
-    position: sticky;
-    z-index: 3;
+  position: sticky;
+  z-index: 3;
 }
 
 #slot_children_index table th.arrival,
-#slot_children_index table th.level, 
+#slot_children_index table th.level,
 #slot_children_index table th.name,
 #slot_children_index table th.allergy,
 #slot_children_index table th.photos,
 #slot_children_index table th.depart {
-    position: sticky;
-    z-index: 1;
+  position: sticky;
+  z-index: 1;
 }
 
 #slot_children_index table th.arrival {
-    left: 0;
-    min-width: 6vw;
+  left: 0;
+  min-width: 6vw;
 }
 
 #slot_children_index table th.level {
-    left: 8vw;
-    min-width: 8vw;
+  left: 8vw;
+  min-width: 8vw;
 }
 
 #slot_children_index table th.name {
-    left: 18vw;
-    min-width: 13vw;
+  left: 18vw;
+  min-width: 13vw;
 }
 
 #slot_children_index table th.allergy {
-    left: 33vw;
-    min-width: 8vw;
+  left: 33vw;
+  min-width: 8vw;
 }
 
 #slot_children_index table th.photos {
-    left: 43vw;
-    min-width: 6vw;
+  left: 43vw;
+  min-width: 6vw;
 }
 
 #slot_children_index table th.depart {
-    left: 51vw;
-    min-width: 6vw;
+  left: 51vw;
+  min-width: 6vw;
 }

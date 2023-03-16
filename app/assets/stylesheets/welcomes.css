@@ -1,69 +1,69 @@
 main#current_event {
-    height: 100vh;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 9vh 1fr 2fr;
-    text-align: center;
-    background-color: #0369a1;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 9vh 1fr 2fr;
+  text-align: center;
+  background-color: #0369a1;
 }
 
 main #ku_logo_bar {
-    grid-column: 1 / 3;
-    grid-row: 1 / 2;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 main #ku_logo_bar img {
-    height: 9vh;
+  height: 9vh;
 }
 
 main #ku_logo_bar img:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 main#current_event #sign_in_container,
 main#current_event #sign_up_container,
 main#current_event #promo_image_container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 main#current_event #sign_in_container a,
 main#current_event #sign_up_container a {
-    background-color: var(--ku-orange);
-    border-radius: 2vw;
-    border: 0.25vw outset black;
-    padding: 1vw;
+  background-color: var(--ku-orange);
+  border-radius: 2vw;
+  border: 0.25vw outset black;
+  padding: 1vw;
 }
 
 main#current_event #sign_in_container a:hover,
 main#current_event #sign_up_container a:hover {
-    background-color: var(--ku-orange-hover);
+  background-color: var(--ku-orange-hover);
 }
 
 main#current_event #sign_in_container a:active,
 main#current_event #sign_up_container a:active {
-    border-style: inset;
+  border-style: inset;
 }
 
 main#current_event #sign_up_container {
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
 }
 
 main#current_event #sign_in_container {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
 }
 
 main#current_event #promo_image_container {
-    grid-column: 1 / 3;
-    grid-row: 3 / 4;
-    background-image: url("winter_school_promo.jpg");
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+  grid-column: 1 / 3;
+  grid-row: 3 / 4;
+  background-image: url("winter_school_promo.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }

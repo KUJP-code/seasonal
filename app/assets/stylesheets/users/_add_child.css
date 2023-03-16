@@ -1,148 +1,140 @@
 #add_child {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: stretch;
-    justify-content: center;
-    gap: 1vw;
-    background-color: var(--ku-dark-background);
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: 1vw;
+  background-color: var(--ku-dark-background);
 }
 
 #add_child .find_child,
 #add_child .add_new_child {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: center;
-    gap: 1vw;
-    flex-basis: 48%;
-    background-color: var(--ku-background);
-    border-radius: 1vw;
-    padding: 1vw;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1vw;
+  flex-basis: 48%;
+  background-color: var(--ku-background);
+  border-radius: 1vw;
+  padding: 1vw;
 }
 
 #add_child .button {
-    align-self: center;
+  align-self: center;
 }
 
 #add_child .field,
 #add_child .button {
-    font-size: 24px;
+  font-size: 24px;
 }
 
 #add_child input:not(.button),
 #add_child select,
 #add_child textarea {
-    border-radius: 1vw;
-    border: none;
-    padding: 5px;
-    text-align: center;
-    background-color: var(--ku-orange-hover);
+  border-radius: 1vw;
+  border: none;
+  padding: 5px;
+  text-align: center;
+  background-color: var(--ku-orange-hover);
 }
 
 #add_child input:not(.button):focus-visible {
-    outline: none;
-    box-shadow: 0.5vw 1vw 1vw var(--ku-dark-accent);
+  outline: none;
+  box-shadow: 0.5vw 1vw 1vw var(--ku-dark-accent);
 }
 
 #add_child .field {
-    display: flex;
-    flex-flow: column wrap;
-    gap: 1vw;
-    font-size: 24px;
+  display: flex;
+  flex-flow: column wrap;
+  gap: 1vw;
+  font-size: 24px;
 }
-
 
 #add_child input {
-    text-align: center;
+  text-align: center;
 }
-
-
-
 
 /* For claiming an existing child */
 
-
 #claim_child_form {
-    display: flex;
-    flex-flow: column wrap;
-    align-items: center;
-    gap: 1vw;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  gap: 1vw;
 }
 
 #child_results {
-    display: flex;
-    flex-flow: column nowrap;
-    width: 80vw;
+  display: flex;
+  flex-flow: column nowrap;
+  width: 80vw;
 }
 
 #child_results #add_form {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
 }
 #child_results {
-    display: flex;
-    flex-flow: column nowrap;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 #child_results .child.header {
-    background-color: var(--ku-orange);
-    font-weight: bold;
+  background-color: var(--ku-orange);
+  font-weight: bold;
 }
 
 #child_results .child {
-    display: flex;
-    flex-flow: row nowrap;
-    background-color: var(--ku-dark-background);
-    padding: 1vw;
+  display: flex;
+  flex-flow: row nowrap;
+  background-color: var(--ku-dark-background);
+  padding: 1vw;
 }
 
 #child_results .child p {
-    flex-basis: 12.5%;
+  flex-basis: 12.5%;
 }
 
 #child_results #add_form {
-    margin-top: 1vw;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
+  margin-top: 1vw;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
 }
 
 #child_results .success {
-    background-color: lightpink;
-    color: red;
-    font-weight: bold;
+  background-color: lightpink;
+  color: red;
+  font-weight: bold;
 }
-
-
-
 
 /* For adding a new child */
 
 #add_child .child_form {
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 2vw;
-    padding: 1vw;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2vw;
+  padding: 1vw;
 }
 
 #add_child .child_form h3 {
-    width: 100%;
-    font-size: var(--main-heading-size);
+  width: 100%;
+  font-size: var(--main-heading-size);
 }
 
 #add_child .child_form .button {
-    width: 100%;
+  width: 100%;
 }
 
 #add_child .child_form .personal_info,
 #add_child .child_form .school_info {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    align-items: center;
-    gap: 1vw;
-    padding: 1vw;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1vw;
+  padding: 1vw;
 }

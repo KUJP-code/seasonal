@@ -1,21 +1,21 @@
 .school {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    align-items: center;
-    text-align: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
 }
 
-.school>.address {
-    flex-basis: 30vw;
+.school > .address {
+  flex-basis: 30vw;
 }
 
-.school>.area,
-.school>.name,
-.school>.phone {
-    flex-basis: 18vw;
+.school > .area,
+.school > .name,
+.school > .phone {
+  flex-basis: 18vw;
 }
 
-.school>.children {
-    flex-basis: 8vw;
+.school > .children {
+  flex-basis: 8vw;
 }

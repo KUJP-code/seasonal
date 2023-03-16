@@ -17,10 +17,8 @@ amazon:
   http_read_timeout: 10
   retry_limit: 3
   upload:
-    server_side_encryption: 'aws:kms' # 'aws:kms' or 'AES256'
+    server_side_encryption: "aws:kms" # 'aws:kms' or 'AES256'
     cache_control: "private, max-age=<%= 1.day.to_i %>"
-
-
 # Remember not to checkin your GCS keyfile to a repository
 # google:
 #   service: GCS

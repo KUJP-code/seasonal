@@ -1,251 +1,251 @@
 /* Styles for the main element */
 #event_show {
-    margin-top: 9vh;
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    text-align: center;
-    gap: 1vw;
-    padding: 1vw;
+  margin-top: 9vh;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  text-align: center;
+  gap: 1vw;
+  padding: 1vw;
 }
 
 #event_show h2 {
-    width: 100%;
+  width: 100%;
 }
 
 #event_show #children {
-    display: flex;
-    flex-flow: row wrap;
-    gap: 2vw;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 2vw;
 }
 
 #event_show #children .child {
-    display: flex;
-    flex-flow: column nowrap;
-    padding: 1vw;
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 1vw;
 }
 
 #event_show #children .child.active {
-    box-shadow: 0px 0px 5px 5px var(--ku-orange);
+  box-shadow: 0px 0px 5px 5px var(--ku-orange);
 }
 
 /* Styles for all shadowed containers */
 #event_show .time_slot {
-    width: max(30vw, 300px);
-    border-radius: 1vw;
-    padding: 1vw;
-    gap: 1vw;
-    box-shadow: var(--container-shadow);
-    font-size: var(--content-size);
+  width: max(30vw, 300px);
+  border-radius: 1vw;
+  padding: 1vw;
+  gap: 1vw;
+  box-shadow: var(--container-shadow);
+  font-size: var(--content-size);
 }
 
 #event_show .time_slot .date {
-    flex: 1 1 100%;
-    text-align: left;
+  flex: 1 1 100%;
+  text-align: left;
 }
 
 #event_show .time_slot .morning,
 #event_show .time_slot .afternoon {
-    display: flex;
-    flex-flow: row wrap;
-    gap: 0.5vw;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0.5vw;
 }
 
 #event_show .wrap-collapsible {
-    flex-basis: 100%;
+  flex-basis: 100%;
 }
 
-#event_show input[type='checkbox'] { 
-    display: none; 
-} 
-
-.wrap-collapsible { 
-    margin: 1.2rem 0; 
-} 
-
-.lbl-toggle.button { 
-    display: block; 
-    cursor: pointer;
-    width: 97vw;
-    transition: all 0.25s ease-out;
-} 
-
-.lbl-toggle::before { 
-    content: ' ';
-    display: inline-block;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-    border-left: 5px solid currentColor;
-    vertical-align: middle;
-    margin-right: .7rem;
-    transform: translateY(-2px);
-    transition: transform .2s ease-out;
-} 
-
-.toggle:checked+.lbl-toggle::before { 
-    transform: rotate(90deg) translateX(-3px);
-} 
-
-.collapsible-content { 
-    max-height: 0px;
-    overflow: hidden;
-    transition: max-height .25s ease-in-out;
+#event_show input[type="checkbox"] {
+  display: none;
 }
 
-.toggle:checked + .lbl-toggle + .collapsible-content { 
-    max-height: fit-content;
-} 
+.wrap-collapsible {
+  margin: 1.2rem 0;
+}
 
-.toggle:checked+.lbl-toggle { 
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-} 
+.lbl-toggle.button {
+  display: block;
+  cursor: pointer;
+  width: 97vw;
+  transition: all 0.25s ease-out;
+}
+
+.lbl-toggle::before {
+  content: " ";
+  display: inline-block;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid currentColor;
+  vertical-align: middle;
+  margin-right: 0.7rem;
+  transform: translateY(-2px);
+  transition: transform 0.2s ease-out;
+}
+
+.toggle:checked + .lbl-toggle::before {
+  transform: rotate(90deg) translateX(-3px);
+}
+
+.collapsible-content {
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height 0.25s ease-in-out;
+}
+
+.toggle:checked + .lbl-toggle + .collapsible-content {
+  max-height: fit-content;
+}
+
+.toggle:checked + .lbl-toggle {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
 
 .collapsible-content .content-inner {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    align-items: center;
-    background: rgba(0, 105, 255, .2);
-    border-bottom: 1px solid rgba(0, 105, 255, .45);
-    border-bottom-left-radius: 7px;
-    border-bottom-right-radius: 7px;
-    padding: .5rem 1rem;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(0, 105, 255, 0.2);
+  border-bottom: 1px solid rgba(0, 105, 255, 0.45);
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  padding: 0.5rem 1rem;
 }
 
 #event_show .children .child,
 #event_show .adjustment {
-    flex: 1 1 auto;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    align-items: center;
-    gap: 1vw;
+  flex: 1 1 auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1vw;
 }
 
 #event_show .adjustment p:first-child {
-    width: 10vw;
+  width: 10vw;
 }
 
 #event_show .adjustment p:last-child {
-    width: 30vw;
+  width: 30vw;
 }
 
-.collapsible-content p { 
-    margin-bottom: 0; 
+.collapsible-content p {
+  margin-bottom: 0;
 }
 
 #event_show .event_option {
-    flex: 0 0 auto;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    align-items: center;
-    border-radius: 1vw;
-    padding: 1vw;
-    gap: 1vw;
-    box-shadow: var(--container-shadow);
-    background: var(--near-white);
-    font-size: var(--sub-heading-size);
+  flex: 0 0 auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 1vw;
+  padding: 1vw;
+  gap: 1vw;
+  box-shadow: var(--container-shadow);
+  background: var(--near-white);
+  font-size: var(--sub-heading-size);
 }
 
 #event_show .time_slot .morning:first-child {
-    display: flex;
-    flex-flow: column nowrap;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 #event_show .time_slot .add_reg {
-    flex: 1 1 auto;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5vw;
+  flex: 1 1 auto;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5vw;
 }
 
 #event_show .time_slot .add_reg.hidden {
-    display: none;
+  display: none;
 }
 
 #event_show .time_slot .morning:first-child {
-    flex: 1 1 55%;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: center;
+  flex: 1 1 55%;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
 }
 
 #event_show .time_slot .afternoon .add_reg:first-child {
-    flex: 1 1 100%;
+  flex: 1 1 100%;
 }
 
 #event_show .time_slot a {
-    width: 40%;
-    border-radius: 2vw;
+  width: 40%;
+  border-radius: 2vw;
 }
 
 #event_show .time_slot img {
-    width: 100%;
-    border-radius: 2vw;
+  width: 100%;
+  border-radius: 2vw;
 }
 
 #event_show .time_slot {
-    height: fit-content;
-    background: var(--near-white);
+  height: fit-content;
+  background: var(--near-white);
 }
 
 #event_show .time_slot ul {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 #event_show .time_slot li {
-    display: flex;
-    justify-content: center;
-    gap: 1vw;
+  display: flex;
+  justify-content: center;
+  gap: 1vw;
 }
 
 #event_show #price_bar {
-    position: sticky;
-    bottom: 1vw;
-    left: 1vw;
-    right: 1vw;
-    width: 95vw;
-    padding: 1vw;
-    z-index: 10;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    align-items: center;
-    background: var(--near-white);
-    border-radius: 1vw;
+  position: sticky;
+  bottom: 1vw;
+  left: 1vw;
+  right: 1vw;
+  width: 95vw;
+  padding: 1vw;
+  z-index: 10;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  background: var(--near-white);
+  border-radius: 1vw;
 }
 
 #event_show #price_bar #cost_summary {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: rgba(128, 128, 128, 0.7);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(128, 128, 128, 0.7);
 }
 
 #event_show #price_bar #cost_summary:not(.hidden) {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
 }
 
 #event_show #price_bar #cost_summary .card {
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    align-items: center;
-    border-radius: 2vw;
-    padding: 2vw;
-    gap: 1vw;
-    background: var(--near-white);
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2vw;
+  padding: 2vw;
+  gap: 1vw;
+  background: var(--near-white);
 }
 
-#event_show #price_bar #cost_summary .card>.button {
-    align-self: flex-end;
+#event_show #price_bar #cost_summary .card > .button {
+  align-self: flex-end;
 }

@@ -1,64 +1,64 @@
 #user_index {
-    margin-top: 9vh;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: flex-start;
-    align-items: stretch;
-    text-align: center;
+  margin-top: 9vh;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  text-align: center;
 }
 
 #user_index .user.header {
-    top: 9vh;
-    position: sticky;
-    font-size: var(--sub-heading-size);
-    font-weight: bold;
-    padding: 1vw;
+  top: 9vh;
+  position: sticky;
+  font-size: var(--sub-heading-size);
+  font-weight: bold;
+  padding: 1vw;
 }
 
 #user_index .user {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1vw;
-    gap: 1vw;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1vw;
+  gap: 1vw;
 }
 
 #user_index .user {
-    background-color: var(--ku-dark-background);
+  background-color: var(--ku-dark-background);
 }
 
 #user_index .user p.name,
 #user_index .user p.school,
 #user_index .user p.edit {
-    width: 8vw;
+  width: 8vw;
 }
 
 #user_index .user p.katakana,
 #user_index .user p.en,
 #user_index .user p.phone {
-    width: 10vw;
+  width: 10vw;
 }
 
 #user_index .user p.address,
 #user_index .user p.email {
-    width: 15vw;
+  width: 15vw;
 }
 
 #user_index .user .user_children {
-    flex-basis: 100%;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--ku-background);
+  flex-basis: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--ku-background);
 }
 
 #user_index .user .user_children h4 {
-    flex-basis: 100%;
+  flex-basis: 100%;
 }
 
 #user_index .user .user_children a {
-    padding-left: 2vw;
-    padding-right: 2vw;
+  padding-left: 2vw;
+  padding-right: 2vw;
 }

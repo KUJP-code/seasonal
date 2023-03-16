@@ -1,19 +1,19 @@
 #child_edit #add_child,
 #child_new #add_child {
-    width: 90vw;
-    border-radius: 2vw;
+  width: 90vw;
+  border-radius: 2vw;
 }
 
 .child_form .personal_info,
 .child_form .school_info {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    align-items: center;
-    text-align: center;
-    gap: 1vw;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  gap: 1vw;
 }
 
 .child_form h3 {
-    width: 100%;
+  width: 100%;
 }

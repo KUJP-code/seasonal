@@ -1,95 +1,95 @@
 #user_edit {
-    margin-top: 9vh;
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: center;
-    padding: 1vw;
+  margin-top: 9vh;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  padding: 1vw;
 }
 
 #user_edit form.edit_user {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: stretch;
-    width: 94vw;
-    height: fit-content;
-    overflow: scroll;
-    padding: 2vw;
-    gap: 1vw;
-    border-radius: 2vw;
-    box-shadow: var(--container-shadow);
-    background: var(--ku-dark-background);
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: stretch;
+  width: 94vw;
+  height: fit-content;
+  overflow: scroll;
+  padding: 2vw;
+  gap: 1vw;
+  border-radius: 2vw;
+  box-shadow: var(--container-shadow);
+  background: var(--ku-dark-background);
 }
 
 form.edit_user input:not(.button),
 form.edit_user select,
 form.edit_user textarea {
-    border-radius: 1vw;
-    border: none;
-    padding: 5px;
-    text-align: center;
-    background-color: var(--ku-orange-hover);
+  border-radius: 1vw;
+  border: none;
+  padding: 5px;
+  text-align: center;
+  background-color: var(--ku-orange-hover);
 }
 
 .edit_user input:not(.button):focus-visible {
-    outline: none;
-    box-shadow: 0.5vw 1vw 1vw var(--ku-dark-accent);
+  outline: none;
+  box-shadow: 0.5vw 1vw 1vw var(--ku-dark-accent);
 }
 
 .edit_user .button,
 .edit_user .field {
-    font-size: 24px;
+  font-size: 24px;
 }
 
 .edit_user .field {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5vw;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5vw;
 }
 
 .edit_user h2,
 .edit_user h3 {
-    flex-basis: 100%;
-    text-align: center;
+  flex-basis: 100%;
+  text-align: center;
 }
 
 .edit_user h2 {
-    font-size: 36px;
+  font-size: 36px;
 }
 
 .edit_user h3 {
-    font-size: 26px;
+  font-size: 26px;
 }
 
 .edit_user .user_fields,
 .edit_user .fields_wrapper {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--ku-background);
-    gap: 2vw;
-    padding: 1vw;
-    border-radius: 2vw;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--ku-background);
+  gap: 2vw;
+  padding: 1vw;
+  border-radius: 2vw;
 }
 
 .edit_user .personal_info,
 .edit_user .account_info,
 .edit_user .school_info {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    padding: 1vw;
-    gap: 1vw;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  padding: 1vw;
+  gap: 1vw;
 }
 
 .edit_user .actions {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 2vw;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2vw;
 }

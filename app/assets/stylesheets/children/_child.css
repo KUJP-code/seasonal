@@ -1,8 +1,8 @@
 .child {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    align-items: center;
-    text-align: center;
-    background-color: var(--ku-dark-background);
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  background-color: var(--ku-dark-background);
 }
