@@ -49,9 +49,32 @@ class TimeSlot < ApplicationRecord
   scope :morning, -> { where(morning: true).order(start_time: :asc) }
   scope :afternoon, -> { where(morning: false).order(start_time: :asc) }
 
+  # Public methods
+  # Returns arrival time if different to slot start time, otherwise blank string
+  def arrival_time(child)
+    arrival_option = child.options.find_by(category: 'arrival', optionable_id: id, optionable_type: 'TimeSlot')
+
+    if arrival_option
+      (start_time + arrival_option.modifier.minutes).strftime('%I:%M%p')
+    else
+      ''
+    end
+  end
+
   # These convert the start/end datetimes into something more useful for display
   def date
     start_time.to_date.to_s
+  end
+
+  # Returns departure time if different to slot end time, otherwise blank string
+  def departure_time(child)
+    departure_option = child.options.find_by(category: 'departure', optionable_id: id, optionable_type: 'TimeSlot')
+
+    if departure_option
+      (end_time + departure_option.modifier.minutes).strftime('%I:%M%p')
+    else
+      ''
+    end
   end
 
   def f_end_time
