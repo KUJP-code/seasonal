@@ -30,7 +30,7 @@
 
     <div class="wrap-collapsible"> 
         <input id="collapsible" class="toggle" type="checkbox"> 
-        <label for="collapsible" class="lbl-toggle button"><%= t('.price_lists') %></label>
+        <label for="collapsible" class="lbl-toggle button"><%= t('.more_info') %></label>
 
         <div class="collapsible-content">
             <div class="content-inner">
@@ -87,6 +87,14 @@
                             <% end %>
                         <% end %>
                     </div>
+
+                    <% if @child.regular_schedule %>
+                        <div class="schedule">
+                            <h3><%= t('.regular_schedule') %></h3>
+
+                            <p><%= @child.regular_schedule.days %></p>
+                        </div>
+                    <% end %>
                 </p>
             </div>
         </div>
