@@ -66,6 +66,10 @@ class TimeSlot < ApplicationRecord
     start_time.to_date.to_s
   end
 
+  def day
+    start_time.strftime('%A')
+  end
+
   # Returns departure time if different to slot end time, otherwise blank string
   def departure_time(child)
     departure_option = child.options.find_by(category: 'departure', optionable_id: id, optionable_type: 'TimeSlot')

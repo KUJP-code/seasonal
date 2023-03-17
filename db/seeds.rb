@@ -772,6 +772,16 @@ member.children.create!([
 }
 ])
 
+member.children.each do |child|
+  child.create_regular_schedule!(
+    monday: true,
+    tuesday: false,
+    wednesday: true,
+    thursday: false,
+    friday: false
+  )
+end
+
 puts 'Created test users for only member children and only non-member children, with no registrations'
 
 
