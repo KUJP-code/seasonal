@@ -1,0 +1,40 @@
+<main id="invoice_confirm">
+    <h1><%= t('.please_confirm') %></h1>
+
+    <div id="summary">
+        <%= sanitize @invoice.summary, tags: %w[h1 h2 h3 div p], attributes: %w[class id] %>
+    </div>
+
+    <%= form_for @invoice, url: invoice_path(@invoice), method: :patch do |f| %>
+        <%= f.hidden_field :id %>
+        <%= f.hidden_field :child_id %>
+        <%= f.hidden_field :event_id %>
+
+        <div class="slot_regs">
+            <%= f.fields_for :slot_regs do |slot_f| %>
+                <div>
+                    <%= slot_f.hidden_field :_destroy %>
+                    <%= slot_f.hidden_field :id %>
+                    <%= slot_f.hidden_field :child_id %>
+                    <%= slot_f.hidden_field :registerable_id %>
+                    <%= slot_f.hidden_field :registerable_type %>
+                </div>
+            <% end %>
+        </div>
+
+<%# TODO: options now calculated, but can't get detailed/grouped breakdown %>
+        <div class="opt_regs">
+            <%= f.fields_for :opt_regs do |opt_f| %>
+                <div>
+                    <%= opt_f.hidden_field :_destroy, value: 0 %>
+                    <%= opt_f.hidden_field :id %>
+                    <%= opt_f.hidden_field :child_id %>
+                    <%= opt_f.hidden_field :registerable_id %>
+                    <%= opt_f.hidden_field :registerable_type %>
+                </div>
+            <% end %>
+        </div>
+
+        <%= f.submit class: 'button' %>
+    <% end %>
+</main>

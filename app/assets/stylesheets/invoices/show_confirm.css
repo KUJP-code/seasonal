@@ -1,4 +1,5 @@
-#invoice_show #summary {
+#invoice_show #summary,
+#invoice_confirm #summary {
   width: 90%;
   display: flex;
   flex-flow: column nowrap;
@@ -11,13 +12,16 @@
 }
 
 #invoice_show #summary #key_info,
-#invoice_show #summary #details {
+#invoice_show #summary #details,
+#invoice_confirm #summary #key_info,
+#invoice_confirm #summary #details {
   background: var(--ku-background);
   border-radius: 2vw;
   padding: 1vw;
 }
 
-#invoice_show #summary #key_info {
+#invoice_show #summary #key_info,
+#invoice_confirm #summary #key_info {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
@@ -25,7 +29,8 @@
   gap: 0.5vw;
 }
 
-#invoice_show #summary #details {
+#invoice_show #summary #details,
+#invoice_confirm #summary #details {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
@@ -35,11 +40,19 @@
 
 #invoice_show #summary #details h1,
 #invoice_show #summary #details h2,
-#invoice_show #summary #details h3 {
+#invoice_show #summary #details h3,
+#invoice_confirm #summary #details h1,
+#invoice_confirm #summary #details h2,
+#invoice_confirm #summary #details h3 {
   width: 100%;
 }
 
-#invoice_show #summary #details .slot_regs {
+#invoice_confirm > h1 {
+  background: red;
+}
+
+#invoice_show #summary #details .slot_regs,
+#invoice_confirm #summary #details .slot_regs {
   width: 20%;
   display: flex;
   flex-flow: column nowrap;
@@ -47,12 +60,14 @@
   align-items: flex-start;
 }
 
-#invoice_show #summary #details .slot_regs p:first-child {
+#invoice_show #summary #details .slot_regs p:first-child,
+#invoice_confirm #summary #details .slot_regs p:first-child {
   font-weight: bold;
   align-self: stretch;
 }
 
-#invoice_show #summary #final_cost {
+#invoice_show #summary #final_cost,
+#invoice_confirm #summary #final_cost {
   background: var(--ku-background);
   border-radius: 2vw;
   padding: 1vw;

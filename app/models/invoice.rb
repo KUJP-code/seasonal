@@ -19,10 +19,10 @@ class Invoice < ApplicationRecord
            dependent: :destroy,
            inverse_of: :invoice
   accepts_nested_attributes_for :opt_regs, allow_destroy: true
-  has_many :time_slots, through: :registrations,
+  has_many :time_slots, through: :slot_regs,
                         source: :registerable,
                         source_type: 'TimeSlot'
-  has_many :options, through: :registrations,
+  has_many :options, through: :opt_regs,
                      source: :registerable,
                      source_type: 'Option'
   has_many :adjustments, dependent: :destroy
@@ -98,11 +98,11 @@ class Invoice < ApplicationRecord
   end
 
   def calc_option_cost
-    return 0 if opt_regs.empty?
-
-    opt_cost = options.reduce(0) { |sum, opt| sum + opt.cost }
+    opt_cost = opt_regs.reduce(0) { |sum, reg| sum + reg.registerable.cost }
     @breakdown << "<h3>Option cost:</h3>
-                   <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{options.size} options</p>"
+                   <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{opt_regs.size} options</p>"
+    # TODO: Currently won't provide detailed options grouped by name for
+    # confirmation since they can't be accessed through unsaved opt_regs
     options.group(:name).sum(:cost).each do |name, cost|
       @breakdown << "<p>- #{name} x #{options.where(name: name).count}: #{cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
                                                                                                  '\\1,').reverse}円</p>"
@@ -155,7 +155,7 @@ class Invoice < ApplicationRecord
     unless child.invoices.where(event: event).any? do |invoice|
              invoice.adjustments.find_by(change: 1_100, reason: 'because first time children must purchase a hat')
            end
-      adjustments.create(
+      adjustments.new(
         change: 1_100,
         reason: 'because first time children must purchase a hat'
       )
@@ -196,7 +196,7 @@ class Invoice < ApplicationRecord
     unless child.invoices.where(event: event).any? do |invoice|
              invoice.adjustments.find_by(change: -10_000, reason: 'repeater discount')
            end
-      adjustments.create(
+      adjustments.new(
         change: -10_000,
         reason: 'repeater discount'
       )
@@ -219,6 +219,6 @@ class Invoice < ApplicationRecord
                                                                                   '\\1,').reverse}円</h2>"
     generate_template
     self.summary = @breakdown
-    save
+    save unless new_record?
   end
 end

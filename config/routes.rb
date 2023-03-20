@@ -24,6 +24,7 @@ Rails.application.routes.draw do
 
       # Routes for InvoiceEdits controller
       put 'copy_invoice', to: 'invoices#copy', as: :copy_invoice
+      patch 'confirm_invoice', to: 'invoices#confirm', as: :confirm_invoice
 
       # Ensures just the locale also goes to root
       get '/:locale', to: 'users#profile'

@@ -31,6 +31,11 @@ class InvoicesController < ApplicationController
     end
   end
 
+  def confirm
+    @invoice = Invoice.new(invoice_params)
+    @invoice.calc_cost
+  end
+
   def copy
     target = Child.find(params[:target])
     event = Event.find(params[:event])
@@ -78,7 +83,7 @@ class InvoicesController < ApplicationController
 
   def invoice_params
     params.require(:invoice).permit(
-      :id, :billing_date, :in_ss, :paid, :email_sent,
+      :id, :child_id, :event_id, :billing_date, :in_ss,
       slot_regs_attributes: %i[id child_id _destroy invoice_id registerable_id
                                registerable_type],
       opt_regs_attributes: %i[id child_id _destroy invoice_id registerable_id
