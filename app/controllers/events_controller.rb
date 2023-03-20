@@ -81,7 +81,7 @@ class EventsController < ApplicationController
     @children = current_user.children
     @all_invoices = current_user.invoices.where(event: @event, child: @child).includes(:registrations)
 
-    return unless @all_invoices.size.zero? || @all_invoices.all?(&:in_ss)
+    return unless @all_invoices.empty? || @all_invoices.all?(&:in_ss)
 
     # I'm doing this in 2 lines because the view code wants an AR relation
     Invoice.create(child: @child, event: @event, total_cost: 0)

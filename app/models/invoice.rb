@@ -77,7 +77,8 @@ class Invoice < ApplicationRecord
 
     generic_adj = adjustments.reduce(0) { |sum, adj| sum + adj.change }
     adjustments.each do |adj|
-      @breakdown << "<p>Adjustment of #{adj.change.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 applied because #{adj.reason}</p>"
+      @breakdown << "<p>Adjustment of #{adj.change.to_s.reverse.gsub(/(\d{3})(?=\d)/,
+                                                                     '\\1,').reverse}円 applied because #{adj.reason}</p>"
     end
 
     generic_adj
@@ -97,13 +98,14 @@ class Invoice < ApplicationRecord
   end
 
   def calc_option_cost
-    return 0 if opt_regs.size.zero?
+    return 0 if opt_regs.empty?
 
     opt_cost = options.reduce(0) { |sum, opt| sum + opt.cost }
     @breakdown << "<h3>Option cost:</h3>
                    <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{options.size} options</p>"
     options.group(:name).sum(:cost).each do |name, cost|
-      @breakdown << "<p>- #{name} x #{options.where(name: name).count}: #{cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
+      @breakdown << "<p>- #{name} x #{options.where(name: name).count}: #{cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
+                                                                                                 '\\1,').reverse}円</p>"
     end
     opt_cost
   end
@@ -117,7 +119,7 @@ class Invoice < ApplicationRecord
     @breakdown << "</div><div id='details'><h1>Invoice details:</h1>"
 
     e_opt_regs = opt_regs.where(registerable: event.options)
-    unless e_opt_regs.size.zero?
+    unless e_opt_regs.empty?
       @breakdown << '<h2>Event Options:</h2>'
       event.options.each do |opt|
         @breakdown << "<p>- #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
@@ -150,7 +152,9 @@ class Invoice < ApplicationRecord
   end
 
   def hat_adjustment
-    unless child.invoices.where(event: event).any? { |invoice| invoice.adjustments.find_by(change: 1_100, reason: 'because first time children must purchase a hat')}
+    unless child.invoices.where(event: event).any? do |invoice|
+             invoice.adjustments.find_by(change: 1_100, reason: 'because first time children must purchase a hat')
+           end
       adjustments.create(
         change: 1_100,
         reason: 'because first time children must purchase a hat'
@@ -182,13 +186,16 @@ class Invoice < ApplicationRecord
   def pointless_price(num_regs, courses)
     days = child.full_days(event, time_slots.ids)
     extension_cost = days * (courses['1'] + 184)
-    @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{extension_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
+    @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{extension_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
+                                                                                             '\\1,').reverse}円</p>"
     spot_cost = spot_use(num_regs - days, courses)
     extension_cost + spot_cost
   end
 
   def repeater_discount
-    unless child.invoices.where(event: event).any? { |invoice| invoice.adjustments.find_by(change: -10_000, reason: 'repeater discount') }
+    unless child.invoices.where(event: event).any? do |invoice|
+             invoice.adjustments.find_by(change: -10_000, reason: 'repeater discount')
+           end
       adjustments.create(
         change: -10_000,
         reason: 'repeater discount'
@@ -199,7 +206,8 @@ class Invoice < ApplicationRecord
   def spot_use(num_regs, courses)
     spot_cost = num_regs * courses['1']
     unless spot_cost.zero?
-      @breakdown << "<p>スポット1回(午前・15:00~18:30) x #{num_regs}: #{spot_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
+      @breakdown << "<p>スポット1回(午前・15:00~18:30) x #{num_regs}: #{spot_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
+                                                                                                    '\\1,').reverse}円</p>"
     end
     spot_cost
   end
@@ -207,7 +215,8 @@ class Invoice < ApplicationRecord
   # Updates total cost and summary once calculated/generated
   def update_cost(new_cost)
     self.total_cost = new_cost
-    @breakdown << "<h2 id='final_cost'>Final cost is #{new_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</h2>"
+    @breakdown << "<h2 id='final_cost'>Final cost is #{new_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
+                                                                                  '\\1,').reverse}円</h2>"
     generate_template
     self.summary = @breakdown
     save

@@ -31,7 +31,42 @@ class InvoicesController < ApplicationController
     end
   end
 
+  def copy
+    target = Child.find(params[:target])
+    event = Event.find(params[:event])
+    origin = Child.find(params[:origin])
+
+    @target_invoice = copy_invoice(target, event, origin)
+    @target_invoice.calc_cost
+
+    redirect_to invoice_path(@target_invoice)
+  end
+
   private
+
+  def copy_invoice(target, event, origin)
+    # List of registrations to copy
+    og_regs = origin.invoices.where(event: event).map(&:registrations).flatten
+    # Get the target's modifiable invoice, create one if none
+    target_invoice = target.invoices.where(event: event).find_by(in_ss: false) || target.invoices.create(event: event)
+
+    og_regs.each do |o_reg|
+      # Skip if already on target invoice
+      if target_invoice.registrations.any? { |t_reg| t_reg.registerable_id == o_reg.registerable_id && t_reg.registerable_type == o_reg.registerable_type }
+        next
+      end
+
+      # If not on target invoice, add registration
+      target_invoice.registrations.create!(
+        child: target,
+        registerable_id: o_reg.registerable_id,
+        registerable_type: o_reg.registerable_type,
+        invoice: target_invoice
+      )
+    end
+
+    target_invoice
+  end
 
   def flash_failure
     flash.now[:alert] = t('.failure')

@@ -22,6 +22,9 @@ Rails.application.routes.draw do
       resources :time_slots
       resources :users
 
+      # Routes for InvoiceEdits controller
+      put 'copy_invoice', to: 'invoices#copy', as: :copy_invoice
+
       # Ensures just the locale also goes to root
       get '/:locale', to: 'users#profile'
     end

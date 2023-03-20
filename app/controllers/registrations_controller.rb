@@ -49,11 +49,9 @@ class RegistrationsController < ApplicationController
   private
 
   def check_source
-    if %w[Child User].include? params[:source]
-      params[:source].constantize.find(params[:id])
-    else
-      raise StandardError, "unexpected source request: #{params[:source]}"
-    end
+    raise StandardError, "unexpected source request: #{params[:source]}" unless %w[Child User].include? params[:source]
+
+    params[:source].constantize.find(params[:id])
   end
 
   def flash_failure
