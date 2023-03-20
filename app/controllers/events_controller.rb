@@ -84,7 +84,7 @@ class EventsController < ApplicationController
     return unless @all_invoices.empty? || @all_invoices.all?(&:in_ss)
 
     # I'm doing this in 2 lines because the view code wants an AR relation
-    Invoice.create(child: @child, event: @event, total_cost: 0)
+    Invoice.create(child: @child, event: @event, total_cost: 0).calc_cost
     @all_invoices = current_user.invoices.where(event: @event, child: @child).reload
   end
 

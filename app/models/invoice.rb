@@ -41,6 +41,7 @@ class Invoice < ApplicationRecord
     generate_details
 
     calculated_cost = course_cost + adjustments + option_cost
+    calculated_cost = 0 if calculated_cost.negative?
     update_cost(calculated_cost)
   end
 
