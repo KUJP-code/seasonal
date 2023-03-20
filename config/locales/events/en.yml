@@ -5,6 +5,7 @@ en:
       title: "%{name} at %{school}"
     show:
       all_slots: "See all time slots for %{event}"
+      confirm_invoice: "Confirm Invoice"
       confirm_registrations: "Confirm Registrations"
       member: "Member"
       non_member: "Non Member"

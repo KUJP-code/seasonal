@@ -203,7 +203,7 @@
                     <% end %>
                 </template>
 
-                <%= f.submit class: 'button' unless f.object.in_ss %>
+                <%= f.submit t('.confirm_invoice'), class: 'button' unless f.object.in_ss %>
             <% end %>
         <% end %>
     </div>

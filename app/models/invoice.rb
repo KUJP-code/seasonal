@@ -128,13 +128,17 @@ class Invoice < ApplicationRecord
     end
 
     @breakdown << '<h2>Registration List</h2>'
-    slot_regs.includes(registerable: :options).find_each do |slot_reg|
-      next unless slot_reg.registerable.morning
-
+    slot_regs.each do |slot_reg|
       slot = slot_reg.registerable
-      @breakdown << "<div class='slot_regs'><p>#{slot.name}</p>"
+
+      @breakdown << if slot.morning
+                      "<div class='slot_regs'><p>#{slot.name}</p>"
+                    else
+                      "<div class='slot_regs'><p>#{slot.name} (午後)</p>"
+                    end
+
       slot.options.each do |opt|
-        next unless registrations.find_by(registerable: opt)
+        next unless opt_regs.any? { |reg| reg.registerable_id == opt.id }
 
         @breakdown << "<p> - #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
       end
