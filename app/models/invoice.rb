@@ -33,7 +33,9 @@ class Invoice < ApplicationRecord
   # Validations
   validates :total_cost, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
-  def calc_cost
+  def calc_cost(ignore_slots = [], ignore_opts = [])
+    @ignore_slots = ignore_slots
+    @ignore_opts = ignore_opts
     @breakdown = +''
     course_cost = calc_course_cost
     option_cost = calc_option_cost
@@ -74,7 +76,7 @@ class Invoice < ApplicationRecord
 
   def calc_adjustments
     hat_adjustment if child.needs_hat?
-    repeater_discount if !child.member? && child.events.distinct.size > 1 && slot_regs.size > 9
+    repeater_discount if !child.member? && child.events.distinct.size > 1 && slot_regs.size - @ignore_slots.size > 9
 
     generic_adj = adjustments.reduce(0) { |sum, adj| sum + adj.change }
     adjustments.each do |adj|
@@ -86,24 +88,23 @@ class Invoice < ApplicationRecord
   end
 
   def calc_course_cost
+    num_regs = slot_regs.size - @ignore_slots.size
     course_cost = if child.member?
-                    best_price(slot_regs.size, member_prices)
+                    best_price(num_regs, member_prices)
                   else
-                    best_price(slot_regs.size, non_member_prices)
+                    best_price(num_regs, non_member_prices)
                   end
     @breakdown.prepend(
       "<h3>Course cost:</h3>
-      <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{slot_regs.size} registrations</p>"
+      <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{num_regs} registrations</p>"
     )
     course_cost
   end
 
   def calc_option_cost
-    opt_cost = opt_regs.reduce(0) { |sum, reg| sum + reg.registerable.cost }
+    opt_cost = opt_regs.reject { |reg| @ignore_opts.include?(reg.id) }.reduce(0) { |sum, reg| sum + reg.registerable.cost }
     @breakdown << "<h3>Option cost:</h3>
-                   <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{opt_regs.size} options</p>"
-    # TODO: Currently won't provide detailed options grouped by name for
-    # confirmation since they can't be accessed through unsaved opt_regs
+                   <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{opt_regs.size - @ignore_opts.size}  options<p>"
     options.group(:name).sum(:cost).each do |name, cost|
       @breakdown << "<p>- #{name} x #{options.where(name: name).count}: #{cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
                                                                                                  '\\1,').reverse}円</p>"
@@ -129,6 +130,8 @@ class Invoice < ApplicationRecord
 
     @breakdown << '<h2>Registration List</h2>'
     slot_regs.each do |slot_reg|
+      next if @ignore_slots.include?(slot_reg.id)
+
       slot = slot_reg.registerable
 
       @breakdown << if slot.morning
@@ -138,7 +141,8 @@ class Invoice < ApplicationRecord
                     end
 
       slot.options.each do |opt|
-        next unless opt_regs.any? { |reg| reg.registerable_id == opt.id }
+        opt_reg = opt_regs.find_by(registerable_id: opt.id)
+        next if opt_reg.nil? || @ignore_opts.include?(opt_reg.id)
 
         @breakdown << "<p> - #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
       end
@@ -173,7 +177,7 @@ class Invoice < ApplicationRecord
 
   # Decides if we need to apply the dumb 184 円 increase
   def niche_case?
-    slot_regs.size < 5 && child.kindy? && child.full_days(event, time_slots.ids).positive?
+    slot_regs.size - @ignore_slots.size < 5 && child.kindy? && child.full_days(event, time_slots.ids).positive?
   end
 
   def non_member_prices
