@@ -62,6 +62,9 @@ gem 'devise-i18n'
 gem 'aws-sdk-rails', '~> 3'
 gem 'aws-sdk-s3', '~> 1'
 
+# Make showing changes easier
+gem 'diffy'
+
 group :development, :test do
   # Use Faker to generate test data
   gem 'faker'

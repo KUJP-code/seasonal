@@ -114,37 +114,35 @@ class Invoice < ApplicationRecord
 
   def generate_details
     @breakdown.prepend(
-      "<div id='key_info'><h1>Invoice: #{id}</h1>
-      <h2>Child: #{child.name}</h2>
-      <h2>For #{event.name} at #{event.school.name}</h2>"
+      "<div id='key_info'><h1>Invoice: #{id}</h1>\n<h2>Child: #{child.name}</h2>\n<h2>For #{event.name} at #{event.school.name}</h2>\n"
     )
-    @breakdown << "</div><div id='details'><h1>Invoice details:</h1>"
+    @breakdown << "</div><div id='details'><h1>Invoice details:</h1>\n"
 
     e_opt_regs = opt_regs.where(registerable: event.options)
     unless e_opt_regs.empty?
-      @breakdown << '<h2>Event Options:</h2>'
+      @breakdown << "<h2>Event Options:</h2>\n"
       event.options.each do |opt|
-        @breakdown << "<p>- #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
+        @breakdown << "<p>- #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>\n"
       end
     end
 
-    @breakdown << '<h2>Registration List</h2>'
+    @breakdown << "<h2>Registration List</h2>\n"
     slot_regs.each do |slot_reg|
       next if @ignore_slots.include?(slot_reg.id)
 
       slot = slot_reg.registerable
 
       @breakdown << if slot.morning
-                      "<div class='slot_regs'><p>#{slot.name}</p>"
+                      "<div class='slot_regs'><p>#{slot.name}</p>\n"
                     else
-                      "<div class='slot_regs'><p>#{slot.name} (午後)</p>"
+                      "<div class='slot_regs'><p>#{slot.name} (午後)</p>\n"
                     end
 
       slot.options.each do |opt|
         opt_reg = opt_regs.find_by(registerable_id: opt.id)
         next if opt_reg.nil? || @ignore_opts.include?(opt_reg.id)
 
-        @breakdown << "<p> - #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
+        @breakdown << "<p> - #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>\n"
       end
       @breakdown << '</div>'
     end
@@ -196,7 +194,7 @@ class Invoice < ApplicationRecord
     days = child.full_days(event, time_slots.ids)
     extension_cost = days * (courses['1'] + 184)
     @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{extension_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
-                                                                                             '\\1,').reverse}円</p>"
+                                                                                             '\\1,').reverse}円</p>\n"
     spot_cost = spot_use(num_regs - days, courses)
     extension_cost + spot_cost
   end
@@ -216,7 +214,7 @@ class Invoice < ApplicationRecord
     spot_cost = num_regs * courses['1']
     unless spot_cost.zero?
       @breakdown << "<p>スポット1回(午前・15:00~18:30) x #{num_regs}: #{spot_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
-                                                                                                    '\\1,').reverse}円</p>"
+                                                                                                    '\\1,').reverse}円</p>\n"
     end
     spot_cost
   end
@@ -225,7 +223,7 @@ class Invoice < ApplicationRecord
   def update_cost(new_cost)
     self.total_cost = new_cost
     @breakdown << "<h2 id='final_cost'>Final cost is #{new_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
-                                                                                  '\\1,').reverse}円</h2>"
+                                                                                  '\\1,').reverse}円</h2>\n"
     generate_template
     self.summary = @breakdown
     save unless new_record?

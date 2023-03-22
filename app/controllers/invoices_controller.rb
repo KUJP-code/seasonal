@@ -50,6 +50,10 @@ class InvoicesController < ApplicationController
     redirect_to invoice_path(@target_invoice)
   end
 
+  def seen
+    Invoice.find(params[:id]).update(seen_at: Time.current)
+  end
+
   private
 
   def copy_invoice(target, event, origin)

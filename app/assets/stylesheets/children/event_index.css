@@ -36,6 +36,10 @@
   padding: 0.5vw;
 }
 
+#event_children_index table td.highlight {
+  background: lightgreen;
+}
+
 #event_children_index table thead:first-child tr:first-child th {
   background: var(--ku-orange-hover);
   color: var(--near-white);
@@ -98,7 +102,8 @@
 }
 
 #event_children_index .cost_summary,
-#event_children_index .mail_template {
+#event_children_index .mail_template,
+#event_children_index .changes {
   position: fixed;
   top: 0;
   right: 0;
@@ -109,7 +114,8 @@
 }
 
 #event_children_index .cost_summary:not(.hidden),
-#event_children_index .mail_template:not(.hidden) {
+#event_children_index .mail_template:not(.hidden),
+#event_children_index .changes:not(.hidden) {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
@@ -117,8 +123,9 @@
 }
 
 #event_children_index .cost_summary .card,
-#event_children_index .mail_template .card {
-  max-height: 90vh;
+#event_children_index .mail_template .card,
+#event_children_index .changes .card {
+  height: 90vh;
   width: 60vw;
   display: flex;
   flex-flow: column nowrap;

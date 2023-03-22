@@ -110,8 +110,8 @@ class ChildrenController < ApplicationController
     case params[:source]
     when 'Event'
       @children = @source.children.distinct.includes(
-        :invoices, :regular_schedule, :registrations, :time_slots, :options
-      )
+        :regular_schedule, :registrations, :time_slots, :options
+      ).includes(invoices: :versions)
     when 'TimeSlot'
       @children = @source.children.distinct.includes(options: :registrations)
     else
