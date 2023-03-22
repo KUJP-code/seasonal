@@ -141,8 +141,8 @@ User.customers.each do |customer_user|
       post_photos: true,
       allergies: true,
       allergy_details: 'peanuts',
-      level: 'kindy',
-      category: 'external',
+      level: :kindy,
+      category: :external,
       school: customer_user.school
     },
     {
@@ -156,8 +156,8 @@ User.customers.each do |customer_user|
       post_photos: true,
       allergies: true,
       allergy_details: 'peanuts',
-      level: 'land2',
-      category: 'reservation',
+      level: :land2,
+      category: :reservation,
       school: customer_user.school
     }
   ])
@@ -242,7 +242,8 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
       start_time: '18 Feb 2051 09:00 JST +09:00',
       end_time: '18 Feb 2051 11:00 JST +09:00',
       description: choco_descrip,
-      registration_deadline: '16 Feb 2051'
+      registration_deadline: '16 Feb 2051',
+      category: :party
     },
     {
       name: 'Chocolate Day 11am',
@@ -250,7 +251,8 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
       start_time: '18 Feb 2051 11:00 JST +09:00',
       end_time: '18 Feb 2051 12:00 JST +09:00',
       description: choco_descrip,
-      registration_deadline: '16 Feb 2051'
+      registration_deadline: '16 Feb 2051',
+      category: :party
     },
     {
       name: 'Chocolate Day 2pm',
@@ -258,7 +260,8 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
       start_time: '18 Feb 2051 14:00 JST +09:00',
       end_time: '18 Feb 2051 16:00 JST +09:00',
       description: choco_descrip,
-      registration_deadline: '16 Feb 2051'
+      registration_deadline: '16 Feb 2051',
+      category: :party
     },
     {
       name: 'Chocolate Day 4pm',
@@ -266,7 +269,8 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
       start_time: '18 Feb 2051 16:00 JST +09:00',
       end_time: '18 Feb 2051 18:00 JST +09:00',
       description: choco_descrip,
-      registration_deadline: '16 Feb 2051'
+      registration_deadline: '16 Feb 2051',
+      category: :party
     }
   ])
   event.image.attach(io: File.open('app/assets/images/chocolate_day_2024.jpg'), filename: 'logo.jpg', content_type: 'image/jpg')
@@ -336,6 +340,42 @@ Event.where(name: 'Spring School 2023').each do |event|
       end_time: '24 Mar 2050 13:00 JST +09:00',
       description: 'Create your own special Easter Egg! No eating though!',
       registration_deadline: '22 Mar 2050'
+    },
+    {
+      name: 'Banana Party',
+      morning: true,
+      start_time: '25 Mar 2050 9:00 JST +09:00',
+      end_time: '25 Mar 2050 11:00 JST +09:00',
+      description: 'Party like a banana!',
+      registration_deadline: '22 Mar 2050',
+      category: 'special'
+    },
+    {
+      name: 'Banana Split',
+      morning: true,
+      start_time: '25 Mar 2050 11:00 JST +09:00',
+      end_time: '25 Mar 2050 13:00 JST +09:00',
+      description: 'Eat then split!',
+      registration_deadline: '22 Mar 2050',
+      category: 'special'
+    },
+    {
+      name: 'Design a Kite',
+      morning: true,
+      start_time: '25 Mar 2050 14:00 JST +09:00',
+      end_time: '25 Mar 2050 16:00 JST +09:00',
+      description: 'Fly your flag!',
+      registration_deadline: '22 Mar 2050',
+      category: 'special'
+    },
+    {
+      name: 'Castle Rush',
+      morning: true,
+      start_time: '25 Mar 2050 16:00 JST +09:00',
+      end_time: '25 Mar 2050 18:00 JST +09:00',
+      description: 'Down with the bourgeoisie!',
+      registration_deadline: '22 Mar 2050',
+      category: 'special'
     },
     {
       name: 'Cherry Blossom Picnic',
@@ -706,8 +746,8 @@ non_member.children.create!([
     post_photos: true,
     allergies: true,
     allergy_details: 'peanuts',
-    level: 'kindy',
-    category: 'external',
+    level: :kindy,
+    category: :external,
     school: non_member.school
   },
   {
@@ -721,8 +761,8 @@ non_member.children.create!([
     post_photos: true,
     allergies: true,
     allergy_details: 'peanuts',
-    level: 'land2',
-    category: 'external',
+    level: :land2,
+    category: :external,
     school: non_member.school
   }
 ])
@@ -752,7 +792,7 @@ member.children.create!([
   needs_hat: false,
   allergies: true,
   allergy_details: 'peanuts',
-  level: 'kindy',
+  level: :kindy,
   category: 'internal',
   school: member.school
 },
@@ -768,7 +808,7 @@ member.children.create!([
   needs_hat: false,
   allergies: true,
   allergy_details: 'peanuts',
-  level: 'land2',
+  level: :land2,
   category: 'internal',
   school: member.school
 }

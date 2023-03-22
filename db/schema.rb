@@ -204,7 +204,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_18_042750) do
     t.datetime "start_time"
     t.datetime "end_time"
     t.string "description"
-    t.integer "max_attendees"
+    t.integer "category", default: 0
     t.datetime "registration_deadline"
     t.boolean "morning", default: false
     t.bigint "event_id", null: false

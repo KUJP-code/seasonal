@@ -15,6 +15,7 @@ class Option < ApplicationRecord
   has_many :coupons, as: :couponable,
                      dependent: :destroy
 
+  # Map category integer in db to string
   enum :category, regular: 0,
                   arrival: 1,
                   departure: 2,

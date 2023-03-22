@@ -35,6 +35,12 @@ class TimeSlot < ApplicationRecord
 
   validates :description, length: { minimum: 10 }
 
+  # Map category integer in db to a string
+  enum :category, seasonal: 0,
+                  special: 1,
+                  party: 2,
+                  default: :seasonal
+
   # Scopes
   # For time slot status
   scope :past_slots, -> { where('end_time < ?', Time.zone.now).order(start_time: :desc) }
