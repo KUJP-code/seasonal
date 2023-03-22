@@ -3,6 +3,7 @@
 
     <table>
         <% cols = @source.time_slots.morning.size %>
+        <% special = @source.time_slots.select { |slot| slot.special? } %>
         
         <thead>
             <tr>
@@ -19,11 +20,19 @@
                 <th rowspan="2"><%= t('.allergy') %></th>
                 <th rowspan="2"><%= t('.allergy_details') %></th>
                 <th rowspan="2"><%= t('.photo_ok') %></th>
+                <% unless special.size.zero? %>
+                    <th colspan="3"><%= "スペシャルデー #{special.first.start_time.strftime('%m月%d日')}" %></th>
+                <% end %>
                 <% cols.times do |i| %>
                     <th colspan="3"><%= "Day #{i + 1}" %></th>
                 <% end %>
             </tr>
             <tr>
+                <% unless special.size.zero? %>
+                    <th>午前 / 午後</th>
+                    <th>昼食 / 中延長</th>
+                    <th>延長(前) / 延長(後)</th>
+                <% end %>
                 <% cols.times do |i| %>
                     <th>午前 / 午後</th>
                     <th>昼 / 晩</th>

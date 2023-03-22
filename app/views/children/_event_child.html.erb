@@ -1,4 +1,5 @@
 <% event_slots = event_child.time_slots.select { |slot| slot.event_id == event.id }.sort_by{ |slot| slot.start_time } %>
+<% special = event_slots.select { |slot| slot.special? } %>
 <% event_opts = event_child.options.select { |opt| event_slots.map { |slot| slot.id}.include?(opt.optionable_id) } %>
 <% event_invoices = event_child.invoices.select { |invoice| invoice.event_id == event.id } %>
 <% active_invoice = event_invoices.last %>
@@ -78,6 +79,14 @@
         end 
     %></td>
 
+    <% unless special.size.zero? %>
+        <td colspan="3">
+            <% first_slots = special.select { |slot| slot.morning? } %>
+            <%= link_to "#{first_slots.first.name} (午前)", children_path(id: first_slots.first.id, source: 'TimeSlot') %> / 
+            <%= link_to "#{first_slots.last.name} (午後)", children_path(id: first_slots.last.id, source: 'TimeSlot') %>
+        </td>
+    <% end %>
+
     <% event_slots.each do |slot| %>
         <% if slot.morning %>
             <td colspan="3"><%= link_to "#{slot.name} (#{slot.start_time.strftime('%m月%d日')})", children_path(id: slot.id, source: 'TimeSlot') %></td>
@@ -94,6 +103,44 @@
     <% end %>
 </tr>
 <tr>
+    <% unless special.size.zero? %>
+        <% first_slots = special.select { |slot| slot.morning? } %>
+        <td><%=
+            # FIXME: causing N + 1 queries 
+            if event_slots.include?(first_slots.first) && event_slots.include?(first_slots.last)
+                '午前 / 午後'
+            elsif event_slots.include?(first_slots.first)
+                '午前'
+            elsif event_slots.include?(first_slots.last)
+                '午後'
+            else
+                ''
+            end
+        %></td>
+        <td><%=
+            # FIXME: causing N + 1 queries 
+            if event_opts.include?(first_slots.first.options.find_by(name: '昼')) && event_opts.include?(first_slots.first.options.find_by(category: :extension))
+                '昼 / 中延長'
+            elsif event_opts.include?(first_slots.first.options.find_by(name: '昼'))
+                '昼'
+            elsif event_opts.include?(first_slots.first.options.find_by(category: :extension))
+                '中延長'
+            else
+                ''
+            end
+        %></td>
+        <td><%=
+            # FIXME: causing N + 1 queries 
+            if event_slots.include?(first_slots.last) && event_slots.include?(first_slots.first)
+                "#{first_slots.first.arrival_time(event_child)} / #{first_slots.last.departure_time(event_child)}" unless first_slots.first.arrival_time(event_child) == '' && first_slots.last.departure_time(event_child) == ''
+            elsif event_slots.include?(first_slots.first)
+                "#{first_slots.first.arrival_time(event_child)}"
+            else
+                ''
+            end
+        %></td>
+    <% end %>
+
     <% event_slots.each do |slot| %>
         <% if slot.morning %>
             <td><%=

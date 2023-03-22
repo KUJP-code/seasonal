@@ -21,6 +21,7 @@ class Option < ApplicationRecord
                   departure: 2,
                   meal: 3,
                   event: 4,
+                  extension: 5,
                   default: :regular
 
   validates :name, :description, :cost, presence: true
