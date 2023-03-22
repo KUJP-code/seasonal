@@ -28,7 +28,7 @@ class Invoice < ApplicationRecord
   has_many :adjustments, dependent: :destroy
 
   # Track changes with Paper Trail
-  has_paper_trail
+  has_paper_trail ignore: [:seen_at]
 
   # Validations
   validates :total_cost, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
