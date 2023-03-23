@@ -42,9 +42,4 @@
 
     <h2><%= t('.next_event') %></h2>
     <%= render @next_event, partial: 'events/event' %>
-
-    <h2><%= t('.upcoming_slots') %></h2>
-    <div id="time_slot_container">
-        <%= render partial: 'time_slots/time_slot', collection: @slots.where(morning: true), locals: { children: [@child] } %>
-    </div>
 </main>
