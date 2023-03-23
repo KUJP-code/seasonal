@@ -52,6 +52,11 @@ class InvoicesController < ApplicationController
 
   def seen
     Invoice.find(params[:id]).update(seen_at: Time.current)
+    @child_id = params[:child]
+
+    respond_to do |format|
+      format.turbo_stream
+    end
   end
 
   private

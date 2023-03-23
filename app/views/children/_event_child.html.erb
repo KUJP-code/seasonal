@@ -23,31 +23,32 @@
             <% end %>
         </div>
     </td>
-    <td rowspan="2" data-controller="popup" class="<%= 'highlight' if active_invoice.seen_at.nil? || active_invoice.versions.last.created_at > active_invoice.seen_at %>">
-        <% if active_invoice.seen_at.nil? || active_invoice.versions.last.created_at > active_invoice.seen_at %>
-            <%= button_tag t('.view_changes'), class: 'button', data: { action: "click->popup#toggle" } %>
-            <div class="hidden changes" data-popup-target="popup">
-                <div class="card">
-                    <% if active_invoice.seen_at.nil? %>
-                        <% active_invoice.versions.each do |ver| %>
-                            <% next if ver.index.zero? %>
-
-                            <h3><%= ver.index %></h3>
-                            <%= sanitize(Diffy::Diff.new(simple_format(ver.reify.summary), simple_format(active_invoice.summary)).to_s(:html), tags: %w[div li strong span ul], attributes: %w[class id]) unless ver.reify.nil? %>
+    <td rowspan="2" data-controller="popup" id=<%= "child#{event_child.id}changes" %> class="<%= 'highlight' if active_invoice.seen_at.nil? || active_invoice.versions.last.created_at > active_invoice.seen_at %>">
+        <turbo-frame>
+            <% if active_invoice.seen_at.nil? || active_invoice.versions.last.created_at > active_invoice.seen_at %>
+                <%= button_tag t('.view_changes'), class: 'button', data: { action: "click->popup#toggle" } %>
+                <div class="hidden changes" data-popup-target="popup">
+                    <div class="card">
+                        <% if active_invoice.seen_at.nil? %>
+                            <% active_invoice.versions.each do |ver| %>
+                                <% next if ver.index.zero? %>
+                                <h3><%= ver.index %></h3>
+                                <%= sanitize(Diffy::Diff.new(simple_format(ver.reify.summary), simple_format(active_invoice.summary)).to_s(:html), tags: %w[div li strong span ul], attributes: %w[class id]) unless ver.reify.nil? %>
+                            <% end %>
+                        <% else %>
+                            <% active_invoice.versions.select { |ver| ver.created_at > active_invoice.seen_at }.each do |ver| %>
+                                <% next if ver.index.zero? %>
+                                <h3><%= ver.index %></h3>
+                                <%= sanitize(Diffy::Diff.new(simple_format(ver.reify.summary), simple_format(active_invoice.summary)).to_s(:html), tags: %w[div li strong span ul], attributes: %w[class id]) unless ver.reify.nil? %>
+                            <% end %>
                         <% end %>
-                    <% else %>
-                        <% active_invoice.versions.select { |ver| ver.created_at > active_invoice.seen_at }.each do |ver| %>
-                            <% next if ver.index.zero? %>
-
-                            <h3><%= ver.index %></h3>
-                            <%= sanitize(Diffy::Diff.new(simple_format(ver.reify.summary), simple_format(active_invoice.summary)).to_s(:html), tags: %w[div li strong span ul], attributes: %w[class id]) unless ver.reify.nil? %>
-                        <% end %>
-                    <% end %>
-                    <%= button_to t('.mark_seen'), seen_invoice_path(id: active_invoice.id), class: 'button', data: { action: "click->popup#toggle" } %>
+                        <%= button_to t('.mark_seen'), seen_invoice_path(id: active_invoice.id, child: event_child.id), class: 'button', data: { action: "click->popup#toggle" } %>
+                    </div>
                 </div>
-            </div>
-        <% end %>
+            <% end %>
+        </turbo-frame>
     </td>
+    
     <td rowspan="2"><% event_invoices.each do |invoice| %>
         <p><%= "##{invoice.id}: #{invoice.f_bill_date}" unless invoice.billing_date.nil? %></p>
     <% end %></td>
