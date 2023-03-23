@@ -32,8 +32,16 @@ class InvoicesController < ApplicationController
   end
 
   def confirm
-    ignore_slots = invoice_params['slot_regs_attributes'].keep_if { |_, v| v['_destroy'] == '1' }.to_h.transform_values { |v| v['id'].to_i }.values
-    ignore_opts = invoice_params['opt_regs_attributes'].keep_if { |_, v| v['_destroy'] == '1' }.to_h.transform_values { |v| v['id'].to_i }.values
+    ignore_slots = if invoice_params['slot_regs_attributes'].nil?
+                     []
+                   else
+                     invoice_params['slot_regs_attributes'].keep_if { |_, v| v['_destroy'] == '1' }.to_h.transform_values { |v| v['id'].to_i }.values
+                   end
+    ignore_opts = if invoice_params['opt_regs_attributes'].nil?
+                    []
+                  else
+                    invoice_params['opt_regs_attributes'].keep_if { |_, v| v['_destroy'] == '1' }.to_h.transform_values { |v| v['id'].to_i }.values
+                  end
 
     @invoice = Invoice.new(invoice_params)
     @invoice.calc_cost(ignore_slots, ignore_opts)
