@@ -1,29 +1,42 @@
-<% regular_options = @source.options.reject{|opt| opt.arrival? || opt.departure? } %>
-<% event_options = @source.event.options %>
+<% morn_options = @source.options.reject { |opt| opt.arrival? || opt.departure? } + @source.event.options %>
+<% aft_options = if @source.afternoon_slot.nil?
+                   []
+                 else
+                   @source.afternoon_slot.options.reject { |opt| opt.arrival? || opt.departure? }
+                 end
+%>
 
 <main id="slot_children_index" data-controller="refresh">
     <h1><%= "#{@source.name} (#{@source.start_time.strftime('%m月%d日')})" %></h1>
-    <h2>Automatic refresh in <span data-refresh-target="counter"></span></h2>
+    <h2>Automatic refresh in <span data-refresh-target="counter">10:00</span></h2>
 
     <table>
         <thead>
             <tr>
                 <th id="arrival_header" class="arrival"><%= t('.arrival_time') %></th>
-                <th id="level_header" class="level"><%= "K: #{@children.select{|c| c.kindy}.size}, E: #{@children.reject{|c| c.kindy}.size}" %></th>
+                <th id="morning_header" class="morning">
+                    <p><%= t('.attend_morning') %></p>
+                    <p><%= "K: #{@children.select{|c| c.kindy}.size}, E: #{@children.reject{|c| c.kindy}.size}" %></p>
+                </th>
                 <th id="name_header" class="name"><%= t('.name') %></th>
                 <th id="allergy_header" class="allergy"><%= t('.allergy') %></th>
                 <th id="photos_header" class="photos"><%= t('.photos_ok') %></th>
-                <th id="depart_header" class="depart"><%= t('.depart_time') %></th>
-                <% event_options.each do |opt| %>
-                    <th><%= "#{opt.name}: #{opt.registrations.size}" %></th>
-                <% end %>
-                <% regular_options.each do |opt| %>
+                <% morn_options.each do |opt| %>
                     <%# FIXME: n+1 queries %>
                     <th><%= "#{opt.name}: #{opt.registrations.size}" %></th>
                 <% end %>
+                <th id="afternoon_header" class="afternoon">
+                    <p><%= t('.attend_afternoon') %></p>
+                    <p><%= "K: #{@children.select{|c| c.kindy}.size}, E: #{@children.reject{|c| c.kindy}.size}" %></p>
+                </th>
+                <% aft_options.each do |opt| %>
+                    <%# FIXME: n+1 queries %>
+                    <th><%= "#{opt.name}: #{opt.registrations.size}" %></th>
+                <% end %>
+                <th id="depart_header" class="depart"><%= t('.depart_time') %></th>
             </tr>
         </thead>
 
-        <%= render partial: 'children/slot_child', collection: @children, locals: { slot: @source, options: regular_options, event_options: event_options } %>
+        <%= render partial: 'children/slot_child', collection: @children, locals: { slot: @source, morn_options: morn_options, aft_options: aft_options } %>
     </table>
 </main>

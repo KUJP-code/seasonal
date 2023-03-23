@@ -1,6 +1,6 @@
 <tr>
     <th class="arrival"><%= slot.arrival_time(slot_child) %></th>
-    <th class="level"><%= (slot_child.kindy) ? 'Kindy' : 'Elementary' %></th>
+    <th class="morning"><%= (slot_child.kindy) ? 'Kindy' : 'Elementary' %></th>
     <th class="name"><%= link_to "#{slot_child.name} (#{slot_child.en_name})", child_path(slot_child) %></th>
     <th class="allergy"><%= slot_child.allergy_details %></th>
     <th class="photos"><%= 
@@ -10,11 +10,13 @@
             '𐄂'
         end 
     %></th>
-        <th class="depart"><%= slot.departure_time(slot_child) %></th>
-    <% event_options.each do |opt| %>
+    <% morn_options.each do |opt| %>
         <td><%= opt.name if slot_child.options.include?(opt) %></td>
     <% end %>
-    <% options.each do |opt| %>
+    <th class="afternoon"><%= '✓' if slot_child.registered?(slot.afternoon_slot) %></th>
+    <% aft_options.each do |opt| %>
         <td><%= opt.name if slot_child.options.include?(opt) %></td>
     <% end %>
+    <th class="depart"><%= slot.afternoon_slot.departure_time(slot_child) %></th>
+
 </tr>

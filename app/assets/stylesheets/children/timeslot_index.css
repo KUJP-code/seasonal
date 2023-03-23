@@ -61,7 +61,7 @@
 }
 
 #slot_children_index table th#arrival_header,
-#slot_children_index table th#level_header,
+#slot_children_index table th#morning_header,
 #slot_children_index table th#name_header,
 #slot_children_index table th#allergy_header,
 #slot_children_index table th#photos_header,
@@ -71,7 +71,7 @@
 }
 
 #slot_children_index table th.arrival,
-#slot_children_index table th.level,
+#slot_children_index table th.morning,
 #slot_children_index table th.name,
 #slot_children_index table th.allergy,
 #slot_children_index table th.photos,
@@ -85,7 +85,7 @@
   min-width: 6vw;
 }
 
-#slot_children_index table th.level {
+#slot_children_index table th.morning {
   left: 8vw;
   min-width: 8vw;
 }
