@@ -1,6 +1,0 @@
-<%= form_with model: Registration.new do |f| %>
-    <%= f.hidden_field :child_id, value: child.id %>
-    <%= f.hidden_field :registerable_id, value: registerable.id %>
-    <%= f.hidden_field :registerable_type, value: registerable.class.name %>
-    <%= f.submit t('.register'), class: 'button register' %>
-<% end %>

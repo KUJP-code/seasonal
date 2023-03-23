@@ -1,6 +1,0 @@
-<%= turbo_frame_tag "child#{child.id}_slot#{slot.id}" do %>
-    <div class="registration">
-        <%= link_to child.name, child_path(child) %>
-        <%= render 'registrations/register_button', registerable: slot, child: child, type: 'TimeSlot' %>
-    </div>
-<% end %>
