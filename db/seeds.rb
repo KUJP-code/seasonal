@@ -342,20 +342,11 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '22 Mar 2050'
     },
     {
-      name: 'Banana Party',
+      name: 'Banana Party & Banana Split',
       morning: true,
       start_time: '25 Mar 2050 9:00 JST +09:00',
-      end_time: '25 Mar 2050 11:00 JST +09:00',
-      description: 'Party like a banana!',
-      registration_deadline: '22 Mar 2050',
-      category: 'special'
-    },
-    {
-      name: 'Design a Kite',
-      morning: true,
-      start_time: '25 Mar 2050 14:00 JST +09:00',
-      end_time: '25 Mar 2050 16:00 JST +09:00',
-      description: 'Fly your flag!',
+      end_time: '25 Mar 2050 13:00 JST +09:00',
+      description: 'Party like a banana then split!',
       registration_deadline: '22 Mar 2050',
       category: 'special'
     },
@@ -544,18 +535,9 @@ Event.where(name: 'Spring School 2023').each do |event|
       registration_deadline: '3 Apr 2050'
     },
     {
-      name: 'Banana Split',
-      morning_slot: TimeSlot.find_by(name: 'Banana Party', morning: true, event_id: event.id),
-      start_time: '25 Mar 2050 11:00 JST +09:00',
-      end_time: '25 Mar 2050 13:00 JST +09:00',
-      description: 'Eat then split!',
-      registration_deadline: '22 Mar 2050',
-      category: 'special'
-    },
-    {
-      name: 'Castle Rush',
-      morning_slot: TimeSlot.find_by(name: 'Design a Kite', morning: true, event_id: event.id),
-      start_time: '25 Mar 2050 16:00 JST +09:00',
+      name: 'Design a Kite & Castle Rush',
+      morning_slot: TimeSlot.find_by(name: 'Banana Party & Banana Split', morning: true, event_id: event.id),
+      start_time: '25 Mar 2050 14:00 JST +09:00',
       end_time: '25 Mar 2050 18:00 JST +09:00',
       description: 'Down with the bourgeoisie!',
       registration_deadline: '22 Mar 2050',

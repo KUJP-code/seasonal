@@ -1,6 +1,7 @@
-<% event_slots = event_child.time_slots.select { |slot| slot.event_id == event.id }.sort_by{ |slot| slot.start_time } %>
-<% special = event_slots.select { |slot| slot.special? } %>
-<% event_opts = event_child.options.select { |opt| event_slots.map { |slot| slot.id}.include?(opt.optionable_id) } %>
+<% reg_slots = event_child.time_slots.select { |slot| slot.event_id == event.id && slot.category == 'seasonal' }.sort_by{ |slot| slot.start_time } %>
+<% event_special = event.time_slots.select { |slot| slot.category == 'special' } %>
+<% reg_special = event_child.time_slots.select { |slot| slot.category == 'special' }.sort_by{ |slot| slot.start_time } %>
+<% event_opts = event_child.options.select { |opt| (reg_slots + reg_special).map { |slot| slot.id}.include?(opt.optionable_id) } %>
 <% event_invoices = event_child.invoices.select { |invoice| invoice.event_id == event.id } %>
 <% active_invoice = event_invoices.last %>
 
@@ -80,20 +81,19 @@
         end 
     %></td>
 
-    <% if special.size.zero? %>
+    <% if reg_special.size.zero? %>
         <td colspan="3"></td>
     <% else %>
         <td colspan="3">
-            <% first_slots = special.select { |slot| slot.morning? } %>
-            <%= link_to "#{first_slots.first.name} (午前)", children_path(id: first_slots.first.id, source: 'TimeSlot') %> / 
-            <%= link_to "#{first_slots.last.name} (午後)", children_path(id: first_slots.last.id, source: 'TimeSlot') %>
+            <%= link_to "#{event_special.first.name} (午前)", children_path(id: event_special.first.id, source: 'TimeSlot') %> / 
+            <%= link_to "#{event_special.last.name} (午後)", children_path(id: event_special.last.id, source: 'TimeSlot') %>
         </td>
     <% end %>
 
-    <% event_slots.each do |slot| %>
+    <% reg_slots.each do |slot| %>
         <% if slot.morning %>
             <td colspan="3"><%= link_to "#{slot.name} (#{slot.start_time.strftime('%m月%d日')})", children_path(id: slot.id, source: 'TimeSlot') %></td>
-        <% elsif event_slots.include?(slot.morning_slot) %>
+        <% elsif reg_slots.include?(slot.morning_slot) %>
             <% next %>
         <% else %>
             <td colspan="3"><%= link_to "#{slot.name} (#{slot.start_time.strftime('%m月%d日')})", children_path(id: slot.id, source: 'TimeSlot') %></td>
@@ -101,24 +101,23 @@
     <% end %>
 
     <%# TODO: Probably a more efficient way to do this %>
-    <% (cols - event_slots.select{ |slot| slot.morning }.size - event_slots.reject { |slot| slot.morning || event_slots.any? { |e_slot| e_slot.id == slot.morning_slot_id} }.size).times do %>
+    <% (cols - reg_slots.select{ |slot| slot.morning }.size - reg_slots.reject { |slot| slot.morning || reg_slots.any? { |e_slot| e_slot.id == slot.morning_slot_id} }.size).times do %>
         <td colspan="3"></td>
     <% end %>
 </tr>
 <tr>
-    <% if special.size.zero? %>
+    <% if reg_special.size.zero? %>
         <td></td>
         <td></td>
         <td></td>
     <% else %>
-        <% first_slots = special.select { |slot| slot.morning? } %>
         <td><%=
             # FIXME: causing N + 1 queries 
-            if event_slots.include?(first_slots.first) && event_slots.include?(first_slots.last)
+            if reg_special.include?(event_special.first) && reg_special.include?(event_special.last)
                 '午前 / 午後'
-            elsif event_slots.include?(first_slots.first)
+            elsif reg_special.include?(event_special.first)
                 '午前'
-            elsif event_slots.include?(first_slots.last)
+            elsif reg_special.include?(event_special.last)
                 '午後'
             else
                 ''
@@ -126,35 +125,31 @@
         %></td>
         <td><%=
             # FIXME: causing N + 1 queries 
-            if event_opts.include?(first_slots.first.options.find_by(name: '昼')) && event_opts.include?(first_slots.first.options.find_by(category: :extension))
-                '昼 / 中延長'
-            elsif event_opts.include?(first_slots.first.options.find_by(name: '昼'))
+            if event_opts.include?(event_special.first.options.find_by(name: '昼'))
                 '昼'
-            elsif event_opts.include?(first_slots.first.options.find_by(category: :extension))
-                '中延長'
-            else
-                ''
             end
         %></td>
         <td><%=
             # FIXME: causing N + 1 queries 
-            if event_slots.include?(first_slots.last) && event_slots.include?(first_slots.first)
-                "#{first_slots.first.arrival_time(event_child)} / #{first_slots.last.departure_time(event_child)}" unless first_slots.first.arrival_time(event_child) == '' && first_slots.last.departure_time(event_child) == ''
-            elsif event_slots.include?(first_slots.first)
-                "#{first_slots.first.arrival_time(event_child)}"
+            if reg_special.include?(event_special.first) && reg_special.include?(event_special.last)
+                "#{event_special.first.arrival_time(event_child)} / #{'中延長 ' if event_opts.include?(event_special.first.options.find_by(category: :extension))} / #{event_special.last.departure_time(event_child)}"
+            elsif reg_special.include?(event_special.first)
+                "#{event_special.first.arrival_time(event_child)}"
+            elsif reg_special.include?(event_special.last)
+                "#{event_special.last.departure_time(event_child)}"
             else
                 ''
             end
         %></td>
     <% end %>
 
-    <% event_slots.each do |slot| %>
+    <% reg_slots.each do |slot| %>
         <% if slot.morning %>
             <td><%=
                 # FIXME: causing N + 1 queries 
-                if event_slots.include?(slot.afternoon_slot) && event_slots.include?(slot)
+                if reg_slots.include?(slot.afternoon_slot) && reg_slots.include?(slot)
                     '午前 / 午後'
-                elsif event_slots.include?(slot)
+                elsif reg_slots.include?(slot)
                     '午前'
                 else
                     ''
@@ -175,15 +170,15 @@
 
             <%# FIXME: N+1 queries %>
             <td><%=
-                if event_slots.include?(slot.afternoon_slot) && event_slots.include?(slot)
+                if reg_slots.include?(slot.afternoon_slot) && reg_slots.include?(slot)
                     "#{slot.arrival_time(event_child)} / #{slot.afternoon_slot.departure_time(event_child)}" unless slot.arrival_time(event_child) == '' && slot.afternoon_slot.departure_time(event_child) == ''
-                elsif event_slots.include?(slot)
+                elsif reg_slots.include?(slot)
                     "#{slot.arrival_time(event_child)}"
                 else
                     ''
                 end
              %></td>
-        <% elsif event_slots.include?(slot.morning_slot) %>
+        <% elsif reg_slots.include?(slot.morning_slot) %>
             <% next %>
         <% else %>
             <td>午後</td>
@@ -206,7 +201,7 @@
     <% end %>
 
     <%# TODO: Probabaly a more efficient way to do this %>
-    <% (cols - event_slots.select{ |slot| slot.morning }.size - event_slots.reject { |slot| slot.morning || event_slots.any? { |e_slot| e_slot.id == slot.morning_slot_id} }.size).times do %>
+    <% (cols - reg_slots.select{ |slot| slot.morning }.size - reg_slots.reject { |slot| slot.morning || reg_slots.any? { |e_slot| e_slot.id == slot.morning_slot_id} }.size).times do %>
             <td></td>
             <td></td>
             <td></td>
