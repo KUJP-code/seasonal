@@ -6,8 +6,7 @@ User.create!([
   {
     email: 'admin@gmail.com',
     password: 'adminadminadmin',
-    ja_first_name: Faker::Name.first_name,
-    ja_family_name: Faker::Name.last_name,
+    name: Faker::Name.name,
     katakana_name: Faker::Name.name.kana,
     role: :admin,
     address: Faker::Address.full_address,
@@ -16,8 +15,7 @@ User.create!([
   {
     email: 'am@gmail.com',
     password: 'ampasswordampassword',
-    ja_first_name: Faker::Name.first_name,
-    ja_family_name: Faker::Name.last_name,
+    name: Faker::Name.name,
     katakana_name: Faker::Name.name.kana,
     role: :area_manager,
     address: Faker::Address.full_address,
@@ -26,8 +24,7 @@ User.create!([
   {
     email: 'sm@gmail.com',
     password: 'smpasswordsmpassword',
-    ja_first_name: Faker::Name.first_name,
-    ja_family_name: Faker::Name.last_name,
+    name: Faker::Name.name,
     katakana_name: Faker::Name.name.kana,
     role: :school_manager,
     address: Faker::Address.full_address,
@@ -36,8 +33,7 @@ User.create!([
   {
     email: 'customer@gmail.com',
     password: 'customerpassword',
-    ja_first_name: Faker::Name.first_name,
-    ja_family_name: Faker::Name.last_name,
+    name: Faker::Name.name,
     katakana_name: Faker::Name.name.kana,
     role: :customer,
     address: Faker::Address.full_address,
@@ -78,8 +74,7 @@ area.schools.create!([
 School.first.managers << User.create!(
   email: 'yoshi@ku.jp',
   password: 'smpasswordsmpassword',
-  ja_first_name: 'みの',
-  ja_family_name: 'よし',
+  name: 'みの',
   katakana_name: 'ミノヨシ',
   role: :school_manager,
   address: Faker::Address.full_address,
@@ -89,8 +84,7 @@ School.first.managers << User.create!(
 School.find(2).managers << User.create!(
   email: 'marinara@ku.jp',
   password: 'smpasswordsmpassword',
-  ja_first_name: 'まりなら',
-  ja_family_name: 'よ',
+  name: 'まりなら',
   katakana_name: 'マリナらヨ',
   role: :school_manager,
   address: Faker::Address.full_address,
@@ -104,8 +98,7 @@ puts 'Added 3 schools and gave each a manager'
 School.all.each do |school|
   school.customers.create!([
     {
-      ja_first_name: Faker::Name.first_name,
-      ja_family_name: Faker::Name.last_name,
+      name: Faker::Name.name,
       katakana_name: Faker::Name.name.kana,
       email: Faker::Internet.unique.email,
       password: Faker::Internet.password(min_length: 10),
@@ -113,8 +106,7 @@ School.all.each do |school|
       phone: Faker::PhoneNumber.phone_number
     },
     {
-      ja_first_name: Faker::Name.first_name,
-      ja_family_name: Faker::Name.last_name,
+      name: Faker::Name.name,
       katakana_name: Faker::Name.name.kana,
       email: Faker::Internet.unique.email,
       password: Faker::Internet.password(min_length: 10),
@@ -131,8 +123,7 @@ puts 'Added 2 Faker customers to each school, plus my test customer to the last 
 User.customers.each do |customer_user|
   customer_user.children.create!([
     {
-      ja_first_name: Faker::Name.first_name,
-      ja_family_name: Faker::Name.last_name,
+      name: Faker::Name.name,
       katakana_name: Faker::Name.name.kana,
       en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
       birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
@@ -146,8 +137,7 @@ User.customers.each do |customer_user|
       school: customer_user.school
     },
     {
-      ja_first_name: Faker::Name.first_name,
-      ja_family_name: Faker::Name.last_name,
+      name: Faker::Name.name,
       katakana_name: Faker::Name.name.kana,
       en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
       birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
@@ -166,8 +156,7 @@ end
 puts 'Gave each customer 2 children'
 
 Child.create!(
-  ja_first_name: Faker::Name.first_name,
-  ja_family_name: Faker::Name.last_name,
+  name: Faker::Name.name,
   katakana_name: Faker::Name.name.kana,
   en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
   birthday: 'Wed, 20 Feb 2020',
@@ -715,8 +704,7 @@ puts 'Created a random regular schedule for each child'
 non_member = User.create!(
     email: 'non_member@gmail.com',
     password: 'nonmembernon',
-    ja_first_name: Faker::Name.first_name,
-    ja_family_name: Faker::Name.last_name,
+    name: Faker::Name.name,
     katakana_name: Faker::Name.name.kana,
     role: :customer,
     address: Faker::Address.full_address,
@@ -726,8 +714,7 @@ non_member = User.create!(
 
 non_member.children.create!([
   {
-    ja_first_name: Faker::Name.first_name,
-    ja_family_name: Faker::Name.last_name,
+    name: Faker::Name.name,
     katakana_name: Faker::Name.name.kana,
     en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
     birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
@@ -741,8 +728,7 @@ non_member.children.create!([
     school: non_member.school
   },
   {
-    ja_first_name: Faker::Name.first_name,
-    ja_family_name: Faker::Name.last_name,
+    name: Faker::Name.name,
     katakana_name: Faker::Name.name.kana,
     en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
     birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
@@ -760,8 +746,7 @@ non_member.children.create!([
 member = User.create!(
   email: 'member@gmail.com',
   password: 'membermembermember',
-  ja_first_name: Faker::Name.first_name,
-  ja_family_name: Faker::Name.last_name,
+  name: Faker::Name.name,
   katakana_name: Faker::Name.name.kana,
   role: :customer,
   address: Faker::Address.full_address,
@@ -771,8 +756,7 @@ member = User.create!(
 
 member.children.create!([
 {
-  ja_first_name: Faker::Name.first_name,
-  ja_family_name: Faker::Name.last_name,
+  name: Faker::Name.name,
   katakana_name: Faker::Name.name.kana,
   en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
   birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
@@ -787,8 +771,7 @@ member.children.create!([
   school: member.school
 },
 {
-  ja_first_name: Faker::Name.first_name,
-  ja_family_name: Faker::Name.last_name,
+  name: Faker::Name.name,
   katakana_name: Faker::Name.name.kana,
   en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
   birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
@@ -818,8 +801,8 @@ puts 'Created test users for only member children and only non-member children, 
 
 
 # TODO: add back in once coupons are properly implemented
-# TimeSlot.all.each do |slot|
-#   slot.coupons.create(
+# Invoice.all.each do |invoice|
+#   invoice.coupons.create(
 #     code: Faker::Code.asin,
 #     name: Faker::Games::LeagueOfLegends.champion,
 #     description: Faker::Games::LeagueOfLegends.quote,

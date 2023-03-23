@@ -58,8 +58,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_18_042750) do
   end
 
   create_table "children", force: :cascade do |t|
-    t.string "ja_first_name"
-    t.string "ja_family_name"
+    t.string "name"
     t.string "katakana_name"
     t.string "en_name"
     t.integer "category", default: 0
@@ -229,8 +228,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_18_042750) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
-    t.string "ja_first_name"
-    t.string "ja_family_name"
+    t.string "name"
     t.string "katakana_name"
     t.integer "role", default: 0
     t.string "postcode"

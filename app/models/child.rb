@@ -33,21 +33,8 @@ class Child < ApplicationRecord
                   default: :external
 
   # Validations
-  validates :ja_first_name, :ja_family_name, :katakana_name, :en_name, presence: true
-
-  validates :ja_first_name, :ja_family_name, format: { with: /\A[一-龠]+|[ぁ-ゔ]+|[ァ-ヴー]+|[々〆〤ヶ]+\z/u }
-  validates :katakana_name, format: { with: /[ァ-ヴー]/u }
-  validates :en_name, format: { with: /[A-Za-z '-]/ }
-
   validates :birthday, comparison: { greater_than: 15.years.ago, less_than: 1.year.ago }
   validates :ssid, uniqueness: { allow_blank: true }
-
-  # Scopes for broad levels
-  scope :elementary, -> { where(level: [2, 3, 4, 5, 6, 7, 8, 9, 10]) }
-  scope :evening_only, -> { where(level: [8, 9, 10]) }
-  scope :land, -> { where(level: [2, 3]) }
-  scope :sky, -> { where(level: [4, 5]) }
-  scope :galaxy, -> { where(level: [5, 6]) }
 
   # Scopes for children who attend certain days
   scope :attend_monday, -> { joins(:regular_schedule).where('regular_schedule.monday' => true) }
@@ -86,10 +73,6 @@ class Child < ApplicationRecord
     return false if category == 'external'
 
     true
-  end
-
-  def name
-    "#{ja_family_name} #{ja_first_name}"
   end
 
   def opt_registrations
