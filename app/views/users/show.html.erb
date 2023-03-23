@@ -47,6 +47,8 @@
 
 
     <% if @user.children? && !@user.school.nil? %>
+        <%= link_to t('.my_invoices'), invoices_path(user: @user.id), class: 'button' %>
+
         <h2><%= t('.next_event') %></h2>
         <%= render Event.all.where(school: @user.school).order(start_date: :asc).first %>
     <% end %>

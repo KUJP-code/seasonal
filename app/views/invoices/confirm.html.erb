@@ -1,9 +1,7 @@
 <main id="invoice_confirm">
     <h1><%= t('.please_confirm') %></h1>
 
-    <div id="summary">
-        <%= sanitize @invoice.summary, tags: %w[h1 h2 h3 div p], attributes: %w[class id] %>
-    </div>
+    <%= render @invoice %>
 
     <%= form_for @invoice, url: invoice_path(@invoice), method: :patch do |f| %>
         <%= f.hidden_field :id %>

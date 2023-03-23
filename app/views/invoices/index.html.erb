@@ -1,9 +1,5 @@
-<main id="invoice_index">
+<main id="invoice">
     <h1>If you have multiple invoices for a single child, your total cost will likely decrease when they're merged later</h1>
 
-    <% @invoices.each do |invoice| %>
-        <div class="invoice">
-        <%= sanitize invoice.summary, tags: %w[h1 h2 h3 div p], attributes: %w[class id] %>
-    </div>
-    <% end %>
+    <%= render partial: 'invoices/invoice', collection: @invoices %>
 </main>

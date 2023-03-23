@@ -1,5 +1,3 @@
-<main id="invoice_show">
-    <div id="summary">
-        <%= sanitize @invoice.summary, tags: %w[h1 h2 h3 div p], attributes: %w[class id] %>
-    </div>
+<main id="invoice">
+    <%= render @invoice %>
 </main>
