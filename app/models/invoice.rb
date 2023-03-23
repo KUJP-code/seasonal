@@ -26,6 +26,8 @@ class Invoice < ApplicationRecord
                      source: :registerable,
                      source_type: 'Option'
   has_many :adjustments, dependent: :destroy
+  has_many :coupons, as: :couponable,
+                     dependent: :destroy
 
   # Track changes with Paper Trail
   has_paper_trail ignore: [:seen_at]

@@ -51,8 +51,20 @@
     </td>
     
     <td rowspan="2"><% event_invoices.each do |invoice| %>
+        <% unless invoice.coupons.size.zero? %>
+            <p>
+            <%= "Invoice##{invoice.id}: " %>
+            <% invoice.coupons.each do |coupon| %>
+                <%= coupon.code %>
+            <% end %>
+            </p>
+        <% end %>
+    <% end %></td>
+
+    <td rowspan="2"><% event_invoices.each do |invoice| %>
         <p><%= link_to "##{invoice.id}: #{invoice.f_bill_date}", invoice_path(invoice) unless invoice.billing_date.nil? %></p>
     <% end %></td>
+
     <td rowspan="2" data-controller="popup">
         <%= button_tag t('.view_template'), class: 'button', data: { action: "click->popup#toggle" } %>
         <div class="hidden mail_template" data-popup-target="popup">
