@@ -35,7 +35,7 @@
                 <%= "#{t(".school")} #{@school.name}" unless @school.nil? %>
             </p>
             <p><%= "#{t('.category')} #{@child.category.capitalize}" %></p>
-            <p><%= "#{t('.level')} #{@child.level.titleize}" %></p>
+            <p><%= (@child.kindy) ? 'Kindy' : 'Elementary' %></p>
             <p><%= "#{t('.ele_school')} #{@child.ele_school_name}" %></p>
         </div>
     </div>

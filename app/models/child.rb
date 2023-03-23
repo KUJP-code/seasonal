@@ -23,19 +23,6 @@ class Child < ApplicationRecord
   # Track changes with PaperTrail
   has_paper_trail
 
-  # Map level integer in table to a level
-  enum :level, unknown: 0,
-               kindy: 1,
-               land1: 2,
-               land2: 3,
-               sky1: 4,
-               sky2: 5,
-               galaxy1: 6,
-               galaxy2: 7,
-               keep_up: 8,
-               specialist: 9,
-               tech_up: 10
-
   # Map category int in table to a category
   # TODO: check this being different from db default is fine.
   # Logic for them being different was for direct imports from SS we want
@@ -92,12 +79,6 @@ class Child < ApplicationRecord
     full_days = time_slots.where(id: invoice_slot_ids, morning: true, event: event).distinct
 
     full_days.count { |slot| registered?(slot.afternoon_slot) }
-  end
-
-  def kindy?
-    return true if level == 'kindy'
-
-    false
   end
 
   # Checks which price list the child uses

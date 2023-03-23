@@ -64,7 +64,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_18_042750) do
     t.string "en_name"
     t.integer "category", default: 0
     t.date "birthday"
-    t.integer "level", default: 0
+    t.boolean "kindy", default: false
     t.boolean "allergies"
     t.string "allergy_details"
     t.bigint "ssid"

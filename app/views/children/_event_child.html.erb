@@ -50,7 +50,7 @@
     </td>
     
     <td rowspan="2"><% event_invoices.each do |invoice| %>
-        <p><%= "##{invoice.id}: #{invoice.f_bill_date}" unless invoice.billing_date.nil? %></p>
+        <p><%= link_to "##{invoice.id}: #{invoice.f_bill_date}", invoice_path(invoice) unless invoice.billing_date.nil? %></p>
     <% end %></td>
     <td rowspan="2" data-controller="popup">
         <%= button_tag t('.view_template'), class: 'button', data: { action: "click->popup#toggle" } %>

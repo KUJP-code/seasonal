@@ -72,8 +72,8 @@
 
             <% if current_user.staff? %>
                 <div class="field">
-                    <%= f.label :level, t('.level') %><br />
-                    <%= f.select :level, [["Unknown", "unknown"], ["Kindy", "kindy"], ["Land Low", "land_low"], ["Land High", "land_high"], ["Sky Low", "sky_low"], ["Sky High", "sky_high"], ["Galaxy Low", "galaxy_low"], ["Galaxy High", "galaxy_high"], ["Keep Up", "keep_up"], ["Specialist", "specialist"], ["Tech Up", "tech_up"]] %>
+                    <%= f.label :kindy, t('.kindy?') %><br />
+                    <%= f.check_box :kindy %>
                 </div>
 
                 <div class="field">

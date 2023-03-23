@@ -7,7 +7,7 @@ class CreateChildren < ActiveRecord::Migration[7.0]
       t.string :en_name
       t.integer :category, default: 0
       t.date :birthday, index: true
-      t.integer :level, default: 0
+      t.boolean :kindy, default: false
       t.boolean :allergies
       t.string :allergy_details
       t.bigint :ssid

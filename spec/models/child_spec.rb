@@ -12,11 +12,6 @@ RSpec.describe Child do
       expect(valid).to be true
     end
 
-    it 'saves level as unknown by default' do
-      lvl = child.level
-      expect(lvl).to eq 'unknown'
-    end
-
     it 'saves category as internal by default' do
       category = child.category
       expect(category).to eq 'internal'
@@ -32,13 +27,6 @@ RSpec.describe Child do
       valid_child.katakana_name = 'タナカ　サクラ'
       valid = valid_child.save!
       expect(valid).to be true
-    end
-
-    it 'can change its level' do
-      child.level = :sky1
-      child.update!(level: :sky2)
-      lvl = child.level
-      expect(lvl).to eq 'sky2'
     end
 
     with_versioning do

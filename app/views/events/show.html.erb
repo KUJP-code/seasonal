@@ -17,7 +17,7 @@
                     <div class="hidden"><%= "#{child.id}" %></div>
                     <div class="hidden hat"><%= child.needs_hat %></div>
                     <p><%= child.name %></p>
-                    <p class="level"><%= child.level.capitalize.gsub(/\d+/, ' \0 ') %></p>
+                    <p class="level"><%= (child.kindy) ? 'Kindy' : "Elementary" %></p>
                     <% if child.member? %>
                         <p class="membership"><%= t('.member') %></p>
                     <% else %>

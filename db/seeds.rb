@@ -141,7 +141,7 @@ User.customers.each do |customer_user|
       post_photos: true,
       allergies: true,
       allergy_details: 'peanuts',
-      level: :kindy,
+      kindy: true,
       category: :external,
       school: customer_user.school
     },
@@ -156,7 +156,7 @@ User.customers.each do |customer_user|
       post_photos: true,
       allergies: true,
       allergy_details: 'peanuts',
-      level: :land2,
+      kindy: false,
       category: :reservation,
       school: customer_user.school
     }
@@ -754,7 +754,7 @@ non_member.children.create!([
     post_photos: true,
     allergies: true,
     allergy_details: 'peanuts',
-    level: :kindy,
+    kindy: true,
     category: :external,
     school: non_member.school
   },
@@ -769,7 +769,7 @@ non_member.children.create!([
     post_photos: true,
     allergies: true,
     allergy_details: 'peanuts',
-    level: :land2,
+    kindy: false,
     category: :external,
     school: non_member.school
   }
@@ -800,7 +800,7 @@ member.children.create!([
   needs_hat: false,
   allergies: true,
   allergy_details: 'peanuts',
-  level: :kindy,
+  kindy: true,
   category: 'internal',
   school: member.school
 },
@@ -816,7 +816,7 @@ member.children.create!([
   needs_hat: false,
   allergies: true,
   allergy_details: 'peanuts',
-  level: :land2,
+  kindy: false,
   category: 'internal',
   school: member.school
 }

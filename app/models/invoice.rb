@@ -175,7 +175,7 @@ class Invoice < ApplicationRecord
 
   # Decides if we need to apply the dumb 184 円 increase
   def niche_case?
-    slot_regs.size - @ignore_slots.size < 5 && child.kindy? && child.full_days(event, time_slots.ids).positive?
+    slot_regs.size - @ignore_slots.size < 5 && child.kindy && child.full_days(event, time_slots.ids).positive?
   end
 
   def non_member_prices
