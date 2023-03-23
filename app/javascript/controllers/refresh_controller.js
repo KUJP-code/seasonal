@@ -5,7 +5,7 @@ export default class extends Controller {
 
   connect() {
     let timer = null;
-    const interval = 1200000;
+    const interval = 600000;
 
     function resetTimer(counter, target) {
       clearInterval(timer);
