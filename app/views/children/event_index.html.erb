@@ -1,5 +1,6 @@
-<main id="event_children_index">
+<main id="event_children_index" data-controller="refresh">
     <h1><%= @source.name %></h1>
+    <h2>Automatic refresh in <span data-refresh-target="counter"></span></h2>
 
     <table>
         <% cols = @source.time_slots.morning.size %>

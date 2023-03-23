@@ -9,6 +9,10 @@
   color: var(--near-white);
 }
 
+#slot_children_index > h2 {
+  align-self: center;
+}
+
 #slot_children_index thead tr:first-child {
   background: var(--ku-background);
 }

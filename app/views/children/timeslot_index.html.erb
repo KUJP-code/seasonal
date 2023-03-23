@@ -1,8 +1,9 @@
 <% regular_options = @source.options.reject{|opt| opt.arrival? || opt.departure? } %>
 <% event_options = @source.event.options %>
 
-<main id="slot_children_index">
+<main id="slot_children_index" data-controller="refresh">
     <h1><%= "#{@source.name} (#{@source.start_time.strftime('%m月%d日')})" %></h1>
+    <h2>Automatic refresh in <span data-refresh-target="counter"></span></h2>
 
     <table>
         <thead>
