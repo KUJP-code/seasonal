@@ -10,7 +10,7 @@ export default class extends Controller {
     function resetTimer(counter, target) {
       clearInterval(timer);
       timer = setInterval(() => {
-        counter -= 100;
+        counter -= 1000;
         if (counter < 0) {
           clearInterval(timer);
           return location.reload();
@@ -22,7 +22,7 @@ export default class extends Controller {
           .padStart(2, "0");
 
         target.innerHTML = `${minutes}:${seconds}`;
-      }, 100);
+      }, 1000);
     }
 
     ["click", "mousemove", "scroll", "keydown"].forEach((event) =>
