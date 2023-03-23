@@ -3,7 +3,8 @@
     <h2>Automatic refresh in <span data-refresh-target="counter">10:00</span></h2>
 
     <table>
-        <% cols = @source.time_slots.morning.size %>
+        <%# Minus 1 for special day %>
+        <% cols = @source.time_slots.morning.size - 1 %>
         <% special = @source.time_slots.select { |slot| slot.special? } %>
         
         <thead>
