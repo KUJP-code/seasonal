@@ -4,32 +4,33 @@ export default class extends Controller {
   static targets = ["counter"];
 
   connect() {
-    this.resetTimer();
-  }
+    let timer = null;
+    const interval = 1200000;
 
-  startTimer(timer) {
-    setInterval(() => {
-      timer -= 100;
-      if (timer < 0) {
-        return;
-      }
-      const minutes = Math.floor(timer / 60000);
-      const seconds = Math.floor((timer % 60000) / 1000)
-        .toString()
-        .padStart(2, "0");
+    function resetTimer(counter, target) {
+      clearInterval(timer);
+      timer = setInterval(() => {
+        counter -= 100;
+        if (counter < 0) {
+          clearInterval(timer);
+          return location.reload();
+        }
 
-      this.counterTarget.innerHTML = `${minutes}:${seconds}`;
-    }, 100);
-  }
+        const minutes = Math.floor(counter / 60000);
+        const seconds = Math.floor((counter % 60000) / 1000)
+          .toString()
+          .padStart(2, "0");
 
-  refresh() {
-    location.reload();
-  }
+        target.innerHTML = `${minutes}:${seconds}`;
+      }, 100);
+    }
 
-  resetTimer() {
-    this.startTimer(1200000);
-    setTimeout(() => {
-      this.refresh();
-    }, 1200000);
+    ["click", "mousemove", "scroll", "keydown"].forEach((event) =>
+      document.addEventListener(event, () =>
+        resetTimer(interval, this.counterTarget)
+      )
+    );
+
+    resetTimer(interval, this.counterTarget);
   }
 }
