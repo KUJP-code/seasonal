@@ -1,7 +1,7 @@
 <tr>
     <th class="arrival"><%= slot.arrival_time(slot_child) %></th>
     <th class="morning"><%= (slot_child.kindy) ? 'Kindy' : 'Elementary' %></th>
-    <th class="name"><%= link_to "#{slot_child.name} (#{slot_child.en_name})", child_path(slot_child) %></th>
+    <th class="name"><%= link_to "#{slot_child.katakana_name} (#{slot_child.en_name})", child_path(slot_child) %></th>
     <th class="allergy"><%= slot_child.allergy_details %></th>
     <th class="photos"><%= 
         unless slot_child.post_photos
