@@ -20,7 +20,7 @@
                 </th>
                 <th id="name_header" class="name"><%= t('.name') %></th>
                 <th id="allergy_header" class="allergy"><%= t('.allergy') %></th>
-                <th id="photos_header" class="photos"><%= t('.photos_ok') %></th>
+                <th id="photos_header" class="photos"><%= t('.photo') %></th>
                 <% morn_options.each do |opt| %>
                     <%# FIXME: n+1 queries %>
                     <th><%= "#{opt.name}: #{opt.registrations.size}" %></th>

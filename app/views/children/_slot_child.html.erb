@@ -4,11 +4,9 @@
     <th class="name"><%= link_to "#{slot_child.name} (#{slot_child.en_name})", child_path(slot_child) %></th>
     <th class="allergy"><%= slot_child.allergy_details %></th>
     <th class="photos"><%= 
-        if slot_child.post_photos 
-            '✓'
-        else
-            '𐄂'
-        end 
+        unless slot_child.post_photos
+           'NG' 
+        end
     %></th>
     <% morn_options.each do |opt| %>
         <td><%= opt.name if slot_child.options.include?(opt) %></td>
