@@ -628,7 +628,7 @@ end
 puts 'Created options for spring school, and added images to slots'
 
 School.all.each do |school|
-  Child.all.each do |child|
+  school.children.each do |child|
     school.events.each do |event|
       child.invoices.create!([
         {
