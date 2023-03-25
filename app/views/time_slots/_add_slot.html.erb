@@ -14,7 +14,7 @@
              data-register-child-value=<%= child.id %>>
             <h4 data-register-target="name"><%= add_slot.name %></h4>
             <% if slots_in_ss.any? { |reg| reg.registerable_id == add_slot.id } %>
-                <p>✓</p>
+                <p>◯</p>
             <% else %>
                 <button class="button<%= ' registered' if registered %>" 
                     data-register-target="button" data-action="click->register#toggle"><%= 
@@ -31,7 +31,7 @@
                 <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
 
                 <% if opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
-                    <p><%= "#{opt.name}: ✓" %></p>
+                    <p><%= "#{opt.name}: ◯" %></p>
                 <% else %>
                     <div class="add_reg"
                          data-controller="register"
@@ -44,7 +44,7 @@
                         <button class="button <%= 'registered' if opt_registered %>"
                             data-register-target="button" data-action="click->register#toggle"><%=
                         if opt_registered
-                            '✓'
+                            '◯'
                         else
                             '✖'
                         end
@@ -57,7 +57,7 @@
 
             <% if arrival_options.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
                 <% registered_arrival = arrival_options.select { |opt| opts_in_ss.any? {  |reg| reg.registerable_id == opt.id} }.first %>
-                <p><%= "#{registered_arrival.name}: ✓" %></p>
+                <p><%= "#{registered_arrival.name}: ◯" %></p>
             <% else %>
                 <fieldset>
                     <legend><%= t('.arrival_options') %></legend>
@@ -86,7 +86,7 @@
 
             <% if depart_options.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
                 <% registered_depart = depart_options.select { |opt| opts_in_ss.any? {  |reg| reg.registerable_id == opt.id} }.first %>
-                <p><%= "#{registered_depart.name}: ✓" %></p>
+                <p><%= "#{registered_depart.name}: ◯" %></p>
             <% else %>
                 <fieldset>
                     <legend><%= t('.depart_options') %></legend>
@@ -128,7 +128,7 @@
                 <h4 data-register-target="name"><%= t('.afternoon') %></h4>
 
                 <% if slots_in_ss.any? { |reg| reg.registerable_id == add_slot.id } %>
-                    <p>✓</p>
+                    <p>◯</p>
                 <% elsif child.regular_schedule && child.regular_schedule[afternoon_slot.day.downcase] %>
                     <p><%= t('.regular_day') %></p>
                 <% else %>
@@ -147,7 +147,7 @@
                     <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
 
                     <% if opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
-                        <p><%= "#{opt.name}: ✓" %></p>
+                        <p><%= "#{opt.name}: ◯" %></p>
                     <% else %>
                         <div class="add_reg"
                              data-controller="register"
@@ -159,7 +159,7 @@
                             <p data-register-target="name"><%= opt.name %></p>
                             <button class="button <%= 'registered' if opt_registered %>" data-register-target="button" data-action="click->register#toggle"><%=
                             if opt_registered
-                                '✓'
+                                '◯'
                             else
                                 '✖'
                             end
@@ -172,7 +172,7 @@
 
                 <% if arrival_options.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
                     <% registered_arrival = arrival_options.select { |opt| opts_in_ss.any? {  |reg| reg.registerable_id == opt.id} }.first %>
-                    <p><%= "#{registered_arrival.name}: ✓" %></p>
+                    <p><%= "#{registered_arrival.name}: ◯" %></p>
                 <% else %>
                     <fieldset>
                         <legend><%= t('.arrival_options') %></legend>
@@ -201,7 +201,7 @@
 
                 <% if depart_options.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
                     <% registered_depart = depart_options.select { |opt| opts_in_ss.any? {  |reg| reg.registerable_id == opt.id} }.first %>
-                    <p><%= "#{registered_depart.name}: ✓" %></p>
+                    <p><%= "#{registered_depart.name}: ◯" %></p>
                 <% else %>
                     <fieldset>
                         <legend><%= t('.depart_options') %></legend>

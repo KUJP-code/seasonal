@@ -113,7 +113,7 @@
         <% @event.options.each do |opt| %>
             <% if opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
                 <div class="event_option">
-                    <p><%= "#{opt.name}: ✓" %></p>
+                    <p><%= "#{opt.name}: ◯" %></p>
                 </div>
             <% else %>
                 <% opt_registered = registrations.any? { |reg| reg.child_id == @child.id && reg.registerable_id == opt.id } %>

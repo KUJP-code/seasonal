@@ -14,17 +14,17 @@
 
         <div class="staff_info">
             <p>
-                <%= "#{t('.photos')} ✓" if @child.post_photos %>
+                <%= "#{t('.photos')} ◯" if @child.post_photos %>
                 <%= "#{t('.photos')} ✖" unless @child.post_photos %>
             </p>
 
             <p>
-                <%= "#{t('.need_hat')} ✓" if @child.needs_hat %>            
+                <%= "#{t('.need_hat')} ◯" if @child.needs_hat %>            
                 <%= "#{t('.need_hat')} ✖" unless @child.needs_hat %>
             </p>
 
             <p>
-                <%= "#{t('.got_hat')} ✓" if @child.received_hat %>
+                <%= "#{t('.got_hat')} ◯" if @child.received_hat %>
                 <%= "#{t('.got_hat')} ✖" unless @child.received_hat %>
             </p>
         </div>

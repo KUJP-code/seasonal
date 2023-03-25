@@ -31,9 +31,9 @@ export default class extends Controller {
         break;
       case "✖":
         this.buttonTarget.classList.add("registered");
-        this.buttonTarget.innerHTML = "✓";
+        this.buttonTarget.innerHTML = "◯";
         break;
-      case "✓":
+      case "◯":
         this.buttonTarget.classList.remove("registered");
         this.buttonTarget.innerHTML = "✖";
         break;

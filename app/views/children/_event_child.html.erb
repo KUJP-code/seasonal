@@ -79,18 +79,16 @@
     <td rowspan="2"><%= event_child.regular_schedule.days if event_child.regular_schedule %></td>
     <td rowspan="2"><%= 
         if event_child.allergies 
-            '✓'
+            '◯'
         else
             '𐄂'
         end
     %></td>
     <td rowspan="2"><%= event_child.allergy_details %></td>
     <td rowspan="2"><%= 
-    if event_child.post_photos 
-            '✓'
-        else
-            '𐄂'
-        end 
+    unless event_child.post_photos 
+        'NG'
+    end 
     %></td>
 
     <% if reg_special.size.zero? %>

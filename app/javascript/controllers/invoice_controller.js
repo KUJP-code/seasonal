@@ -57,7 +57,7 @@ export default class extends Controller {
         this.add(child, cost, id, type);
         break;
       case "Unregister":
-      case "✓":
+      case "◯":
         this.remove(child, id, type);
         break;
       default:
