@@ -679,7 +679,7 @@ Child.all.each do |child|
   end
 end
 
-puts "Registered kids for first option for each event/slot they're attending"
+puts "Registered kids for an option at each event/slot they're attending"
 
 
 Invoice.all.each do |invoice|
