@@ -15,6 +15,9 @@ class Registration < ApplicationRecord
   delegate :school, to: :registerable
   delegate :parent, to: :child
 
+  # Validations
+  validates :registerable_id, uniqueness: { scope: %i[child_id registerable_type], message: t('.register_once') }
+
   # Set scopes for registerable type
   scope :slot_registrations, -> { where(registerable_type: 'TimeSlot') }
   scope :option_registrations, -> { where(registerable_type: 'Option') }

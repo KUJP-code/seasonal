@@ -173,6 +173,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_18_042750) do
     t.datetime "updated_at", null: false
     t.index ["child_id"], name: "index_registrations_on_child_id"
     t.index ["invoice_id"], name: "index_registrations_on_invoice_id"
+    t.index ["registerable_id", "child_id", "registerable_type"], name: "idx_reg_per_child", unique: true
     t.index ["registerable_type", "registerable_id"], name: "index_registrations_on_registerable"
   end
 

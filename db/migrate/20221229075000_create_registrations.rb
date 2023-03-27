@@ -7,5 +7,9 @@ class CreateRegistrations < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
+
+    add_index :registrations, %i[registerable_id child_id registerable_type],
+                              unique: true,
+                              name: "idx_reg_per_child"
   end
 end

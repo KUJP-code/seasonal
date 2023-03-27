@@ -1,4 +1,9 @@
 en:
+  activerecord:
+    errors:
+      models:
+        registration:
+          register_once: "You can only register once per child"
   registrations:
     create:
       failure: "Failed to register"
