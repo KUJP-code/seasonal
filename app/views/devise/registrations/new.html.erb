@@ -37,13 +37,13 @@
     <h3><%= t('.personal_information') %></h3>
   
     <div class="field">
-      <%= f.label :ja_first_name, t('.ja_first_name') %><br />
-      <%= f.text_field :ja_first_name, autocomplete: "first-name" %>
+      <%= f.label :first_name, t('.first_name') %><br />
+      <%= text_field_tag "user[first_name]" %>
     </div>
   
     <div class="field">
-      <%= f.label :ja_family_name, t('.ja_family_name') %><br />
-      <%= f.text_field :ja_family_name, autocomplete: "family-name" %>
+      <%= f.label :family_name, t('.family_name') %><br />
+      <%= text_field_tag "user[family_name]" %>
     </div>
   
     <div class="field">

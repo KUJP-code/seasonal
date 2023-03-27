@@ -37,16 +37,15 @@ module Users
     #   super
     # end
 
-    # protected
+    protected
 
     # If you have extra params to permit, append them to the sanitizer.
     def configure_sign_up_params
-      devise_parameter_sanitizer.permit(:sign_up, keys: %i[email_confirmation
-                                                           ja_first_name
-                                                           ja_family_name
-                                                           katakana_name role prefecture address
-                                                           postcode phone
-                                                           school_id])
+      devise_parameter_sanitizer.permit(
+        :sign_up, keys: %i[email_confirmation first_name family_name
+                           katakana_name role prefecture address postcode phone
+                           school_id]
+      )
     end
 
     # If you have extra params to permit, append them to the sanitizer.

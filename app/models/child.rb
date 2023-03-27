@@ -3,6 +3,9 @@
 # Represents a child, or student, enrolled at a school and/or attending an event
 # Must have a parent, and a school
 class Child < ApplicationRecord
+  # Allow use of separate fields to ensure consistent name formatting
+  attr_accessor :first_name, :family_name
+
   # List associations to other models
   belongs_to :parent, class_name: 'User', optional: true
   belongs_to :school, optional: true
@@ -19,6 +22,8 @@ class Child < ApplicationRecord
                      source_type: 'Option'
   has_many :events, -> { distinct }, through: :time_slots
   has_many :invoices, dependent: :destroy
+
+  before_validation :set_name
 
   # Track changes with PaperTrail
   has_paper_trail
@@ -87,5 +92,11 @@ class Child < ApplicationRecord
 
   def slot_registrations
     registrations.where(registerable_type: 'TimeSlot')
+  end
+
+  private
+
+  def set_name
+    self.name = [first_name.strip, family_name.strip].join(' ')
   end
 end
