@@ -4,7 +4,7 @@
 # Must have a parent, and a school
 class Child < ApplicationRecord
   # Allow use of separate fields to ensure consistent name formatting
-  attr_accessor :first_name, :family_name
+  attr_accessor :first_name, :family_name, :kana_first, :kana_family
 
   # List associations to other models
   belongs_to :parent, class_name: 'User', optional: true
@@ -23,7 +23,7 @@ class Child < ApplicationRecord
   has_many :events, -> { distinct }, through: :time_slots
   has_many :invoices, dependent: :destroy
 
-  before_validation :set_name
+  before_validation :set_name, :set_kana
 
   # Track changes with PaperTrail
   has_paper_trail
@@ -95,6 +95,10 @@ class Child < ApplicationRecord
   end
 
   private
+
+  def set_kana
+    self.katakana_name = [kana_first.strip, kana_family.strip].join(' ')
+  end
 
   def set_name
     self.name = [first_name.strip, family_name.strip].join(' ')

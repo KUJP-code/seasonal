@@ -43,8 +43,7 @@ module Users
     def configure_sign_up_params
       devise_parameter_sanitizer.permit(
         :sign_up, keys: %i[email_confirmation first_name family_name
-                           katakana_name role prefecture address postcode phone
-                           school_id]
+                           kana_first kana_family role prefecture address postcode phone school_id]
       )
     end
 

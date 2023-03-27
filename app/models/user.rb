@@ -5,7 +5,7 @@
 # Can be customer, school manager, area manager or admin
 class User < ApplicationRecord
   # Allow use of separate fields to ensure consistent name formatting
-  attr_accessor :first_name, :family_name
+  attr_accessor :first_name, :family_name, :kana_first, :kana_family
 
   belongs_to :school, optional: true
   has_one :area, through: :school
@@ -46,7 +46,7 @@ class User < ApplicationRecord
                                                             inverse_of: :user
 
   # Set full name from submitted first and last names
-  before_validation :set_name
+  before_validation :set_name, :set_kana
 
   # Make sure children are deleted when Parent is
   before_destroy :destroy_children
@@ -131,6 +131,10 @@ class User < ApplicationRecord
 
   def destroy_children
     children.destroy_all
+  end
+
+  def set_kana
+    self.katakana_name = [kana_first.strip, kana_family.strip].join(' ')
   end
 
   def set_name

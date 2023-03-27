@@ -17,8 +17,13 @@
         </div>
         
         <div class="field">
-            <%= f.label :katakana_name, t('.katakana_name') %><br />
-            <%= f.text_field :katakana_name, autocomplete: "kana-name" %>
+            <%= f.label :kana_first, t('.kana_first') %><br />
+            <%= text_field_tag "user[children_attributes][#{f.index}][kana_first]" %>
+        </div>
+
+        <div class="field">
+            <%= f.label :kana_family, t('.kana_family') %><br />
+            <%= text_field_tag "user[children_attributes][#{f.index}][kana_family]" %>
         </div>
         
         <div class="field">
