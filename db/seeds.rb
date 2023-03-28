@@ -6,8 +6,10 @@ User.create!([
   {
     email: 'admin@gmail.com',
     password: 'adminadminadmin',
-    name: Faker::Name.name,
-    katakana_name: Faker::Name.name.kana,
+    first_name: Faker::Name.first_name,
+    family_name: Faker::Name.last_name,
+    kana_first: Faker::Name.first_name.kana,
+    kana_family: Faker::Name.last_name.kana,
     role: :admin,
     address: Faker::Address.full_address,
     phone: Faker::PhoneNumber.phone_number
@@ -15,8 +17,10 @@ User.create!([
   {
     email: 'am@gmail.com',
     password: 'ampasswordampassword',
-    name: Faker::Name.name,
-    katakana_name: Faker::Name.name.kana,
+    first_name: Faker::Name.first_name,
+    family_name: Faker::Name.last_name,
+    kana_first: Faker::Name.first_name.kana,
+    kana_family: Faker::Name.last_name.kana,
     role: :area_manager,
     address: Faker::Address.full_address,
     phone: Faker::PhoneNumber.phone_number
@@ -24,8 +28,10 @@ User.create!([
   {
     email: 'sm@gmail.com',
     password: 'smpasswordsmpassword',
-    name: Faker::Name.name,
-    katakana_name: Faker::Name.name.kana,
+    first_name: Faker::Name.first_name,
+    family_name: Faker::Name.last_name,
+    kana_first: Faker::Name.first_name.kana,
+    kana_family: Faker::Name.last_name.kana,
     role: :school_manager,
     address: Faker::Address.full_address,
     phone: Faker::PhoneNumber.phone_number
@@ -33,8 +39,10 @@ User.create!([
   {
     email: 'customer@gmail.com',
     password: 'customerpassword',
-    name: Faker::Name.name,
-    katakana_name: Faker::Name.name.kana,
+    first_name: Faker::Name.first_name,
+    family_name: Faker::Name.last_name,
+    kana_first: Faker::Name.first_name.kana,
+    kana_family: Faker::Name.last_name.kana,
     role: :customer,
     address: Faker::Address.full_address,
     phone: Faker::PhoneNumber.phone_number
@@ -74,8 +82,10 @@ area.schools.create!([
 School.first.managers << User.create!(
   email: 'yoshi@ku.jp',
   password: 'smpasswordsmpassword',
-  name: 'みの',
-  katakana_name: 'ミノヨシ',
+  first_name: 'みの',
+  family_name: 'ルよし',
+  kana_first: 'ミノヨシ',
+  kana_family: 'オクラ',
   role: :school_manager,
   address: Faker::Address.full_address,
   phone: Faker::PhoneNumber.phone_number
@@ -84,8 +94,10 @@ School.first.managers << User.create!(
 School.find(2).managers << User.create!(
   email: 'marinara@ku.jp',
   password: 'smpasswordsmpassword',
-  name: 'まりなら',
-  katakana_name: 'マリナらヨ',
+  first_name: 'まりなら',
+  family_name: '涼元',
+  kana_first: 'マリナらヨ',
+  kana_family: 'オクラ',
   role: :school_manager,
   address: Faker::Address.full_address,
   phone: Faker::PhoneNumber.phone_number
@@ -98,16 +110,20 @@ puts 'Added 3 schools and gave each a manager'
 School.all.each do |school|
   school.customers.create!([
     {
-      name: Faker::Name.name,
-      katakana_name: Faker::Name.name.kana,
+      first_name: Faker::Name.first_name,
+      family_name: Faker::Name.last_name,
+      kana_first: Faker::Name.first_name.kana,
+      kana_family: Faker::Name.last_name.kana,
       email: Faker::Internet.unique.email,
       password: Faker::Internet.password(min_length: 10),
       address: Faker::Address.full_address,
       phone: Faker::PhoneNumber.phone_number
     },
     {
-      name: Faker::Name.name,
-      katakana_name: Faker::Name.name.kana,
+      first_name: Faker::Name.first_name,
+      family_name: Faker::Name.last_name,
+      kana_first: Faker::Name.first_name.kana,
+      kana_family: Faker::Name.last_name.kana,
       email: Faker::Internet.unique.email,
       password: Faker::Internet.password(min_length: 10),
       address: Faker::Address.full_address,
@@ -116,35 +132,37 @@ School.all.each do |school|
   ])
 end
 
-School.last.users << customer
+customer.update!(school_id: School.last.id)
 
 puts 'Added 2 Faker customers to each school, plus my test customer to the last one'
 
 User.customers.each do |customer_user|
   customer_user.children.create!([
     {
-      name: Faker::Name.name,
-      katakana_name: Faker::Name.name.kana,
+      first_name: Faker::Name.first_name,
+      family_name: Faker::Name.last_name,
+      kana_first: Faker::Name.first_name.kana,
+      kana_family: Faker::Name.last_name.kana,
       en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
       birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
       ssid: Faker::Number.unique.number,
       ele_school_name: Faker::GreekPhilosophers.name,
       post_photos: true,
       allergies: true,
-      allergy_details: 'peanuts',
       kindy: true,
       category: :external,
       school: customer_user.school
     },
     {
-      name: Faker::Name.name,
-      katakana_name: Faker::Name.name.kana,
+      first_name: Faker::Name.first_name,
+      family_name: Faker::Name.last_name,
+      kana_first: Faker::Name.first_name.kana,
+      kana_family: Faker::Name.last_name.kana,
       en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
       birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
       ssid: Faker::Number.unique.number,
       ele_school_name: Faker::GreekPhilosophers.name,
       allergies: true,
-      allergy_details: 'peanuts',
       kindy: false,
       category: :reservation,
       school: customer_user.school
@@ -155,15 +173,16 @@ end
 puts 'Gave each customer 2 children'
 
 Child.create!(
-  name: Faker::Name.name,
-  katakana_name: Faker::Name.name.kana,
+  first_name: Faker::Name.first_name,
+  family_name: Faker::Name.last_name,
+  kana_first: Faker::Name.first_name.kana,
+  kana_family: Faker::Name.last_name.kana,
   en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
   birthday: 'Wed, 20 Feb 2020',
   ssid: 1,
   ele_school_name: Faker::GreekPhilosophers.name,
   post_photos: true,
   allergies: true,
-  allergy_details: 'peanuts'
 )
 
 puts "Created an orphaned child to test adding parent's children with"
@@ -703,8 +722,10 @@ puts 'Created a random regular schedule for each child'
 non_member = User.create!(
     email: 'non_member@gmail.com',
     password: 'nonmembernon',
-    name: Faker::Name.name,
-    katakana_name: Faker::Name.name.kana,
+    first_name: Faker::Name.first_name,
+    family_name: Faker::Name.last_name,
+    kana_first: Faker::Name.first_name.kana,
+    kana_family: Faker::Name.last_name.kana,
     role: :customer,
     address: Faker::Address.full_address,
     phone: Faker::PhoneNumber.phone_number,
@@ -713,28 +734,30 @@ non_member = User.create!(
 
 non_member.children.create!([
   {
-    name: Faker::Name.name,
-    katakana_name: Faker::Name.name.kana,
+    first_name: Faker::Name.first_name,
+    family_name: Faker::Name.last_name,
+    kana_first: Faker::Name.first_name.kana,
+    kana_family: Faker::Name.last_name.kana,
     en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
     birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
     ssid: Faker::Number.unique.number,
     ele_school_name: Faker::GreekPhilosophers.name,
     allergies: true,
-    allergy_details: 'peanuts',
     kindy: true,
     category: :external,
     school: non_member.school
   },
   {
-    name: Faker::Name.name,
-    katakana_name: Faker::Name.name.kana,
+    first_name: Faker::Name.first_name,
+    family_name: Faker::Name.last_name,
+    kana_first: Faker::Name.first_name.kana,
+    kana_family: Faker::Name.last_name.kana,
     en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
     birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
     ssid: Faker::Number.unique.number,
     ele_school_name: Faker::GreekPhilosophers.name,
     post_photos: true,
     allergies: true,
-    allergy_details: 'peanuts',
     kindy: false,
     category: :external,
     school: non_member.school
@@ -744,8 +767,10 @@ non_member.children.create!([
 member = User.create!(
   email: 'member@gmail.com',
   password: 'membermembermember',
-  name: Faker::Name.name,
-  katakana_name: Faker::Name.name.kana,
+  first_name: Faker::Name.first_name,
+  family_name: Faker::Name.last_name,
+  kana_first: Faker::Name.first_name.kana,
+  kana_family: Faker::Name.last_name.kana,
   role: :customer,
   address: Faker::Address.full_address,
   phone: Faker::PhoneNumber.phone_number,
@@ -754,8 +779,10 @@ member = User.create!(
 
 member.children.create!([
 {
-  name: Faker::Name.name,
-  katakana_name: Faker::Name.name.kana,
+  first_name: Faker::Name.first_name,
+  family_name: Faker::Name.last_name,
+  kana_first: Faker::Name.first_name.kana,
+  kana_family: Faker::Name.last_name.kana,
   en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
   birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
   ssid: Faker::Number.unique.number,
@@ -763,21 +790,21 @@ member.children.create!([
   post_photos: true,
   needs_hat: false,
   allergies: true,
-  allergy_details: 'peanuts',
   kindy: true,
   category: 'internal',
   school: member.school
 },
 {
-  name: Faker::Name.name,
-  katakana_name: Faker::Name.name.kana,
+  first_name: Faker::Name.first_name,
+  family_name: Faker::Name.last_name,
+  kana_first: Faker::Name.first_name.kana,
+  kana_family: Faker::Name.last_name.kana,
   en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
   birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
   ssid: Faker::Number.unique.number,
   ele_school_name: Faker::GreekPhilosophers.name,
   needs_hat: false,
   allergies: true,
-  allergy_details: 'peanuts',
   kindy: false,
   category: 'internal',
   school: member.school

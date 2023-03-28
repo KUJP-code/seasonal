@@ -110,8 +110,9 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(
       :id, :email, :password, :password_confirmation, :kana_first, :role,
-      :prefecture, :address, :postcode, :phone, :school_id, :first_name, :family_name, :email_confirmation, :kana_family,
-      children_attributes: %i[id first_name family_name allergy_details
+      :prefecture, :address, :postcode, :phone, :school_id, :first_name,
+      :family_name, :email_confirmation, :kana_family,
+      children_attributes: %i[id first_name family_name grade
                               katakana_name en_name category birthday
                               level allergies ssid ele_school_name
                               post_photos needs_hat received_hat

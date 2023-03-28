@@ -134,10 +134,10 @@ class User < ApplicationRecord
   end
 
   def set_kana
-    self.katakana_name = [kana_first.strip, kana_family.strip].join(' ')
+    self.katakana_name = [kana_first.strip, kana_family.strip].join(' ') if katakana_name.nil?
   end
 
   def set_name
-    self.name = [first_name.strip, family_name.strip].join(' ')
+    self.name = [first_name.strip, family_name.strip].join(' ') if name.nil?
   end
 end

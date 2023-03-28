@@ -37,6 +37,22 @@ class Child < ApplicationRecord
                   external: 2,
                   default: :external
 
+  # Map grade int in table to a grade
+  enum :grade, '満１歳' => 0,
+               '満２歳' => 1,
+               '年々少' => 3,
+               '年少' => 4,
+               '年中' => 5,
+               '年長' => 6,
+               '小１' => 7,
+               '小２' => 8,
+               '小３' => 9,
+               '小４' => 10,
+               '小５' => 11,
+               '小６' => 12,
+               '中学１年' => 13,
+               '中学２年' => 14
+
   # Validations
   validates :birthday, comparison: { greater_than: 15.years.ago, less_than: 1.year.ago }
   validates :ssid, uniqueness: { allow_blank: true }

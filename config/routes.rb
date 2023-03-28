@@ -14,7 +14,6 @@ Rails.application.routes.draw do
       resources :coupons
       resources :events
       resources :invoices
-      resources :notifications
       resources :options
       resources :price_lists
       resources :registrations
