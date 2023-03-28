@@ -40,22 +40,22 @@
 
                 <div class="field">
                     <%= f.label :first_name, t('.first_name') %><br />
-                    <%= text_field_tag "user[first_name]" %>
+                    <%= text_field_tag "user[first_name]", @user.name.split[0] %>
                 </div>
 
                 <div class="field">
                     <%= f.label :family_name, t('.family_name') %><br />
-                    <%= text_field_tag "user[family_name]" %>
+                    <%= text_field_tag "user[family_name]", @user.name.split[1] %>
                 </div>
 
                 <div class="field">
                     <%= f.label :kana_first, t('.kana_first') %><br />
-                    <%= text_field_tag "user[kana_first]" %>
+                    <%= text_field_tag "user[kana_first]", @user.katakana_name.split[0] %>
                 </div>
 
                 <div class="field">
                     <%= f.label :kana_family, t('.kana_family') %><br />
-                    <%= text_field_tag "user[kana_family]" %>
+                    <%= text_field_tag "user[kana_family]", @user.katakana_name.split[1] %>
                 </div>
 
                 <div class="field">

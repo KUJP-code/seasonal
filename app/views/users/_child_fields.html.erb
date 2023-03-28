@@ -8,22 +8,22 @@
 
         <div class="field">
             <%= f.label :first_name, t('.first_name') %><br />
-            <%= text_field_tag "user[children_attributes][#{f.index}][first_name]" %>
+            <%= text_field_tag "user[children_attributes][#{f.index}][first_name]", (f.object.name.split[0] unless f.object.name.nil?) %>
         </div>
 
         <div class="field">
             <%= f.label :family_name, t('.family_name') %><br />
-            <%= text_field_tag "user[children_attributes][#{f.index}][family_name]" %>
+            <%= text_field_tag "user[children_attributes][#{f.index}][family_name]", (f.object.name.split[1] unless f.object.name.nil?) %>
         </div>
         
         <div class="field">
             <%= f.label :kana_first, t('.kana_first') %><br />
-            <%= text_field_tag "user[children_attributes][#{f.index}][kana_first]" %>
+            <%= text_field_tag "user[children_attributes][#{f.index}][kana_first]", (f.object.katakana_name.split[0] unless f.object.katakana_name.nil?) %>
         </div>
 
         <div class="field">
             <%= f.label :kana_family, t('.kana_family') %><br />
-            <%= text_field_tag "user[children_attributes][#{f.index}][kana_family]" %>
+            <%= text_field_tag "user[children_attributes][#{f.index}][kana_family]", (f.object.katakana_name.split[1] unless f.object.katakana_name.nil?) %>
         </div>
         
         <div class="field">
@@ -39,11 +39,6 @@
         <div class="field">
             <%= f.label :allergies, t('.allergies') %><br />
             <%= f.check_box :allergies %>
-        </div>
-
-        <div class="field">
-            <%= f.label :allergy_details, t('.allergy_details') %><br />
-            <%= f.text_area :allergy_details %>
         </div>
 
         <div class="field">
