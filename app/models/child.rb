@@ -113,10 +113,18 @@ class Child < ApplicationRecord
   private
 
   def set_kana
+    # Guard clause should never happen in prod because required field, but does
+    # when directly modifying after creation in seeds file
+    return if kana_first.nil? && kana_family.nil?
+
     self.katakana_name = [kana_first.strip, kana_family.strip].join(' ')
   end
 
   def set_name
+    # Guard clause should never happen in prod because required field, but does
+    # when directly modifying after creation in seeds file
+    return if first_name.nil? && family_name.nil?
+
     self.name = [first_name.strip, family_name.strip].join(' ')
   end
 end
