@@ -65,8 +65,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
     t.integer "grade", default: 4
     t.date "birthday"
     t.boolean "kindy", default: false
-    t.boolean "allergies"
-    t.string "allergy_details"
+    t.string "allergies"
     t.bigint "ssid"
     t.string "ele_school_name"
     t.boolean "post_photos"

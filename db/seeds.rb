@@ -148,7 +148,7 @@ User.customers.each do |customer_user|
       ssid: Faker::Number.unique.number,
       ele_school_name: Faker::GreekPhilosophers.name,
       post_photos: true,
-      allergies: true,
+      allergies: 'peanuts',
       kindy: true,
       category: :external,
       school: customer_user.school
@@ -162,7 +162,7 @@ User.customers.each do |customer_user|
       birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
       ssid: Faker::Number.unique.number,
       ele_school_name: Faker::GreekPhilosophers.name,
-      allergies: true,
+      allergies: 'peanuts',
       kindy: false,
       category: :reservation,
       school: customer_user.school
@@ -182,7 +182,7 @@ Child.create!(
   ssid: 1,
   ele_school_name: Faker::GreekPhilosophers.name,
   post_photos: true,
-  allergies: true,
+  allergies: 'peanuts',
 )
 
 puts "Created an orphaned child to test adding parent's children with"
@@ -742,7 +742,7 @@ non_member.children.create!([
     birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
     ssid: Faker::Number.unique.number,
     ele_school_name: Faker::GreekPhilosophers.name,
-    allergies: true,
+    allergies: '',
     kindy: true,
     category: :external,
     school: non_member.school
@@ -757,7 +757,7 @@ non_member.children.create!([
     ssid: Faker::Number.unique.number,
     ele_school_name: Faker::GreekPhilosophers.name,
     post_photos: true,
-    allergies: true,
+    allergies: '',
     kindy: false,
     category: :external,
     school: non_member.school
@@ -789,7 +789,7 @@ member.children.create!([
   ele_school_name: Faker::GreekPhilosophers.name,
   post_photos: true,
   needs_hat: false,
-  allergies: true,
+  allergies: 'milk',
   kindy: true,
   category: 'internal',
   school: member.school
@@ -804,7 +804,7 @@ member.children.create!([
   ssid: Faker::Number.unique.number,
   ele_school_name: Faker::GreekPhilosophers.name,
   needs_hat: false,
-  allergies: true,
+  allergies: 'milk',
   kindy: false,
   category: 'internal',
   school: member.school

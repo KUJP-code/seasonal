@@ -8,8 +8,7 @@ class CreateChildren < ActiveRecord::Migration[7.0]
       t.integer :grade, default: 4
       t.date :birthday, index: true
       t.boolean :kindy, default: false
-      t.boolean :allergies
-      t.string :allergy_details
+      t.string :allergies
       t.bigint :ssid
       t.string :ele_school_name
       t.boolean :post_photos
