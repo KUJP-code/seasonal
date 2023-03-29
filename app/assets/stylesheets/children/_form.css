@@ -17,3 +17,8 @@
 .child_form h3 {
   width: 100%;
 }
+
+.child_form > input[type="text"]:read-only,
+.child_form > input[type="text"]:disabled {
+  background: grey;
+}

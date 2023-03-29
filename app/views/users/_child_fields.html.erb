@@ -36,9 +36,10 @@
             <%= f.date_field :birthday, autocomplete: "birth-date" %>
         </div>
 
-        <div class="field">
+        <div class="field" data-controller="conditional">
             <%= f.label :allergies, t('.allergies') %><br />
-            <%= f.text_field :allergies %>
+            <input type="checkbox" name="allergies" data-action="click->conditional#toggle" <%= "checked=checked" unless f.object.allergies == '' %> data-conditional-target="condition">
+            <%= f.text_field :allergies, value: f.object.allergies, data: { conditional_target: 'target' } %>
         </div>
 
         <div class="field">

@@ -44,6 +44,10 @@
   box-shadow: 0.5vw 1vw 1vw var(--ku-dark-accent);
 }
 
+#add_child input:not(.button):read-only {
+  background: grey;
+}
+
 #add_child .field {
   display: flex;
   flex-flow: column wrap;

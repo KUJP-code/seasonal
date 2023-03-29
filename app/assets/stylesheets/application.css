@@ -143,6 +143,11 @@ form > .errors {
   font-size: var(--sub-heading-size);
 }
 
+input[type="text"]:read-only,
+input[type="text"]:disabled {
+  background: grey;
+}
+
 .button {
   display: flex;
   justify-content: center;

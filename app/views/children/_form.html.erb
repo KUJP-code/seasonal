@@ -18,22 +18,22 @@
 
             <div class="field">
                 <%= f.label :first_name, t('.first_name') %><br />
-                <%= text_field_tag "child[first_name]", @child.name.split[0] %>
+                <%= text_field_tag "child[first_name]", (@child.name.split[0] unless @child.name.nil?) %>
             </div>
 
             <div class="field">
                 <%= f.label :family_name, t('.family_name') %><br />
-                <%= text_field_tag "child[family_name]", @child.name.split[1] %>
+                <%= text_field_tag "child[family_name]", (@child.name.split[1] unless @child.name.nil?) %>
             </div>
 
             <div class="field">
                 <%= f.label :kana_first, t('.kana_first') %><br />
-                <%= text_field_tag "child[kana_first]", @child.katakana_name.split[0] %>
+                <%= text_field_tag "child[kana_first]", (@child.katakana_name.split[0] unless @child.name.nil?) %>
             </div>
 
             <div class="field">
                 <%= f.label :kana_family, t('.kana_family') %><br />
-                <%= text_field_tag "child[kana_family]", @child.katakana_name.split[1] %>
+                <%= text_field_tag "child[kana_family]", (@child.katakana_name.split[1] unless @child.name.nil?) %>
             </div>
 
             <div class="field">
@@ -46,14 +46,15 @@
                 <%= f.date_field :birthday, autocomplete: "birth-date" %>
             </div>
 
-            <div class="field">
+            <div class="field" data-controller="conditional">
                 <%= f.label :allergies, t('.allergies') %><br />
-                <%= f.text_field :allergies %>
+                <input type="checkbox" name="allergies" data-action="click->conditional#toggle" <%= "checked=checked" unless @child.allergies == '' %> data-conditional-target="condition">
+                <%= f.text_field :allergies, value: @child.allergies, data: { conditional_target: 'target' } %>
             </div>
 
             <div class="field">
                 <%= f.label :grade, t('.grade') %><br />
-                <%= f.select :grade, Child.grades.reject { |k, _| %w[満１歳 満２歳 年々少 中学１年 中学２年].include?(k) }.map { |k, v| v = k }, selected: f.object.grade %>
+                <%= f.select :grade, Child.grades.reject { |k, _| %w[満１歳 満２歳 年々少 中学１年 中学２年].include?(k) }.map { |k, v| v = k }, selected: @child.grade %>
             </div>
 
             <div class="field">

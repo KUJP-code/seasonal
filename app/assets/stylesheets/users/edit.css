@@ -32,6 +32,10 @@ form.edit_user textarea {
   background-color: var(--ku-orange-hover);
 }
 
+form.edit_user input:not(.button):read-only {
+  background: grey;
+}
+
 .edit_user input:not(.button):focus-visible {
   outline: none;
   box-shadow: 0.5vw 1vw 1vw var(--ku-dark-accent);
