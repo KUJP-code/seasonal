@@ -24,7 +24,7 @@
 
                 <div class="field">
                     <%= f.label :email_confirmation %><br />
-                    <%= f.email_field :email_confirmation, autofocus: true, autocomplete: "email" %>
+                    <%= f.email_field :email_confirmation, value: @user.email, autocomplete: "email" %>
                 </div>
 
                 <% if current_user.admin? %>
