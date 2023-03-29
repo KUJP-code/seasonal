@@ -5,7 +5,7 @@ class CreateChildren < ActiveRecord::Migration[7.0]
       t.string :katakana_name
       t.string :en_name
       t.integer :category, default: 0
-      t.integer :grade, default: 4
+      t.integer :grade, default: 3
       t.date :birthday, index: true
       t.boolean :kindy, default: false
       t.string :allergies

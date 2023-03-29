@@ -40,18 +40,18 @@ class Child < ApplicationRecord
   # Map grade int in table to a grade
   enum :grade, '満１歳' => 0,
                '満２歳' => 1,
-               '年々少' => 3,
-               '年少' => 4,
-               '年中' => 5,
-               '年長' => 6,
-               '小１' => 7,
-               '小２' => 8,
-               '小３' => 9,
-               '小４' => 10,
-               '小５' => 11,
-               '小６' => 12,
-               '中学１年' => 13,
-               '中学２年' => 14
+               '年々少' => 2,
+               '年少' => 3,
+               '年中' => 4,
+               '年長' => 5,
+               '小１' => 6,
+               '小２' => 7,
+               '小３' => 8,
+               '小４' => 9,
+               '小５' => 10,
+               '小６' => 11,
+               '中学１年' => 12,
+               '中学２年' => 13
 
   # Validations
   validates :birthday, comparison: { greater_than: 15.years.ago, less_than: 1.year.ago }
