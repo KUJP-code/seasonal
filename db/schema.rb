@@ -62,7 +62,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
     t.string "katakana_name"
     t.string "en_name"
     t.integer "category", default: 0
-    t.integer "grade", default: 4
+    t.integer "grade", default: 3
     t.date "birthday"
     t.boolean "kindy", default: false
     t.string "allergies"

@@ -42,6 +42,11 @@
         </div>
 
         <div class="field">
+            <%= f.label :grade, t('.grade') %><br />
+            <%= f.select :grade, Child.grades.reject { |k, _| %w[満１歳 満２歳 年々少 中学１年 中学２年].include?(k) }.map { |k, v| v = k }, selected: f.object.grade %>
+        </div>
+
+        <div class="field">
             <%= f.label :ele_school_name, t('.ele_school_name') %><br />
             <%= f.text_field :ele_school_name %>
         </div>

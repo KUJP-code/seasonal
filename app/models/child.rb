@@ -23,7 +23,7 @@ class Child < ApplicationRecord
   has_many :events, -> { distinct }, through: :time_slots
   has_many :invoices, dependent: :destroy
 
-  before_validation :set_name, :set_kana
+  before_validation :set_name, :set_kana, :set_kindy
 
   # Track changes with PaperTrail
   has_paper_trail
@@ -118,6 +118,10 @@ class Child < ApplicationRecord
     return if kana_first.nil? && kana_family.nil?
 
     self.katakana_name = [kana_first.strip, kana_family.strip].join(' ')
+  end
+
+  def set_kindy
+    self.kindy = %w[満１歳 満２歳 年々少 年少 年中 年長].include?(grade)
   end
 
   def set_name

@@ -149,7 +149,7 @@ User.customers.each do |customer_user|
       ele_school_name: Faker::GreekPhilosophers.name,
       post_photos: true,
       allergies: 'peanuts',
-      kindy: true,
+      grade: '年中',
       category: :external,
       school: customer_user.school
     },
@@ -163,7 +163,7 @@ User.customers.each do |customer_user|
       ssid: Faker::Number.unique.number,
       ele_school_name: Faker::GreekPhilosophers.name,
       allergies: 'peanuts',
-      kindy: false,
+      grade: '小４',
       category: :reservation,
       school: customer_user.school
     }
@@ -743,7 +743,7 @@ non_member.children.create!([
     ssid: Faker::Number.unique.number,
     ele_school_name: Faker::GreekPhilosophers.name,
     allergies: '',
-    kindy: true,
+    grade: '年中',
     category: :external,
     school: non_member.school
   },
@@ -758,7 +758,7 @@ non_member.children.create!([
     ele_school_name: Faker::GreekPhilosophers.name,
     post_photos: true,
     allergies: '',
-    kindy: false,
+    grade: '小４',
     category: :external,
     school: non_member.school
   }
@@ -790,7 +790,7 @@ member.children.create!([
   post_photos: true,
   needs_hat: false,
   allergies: 'milk',
-  kindy: true,
+  grade: '年中',
   category: 'internal',
   school: member.school
 },
@@ -805,7 +805,7 @@ member.children.create!([
   ele_school_name: Faker::GreekPhilosophers.name,
   needs_hat: false,
   allergies: 'milk',
-  kindy: false,
+  grade: '小４',
   category: 'internal',
   school: member.school
 }
