@@ -42,8 +42,6 @@ class User < ApplicationRecord
                                 source_type: 'Option'
   has_many :events, -> { order(start_date: :asc).distinct }, through: :time_slots
   has_many :invoices, through: :children
-  has_many :notifications, -> { order(created_at: :desc) }, dependent: :destroy,
-                                                            inverse_of: :user
 
   # Set full name from submitted first and last names
   before_validation :set_name, :set_kana
