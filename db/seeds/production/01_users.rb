@@ -57,7 +57,7 @@ User.find_by(role: 'area_manager').managed_areas.create!(name: '神奈川県')
 
 non_member = User.create!(
   email: 'non_member@gmail.com',
-  password: 'nonmembernon',
+  password: ENV['NONMEMBER_PASS'],
   first_name: %w[Timmy Sally Billy Sarah Brett ヨシ マリナ カイト].sample,
   family_name: %w[Timmy Sally Billy Sarah Brett ヨシ マリナ カイト].sample,
   kana_first: %w[Timmy Sally Billy Sarah Brett ヨシ マリナ カイト].sample,
@@ -104,7 +104,7 @@ non_member.children.create!([
 
 member = User.create!(
   email: 'member@gmail.com',
-  password: 'membermembermember',
+  password: ENV['MEMBER_PASS'],
   first_name: %w[Timmy Sally Billy Sarah Brett ヨシ マリナ カイト].sample,
   family_name: %w[Timmy Sally Billy Sarah Brett ヨシ マリナ カイト].sample,
   kana_first: %w[Timmy Sally Billy Sarah Brett ヨシ マリナ カイト].sample,
