@@ -68,11 +68,11 @@ gem 'diffy'
 # Can't use 2.8.0 as it causes issues with EB
 gem 'mail', '2.7.1'
 
-group :development, :test do
-  # Use Faker to generate test data
-  gem 'faker'
-  gem 'faker_japanese'
+# Use Faker to generate test data
+gem 'faker'
+gem 'faker_japanese'
 
+group :development, :test do
   # Capybara for system/feature testing
   gem 'capybara'
 
