@@ -1,4 +1,6 @@
 User.customers.each do |customer|
+  next unless customer.children.empty?
+  
   customer.children.create!([
     {
       first_name: %w[Timmy Sally Billy Sarah Brett ヨシ マリナ カイト].sample,
@@ -39,13 +41,15 @@ Child.create!(
   kana_family: %w[Timmy Sally Billy Sarah Brett ヨシ マリナ カイト].sample,
   en_name: %w[Timmy Sally Billy Sarah Brett ヨシ マリナ カイト].sample,
   birthday: 'Wed, 20 Feb 2020',
-  ssid: "#{customer.id}#{customer.school_id}10".to_i,
+  ssid: 9999999999999,
   ele_school_name: '菊名',
   allergies: 'peanuts',
   grade: '小４'
 )
 
 Child.all.each do |child|
+  next unless child.regular_schedule.nil?
+
   child.create_regular_schedule(
     monday: [true, false].sample,
     tuesday: [true, false].sample,
