@@ -18,7 +18,7 @@
 <% else %>
 
     <div class="event">
-        <%= link_to image_tag(url_for(event.image)), event_path(id: event, child: current_user.children.first.id) unless event.image.nil? %>
+        <%= (link_to image_tag(url_for(event.image)), event_path(id: event, child: current_user.children.first.id)) unless event.image.nil? %>
 
         <h2><%= link_to event.description, event_path(id: event, child: current_user.children.first.id) %></h2>
 
