@@ -1,6 +1,6 @@
 <div class="time_slot">
     <div class="slot_details">
-        <%= link_to image_tag(url_for(time_slot.image)), time_slot_path(time_slot) %>
+        <%= link_to image_tag(url_for(time_slot.image)), time_slot_path(time_slot) unless time_slot.image.nil? %>
         <h2><%= link_to time_slot.description, time_slot_path(time_slot) %></h2>
         <p>
             <% if current_user.staff? %>
