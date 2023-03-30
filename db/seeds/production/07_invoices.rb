@@ -1,4 +1,3 @@
-
 School.all.each do |school|
   school.children.each do |child|
     school.events.each do |event|

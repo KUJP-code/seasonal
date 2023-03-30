@@ -24,5 +24,3 @@ PriceList.create!([
     }
   }
 ])
-
-puts 'Created a member and non-member price list for testing'
