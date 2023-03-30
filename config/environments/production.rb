@@ -66,7 +66,14 @@ Rails.application.configure do
 
   config.x.mail_from = %(Kids Up Events <no-reply@eventdbstaging-env.eba-mpbqmmjv.ap-northeast-1.elasticbeanstalk.com>)
   config.action_mailer.default_url_options = { host: 'eventdbstaging-env.eba-mpbqmmjv.ap-northeast-1.elasticbeanstalk.com' }
-  config.action_mailer.smtp_settings = { address: 'email-smtp.ap-northeast-1.amazonaws.com', user_name: ENV['SES_USERNAME'], password: ENV['SES_PASSWORD'] }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { 
+    address: 'email-smtp.ap-northeast-1.amazonaws.com',
+    port: 587,
+    authentication: :plain,
+    user_name: ENV['SES_USERNAME'],
+    password: ENV['SES_PASSWORD'] 
+  }
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_caching = false
 
