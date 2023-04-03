@@ -1,6 +1,6 @@
 <div class="time_slot">
     <p class="date"><%= add_slot.date %></p>
-    <%= link_to image_tag(url_for(add_slot.image)), time_slot_path(add_slot) %>
+    <%= (link_to image_tag(url_for(add_slot.image)), time_slot_path(add_slot)) unless add_slot.image.blank? %>
 
     <div class="morning" data-controller="popup"
     data-action="register:toggle->popup#listen">
