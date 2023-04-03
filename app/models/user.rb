@@ -34,6 +34,7 @@ class User < ApplicationRecord
                       inverse_of: :parent
   accepts_nested_attributes_for :children, allow_destroy: true
   has_many :registrations, through: :children
+  validates_associated :children
   has_many :time_slots, through: :registrations,
                         source: :registerable,
                         source_type: 'TimeSlot'
