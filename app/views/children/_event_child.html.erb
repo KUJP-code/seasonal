@@ -9,7 +9,7 @@
     <th rowspan="2" class="order"><%= event_child_iteration.index + 1 %></th>
     <th rowspan="2" class="ja_name"><%= link_to event_child.name, child_path(event_child) %></th>
     <th rowspan="2" class="en_name"><%= link_to event_child.en_name, child_path(event_child) %></th>
-    <th rowspan="2" class="ssid"><%= link_to event_child.ssid, child_path(event_child) %></th>
+    <th rowspan="2" class="ssid <%= 'no_ssid' if event_child.ssid.nil? %>"><%= link_to (event_child.ssid ? event_child.ssid : t('.no_ssid')), child_path(event_child) %></th>
     <td rowspan="2">
         <%= number_to_currency(event_invoices.reduce(0) { |sum, invoice| sum + invoice.total_cost }, unit: '円', precision: 0, locale: :ja) %>
     </td>

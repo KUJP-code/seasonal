@@ -69,6 +69,10 @@
   border: none;
 }
 
+#event_children_index th.no_ssid.ssid {
+  background: red;
+}
+
 #event_children_index table th#order_header,
 #event_children_index table th#ja_header,
 #event_children_index table th#en_header,
