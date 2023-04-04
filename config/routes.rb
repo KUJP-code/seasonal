@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       put 'copy_invoice', to: 'invoices#copy', as: :copy_invoice
       patch 'confirm_invoice', to: 'invoices#confirm', as: :confirm_invoice
       post 'seen_invoice', to: 'invoices#seen', as: :seen_invoice
+      post 'merge_invoices', to: 'invoices#merge', as: :merge_invoices
 
       # Ensures just the locale also goes to root
       get '/:locale', to: 'users#profile'

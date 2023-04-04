@@ -59,6 +59,10 @@
   width: 86vw;
 }
 
-#invoice_confirm > h1 {
-  background: red;
+.invoice form {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2vw;
 }

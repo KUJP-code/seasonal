@@ -9,6 +9,7 @@ class Invoice < ApplicationRecord
   belongs_to :event
 
   has_many :registrations, dependent: :destroy
+  accepts_nested_attributes_for :registrations
   has_many :slot_regs, -> { where(registerable_type: 'TimeSlot') },
            class_name: 'Registration',
            dependent: :destroy,
@@ -228,6 +229,7 @@ class Invoice < ApplicationRecord
                                                                                   '\\1,').reverse}円</h2>\n"
     generate_template
     self.summary = @breakdown
+    # To avoid saving on the confirm page
     save unless new_record?
   end
 end

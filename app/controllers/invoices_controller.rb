@@ -50,6 +50,17 @@ class InvoicesController < ApplicationController
     redirect_to invoice_path(@target_invoice)
   end
 
+  def merge
+    merge_from = Invoice.find(params[:merge_from])
+    merge_to = Invoice.find(params[:merge_to])
+
+    merge_invoices(merge_from, merge_to)
+
+    merge_from.reload.destroy
+    merge_to.calc_cost
+    redirect_to invoice_path(merge_to)
+  end
+
   def seen
     Invoice.find(params[:id]).update(seen_at: Time.current)
     @child_id = params[:child]
@@ -67,9 +78,6 @@ class InvoicesController < ApplicationController
     # Get the target's modifiable invoice, create one if none
     target_invoice = target.invoices.where(event: event).find_by(in_ss: false) || target.invoices.create(event: event)
 
-    p target_invoice
-    p target_invoice.id || 'nil'
-
     og_regs.each do |o_reg|
       # Skip if already on target invoice
       if target_invoice.registrations.any? { |t_reg| t_reg.registerable_id == o_reg.registerable_id && t_reg.registerable_type == o_reg.registerable_type }
@@ -85,7 +93,7 @@ class InvoicesController < ApplicationController
       )
     end
 
-    p target_invoice.save!
+    target_invoice.save
     target_invoice
   end
 
@@ -95,6 +103,20 @@ class InvoicesController < ApplicationController
 
   def flash_success
     flash.now[:notice] = t('.success')
+  end
+
+  def merge_invoices(from, to)
+    from.registrations.each do |reg|
+      reg.update(invoice_id: to.id)
+    end
+
+    from_adj = from.adjustments
+    to_adj = to.adjustments
+    from_adj.each do |adj|
+      next if to_adj.any? { |ta| ta.reason == adj.reason }
+
+      adj.update(invoice_id: to.id)
+    end
   end
 
   def invoice_params

@@ -24,12 +24,14 @@
                         <p class="membership"><%= t('.non_member') %></p>
                     <% end %>
 
-                    <%= link_to t('.copy_regs', child: child.name), 
+                    <%= 
+                        link_to t('.copy_regs', child: child.name), 
                         copy_invoice_path(origin: @child.id, target: child.id, event: @event.id), class: 'button', 
                         data: { 
                             turbo_method: :put, 
                             turbo_confirm: "This will register #{child.name} for all the same time slots and options as #{@child.name}. None of #{child.name}'s existing registrations will be affected"
-                            } unless child.id == @child.id %>
+                            } unless child.id == @child.id 
+                    %>
                 </div>
             <% end %>
         <% end %>
