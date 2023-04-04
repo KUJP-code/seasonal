@@ -110,7 +110,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
   end
 
   create_table "invoices", force: :cascade do |t|
-    t.integer "total_cost"
+    t.integer "total_cost", default: 0
     t.datetime "billing_date"
     t.string "summary"
     t.string "email_template"

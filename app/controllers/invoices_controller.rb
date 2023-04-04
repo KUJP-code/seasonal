@@ -67,6 +67,9 @@ class InvoicesController < ApplicationController
     # Get the target's modifiable invoice, create one if none
     target_invoice = target.invoices.where(event: event).find_by(in_ss: false) || target.invoices.create(event: event)
 
+    p target_invoice
+    p target_invoice.id || 'nil'
+
     og_regs.each do |o_reg|
       # Skip if already on target invoice
       if target_invoice.registrations.any? { |t_reg| t_reg.registerable_id == o_reg.registerable_id && t_reg.registerable_type == o_reg.registerable_type }
@@ -82,6 +85,7 @@ class InvoicesController < ApplicationController
       )
     end
 
+    p target_invoice.save!
     target_invoice
   end
 

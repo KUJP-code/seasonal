@@ -1,7 +1,7 @@
 class CreateInvoices < ActiveRecord::Migration[7.0]
   def change
     create_table :invoices do |t|
-      t.integer :total_cost
+      t.integer :total_cost, default: 0
       t.datetime :billing_date
       t.string :summary
       t.string :email_template
