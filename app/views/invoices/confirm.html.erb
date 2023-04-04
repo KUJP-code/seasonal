@@ -23,7 +23,7 @@
         <div class="opt_regs">
             <%= f.fields_for :opt_regs do |opt_f| %>
                 <div>
-                    <%= opt_f.hidden_field :_destroy, value: 0 %>
+                    <%= opt_f.hidden_field :_destroy %>
                     <%= opt_f.hidden_field :id %>
                     <%= opt_f.hidden_field :child_id %>
                     <%= opt_f.hidden_field :registerable_id %>
@@ -32,6 +32,6 @@
             <% end %>
         </div>
 
-        <%= f.submit class: 'button' %>
+        <%= f.submit t('.confirm_changes'), class: 'button' %>
     <% end %>
 </main>
