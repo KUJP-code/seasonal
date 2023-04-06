@@ -32,8 +32,24 @@ class InvoicesController < ApplicationController
   end
 
   def confirm
-    ignore_slots = invoice_params['slot_regs_attributes'].nil? ? [] : invoice_params['slot_regs_attributes'].keep_if { |_, v| v['_destroy'] == '1' }.to_h.transform_values { |v| v['id'].to_i }.values
-    ignore_opts = invoice_params['opt_regs_attributes'].nil? ? [] : invoice_params['opt_regs_attributes'].keep_if { |_, v| v['_destroy'] == '1' }.to_h.transform_values { |v| v['id'].to_i }.values
+    ignore_slots = if invoice_params['slot_regs_attributes'].nil?
+                     []
+                   else
+                     invoice_params['slot_regs_attributes'].keep_if do |_, v|
+                       v['_destroy'] == '1'
+                     end.to_h.transform_values do |v|
+                       v['id'].to_i
+                     end.values
+                   end
+    ignore_opts = if invoice_params['opt_regs_attributes'].nil?
+                    []
+                  else
+                    invoice_params['opt_regs_attributes'].keep_if do |_, v|
+                      v['_destroy'] == '1'
+                    end.to_h.transform_values do |v|
+                      v['id'].to_i
+                    end.values
+                  end
 
     @invoice = Invoice.new(invoice_params)
     @invoice.calc_cost(ignore_slots, ignore_opts)
@@ -80,7 +96,9 @@ class InvoicesController < ApplicationController
 
     og_regs.each do |o_reg|
       # Skip if already on target invoice
-      if target_invoice.registrations.any? { |t_reg| t_reg.registerable_id == o_reg.registerable_id && t_reg.registerable_type == o_reg.registerable_type }
+      if target_invoice.registrations.any? do |t_reg|
+           t_reg.registerable_id == o_reg.registerable_id && t_reg.registerable_type == o_reg.registerable_type
+         end
         next
       end
 

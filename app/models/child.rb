@@ -28,6 +28,9 @@ class Child < ApplicationRecord
   # Track changes with PaperTrail
   has_paper_trail
 
+  # Allow export/import with postgres-copy
+  acts_as_copy_target
+
   # Map category int in table to a category
   # TODO: check this being different from db default is fine.
   # Logic for them being different was for direct imports from SS we want

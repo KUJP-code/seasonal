@@ -33,6 +33,9 @@ class Invoice < ApplicationRecord
   # Track changes with Paper Trail
   has_paper_trail ignore: [:seen_at]
 
+  # Allow export/import with postgres-copy
+  acts_as_copy_target
+
   # Validations
   validates :total_cost, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
@@ -105,9 +108,12 @@ class Invoice < ApplicationRecord
   end
 
   def calc_option_cost
-    opt_cost = opt_regs.reject { |reg| @ignore_opts.include?(reg.id) }.reduce(0) { |sum, reg| sum + reg.registerable.cost }
+    opt_cost = opt_regs.reject do |reg|
+                 @ignore_opts.include?(reg.id)
+               end.reduce(0) { |sum, reg| sum + reg.registerable.cost }
     @breakdown << "<h3>Option cost:</h3>
-                   <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{opt_regs.size - @ignore_opts.size}  options<p>"
+                   <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
+                                                   '\\1,').reverse}円 for #{opt_regs.size - @ignore_opts.size}  options<p>"
     options.group(:name).sum(:cost).each do |name, cost|
       @breakdown << "<p>- #{name} x #{options.where(name: name).count}: #{cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
                                                                                                  '\\1,').reverse}円</p>"

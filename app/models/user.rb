@@ -53,6 +53,9 @@ class User < ApplicationRecord
   # Track changes with PaperTrail
   has_paper_trail
 
+  # Allow export/import with postgres-copy
+  acts_as_copy_target
+
   # Validations
   validates :email, confirmation: true
 
@@ -102,7 +105,7 @@ class User < ApplicationRecord
 
   # Include default devise modules. Others available are:
   # :timeoutable, :confirmable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable, 
+  devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :lockable
 
   # Public methods

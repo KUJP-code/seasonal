@@ -53,6 +53,14 @@
         <%= render Event.all.where(school: @user.school).order(start_date: :asc).first %>
     <% end %>
 
+    <% if @user.admin? && current_user.admin? %>
+        <h1><%= t('.admin_options') %></h1>
+
+        <div id="admin_options">
+            <%= link_to t('.import_export'), csvs_path, class: 'button' %>
+        </div>
+    <% end %>
+
     <% if @user.area_manager? %>
         <h2><%= t('.managed_areas') %></h2>
         <div id="area_container">

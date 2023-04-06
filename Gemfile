@@ -72,6 +72,9 @@ gem 'mail', '2.7.1'
 gem 'faker'
 gem 'faker_japanese'
 
+# Use postgres-copy to import/export .csv data
+gem 'postgres-copy'
+
 group :development, :test do
   # Capybara for system/feature testing
   gem 'capybara'

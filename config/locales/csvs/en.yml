@@ -1,0 +1,5 @@
+en:
+  csvs:
+    index:
+      download_records: "Download Records"
+      upload_records: "Upload Records"

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get 'csvs/index'
   scope '(/:locale)', locale: /ja|en/ do
     devise_for :users, path: 'auth', controllers: {
       registrations: 'users/registrations'
@@ -12,20 +13,25 @@ Rails.application.routes.draw do
       resources :areas
       resources :children
       resources :coupons
+      resources :csvs
       resources :events
       resources :invoices
-      resources :options
+      resources :options, only: [:index]
       resources :price_lists
       resources :registrations
       resources :schools
       resources :time_slots
       resources :users
 
-      # Routes for InvoiceEdits controller
+      # Non-REST routes for Invoice controller
       put 'copy_invoice', to: 'invoices#copy', as: :copy_invoice
       patch 'confirm_invoice', to: 'invoices#confirm', as: :confirm_invoice
       post 'seen_invoice', to: 'invoices#seen', as: :seen_invoice
       post 'merge_invoices', to: 'invoices#merge', as: :merge_invoices
+
+      # Non-REST routes for Csv controller
+      post 'csv/upload', to: 'csvs#upload', as: :upload_csv
+      get 'csv/download', to: 'csvs#download', as: :download_csv
 
       # Ensures just the locale also goes to root
       get '/:locale', to: 'users#profile'
