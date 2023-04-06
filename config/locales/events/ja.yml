@@ -1,7 +1,6 @@
 ja:
   events:
     event:
-      reg_count: "%{num_kids}名の登録児童"
       title: "%{school}の%{name}"
     show:
       time_slot: "%{event}のタイムスロット"

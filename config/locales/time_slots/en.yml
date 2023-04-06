@@ -3,7 +3,6 @@ en:
     time_slot:
       am_reg: "AM Registrations"
       date: "Date: %{date}"
-      reg_count: "%{num_kids} children registered"
       pm_reg: "PM Registrations"
       times: "Time: %{time}"
       title: "%{name} at %{school}"
