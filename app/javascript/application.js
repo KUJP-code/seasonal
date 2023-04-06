@@ -4,8 +4,6 @@
 //= require bootstrap-sprockets
 
 import "@hotwired/turbo-rails";
-import "@popperjs/core";
-import "bootstrap";
 import "controllers";
 
 // Initializers for Bootstrap components that need them
