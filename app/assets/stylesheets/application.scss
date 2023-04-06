@@ -14,6 +14,9 @@
  *= require_self
  */
 
+/* Custom bootstrap variables must be set or imported *before* bootstrap. */
+@import "bootstrap";
+
 :root {
   font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
@@ -23,12 +26,12 @@
   --ku-dark-accent: #d45e69;
   --ku-background: #80b4cf;
   --ku-dark-background: #1487b8;
-  --main-heading-size: min(4vw, 32px);
+  --main-heading-size: 32px;
   --near-black: #222222;
   --near-white: #f2f2f2;
-  --sub-heading-size: min(1.5vw, 20px);
-  --content-size: min(1.5vw, 16px);
-  font-size: min(1.5vw, 16px);
+  --sub-heading-size: 20px;
+  --content-size: 16px;
+  font-size: 16px;
 }
 
 body {

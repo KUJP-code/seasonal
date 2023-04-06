@@ -31,7 +31,7 @@
 
 /* Styles for all shadowed containers */
 #event_show .time_slot {
-  width: max(30vw, 300px);
+  width: 30vw;
   border-radius: 1vw;
   padding: 1vw;
   gap: 1vw;

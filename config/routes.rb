@@ -36,7 +36,6 @@ Rails.application.routes.draw do
       # Ensures just the locale also goes to root
       get '/:locale', to: 'users#profile'
     end
-    get '/current_event', to: 'welcomes#current_event'
     get 'errors/child_theft', to: 'errors#child_theft', as: :child_theft
     get 'errors/permission', to: 'errors#permission', as: :no_permission
     get 'errors/registration_error', to: 'errors#registration_error', as: :reg_error
