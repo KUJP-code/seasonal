@@ -8,9 +8,10 @@ class School < ApplicationRecord
   has_many :managements, as: :manageable,
                          dependent: :destroy
   has_many :managers, through: :managements
-  has_many :users, dependent: :restrict_with_exception
-  delegate :customers, to: :users
   has_many :children, dependent: nil
+  has_many :parents, -> { distinct }, through: :children,
+                                      class_name: 'User',
+                                      foreign_key: :parent_id
   has_many :events, -> { order(start_date: :asc) }, dependent: :destroy,
                                                     inverse_of: :school
   has_many :time_slots, through: :events
