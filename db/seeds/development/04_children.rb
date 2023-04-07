@@ -1,4 +1,5 @@
 User.customers.each do |customer_user|
+  school = School.find(rand(1..3))
   customer_user.children.create!([
     {
       first_name: Faker::Name.first_name,
@@ -13,7 +14,7 @@ User.customers.each do |customer_user|
       allergies: 'peanuts',
       grade: '年中',
       category: :external,
-      school: customer_user.school
+      school: school
     },
     {
       first_name: Faker::Name.first_name,
@@ -27,7 +28,7 @@ User.customers.each do |customer_user|
       allergies: 'peanuts',
       grade: '小４',
       category: :reservation,
-      school: customer_user.school
+      school: school
     }
   ])
 end

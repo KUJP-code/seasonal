@@ -1,5 +1,5 @@
-School.all.each do |school|
-  school.customers.create!([
+School.all.count.times do
+  User.create!([
     {
       first_name: Faker::Name.first_name,
       family_name: Faker::Name.last_name,

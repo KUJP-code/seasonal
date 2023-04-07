@@ -222,12 +222,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
     t.string "prefecture"
     t.string "address"
     t.string "phone"
-    t.bigint "school_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["school_id"], name: "index_users_on_school_id"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -258,5 +256,4 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
   add_foreign_key "schools", "areas"
   add_foreign_key "time_slots", "events"
   add_foreign_key "time_slots", "time_slots", column: "morning_slot_id"
-  add_foreign_key "users", "schools"
 end

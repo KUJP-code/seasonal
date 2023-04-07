@@ -7,7 +7,6 @@ class User < ApplicationRecord
   # Allow use of separate fields to ensure consistent name formatting
   attr_accessor :first_name, :family_name, :kana_first, :kana_family
 
-  belongs_to :school, optional: true
   has_one :area, through: :school
 
   has_many :managements, foreign_key: :manager_id,
@@ -33,8 +32,9 @@ class User < ApplicationRecord
                       foreign_key: :parent_id,
                       inverse_of: :parent
   accepts_nested_attributes_for :children, allow_destroy: true
-  has_many :registrations, through: :children
   validates_associated :children
+  has_many :registrations, through: :children
+  has_many :invoices, through: :children
   has_many :time_slots, through: :registrations,
                         source: :registerable,
                         source_type: 'TimeSlot'
@@ -42,7 +42,6 @@ class User < ApplicationRecord
                                 source: :registerable,
                                 source_type: 'Option'
   has_many :events, -> { order(start_date: :asc).distinct }, through: :time_slots
-  has_many :invoices, through: :children
 
   # Set full name from submitted first and last names
   before_validation :set_name, :set_kana
@@ -59,7 +58,7 @@ class User < ApplicationRecord
   # Validations
   validates :email, confirmation: true
 
-  validates :phone, format: { with: /\A[0-9 \-+x.)(]+\Z/, message: I18n.t('schools.validations.phone') }
+  validates :phone, format: { with: /\A[0-9 \-+x.)(]+\Z/ }
 
   # Map role integer in db to a string
   enum :role, customer: 0,
@@ -74,22 +73,6 @@ class User < ApplicationRecord
   scope :school_managers, -> { where(role: :school_manager) }
   scope :admins, -> { where(role: :admin) }
 
-  # Scopes for User#index to display to each role
-  scope :admin_index, -> { order(updated_at: :desc).includes(:children, :school) }
-
-  scope :sm_index, lambda { |sm|
-    where(school: sm.managed_schools)
-      .order(updated_at: :desc)
-      .limit(12)
-      .includes(:children, :school)
-  }
-  scope :am_index, lambda { |am|
-    where(school: School.where(area: am.managed_areas))
-      .order(updated_at: :desc)
-      .limit(12)
-      .includes(:children, :school)
-  }
-
   # Scope for User#show TODO: Optimise properly once the view is finalised
   scope :user_show, lambda { |param_id|
     where(id: param_id).includes(:children,
@@ -98,8 +81,7 @@ class User < ApplicationRecord
                                  :time_slots,
                                  :registered_options,
                                  :managed_schools,
-                                 :managed_areas,
-                                 :school)
+                                 :managed_areas)
                        .first
   }
 

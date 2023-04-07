@@ -4,7 +4,6 @@
             <div class="key_info">
                 <h1><%= @user.name %></h1>
                 <h4><%= t(".roles.#{@user.role}") unless @user.customer? %></h4>
-                <h4><%= "#{t(".school")}: #{@user.school.name}" unless @user.school.nil? %></h4>
             </div>
 
             <% if @user.customer? && !@user.children.nil? %>
@@ -45,12 +44,11 @@
         <% end %>
     </div>
 
-
-    <% if @user.children? && !@user.school.nil? %>
+    <% if @user.children? %>
         <%= link_to t('.my_invoices'), invoices_path(user: @user.id), class: 'button' %>
 
         <h2><%= t('.next_event') %></h2>
-        <%= render Event.all.where(school: @user.school).order(start_date: :asc).first %>
+        <%= render Event.all.where(school: @user.children.map(&:school)).order(start_date: :asc).first %>
     <% end %>
 
     <% if @user.admin? && current_user.admin? %>

@@ -18,6 +18,4 @@ Area.first.schools.create!([
 
 School.all.last.managers << User.find_by(role: 'school_manager')
 
-User.all.customers.first.update!(school_id: School.last.id)
-
 puts 'Added 3 schools and gave each a manager'

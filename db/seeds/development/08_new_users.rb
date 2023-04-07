@@ -9,8 +9,7 @@ non_member = User.create!(
   kana_family: Faker::Name.last_name,
   role: :customer,
   address: Faker::Address.full_address,
-  phone: Faker::PhoneNumber.phone_number,
-  school: School.all.find_by(name: '溝の口')
+  phone: Faker::PhoneNumber.phone_number
 )
 
 non_member.children.create!([
@@ -26,7 +25,7 @@ non_member.children.create!([
   allergies: '',
   grade: '年中',
   category: :external,
-  school: non_member.school
+  school: School.all.find_by(name: '溝の口')
 },
 {
   first_name: Faker::Name.first_name,
@@ -41,7 +40,7 @@ non_member.children.create!([
   allergies: '',
   grade: '小４',
   category: :external,
-  school: non_member.school
+  school: School.all.find_by(name: '溝の口')
 }
 ])
 
@@ -54,8 +53,7 @@ member = User.create!(
   kana_family: Faker::Name.last_name,
   role: :customer,
   address: Faker::Address.full_address,
-  phone: Faker::PhoneNumber.phone_number,
-  school: School.all.find_by(name: '溝の口')
+  phone: Faker::PhoneNumber.phone_number
 )
 
 member.children.create!([
@@ -73,7 +71,7 @@ member.children.create!([
     allergies: 'milk',
     grade: '年中',
     category: 'internal',
-    school: member.school
+    school: School.all.find_by(name: '溝の口')
   },
   {
     first_name: Faker::Name.first_name,
@@ -88,7 +86,7 @@ member.children.create!([
     allergies: 'milk',
     grade: '小４',
     category: 'internal',
-    school: member.school
+    school: School.all.find_by(name: '溝の口')
   }
 ])
 

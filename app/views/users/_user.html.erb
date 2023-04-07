@@ -4,11 +4,6 @@
     <p class="email"><%= user.email %></p>
     <p class="phone"><%= user.phone %></p>
     <p class="address"><%= user.address %></p>
-    <% if user.school.nil? %>
-        <p class="school"><%= t('.no_school') %></p>
-    <% else %>
-        <p class="school"><%= user.school.name %></p>
-    <% end %>
     <p class="edit"><%= link_to t('.edit_user'), edit_user_path(user), class: 'button' if current_user.staff? %></p>
 
     <div class="user_children">
