@@ -48,7 +48,13 @@
 
             <div class="field" data-controller="conditional">
                 <%= f.label :allergies, t('.allergies') %><br />
-                <input type="checkbox" name="allergies" data-action="click->conditional#toggle" <%= "checked=checked" unless @child.allergies == '' %> data-conditional-target="condition">
+                <select name="" id=""
+                data-action="change->conditional#toggle"
+                data-conditional-target="condition">
+                    <option value="">-</option>
+                    <option value="なし" <%= "selected='selected'" if @child.allergies == 'なし' %>>なし</option>
+                    <option value="はい" <%= "selected='selected'" unless @child.allergies == 'なし' || @child.allergies.nil? %>>はい</option>
+                </select>
                 <%= f.text_field :allergies, value: @child.allergies, data: { conditional_target: 'target' } %>
             </div>
 

@@ -8,14 +8,22 @@ export default class extends Controller {
   }
 
   toggle() {
-    if (this.conditionTarget.checked) {
-      const target = this.targetTarget;
-      target.removeAttribute("readOnly");
-      target.value = "";
-    } else {
-      const target = this.targetTarget;
-      target.value = "なし";
-      target.readOnly = true;
+    const allergy = this.conditionTarget.value;
+    const target = this.targetTarget;
+
+    switch (allergy) {
+      case "なし":
+        target.value = "なし";
+        target.readOnly = true;
+        break;
+      case "はい":
+        target.removeAttribute("readOnly");
+        target.value = "";
+        break;
+      default:
+        target.value = null;
+        target.readOnly = true;
+        break;
     }
   }
 }
