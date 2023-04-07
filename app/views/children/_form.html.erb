@@ -52,10 +52,10 @@
                 data-action="change->conditional#toggle"
                 data-conditional-target="condition">
                     <option value="">-</option>
-                    <option value="なし" <%= "selected='selected'" if @child.allergies == 'なし' %>>なし</option>
-                    <option value="はい" <%= "selected='selected'" unless @child.allergies == 'なし' || @child.allergies.nil? %>>はい</option>
+                    <option value="なし" <%= "selected='selected'" if f.object.allergies == 'なし' %>>なし</option>
+                    <option value="はい">はい</option>
                 </select>
-                <%= f.text_field :allergies, value: @child.allergies, data: { conditional_target: 'target' } %>
+                <%= f.text_field :allergies, value: f.object.allergies, data: { conditional_target: 'target' } %>
             </div>
 
             <div class="field">
@@ -86,6 +86,13 @@
                 <%= f.label :photos, t('.photos') %><br />
                 <%= f.select :photos, [%w[OK OK], %w[なし なし]] %>
             </div>
+
+            <% if current_user.customer? && f.object.new_record? %>
+                <div class="field">
+                    <%= f.label :first_seasonal, t('.first_seasonal') %><br />
+                    <%= f.check_box :first_seasonal %>
+                </div>
+            <% end %>
 
             <% if current_user.staff? %>
                 <div class="field">

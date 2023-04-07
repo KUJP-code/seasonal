@@ -4,7 +4,7 @@
 # Must have a parent, and a school
 class Child < ApplicationRecord
   # Allow use of separate fields to ensure consistent name formatting
-  attr_accessor :first_name, :family_name, :kana_first, :kana_family
+  attr_accessor :first_name, :family_name, :kana_first, :kana_family, :first_seasonal
 
   # List associations to other models
   belongs_to :parent, class_name: 'User', optional: true
@@ -23,7 +23,7 @@ class Child < ApplicationRecord
   has_many :events, -> { distinct }, through: :time_slots
   has_many :invoices, dependent: :destroy
 
-  before_validation :set_name, :set_kana, :set_kindy
+  before_validation :set_name, :set_kana, :set_kindy, :set_hat
 
   # Track changes with PaperTrail
   has_paper_trail
@@ -119,6 +119,12 @@ class Child < ApplicationRecord
   end
 
   private
+
+  def set_hat
+    return if first_seasonal.nil?
+
+    self.needs_hat = first_seasonal
+  end
 
   def set_kana
     # Guard clause should never happen in prod because required field, but does
