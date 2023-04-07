@@ -10,8 +10,14 @@ end
 puts 'Added the photo service option to each event'
 
 Event.where(name: 'Spring School 2023').each do |event|
-  event.time_slots.each do |slot|
-    slot.options.create!([
+  event.time_slots.morning.each do |m_slot|
+    m_slot.options.create!([
+      {
+        name: '昼',
+        description: 'Top up on energy through the day!',
+        category: :meal,
+        cost: 100
+      },
       {
         name: 'Arrive on time',
         category: :arrival,
@@ -32,6 +38,17 @@ Event.where(name: 'Spring School 2023').each do |event|
         modifier: -60,
         description: 'Be at KU longer, for even more fun!',
         cost: 100
+      }
+    ])
+  end
+
+  event.time_slots.afternoon.each do |a_slot|
+    a_slot.options.create!([
+      {
+        name: '晩',
+        description: 'Top up on energy through the day!',
+        category: :meal,
+        cost: 100
       },
       {
         name: 'Leave on time',
@@ -43,37 +60,18 @@ Event.where(name: 'Spring School 2023').each do |event|
       {
         name: 'Leave 30min late',
         category: :departure,
-        modifier: +30,
+        modifier: 30,
         description: 'Be at KU longer, for even more fun!',
         cost: 100
       },
       {
         name: 'Leave 1hr late',
         category: :departure,
-        modifier: +60,
+        modifier: 60,
         description: 'Be at KU longer, for even more fun!',
         cost: 100
-      },
+      }
     ])
-    slot.image.attach(io: File.open("app/assets/images/#{slot.name.downcase.gsub(' ', '_').gsub('_pm', '')}.jpg"), filename: 'logo.jpg', content_type: 'image/jpg')
-  end
-
-  event.time_slots.morning.each do |m_slot|
-    m_slot.options.create!(
-    name: '昼',
-    description: 'Top up on energy through the day!',
-    category: :meal,
-    cost: 100
-    )
-  end
-
-  event.time_slots.afternoon.each do |a_slot|
-    a_slot.options.create!(
-    name: '晩',
-    description: 'Top up on energy through the day!',
-    category: :meal,
-    cost: 100
-    )
   end
   
   event.time_slots.morning.where(category: :special).each do |sp_slot|

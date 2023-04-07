@@ -337,3 +337,9 @@ end
 
 
 puts 'Create afternoon time slots for spring school'
+
+TimeSlot.all.each do |slot|
+  slot.image.attach(io: File.open("app/assets/images/#{slot.name.downcase.gsub(' ', '_').gsub('_pm', '')}.jpg"), filename: 'logo.jpg', content_type: 'image/jpg')
+end
+
+puts 'Added images to each slot'

@@ -81,35 +81,6 @@
                     <% end %>
                 </fieldset>
             <% end %>
-
-            <% depart_options = add_slot.options.select { |opt| opt.departure? } %>
-
-            <% if depart_options.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
-                <% registered_depart = depart_options.select { |opt| opts_in_ss.any? {  |reg| reg.registerable_id == opt.id} }.first %>
-                <p><%= "#{registered_depart.name}: ◯" %></p>
-            <% else %>
-                <fieldset>
-                    <legend><%= t('.depart_options') %></legend>
-                    <% depart_options.each do |opt| %>
-                        <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
-
-                        <div class="add_reg"
-                             data-controller="register"
-                             data-register-id-value=<%= opt.id %>
-                             data-register-type-value="Option"
-                             data-register-child-value=<%= child.id %>
-                             data-register-cost-value=<%= opt.cost %>>
-
-                            <label for="<%= "depart#{opt.optionable_id}opt#{opt.id}" %>" data-register-target="name"><%= opt.name %></label>
-                            <input type="radio" 
-                            name="depart<%= "#{opt.optionable_id}" %>" 
-                            id="<%= "depart#{opt.optionable_id}opt#{opt.id}" %>" 
-                            <%= 'checked' if opt_registered %>
-                            data-register-target="button" data-action="change->register#toggle">
-                        </div>
-                    <% end %>
-                </fieldset>
-            <% end %>
         </div>
     </div>
     <div class="afternoon" data-controller="popup"
@@ -166,35 +137,6 @@
                             %></button>
                         </div>
                     <% end %>
-                <% end %>
-
-                <% arrival_options = afternoon_slot.options.select { |opt| opt.arrival? }%>
-
-                <% if arrival_options.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
-                    <% registered_arrival = arrival_options.select { |opt| opts_in_ss.any? {  |reg| reg.registerable_id == opt.id} }.first %>
-                    <p><%= "#{registered_arrival.name}: ◯" %></p>
-                <% else %>
-                    <fieldset>
-                        <legend><%= t('.arrival_options') %></legend>
-                        <% afternoon_slot.options.select { |opt| opt.arrival? }.each do |opt| %>
-                            <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
-
-                            <div class="add_reg"
-                                 data-controller="register"
-                                 data-register-id-value=<%= opt.id %>
-                                 data-register-type-value="Option"
-                                 data-register-child-value=<%= child.id %>
-                                 data-register-cost-value=<%= opt.cost %>>
-
-                                <label for="<%= "arrival#{opt.optionable_id}opt#{opt.id}" %>" data-register-target="name"><%= opt.name %></label>
-                                <input type="radio" 
-                                name=<%= "arrival#{opt.optionable_id}child#{child.id}" %> 
-                                id="<%= "arrival#{opt.optionable_id}opt#{opt.id}" %>" 
-                                <%= 'checked' if opt_registered %>
-                                data-register-target="button" data-action="change->register#toggle">
-                            </div>
-                        <% end %>
-                    </fieldset>
                 <% end %>
 
                 <% depart_options = afternoon_slot.options.select { |opt| opt.departure? } %>
