@@ -66,15 +66,15 @@
             <%= f.select :category, [["#{t('.internal')}", "internal"], ["#{t('.reservation')}", "reservation"], ["#{t('.external')}", "external"]] %>
         </div>
 
+        <div class="field">
+            <%= f.label :photos, t('.photos') %><br />
+            <%= f.select :photos, [%w[OK OK], %w[なし なし]] %>
+        </div>
+
         <% if current_user.staff? %>
             <div class="field">
                 <%= f.label :kindy, t('.kindy') %><br />
                 <%= f.check_box :kindy %>
-            </div>
-
-            <div class="field">
-                <%= f.label :photos, t('.photos') %><br />
-                <%= f.check_box :photos %>
             </div>
 
             <div class="field">

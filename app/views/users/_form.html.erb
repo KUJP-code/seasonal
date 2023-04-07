@@ -78,11 +78,6 @@
                     <%= f.label :phone, t('.phone') %><br />
                     <%= f.telephone_field :phone, autocomplete: "phone" %>
                 </div>
-
-                <div class="field school">
-                    <%= f.label :school, t('.school') %><br />
-                    <%= f.collection_select :school_id, School.order(:name), :id, :name %>
-                </div>
             </div>
         </div>
     

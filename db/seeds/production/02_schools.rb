@@ -17,6 +17,3 @@ Area.first.schools.create!([
 ])
 
 School.all.last.managers << User.find_by(role: 'school_manager')
-
-# Add the test user to a school
-User.all.customers.first.update!(school_id: School.last.id)

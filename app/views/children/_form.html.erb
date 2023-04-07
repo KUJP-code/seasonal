@@ -76,6 +76,11 @@
                 <%= f.select :category, [["#{t('.external')}", "external"], ["#{t('.internal')}", "internal"], ["#{t('.reservation')}", "reservation"]], selected: "#{t('.external')}" %>
             </div>
 
+            <div class="field">
+                <%= f.label :photos, t('.photos') %><br />
+                <%= f.select :photos, [%w[OK OK], %w[なし なし]] %>
+            </div>
+
             <% if current_user.staff? %>
                 <div class="field">
                     <%= f.label :kindy, t('.kindy?') %><br />
@@ -85,11 +90,6 @@
                 <div class="field">
                     <%= f.label :ssid, t('.ssid') %><br />
                     <%= f.number_field :ssid %>
-                </div>
-
-                <div class="field">
-                    <%= f.label :photos, t('.photos') %><br />
-                    <%= f.check_box :photos %>
                 </div>
 
                 <div class="field">

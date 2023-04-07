@@ -38,6 +38,13 @@
             <p><%= (@child.kindy) ? 'Kindy' : 'Elementary' %></p>
             <p><%= "#{t('.ele_school')} #{@child.ele_school_name}" %></p>
         </div>
+
+
+        <% if current_user.staff? || current_user.id == @child.parent_id %>
+            <div class="staff_options">
+                <%= link_to t('.edit_child'), edit_child_path(@child), class: 'button' %>
+            </div>
+        <% end %>
     </div>
 
     <h2><%= t('.next_event') %></h2>
