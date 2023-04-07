@@ -115,7 +115,7 @@ class UsersController < ApplicationController
       children_attributes: %i[id first_name family_name grade
                               katakana_name en_name category birthday
                               level allergies ssid ele_school_name
-                              post_photos needs_hat received_hat
+                              photos needs_hat received_hat
                               parent_id school_id kana_first kana_family]
     )
   end

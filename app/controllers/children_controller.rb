@@ -64,7 +64,7 @@ class ChildrenController < ApplicationController
     params.require(:child).permit(:id, :first_name, :family_name,
                                   :kana_first, :kana_family, :en_name, :category, :birthday, :level, :allergies,
                                   :grade, :ssid, :ele_school_name,
-                                  :post_photos, :needs_hat,
+                                  :photos, :needs_hat,
                                   :received_hat, :parent_id, :school_id,
                                   registrations_attributes: %i[
                                     child_id registerable_type

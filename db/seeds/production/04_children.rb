@@ -11,7 +11,7 @@ User.customers.each do |customer|
       birthday: 'Fri, 21 Aug 2020',
       ssid: "#{customer.id}#{customer.email[0]}1".to_i,
       ele_school_name: '菊名',
-      post_photos: true,
+      photos: 'マイペイジ',
       allergies: 'なし',
       grade: '年中',
       category: :external,

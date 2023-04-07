@@ -56,6 +56,11 @@ class Child < ApplicationRecord
                '中学１年' => 12,
                '中学２年' => 13
 
+  # Map photos int in table to a permission
+  enum :photos, 'なし' => 0,
+                'マイペイジ' => 1,
+                'OK' => 3
+
   # Validations
   validates :birthday, comparison: { greater_than: 15.years.ago, less_than: 1.year.ago }
   validates :ssid, uniqueness: { allow_blank: true }

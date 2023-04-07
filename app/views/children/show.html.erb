@@ -14,8 +14,8 @@
 
         <div class="staff_info">
             <p>
-                <%= "#{t('.photos')} ◯" if @child.post_photos %>
-                <%= "#{t('.photos')} ✖" unless @child.post_photos %>
+                <%= "#{t('.photos')} ◯" if @child.photos == 'OK' %>
+                <%= "#{t('.photos')} ✖" unless @child.photos == 'OK' %>
             </p>
 
             <p>

@@ -11,7 +11,7 @@ class CreateChildren < ActiveRecord::Migration[7.0]
       t.string :allergies
       t.bigint :ssid
       t.string :ele_school_name
-      t.boolean :post_photos
+      t.integer :photos, default: 0
       t.boolean :needs_hat, default: true
       t.boolean :received_hat, default: false
 

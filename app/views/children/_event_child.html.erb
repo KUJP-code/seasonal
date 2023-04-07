@@ -78,11 +78,7 @@
     </td>
     <td rowspan="2"><%= event_child.regular_schedule.days if event_child.regular_schedule %></td>
     <td rowspan="2"><%= event_child.allergies %></td>
-    <td rowspan="2"><%= 
-    unless event_child.post_photos 
-        'NG'
-    end 
-    %></td>
+    <td rowspan="2"><%= event_child.photos unless event_child.photos == 'OK' %></td>
 
     <% if reg_special.size.zero? %>
         <td colspan="3"></td>

@@ -10,7 +10,7 @@ User.customers.each do |customer_user|
       birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
       ssid: Faker::Number.unique.number,
       ele_school_name: Faker::GreekPhilosophers.name,
-      post_photos: true,
+      photos: 'OK',
       allergies: 'peanuts',
       grade: '年中',
       category: :external,
@@ -44,7 +44,7 @@ Child.create!(
   birthday: 'Wed, 20 Feb 2020',
   ssid: 1,
   ele_school_name: Faker::GreekPhilosophers.name,
-  post_photos: true,
+  photos: 'OK',
   allergies: 'peanuts',
 )
 
