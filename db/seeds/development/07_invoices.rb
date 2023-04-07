@@ -25,7 +25,7 @@ School.all.each do |school|
   school.time_slots.each do |slot|
     school.children.each do |child|
       if slot.id.even?
-        child.registrations.create!(registerable: slot, invoice: Invoice.find_by(child: child, event: slot.event))
+        child.registrations.create!(registerable: slot, invoice: Invoice.find_by(child: child, event: slot.event, in_ss: false))
       else
         child.registrations.create!(registerable: slot, invoice: Invoice.find_by(child: child, event: slot.event, in_ss: true))
       end

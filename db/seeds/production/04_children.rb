@@ -9,13 +9,13 @@ User.customers.each do |customer|
       kana_family: %w[Timmy Sally Billy Sarah Brett ヨシ マリナ カイト].sample,
       en_name: %w[Timmy Sally Billy Sarah Brett ヨシ マリナ カイト].sample,
       birthday: 'Fri, 21 Aug 2020',
-      ssid: "#{customer.id}#{customer.school_id}1".to_i,
+      ssid: "#{customer.id}#{customer.email[0]}1".to_i,
       ele_school_name: '菊名',
       post_photos: true,
       allergies: 'なし',
       grade: '年中',
       category: :external,
-      school: customer.school
+      school_id: rand(1..3) 
     },
     {
       first_name: %w[Timmy Sally Billy Sarah Brett ヨシ マリナ カイト].sample,
@@ -24,12 +24,12 @@ User.customers.each do |customer|
       kana_family: %w[Timmy Sally Billy Sarah Brett ヨシ マリナ カイト].sample,
       en_name: %w[Timmy Sally Billy Sarah Brett ヨシ マリナ カイト].sample,
       birthday: 'Fri, 21 Aug 2020',
-      ssid: "#{customer.id}#{customer.school_id}2".to_i,
+      ssid: "#{customer.id}#{customer.email[0]}2".to_i,
       ele_school_name: '菊名',
       allergies: 'peanuts',
       grade: '小４',
       category: :reservation,
-      school: customer.school
+      school_id: rand(1..3) 
     }
   ])
 end
