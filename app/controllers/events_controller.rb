@@ -39,7 +39,7 @@ class EventsController < ApplicationController
 
     if @event.update(event_params)
       flash_success
-      redirect_to event_path(@event)
+      redirect_to events_path
     else
       flash_failure
       render :edit, status: :unprocessable_entity
@@ -61,10 +61,11 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:id, :name, :description, :start_date,
-                                  :end_date, :school_id, time_slots_attributes:
+    params.require(:event).permit(:id, :name, :description, :start_date, :image,
+                                  :end_date, :school_id, :member_prices_id,
+                                  :non_member_prices_id, time_slots_attributes:
                                   %i[id name start_time end_time description
-                                     max_attendees registration_deadline event_id _destroy])
+                                     category registration_deadline event_id morning morning_slot_id image _destroy])
   end
 
   def flash_failure
@@ -97,7 +98,7 @@ class EventsController < ApplicationController
     when 'school_manager'
       current_user.school_events.with_attached_image
     else
-      current_user.school.events.with_attached_image
+      current_user.children_events
     end
   end
 end

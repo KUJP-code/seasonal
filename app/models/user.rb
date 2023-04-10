@@ -91,6 +91,15 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :lockable
 
   # Public methods
+  # Finds the list of events at their children's schools
+  def children_events
+    all_events = children.reduce([]) do |sum, child|
+      sum + child.school.events.with_attached_image
+    end
+
+    all_events.uniq
+  end
+
   # Checks if User has children
   def children?
     return false if children.empty?
