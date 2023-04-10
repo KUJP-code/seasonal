@@ -37,9 +37,10 @@
             <%= f.date_field :end_date %>
         </div>
 
+        <%# TODO: add an option to create for all schools here, and in controller %>
         <div class="field">
             <%= f.label :school_id, t('.school') %><br />
-            <%= f.collection_select :school_id, School.order(:name), :id, :name %>
+            <%= f.select :school_id, [%w[All Schools, all]] + School.order(:name).map { |school| [school.name, school.id]} %>
         </div>
 
         <div class="field">

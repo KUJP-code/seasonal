@@ -23,14 +23,21 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(event_params)
-
-    if @event.save
-      flash_success
+    if params[:event][:school_id] == 'all'
+      School.all.each do |school|
+        school.events.create(event_params)
+      end
       redirect_to events_path
     else
-      flash_failure
-      render :new, status: :unprocessable_entity
+      @event = Event.new(event_params)
+
+      if @event.save
+        flash_success
+        redirect_to events_path
+      else
+        flash_failure
+        render :new, status: :unprocessable_entity
+      end
     end
   end
 
