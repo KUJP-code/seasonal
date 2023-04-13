@@ -113,6 +113,10 @@
   padding: 0.5rem 1rem;
 }
 
+.collapsible-content .content-inner img {
+  width: 70%;
+}
+
 #event_show .children .child,
 #event_show .adjustment {
   flex: 1 1 auto;
