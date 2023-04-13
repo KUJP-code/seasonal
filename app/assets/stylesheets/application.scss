@@ -207,10 +207,10 @@ main#sign-up {
 }
 
 main#login {
-  background: image-url("login_splash.png");
+  background-image: image-url("login_splash.jpg");
   background-position: top;
-  background-repeat: no-repeat;
   background-size: contain;
+  background-repeat: no-repeat;
 }
 
 #reset-pass {
@@ -218,6 +218,7 @@ main#login {
 }
 
 form#new_user {
+  z-index: 1;
   width: 100vw;
   background-color: white;
   border-radius: 4rem 4rem 0 0;
