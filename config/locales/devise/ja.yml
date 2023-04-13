@@ -14,6 +14,8 @@ ja:
         prefecture: "県を選ぶ"
         school: "学校"
         sign_up: "アカウントを作成"
+        sign_up_msg: "新しいアカウントを作成するには、以下に情報を入力してください"
+        welcome: "ようこそ!"
     sessions:
       new:
         login: "ログイン"

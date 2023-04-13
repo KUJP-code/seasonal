@@ -4,10 +4,13 @@
 
 <main id="sign-up">
   
-  <%= form_for(resource, as: resource_name, url: user_registration_path, html: { class: 'h-adr' }) do |f| %>
+  <%= form_for(resource, as: resource_name, url: user_registration_path, html: { class: 'h-adr d-grid gap-3 p-5' }) do |f| %>
     <span class="p-country-name" style="display:none;">Japan</span>
 
-    <h2 class='mb-3'><%= t('.sign_up') %></h2>
+    <div class="text-end"><%= image_tag "favicon.svg" %></div>
+
+    <h2 class='mb-3'><%= t('.welcome') %></h2>
+    <p><%= t('.sign_up_msg') %></p>
 
     <%= render "devise/shared/error_messages", resource: resource %>
       

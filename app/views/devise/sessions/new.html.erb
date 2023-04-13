@@ -4,7 +4,7 @@
     <h2><%= t('.login') %></h2>
 
     <div class="form-floating">
-      <%= f.email_field :email, class: 'form-control form-control bs-info',
+      <%= f.email_field :email, class: 'form-control bs-info',
                             'aria-describedby': 'emailHelp', 
                             autofocus: true, 
                             autocomplete: "email", 
@@ -14,7 +14,7 @@
     </div>
   
     <div class="form-floating">
-      <%= f.password_field :password, class: 'form-control form-control',
+      <%= f.password_field :password, class: 'form-control',
                                       autocomplete: "current-password",
                                       placeholder: t('.password'),
                                       required: true,

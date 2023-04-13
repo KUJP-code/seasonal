@@ -141,15 +141,6 @@ a {
   background-image: url("logo.svg");
 }
 
-form > .errors {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-size: var(--sub-heading-size);
-}
-
 input[type="text"]:read-only,
 input[type="text"]:disabled {
   background: grey;
@@ -217,13 +208,35 @@ main#login {
   text-align: right;
 }
 
-form#new_user {
-  z-index: 1;
-  width: 100vw;
-  background-color: white;
+main#login form#new_user {
   border-radius: 4rem 4rem 0 0;
 }
 
-form#new_user input:not(.btn) {
+main#sign-up form#new_user img {
+  width: 20%;
+}
+
+form#new_user {
+  width: 100vw;
+  background-color: white;
+  overflow: scroll;
+}
+
+// Form styles
+
+form > .errors {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: var(--sub-heading-size);
+}
+
+form .form-control {
   background-color: var(--bs-gray-200);
+}
+
+form .input-group-text {
+  background-color: var(--bs-gray-300);
 }

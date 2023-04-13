@@ -10,6 +10,7 @@ en:
         personal_information: "Personal Information"
         phone: "Phone Number"
         school: "School"
+        sign_up_msg: "To create a new account please enter your info below."
     sessions:
       new:
         login: "Log In"
