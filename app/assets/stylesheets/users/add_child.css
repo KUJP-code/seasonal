@@ -40,14 +40,14 @@
 }
 
 #child_results .child.header {
-  background-color: var(--ku-orange);
+  background-color: #707070;
   font-weight: bold;
 }
 
 #child_results .child {
   display: flex;
   flex-flow: row nowrap;
-  background-color: var(--ku-dark-background);
+  background-color: var(--near-white);
   padding: 1vw;
 }
 
