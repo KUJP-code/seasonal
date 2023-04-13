@@ -38,9 +38,9 @@
     <div>
       <%= f.label :first_name, t('.name'), class: 'form-label' %><br />
       <div class="input-group">
-        <%= text_field_tag "user[first_name]", '', class: 'form-control' %>
+        <%= text_field_tag "user[first_name]", (resource.name.split[0] unless resource.name.nil?), class: 'form-control' %>
         <span class="input-group-text"></span>
-        <%= text_field_tag "user[family_name]", '', class: 'form-control' %>
+        <%= text_field_tag "user[family_name]", (resource.name.split[1] unless resource.name.nil?), class: 'form-control' %>
       </div>
     </div>
   
