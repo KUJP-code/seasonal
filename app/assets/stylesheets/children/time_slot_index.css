@@ -6,7 +6,6 @@
 
 #slot_children_index > h1 {
   align-self: center;
-  color: var(--near-white);
 }
 
 #slot_children_index > h2 {
@@ -32,6 +31,7 @@
   table-layout: fixed;
   white-space: nowrap;
   border-spacing: 0;
+  border-collapse: separate;
 }
 
 #slot_children_index table td,

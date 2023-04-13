@@ -7,7 +7,7 @@
 %>
 
 <main id="slot_children_index" data-controller="refresh">
-    <%= link_to t('.back_to_event'), children_path(id: @source.event_id, source: 'Event'), class: 'button' %>
+    <%= link_to t('.back_to_event'), children_path(id: @source.event_id, source: 'Event'), class: 'btn btn-primary' %>
     <h1><%= "#{@source.name} (#{@source.start_time.strftime('%m月%d日')})" %></h1>
     <h2>Automatic refresh in <span data-refresh-target="counter">10:00</span></h2>
 
