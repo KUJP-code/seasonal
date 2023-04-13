@@ -91,12 +91,12 @@
 }
 
 #event_children_index table th.en_name {
-  left: 12.5rem;
+  left: 12rem;
   min-width: 6rem;
 }
 
 #event_children_index table th.ssid {
-  left: 20.5rem;
+  left: 20rem;
   min-width: 3rem;
 }
 

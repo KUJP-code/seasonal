@@ -12,10 +12,6 @@
   align-self: center;
 }
 
-#slot_children_index thead tr:first-child {
-  background: var(--ku-background);
-}
-
 #slot_children_index tr:nth-child(odd) td,
 #slot_children_index tr:nth-child(odd) th {
   background: white;
@@ -96,12 +92,12 @@
 }
 
 #slot_children_index table th.allergy {
-  left: 33vw;
+  left: 32vw;
   min-width: 8vw;
 }
 
 #slot_children_index table th.photos {
-  left: 43vw;
+  left: 40vw;
   min-width: 6vw;
 }
 
