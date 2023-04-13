@@ -4,9 +4,8 @@ en:
       new:
         account_information: "Account Information"
         address: "Address"
-        ja_family_name: "Japanese Family Name"
-        ja_first_name: "Japanese First Name"
-        katakana_name: "Name in Katakana"
+        name: "Name"
+        kana_name: "Kana Name"
         min_length: "%{length} characters minimum"
         personal_information: "Personal Information"
         phone: "Phone Number"

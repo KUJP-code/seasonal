@@ -2,83 +2,77 @@
   <script defer src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 <% end %>
 
-<main id="sign_up">
+<main id="sign-up">
   
   <%= form_for(resource, as: resource_name, url: user_registration_path, html: { class: 'h-adr' }) do |f| %>
     <span class="p-country-name" style="display:none;">Japan</span>
 
-    <h2><%= t('.sign_up') %></h2>
+    <h2 class='mb-3'><%= t('.sign_up') %></h2>
 
     <%= render "devise/shared/error_messages", resource: resource %>
+      
+    <div class="mb-3 form-floating confirmed">
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: t('.email') %>
+      <%= f.label :email, class: 'form-label' %><br />
+    </div>
+
+    <div class="mb-3 form-floating confirmed">
+      <%= f.email_field :email_confirmation, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: t('.email_confirmation') %>
+      <%= f.label :email_confirmation, t('.email_confirmation'), class: 'form-label' %><br />
+    </div>
+
+    <div class="mb-3 form-floating confirmed">
+      <%= f.password_field :password, autocomplete: "new-password", 'aria-labelledby': 'pwd-length', class: 'form-control', placeholder: t('.password') %>
+      <%= f.label :password, class: 'form-label' %>
+      <div id="pwd-length" class="form-text"><%= t('.min_length', length: @minimum_password_length) %></div>
+    </div>
   
-    <h3><%= t('.account_information') %></h3>
+    <div class="mb-3 form-floating confirmed">
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', placeholder: t('.password_confirmation') %>
+      <%= f.label :password_confirmation, class: 'form-label' %><br />
+    </div>
     
-    <div class="field confirmed">
-      <%= f.label :email %><br />
-      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <div class="mb-3">
+      <%= f.label :first_name, t('.name'), class: 'form-label' %><br />
+      <div class="input-group">
+        <%= text_field_tag "user[first_name]", '', class: 'form-control' %>
+        <span class="input-group-text"></span>
+        <%= text_field_tag "user[family_name]", '', class: 'form-control' %>
+      </div>
+    </div>
+  
+    <div class="mb-3">
+      <%= f.label :kana_first, t('.kana_name'), class: 'form-label' %>
+      <div class="input-group">
+        <%= text_field_tag "user[kana_first]", '', class: 'form-control' %>
+        <span class="input-group-text"></span>
+        <%= text_field_tag "user[kana_family]", '', class: 'form-control' %>
+      </div>
     </div>
 
-    <div class="field confirmed">
-      <%= f.label :password %>
-      <%= f.password_field :password, autocomplete: "new-password" %>
-      <em><%= t('.min_length', length: @minimum_password_length) %></em>
+    <div class="mb-3 form-floating">
+      <%= f.text_field :postcode, class: 'p-postal-code', size: 8, maxlength: 8, autocomplete: "postcode", class: 'form-control', placeholder: '〒' %>
+      <%= f.label :postcode, '〒', class: 'form-label' %><br />
     </div>
 
-    <div class="field confirmed">
-      <%= f.label :email_confirmation %><br />
-      <%= f.email_field :email_confirmation, autofocus: true, autocomplete: "email" %>
-    </div>
-  
-    <div class="field confirmed">
-      <%= f.label :password_confirmation %><br />
-      <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-    </div>
-  
-    <h3><%= t('.personal_information') %></h3>
-  
-    <div class="field">
-      <%= f.label :first_name, t('.first_name') %><br />
-      <%= text_field_tag "user[first_name]" %>
-    </div>
-  
-    <div class="field">
-      <%= f.label :family_name, t('.family_name') %><br />
-      <%= text_field_tag "user[family_name]" %>
-    </div>
-  
-    <div class="field">
-        <%= f.label :kana_first, t('.kana_first') %><br />
-        <%= text_field_tag "user[kana_first]" %>
+    <div class="mb-3 form-floating">
+      <%= f.text_field :prefecture, class: 'p-region form-control', placeholder: t('.prefecture') %>
+      <%= f.label :prefecture, t('.prefecture'), class: 'form-label' %><br />
     </div>
 
-    <div class="field">
-        <%= f.label :kana_family, t('.kana_family') %><br />
-        <%= text_field_tag "user[kana_family]" %>
-    </div>
-
-    <div class="field">
-      <%= f.label :postcode, '〒' %><br />
-      <%= f.text_field :postcode, class: 'p-postal-code', size: 8, maxlength: 8, autocomplete: "postcode" %>
-    </div>
-
-    <div class="field">
-      <%= f.label :prefecture, t('.prefecture') %><br />
-      <%= f.text_field :prefecture, class: 'p-region' %>
-    </div>
-
-    <div class="field">
-      <%= f.label :address, t('.address') %><br />
-      <%= f.text_area :address, class: 'p-locality p-street-address p-extended-address', autocomplete: "address" %>
+    <div class="mb-3 form-floating">
+      <%= f.text_area :address, class: 'p-locality p-street-address p-extended-address form-control', autocomplete: "address", placeholder: t('.address') %>
+      <%= f.label :address, t('.address'), class: 'form-label' %><br />
     </div>
   
-    <div class="field">
-      <%= f.label :phone, t('.phone') %><br />
-      <%= f.telephone_field :phone, autocomplete: "phone" %>
+    <div class="mb-3 form-floating">
+      <%= f.telephone_field :phone, autocomplete: "phone", class: 'form-control', placeholder: t('.phone') %>
+      <%= f.label :phone, t('.phone'), class: 'form-label' %><br />
     </div>
   
-    <div class="actions">
-      <%= f.submit t('.sign_up'), class: 'button' %>
-      <%= render "devise/shared/links" %>
+    <div class="d-grid gap-3">
+      <%= f.submit t('.sign_up'), class: 'btn btn-primary' %>
+      <%= link_to t('.log_in'), new_session_path(resource_name), class: 'btn btn-secondary' %>
     </div>
 
   <% end %>

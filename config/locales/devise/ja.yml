@@ -4,14 +4,18 @@ ja:
       new:
         account_information: "口座情報"
         address: "住所"
-        ja_family_name: "姓"
-        ja_first_name: "名"
-        katakana_name: "カナ"
+        email_confirmation: "もう一度Eメールを入力してください"
+        kana_name: "カナ名前"
+        log_in: "ログイン"
         min_length: "最大文字数:%{length}"
+        name: "名前"
         personal_information: "個人情報"
         phone: "電話番号"
+        prefecture: "県を選ぶ"
         school: "学校"
-    shared:
-      links:
-        forgot_password: "パスワードをお忘れですか？"
-        log_in: "ログイン"
+        sign_up: "アカウントを作成"
+    sessions:
+      new:
+        login: "ログイン"
+        forgot_password: "パスワードを忘れた場合"
+        sign_up: "アカウントを作成"

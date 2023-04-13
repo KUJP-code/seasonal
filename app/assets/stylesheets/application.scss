@@ -1,3 +1,23 @@
+$primary: #f48000;
+$secondary: #707070;
+
+:root {
+  --container-shadow: 0px 0.5vw 0.5vw grey;
+  --ku-orange: #f48000;
+  --ku-orange-hover: #fb961b;
+  --ku-dark-accent: #d45e69;
+  --ku-background: #80b4cf;
+  --ku-dark-background: #1487b8;
+  --main-heading-size: 32px;
+  --near-black: #222222;
+  --near-white: #f2f2f2;
+  --sub-heading-size: 20px;
+  --content-size: 16px;
+}
+
+/* Custom bootstrap variables must be set or imported *before* bootstrap. */
+@import "bootstrap";
+
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -14,24 +34,8 @@
  *= require_self
  */
 
-/* Custom bootstrap variables must be set or imported *before* bootstrap. */
-@import "bootstrap";
-
-:root {
-  font-family: Arial, Helvetica, sans-serif;
-  box-sizing: border-box;
-  --container-shadow: 0px 0.5vw 0.5vw grey;
-  --ku-orange: #ef8200;
-  --ku-orange-hover: #fb961b;
-  --ku-dark-accent: #d45e69;
-  --ku-background: #80b4cf;
-  --ku-dark-background: #1487b8;
-  --main-heading-size: 32px;
-  --near-black: #222222;
-  --near-white: #f2f2f2;
-  --sub-heading-size: 20px;
-  --content-size: 16px;
-  font-size: 16px;
+.btn {
+  --bs-btn-border-radius: 5rem;
 }
 
 body {
@@ -151,41 +155,74 @@ input[type="text"]:disabled {
   background: grey;
 }
 
-.button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: fit-content;
-  height: fit-content;
-  border-radius: 1vw;
-  padding: 0.5vw;
-  text-align: center;
-  font-size: var(--content-size);
+.btn-primary {
+  background: $primary;
+  color: var(--near-white);
   font-weight: bold;
-  background: linear-gradient(var(--ku-orange), var(--ku-dark-accent));
-  border: 1px outset var(--ku-orange);
+  &:hover {
+    background: var(--near-white);
+    color: $primary;
+    border: 1px inset $primary;
+  }
 }
 
-.button:hover {
-  background: linear-gradient(var(--ku-orange-hover), var(--ku-dark-accent));
-  border: 1px inset var(--ku-orange);
+.btn-secondary {
+  background: $secondary;
+  color: var(--near-white);
+  font-weight: bold;
+  &:hover {
+    background: var(--near-white);
+    color: $secondary;
+    border: 1px inset $secondary;
+  }
 }
 
-.button.registered {
+.button-ku-registered {
   background: linear-gradient(lightgreen, green);
   border: 1px outset green;
 }
 
-.button.registered:hover {
+.button-ku-registered:hover {
   background: linear-gradient(red, darkred);
   border: 1px inset darkred;
 }
 
-.button:active,
+.button-ku:active,
 input:active {
   border-style: inset;
 }
 
 .hidden {
   display: none;
+}
+
+// Devise
+
+main#login,
+main#sign-up {
+  justify-content: flex-end;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+}
+
+main#login {
+  background: image-url("login_splash.png");
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+#reset-pass {
+  text-align: right;
+}
+
+form#new_user {
+  width: 100vw;
+  background-color: white;
+  border-radius: 6rem 6rem 0 0;
+}
+
+form#new_user input:not(.btn) {
+  background-color: var(--bs-gray-200);
 }
