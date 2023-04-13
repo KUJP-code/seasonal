@@ -66,7 +66,7 @@ class UsersController < ApplicationController
     @child = Child.find(params[:child_id])
     return redirect_to :child_theft unless @child.parent_id.nil?
 
-    update_child
+    @child.update!(parent_id: params[:parent_id])
     flash_success
     redirect_to child_path(@child)
   end
@@ -98,13 +98,6 @@ class UsersController < ApplicationController
     return User.all if current_user.admin?
     return current_user.managed_schools.reduce([]) { |array, s| array + s.parents } if current_user.school_manager?
     return User.am_index(current_user) if current_user.area_manager?
-  end
-
-  def update_child
-    @parent = User.find(params[:parent_id])
-    @parent.children << @child
-    @child.school = @parent.school
-    @child.save
   end
 
   def user_params

@@ -44,7 +44,8 @@ Child.create!(
   ssid: 9999999999999,
   ele_school_name: '菊名',
   allergies: 'peanuts',
-  grade: '小４'
+  grade: '小４',
+  school: School.find(rand(1..3))
 )
 
 Child.all.each do |child|
