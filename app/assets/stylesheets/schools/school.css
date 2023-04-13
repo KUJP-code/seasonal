@@ -1,4 +1,4 @@
-.school {
+main#school_index .school {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
@@ -6,16 +6,16 @@
   text-align: center;
 }
 
-.school > .address {
+main#school_index .school > .address {
   flex-basis: 30vw;
 }
 
-.school > .area,
-.school > .name,
-.school > .phone {
+main#school_index .school > .area,
+main#school_index .school > .name,
+main#school_index .school > .phone {
   flex-basis: 18vw;
 }
 
-.school > .children {
+main#school_index .school > .children {
   flex-basis: 8vw;
 }

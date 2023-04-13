@@ -16,34 +16,32 @@
         <div class="personal_info">
             <h3><%= t('.personal_info') %></h3>
 
-            <div class="field">
-                <%= f.label :first_name, t('.first_name') %><br />
-                <%= text_field_tag "child[first_name]", (@child.name.split[0] unless @child.name.nil?) %>
+            <div>
+                <%= f.label :first_name, t('.name'), class: 'form-label' %><br />
+                <div class="input-group">
+                    <%= text_field_tag "child[first_name]", (@child.name.split[0] unless @child.name.nil?), class: 'form-control' %>
+                    <span class="input-group-text"></span>
+                    <%= text_field_tag "child[family_name]", (@child.name.split[1] unless @child.name.nil?), class: 'form-control' %>
+                </div>
             </div>
 
-            <div class="field">
-                <%= f.label :family_name, t('.family_name') %><br />
-                <%= text_field_tag "child[family_name]", (@child.name.split[1] unless @child.name.nil?) %>
+            <div>
+                <%= f.label :kana_first, t('.kana_first'), class: 'form-label' %><br />
+                <div class="input-group">
+                    <%= text_field_tag "child[kana_first]", (@child.katakana_name.split[0] unless @child.name.nil?), class: 'form-control' %>
+                    <span class="input-group-text"></span>
+                    <%= text_field_tag "child[kana_family]", (@child.katakana_name.split[1] unless @child.name.nil?), class: 'form-control' %>
+                </div>
             </div>
 
-            <div class="field">
-                <%= f.label :kana_first, t('.kana_first') %><br />
-                <%= text_field_tag "child[kana_first]", (@child.katakana_name.split[0] unless @child.name.nil?) %>
+            <div class="form-floating">
+                <%= f.text_field :en_name, autocomplete: "english-name", class: 'form-control', placeholder: t('.en_name') %>
+                <%= f.label :en_name, t('.en_name'), class: 'form-label' %><br />
             </div>
 
-            <div class="field">
-                <%= f.label :kana_family, t('.kana_family') %><br />
-                <%= text_field_tag "child[kana_family]", (@child.katakana_name.split[1] unless @child.name.nil?) %>
-            </div>
-
-            <div class="field">
-                <%= f.label :en_name, t('.en_name') %><br />
-                <%= f.text_field :en_name, autocomplete: "english-name" %>
-            </div>
-
-            <div class="field">
-                <%= f.label :birthday, t('.birthday') %><br />
-                <%= f.date_field :birthday, autocomplete: "birth-date" %>
+            <div class="form-floating">
+                <%= f.date_field :birthday, autocomplete: "birth-date", class: 'form-control', placeholder: t('.birthday') %>
+                <%= f.label :birthday, t('.birthday'), class: 'form-label' %><br />
             </div>
 
             <div class="field" data-controller="conditional">
@@ -63,9 +61,9 @@
                 <%= f.select :grade, Child.grades.reject { |k, _| %w[満１歳 満２歳 年々少 中学１年 中学２年].include?(k) }.map { |k, v| v = k }, selected: @child.grade %>
             </div>
 
-            <div class="field">
-                <%= f.label :ele_school_name, t('.ele_school_name') %><br />
-                <%= f.text_field :ele_school_name %>
+            <div class="form-floating">
+                <%= f.text_field :ele_school_name, class: 'form-control', placeholder: t('.ele_school_name') %>
+                <%= f.label :ele_school_name, t('.ele_school_name'), class: 'form-label' %><br />
             </div>
         </div>
 
@@ -100,7 +98,7 @@
                     <%= f.check_box :kindy %>
                 </div>
 
-                <div class="field">
+                <div class="form-floating">
                     <%= f.label :ssid, t('.ssid') %><br />
                     <%= f.number_field :ssid %>
                 </div>
@@ -117,6 +115,6 @@
             <% end %>
         </div>
         
-        <%= f.submit class: 'button', data: { turbo_frame: '_top' } %>
+        <%= f.submit class: 'btn btn-primary', data: { turbo_frame: '_top' } %>
     <% end %>
 <% end %>
