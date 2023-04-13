@@ -1,6 +1,6 @@
 <% if current_user.staff? %>
 
-    <div class="event">
+    <div class="card">
         <%= (link_to image_tag(url_for(event.image)), children_path(source: 'Event', id: event.id)) unless event.image.blank? %>
 
         <h2><%= link_to event.description, children_path(source: 'Event', id: event.id) %></h2>
@@ -13,7 +13,7 @@
 
 <% else %>
 
-    <div class="event">
+    <div class="card">
         <%= (link_to image_tag(url_for(event.image)), event_path(id: event, child: current_user.children.first.id)) unless event.image.blank? %>
 
         <h2><%= link_to event.description, event_path(id: event, child: current_user.children.first.id) %></h2>

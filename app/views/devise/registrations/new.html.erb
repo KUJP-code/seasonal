@@ -9,33 +9,33 @@
 
     <div class="text-end"><%= image_tag "favicon.svg" %></div>
 
-    <h2 class='mb-3'><%= t('.welcome') %></h2>
+    <h2 class=''><%= t('.welcome') %></h2>
     <p><%= t('.sign_up_msg') %></p>
 
     <%= render "devise/shared/error_messages", resource: resource %>
       
-    <div class="mb-3 form-floating confirmed">
+    <div class="form-floating confirmed">
       <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: t('.email') %>
       <%= f.label :email, class: 'form-label' %><br />
     </div>
 
-    <div class="mb-3 form-floating confirmed">
+    <div class="form-floating confirmed">
       <%= f.email_field :email_confirmation, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: t('.email_confirmation') %>
       <%= f.label :email_confirmation, t('.email_confirmation'), class: 'form-label' %><br />
     </div>
 
-    <div class="mb-3 form-floating confirmed">
+    <div class="form-floating confirmed">
       <%= f.password_field :password, autocomplete: "new-password", 'aria-labelledby': 'pwd-length', class: 'form-control', placeholder: t('.password') %>
       <%= f.label :password, class: 'form-label' %>
       <div id="pwd-length" class="form-text"><%= t('.min_length', length: @minimum_password_length) %></div>
     </div>
   
-    <div class="mb-3 form-floating confirmed">
+    <div class="form-floating confirmed">
       <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', placeholder: t('.password_confirmation') %>
       <%= f.label :password_confirmation, class: 'form-label' %><br />
     </div>
     
-    <div class="mb-3">
+    <div>
       <%= f.label :first_name, t('.name'), class: 'form-label' %><br />
       <div class="input-group">
         <%= text_field_tag "user[first_name]", '', class: 'form-control' %>
@@ -44,7 +44,7 @@
       </div>
     </div>
   
-    <div class="mb-3">
+    <div>
       <%= f.label :kana_first, t('.kana_name'), class: 'form-label' %>
       <div class="input-group">
         <%= text_field_tag "user[kana_first]", '', class: 'form-control' %>
@@ -53,22 +53,22 @@
       </div>
     </div>
 
-    <div class="mb-3 form-floating">
+    <div class="form-floating">
       <%= f.text_field :postcode, class: 'p-postal-code', size: 8, maxlength: 8, autocomplete: "postcode", class: 'form-control', placeholder: '〒' %>
       <%= f.label :postcode, '〒', class: 'form-label' %><br />
     </div>
 
-    <div class="mb-3 form-floating">
+    <div class="form-floating">
       <%= f.text_field :prefecture, class: 'p-region form-control', placeholder: t('.prefecture') %>
       <%= f.label :prefecture, t('.prefecture'), class: 'form-label' %><br />
     </div>
 
-    <div class="mb-3 form-floating">
+    <div class="form-floating">
       <%= f.text_area :address, class: 'p-locality p-street-address p-extended-address form-control', autocomplete: "address", placeholder: t('.address') %>
       <%= f.label :address, t('.address'), class: 'form-label' %><br />
     </div>
   
-    <div class="mb-3 form-floating">
+    <div class="form-floating">
       <%= f.telephone_field :phone, autocomplete: "phone", class: 'form-control', placeholder: t('.phone') %>
       <%= f.label :phone, t('.phone'), class: 'form-label' %><br />
     </div>

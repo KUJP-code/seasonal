@@ -38,19 +38,16 @@ $secondary: #707070;
   --bs-btn-border-radius: 5rem;
 }
 
-body {
-  background-color: var(--ku-background);
-}
-
 main {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
   padding: 1vw;
+  padding-top: 3vw;
   gap: 1vw;
   margin-top: 9vh;
-  background: var(--ku-background);
+  background: var(--bs-gray-300);
   min-height: 87vh;
 }
 
@@ -65,6 +62,10 @@ li,
 p {
   margin: 0;
   padding: 0;
+}
+
+ul {
+  list-style-type: none;
 }
 
 a {
@@ -108,9 +109,22 @@ a {
   flex-flow: row nowrap;
   justify-content: space-around;
   align-items: center;
-  background-color: #ef8200;
+  background-color: #4e4a4a;
   box-shadow: 0.8vw 0.8vh 1.6vh grey, -0.8vw 0.8vh 1.6vh grey;
   font-size: var(--sub-heading-size);
+}
+
+.card {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  padding: 1vw;
+  gap: 1vw;
+  border-radius: 1vw;
+  text-align: center;
+  box-shadow: var(--container-shadow);
+  background-color: var(--bs-gray-100);
 }
 
 #nav_bar a {
@@ -125,14 +139,14 @@ a {
 }
 
 #nav_bar a:hover {
-  color: #ef8200;
+  color: #4e4a4a;
   background-color: white;
 }
 
 #nav_bar a:first-child {
   background-image: image-url("white_logo.svg");
   background-position: center;
-  background-size: contain;
+  background-size: 90% 90%;
   background-repeat: no-repeat;
   flex: 1 0 150px;
 }
@@ -222,7 +236,14 @@ form#new_user {
   overflow: scroll;
 }
 
-// Form styles
+// Events
+
+.card img {
+  width: 90%;
+  border-radius: 2vw;
+}
+
+// Forms
 
 form > .errors {
   display: flex;
@@ -239,4 +260,57 @@ form .form-control {
 
 form .input-group-text {
   background-color: var(--bs-gray-300);
+}
+
+form input {
+  text-align: center;
+}
+
+// User#show
+
+main#user_show {
+  gap: 3vw;
+}
+
+main#user_show .card {
+  width: 90vw;
+}
+
+main#user_show ul li {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 1vw;
+  gap: 1vw;
+}
+
+main#user_show .user_options {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  padding: 1vw;
+  gap: 0.5vw;
+}
+
+main#user_show #add_child {
+  width: 95%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: 1vw;
+  background-color: var(--bs-gray-100);
+}
+
+#add_child .find_child,
+#add_child .add_new_child {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1vw;
+  flex-basis: 40%;
+  background-color: var(--bs-gray-100);
+  padding: 1vw;
 }

@@ -1,25 +1,3 @@
-#add_child {
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: stretch;
-  justify-content: center;
-  gap: 1vw;
-  background-color: var(--ku-dark-background);
-}
-
-#add_child .find_child,
-#add_child .add_new_child {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-  gap: 1vw;
-  flex-basis: 48%;
-  background-color: var(--ku-background);
-  border-radius: 1vw;
-  padding: 1vw;
-}
-
 #add_child .button {
   align-self: center;
 }
@@ -29,34 +7,11 @@
   font-size: 24px;
 }
 
-#add_child input:not(.button),
-#add_child select,
-#add_child textarea {
-  border-radius: 1vw;
-  border: none;
-  padding: 5px;
-  text-align: center;
-  background-color: var(--ku-orange-hover);
-}
-
-#add_child input:not(.button):focus-visible {
-  outline: none;
-  box-shadow: 0.5vw 1vw 1vw var(--ku-dark-accent);
-}
-
-#add_child input:not(.button):read-only {
-  background: grey;
-}
-
 #add_child .field {
   display: flex;
   flex-flow: column wrap;
   gap: 1vw;
   font-size: 24px;
-}
-
-#add_child input {
-  text-align: center;
 }
 
 /* For claiming an existing child */
