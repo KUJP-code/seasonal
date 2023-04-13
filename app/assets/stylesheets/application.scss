@@ -201,6 +201,37 @@ input:active {
   display: none;
 }
 
+// Child
+
+main#child_show {
+  gap: 3vw;
+}
+
+main#child_show .card {
+  width: 90%;
+}
+
+main#child_show .card .info {
+  width: 95%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+main#child_show .card .personal_info,
+main#child_show .card .school_info,
+main#child_show .card .staff_info {
+  width: 30%;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  background: var(--bs-gray-200);
+  border-radius: 1vw;
+  padding: 0.5vw;
+  gap: 0.5vw;
+}
+
 // Devise
 
 main#login,

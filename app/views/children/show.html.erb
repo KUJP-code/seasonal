@@ -1,48 +1,46 @@
 <main id="child_show">
-    <div class="child">
+    <div class="card">
         <h1><%= @child.name %></h1>
         <h3>SSID: <%= @child.ssid %></h3>
         <h3><%= link_to "#{t('.parent')} #{@parent.name}", user_path(@parent) %></h3>
 
 
-        <div class="personal_info">
-            <p><%= "#{t('.kana')} #{@child.katakana_name}" %></p>
-            <p><%= "#{t('.en')} #{@child.en_name}" %></p>
-            <p><%= "#{t('.bday')} #{@child.birthday}" %></p>
-            <p><%= "#{t('.allergies')} #{@child.allergies}" %></p>
-        </div>
-
-        <div class="staff_info">
-            <p>
-                <%= "#{t('.photos')} ◯" if @child.photos == 'OK' %>
-                <%= "#{t('.photos')} ✖" unless @child.photos == 'OK' %>
-            </p>
-
-            <p>
-                <%= "#{t('.need_hat')} ◯" if @child.needs_hat %>            
-                <%= "#{t('.need_hat')} ✖" unless @child.needs_hat %>
-            </p>
-
-            <p>
-                <%= "#{t('.got_hat')} ◯" if @child.received_hat %>
-                <%= "#{t('.got_hat')} ✖" unless @child.received_hat %>
-            </p>
-        </div>
-
-        <div class="school_info">
-            <p>
-                <%= t(".no_school") if @school.nil? %>
-                <%= "#{t(".school")} #{@school.name}" unless @school.nil? %>
-            </p>
-            <p><%= "#{t('.category')} #{@child.category.capitalize}" %></p>
-            <p><%= (@child.kindy) ? 'Kindy' : 'Elementary' %></p>
-            <p><%= "#{t('.ele_school')} #{@child.ele_school_name}" %></p>
+        <div class="info">
+            <div class="personal_info">
+                <p><%= "#{t('.kana')} #{@child.katakana_name}" %></p>
+                <p><%= "#{t('.en')} #{@child.en_name}" %></p>
+                <p><%= "#{t('.bday')} #{@child.birthday}" %></p>
+                <p><%= "#{t('.allergies')} #{@child.allergies}" %></p>
+            </div>
+            <div class="staff_info">
+                <p>
+                    <%= "#{t('.photos')} ◯" if @child.photos == 'OK' %>
+                    <%= "#{t('.photos')} ✖" unless @child.photos == 'OK' %>
+                </p>
+                <p>
+                    <%= "#{t('.need_hat')} ◯" if @child.needs_hat %>
+                    <%= "#{t('.need_hat')} ✖" unless @child.needs_hat %>
+                </p>
+                <p>
+                    <%= "#{t('.got_hat')} ◯" if @child.received_hat %>
+                    <%= "#{t('.got_hat')} ✖" unless @child.received_hat %>
+                </p>
+            </div>
+            <div class="school_info">
+                <p>
+                    <%= t(".no_school") if @school.nil? %>
+                    <%= "#{t(".school")} #{@school.name}" unless @school.nil? %>
+                </p>
+                <p><%= "#{t('.category')} #{@child.category.capitalize}" %></p>
+                <p><%= (@child.kindy) ? 'Kindy' : 'Elementary' %></p>
+                <p><%= "#{t('.ele_school')} #{@child.ele_school_name}" %></p>
+            </div>
         </div>
 
 
         <% if current_user.staff? || current_user.id == @child.parent_id %>
             <div class="staff_options">
-                <%= link_to t('.edit_child'), edit_child_path(@child), class: 'button' %>
+                <%= link_to t('.edit_child'), edit_child_path(@child), class: 'btn btn-primary' %>
             </div>
         <% end %>
     </div>
