@@ -61,14 +61,14 @@
 
     <% if @user.area_manager? %>
         <h2><%= t('.managed_areas') %></h2>
-        <div id="class">
+        <div class="card">
             <%= render @user.managed_areas %>
         </div>
     <% end %>
 
     <% if @user.school_manager? %>
         <h2><%= t('.managed_schools') %></h2>
-        <div id="class">
+        <div class="card">
             <div class="school header">
                 <p class="name"><%= t('.name') %></p>
                 <p class="address"><%= t('.address') %></p>

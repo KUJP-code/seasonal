@@ -13,10 +13,6 @@
   align-self: center;
 }
 
-#event_children_index thead tr:first-child {
-  background: var(--ku-background);
-}
-
 #event_children_index tr:nth-child(odd) td,
 #event_children_index tr:nth-child(odd) th {
   background: white;
@@ -32,12 +28,13 @@
   table-layout: fixed;
   white-space: nowrap;
   border-spacing: 0;
+  border-collapse: separate;
 }
 
 #event_children_index table td,
 #event_children_index table th {
   border: 1px solid black;
-  padding: 0.5vw;
+  padding: 0.5rem;
 }
 
 #event_children_index table td.highlight {
@@ -48,7 +45,7 @@
   background: var(--ku-orange-hover);
   color: var(--near-white);
   font-size: 16px;
-  padding: 1vw;
+  padding: 1rem;
   position: sticky;
   top: 9vh;
   z-index: 2;
@@ -58,15 +55,10 @@
   background: var(--ku-orange-hover);
   color: var(--near-white);
   font-size: 16px;
-  padding: 1vw;
+  padding: 1rem;
   position: sticky;
   top: 15vh;
   z-index: 2;
-}
-
-#event_children_index table thead tr:first-child th:first-child {
-  background: var(--ku-background);
-  border: none;
 }
 
 #event_children_index th.no_ssid.ssid {
@@ -91,22 +83,22 @@
 
 #event_children_index table th.order {
   left: 0;
-  min-width: 1vw;
+  min-width: 2rem;
 }
 
 #event_children_index table th.ja_name {
-  left: 3vw;
-  min-width: 8vw;
+  left: 2rem;
+  min-width: 6rem;
 }
 
 #event_children_index table th.en_name {
-  left: 13vw;
-  min-width: 8vw;
+  left: 12.5rem;
+  min-width: 6rem;
 }
 
 #event_children_index table th.ssid {
-  left: 23vw;
-  min-width: 3vw;
+  left: 20.5rem;
+  min-width: 3rem;
 }
 
 #event_children_index .cost_summary,
@@ -140,7 +132,7 @@
   justify-content: flex-start;
   align-items: center;
   border-radius: 2vw;
-  padding: 2vw;
+  padding: 1rem;
   gap: 1vw;
   background: var(--near-white);
   overflow: scroll;

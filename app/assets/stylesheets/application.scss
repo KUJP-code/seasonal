@@ -34,6 +34,10 @@ $secondary: #707070;
 /* Custom bootstrap variables must be set or imported *before* bootstrap. */
 @import "bootstrap";
 
+body {
+  background: var(--bs-gray-300);
+}
+
 .btn {
   --bs-btn-border-radius: 5rem;
 }
@@ -48,7 +52,7 @@ main {
   gap: 1vw;
   margin-top: 9vh;
   background: var(--bs-gray-300);
-  min-height: 87vh;
+  min-height: 100vh;
 }
 
 h1,
@@ -314,6 +318,10 @@ main#event_index .card .event_management {
   justify-content: center;
   align-items: center;
   gap: 1vw;
+}
+
+main#event_index .card .event_management a {
+  width: 100%;
 }
 
 // Forms

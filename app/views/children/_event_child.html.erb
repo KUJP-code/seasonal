@@ -14,11 +14,11 @@
         <%= number_to_currency(event_invoices.reduce(0) { |sum, invoice| sum + invoice.total_cost }, unit: '円', precision: 0, locale: :ja) %>
     </td>
     <td rowspan="2" data-controller="popup">
-        <%= button_tag t('.view_summary'), class: 'button', data: { action: "click->popup#toggle" } %>
+        <%= button_tag t('.view_summary'), class: 'btn btn-primary', data: { action: "click->popup#toggle" } %>
         <div class="hidden cost_summary" data-popup-target="popup">
             <% event_invoices.each do |invoice| %>
                 <div class="card">
-                    <%= button_tag '✖', class: 'button', data: { action: "click->popup#toggle" } %>
+                    <%= button_tag '✖', class: 'btn btn-primary', data: { action: "click->popup#toggle" } %>
                     <%= sanitize invoice.summary, tags: %w[h1 h2 h3 div p], attributes: %w[class id] %>
                 </div>
             <% end %>
@@ -27,7 +27,7 @@
     <td rowspan="2" data-controller="popup" id=<%= "child#{event_child.id}changes" %> class="<%= 'highlight' if active_invoice.seen_at.nil? || active_invoice.versions.last.created_at > active_invoice.seen_at %>">
         <turbo-frame>
             <% if active_invoice.seen_at.nil? || active_invoice.versions.last.created_at > active_invoice.seen_at %>
-                <%= button_tag t('.view_changes'), class: 'button', data: { action: "click->popup#toggle" } %>
+                <%= button_tag t('.view_changes'), class: 'btn btn-primary', data: { action: "click->popup#toggle" } %>
                 <div class="hidden changes" data-popup-target="popup">
                     <div class="card">
                         <% if active_invoice.seen_at.nil? %>
@@ -43,7 +43,7 @@
                                 <%= sanitize(Diffy::Diff.new(simple_format(ver.reify.summary), simple_format(active_invoice.summary)).to_s(:html), tags: %w[div li strong span ul], attributes: %w[class id]) unless ver.reify.nil? %>
                             <% end %>
                         <% end %>
-                        <%= button_to t('.mark_seen'), seen_invoice_path(id: active_invoice.id, child: event_child.id), class: 'button', data: { action: "click->popup#toggle" } %>
+                        <%= button_to t('.mark_seen'), seen_invoice_path(id: active_invoice.id, child: event_child.id), class: 'btn btn-primary', data: { action: "click->popup#toggle" } %>
                     </div>
                 </div>
             <% end %>
@@ -66,11 +66,11 @@
     <% end %></td>
 
     <td rowspan="2" data-controller="popup">
-        <%= button_tag t('.view_template'), class: 'button', data: { action: "click->popup#toggle" } %>
+        <%= button_tag t('.view_template'), class: 'btn btn-primary', data: { action: "click->popup#toggle" } %>
         <div class="hidden mail_template" data-popup-target="popup">
             <% event_invoices.each do |invoice| %>
                 <div class="card">
-                    <%= button_tag '✖', class: 'button', data: { action: "click->popup#toggle" } %>
+                    <%= button_tag '✖', class: 'btn btn-primary', data: { action: "click->popup#toggle" } %>
                     <%= invoice.email_template %>
                 </div>
             <% end %>
