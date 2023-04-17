@@ -47,8 +47,4 @@ User.create!([
   }
 ])
 
-puts 'Created my test accounts'
-
 User.find_by(role: 'area_manager').managed_areas.create!(name: "神奈川県")
-
-puts 'Gave AM an area to manage'

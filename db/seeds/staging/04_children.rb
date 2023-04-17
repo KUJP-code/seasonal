@@ -33,8 +33,6 @@ User.customers.each do |customer_user|
   ])
 end
 
-puts 'Gave each customer 2 children'
-
 Child.create!(
   first_name: Faker::Name.first_name,
   family_name: Faker::Name.last_name,
@@ -49,8 +47,6 @@ Child.create!(
   school: School.find(rand(1..3))
 )
 
-puts "Created an orphaned child to test adding parent's children with"
-
 Child.all.each do |child|
   child.create_regular_schedule(
     monday: [true, false].sample,
@@ -60,5 +56,3 @@ Child.all.each do |child|
     friday: [true, false].sample
   )
 end
-
-puts 'Created a random regular schedule for each child'

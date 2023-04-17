@@ -7,8 +7,6 @@ Event.all.each do |event|
   )
 end
 
-puts 'Added the photo service option to each event'
-
 Event.where(name: 'Spring School 2023').each do |event|
   event.time_slots.morning.each do |m_slot|
     m_slot.options.create!([
@@ -83,5 +81,3 @@ Event.where(name: 'Spring School 2023').each do |event|
       )
   end
 end
-
-puts 'Created options for spring school, and added images to slots'

@@ -22,5 +22,3 @@ School.all.count.times do
     }
   ])
 end
-
-puts 'Added 2 Faker customers to each school, plus my test customer to the last one'

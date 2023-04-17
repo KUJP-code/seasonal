@@ -19,8 +19,6 @@ School.all.each do |school|
   end
 end
 
-puts 'Created invoices for each child/event combo at each school'
-
 School.all.each do |school|
   school.time_slots.each do |slot|
     school.children.each do |child|
@@ -32,8 +30,6 @@ School.all.each do |school|
     end
   end
 end
-
-puts 'Registered children for each time slot at each event at their school'
 
 Child.all.each do |child|
   child.time_slots.each do |slot|
@@ -51,11 +47,6 @@ Child.all.each do |child|
   end
 end
 
-puts "Registered kids for an option at each event/slot they're attending"
-
-
 Invoice.all.each do |invoice|
   invoice.calc_cost
 end
-
-puts 'Calculated invoice costs and added to SS now all are created'

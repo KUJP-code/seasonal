@@ -21,8 +21,6 @@ School.all.each do |school|
     ])
 end
 
-puts 'Created choco day and spring school at each school'
-
 Event.where(name: 'Chocolate Day 2024').each do |event|
   event.time_slots.create!([
     {
@@ -65,8 +63,6 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
   event.image.attach(io: File.open('app/assets/images/chocolate_day_2024.jpg'), filename: 'logo.jpg', content_type: 'image/jpg')
 end
 
-puts 'Created time slots for choco day, and added images to each event'
-
 Event.where(name: 'Chocolate Day 2024').each do |event|
   event.time_slots.each do |slot|
     slot.options.create!(
@@ -77,8 +73,6 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
     slot.image.attach(io: File.open("app/assets/images/#{slot.name.downcase.gsub(' ', '_').gsub('_pm', '')}.jpg"), filename: 'logo.jpg', content_type: 'image/jpg')
   end
 end
-
-puts 'Created options for chocolate day, added images to time slots'
 
 Event.where(name: 'Spring School 2023').each do |event|
   event.time_slots.create!([
@@ -207,10 +201,6 @@ Event.where(name: 'Spring School 2023').each do |event|
   event.image.attach(io: File.open('app/assets/images/spring_school_2023.jpg'), filename: 'logo.jpg', content_type: 'image/jpg')
 end
 
-puts 'Created time slots for spring school, and added images to the events'
-
 TimeSlot.all.morning.each do |slot|
   slot.image.attach(io: File.open("app/assets/images/#{slot.name.downcase.gsub(' ', '_').gsub('_pm', '')}.jpg"), filename: 'logo.jpg', content_type: 'image/jpg')
 end
-
-puts 'Added images to each morning slot'
