@@ -38,6 +38,7 @@ class Child < ApplicationRecord
   enum :category, internal: 0,
                   reservation: 1,
                   external: 2,
+                  withdrawn: 3,
                   default: :external
 
   # Map grade int in table to a grade

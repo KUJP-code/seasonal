@@ -1,26 +1,24 @@
-<% models = [%w[Children Child], %w[Users User], %w[Invoices Invoice]] %>
+<% models = [%w[Children Child], %w[Users User], %w[Invoices Invoice], ['Regular Schedules', 'RegularSchedule']] %>
 
 <main id="csvs_index">
-    <h1><%= t('.import') %></h1>
-
-    <%= form_with url: upload_csv_path do |f| %>
-        <div class="fields">
-            <%= f.label :model %>
-            <%= f.select :model, models %>
-        </div>
-
-        <div class="field">
-            <%= f.label :csv %>
-            <%= f.file_field :csv %>
-        </div>
-
-        <%= f.submit t('.upload_records'), class: 'button' %>
-    <% end %>
-
-
-    <h1><%= t('.export') %></h1>
-
-    <% models.each do |model| %>
-        <%= link_to model[0], download_csv_path(model: model[1]), class: 'button', data: { turbolinks: false } %>
-    <% end %>
+    <div class="card">
+        <h1><%= t('.import') %></h1>
+        <%= form_with url: upload_csv_path, html: { class: 'd-grid gap-3 p-5' } do |f| %>
+            <div class="fields">
+                <%= f.label :model, class: 'form-label' %>
+                <%= f.select :model, models, {}, class: 'form-select' %>
+            </div>
+            <div class="field">
+                <%= f.label :csv, class: 'form-label' %>
+                <%= f.file_field :csv, class: 'form-control' %>
+            </div>
+            <%= f.submit t('.upload_records'), class: 'btn btn-primary' %>
+        <% end %>
+    </div>
+    <div class="card d-grid gap-3 p-5">
+        <h1><%= t('.export') %></h1>
+        <% models.each do |model| %>
+            <%= link_to model[0], download_csv_path(model: model[1]), class: 'btn btn-primary', data: { turbolinks: false } %>
+        <% end %>
+    </div>
 </main>
