@@ -1,120 +1,123 @@
-<%= turbo_frame_tag "add_child" do %>
-    <%= form_with model: @child, class: 'child_form' do |f| %>
-        <%= f.hidden_field :parent_id %>
-
-        <% if @child.errors.any? %>
-            <div class="errors">
-                <h3><%= t('.unable_to_save', child: @child.name) %></h3>
-                <ul>
-                    <% @child.errors.full_messages.each do |error| %>
-                        <li><%= error %></li>
-                    <% end %>
-                </ul>
-            </div>
-        <% end %>
-
-        <div class="personal_info">
-            <h3><%= t('.personal_info') %></h3>
-
-            <div>
-                <%= f.label :first_name, t('.name'), class: 'form-label' %><br />
-                <div class="input-group">
-                    <%= text_field_tag "child[first_name]", (@child.name.split[0] unless @child.name.nil?), class: 'form-control' %>
-                    <span class="input-group-text"></span>
-                    <%= text_field_tag "child[family_name]", (@child.name.split[1] unless @child.name.nil?), class: 'form-control' %>
-                </div>
-            </div>
-
-            <div>
-                <%= f.label :kana_first, t('.kana_first'), class: 'form-label' %><br />
-                <div class="input-group">
-                    <%= text_field_tag "child[kana_first]", (@child.katakana_name.split[0] unless @child.name.nil?), class: 'form-control' %>
-                    <span class="input-group-text"></span>
-                    <%= text_field_tag "child[kana_family]", (@child.katakana_name.split[1] unless @child.name.nil?), class: 'form-control' %>
-                </div>
-            </div>
-
-            <div class="form-floating">
-                <%= f.text_field :en_name, autocomplete: "english-name", class: 'form-control', placeholder: t('.en_name') %>
-                <%= f.label :en_name, t('.en_name'), class: 'form-label' %><br />
-            </div>
-
-            <div class="form-floating">
-                <%= f.date_field :birthday, autocomplete: "birth-date", class: 'form-control', placeholder: t('.birthday') %>
-                <%= f.label :birthday, t('.birthday'), class: 'form-label' %><br />
-            </div>
-
-            <div class="field" data-controller="conditional">
-                <%= f.label :allergies, t('.allergies') %><br />
-                <select name="" id=""
-                data-action="change->conditional#toggle"
-                data-conditional-target="condition">
-                    <option value="">-</option>
-                    <option value="なし" <%= "selected='selected'" if f.object.allergies == 'なし' %>>なし</option>
-                    <option value="はい">はい</option>
-                </select>
-                <%= f.text_field :allergies, value: f.object.allergies, data: { conditional_target: 'target' } %>
-            </div>
-
-            <div class="field">
-                <%= f.label :grade, t('.grade') %><br />
-                <%= f.select :grade, Child.grades.reject { |k, _| %w[満１歳 満２歳 年々少 中学１年 中学２年].include?(k) }.map { |k, v| v = k }, selected: @child.grade %>
-            </div>
-
-            <div class="form-floating">
-                <%= f.text_field :ele_school_name, class: 'form-control', placeholder: t('.ele_school_name') %>
-                <%= f.label :ele_school_name, t('.ele_school_name'), class: 'form-label' %><br />
-            </div>
-        </div>
-
-        <div class="school_info">
-            <h3><%= t('.school_info') %></h3>
-
-            <div class="field school">
-                <%= f.label :school, t('.school') %><br />
-                <%= f.collection_select :school_id, School.order(:name), :id, :name %>
-            </div>
-
-            <div class="field">
-                <%= f.label :category, t('.category') %><br />
-                <%= f.select :category, [["#{t('.external')}", "external"], ["#{t('.internal')}", "internal"], ["#{t('.reservation')}", "reservation"]], selected: "#{t('.external')}" %>
-            </div>
-
-            <div class="field">
-                <%= f.label :photos, t('.photos') %><br />
-                <%= f.select :photos, [%w[OK OK], %w[なし なし]] %>
-            </div>
-
-            <% if current_user.customer? && f.object.new_record? %>
-                <div class="field">
-                    <%= f.label :first_seasonal, t('.first_seasonal') %><br />
-                    <%= f.check_box :first_seasonal %>
+<div class="card">
+    <%= turbo_frame_tag "add_child" do %>
+        <%= form_with model: @child, class: 'child_form', html: { class: 'd-grid gap-3 p-5' } do |f| %>
+            <%= f.hidden_field :parent_id %>
+    
+            <% if @child.errors.any? %>
+                <div class="errors">
+                    <h3><%= t('.unable_to_save', child: @child.name) %></h3>
+                    <ul>
+                        <% @child.errors.full_messages.each do |error| %>
+                            <li><%= error %></li>
+                        <% end %>
+                    </ul>
                 </div>
             <% end %>
-
-            <% if current_user.staff? %>
-                <div class="field">
-                    <%= f.label :kindy, t('.kindy?') %><br />
-                    <%= f.check_box :kindy %>
+    
+            <div class="personal_info d-grid gap-3 p-5">
+                <h3><%= t('.personal_info') %></h3>
+    
+                <div>
+                    <%= f.label :first_name, t('.name'), class: 'form-label' %><br />
+                    <div class="input-group">
+                        <%= text_field_tag "child[first_name]", (@child.name.split[0] unless @child.name.nil?), class: 'form-control' %>
+                        <span class="input-group-text"></span>
+                        <%= text_field_tag "child[family_name]", (@child.name.split[1] unless @child.name.nil?), class: 'form-control' %>
+                    </div>
                 </div>
-
+    
+                <div>
+                    <%= f.label :kana_first, t('.kana_name'), class: 'form-label' %><br />
+                    <div class="input-group">
+                        <%= text_field_tag "child[kana_first]", (@child.katakana_name.split[0] unless @child.name.nil?), class: 'form-control' %>
+                        <span class="input-group-text"></span>
+                        <%= text_field_tag "child[kana_family]", (@child.katakana_name.split[1] unless @child.name.nil?), class: 'form-control' %>
+                    </div>
+                </div>
+    
                 <div class="form-floating">
-                    <%= f.label :ssid, t('.ssid') %><br />
-                    <%= f.number_field :ssid %>
+                    <%= f.text_field :en_name, autocomplete: "english-name", class: 'form-control', placeholder: t('.en_name') %>
+                    <%= f.label :en_name, t('.en_name'), class: 'form-label' %><br />
                 </div>
-
-                <div class="field">
-                    <%= f.label :needs_hat, t('.needs_hat') %><br />
-                    <%= f.check_box :needs_hat %>
+    
+                <div class="form-floating">
+                    <%= f.date_field :birthday, autocomplete: "birth-date", class: 'form-control', placeholder: t('.birthday') %>
+                    <%= f.label :birthday, t('.birthday'), class: 'form-label' %><br />
                 </div>
-
-                <div class="field">
-                    <%= f.label :received_hat, t('.received_hat') %><br />
-                    <%= f.check_box :received_hat %>
+    
+                <div data-controller="conditional">
+                    <%= f.label :allergies, t('.allergies'), class: 'form-label' %><br />
+                    <select name="" id=""
+                    data-action="change->conditional#toggle"
+                    data-conditional-target="condition"
+                    class="form-select">
+                        <option value="">-</option>
+                        <option value="なし" <%= "selected='selected'" if f.object.allergies == 'なし' %>>なし</option>
+                        <option value="はい">はい</option>
+                    </select>
+                    <%= f.text_field :allergies, value: f.object.allergies, data: { conditional_target: 'target' }, class: 'form-control' %>
                 </div>
-            <% end %>
-        </div>
-        
-        <%= f.submit class: 'btn btn-primary', data: { turbo_frame: '_top' } %>
+    
+                <div>
+                    <%= f.label :grade, t('.grade'), class: 'form-label' %><br />
+                    <%= f.select :grade, Child.grades.reject { |k, _| %w[満１歳 満２歳 年々少 中学１年 中学２年].include?(k) }.map { |k, v| v = k }, {}, { class: 'form-select' } %>
+                </div>
+    
+                <div class="form-floating">
+                    <%= f.text_field :ele_school_name, class: 'form-control', placeholder: t('.ele_school_name') %>
+                    <%= f.label :ele_school_name, t('.ele_school_name'), class: 'form-label' %><br />
+                </div>
+            </div>
+    
+            <div class="school_info d-grid gap-3 p-5">
+                <h3><%= t('.school_info') %></h3>
+    
+                <div>
+                    <%= f.label :school, t('.school'), class: 'form-label' %><br />
+                    <%= f.collection_select :school_id, School.order(:name), :id, :name, {}, { class: 'form-select' } %>
+                </div>
+    
+                <div>
+                    <%= f.label :category, t('.category'), class: 'form-label' %><br />
+                    <%= f.select :category, [["#{t('.external')}", "external"], ["#{t('.internal')}", "internal"], ["#{t('.reservation')}", "reservation"]], {}, { class: 'form-select' } %>
+                </div>
+    
+                <div>
+                    <%= f.label :photos, t('.photos'), class: 'form-label' %><br />
+                    <%= f.select :photos, [%w[OK OK], %w[なし なし]], {}, { class: 'form-select' } %>
+                </div>
+    
+                <% if current_user.customer? && f.object.new_record? %>
+                    <div>
+                        <%= f.check_box :first_seasonal, class: 'form-check-input' %>
+                        <%= f.label :first_seasonal, t('.first_seasonal'), class: 'form-check-label' %><br />
+                    </div>
+                <% end %>
+    
+                <% if current_user.staff? %>
+                    <div>
+                        <%= f.check_box :kindy, class: 'form-check-input' %>
+                        <%= f.label :kindy, t('.kindy?'), class: 'form-check-label' %><br />
+                    </div>
+    
+                    <div class="form-floating">
+                        <%= f.text_field :ssid, placeholder: t('.ssid'), class: 'form-control' %>
+                        <%= f.label :ssid, t('.ssid'), class: 'form-label' %><br />
+                    </div>
+    
+                    <div>
+                        <%= f.check_box :needs_hat, class: 'form-check-input' %>
+                        <%= f.label :needs_hat, t('.needs_hat'), class: 'form-check-label' %><br />
+                    </div>
+    
+                    <div>
+                        <%= f.check_box :received_hat, class: 'form-check-input' %>
+                        <%= f.label :received_hat, t('.received_hat'), class: 'form-check-label' %><br />
+                    </div>
+                <% end %>
+            </div>
+    
+            <%= f.submit class: 'btn btn-primary', data: { turbo_frame: '_top' } %>
+        <% end %>
     <% end %>
-<% end %>
+</div>

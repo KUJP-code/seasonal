@@ -335,7 +335,9 @@ form > .errors {
   font-size: var(--sub-heading-size);
 }
 
-form .form-control {
+form .form-control,
+form .form-check-input,
+form .form-select {
   background-color: var(--bs-gray-200);
 }
 
