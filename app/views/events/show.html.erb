@@ -44,67 +44,61 @@
         <div class="collapsible-content">
             <div class="content-inner">
                 <p> 
-
-                    <%= image_tag('price_list.png') %>
-
-                    <%# TODO: Add these back and style after AM presentation %>
-                    <div class="hidden">
-                        <% unless @member_prices.nil? %>
-                            <div class="price_list">
-                                <h3><%= t('.member_prices') %></h3>
-                                <table>
+                    <% unless @member_prices.nil? %>
+                        <div class="price_list">
+                            <h3><%= t('.member_prices') %></h3>
+                            <table>
+                                <tr>
+                                    <th><%= t('.course') %></th>
+                                    <th><%= t('.price') %></th>
+                                </tr>
+                                <% @member_prices.courses.each do |course, price| %>
                                     <tr>
-                                        <th><%= t('.course') %></th>
-                                        <th><%= t('.price') %></th>
+                                        <td><%= course %></td>
+                                        <td><%= price %></td>
                                     </tr>
-                                    <% @member_prices.courses.each do |course, price| %>
-                                        <tr>
-                                            <td><%= course %></td>
-                                            <td><%= price %></td>
-                                        </tr>
-                                    <% end %>
-                                </table>
-                            </div>
-                        <% end %>
-                        <% unless @non_member_prices.nil? %>
-                            <div class="price_list">
-                                <h3><%= t('.non_member_prices') %></h3>
-                                <table>
-                                    <tr>
-                                        <th><%= t('.course') %></th>
-                                        <th><%= t('.price') %></th>
-                                    </tr>
-                                    <% @non_member_prices.courses.each do |course, price| %>
-                                        <tr>
-                                            <td><%= course %></td>
-                                            <td><%= price %></td>
-                                        </tr>
-                                    <% end %>
-                                </table>
-                            </div>
-                        <% end %>
-                        <div id="adjustments">
-                            <h3><%= t('.adjustments') %></h3>
-                            <div class="adjustment">
-                                <p><%= t('.change') %></p>
-                                <p><%= t('.reason') %></p>
-                            </div>
-                            <% @all_invoices.each do |invoice| %>
-                                <% invoice.adjustments.each do |adj| %>
-                                    <div class="adjustment">
-                                        <p data-price-target="adjChange"><%= adj.change %></p>
-                                        <p><%= adj.reason %></p>
-                                    </div>
                                 <% end %>
-                            <% end %>
+                            </table>
                         </div>
-                        <% if @child.regular_schedule %>
-                            <div class="schedule">
-                                <h3><%= t('.regular_schedule') %></h3>
-                                <p><%= @child.regular_schedule.days %></p>
-                            </div>
+                    <% end %>
+                    <% unless @non_member_prices.nil? %>
+                        <div class="price_list">
+                            <h3><%= t('.non_member_prices') %></h3>
+                            <table>
+                                <tr>
+                                    <th><%= t('.course') %></th>
+                                    <th><%= t('.price') %></th>
+                                </tr>
+                                <% @non_member_prices.courses.each do |course, price| %>
+                                    <tr>
+                                        <td><%= course %></td>
+                                        <td><%= price %></td>
+                                    </tr>
+                                <% end %>
+                            </table>
+                        </div>
+                    <% end %>
+                    <div id="adjustments">
+                        <h3><%= t('.adjustments') %></h3>
+                        <div class="adjustment">
+                            <p><%= t('.change') %></p>
+                            <p><%= t('.reason') %></p>
+                        </div>
+                        <% @all_invoices.each do |invoice| %>
+                            <% invoice.adjustments.each do |adj| %>
+                                <div class="adjustment">
+                                    <p data-price-target="adjChange"><%= adj.change %></p>
+                                    <p><%= adj.reason %></p>
+                                </div>
+                            <% end %>
                         <% end %>
                     </div>
+                    <% if @child.regular_schedule %>
+                        <div class="schedule">
+                            <h3><%= t('.regular_schedule') %></h3>
+                            <p><%= @child.regular_schedule.days %></p>
+                        </div>
+                    <% end %>
                 </p>
             </div>
         </div>
