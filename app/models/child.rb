@@ -119,6 +119,10 @@ class Child < ApplicationRecord
     registrations.where(registerable_type: 'TimeSlot')
   end
 
+  def siblings
+    parent.children.where.not(id: id)
+  end
+
   private
 
   def set_hat
