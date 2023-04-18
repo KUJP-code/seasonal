@@ -60,6 +60,8 @@ class User < ApplicationRecord
 
   validates :phone, format: { with: /\A[0-9 \-+x.)(]+\Z/ }
 
+  validates :pin, length: { is: 4 }, allow_blank: true
+
   # Map role integer in db to a string
   enum :role, customer: 0,
               school_manager: 1,
