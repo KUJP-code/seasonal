@@ -1,6 +1,13 @@
 <main id="event_children_index" data-controller="refresh">
     <div class="links">
         <%= link_to t('.print'), '', class: 'btn btn-primary ms-3', :onclick => 'window.print();return false;' %>
+        <div class="slots p-3 d-flex flex-wrap gap-3 justify-content-between">
+            <h2 class="w-100 text-center"><%= t('.daily_attendance') %></h2>
+            <%= link_to t('.all'), '', class: 'btn btn-primary' %>
+            <% @source.time_slots.morning.each do |slot| %>
+                <%= link_to slot.name, children_path(id: slot.id, source: 'TimeSlot'), class: 'btn btn-primary' %>
+            <% end %>
+        </div>
     </div>
 
     <h1><%= @source.name %></h1>
