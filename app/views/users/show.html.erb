@@ -81,10 +81,17 @@
         </div>
     <% end %>
 
-    <% unless current_user.staff? %>
+    <% unless @user.staff? %>
         <h2><%= t('.add_children') %></h2>
         <div id="add_child_container" class="card">
             <%= render 'users/add_child', parent: @user %>
+        </div>
+    <% end %>
+
+    <% if @user.customer? && current_user.staff? %>
+        <h2><%= t('.merge_children') %></h2>
+        <div class="card">
+            <%= render 'users/merge_children', parent: @user %>
         </div>
     <% end %>
 </main>

@@ -1,0 +1,26 @@
+<%= turbo_frame_tag "merge_child" do %>
+    <% if @child %>
+        <%= form_with url: merge_children_path, html: { class: 'd-grid gap-3 p-5' } do |f| %>
+            <%= f.hidden_field :ss_kid, value: @child.id %>
+
+            <%= t('.ss_kid') %>
+            <%= render @child %>
+
+            <div>
+                <%= f.label :non_ss_kid, class: 'form-label' %>
+                <%= f.collection_select :non_ss_kid, @child.parent.children, :id, :name, {}, class: 'form-select' %>
+            </div>
+
+            <%= f.submit t('.merge_children'), class: 'btn btn-primary' %>
+        <% end %>
+    <% else %>
+        <%= form_with url: children_path, method: :get, id: 'merge_child_form', html: { class: 'd-grid gap-3 p-5' } do |f| %>
+            <div class="form-floating">
+                <%= f.search_field :ssid, class: 'form-control', placeholder: t('.ssid') %>
+                <%= f.label :ssid, t('.ssid'), class: 'form-label'  %>
+            </div>
+
+            <%= f.submit t('.find_child'), class: 'btn btn-primary' %>
+        <% end %>
+    <% end %>
+<% end %>

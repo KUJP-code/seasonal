@@ -21,6 +21,9 @@ en:
       update_all: "Update All"
     form:
       update_all: "Update All"
+    merge_children:
+      find_child: "Find Child"
+      merge_children: "Merge Children"
     show:
       all_registrations: "All registrations"
       children: "Children:"

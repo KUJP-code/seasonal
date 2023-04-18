@@ -78,7 +78,22 @@ class ChildrenController < ApplicationController
 
   def find_child
     @child = search_result
-    render 'users/_add_child', locals: { parent: User.find(params[:parent_id]) }
+    render 'users/_add_child', locals: { parent: User.find(params[:parent_id]) } if params[:bday]
+
+    render 'users/_merge_children', locals: { child: @child } if @child.present?
+  end
+
+  def find_children
+    case params[:source]
+    when 'Event'
+      @children = @source.children.distinct.includes(
+        :regular_schedule, :registrations, :time_slots, :options
+      ).includes(invoices: :versions)
+    when 'TimeSlot'
+      @children = @source.children.distinct.includes(options: :registrations)
+    else
+      render status: :unprocessable_entity
+    end
   end
 
   def flash_failure
@@ -87,6 +102,13 @@ class ChildrenController < ApplicationController
 
   def flash_success
     flash.now[:notice] = t('.success')
+  end
+
+  def find_source
+    @source = params[:source].constantize.find(params[:id])
+    @children = find_children
+
+    @source
   end
 
   def role_show
@@ -103,27 +125,9 @@ class ChildrenController < ApplicationController
   end
 
   def search_result
-    Child.find_by(ssid: params[:ssid], birthday: params[:bday])
-  end
+    Child.find_by(ssid: params[:ssid], birthday: params[:bday]) if params[:bday]
 
-  def find_children
-    case params[:source]
-    when 'Event'
-      @children = @source.children.distinct.includes(
-        :regular_schedule, :registrations, :time_slots, :options
-      ).includes(invoices: :versions)
-    when 'TimeSlot'
-      @children = @source.children.distinct.includes(options: :registrations)
-    else
-      render status: :unprocessable_entity
-    end
-  end
-
-  def find_source
-    @source = params[:source].constantize.find(params[:id])
-    @children = find_children
-
-    @source
+    Child.find_by(ssid: params[:ssid])
   end
 
   def role_index

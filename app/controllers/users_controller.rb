@@ -71,6 +71,22 @@ class UsersController < ApplicationController
     redirect_to child_path(@child)
   end
 
+  def merge_children
+    ss_kid = Child.find(params[:ss_kid])
+    non_ss_kid = Child.find(params[:non_ss_kid])
+
+    return redirect_to user_path(non_ss_kid.parent) if non_ss_kid.ssid
+
+    ss_kid.update(parent_id: non_ss_kid.parent_id)
+    non_ss_kid.invoices.each do |invoice|
+      invoice.update(child_id: ss_kid.id)
+    end
+    non_ss_kid.update(parent_id: nil)
+
+    flash_success
+    redirect_to user_path(ss_kid.parent_id)
+  end
+
   def remove_child
     @child = Child.find(params[:child_id])
     @parent = User.find(params[:parent_id])
