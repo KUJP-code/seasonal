@@ -4,7 +4,7 @@
 # Must have an area manager
 class Area < ApplicationRecord
   has_many :schools, dependent: nil
-  has_many :users, through: :schools
+  has_many :parents, through: :schools
   has_many :children, through: :schools
   has_many :events, -> { distinct }, through: :schools
   has_many :time_slots, through: :events

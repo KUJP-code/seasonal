@@ -7,8 +7,6 @@ class User < ApplicationRecord
   # Allow use of separate fields to ensure consistent name formatting
   attr_accessor :first_name, :family_name, :kana_first, :kana_family
 
-  has_one :area, through: :school
-
   has_many :managements, foreign_key: :manager_id,
                          inverse_of: :manager,
                          dependent: :destroy
@@ -33,8 +31,10 @@ class User < ApplicationRecord
                       inverse_of: :parent
   accepts_nested_attributes_for :children, allow_destroy: true
   validates_associated :children
-  has_many :registrations, through: :children
   has_many :invoices, through: :children
+  has_many :registrations, through: :children
+  has_many :schools, -> { distinct }, through: :children
+  has_many :areas, -> { distinct }, through: :schools
   has_many :time_slots, through: :registrations,
                         source: :registerable,
                         source_type: 'TimeSlot'

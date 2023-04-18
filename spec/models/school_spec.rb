@@ -139,13 +139,13 @@ RSpec.describe School do
     end
   end
 
-  context 'with customers' do
-    let(:customer) { create(:customer_user) }
+  context 'with parents' do
+    let(:parent) { create(:customer_user) }
 
     it 'knows its customers' do
-      school.users << customer
-      school_customers = school.users.customers
-      expect(school_customers).to contain_exactly(customer)
+      parent.children << create(:child, school: school)
+      school_parents = school.parents
+      expect(school_parents).to contain_exactly(parent)
     end
   end
 

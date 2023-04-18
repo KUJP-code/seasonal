@@ -43,7 +43,7 @@ RSpec.describe 'User' do
       end
 
       it 'creates a paper trail on update' do
-        user.update(ja_first_name: '吉田丸山')
+        user.update(name: '吉田丸山')
         expect(user).to be_versioned
       end
 
@@ -53,10 +53,10 @@ RSpec.describe 'User' do
       end
 
       it 'can be restored to previous version' do
-        old_name = user.ja_first_name
-        user.update(ja_first_name: '吉田丸山')
+        old_name = user.name
+        user.update(name: '吉田丸山')
         user.paper_trail.previous_version.save
-        reverted_name = user.reload.ja_first_name
+        reverted_name = user.reload.name
         expect(old_name).to eq reverted_name
       end
 
@@ -71,32 +71,6 @@ RSpec.describe 'User' do
   end
 
   context 'when invalid' do
-    context 'when required fields missing' do
-      it 'Japanese first name missing' do
-        valid_user.ja_first_name = nil
-        valid = valid_user.save
-        expect(valid).to be false
-      end
-
-      it 'Japanese family name missing' do
-        valid_user.ja_family_name = nil
-        valid = valid_user.save
-        expect(valid).to be false
-      end
-
-      it 'Katakana name missing' do
-        valid_user.katakana_name = nil
-        valid = valid_user.save
-        expect(valid).to be false
-      end
-
-      it 'phone number missing' do
-        valid_user.phone = nil
-        valid = valid_user.save
-        expect(valid).to be false
-      end
-    end
-
     context 'when password is invalid' do
       it 'rejects passwords shorter than 10 characters' do
         short_pass = build(:user, password: 'short')
@@ -132,46 +106,14 @@ RSpec.describe 'User' do
         expect(valid).to be false
       end
     end
-
-    context 'when names in wrong language' do
-      it 'rejects Japanese first name in English' do
-        valid_user.ja_first_name = "B'rett-Tan ner"
-        valid = valid_user.save
-        expect(valid).to be false
-      end
-
-      it 'rejects Japanese family name in English' do
-        valid_user.ja_family_name = "B'rett-Tan ner"
-        valid = valid_user.save
-        expect(valid).to be false
-      end
-
-      it 'rejects Katakana name in Kanji' do
-        valid_user.katakana_name = '吉田'
-        valid = valid_user.save
-        expect(valid).to be false
-      end
-
-      it 'rejects Katakana name in Hiragana' do
-        valid_user.katakana_name = 'ゆじいたどり'
-        valid = valid_user.save
-        expect(valid).to be false
-      end
-
-      it 'rejects Katakana name in English' do
-        valid_user.katakana_name = "B'rett-Tan ner"
-        valid = valid_user.save
-        expect(valid).to be false
-      end
-    end
   end
 
   context 'when regular user' do
     it 'knows its school' do
-      user_attr = attributes_for(:customer_user)
-      customer = school.users.create(user_attr)
-      customer_school = customer.school
-      expect(customer_school).to be school
+      parent = create(:customer_user)
+      parent.children << create(:child, school: school)
+      parent_schools = parent.schools
+      expect(parent_schools).to contain_exactly(school)
     end
 
     it "doesn't need a managed school" do
@@ -187,10 +129,11 @@ RSpec.describe 'User' do
     end
 
     it 'knows its area through school' do
-      customer = school.users.create(attributes_for(:customer_user))
+      parent = create(:customer_user)
+      parent.children << create(:child, school: school)
       school_area = school.area
-      customer_area = customer.area
-      expect(school_area).to eq(customer_area)
+      parent_areas = parent.areas
+      expect(parent_areas).to contain_exactly(school_area)
     end
   end
 

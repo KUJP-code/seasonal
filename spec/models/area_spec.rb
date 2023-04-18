@@ -76,11 +76,12 @@ RSpec.describe Area do
     end
 
     context 'with users' do
-      let(:user) { create(:customer_user, school: school) }
+      let(:parent) { create(:customer_user) }
 
-      it 'knows its users through school' do
-        area_users = area.users
-        expect(area_users).to contain_exactly(user)
+      it 'knows its parents through school' do
+        parent.children << create(:child, school: school)
+        area_parents = area.parents
+        expect(area_parents).to contain_exactly(parent)
       end
     end
 
