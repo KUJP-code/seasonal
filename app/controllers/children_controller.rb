@@ -8,7 +8,7 @@ class ChildrenController < ApplicationController
 
     # List children attending an event or time slot
     if params[:all]
-      @slots = params[:source].constantize.find(params[:id]).time_slots
+      @slots = params[:source].constantize.find(params[:id]).time_slots.morning
       return render 'event_attendance_index'
     elsif params[:source]
       find_source

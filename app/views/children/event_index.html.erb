@@ -1,6 +1,5 @@
 <main id="event_children_index" data-controller="refresh">
     <div class="links">
-        <%= link_to t('.print'), '', class: 'btn btn-primary ms-3', :onclick => 'window.print();return false;' %>
         <div class="slots p-3 d-flex flex-wrap gap-3 justify-content-between">
             <h2 class="w-100 text-center"><%= t('.daily_attendance') %></h2>
             <%= link_to t('.all'), children_path(id: @source.id, source: 'Event', all: true), class: 'btn btn-primary' %>
