@@ -90,14 +90,18 @@ RSpec.describe Invoice do
     end
   end
 
+  # All are plus 1 100 because the kid has no previous invoices so needs a hat
   context 'when calculating total cost' do
-    let(:slot) { create(:time_slot, event: invoice.event, morning: true) }
-
     context 'when for member child' do
       let(:member_child) { create(:child, category: :internal) }
 
       def register(num)
-        create_list(:slot_registration, num, invoice: invoice, registerable: slot, child: member_child)
+        num.times do
+          member_child.registrations.create!(
+            invoice: invoice,
+            registerable: create(:time_slot, event: invoice.event, morning: true)
+          )
+        end
       end
 
       before do
@@ -108,21 +112,21 @@ RSpec.describe Invoice do
         register(5)
         invoice.calc_cost
         total_cost = invoice.total_cost
-        expect(total_cost).to be 18_700
+        expect(total_cost).to be 19_800
       end
 
       it 'calculates cost when not on breakpoint' do
         register(7)
         invoice.calc_cost
         total_cost = invoice.total_cost
-        expect(total_cost).to be 27_132
+        expect(total_cost).to be 28_232
       end
 
       it 'calculates registrations much larger than course table anticipates' do
         register(69)
         invoice.calc_cost
         total_cost = invoice.total_cost
-        expect(total_cost).to be 233_564
+        expect(total_cost).to be 234_664
       end
     end
 
@@ -130,7 +134,12 @@ RSpec.describe Invoice do
       let(:non_member_child) { create(:child, category: :external) }
 
       def register(num)
-        create_list(:slot_registration, num, invoice: invoice, registerable: slot, child: non_member_child)
+        num.times do
+          non_member_child.registrations.create!(
+            invoice: invoice,
+            registerable: create(:time_slot, event: invoice.event, morning: true)
+          )
+        end
       end
 
       before do
@@ -141,26 +150,26 @@ RSpec.describe Invoice do
         register(5)
         invoice.calc_cost
         total_cost = invoice.total_cost
-        expect(total_cost).to be 30_000
+        expect(total_cost).to be 31_100
       end
 
       it 'calculates cost when not on breakpoint' do
         register(7)
         invoice.calc_cost
         total_cost = invoice.total_cost
-        expect(total_cost).to be 43_200
+        expect(total_cost).to be 44_300
       end
 
       it 'calculates registrations much larger than course table anticipates' do
         register(69)
         invoice.calc_cost
         total_cost = invoice.total_cost
-        expect(total_cost).to be 336_400
+        expect(total_cost).to be 337_500
       end
     end
 
     context 'when member child attending for only 1 or 2 full days' do
-      let(:kindy_member) { create(:child, category: :internal, level: :kindy) }
+      let(:kindy_member) { create(:child, category: :internal, kindy: true) }
 
       def register(num)
         num.times do
@@ -180,14 +189,14 @@ RSpec.describe Invoice do
         register(1)
         invoice.calc_cost
         total_cost = invoice.total_cost
-        expect(total_cost).to be 8_616
+        expect(total_cost).to be 9_716
       end
 
       it 'correctly applies 184 yen increase for two full days' do
         register(2)
         invoice.calc_cost
         total_cost = invoice.total_cost
-        expect(total_cost).to be 17_232
+        expect(total_cost).to be 18_332
       end
     end
 
@@ -195,9 +204,22 @@ RSpec.describe Invoice do
       let(:child) { create(:child, category: :external) }
       let(:option) { create(:option, optionable: slot, cost: 100) }
 
-      def register(slots, options)
-        create_list(:slot_registration, slots, invoice: invoice, registerable: slot, child: child)
-        create_list(:option_registration, options, invoice: invoice, registerable: option, child: child)
+      def register(num)
+        num.times do
+          slot = create(:time_slot, event: invoice.event)
+          option = create(:option, optionable: slot, cost: 100)
+
+          child.registrations.create!([
+            {
+              invoice: invoice,
+              registerable: slot
+            },
+            {
+              invoice: invoice,
+              registerable: option
+            }
+          ])
+        end
       end
 
       before do
@@ -205,10 +227,10 @@ RSpec.describe Invoice do
       end
 
       it 'includes options' do
-        register(5, 5)
+        register(5)
         invoice.calc_cost
         total_cost = invoice.total_cost
-        expect(total_cost).to be 30_500
+        expect(total_cost).to be 31_600
       end
     end
 
@@ -216,7 +238,12 @@ RSpec.describe Invoice do
       let(:non_member_child) { create(:child, category: :external) }
 
       def register(num)
-        create_list(:slot_registration, num, invoice: invoice, registerable: slot, child: non_member_child)
+        num.times do
+          non_member_child.registrations.create!(
+            invoice: invoice,
+            registerable: create(:time_slot, event: invoice.event, morning: true)
+          )
+        end
       end
 
       before do
@@ -234,7 +261,7 @@ RSpec.describe Invoice do
         create(:adjustment, invoice: invoice, change: -5_000)
         invoice.calc_cost
         cost = invoice.total_cost
-        expect(cost).to be 25_000
+        expect(cost).to be 26_100
       end
     end
 
