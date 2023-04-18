@@ -7,14 +7,14 @@
 %>
 <% children = slot_attendance.children.distinct %>
 
-<div class="slot_attendance mb-5" data-controller="refresh print">
+<div class="slot_attendance mb-5" data-controller="refresh print" data-print-target="print">
     <div class="links d-flex gap-3">
         <%= link_to t('.back_to_event'), children_path(id: slot_attendance.event_id, source: 'Event'), class: 'btn btn-primary ms-3' %>
         <%= button_tag t('.print'), class: 'btn btn-primary', data: { action: "click->print#print" } %>
     </div>
-    <h1 class="text-center" data-print-target="heading"><%= "#{slot_attendance.name} (#{slot_attendance.start_time.strftime('%m月%d日')})" %></h1>
+    <h1 class="text-center"><%= "#{slot_attendance.name} (#{slot_attendance.start_time.strftime('%m月%d日')})" %></h1>
     <h2 class="counter text-center">Automatic refresh in <span data-refresh-target="counter">10:00</span></h2>
-    <table data-print-target="table">
+    <table>
         <thead>
             <tr>
                 <th id="arrival_header" class="arrival"><%= t('.arrival_time') %></th>
