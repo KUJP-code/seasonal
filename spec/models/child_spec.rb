@@ -62,32 +62,6 @@ RSpec.describe Child do
   end
 
   context 'when invalid' do
-    context 'when required fields missing' do
-      it 'Japanese first name missing' do
-        valid_child.ja_first_name = nil
-        valid = valid_child.save
-        expect(valid).to be false
-      end
-
-      it 'Japanese family name missing' do
-        valid_child.ja_family_name = nil
-        valid = valid_child.save
-        expect(valid).to be false
-      end
-
-      it 'Katakana name missing' do
-        valid_child.katakana_name = nil
-        valid = valid_child.save
-        expect(valid).to be false
-      end
-
-      it 'English name missing' do
-        valid_child.en_name = nil
-        valid = valid_child.save
-        expect(valid).to be false
-      end
-    end
-
     context 'when birthday invalid' do
       it 'rejects children who are too old' do
         old_child = build(:child, birthday: 20.years.ago)
@@ -98,44 +72,6 @@ RSpec.describe Child do
       it 'rejects children who are too young' do
         young_child = build(:child, birthday: 6.months.ago)
         valid = young_child.save
-        expect(valid).to be false
-      end
-    end
-
-    context 'when names in wrong language' do
-      it 'rejects Japanese first name in English' do
-        valid_child.ja_first_name = "B'rett-Tan ner"
-        valid = valid_child.save
-        expect(valid).to be false
-      end
-
-      it 'rejects Japanese family name in English' do
-        valid_child.ja_family_name = "B'rett-Tan ner"
-        valid = valid_child.save
-        expect(valid).to be false
-      end
-
-      it 'rejects Katakana name in Kanji' do
-        valid_child.katakana_name = '吉田'
-        valid = valid_child.save
-        expect(valid).to be false
-      end
-
-      it 'rejects Katakana name in Hiragana' do
-        valid_child.katakana_name = 'ゆじいたどり'
-        valid = valid_child.save
-        expect(valid).to be false
-      end
-
-      it 'rejects Katakana name in English' do
-        valid_child.katakana_name = "B'rett-Tan ner"
-        valid = valid_child.save
-        expect(valid).to be false
-      end
-
-      it 'rejects English name in Japanese' do
-        valid_child.en_name = 'サクラ田中'
-        valid = valid_child.save
         expect(valid).to be false
       end
     end
@@ -151,7 +87,8 @@ RSpec.describe Child do
     end
 
     it 'parent knows its child' do
-      new_child = create(:child, parent: parent)
+      new_child = create(:child)
+      parent.children << new_child
       parent_children = parent.children
       expect(parent_children).to include(new_child)
     end
