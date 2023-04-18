@@ -29,13 +29,15 @@
                     <%# FIXME: n+1 queries %>
                     <th><%= "#{opt.name}: #{opt.registrations.size}" %></th>
                 <% end %>
-                <th id="afternoon_header" class="afternoon">
-                    <p><%= t('.attend_afternoon') %></p>
-                    <p><%= "K: #{@children.select{|c| c.kindy}.size}, E: #{@children.reject{|c| c.kindy}.size}" %></p>
-                </th>
-                <% aft_options.each do |opt| %>
-                    <%# FIXME: n+1 queries %>
-                    <th><%= "#{opt.name}: #{opt.registrations.size}" %></th>
+                <% unless @source.special? %>
+                    <th id="afternoon_header" class="afternoon">
+                        <p><%= t('.attend_afternoon') %></p>
+                        <p><%= "K: #{@children.select{|c| c.kindy && c.registered?(@source.afternoon_slot)}.size}, E: #{@children.reject(&:kindy).select{|c| c.registered?(@source.afternoon_slot)}.size}" %></p>
+                    </th>
+                    <% aft_options.each do |opt| %>
+                        <%# FIXME: n+1 queries %>
+                        <th><%= "#{opt.name}: #{opt.registrations.size}" %></th>
+                    <% end %>
                 <% end %>
                 <th id="depart_header" class="depart"><%= t('.depart_time') %></th>
             </tr>
