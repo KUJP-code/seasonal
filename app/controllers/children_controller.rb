@@ -7,7 +7,10 @@ class ChildrenController < ApplicationController
     return find_child if params[:commit] == 'Find Child'
 
     # List children attending an event or time slot
-    if params[:source]
+    if params[:all]
+      @slots = params[:source].constantize.find(params[:id]).time_slots
+      return render 'event_attendance_index'
+    elsif params[:source]
       find_source
 
       return render "#{@source.class.name.downcase}_index"
