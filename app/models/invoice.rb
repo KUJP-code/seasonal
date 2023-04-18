@@ -4,6 +4,8 @@
 class Invoice < ApplicationRecord
   include ActionView::Helpers::SanitizeHelper
 
+  before_save :update_regs_child
+
   belongs_to :child
   delegate :parent, to: :child
   belongs_to :event
@@ -237,5 +239,13 @@ class Invoice < ApplicationRecord
     self.summary = @breakdown
     # To avoid saving on the confirm page
     save unless new_record?
+  end
+
+  def update_regs_child
+    return if registrations.empty? || registrations.first.child_id == child_id
+
+    registrations.each do |reg|
+      reg.update!(child_id: child_id)
+    end
   end
 end
