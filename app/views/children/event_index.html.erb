@@ -1,6 +1,10 @@
 <main id="event_children_index" data-controller="refresh">
+    <div class="links">
+        <%= link_to t('.print'), '', class: 'btn btn-primary ms-3', :onclick => 'window.print();return false;' %>
+    </div>
+
     <h1><%= @source.name %></h1>
-    <h2>Automatic refresh in <span data-refresh-target="counter">10:00</span></h2>
+    <h2 class="counter">Automatic refresh in <span data-refresh-target="counter">10:00</span></h2>
 
     <table>
         <%# Minus 1 for special day %>
