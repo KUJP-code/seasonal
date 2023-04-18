@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "user#{@user.id}" do %>
-    <%= form_with model: @user, data: { controller: :fields }, class: 'edit_user' do |f| %>
+    <%= form_with model: @user, data: { controller: :fields } do |f| %>
 
         <% if @user.errors.any? %>
             <div class="errors">
@@ -12,90 +12,69 @@
             </div>
         <% end %>
 
-        <div class="user_fields">
-            <h2><%= t('.user_info') %></h2>
-            <div class="account_info">
-                <h3><%= t('.account_information') %></h3>
+        <div class="account_info d-grid gap-3 p-5">
+            <h3><%= t('.account_information') %></h3>
 
-                <div class="field">
-                    <%= f.label :email %><br />
-                    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-                </div>
-
-                <div class="field">
-                    <%= f.label :email_confirmation %><br />
-                    <%= f.email_field :email_confirmation, value: @user.email, autocomplete: "email" %>
-                </div>
-
-                <% if current_user.admin? %>
-                    <div class="field">
-                        <%= f.label :role %>
-                        <%= f.select :role, [["Admin", "admin"], ["Area Manager", "area_manager"], ["School Manager", "school_manager"], ["Parent", "customer"]] %>
-                    </div>
-                <% end %>
+            <div class="form-floating">
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: t('.email') %>
+                <%= f.label :email, class: 'form-label' %><br />
             </div>
 
-            <div class="personal_info">
-                <h3><%= t('.personal_information') %></h3>
-
-                <div class="field">
-                    <%= f.label :first_name, t('.first_name') %><br />
-                    <%= text_field_tag "user[first_name]", @user.name.split[0] %>
-                </div>
-
-                <div class="field">
-                    <%= f.label :family_name, t('.family_name') %><br />
-                    <%= text_field_tag "user[family_name]", @user.name.split[1] %>
-                </div>
-
-                <div class="field">
-                    <%= f.label :kana_first, t('.kana_first') %><br />
-                    <%= text_field_tag "user[kana_first]", @user.katakana_name.split[0] %>
-                </div>
-
-                <div class="field">
-                    <%= f.label :kana_family, t('.kana_family') %><br />
-                    <%= text_field_tag "user[kana_family]", @user.katakana_name.split[1] %>
-                </div>
-
-                <div class="field">
-                  <%= f.label :postcode, t('.postcode') %><br />
-                  <%= f.text_field :postcode, autocomplete: "postcode" %>
-                </div>
-
-
-                <div class="field">
-                  <%= f.label :prefecture, t('.prefecture') %><br />
-                  <%= f.text_field :prefecture %>
-                </div>
-
-                <div class="field">
-                  <%= f.label :address, t('.address') %><br />
-                  <%= f.text_area :address, autocomplete: "address" %>
-                </div>
-
-                <div class="field">
-                    <%= f.label :phone, t('.phone') %><br />
-                    <%= f.telephone_field :phone, autocomplete: "phone" %>
-                </div>
+            <div class="form-floating">
+                <%= f.email_field :email_confirmation, value: @user.email, autocomplete: "email", class: 'form-control', placeholder: t('.email_confirm') %>
+                <%= f.label :email_confirmation, class: 'form-label' %><br />
             </div>
-        </div>
-    
-        <template data-fields-target="template">
-            <%= f.fields_for :children, Child.new(parent_id: @user.id), child_index: 'CHILD' do |child_f| %>
-                <%= render 'users/child_fields', f: child_f %>
+
+            <% if current_user.admin? %>
+                <div class="form-floating">
+                    <%= f.label :role, class: 'form-label' %>
+                    <%= f.select :role, [["Admin", "admin"], ["Area Manager", "area_manager"], ["School Manager", "school_manager"], ["Parent", "customer"]], class: 'form-select' %>
+                </div>
             <% end %>
-        </template>
-    
-        <%= f.fields_for :children do |child_f| %>
-            <%= render 'users/child_fields', f: child_f %>
-        <% end %>
-    
-        <div data-fields-target="target"></div>
-    
-        <div class="actions">
-            <%= button_tag t('.add_child'), data: { action: "fields#add" }, class: 'button' %>
-            <%= f.submit t('.update_all'), class: 'button', data: { turbo_frame: '_top' } %>
         </div>
+
+        <div class="personal_info d-grid gap-3 p-5 pt-0">
+            <h3><%= t('.personal_information') %></h3>
+
+            <div>
+                <%= f.label :first_name, t('.name'), class: 'form-label' %><br />
+                <div class="input-group">
+                    <%= text_field_tag "user[first_name]", @user.name.split[0], class: 'form-control' %>
+                    <span class="input-group-text"></span>
+                    <%= text_field_tag "user[family_name]", @user.name.split[1], class: 'form-control' %>
+                </div>
+            </div>
+
+            <div>
+                <%= f.label :kana_first, t('.kana_name'), class: 'form-label' %><br />
+                <div class="input-group">
+                    <%= text_field_tag "user[kana_first]", @user.katakana_name.split[0], class: 'form-control' %>
+                    <span class="input-group-text"></span>
+                    <%= text_field_tag "user[kana_family]", @user.katakana_name.split[1], class: 'form-control' %>
+                </div>
+            </div>
+
+            <div class="form-floating">
+              <%= f.text_field :postcode, autocomplete: "postcode", class: 'form-control', placeholder: t(',postcode') %>
+              <%= f.label :postcode, t('.postcode'), class: 'form-label' %><br />
+            </div>
+
+            <div class="form-floating">
+              <%= f.text_field :prefecture, class: 'form-control', placeholder: t('prefecture') %>
+              <%= f.label :prefecture, t('.prefecture'), class: 'form-label' %><br />
+            </div>
+
+            <div class="form-floating">
+              <%= f.text_area :address, autocomplete: "address", class: 'form-control', placeholder: t('.address') %>
+              <%= f.label :address, t('.address'), class: 'form-label' %><br />
+            </div>
+
+            <div class="form-floating">
+                <%= f.telephone_field :phone, autocomplete: "phone", class: 'form-control', placeholder: t('.phone') %>
+                <%= f.label :phone, t('.phone'), class: 'form-label' %><br />
+            </div>
+        </div>
+    
+        <%= f.submit class: 'btn btn-primary', data: { turbo_frame: '_top' } %>
     <% end %>
 <% end %>

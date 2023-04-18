@@ -40,7 +40,7 @@
 
         <% if current_user.staff? || current_user.id == @child.parent_id %>
             <div class="staff_options">
-                <%= link_to t('.edit_child'), edit_child_path(@child), class: 'btn btn-primary' %>
+                <%= link_to t('.edit_child'), edit_child_path(@child), class: 'btn btn-primary' unless @child.ssid %>
             </div>
         <% end %>
     </div>
