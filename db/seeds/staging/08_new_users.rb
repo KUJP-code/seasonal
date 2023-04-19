@@ -2,7 +2,7 @@
 
 non_member = User.create!(
   email: 'non_member@gmail.com',
-  password: 'nonmembernon',
+  password: ENV['NON_MEMBER_PASS'],
   first_name: Faker::Name.first_name,
   family_name: Faker::Name.last_name,
   kana_first: Faker::Name.first_name,
@@ -46,7 +46,7 @@ non_member.children.create!([
 
 member = User.create!(
   email: 'member@gmail.com',
-  password: 'membermembermember',
+  password: ENV['MEMBER_PASS'],
   first_name: Faker::Name.first_name,
   family_name: Faker::Name.last_name,
   kana_first: Faker::Name.first_name,
