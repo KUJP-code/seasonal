@@ -2,12 +2,15 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = ["target", "condition"];
+  static values = {
+    pin: String,
+  };
 
   connect() {
     this.toggle;
   }
 
-  toggle() {
+  allergy() {
     const allergy = this.conditionTarget.value;
     const target = this.targetTarget;
 
@@ -25,5 +28,19 @@ export default class extends Controller {
         target.readOnly = true;
         break;
     }
+  }
+
+  pin() {
+    const pin = this.conditionTarget.value;
+
+    console.log(this.pinValue);
+
+    if (pin !== this.pinValue) {
+      return;
+    }
+
+    this.targetTargets.forEach((target) => {
+      target.classList.toggle("d-none");
+    });
   }
 }
