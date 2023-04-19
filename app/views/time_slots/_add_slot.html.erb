@@ -16,8 +16,8 @@
             <% if slots_in_ss.any? { |reg| reg.registerable_id == add_slot.id } %>
                 <p>◯</p>
             <% else %>
-                <button class="button<%= ' registered' if registered %>" 
-                    data-register-target="button" data-action="click->register#toggle"><%= 
+                <button class="btn btn-primary<%= ' registered' if registered %>" 
+                    data-register-target='button' data-action="click->register#toggle"><%= 
                     if registered
                         t('unregister')
                     else
@@ -41,8 +41,8 @@
                          data-register-cost-value=<%= opt.cost %>>
 
                         <p data-register-target="name"><%= opt.name %></p>
-                        <button class="button <%= 'registered' if opt_registered %>"
-                            data-register-target="button" data-action="click->register#toggle"><%=
+                        <button class="btn btn-primary <%= 'registered' if opt_registered %>"
+                            data-register-target='button' data-action="click->register#toggle"><%=
                         if opt_registered
                             '◯'
                         else
@@ -76,7 +76,7 @@
                             name=<%= "arrival#{opt.optionable_id}child#{child.id}" %> 
                             id="<%= "arrival#{opt.optionable_id}opt#{opt.id}" %>" 
                             <%= 'checked' if opt_registered %>
-                            data-register-target="button" data-action="change->register#toggle">
+                            data-register-target='button' data-action="change->register#toggle">
                         </div>
                     <% end %>
                 </fieldset>
@@ -103,8 +103,8 @@
                 <% elsif child.regular_schedule && child.regular_schedule[afternoon_slot.day.downcase] %>
                     <p><%= t('.regular_day') %></p>
                 <% else %>
-                    <button class="button<%= ' registered' if aft_registered %>" 
-                        data-register-target="button" data-action="click->register#toggle"><%= 
+                    <button class="btn btn-primary<%= ' registered' if aft_registered %>" 
+                        data-register-target='button' data-action="click->register#toggle"><%= 
                         if aft_registered
                             t('unregister')
                         else
@@ -128,7 +128,7 @@
                              data-register-child-value=<%= child.id %>
                              data-register-cost-value=<%= opt.cost %>>
                             <p data-register-target="name"><%= opt.name %></p>
-                            <button class="button <%= 'registered' if opt_registered %>" data-register-target="button" data-action="click->register#toggle"><%=
+                            <button class="button <%= 'registered' if opt_registered %>" data-register-target='button' data-action="click->register#toggle"><%=
                             if opt_registered
                                 '◯'
                             else
@@ -162,7 +162,7 @@
                                 name="depart<%= "#{opt.optionable_id}" %>" 
                                 id="<%= "depart#{opt.optionable_id}opt#{opt.id}" %>" 
                                 <%= 'checked' if opt_registered %>
-                                data-register-target="button" data-action="change->register#toggle">
+                                data-register-target='button' data-action="change->register#toggle">
                             </div>
                         <% end %>
                     </fieldset>

@@ -26,7 +26,7 @@
 
                     <%= 
                         link_to t('.copy_regs', child: child.name), 
-                        copy_invoice_path(origin: @child.id, target: child.id, event: @event.id), class: 'button', 
+                        copy_invoice_path(origin: @child.id, target: child.id, event: @event.id), class: 'btn btn-primary', 
                         data: { 
                             turbo_method: :put, 
                             turbo_confirm: "This will register #{child.name} for all the same time slots and options as #{@child.name}. None of #{child.name}'s existing registrations will be affected"
@@ -124,7 +124,7 @@
                     <h4 data-register-target="name"><%= opt.name %></h4>
 
                     <button class="button <%= 'registered' if opt_registered %>" 
-                        data-register-target="button" data-action="click->register#toggle"><%= 
+                        data-register-target='btn btn-primary' data-action="click->register#toggle"><%= 
                         if opt_registered
                             t('unregister')
                         else
@@ -200,7 +200,7 @@
                     <% end %>
                 </template>
 
-                <%= f.submit t('.confirm_invoice'), class: 'button' unless f.object.in_ss %>
+                <%= f.submit t('.confirm_invoice'), class: 'btn btn-primary' unless f.object.in_ss %>
             <% end %>
         <% end %>
     </div>
