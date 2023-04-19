@@ -1,5 +1,6 @@
 en:
-  enter_pin: "Enter PIN to reveal"
+  ele_school: "Elementary School"
+  enter_pin: "Enter PIN to reveal %{info}"
   nav_bar:
     child_list: "Children"
     customers: "Customers"

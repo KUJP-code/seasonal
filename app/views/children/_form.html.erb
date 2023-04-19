@@ -63,10 +63,25 @@
                     <%= f.select :grade, Child.grades.reject { |k, _| %w[満１歳 満２歳 年々少 中学１年 中学２年].include?(k) }.map { |k, v| v = k }, {}, { class: 'form-select' } %>
                 </div>
     
-                <div class="form-floating">
-                    <%= f.text_field :ele_school_name, class: 'form-control', placeholder: t('.ele_school_name') %>
-                    <%= f.label :ele_school_name, t('.ele_school_name'), class: 'form-label' %><br />
-                </div>
+                <% if @child.new_record? %>
+                    <div class="form-floating">
+                        <%= f.text_field :ele_school_name, class: 'form-control', placeholder: t('ele_school') %>
+                        <%= f.label :ele_school_name, t('ele_school'), class: 'form-label' %><br />
+                    </div>
+                <% end %>
+                <% if !@child.new_record? && current_user.staff? %>
+                    <div data-controller="conditional" data-conditional-pin-value=<%= current_user.pin %>>
+                        <div class="form-floating d-none"
+                             data-conditional-target="target">
+                            <%= f.text_field :ele_school_name, class: 'form-control', placeholder: t('ele_school') %>
+                            <%= f.label :ele_school_name, t('ele_school'), class: 'form-label' %><br />
+                        </div>
+                        <div class="form-floating" data-conditional-target="target">
+                            <%= text_field_tag t('enter_pin', info: t('ele_school')), '', class: 'form-control', placeholder: t('enter_pin', info: t('ele_school')), maxlength: 4, data: { 'conditional-target': 'condition', action: 'conditional#pin' } %>
+                            <%= label_tag t('enter_pin', info: t('ele_school')), nil, class: 'form-label' %>
+                        </div>
+                    </div>
+                <% end %>
             </div>
     
             <div class="school_info d-grid gap-3 p-5 pt-0">
