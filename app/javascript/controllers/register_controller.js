@@ -14,37 +14,22 @@ export default class extends Controller {
     e.preventDefault();
 
     const child = this.childValue;
-    const content = this.buttonTarget.innerHTML;
+    const checked = this.buttonTarget.checked;
     const cost = this.costValue;
     const id = this.idValue;
     const siblings = getSiblings(this.element);
     const type = this.typeValue;
 
-    switch (content) {
-      case "Register":
-        this.buttonTarget.classList.add("registered");
-        this.buttonTarget.innerHTML = "Unregister";
-        break;
-      case "Unregister":
-        this.buttonTarget.classList.remove("registered");
-        this.buttonTarget.innerHTML = "Register";
-        break;
-      case "✖":
-        this.buttonTarget.classList.add("registered");
-        this.buttonTarget.innerHTML = "◯";
-        break;
-      case "◯":
-        this.buttonTarget.classList.remove("registered");
-        this.buttonTarget.innerHTML = "✖";
-        break;
-      default:
-        break;
+    if (checked) {
+      this.buttonTarget.classList.add("registered");
+    } else {
+      this.buttonTarget.classList.remove("registered");
     }
 
     this.dispatch("toggle", {
       detail: {
         child: child,
-        content: content,
+        checked: checked,
         cost: cost,
         id: id,
         siblings: siblings,

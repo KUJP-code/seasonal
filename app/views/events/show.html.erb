@@ -123,14 +123,7 @@
 
                     <h4 data-register-target="name"><%= opt.name %></h4>
 
-                    <button class="btn btn-primary <%= 'registered' if opt_registered %>" 
-                        data-register-target='button' data-action="click->register#toggle"><%= 
-                        if opt_registered
-                            t('unregister')
-                        else
-                            t('register')
-                        end
-                    %></button>
+                    <%= check_box_tag '', '', (true if opt_registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
                 </div>
             <% end %>
         <% end %>
@@ -204,7 +197,7 @@
                     <% unless f.object.in_ss %>
                         <%= f.fields_for :coupons, f.object.coupons.new do |coup_f| %>
                             <div class="form-floating">
-                                <%= coup_f.text_field :code, class: 'form-control', placeholder: t('.coupon_codes') %>
+                                <%= coup_f.text_field :code, class: 'form-control form-control-sm', placeholder: t('.coupon_codes') %>
                                 <%= coup_f.label :code, t('coupon_codes'), class: 'form-label' %>
                             </div>
                         <% end %>

@@ -45,24 +45,20 @@ export default class extends Controller {
 
   change(e) {
     const child = e.detail.child;
-    const content = e.detail.content;
+    const checked = e.detail.checked;
     const cost = e.detail.cost;
     const id = e.detail.id;
     const siblings = e.detail.siblings;
     const type = e.detail.type;
 
-    switch (content) {
-      case "Register":
-      case "✖":
-        this.add(child, cost, id, type);
-        break;
-      case "Unregister":
-      case "◯":
-        this.remove(child, id, type);
-        break;
-      default:
+    if (checked) {
+      if (siblings.length > 0) {
         this.radio(child, cost, id, siblings, type);
-        break;
+      } else {
+        this.add(child, cost, id, type);        
+      }
+    } else {
+      this.remove(child, id, type);
     }
   }
 

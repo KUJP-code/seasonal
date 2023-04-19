@@ -16,14 +16,7 @@
             <% if slots_in_ss.any? { |reg| reg.registerable_id == add_slot.id } %>
                 <p>◯</p>
             <% else %>
-                <button class="btn btn-primary<%= ' registered' if registered %>" 
-                    data-register-target='button' data-action="click->register#toggle"><%= 
-                    if registered
-                        t('unregister')
-                    else
-                        t('register')
-                    end
-                %></button>
+                <%= check_box_tag '', '', (true if registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
             <% end %>
         </div>
         <div class="options<%= ' hidden' unless registered %>" data-popup-target="popup">
@@ -41,14 +34,7 @@
                          data-register-cost-value=<%= opt.cost %>>
 
                         <p data-register-target="name"><%= opt.name %></p>
-                        <button class="btn btn-primary <%= 'registered' if opt_registered %>"
-                            data-register-target='button' data-action="click->register#toggle"><%=
-                        if opt_registered
-                            '◯'
-                        else
-                            '✖'
-                        end
-                        %></button>
+                        <%= check_box_tag '', '', (true if opt_registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
                     </div>
                 <% end %>
             <% end %>
@@ -103,14 +89,7 @@
                 <% elsif child.regular_schedule && child.regular_schedule[afternoon_slot.day.downcase] %>
                     <p><%= t('.regular_day') %></p>
                 <% else %>
-                    <button class="btn btn-primary<%= ' registered' if aft_registered %>" 
-                        data-register-target='button' data-action="click->register#toggle"><%= 
-                        if aft_registered
-                            t('unregister')
-                        else
-                            t('register')
-                        end
-                    %></button>
+                    <%= check_box_tag '', '', (true if aft_registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
                 <% end %>
             </div>
             <div class="options<%= ' hidden' unless aft_registered %>" data-popup-target="popup">
@@ -128,13 +107,7 @@
                              data-register-child-value=<%= child.id %>
                              data-register-cost-value=<%= opt.cost %>>
                             <p data-register-target="name"><%= opt.name %></p>
-                            <button class="button <%= 'registered' if opt_registered %>" data-register-target='button' data-action="click->register#toggle"><%=
-                            if opt_registered
-                                '◯'
-                            else
-                                '✖'
-                            end
-                            %></button>
+                            <%= check_box_tag '', '', (true if opt_registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
                         </div>
                     <% end %>
                 <% end %>
