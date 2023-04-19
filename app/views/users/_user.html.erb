@@ -2,9 +2,7 @@
     <p class="name"><%= link_to user.name, user_path(user) %></p>
     <p class="katakana"><%= link_to user.katakana_name, user_path(user) %></p>
     <p class="email"><%= user.email %></p>
-    <p class="phone"><%= user.phone %></p>
-    <p class="address"><%= user.address %></p>
-    <p class="edit"><%= link_to t('.edit_user'), edit_user_path(user), class: 'button' if current_user.staff? %></p>
+    <p class="edit"><%= link_to t('.edit_user'), edit_user_path(user), class: 'btn btn-primary' if current_user.staff? %></p>
 
     <div class="user_children">
         <h4><%= t('.children') if user.children.size > 1 %></h3>

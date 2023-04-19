@@ -54,25 +54,34 @@
                 </div>
             </div>
 
-            <div class="form-floating">
-              <%= f.text_field :postcode, autocomplete: "postcode", class: 'form-control', placeholder: t(',postcode') %>
-              <%= f.label :postcode, t('.postcode'), class: 'form-label' %><br />
-            </div>
-
-            <div class="form-floating">
-              <%= f.text_field :prefecture, class: 'form-control', placeholder: t('prefecture') %>
-              <%= f.label :prefecture, t('.prefecture'), class: 'form-label' %><br />
-            </div>
-
-            <div class="form-floating">
-              <%= f.text_area :address, autocomplete: "address", class: 'form-control', placeholder: t('.address') %>
-              <%= f.label :address, t('.address'), class: 'form-label' %><br />
-            </div>
-
-            <div class="form-floating">
-                <%= f.telephone_field :phone, autocomplete: "phone", class: 'form-control', placeholder: t('.phone') %>
-                <%= f.label :phone, t('.phone'), class: 'form-label' %><br />
-            </div>
+            <% if current_user.staff? %>
+                <div data-controller="conditional" 
+                     data-conditional-pin-value=<%= current_user.pin %>>
+                    <div class="d-none"
+                         data-conditional-target="target">
+                        <div class="form-floating">
+                        <%= f.text_field :postcode, autocomplete: "postcode", class: 'form-control', placeholder: t(',postcode') %>
+                        <%= f.label :postcode, t('.postcode'), class: 'form-label' %><br />
+                        </div>
+                        <div class="form-floating">
+                        <%= f.text_field :prefecture, class: 'form-control', placeholder: t('prefecture') %>
+                        <%= f.label :prefecture, t('.prefecture'), class: 'form-label' %><br />
+                        </div>
+                        <div class="form-floating">
+                        <%= f.text_area :address, autocomplete: "address", class: 'form-control', placeholder: t('.address') %>
+                        <%= f.label :address, t('.address'), class: 'form-label' %><br />
+                        </div>
+                        <div class="form-floating">
+                            <%= f.telephone_field :phone, autocomplete: "phone", class: 'form-control', placeholder: t('.phone') %>
+                            <%= f.label :phone, t('.phone'), class: 'form-label' %><br />
+                        </div>
+                    </div>
+                    <div class="form-floating" data-conditional-target="target">
+                        <%= text_field_tag t('enter_pin', info: t('contact_info')), '', class: 'form-control', placeholder: t('enter_pin', info: t('contact_info')), maxlength: 4, data: { 'conditional-target': 'condition', action: 'conditional#pin' } %>
+                            <%= label_tag t('enter_pin', info: t('contact_info')), nil, class: 'form-label' %>
+                    </div>
+                </div>
+            <% end %>
         </div>
     
         <%= f.submit class: 'btn btn-primary', data: { turbo_frame: '_top' } %>
