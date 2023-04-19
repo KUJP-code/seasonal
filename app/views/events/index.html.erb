@@ -1,5 +1,5 @@
 <main id="event_index">
-    <%= link_to t('.create_event'), new_event_path, class: 'button' if current_user.admin? %>
+    <%= link_to t('.create_event'), new_event_path, class: 'btn btn-primary' if current_user.admin? %>
 
     <%= render partial: 'events/event', collection: @events %>
 </main>
