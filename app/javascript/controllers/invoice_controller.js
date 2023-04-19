@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static targets = ["slotTemplate", "slotTarget", "optTemplate", "optTarget"];
 
-  add(child, cost, id, type) {
+  add(child, cost, id, type, name) {
     const wrapper =
       type === "TimeSlot"
         ? document.getElementById(`slot${id}`.concat(`child${child}`))
@@ -40,6 +40,11 @@ export default class extends Controller {
       }
     }
 
+    const nameContainer = document.getElementById("reg_slots");
+    const nameP = document.createElement("p");
+    nameP.innerText = name.replaceAll("_", " ");
+    nameContainer.appendChild(nameP);
+
     this.dispatch("add");
   }
 
@@ -48,32 +53,31 @@ export default class extends Controller {
     const checked = e.detail.checked;
     const cost = e.detail.cost;
     const id = e.detail.id;
+    const name = e.detail.name;
     const siblings = e.detail.siblings;
     const type = e.detail.type;
 
-    if (checked) {
-      if (siblings.length > 0) {
-        this.radio(child, cost, id, siblings, type);
-      } else {
-        this.add(child, cost, id, type);        
-      }
+    if (checked && type === "TimeSlot") {
+      this.add(child, cost, id, type, name);
+    } else if (checked) {
+      this.radio(child, cost, id, siblings, type, name);
     } else {
-      this.remove(child, id, type);
+      this.remove(child, id, type, name);
     }
   }
 
-  radio(child, cost, id, siblings, type) {
-    this.add(child, cost, id, type);
+  radio(child, cost, id, siblings, type, name) {
+    this.add(child, cost, id, type, name);
 
     siblings.forEach((sibling) => {
       const child = sibling.dataset.registerChildValue;
       const id = sibling.dataset.registerIdValue;
 
-      this.remove(child, id, "Option");
+      this.remove(child, id, "Option", name);
     });
   }
 
-  remove(child, id, type) {
+  remove(child, id, type, name) {
     const wrapper =
       type === "TimeSlot"
         ? document.getElementById(`slot${id}`.concat(`child${child}`))
@@ -94,6 +98,13 @@ export default class extends Controller {
         }
       }
     }
+
+    const nameContainer = document.getElementById("reg_slots");
+    nameContainer.childNodes.forEach((node) => {
+      if (node.innerText === name.replaceAll("_", " ")) {
+        nameContainer.removeChild(node);
+      }
+    });
 
     this.dispatch("remove");
   }
