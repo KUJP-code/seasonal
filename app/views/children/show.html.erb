@@ -39,8 +39,8 @@
                         <%= "#{t('.ele_school')} #{@child.ele_school_name}" %>
                     </p>
                     <div class="form-floating" data-conditional-target="target">
-                        <%= text_field_tag 'PIN', '', class: 'form-control', placeholder: 'PIN', maxlength: 4, data: { 'conditional-target': 'condition', action: 'conditional#pin' } %>
-                        <%= label_tag 'PIN', nil, class: 'form-label' %>
+                        <%= text_field_tag t('enter_pin'), '', class: 'form-control', placeholder: t('enter_pin'), maxlength: 4, data: { 'conditional-target': 'condition', action: 'conditional#pin' } %>
+                        <%= label_tag t('enter_pin'), nil, class: 'form-label' %>
                     </div>
                 </div>
             </div>

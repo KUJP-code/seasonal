@@ -32,9 +32,6 @@ export default class extends Controller {
 
   pin() {
     const pin = this.conditionTarget.value;
-
-    console.log(this.pinValue);
-
     if (pin !== this.pinValue) {
       return;
     }
@@ -42,5 +39,12 @@ export default class extends Controller {
     this.targetTargets.forEach((target) => {
       target.classList.toggle("d-none");
     });
+
+    // Auto-hide again after 30min
+    setTimeout(() => {
+      this.targetTargets.forEach((target) => {
+        target.classList.toggle("d-none");
+      });
+    }, 1800000)
   }
 }

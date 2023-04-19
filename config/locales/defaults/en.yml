@@ -1,4 +1,5 @@
 en:
+  enter_pin: "Enter PIN to reveal"
   nav_bar:
     child_list: "Children"
     customers: "Customers"
