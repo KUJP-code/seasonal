@@ -3,7 +3,7 @@
 User.create!([
   {
     email: 'admin@gmail.com',
-    password: 'adminadminadmin',
+    password: ENV['ADMIN_PASS'],
     first_name: Faker::Name.first_name,
     family_name: Faker::Name.last_name,
     kana_first: Faker::Name.first_name,
@@ -15,7 +15,7 @@ User.create!([
   },
   {
     email: 'am@gmail.com',
-    password: 'ampasswordampassword',
+    password: ENV['AM_PASS'],
     first_name: Faker::Name.first_name,
     family_name: Faker::Name.last_name,
     kana_first: Faker::Name.first_name,
@@ -27,7 +27,7 @@ User.create!([
   },
   {
     email: 'sm@gmail.com',
-    password: 'smpasswordsmpassword',
+    password: ENV['SM_PASS'],
     first_name: Faker::Name.first_name,
     family_name: Faker::Name.last_name,
     kana_first: Faker::Name.first_name,
@@ -39,7 +39,7 @@ User.create!([
   },
   {
     email: 'customer@gmail.com',
-    password: 'customerpassword',
+    password: ENV['CUSTOMER_PASS'],
     first_name: Faker::Name.first_name,
     family_name: Faker::Name.last_name,
     kana_first: Faker::Name.first_name,
