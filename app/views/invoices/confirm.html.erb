@@ -32,6 +32,14 @@
             <% end %>
         </div>
 
+        <div class="coupons">
+            <%= f.fields_for :coupons do |coup_f| %>
+                <div>
+                    <%= coup_f.hidden_field :code %>
+                </div>
+            <% end %>
+        </div>
+
         <%= f.submit t('.confirm_changes'), class: 'btn btn-primary' %>
     <% end %>
 </main>

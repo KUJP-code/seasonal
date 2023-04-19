@@ -123,8 +123,8 @@
 
                     <h4 data-register-target="name"><%= opt.name %></h4>
 
-                    <button class="button <%= 'registered' if opt_registered %>" 
-                        data-register-target='btn btn-primary' data-action="click->register#toggle"><%= 
+                    <button class="btn btn-primary <%= 'registered' if opt_registered %>" 
+                        data-register-target='button' data-action="click->register#toggle"><%= 
                         if opt_registered
                             t('unregister')
                         else
@@ -200,7 +200,17 @@
                     <% end %>
                 </template>
 
-                <%= f.submit t('.confirm_invoice'), class: 'btn btn-primary' unless f.object.in_ss %>
+                <div class="d-flex gap-3">
+                    <% unless f.object.in_ss %>
+                        <%= f.fields_for :coupons, f.object.coupons.new do |coup_f| %>
+                            <div class="form-floating">
+                                <%= coup_f.text_field :code, class: 'form-control', placeholder: t('.coupon_codes') %>
+                                <%= coup_f.label :code, t('coupon_codes'), class: 'form-label' %>
+                            </div>
+                        <% end %>
+                    <% end %>
+                    <%= f.submit t('.confirm_invoice'), class: 'btn btn-primary' unless f.object.in_ss %>
+                </div>
             <% end %>
         <% end %>
     </div>

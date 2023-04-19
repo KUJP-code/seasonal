@@ -143,7 +143,8 @@ class InvoicesController < ApplicationController
       slot_regs_attributes: %i[id child_id _destroy invoice_id registerable_id
                                registerable_type],
       opt_regs_attributes: %i[id child_id _destroy invoice_id registerable_id
-                              registerable_type]
+                              registerable_type],
+      coupons_attributes: [:code]
     )
   end
 end
