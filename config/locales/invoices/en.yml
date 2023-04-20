@@ -3,4 +3,5 @@ en:
     confirm:
       confirm_changes: "Confirm Changes"
     invoice:
+      in_ss: "In SS, editing locked"
       merge_invoices: "Merge Invoices"
