@@ -1,7 +1,7 @@
 <main id="invoice_confirm">
     <h1><%= t('.please_confirm') %></h1>
 
-    <%= render @invoice %>
+    <%= render @invoice, show: true, past: false %>
 
     <%= form_for @invoice, url: invoice_path(@invoice), method: :patch do |f| %>
         <%= f.hidden_field :id %>

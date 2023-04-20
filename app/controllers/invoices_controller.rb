@@ -108,6 +108,12 @@ class InvoicesController < ApplicationController
 
   private
 
+  def already_registered?(target_invoice, o_reg)
+    target_invoice.registrations.any? do |t_reg|
+      t_reg.registerable_id == o_reg.registerable_id && t_reg.registerable_type == o_reg.registerable_type
+    end
+  end
+
   def copy_invoice(target, event, origin)
     # List of registrations to copy
     og_regs = origin.invoices.where(event: event).map(&:registrations).flatten
@@ -116,11 +122,7 @@ class InvoicesController < ApplicationController
 
     og_regs.each do |o_reg|
       # Skip if already on target invoice
-      if target_invoice.registrations.any? do |t_reg|
-           t_reg.registerable_id == o_reg.registerable_id && t_reg.registerable_type == o_reg.registerable_type
-         end
-        next
-      end
+      next  if already_registered?(target_invoice, o_reg)
 
       # If not on target invoice, add registration
       target_invoice.registrations.create!(

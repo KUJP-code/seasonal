@@ -1,8 +1,13 @@
 <main id="invoice_show" class="gap-5">
-    <h1><%= t('.current_version') %></h1>
+    <% unless @previous_versions.empty? %>
+        <h1><%= t('.current_version') %></h1>
+    <% end %>
+
     <%= render @invoice, show: true, past: false %>
 
-    <h1><%= t('.previous_versions') %></h1>
+    <% unless @previous_versions.empty? %>
+        <h1><%= t('.previous_versions') %></h1>
 
-    <%= render partial: 'invoices/invoice', collection: @previous_versions, locals: { show: true, past: true } %>
+        <%= render partial: 'invoices/invoice', collection: @previous_versions, locals: { show: true, past: true } %>
+    <% end %>
 </main>
