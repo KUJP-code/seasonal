@@ -3,6 +3,7 @@ class CreateEvents < ActiveRecord::Migration[7.0]
     create_table :events do |t|
       t.string :name
       t.string :description
+      t.integer :goal
       t.date :start_date
       t.date :end_date
       t.references :school, null: false, foreign_key: true

@@ -8,7 +8,8 @@ School.all.each do |school|
         start_date: 'February 18 2051',
         end_date: 'February 18 2051',
         member_prices_id: 1,
-        non_member_prices_id: 2
+        non_member_prices_id: 2,
+        goal: 500_000
       },
       {
         name: 'Spring School 2023',
@@ -16,7 +17,8 @@ School.all.each do |school|
         start_date: 'March 16 2050',
         end_date: 'April 4 2050',
         member_prices_id: 1,
-        non_member_prices_id: 2
+        non_member_prices_id: 2,
+        goal: 1_000_000
       }
     ])
 end

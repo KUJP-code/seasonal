@@ -97,6 +97,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
   create_table "events", force: :cascade do |t|
     t.string "name"
     t.string "description"
+    t.integer "goal"
     t.date "start_date"
     t.date "end_date"
     t.bigint "school_id", null: false
