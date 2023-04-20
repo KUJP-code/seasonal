@@ -2,6 +2,7 @@ en:
   devise:
     registrations:
       new:
+        accept_policy: "Accept P-UP privacy policy"
         account_information: "Account Information"
         address: "Address"
         name: "Name"
@@ -11,6 +12,7 @@ en:
         phone: "Phone Number"
         school: "School"
         sign_up_msg: "To create a new account please enter your info below."
+        view_policy: "View Privacy Policy"
     sessions:
       new:
         login: "Log In"
