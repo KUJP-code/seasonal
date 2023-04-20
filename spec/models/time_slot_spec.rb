@@ -52,20 +52,6 @@ RSpec.describe TimeSlot do
       expect(valid).to be false
     end
 
-    it 'with registration deadline after start time' do
-      deadline_after_start = build(:time_slot, start_time: 1.day.from_now,
-                                               end_time: 2.days.from_now,
-                                               registration_deadline: 2.days.from_now)
-      valid = deadline_after_start.save
-      expect(valid).to be false
-    end
-
-    it 'with registration deadline in past' do
-      past_deadline = build(:time_slot, registration_deadline: Time.zone.yesterday)
-      valid = past_deadline.save
-      expect(valid).to be false
-    end
-
     it 'without description' do
       no_description = build(:time_slot, description: nil)
       valid = no_description.save
@@ -84,7 +70,7 @@ RSpec.describe TimeSlot do
     it "knows today's time slots" do
       current_slot = create(:time_slot, start_time: 20.minutes.from_now,
                                         end_time: 2.hours.from_now,
-                                        registration_deadline: 10.minutes.from_now, event: event)
+                                        event: event)
       todays_slots = event.time_slots.todays_slots
       expect(todays_slots).to contain_exactly(current_slot)
     end

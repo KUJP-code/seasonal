@@ -26,12 +26,11 @@ class TimeSlot < ApplicationRecord
   has_one_attached :image
 
   # Validations
-  validates :name, :start_time, :end_time, :description, :registration_deadline, presence: true
+  validates :name, :start_time, :end_time, :description, presence: true
 
   validates :start_time, comparison: { greater_than_or_equal_to: Time.zone.today.midnight, less_than: :end_time }
   validates :end_time, comparison: { greater_than_or_equal_to: Time.zone.today.midnight }
   validates_comparison_of :end_time, greater_than: :start_time
-  validates :registration_deadline, comparison: { less_than_or_equal_to: :start_time, greater_than: Time.zone.now }
 
   validates :description, length: { minimum: 10 }
 
@@ -65,6 +64,11 @@ class TimeSlot < ApplicationRecord
     else
       ''
     end
+  end
+
+  # Consolidates manual closing and automatic closing into one check
+  def closed?
+    closed || Time.zone.now > end_time - 1.day
   end
 
   # These convert the start/end datetimes into something more useful for display

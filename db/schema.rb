@@ -196,7 +196,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
     t.datetime "end_time"
     t.string "description"
     t.integer "category", default: 0
-    t.datetime "registration_deadline"
+    t.boolean "closed", default: false
     t.boolean "morning", default: false
     t.bigint "event_id", null: false
     t.datetime "created_at", null: false

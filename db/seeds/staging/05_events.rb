@@ -31,7 +31,6 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
       start_time: '18 Feb 2051 09:00 JST +09:00',
       end_time: '18 Feb 2051 11:00 JST +09:00',
       description: choco_descrip,
-      registration_deadline: '16 Feb 2051',
       category: :party
     },
     {
@@ -40,7 +39,6 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
       start_time: '18 Feb 2051 11:00 JST +09:00',
       end_time: '18 Feb 2051 12:00 JST +09:00',
       description: choco_descrip,
-      registration_deadline: '16 Feb 2051',
       category: :party
     },
     {
@@ -49,7 +47,6 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
       start_time: '18 Feb 2051 14:00 JST +09:00',
       end_time: '18 Feb 2051 16:00 JST +09:00',
       description: choco_descrip,
-      registration_deadline: '16 Feb 2051',
       category: :party
     },
     {
@@ -58,7 +55,6 @@ Event.where(name: 'Chocolate Day 2024').each do |event|
       start_time: '18 Feb 2051 16:00 JST +09:00',
       end_time: '18 Feb 2051 18:00 JST +09:00',
       description: choco_descrip,
-      registration_deadline: '16 Feb 2051',
       category: :party
     }
   ])
@@ -84,7 +80,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '16 Mar 2050 09:00 JST +09:00',
       end_time: '16 Mar 2050 13:00 JST +09:00',
       description: 'Paint your own jigsaw puzzle!',
-      registration_deadline: '14 Mar 2050'
     },
     {
       name: 'Butterfly Finger Puppet',
@@ -92,7 +87,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '17 Mar 2050 9:00 JST +09:00',
       end_time: '17 Mar 2050 13:00 JST +09:00',
       description: 'Make a cute butterfly puppet to take home and enjoy!',
-      registration_deadline: '15 Mar 2050'
     },
     {
       name: 'Magic Day',
@@ -100,7 +94,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '20 Mar 2050 9:00 JST +09:00',
       end_time: '20 Mar 2050 13:00 JST +09:00',
       description: 'Learn magic tricks that will dazzle your family!',
-      registration_deadline: '18 Mar 2050'
     },
     {
       name: 'Vegetable Stamps',
@@ -108,7 +101,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '22 Mar 2050 9:00 JST +09:00',
       end_time: '22 Mar 2050 13:00 JST +09:00',
       description: 'Create some beautiful (and healthy) artwork!',
-      registration_deadline: '20 Mar 2050'
     },
     {
       name: 'Spider Web Race',
@@ -116,7 +108,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '23 Mar 2050 9:00 JST +09:00',
       end_time: '23 Mar 2050 13:00 JST +09:00',
       description: 'Race out of a sticky situation!',
-      registration_deadline: '21 Mar 2050'
     },
     {
       name: 'Easter Egg Craft',
@@ -124,7 +115,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '24 Mar 2050 9:00 JST +09:00',
       end_time: '24 Mar 2050 13:00 JST +09:00',
       description: 'Create your own special Easter Egg! No eating though!',
-      registration_deadline: '22 Mar 2050'
     },
     {
       name: 'Banana Party & Banana Split',
@@ -132,7 +122,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '25 Mar 2050 9:00 JST +09:00',
       end_time: '25 Mar 2050 13:00 JST +09:00',
       description: 'Party like a banana then split!',
-      registration_deadline: '22 Mar 2050',
       category: 'special'
     },
     {
@@ -141,7 +130,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '27 Mar 2050 9:00 JST +09:00',
       end_time: '27 Mar 2050 13:00 JST +09:00',
       description: 'Enjoy a nice picnic under the cherry blossoms!',
-      registration_deadline: '25 Mar 2050'
     },
     {
       name: 'Cute Grass Head',
@@ -149,7 +137,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '28 Mar 2050 9:00 JST +09:00',
       end_time: '28 Mar 2050 13:00 JST +09:00',
       description: "Make your own little friend, in case you're ever stranded on a deserted island!",
-      registration_deadline: '26 Mar 2050'
     },
     {
       name: 'Photo Frame',
@@ -157,7 +144,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '29 Mar 2050 9:00 JST +09:00',
       end_time: '29 Mar 2050 13:00 JST +09:00',
       description: 'Make a special photo frame to store your most precious memories!',
-      registration_deadline: '27 Mar 2050'
     },
     {
       name: 'Marble Pencil Holder',
@@ -165,7 +151,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '30 Mar 2050 9:00 JST +09:00',
       end_time: '30 Mar 2050 13:00 JST +09:00',
       description: "Don't like holding pencils? Make something to do it for you!",
-      registration_deadline: '28 Mar 2050'
     },
     {
       name: 'Spring Terrarium',
@@ -173,7 +158,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '31 Mar 2050 9:00 JST +09:00',
       end_time: '31 Mar 2050 13:00 JST +09:00',
       description: 'Create your own personal ecosystem to rule over!',
-      registration_deadline: '29 Mar 2050'
     },
     {
       name: 'Ninja Master',
@@ -181,7 +165,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '3 Apr 2050 9:00 JST +09:00',
       end_time: '3 Apr 2050 13:00 JST +09:00',
       description: 'Become a ninja master!',
-      registration_deadline: '1 Apr 2050'
     },
     {
       name: 'DIY Tic-Tac-Toe',
@@ -189,7 +172,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '4 Apr 2050 9:00 JST +09:00',
       end_time: '4 Apr 2050 13:00 JST +09:00',
       description: 'Make a game, then play it!',
-      registration_deadline: '2 Apr 2050'
     },
     {
       name: 'Colorful Sand Art',
@@ -197,7 +179,6 @@ Event.where(name: 'Spring School 2023').each do |event|
       start_time: '5 Apr 2050 9:00 JST +09:00',
       end_time: '5 Apr 2050 13:00 JST +09:00',
       description: 'Create art with a wave of nostalgia!',
-      registration_deadline: '3 Apr 2050'
     }
   ])
   event.image.attach(io: File.open('app/assets/images/spring_school_2023.jpg'), filename: 'logo.jpg', content_type: 'image/jpg')

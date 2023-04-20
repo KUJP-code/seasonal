@@ -69,10 +69,10 @@ class EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(:id, :name, :description, :start_date, :image,
-                                  :end_date, :school_id, :member_prices_id,
-                                  :non_member_prices_id, time_slots_attributes:
+                                  :end_date, :school_id, :member_prices_id, :goal, :non_member_prices_id,
+                                  time_slots_attributes:
                                   %i[id name start_time end_time description
-                                     category registration_deadline event_id morning morning_slot_id image _destroy])
+                                     category closed event_id morning morning_slot_id image _destroy])
   end
 
   def flash_failure

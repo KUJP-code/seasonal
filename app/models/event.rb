@@ -66,7 +66,6 @@ class Event < ApplicationRecord
         end_time: m_slot.end_time + 6.hours,
         description: m_slot.description,
         category: m_slot.category,
-        registration_deadline: m_slot.registration_deadline,
         morning: false,
         event_id: m_slot.event_id,
         morning_slot_id: nil
