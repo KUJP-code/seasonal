@@ -30,6 +30,19 @@ export default class extends Controller {
     }
   }
 
+  allowSubmit() {
+    const condition = this.conditionTarget.checked;
+    const target = this.targetTarget;
+
+    console.log(this.conditionTarget.checked);
+
+    if (condition) {
+      target.removeAttribute("disabled");
+    } else {
+      target.setAttribute("disabled", true);
+    }
+  }
+
   pin() {
     const pin = this.conditionTarget.value;
     if (pin !== this.pinValue) {
@@ -45,6 +58,6 @@ export default class extends Controller {
       this.targetTargets.forEach((target) => {
         target.classList.toggle("d-none");
       });
-    }, 1800000)
+    }, 1800000);
   }
 }
