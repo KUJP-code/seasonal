@@ -1,0 +1,49 @@
+<% int_kids = event_stats.children.where(category: 'internal') %>
+<% int_revenue = int_kids.reduce(0) { |sum, kid| sum + kid.invoices.where(event_id: event_stats.id).sum(:total_cost) } %>
+
+<% res_kids = event_stats.children.where(category: 'reservation') %>
+<% res_revenue = res_kids.reduce(0) { |sum, kid| sum + kid.invoices.where(event_id: event_stats.id).sum(:total_cost) } %>
+
+<% ext_kids = event_stats.children.where(category: 'external') %>
+<% ext_revenue = ext_kids.reduce(0) { |sum, kid| sum + kid.invoices.where(event_id: event_stats.id).sum(:total_cost) } %>
+
+<h4><%= event_stats.name %></h4>
+
+<table class="table">
+    <thead>
+        <tr class="table-primary">
+            <th colspan="4" scope="col"><%= t('.attendance') %></th>
+            <th colspan="4" scope="col"><%= t('.revenue') %></th>
+            <th colspan="2" scope="col"><%= t('.goal') %></th>
+        </tr>
+        <tr class="table-secondary">
+            <th scope="col"><%= t('.int_kids') %></th>
+            <th scope="col"><%= t('.reservation_kids') %></th>
+            <th scope="col"><%= t('.ext_kids') %></th>
+            <th scope="col"><%= t('.total_kids') %></th>
+            <th scope="col"><%= t('.int_res_revenue') %></th>
+            <th scope="col"><%= t('.external_revenue') %></th>
+            <th scope="col"><%= t('.total_revenue') %></th>
+            <th scope="col"><%= t('.goal_revenue') %></th>
+            <th scope="col"><%= t('.goal_percent') %></th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        <tr>
+            <td><%= int_kids.size %></td>
+            <td><%= res_kids.size %></td>
+            <td><%= ext_kids.size %></td>
+            <td><%= event_stats.children.count %></td>
+            <td><%= number_to_currency(int_revenue + res_revenue, unit: '円', precision: 0, locale: :ja) %></td>
+            <td><%= number_to_currency(ext_revenue, unit: '円', precision: 0, locale: :ja) %></td>
+            <td><%= number_to_currency(int_revenue + res_revenue + ext_revenue, unit: '円', precision: 0, locale: :ja) %></td>
+            <td><%= 'Requires a DB change so not yet' %></td>
+            <td><%= 'Requires a DB change so not yet' %></td>
+        </tr>
+        <tr>
+            <th colspan="3" scope="row"><%= t('.photo_sales') %></th>
+            <td><%= event_stats.photo_regs.count %></td>        
+        </tr>
+    </tbody>
+</table>

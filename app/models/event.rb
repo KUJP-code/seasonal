@@ -19,7 +19,7 @@ class Event < ApplicationRecord
                           source: :options
   has_many :option_registrations, through: :time_slots
   has_many :registrations, through: :time_slots
-  has_many :children, through: :registrations
+  has_many :children, -> { distinct }, through: :registrations
   has_many :invoices, dependent: :destroy
 
   has_one_attached :image
@@ -40,6 +40,12 @@ class Event < ApplicationRecord
   # List children attending from other schools
   def diff_school_children
     children.where.not(school: school).distinct
+  end
+
+  # Returns registrations for the Photo Service event option
+  def photo_regs
+    photo_id = options.find_by(name: 'Photo Service').id
+    Registration.all.where(registerable_type: 'Option', registerable_id: photo_id)
   end
 
   # List all children at the event's school,
