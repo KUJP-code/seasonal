@@ -139,8 +139,16 @@
     <div id="price_bar">
         <h3 id="total_cost" data-price-target="finalCost"><%="#{t('.total_cost')}: #{@all_invoices.reduce(0) {|sum, i| sum + i.total_cost}}円"%></h3>
 
+        <div id="reg_slots" class="collapse">
+            <% registered_slots.each do |slot| %>
+                <p><%= slot.name %></p>
+            <% end %>
+        </div>
+        <button class="btn btn-primary"
+                type="button" data-bs-toggle="collapse" data-bs-target="#reg_slots" aria-expanded="false" aria-controls="collapseSlots"><%= t('.view_slots') %></button>
+
         <% @all_invoices.each do |invoice| %>
-            <%= form_with model: invoice, url: confirm_invoice_path, data: { turbo: false } do |f| %>
+            <%= form_with model: invoice, url: confirm_invoice_path, data: { turbo: false }, html: { class: 'd-flex gap-3' } do |f| %>
                 <%= f.hidden_field :id %>
                 <%= f.hidden_field :child_id %>
                 <%= f.hidden_field :event_id %>
@@ -193,26 +201,15 @@
                     <% end %>
                 </template>
 
-                <div class="d-flex gap-3">
-                    <% unless f.object.in_ss %>
-                        <div id="reg_slots" class="collapse">
-                            <% registered_slots.each do |slot| %>
-                                <p><%= slot.name %></p>
-                            <% end %>
+                <% unless f.object.in_ss %>
+                    <%= f.fields_for :coupons, f.object.coupons.new do |coup_f| %>
+                        <div class="form-floating">
+                            <%= coup_f.text_field :code, class: 'form-control form-control-sm', placeholder: t('.coupon_codes') %>
+                            <%= coup_f.label :code, t('coupon_codes'), class: 'form-label' %>
                         </div>
-
-                        <button class="btn btn-primary"
-                                type="button" data-bs-toggle="collapse" data-bs-target="#reg_slots" aria-expanded="false" aria-controls="collapseSlots"><%= t('.view_slots') %></button>
-
-                        <%= f.fields_for :coupons, f.object.coupons.new do |coup_f| %>
-                            <div class="form-floating">
-                                <%= coup_f.text_field :code, class: 'form-control form-control-sm', placeholder: t('.coupon_codes') %>
-                                <%= coup_f.label :code, t('coupon_codes'), class: 'form-label' %>
-                            </div>
-                        <% end %>
                     <% end %>
-                    <%= f.submit t('.confirm_invoice'), class: 'btn btn-primary' unless f.object.in_ss %>
-                </div>
+                <% end %>
+                <%= f.submit t('.confirm_invoice'), class: 'btn btn-primary' unless f.object.in_ss %>
             <% end %>
         <% end %>
     </div>
