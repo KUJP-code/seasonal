@@ -113,7 +113,7 @@ class UsersController < ApplicationController
   def index_for_role
     return User.all if current_user.admin?
     return current_user.managed_schools.reduce([]) { |array, s| array + s.parents } if current_user.school_manager?
-    return User.am_index(current_user) if current_user.area_manager?
+    return current_user.managed_areas.reduce([]) { |array, a| array + a.parents } if current_user.area_manager?
   end
 
   def user_params
