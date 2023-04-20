@@ -1,5 +1,11 @@
-<main id="invoice_index">
+<main id="invoice_index" class="gap-5">
     <h1>If you have multiple invoices for a single child, your total cost will likely decrease when they're merged later</h1>
 
-    <%= render partial: 'invoices/invoice', collection: @invoices %>
+    <% @user.children.each do |child| %>
+        <h1><%= child.name %></h1>
+        <% child.events.order(start_date: :asc).each do |event| %>
+            <h2><%= event.name %></h2>
+            <%= render partial: 'invoices/invoice', collection: @invoices.select { |invoice| invoice.child_id == child.id && invoice.event_id == event.id } %>
+        <% end %>
+    <% end %>
 </main>

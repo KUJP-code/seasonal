@@ -84,7 +84,7 @@ class Invoice < ApplicationRecord
   end
 
   def calc_adjustments
-    @breakdown << '<h3>Adjustments:</h3>'
+    @breakdown << '<h4>Adjustments:</h4>'
     @breakdown << '<div class="d-flex flex-column gap-1">'
     hat_adjustment if child.needs_hat?
     repeater_discount if !child.member? && child.events.distinct.size > 1 && slot_regs.size - @ignore_slots.size > 9
@@ -108,7 +108,7 @@ class Invoice < ApplicationRecord
                   end
     @breakdown << '</div>'
     @breakdown.prepend(
-      "<h3>Course cost:</h3>
+      "<h4>Course cost:</h4>
       <div class='d-flex flex-column gap-1'>
       <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{num_regs} registrations</p>"
     )
@@ -119,7 +119,7 @@ class Invoice < ApplicationRecord
     opt_cost = opt_regs.reject do |reg|
                  @ignore_opts.include?(reg.id)
                end.reduce(0) { |sum, reg| sum + reg.registerable.cost }
-    @breakdown << "<h3>Option cost:</h3>
+    @breakdown << "<h4>Option cost:</h4>
                    <div class='d-flex flex-column gap-1'>
                    <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
                                                    '\\1,').reverse}円 for #{opt_regs.size - @ignore_opts.size}  options<p>"
@@ -133,13 +133,13 @@ class Invoice < ApplicationRecord
 
   def generate_details
     @breakdown.prepend(
-      "<div class='d-flex gap-3 flex-column'><h2>Child: #{child.name}</h2>\n<h2>For #{event.name} at #{event.school.name}</h2>\n"
+      "<div class='d-flex gap-3 flex-column'><h2>#{child.name}</h2>\n<h2>For #{event.name} at #{event.school.name}</h2>\n"
     )
-    @breakdown << "</div><h1>Invoice details:</h1>\n"
+    @breakdown << "</div><h2>Invoice details:</h2>\n"
 
     e_opt_regs = opt_regs.where(registerable: event.options)
     unless e_opt_regs.empty?
-      @breakdown << "<h2>Event Options:</h2>\n"
+      @breakdown << "<h4>Event Options:</h4>\n"
       @breakdown << '<div class="d-flex gap-3 p-3 justify-content-center flex-wrap">'
       event.options.each do |opt|
         @breakdown << "<p>- #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>\n"
@@ -147,7 +147,7 @@ class Invoice < ApplicationRecord
       @breakdown << '</div>'
     end
 
-    @breakdown << "<h2>Registration List</h2>\n"
+    @breakdown << "<h4>Registration List</h4>\n"
     @breakdown << '<div class="d-flex gap-3 p-3 justify-content-center flex-wrap">'
     slot_regs.each do |slot_reg|
       next if @ignore_slots.include?(slot_reg.id)

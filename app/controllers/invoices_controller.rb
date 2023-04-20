@@ -12,6 +12,7 @@ class InvoicesController < ApplicationController
                 else
                   current_user.invoices
                 end
+    @user = User.find(params[:user]) if params[:user]
   end
 
   def show
