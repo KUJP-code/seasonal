@@ -34,8 +34,6 @@ export default class extends Controller {
     const condition = this.conditionTarget.checked;
     const target = this.targetTarget;
 
-    console.log(this.conditionTarget.checked);
-
     if (condition) {
       target.removeAttribute("disabled");
     } else {
