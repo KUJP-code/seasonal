@@ -1,4 +1,4 @@
-<div class="invoice">
+<div class="card p-3">
     <%= sanitize invoice.summary, tags: %w[h1 h2 h3 div p], attributes: %w[class id] %>
 
     <% if current_user.staff? %>
