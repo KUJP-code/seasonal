@@ -32,10 +32,11 @@ Rails.application.routes.draw do
       get 'csv/download', to: 'csvs#download', as: :download_csv
 
       # Non-REST routes for Invoices controller
-      put 'copy_invoice', to: 'invoices#copy', as: :copy_invoice
       patch 'confirm_invoice', to: 'invoices#confirm', as: :confirm_invoice
-      post 'seen_invoice', to: 'invoices#seen', as: :seen_invoice
+      put 'copy_invoice', to: 'invoices#copy', as: :copy_invoice
       post 'merge_invoices', to: 'invoices#merge', as: :merge_invoices
+      post 'resurrect_invoice', to: 'invoices#resurrect', as: :resurrect_invoice
+      post 'seen_invoice', to: 'invoices#seen', as: :seen_invoice
 
       # Ensures just the locale also goes to root
       get '/:locale', to: 'users#profile'

@@ -32,10 +32,10 @@
                     %>
                 <% end %>
             <% end %>
+        <% end %>
 
-            <% if past %>
-
-            <% end %>
+        <% if past %>
+            <%= button_to t('.revert_to'), resurrect_invoice_path(id: @invoice.id, version: invoice.id), class: 'btn btn-primary' %>
         <% end %>
     </div>
 </div>

@@ -17,7 +17,13 @@ class InvoicesController < ApplicationController
 
   def show
     @invoice = Invoice.find(params[:id])
-    @previous_versions = @invoice.versions.map(&:reify).compact
+    @previous_versions = @invoice.versions.map do |v|
+      item = v.reify
+      next if item.nil?
+
+      item.id = v.id
+      item
+    end.compact
   end
 
   def update
@@ -77,6 +83,18 @@ class InvoicesController < ApplicationController
     merge_from.reload.destroy
     merge_to.calc_cost
     redirect_to invoice_path(merge_to)
+  end
+
+  def resurrect
+    @version = Invoice.find(params[:id]).versions.find(params[:version])
+
+    if @version.reify
+      @version.reify.save
+    else
+      return redirect_to invoice_path(params[:id]), alert: t('.resurrection_failure')
+    end
+
+    redirect_to invoice_path(params[:id]), notice: t('.resurrection_success')
   end
 
   def seen
