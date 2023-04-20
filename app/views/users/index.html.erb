@@ -1,10 +1,16 @@
 <main id="user_index">
-    <div class="d-flex gap-3 justify-content-between">
-        <p class="name"><%= t('.name') %></p>
-        <p class="katakana"><%=t('.katakana') %></p>
-        <p class="email"><%= t('.email') %></p>
-        <p class="edit"><%= t('.edit_info') %></p>
-    </div>
+    <table class="table">
+        <thead>
+            <tr class="table-primary">
+                <th scope="col"><%= t('.name') %></th>
+                <th scope="col"><%=t('.katakana') %></th>
+                <th scope="col"><%= t('.email') %></th>
+                <th scope="col"><%= t('.edit_info') %></th>
+            </tr>
+        </thead>
 
-    <%= render @users %>
+        <tbody>
+            <%= render @users %>
+        </tbody>
+    </table>
 </main>

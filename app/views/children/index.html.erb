@@ -1,16 +1,22 @@
 <main id="children_index">
-    <div class="child header">
-        <p class="ssid"><%= t('.ssid') %></p>
-        <p class="name"><%= t('.name') %></p>
-        <p class="katakana"><%=t('.katakana') %></p>
-        <p class="en"><%= t('.en') %></p>
-        <p class="category"><%= t('.category') %></p>
-        <p class="allergies"><%= t('.allergies') %></p>
-        <p class="hat"><%= t('.hat') %></p>
-        <p class="parent"><%= t('.parent') %></p>
-        <p class="school"><%= t('.school') %></p>
-        <p class="edit"><%= t('.edit_info') %></p>
-    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr class="table-primary">
+                <th scope="col"><%= t('.ssid') %></th>
+                <th scope="col"><%= t('.name') %></th>
+                <th scope="col"><%=t('.katakana') %></th>
+                <th scope="col"><%= t('.en') %></th>
+                <th scope="col"><%= t('.category') %></th>
+                <th scope="col"><%= t('.allergies') %></th>
+                <th scope="col"><%= t('.hat') %></th>
+                <th scope="col"><%= t('.parent') %></th>
+                <th scope="col"><%= t('.school') %></th>
+                <th scope="col"><%= t('.edit_info') %></th>
+            </tr>
+        </thead>
 
-    <%= render @children %>
+        <tbody>
+            <%= render @children %>
+        </tbody>
+    </table>
 </main>

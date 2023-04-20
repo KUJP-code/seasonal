@@ -1,15 +1,24 @@
-<div class="d-flex gap-3 justify-content-between">
-    <p class="name"><%= link_to user.name, user_path(user) %></p>
-    <p class="katakana"><%= link_to user.katakana_name, user_path(user) %></p>
-    <p class="email"><%= user.email %></p>
-    <p class="edit"><%= link_to t('.edit_user'), edit_user_path(user), class: 'btn btn-primary' if current_user.staff? %></p>
+<tr class="table-secondary">
+    <td><%= link_to user.name, user_path(user) %></td>
+    <td><%= link_to user.katakana_name, user_path(user) %></td>
+    <td><%= user.email %></td>
+    <td><%= link_to t('.edit_user'), edit_user_path(user), class: 'btn btn-primary' if current_user.staff? %></td>
+</tr>
 
-    <div class="user_children">
-        <h4><%= t('.children') if user.children.size > 1 %></h3>
-        <h4><%= t('.child') if user.children.size == 1 %></h3>
-        <h4><%= t('.no_children') if user.children.empty? %></h3>
+<tr class="table-secondary">
+    <% if user.children.size > 1 %>
+        <td colspan="4" class="text-center"><%= t('.children') %> </h3></td>
+    <% elsif user.children.size == 1 %>
+        <td colspan="4" class="text-center"><%= t('.child') %> </td>
+    <% else %>
+        <td colspan="4" class="text-center"><%= t('.no_children') %> </td>
+    <% end %>
+</tr>
+
+<tr class="table-light">
+    <td colspan="4" class="text-center">
         <% user.children.each do |child| %>
-            <%= link_to child.name, child_path(child) %>
+            <p><%= link_to child.name, child_path(child) %></p>
         <% end %>
-    </div>
-</div>
+    </td>
+</tr>
