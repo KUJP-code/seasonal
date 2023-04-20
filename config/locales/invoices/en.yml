@@ -5,3 +5,4 @@ en:
     invoice:
       in_ss: "In SS, editing locked"
       merge_invoices: "Merge Invoices"
+      version_from: "Version from: %{date}"

@@ -1,4 +1,8 @@
 <div class="card p-3">
+    <% if past %>
+        <h2 class="text-white bg-secondary p-3 rounded"><%= t('.version_from', date: invoice.updated_at.strftime('%m/%d/%Y')) %></h2>
+    <% end %>
+
     <%= sanitize invoice.summary, tags: %w[h2 h3 h4 div p], attributes: %w[class id] %>
 
     <div class="d-flex gap-3 align-items-center">
@@ -6,7 +10,7 @@
             <%= link_to t('.view_history'), invoice_path(invoice), class: 'btn btn-primary' %>
         <% end %>
 
-        <% if current_user.staff? %>
+        <% if current_user.staff? && !past %>
             <% if invoice.in_ss %>
                 <p class="btn btn-info"><%= t('.in_ss') %></p>
                 <p class="btn btn-info"><%= "Invoice##{invoice.id}" %></p>
@@ -27,6 +31,10 @@
                         }
                     %>
                 <% end %>
+            <% end %>
+
+            <% if past %>
+
             <% end %>
         <% end %>
     </div>

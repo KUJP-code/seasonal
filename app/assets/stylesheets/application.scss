@@ -824,7 +824,8 @@ main#event_index .card .event_management a {
 
 // Invoices
 
-#invoice_index .card {
+#invoice_index .card,
+#invoice_show .card {
   width: 80%;
 }
 

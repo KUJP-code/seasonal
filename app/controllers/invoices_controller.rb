@@ -17,6 +17,7 @@ class InvoicesController < ApplicationController
 
   def show
     @invoice = Invoice.find(params[:id])
+    @previous_versions = @invoice.versions.map(&:reify).compact
   end
 
   def update
