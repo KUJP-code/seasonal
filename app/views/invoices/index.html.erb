@@ -5,7 +5,7 @@
         <h1><%= child.name %></h1>
         <% child.events.order(start_date: :asc).each do |event| %>
             <h2><%= event.name %></h2>
-            <%= render partial: 'invoices/invoice', collection: @invoices.select { |invoice| invoice.child_id == child.id && invoice.event_id == event.id } %>
+            <%= render partial: 'invoices/invoice', collection: @invoices.select { |invoice| invoice.child_id == child.id && invoice.event_id == event.id }, locals: { show: false } %>
         <% end %>
     <% end %>
 </main>

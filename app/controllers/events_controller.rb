@@ -86,14 +86,14 @@ class EventsController < ApplicationController
   def user_specific_info
     @member_prices = @event.member_prices
     @non_member_prices = @event.non_member_prices
-    @children = current_user.children
-    @all_invoices = current_user.invoices.where(event: @event, child: @child).includes(:registrations)
+    @children = @child.siblings.to_a.unshift(@child)
+    @all_invoices = @child.invoices.where(event: @event).includes(:registrations)
 
     return unless @all_invoices.empty? || @all_invoices.all?(&:in_ss)
 
     # I'm doing this in 2 lines because the view code wants an AR relation
     Invoice.create(child: @child, event: @event, total_cost: 0).calc_cost
-    @all_invoices = current_user.invoices.where(event: @event, child: @child).reload
+    @all_invoices = @child.invoices.where(event: @event).reload
   end
 
   def index_for_role
