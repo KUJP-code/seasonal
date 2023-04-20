@@ -126,7 +126,7 @@ class Invoice < ApplicationRecord
 
   def generate_details
     @breakdown.prepend(
-      "<div id='key_info'><h1>Invoice: #{id}</h1>\n<h2>Child: #{child.name}</h2>\n<h2>For #{event.name} at #{event.school.name}</h2>\n"
+      "<div id='key_info'><h2>Child: #{child.name}</h2>\n<h2>For #{event.name} at #{event.school.name}</h2>\n"
     )
     @breakdown << "</div><div id='details'><h1>Invoice details:</h1>\n"
 
@@ -171,12 +171,12 @@ class Invoice < ApplicationRecord
   end
 
   def hat_adjustment
-    unless child.invoices.where(event: event).any? do |invoice|
-             invoice.adjustments.find_by(change: 1_100, reason: 'because first time children must purchase a hat')
-           end
+    hat_cost = 1_100
+    hat_reason = 'because first time children must purchase a hat'
+    unless child.adjustments.any? { |adj| adj.change == hat_cost && adj.reason == hat_reason }
       adjustments.new(
-        change: 1_100,
-        reason: 'because first time children must purchase a hat'
+        change: hat_cost,
+        reason: hat_reason
       )
     end
   end
