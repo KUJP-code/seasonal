@@ -87,15 +87,20 @@
 
         <h2><%= t('.managed_schools') %></h2>
         <div class="card">
-            <div class="school header">
-                <p class="name"><%= t('.name') %></p>
-                <p class="address"><%= t('.address') %></p>
-                <p class="phone"><%= t('.phone') %></p>
-                <p class="area"><%= t('.area') %></p>
-                <p class="children"><%= t('.children') %></p>
-                <p class="edit"><%= t('.edit') if current_user.admin? || current_user.area_manager? %></p>
-            </div>
-            <%= render @user.managed_schools %>
+            <table class="table table-striped">
+                <thead>
+                    <tr class="table-primary">
+                        <th scope="col"><%= t('.name') %></th>
+                        <th scope="col"><%= t('.address') %></th>
+                        <th scope="col"><%= t('.phone') %></th>
+                        <th scope="col"><%= t('.area') %></th>
+                        <th scope="col"><%= t('.children') %></th>
+                        <th scope="col"><%= t('.edit') if current_user.admin? || current_user.area_manager? %></th>
+                    </tr>
+                </thead>
+
+                <tbody><%= render @user.managed_schools %></tbody>
+            </table>
         </div>
     <% end %>
 

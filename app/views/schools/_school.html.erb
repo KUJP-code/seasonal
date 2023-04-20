@@ -1,8 +1,8 @@
-<div class="school">
-    <p class="name"><%= link_to school.name, school_path(school) %></p>
-    <p class="address"><%= school.address %></p>
-    <p class="phone"><%= school.phone %></p>
-    <p class="area"><%= link_to school.area.name, area_path(school.area) %></p>
-    <p class="children"><%= school.children.size %></p>
-    <p class="edit"><%= link_to t('.edit'), edit_school_path(school), class: 'btn btn-primary' if current_user.admin? || current_user.area_manager? %></p>
-</div>
+<tr>
+    <td><%= link_to school.name, school_path(school) %></td>
+    <td><%= school.address %></td>
+    <td><%= school.phone %></td>
+    <td><%= link_to school.area.name, area_path(school.area) %></td>
+    <td><%= school.children.size %></td>
+    <td><%= link_to t('.edit'), edit_school_path(school), class: 'btn btn-primary' if current_user.admin? || current_user.area_manager? %></td>
+</tr>
