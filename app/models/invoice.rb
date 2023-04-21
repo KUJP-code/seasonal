@@ -31,7 +31,7 @@ class Invoice < ApplicationRecord
   has_many :adjustments, dependent: :destroy
   has_many :coupons, as: :couponable,
                      dependent: :destroy
-  accepts_nested_attributes_for :coupons
+  accepts_nested_attributes_for :coupons, reject_if: :all_blank
 
   # Track changes with Paper Trail
   has_paper_trail ignore: [:seen_at]
