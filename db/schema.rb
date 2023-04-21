@@ -224,6 +224,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
     t.string "address"
     t.string "phone"
     t.string "pin"
+    t.string "ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true

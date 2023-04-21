@@ -41,6 +41,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
       t.string :address
       t.string :phone
       t.string :pin
+      t.string :ip
 
       t.timestamps null: false
     end
