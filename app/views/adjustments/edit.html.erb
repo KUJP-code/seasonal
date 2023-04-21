@@ -1,0 +1,22 @@
+<main id="adjustments_edit">
+    <%= form_with model: @invoice, html: { class: 'card' } do |f| %>
+        <%= f.fields_for :adjustments do |adj_f| %>
+            <div class="form-floating">
+                <%= adj_f.text_field :reason, class: 'form-control', placeholder: t('.reason') %>
+                <%= adj_f.label :reason, t('.reason'), class: 'form-label' %><br />
+            </div>
+
+            <div class="form-floating">
+                <%= adj_f.number_field :change, class: 'form-control', placeholder: t('.change') %>
+                <%= adj_f.label :change, t('.change'), class: 'form-label' %>
+            </div>
+
+            <div class="form-check">
+                <%= adj_f.check_box :_destroy, class: 'form-check-input' %>
+                <%= adj_f.label :_destroy, class: 'form-check-label' %>
+            </div>
+        <% end %>
+
+        <%= f.submit t('.update_adj'), class: 'btn btn-primary' %>
+    <% end %>
+</main>

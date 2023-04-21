@@ -167,7 +167,8 @@ class InvoicesController < ApplicationController
                                registerable_type],
       opt_regs_attributes: %i[id child_id _destroy invoice_id registerable_id
                               registerable_type],
-      coupons_attributes: [:code]
+      coupons_attributes: [:code],
+      adjustments_attributes: %i[id reason change invoice_id _destroy]
     )
   end
 end
