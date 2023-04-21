@@ -9,10 +9,13 @@ class InvoicesController < ApplicationController
                   current_user.invoices.where(event: Event.find(params[:event]))
                 elsif params[:user]
                   User.find(params[:user]).invoices
+                elsif params[:child]
+                  Child.find(params[:child]).invoices
                 else
                   current_user.invoices
                 end
     @user = User.find(params[:user]) if params[:user]
+    @child = Child.find(params[:child]) if params[:child]
   end
 
   def show

@@ -14,6 +14,7 @@ en:
       allergies: "Allergies:"
       bday: "Birthday:"
       category: "Category:"
+      child_bookings: "%{child} Bookings"
       ele_school: "Elementary School:"
       en: "English Name:"
       got_hat: "Received Hat:"

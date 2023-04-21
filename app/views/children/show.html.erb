@@ -49,12 +49,14 @@
         </div>
 
 
-        <% if current_user.staff? || current_user.id == @child.parent_id %>
+        <% if current_user.admin? || current_user.area_manager?  || current_user.id == @child.parent_id %>
             <div class="staff_options">
                 <%= link_to t('.edit_child'), edit_child_path(@child), class: 'btn btn-primary' unless @child.ssid %>
             </div>
         <% end %>
     </div>
+
+    <%= link_to t('.child_bookings', child: @child.name), invoices_path(child: @child.id), class: 'btn btn-primary' %>
 
     <h2><%= t('.next_event') %></h2>
     <%= render @next_event, partial: 'events/event', child: @child %>
