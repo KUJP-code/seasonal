@@ -8,7 +8,7 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
-    @child = Child.find(params[:child])
+    @child =  params[:child] ? Child.find(params[:child]) : current_user.children.first
     user_specific_info
     @event_slots = @event.time_slots.morning.with_attached_image.includes(afternoon_slot: :options).includes(:options)
     @options = @event.options + @event.slot_options

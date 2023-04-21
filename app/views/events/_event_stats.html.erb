@@ -8,7 +8,7 @@
 <% ext_revenue = ext_kids.reduce(0) { |sum, kid| sum + kid.invoices.where(event_id: event_stats.id).sum(:total_cost) } %>
 
 <% total_revenue = int_revenue + res_revenue + ext_revenue %>
-<%= goal_percent = (total_revenue / event_stats.goal.to_f * 100).truncate %>
+<% goal_percent = (total_revenue / event_stats.goal.to_f * 100).truncate %>
 
 <h4><%= event_stats.name %></h4>
 
