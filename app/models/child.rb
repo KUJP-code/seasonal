@@ -121,6 +121,8 @@ class Child < ApplicationRecord
   end
 
   def siblings
+    return [] if parent.nil?
+
     parent.children.where.not(id: id)
   end
 
