@@ -139,7 +139,7 @@ class Invoice < ApplicationRecord
 
   def generate_details
     @breakdown.prepend(
-      "<div class='d-flex gap-3 flex-column'><h2>#{child.name}</h2>\n<h2>For #{event.name} at #{event.school.name}</h2>\n"
+      "<div class='d-flex gap-3 flex-column'><h2>#{child.name}</h2>\n<h2>For #{event.name} at #{event.school.name}</h3>\n<h3>登録番号: T7-0118-0103-7173</h2>"
     )
     @breakdown << "</div><h2>Booking details:</h2>\n"
 
