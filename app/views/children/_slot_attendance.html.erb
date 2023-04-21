@@ -1,4 +1,5 @@
-<% morn_options = slot_attendance.options.reject { |opt| opt.arrival? || opt.departure? } + slot_attendance.event.options %>
+<% event_options = slot_attendance.event.options %>
+<% morn_options = slot_attendance.options.reject { |opt| opt.arrival? || opt.departure? } %>
 <% aft_options = if slot_attendance.afternoon_slot.nil?
                    []
                  else
@@ -25,6 +26,10 @@
                 <th id="name_header" class="name"><%= t('.name') %></th>
                 <th id="allergy_header" class="allergy"><%= t('.allergy') %></th>
                 <th id="photos_header" class="photos"><%= t('.photo') %></th>
+                <% event_options.each do |opt| %>
+                    <%# FIXME: n+1 queries %>
+                    <th><%= "#{opt.name}: #{opt.registrations.size + opt.children.reduce(0) { |sum, c| sum + c.siblings.size }} " %></th>
+                <% end %>
                 <% morn_options.each do |opt| %>
                     <%# FIXME: n+1 queries %>
                     <th><%= "#{opt.name}: #{opt.registrations.size}" %></th>
@@ -42,6 +47,6 @@
                 <th id="depart_header" class="depart"><%= t('.depart_time') %></th>
             </tr>
         </thead>
-        <%= render partial: 'children/slot_child', collection: children, locals: { slot: slot_attendance, morn_options: morn_options, aft_options: aft_options } %>
+        <%= render partial: 'children/slot_child', collection: children, locals: { slot: slot_attendance, event_options: event_options, morn_options: morn_options, aft_options: aft_options } %>
     </table>
 </div>

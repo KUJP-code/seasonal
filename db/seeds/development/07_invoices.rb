@@ -45,14 +45,17 @@ Child.all.each do |child|
       child.registrations.create!(registerable: slot.options.meal.last, invoice: Invoice.find_by(child: child, event: slot.event)) unless slot.options.meal.empty?
     end
   end
-
-  child.events.each do |event|
-    child.registrations.create!(registerable: event.options.first, invoice: Invoice.find_by(child: child, event: event))
-  end
 end
 
 puts "Registered kids for an option at each event/slot they're attending"
 
+User.all.customer.select{|c| c.id.odd?}.each do |user|
+  user.children.first.events.each do |event|
+    user.children.first.registrations.create!(registerable: event.options.first, invoice: Invoice.find_by(child: user.children.first, event: event))
+  end
+end
+
+puts "Registered a kid from every 2nd family for an event option"
 
 Invoice.all.each do |invoice|
   invoice.calc_cost

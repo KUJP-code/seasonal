@@ -9,5 +9,6 @@ en:
       member: "Member"
       non_member: "Non Member"
       regs_for: "Registrations for %{child}"
+      sibling_reg: "Sibling registered"
       total_cost: "Total Cost"
       upcoming_slots: "%{event} Upcoming Time Slots"

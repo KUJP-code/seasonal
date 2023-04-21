@@ -41,9 +41,11 @@ Child.all.each do |child|
       child.registrations.create!(registerable: slot.options.meal.last, invoice: Invoice.find_by(child: child, event: slot.event)) unless slot.options.meal.empty?
     end
   end
+end
 
-  child.events.each do |event|
-    child.registrations.create!(registerable: event.options.first, invoice: Invoice.find_by(child: child, event: event))
+User.all.customer.select{|c| c.id.odd?}.each do |user|
+  user.children.first.events.each do |event|
+    user.children.first.registrations.create!(registerable: event.options.first, invoice: Invoice.find_by(child: user.children.first, event: event))
   end
 end
 

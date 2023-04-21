@@ -108,7 +108,11 @@
         <h2><%= t('.event_options') %></h2>
 
         <% @event.options.each do |opt| %>
-            <% if opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
+            <% if @child.siblings.any? { |sib| sib.registered?(opt) } %>
+                <div class="event_option">
+                    <p><%= "#{opt.name}: #{t('.sibling_reg')}" %></p>
+                </div>
+            <% elsif opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
                 <div class="event_option">
                     <p><%= "#{opt.name}: ◯" %></p>
                 </div>

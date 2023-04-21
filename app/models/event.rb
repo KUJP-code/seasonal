@@ -42,10 +42,11 @@ class Event < ApplicationRecord
     children.where.not(school: school).distinct
   end
 
-  # Returns registrations for the Photo Service event option
+  # Returns num of registrations for the Photo Service event option
   def photo_regs
     photo_id = options.find_by(name: 'Photo Service').id
-    Registration.all.where(registerable_type: 'Option', registerable_id: photo_id)
+    direct_regs = Registration.all.where(registerable_type: 'Option', registerable_id: photo_id)
+    direct_regs.size + direct_regs.reduce(0) { |sum, reg| sum + reg.child.siblings.size }
   end
 
   # List all children at the event's school,
