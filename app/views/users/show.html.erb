@@ -48,7 +48,7 @@
         <%= link_to t('.my_bookings'), invoices_path(user: @user.id), class: 'btn btn-primary' %>
 
         <h2><%= t('.next_event') %></h2>
-        <%= render Event.all.where(school: @user.children.map(&:school)).order(start_date: :asc).first %>
+        <%= render Event.all.where(school: @user.children.map(&:school)).order(start_date: :asc).first, child: nil %>
     <% end %>
 
     <% if @user.admin? && current_user.admin? %>
