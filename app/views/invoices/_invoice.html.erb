@@ -5,12 +5,12 @@
 
     <%= sanitize invoice.summary, tags: %w[h2 h3 h4 div p], attributes: %w[class id] %>
 
-    <div class="d-flex gap-3 align-items-center">
+    <div class="d-flex gap-3 align-items-center flex-wrap">
         <% unless show %>
             <%= link_to t('.view_history'), invoice_path(invoice), class: 'btn btn-primary' %>
         <% end %>
 
-        <% if current_user.staff? && !past %>
+        <% if current_user.staff? && !past && show %>
             <% if invoice.in_ss %>
                 <p class="btn btn-info"><%= t('.in_ss') %></p>
                 <p class="btn btn-info"><%= "Booking##{invoice.id}" %></p>
