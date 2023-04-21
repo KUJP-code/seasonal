@@ -1,4 +1,5 @@
 <% registered_slots = @event.time_slots.morning.joins(:registrations).where(registrations: { child_id: @child.id, invoice_id: @all_invoices.ids }).with_attached_image.includes(afternoon_slot: :options).includes(:options) %>
+<% all_registered_slots = @event.time_slots.joins(:registrations).where(registrations: { child_id: @child.id, invoice_id: @all_invoices.ids }) %>
 <% unregistered_slots = @event.time_slots.morning.where.not(id: registered_slots.ids).with_attached_image.includes(afternoon_slot: :options).includes(:options) %>
 <% registrations = @all_invoices.reduce([]) { |array, invoice| array + invoice.registrations } %>
 <% slots_in_ss = @all_invoices.select { |invoice| invoice.in_ss }.reduce([]) { |array, invoice| array + invoice.slot_regs } %>
@@ -144,8 +145,8 @@
         <h3 id="total_cost" data-price-target="finalCost"><%="#{t('.total_cost')}: #{@all_invoices.reduce(0) {|sum, i| sum + i.total_cost}}円"%></h3>
 
         <div id="reg_slots" class="collapse">
-            <% registered_slots.each do |slot| %>
-                <p><%= slot.name %></p>
+            <% all_registered_slots.each do |slot| %>
+                <p><%= slot.name + (slot.morning ? ' (午前)' : ' (午後)') %></p>
             <% end %>
         </div>
         <button class="btn btn-primary"
@@ -208,8 +209,8 @@
                 <% unless f.object.in_ss %>
                     <%= f.fields_for :coupons, f.object.coupons.new do |coup_f| %>
                         <div class="form-floating">
-                            <%= coup_f.text_field :code, class: 'form-control form-control-sm', placeholder: t('.coupon_codes') %>
-                            <%= coup_f.label :code, t('coupon_codes'), class: 'form-label' %>
+                            <%= coup_f.text_field :code, class: 'form-control form-control-sm', placeholder: t('.coupon_names') %>
+                            <%= coup_f.label :code, t('coupon_names'), class: 'form-label' %>
                         </div>
                     <% end %>
                 <% end %>
