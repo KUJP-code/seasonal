@@ -1,6 +1,6 @@
 <div class="card p-3">
     <% if past %>
-        <h2 class="text-white bg-secondary p-3 rounded"><%= t('.version_from', date: invoice.updated_at.strftime('%m/%d/%Y')) %></h2>
+        <h2 class="text-white bg-secondary p-3 rounded"><%= t('.version_from', date: invoice.updated_at.strftime('%m/%d/%Y %H:%M')) %></h2>
     <% end %>
 
     <%= sanitize invoice.summary, tags: %w[h2 h3 h4 div p], attributes: %w[class id] %>
@@ -32,10 +32,6 @@
                     %>
                 <% end %>
             <% end %>
-        <% end %>
-
-        <% if past %>
-            <%= button_to t('.revert_to'), resurrect_invoice_path(id: @invoice.id, version: invoice.id), class: 'btn btn-primary' %>
         <% end %>
     </div>
 </div>
