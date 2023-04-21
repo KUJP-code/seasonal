@@ -1,0 +1,15 @@
+<div class="fields_wrapper" data-new-record="<%= adj_f.object.new_record? %>">
+    <div class="d-grid gap-2 p-2">
+        <%= adj_f.hidden_field :_destroy %>
+        <div class="form-floating">
+            <%= adj_f.text_field :reason, class: 'form-control', placeholder: t('.reason') %>
+            <%= adj_f.label :reason, t('.reason'), class: 'form-label' %><br />
+        </div>
+        
+        <div class="form-floating">
+            <%= adj_f.number_field :change, class: 'form-control', placeholder: t('.change') %>
+            <%= adj_f.label :change, t('.change'), class: 'form-label' %>
+        </div>
+        <%= button_tag t('.remove_adj'), data: { action: "fields#remove" }, class: 'btn btn-secondary' %>
+    </div>
+</div>
