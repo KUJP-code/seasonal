@@ -40,10 +40,24 @@ export default class extends Controller {
       }
     }
 
+    // Add the name of the registration to the registration list
     const nameContainer = document.getElementById("reg_slots");
     const nameP = document.createElement("p");
     nameP.innerText = name.replaceAll("_", " ");
     nameContainer.appendChild(nameP);
+
+    // Sort the registration list alphabetically
+    const names = [];
+    nameContainer.childNodes.forEach((node) => {
+      names.push(node.innerText);
+    });
+    names.sort();
+    nameContainer.innerHTML = "";
+    names.forEach((name) => {
+      const nameP = document.createElement("p");
+      nameP.innerText = name.replaceAll("_", " ");
+      nameContainer.appendChild(nameP);
+    });
 
     this.dispatch("add");
   }
