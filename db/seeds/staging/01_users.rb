@@ -6,7 +6,7 @@ Faker::Config.locale = :ja
 
 User.create!([
   {
-    email: 'admin@gmail.com',
+    email: 'live_admin@gmail.com',
     password: ENV['ADMIN_PASS'],
     first_name: Faker::Name.first_name,
     family_name: Faker::Name.last_name,
@@ -18,7 +18,7 @@ User.create!([
     pin: '0000'
   },
   {
-    email: 'am@gmail.com',
+    email: 'live_am@gmail.com',
     password: ENV['AM_PASS'],
     first_name: Faker::Name.first_name,
     family_name: Faker::Name.last_name,
@@ -30,7 +30,7 @@ User.create!([
     pin: '0000'
   },
   {
-    email: 'sm@gmail.com',
+    email: 'live_sm@gmail.com',
     password: ENV['SM_PASS'],
     first_name: Faker::Name.first_name,
     family_name: Faker::Name.last_name,
@@ -42,7 +42,7 @@ User.create!([
     pin: '0000'
   },
   {
-    email: 'customer@gmail.com',
+    email: 'live_customer@gmail.com',
     password: ENV['CUSTOMER_PASS'],
     first_name: Faker::Name.first_name,
     family_name: Faker::Name.last_name,
