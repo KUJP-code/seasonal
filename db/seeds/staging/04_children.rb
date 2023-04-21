@@ -4,8 +4,8 @@ User.customers.each do |customer_user|
     {
       first_name: Faker::Name.first_name,
       family_name: Faker::Name.last_name,
-      kana_first: Faker::Name.first_name,
-      kana_family: Faker::Name.last_name,
+      kana_first: Faker::Name.first_name.kana,
+      kana_family: Faker::Name.last_name.kana,
       en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
       birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
       ssid: Faker::Number.unique.number,
@@ -19,8 +19,8 @@ User.customers.each do |customer_user|
     {
       first_name: Faker::Name.first_name,
       family_name: Faker::Name.last_name,
-      kana_first: Faker::Name.first_name,
-      kana_family: Faker::Name.last_name,
+      kana_first: Faker::Name.first_name.kana,
+      kana_family: Faker::Name.last_name.kana,
       en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
       birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
       ssid: Faker::Number.unique.number,
@@ -36,8 +36,8 @@ end
 Child.create!(
   first_name: Faker::Name.first_name,
   family_name: Faker::Name.last_name,
-  kana_first: Faker::Name.first_name,
-  kana_family: Faker::Name.last_name,
+  kana_first: Faker::Name.first_name.kana,
+  kana_family: Faker::Name.last_name.kana,
   en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
   birthday: 'Wed, 20 Feb 2020',
   ssid: 1,

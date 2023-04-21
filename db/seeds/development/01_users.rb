@@ -1,3 +1,7 @@
+# Generate Japanese text
+require 'faker/japanese'
+Faker::Config.locale = :ja
+
 # Creates my test accounts
 
 User.create!([
@@ -6,8 +10,8 @@ User.create!([
     password: 'adminadminadmin',
     first_name: Faker::Name.first_name,
     family_name: Faker::Name.last_name,
-    kana_first: Faker::Name.first_name,
-    kana_family: Faker::Name.last_name,
+    kana_first: Faker::Name.first_name.kana,
+    kana_family: Faker::Name.last_name.kana,
     role: :admin,
     address: Faker::Address.full_address,
     phone: Faker::PhoneNumber.phone_number,
@@ -18,8 +22,8 @@ User.create!([
     password: 'ampasswordampassword',
     first_name: Faker::Name.first_name,
     family_name: Faker::Name.last_name,
-    kana_first: Faker::Name.first_name,
-    kana_family: Faker::Name.last_name,
+    kana_first: Faker::Name.first_name.kana,
+    kana_family: Faker::Name.last_name.kana,
     role: :area_manager,
     address: Faker::Address.full_address,
     phone: Faker::PhoneNumber.phone_number,
@@ -30,8 +34,8 @@ User.create!([
     password: 'smpasswordsmpassword',
     first_name: Faker::Name.first_name,
     family_name: Faker::Name.last_name,
-    kana_first: Faker::Name.first_name,
-    kana_family: Faker::Name.last_name,
+    kana_first: Faker::Name.first_name.kana,
+    kana_family: Faker::Name.last_name.kana,
     role: :school_manager,
     address: Faker::Address.full_address,
     phone: Faker::PhoneNumber.phone_number,
@@ -42,8 +46,8 @@ User.create!([
     password: 'customerpassword',
     first_name: Faker::Name.first_name,
     family_name: Faker::Name.last_name,
-    kana_first: Faker::Name.first_name,
-    kana_family: Faker::Name.last_name,
+    kana_first: Faker::Name.first_name.kana,
+    kana_family: Faker::Name.last_name.kana,
     role: :customer,
     address: Faker::Address.full_address,
     phone: Faker::PhoneNumber.phone_number
