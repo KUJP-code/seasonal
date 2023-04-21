@@ -1,0 +1,9 @@
+<main id="time_slot_index">
+    <% @events.each do |event| %>
+        <h1><%= t('.slots_for', name: event.name) %></h1>
+
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <%= render partial: 'time_slots/time_slot', collection: event.time_slots.morning %>
+        </div>
+    <% end %>
+</main>

@@ -1,0 +1,18 @@
+<% attending_kids = time_slot.children.where(parent_id: current_user.id) %>
+
+<div class="card">
+    <h3><%= time_slot.name %></h3>
+    <%= (link_to image_tag(url_for(time_slot.image), class: 'img-fluid'), time_slot_path(time_slot)) unless time_slot.image.blank? %>
+    <p><%= time_slot.description %></p>
+    
+    <% unless current_user.staff? || attending_kids.empty? %>
+        <h4><%= t('.attending') %></h4>
+            <% attending_kids.each do |kid| %>
+                <p><%= kid.name %></p>
+            <% end %>
+    <% end %>
+
+    <% if current_user.staff? %>
+        <%= link_to t('.edit_slot'), edit_time_slot_path(time_slot), class: 'btn btn-primary' %>
+    <% end %>
+</div>
