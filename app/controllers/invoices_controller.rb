@@ -108,8 +108,8 @@ class InvoicesController < ApplicationController
 
   private
 
-  def already_registered?(target_invoice, o_reg)
-    target_invoice.registrations.any? do |t_reg|
+  def already_registered?(t_regs, o_reg)
+    t_regs.any? do |t_reg|
       t_reg.registerable_id == o_reg.registerable_id && t_reg.registerable_type == o_reg.registerable_type
     end
   end
@@ -119,10 +119,11 @@ class InvoicesController < ApplicationController
     og_regs = origin.invoices.where(event: event).map(&:registrations).flatten
     # Get the target's modifiable invoice, create one if none
     target_invoice = target.invoices.where(event: event).find_by(in_ss: false) || target.invoices.create(event: event)
+    t_regs = target_invoice.registrations
 
     og_regs.each do |o_reg|
       # Skip if already on target invoice
-      next  if already_registered?(target_invoice, o_reg)
+      next if already_registered?(t_regs, o_reg) || o_reg.registerable.closed?
 
       # If not on target invoice, add registration
       target_invoice.registrations.create!(
