@@ -1,5 +1,7 @@
 en:
   time_slots:
+    index:
+      slots_for: "Slots for %{name}"
     time_slot:
       am_reg: "AM Registrations"
       date: "Date: %{date}"

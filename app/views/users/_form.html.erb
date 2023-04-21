@@ -26,7 +26,7 @@
             </div>
 
             <% if current_user.admin? %>
-                <div class="form-floating">
+                <div>
                     <%= f.label :role, class: 'form-label' %>
                     <%= f.select :role, [["Admin", "admin"], ["Area Manager", "area_manager"], ["School Manager", "school_manager"], ["Parent", "customer"]], class: 'form-select' %>
                 </div>
