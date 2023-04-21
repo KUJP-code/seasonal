@@ -10,7 +10,7 @@
 <% total_revenue = int_revenue + res_revenue + ext_revenue %>
 <% goal_percent = (total_revenue / event_stats.goal.to_f * 100).truncate %>
 
-<h4><%= event_stats.name %></h4>
+<h4><%= link_to event_stats.name, children_path(source: 'Event', id: event_stats.id) %></h4>
 
 <table class="table">
     <thead>
