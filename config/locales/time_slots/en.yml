@@ -1,10 +1,12 @@
 en:
   time_slots:
     index:
-      slots_for: "Slots for %{name}"
+      slots_for: "Slots for %{name} at %{school}"
     time_slot:
       am_reg: "AM Registrations"
       date: "Date: %{date}"
+      close: "Close"
       pm_reg: "PM Registrations"
+      reopen: "Reopen"
       times: "Time: %{time}"
       title: "%{name} at %{school}"

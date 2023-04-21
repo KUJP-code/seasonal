@@ -12,7 +12,20 @@
             <% end %>
     <% end %>
 
-    <% if current_user.staff? %>
-        <%= link_to t('.edit_slot'), edit_time_slot_path(time_slot), class: 'btn btn-primary' %>
+    <% if current_user.area_manager? || current_user.admin? %>
+        <div class="d-flex gap-3">
+            <%= link_to t('.edit_slot'), edit_time_slot_path(time_slot), class: 'btn btn-primary' %>
+            <% if time_slot.closed? %>
+                <%= form_with model: time_slot do |f| %>
+                    <%= f.hidden_field :closed, value: 0 %>
+                    <%= f.submit t('.reopen'), class: 'btn btn-primary' %>
+                <% end %>
+            <% else %>
+                <%= form_with model: time_slot do |f| %>
+                    <%= f.hidden_field :closed, value: 1 %>
+                    <%= f.submit t('.close'), class: 'btn btn-primary' %>
+                <% end %>
+            <% end %>
+        </div>
     <% end %>
 </div>
