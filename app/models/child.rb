@@ -64,6 +64,9 @@ class Child < ApplicationRecord
                 'OK' => 3
 
   # Validations
+  validates :name, :katakana_name, presence: true
+  validates :katakana_name, format: { with: /\A[ァ-ヶヶヶ ]+\z/ }
+  
   validates :birthday, comparison: { greater_than: 15.years.ago, less_than: 1.year.ago }
   validates :ssid, uniqueness: { allow_blank: true }
 
