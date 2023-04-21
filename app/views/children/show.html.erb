@@ -37,7 +37,7 @@
                     <div data-controller="conditional"
                         data-conditional-pin-value=<%= current_user.pin %>>
                         <p class="d-none" data-conditional-target="target">
-                            <%= "#{t('ele_school')} #{@child.ele_school_name}" %>
+                            <%= "#{t('ele_school')}: #{@child.ele_school_name}" %>
                         </p>
                         <div class="form-floating" data-conditional-target="target">
                             <%= text_field_tag t('enter_pin', info: t('ele_school')), '', class: 'form-control', placeholder: t('enter_pin', info: t('ele_school')), maxlength: 4, data: { 'conditional-target': 'condition', action: 'conditional#pin' } %>

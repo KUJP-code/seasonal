@@ -31,21 +31,19 @@
 
                 </div>
             <% end %>
-
-            <div class="user_options">
-                <% if current_user.staff? || current_user == @user %>
+ 
+            <% if current_user.admin? %>
+                <div class="user_options">
                     <%= link_to t(".edit"), edit_user_path(@user), class: 'btn btn-primary' %>
-                <% end %>
-                
-                <% if current_user.staff? %>
-                        <%= link_to t('.delete'), user_path(@user), data: { turbo_method: :delete, turbo_confirm: t('.delete_confirm'), turbo_frame: '_top' }, class: 'btn btn-primary' %>
-                <% end %>
-            </div>
+
+                    <%= link_to t('.delete'), user_path(@user), data: { turbo_method: :delete, turbo_confirm: t('.delete_confirm'), turbo_frame: '_top' }, class: 'btn btn-primary' %>
+                </div>
+            <% end %>
         <% end %>
     </div>
 
     <% if @user.children? %>
-        <%= link_to t('.my_bookings'), invoices_path(user: @user.id), class: 'btn btn-primary' %>
+        <%= link_to t('.user_bookings', user: @user.name), invoices_path(user: @user.id), class: 'btn btn-primary' %>
 
         <h2><%= t('.next_event') %></h2>
         <%= render Event.all.where(school: @user.children.map(&:school)).order(start_date: :asc).first, child: nil %>
@@ -69,11 +67,6 @@
                 <% end %>
             <% end %>
         </div>
-
-        <h2><%= t('.managed_areas') %></h2>
-        <div class="card">
-            <%= render @user.managed_areas %>
-        </div>
     <% end %>
 
     <% if @user.school_manager? %>
@@ -83,24 +76,6 @@
                 <h3><%= school.name %></h3>
                 <%= render partial: 'events/event_stats', collection: school.events %>
             <% end %>
-        </div>
-
-        <h2><%= t('.managed_schools') %></h2>
-        <div class="card">
-            <table class="table table-striped">
-                <thead>
-                    <tr class="table-primary">
-                        <th scope="col"><%= t('.name') %></th>
-                        <th scope="col"><%= t('.address') %></th>
-                        <th scope="col"><%= t('.phone') %></th>
-                        <th scope="col"><%= t('.area') %></th>
-                        <th scope="col"><%= t('.children') %></th>
-                        <th scope="col"><%= t('.edit') if current_user.admin? || current_user.area_manager? %></th>
-                    </tr>
-                </thead>
-
-                <tbody><%= render @user.managed_schools %></tbody>
-            </table>
         </div>
     <% end %>
 

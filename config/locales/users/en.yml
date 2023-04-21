@@ -41,7 +41,7 @@ en:
       managed_areas: "Managed Areas"
       managed_schools: "Managed Schools"
       school: "School"
-      upcoming_registrations: "Upcoming Registrations"
+      user_bookings: "%{user} Bookings"
     update:
       failure: "Couldn't update user"
       success: "Successfully updated user"
