@@ -95,11 +95,8 @@ class User < ApplicationRecord
   # Public methods
   # Finds the list of events at their children's schools
   def children_events
-    all_events = children.reduce([]) do |sum, child|
-      sum + child.school.events.with_attached_image
-    end
-
-    all_events.uniq
+    child_schools = children.map(&:school_id).uniq
+    Event.all.where(school_id: child_schools).order(:start_date)
   end
 
   # Checks if User has children
