@@ -8,6 +8,7 @@ en:
       confirm_registrations: "Confirm Registrations"
       member: "Member"
       non_member: "Non Member"
+      num_options: "options registered"
       regs_for: "Registrations for %{child}"
       sibling_reg: "Sibling registered"
       total_cost: "Total Cost"

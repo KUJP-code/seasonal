@@ -2,12 +2,13 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = [
+    "adjChange",
     "child",
-    "slotRegs",
+    "finalCost",
     "optRegs",
     "optCost",
-    "adjChange",
-    "finalCost",
+    "optCount",
+    "slotRegs",
   ];
 
   static values = {
@@ -26,6 +27,12 @@ export default class extends Controller {
       .reduce((sum, option) => sum + parseInt(option.innerHTML), 0);
 
     const adjustmentChange = this.calcAdjustments();
+
+    const optCount = this.optRegsTargets.reduce(
+      (sum, target) => sum + target.querySelectorAll(".registered").length,
+      0
+    );
+    this.optCountTarget.innerHTML = optCount.toString() + " options registered";
 
     const finalCost = optionCost + courseCost + adjustmentChange;
     this.finalCostTarget.innerHTML = `Total Cost: ${finalCost}円`;

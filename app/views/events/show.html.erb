@@ -144,13 +144,18 @@
     <div id="price_bar">
         <h3 id="total_cost" data-price-target="finalCost"><%="#{t('.total_cost')}: #{@all_invoices.reduce(0) {|sum, i| sum + i.total_cost}}円"%></h3>
 
-        <div id="reg_slots" class="collapse">
-            <% all_registered_slots.each do |slot| %>
-                <p><%= slot.name + (slot.morning ? ' (午前)' : ' (午後)') %></p>
-            <% end %>
+        <div id="reg_details" class="collapse">
+            <div id="reg_slots">
+                <% all_registered_slots.each do |slot| %>
+                    <p><%= slot.name + (slot.morning ? ' (午前)' : ' (午後)') %></p>
+                <% end %>
+            </div>
+            <br>
+
+            <p data-price-target="optCount"><%= "#{@all_invoices.reduce(0) { |sum, i| sum + i.options.size }} #{t('.num_options')}" %></p>
         </div>
         <button class="btn btn-primary"
-                type="button" data-bs-toggle="collapse" data-bs-target="#reg_slots" aria-expanded="false" aria-controls="collapseSlots"><%= t('.view_slots') %></button>
+                type="button" data-bs-toggle="collapse" data-bs-target="#reg_details" aria-expanded="false" aria-controls="collapseSlots"><%= t('.view_slots') %></button>
 
         <% @all_invoices.each do |invoice| %>
             <%= form_with model: invoice, url: confirm_invoice_path, data: { turbo: false }, html: { class: 'd-flex gap-3' } do |f| %>
