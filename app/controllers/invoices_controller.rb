@@ -122,7 +122,7 @@ class InvoicesController < ApplicationController
     og_regs = origin.invoices.where(event: event).map(&:registrations).flatten
     # Get the target's modifiable invoice, create one if none
     target_invoice = target.invoices.where(event: event).find_by(in_ss: false) || target.invoices.create(event: event)
-    t_regs = target.invoices.reduce([]) { |a, i| a + i.registrations }
+    t_regs = target.invoices.where(event: event).reduce([]) { |a, i| a + i.registrations }
 
     og_regs.each do |o_reg|
       # Skip if already on target invoice
