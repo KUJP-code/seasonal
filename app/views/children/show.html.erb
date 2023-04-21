@@ -57,5 +57,5 @@
     </div>
 
     <h2><%= t('.next_event') %></h2>
-    <%= render @next_event, partial: 'events/event' %>
+    <%= render @next_event, partial: 'events/event', child: @child %>
 </main>

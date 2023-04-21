@@ -1,22 +1,30 @@
-<% if current_user.staff? %>
+<% if current_user.staff? && child.nil? %>
 
     <div class="card">
         <%= (link_to image_tag(url_for(event.image)), children_path(source: 'Event', id: event.id)) unless event.image.blank? %>
 
         <h2><%= link_to event.description, children_path(source: 'Event', id: event.id) %></h2>
 
-        <div class="event_management">
-            <%= link_to t('.edit'), edit_event_path(event), class: 'btn btn-primary' %>
-            <%= link_to t('.delete'), event_path(event), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm')}, class: 'btn btn-primary' %>
-        </div>
+        <% if current_user.admin? %>
+            <div class="event_management">
+                <%= link_to t('.edit'), edit_event_path(event), class: 'btn btn-primary' %>
+                <%= link_to t('.delete'), event_path(event), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm')}, class: 'btn btn-primary' %>
+            </div>
+        <% end %>
+    </div>
+
+<% elsif child %>
+
+    <div class="card">
+        <%= (link_to image_tag(url_for(event.image)), event_path(id: event, child: child.id)) unless event.image.blank? %>
+        <h2><%= link_to event.description, event_path(id: event, child: child.id) %></h2>
     </div>
 
 <% else %>
 
     <div class="card">
         <%= (link_to image_tag(url_for(event.image)), event_path(id: event, child: current_user.children.first.id)) unless event.image.blank? %>
-
-        <h2><%= link_to event.description, event_path(id: event, child: current_user.children.first.id) %></h2>
+            <h2><%= link_to event.description, event_path(id: event, child: current_user.children.first.id) %></h2>
     </div>
     
 <% end %>
