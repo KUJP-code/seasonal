@@ -45,7 +45,7 @@
     </div>
 
     <% if @user.children? %>
-        <%= link_to t('.my_invoices'), invoices_path(user: @user.id), class: 'btn btn-primary' %>
+        <%= link_to t('.my_bookings'), invoices_path(user: @user.id), class: 'btn btn-primary' %>
 
         <h2><%= t('.next_event') %></h2>
         <%= render Event.all.where(school: @user.children.map(&:school)).order(start_date: :asc).first %>

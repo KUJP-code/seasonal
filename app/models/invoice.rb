@@ -136,7 +136,7 @@ class Invoice < ApplicationRecord
     @breakdown.prepend(
       "<div class='d-flex gap-3 flex-column'><h2>#{child.name}</h2>\n<h2>For #{event.name} at #{event.school.name}</h2>\n"
     )
-    @breakdown << "</div><h2>Invoice details:</h2>\n"
+    @breakdown << "</div><h2>Booking details:</h2>\n"
 
     e_opt_regs = opt_regs.where(registerable: event.options)
     unless e_opt_regs.empty?

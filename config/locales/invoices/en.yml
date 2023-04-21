@@ -4,6 +4,6 @@ en:
       confirm_changes: "Confirm Changes"
     invoice:
       in_ss: "In SS, editing locked"
-      merge_invoices: "Merge Invoices"
+      merge_invoices: "Merge Bookings"
       revert_to: "Revert to this version"
       version_from: "Version from: %{date}"

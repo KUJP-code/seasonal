@@ -13,7 +13,7 @@
         <% if current_user.staff? && !past %>
             <% if invoice.in_ss %>
                 <p class="btn btn-info"><%= t('.in_ss') %></p>
-                <p class="btn btn-info"><%= "Invoice##{invoice.id}" %></p>
+                <p class="btn btn-info"><%= "Booking##{invoice.id}" %></p>
             <% else %>
                 <%= link_to t('.edit_registrations'), event_path(id: invoice.event_id, child: invoice.child_id), class: 'btn btn-primary' %>
                 <%= link_to t('.adjustments'), edit_adjustment_path(invoice), class: 'btn btn-primary' %>
@@ -26,9 +26,9 @@
                         <%= f.collection_select :merge_to, Invoice.where(child_id: invoice.child_id, event_id: invoice.event_id).excluding(invoice), :id, :id %>
                     </div>
                     <%=
-                        f.submit t('.merge_invoices'), class: 'btn btn-primary',
+                        f.submit t('.merge_bookings'), class: 'btn btn-primary',
                         data: {
-                            turbo_confirm: "Please merge to the invoice with adjustments if any, otherwise adjustments will not be included in post-merge calculation. If you merge from an adjusted invoice, the adjustments can be correctly included by triggering another calculation through editing the invoice and submitting it with no changes."
+                            turbo_confirm: "Please merge to the booking with adjustments if any, otherwise adjustments will not be included in post-merge calculation. If you merge from an adjusted booking, the adjustments can be correctly included by triggering another calculation through editing the booking and submitting it with no changes."
                         }
                     %>
                 <% end %>
