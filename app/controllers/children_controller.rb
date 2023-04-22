@@ -3,6 +3,7 @@
 # Control flow of data for Children
 class ChildrenController < ApplicationController
   def index
+    authorize :child, :index?
     # Find a child to add
     return find_child if params[:commit] == 'Find Child'
 
@@ -17,12 +18,11 @@ class ChildrenController < ApplicationController
     end
 
     # By default, see the list of children current user is responsible for
-    @children = role_index
+    @children = policy_scope(Child).order(:ssid)
   end
 
   def show
-    @child = Child.find(params[:id])
-    role_show
+    @child = authorize(Child.find(params[:id]))
   end
 
   def new
@@ -34,11 +34,11 @@ class ChildrenController < ApplicationController
   end
 
   def edit
-    @child = Child.find(params[:id])
+    @child = authorize(Child.find(params[:id]))
   end
 
   def create
-    @child = Child.new(child_params)
+    @child = authorize(Child.new(child_params))
 
     if @child.save
       flash_success
@@ -50,7 +50,7 @@ class ChildrenController < ApplicationController
   end
 
   def update
-    @child = Child.find(params[:id])
+    @child = authorize(Child.find(params[:id]))
 
     if @child.update(child_params)
       flash_success
@@ -114,28 +114,9 @@ class ChildrenController < ApplicationController
     @source
   end
 
-  def role_show
-    @parent = @child.parent
-    @school = @child.school
-    @next_event = @school.next_event
-    return staff_show if current_user.staff?
-
-    customer_show
-  end
-
-  def staff_show
-    @slots = @next_event.time_slots
-  end
-
   def search_result
     Child.find_by(ssid: params[:ssid], birthday: params[:bday]) if params[:bday]
 
     Child.find_by(ssid: params[:ssid])
-  end
-
-  def role_index
-    return Child.all if current_user.admin?
-    return current_user.area_children if current_user.area_manager?
-    return current_user.school_children if current_user.school_manager?
   end
 end

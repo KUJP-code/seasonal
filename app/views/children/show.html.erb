@@ -2,7 +2,7 @@
     <div class="card">
         <h1><%= @child.name %></h1>
         <h3>SSID: <%= @child.ssid %></h3>
-        <h3><%= link_to "#{t('.parent')} #{@parent.name}", user_path(@parent) %></h3>
+        <h3><%= link_to "#{t('.parent')} #{@child.parent.name}", user_path(@child.parent) %></h3>
 
 
         <div class="info">
@@ -28,8 +28,8 @@
             </div>
             <div class="school_info">
                 <p>
-                    <%= t(".no_school") if @school.nil? %>
-                    <%= "#{t(".school")} #{@school.name}" unless @school.nil? %>
+                    <%= t(".no_school") if @child.school.nil? %>
+                    <%= "#{t(".school")} #{@child.school.name}" unless @child.school.nil? %>
                 </p>
                 <p><%= "#{t('.category')} #{@child.category.capitalize}" %></p>
                 <p><%= (@child.kindy) ? 'Kindy' : 'Elementary' %></p>
@@ -58,6 +58,8 @@
 
     <%= link_to t('.child_bookings', child: @child.name), invoices_path(child: @child.id), class: 'btn btn-primary' %>
 
-    <h2><%= t('.next_event') %></h2>
-    <%= render @next_event, partial: 'events/event', child: @child %>
+    <% unless @child.events.empty? %>
+        <h2><%= t('.next_event') %></h2>
+        <%= render @child.events.where("start_date > ?", Time.zone.now).order(:start_date).first, partial: 'events/event', child: @child %>
+    <% end %>
 </main>
