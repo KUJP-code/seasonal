@@ -2,9 +2,13 @@
 
 # Facilitates import/export of records for certain models
 class CsvsController < ApplicationController
-  def index; end
+  def index
+    authorize(:csv)
+  end
 
   def download
+    authorize(:csv)
+
     model = params[:model].constantize
     path = "/tmp/#{params[:model].downcase.pluralize}#{Time.zone.now.strftime('%Y%m%d%H%M')}.csv"
 
@@ -18,6 +22,8 @@ class CsvsController < ApplicationController
   end
 
   def upload
+    authorize(:csv)
+
     csv = params[:csv]
     model = params[:model].constantize
 
