@@ -5,8 +5,6 @@ class InvoicesController < ApplicationController
   def index
     @invoices = if params[:event] && params[:user]
                   User.find(params[:user]).invoices.where(event: Event.find(params[:event]))
-                elsif params[:event]
-                  current_user.invoices.where(event: Event.find(params[:event]))
                 elsif params[:user]
                   User.find(params[:user]).invoices
                 elsif params[:child]
@@ -14,13 +12,13 @@ class InvoicesController < ApplicationController
                 else
                   current_user.invoices
                 end
-    @user = User.find(params[:user]) if params[:user]
-    @child = Child.find(params[:child]) if params[:child]
+    authorize(@invoices)
+    params[:user] ? @user = User.find(params[:user]) : @child = Child.find(params[:child])
   end
 
   def show
-    @invoice = Invoice.find(params[:id])
-    @previous_versions = @invoice.versions.map do |v|
+    @invoice = authorize(Invoice.find(params[:id]))
+    @previous_versions = @invoice.versions.filter_map do |v|
       item = v.reify
       next if item.nil?
 
@@ -30,7 +28,7 @@ class InvoicesController < ApplicationController
   end
 
   def update
-    @invoice = Invoice.find(params[:id])
+    @invoice = authorize(Invoice.find(params[:id]))
 
     if @invoice.update(invoice_params)
       @invoice.calc_cost
@@ -62,7 +60,7 @@ class InvoicesController < ApplicationController
                     end.values
                   end
 
-    @invoice = Invoice.new(invoice_params)
+    @invoice = authorize(Invoice.new(invoice_params))
     @invoice.calc_cost(ignore_slots, ignore_opts)
   end
 
@@ -71,7 +69,7 @@ class InvoicesController < ApplicationController
     event = Event.find(params[:event])
     origin = Child.find(params[:origin])
 
-    @target_invoice = copy_invoice(target, event, origin)
+    @target_invoice = authorize(copy_invoice(target, event, origin))
     @target_invoice.calc_cost
 
     redirect_to invoice_path(@target_invoice)

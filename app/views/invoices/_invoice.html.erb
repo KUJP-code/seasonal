@@ -6,9 +6,7 @@
     <%= sanitize invoice.summary, tags: %w[h2 h3 h4 div p], attributes: %w[class id] %>
 
     <div class="d-flex gap-3 align-items-center flex-wrap">
-        <% unless show %>
-            <%= link_to t('.view_history'), invoice_path(invoice), class: 'btn btn-primary' %>
-        <% end %>
+        <%= link_to t('.view_history'), invoice_path(invoice), class: 'btn btn-primary' %>
 
         <% if current_user.staff? && !past && show %>
             <% if invoice.in_ss %>
