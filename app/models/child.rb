@@ -20,8 +20,8 @@ class Child < ApplicationRecord
   has_many :options, through: :registrations,
                      source: :registerable,
                      source_type: 'Option'
-  has_many :events, -> { distinct }, through: :time_slots
   has_many :invoices, dependent: :destroy
+  has_many :events, -> { distinct }, through: :invoices
   has_many :adjustments, through: :invoices
 
   before_validation :set_name, :set_kana, :set_kindy, :set_hat
