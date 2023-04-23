@@ -40,6 +40,17 @@ class InvoicesController < ApplicationController
     end
   end
 
+  def destroy
+    @invoice = Invoice.find(params[:id])
+    child = @invoice.child
+
+    if @invoice.destroy
+      redirect_to invoices_path(child: child.id), notice: t('delete_success')
+    else
+      redirect_to invoice_path(@invoice), notice: t('delete_failure')
+    end
+  end
+
   def confirm
     ignore_slots = if invoice_params['slot_regs_attributes'].nil?
                      []

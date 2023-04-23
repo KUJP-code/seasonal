@@ -14,6 +14,10 @@ class InvoicePolicy < ApplicationPolicy
     staff_or_parent?(user, record)
   end
 
+  def destroy?
+    user.staff?
+  end
+
   def confirm?
     staff_or_parent?(user, record)
   end

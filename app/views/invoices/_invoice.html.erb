@@ -15,6 +15,7 @@
             <% else %>
                 <%= link_to t('.edit_registrations'), event_path(id: invoice.event_id, child: invoice.child_id), class: 'btn btn-primary' %>
                 <%= link_to t('.adjustments'), edit_adjustment_path(invoice), class: 'btn btn-primary' %>
+                <%= link_to t('.delete_booking'), invoice_path(invoice), data: { turbo_method: :delete, turbo_confirm: t('.you_sure') }, class: 'btn btn-primary' %>
 
                 <%= form_with url: merge_invoices_path, html: { class: 'd-flex align-items-center gap-3' } do |f| %>
                     <%= f.hidden_field :merge_from, value: invoice.id %>
