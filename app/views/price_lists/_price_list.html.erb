@@ -1,0 +1,24 @@
+<div class="card">
+    <h2><%= link_to price_list.name, price_list_path(price_list) %></h2>    
+    
+    <table class="table">
+        <thead>
+            <tr class="table-primary">
+                <th><%= t('.num_slots') %></th>
+                <th><%= t('.price') %></th>
+            </tr>
+        </thead>
+        <% price_list.courses.each do |k, v| %>
+                <tr>
+                    <td><%= k %></td>
+                    <td><%= number_to_currency(v, unit: '円', precision: 0, locale: :ja) %></td>
+                </tr>
+        <% end %>
+    </table>
+
+    <div class="d-flex gap-3">
+        <%= link_to t('.edit_price_list'), edit_price_list_path(price_list), class: 'btn btn-primary' %>
+        
+        <%= link_to t('.delete'), price_list_path(price_list), data: { turbo_method: :delete, turbo_confirm: t('.delete_confirm'), turbo_frame: '_top' }, class: 'btn btn-primary' %>
+    </div>
+</div>
