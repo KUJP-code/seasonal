@@ -7,15 +7,15 @@ class TimeSlotsController < ApplicationController
   end
 
   def show
-    @slot = TimeSlot.find(params[:id])
+    @slot = authorize(TimeSlot.find(params[:id]))
   end
 
   def edit
-    @slot = TimeSlot.find(params[:id])
+    @slot = authorize(TimeSlot.find(params[:id]))
   end
 
   def update
-    @slot = TimeSlot.find(params[:id])
+    @slot = authorize(TimeSlot.find(params[:id]))
 
     if @slot.update(slot_params)
       redirect_to time_slot_path(@slot), notice: t('update_success')

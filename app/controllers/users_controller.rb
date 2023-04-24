@@ -3,9 +3,7 @@
 # Controls flow of info for Users resource
 class UsersController < ApplicationController
   def index
-    return redirect_to :no_permission if current_user.customer?
-
-    @users = index_for_role
+    @users = policy_scope(User)
   end
 
   def profile
@@ -13,20 +11,20 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.user_show(params[:id])
+    @user = authorize(User.user_show(params[:id]))
     return redirect_to :no_permission if current_user.customer? && current_user != @user
   end
 
   def new
-    @user = User.new
+    @user = authorize(User.new)
   end
 
   def edit
-    @user = User.find(params[:id])
+    @user = authorize(User.find(params[:id]))
   end
 
   def create
-    @user = User.new(user_params)
+    @user = authorize(User.new(user_params))
 
     if @user.save
       flash_success
@@ -38,7 +36,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.find(params[:id])
+    @user = authorize(User.find(params[:id]))
 
     if @user.update(user_params)
       flash_success
@@ -50,7 +48,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user = User.find(params[:id])
+    @user = authorize(User.find(params[:id]))
     return redirect_to :required_user if delete_admin?
     return redirect_to :no_permission if current_user.customer?
 
@@ -72,8 +70,8 @@ class UsersController < ApplicationController
   end
 
   def merge_children
-    ss_kid = Child.find(params[:ss_kid])
-    non_ss_kid = Child.find(params[:non_ss_kid])
+    ss_kid = authorize(Child.find(params[:ss_kid]))
+    non_ss_kid = authorize(Child.find(params[:non_ss_kid]))
 
     return redirect_to user_path(non_ss_kid.parent) if non_ss_kid.ssid
 
@@ -88,7 +86,7 @@ class UsersController < ApplicationController
   end
 
   def remove_child
-    @child = Child.find(params[:child_id])
+    @child = authorize(Child.find(params[:child_id]))
     @parent = User.find(params[:parent_id])
     @parent.children.delete(@child)
 
@@ -108,12 +106,6 @@ class UsersController < ApplicationController
 
   def flash_success
     flash.now[:notice] = t('.success')
-  end
-
-  def index_for_role
-    return User.all if current_user.admin?
-    return current_user.managed_schools.reduce([]) { |array, s| array + s.parents } if current_user.school_manager?
-    return current_user.managed_areas.reduce([]) { |array, a| array + a.parents } if current_user.area_manager?
   end
 
   def user_params
