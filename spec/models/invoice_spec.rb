@@ -210,15 +210,15 @@ RSpec.describe Invoice do
           option = create(:option, optionable: slot, cost: 100)
 
           child.registrations.create!([
-            {
-              invoice: invoice,
-              registerable: slot
-            },
-            {
-              invoice: invoice,
-              registerable: option
-            }
-          ])
+                                        {
+                                          invoice: invoice,
+                                          registerable: slot
+                                        },
+                                        {
+                                          invoice: invoice,
+                                          registerable: option
+                                        }
+                                      ])
         end
       end
 

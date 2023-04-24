@@ -118,7 +118,7 @@ class Invoice < ApplicationRecord
 
   def calc_option_cost
     # Prevent multiple siblings registering for same event option
-    opt_regs.where(registerable_id: event.options.ids, registerable_type: 'Option').each do |reg|
+    opt_regs.where(registerable_id: event.options.ids, registerable_type: 'Option').find_each do |reg|
       reg.destroy if child.siblings.any? { |s| s.options.include?(reg.registerable) }
     end
     # Ignore options to be deleted on confirmation screen
@@ -189,12 +189,12 @@ class Invoice < ApplicationRecord
   def hat_adjustment
     hat_cost = 1_100
     hat_reason = 'because first time children must purchase a hat'
-    unless child.adjustments.any? { |adj| adj.change == hat_cost && adj.reason == hat_reason }
-      adjustments.new(
-        change: hat_cost,
-        reason: hat_reason
-      )
-    end
+    return if child.adjustments.any? { |adj| adj.change == hat_cost && adj.reason == hat_reason }
+
+    adjustments.new(
+      change: hat_cost,
+      reason: hat_reason
+    )
   end
 
   def member_prices

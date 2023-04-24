@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Handles authorization for price lists
 class PriceListPolicy < ApplicationPolicy
   def index?

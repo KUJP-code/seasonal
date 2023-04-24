@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Handles authorisation of Option actions
 class OptionPolicy < ApplicationPolicy
   def create?
     user.staff?

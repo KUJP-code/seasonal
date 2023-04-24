@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
+# Handles flow of information for Time Slots
 class TimeSlotsController < ApplicationController
-  def show
-    @slot = TimeSlot.find(params[:id])
-  end
-
   def index
     @events = index_for_role
+  end
+
+  def show
+    @slot = TimeSlot.find(params[:id])
   end
 
   def edit
@@ -39,6 +40,7 @@ class TimeSlotsController < ApplicationController
   end
 
   def slot_params
-    params.require(:time_slot).permit(:name, :image, :start_time, :end_time, :description, :category, :closed, :morning, :event_id)
+    params.require(:time_slot).permit(:name, :image, :start_time, :end_time, :description, :category, :closed,
+                                      :morning, :event_id)
   end
 end

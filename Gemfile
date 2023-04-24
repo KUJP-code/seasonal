@@ -44,7 +44,7 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'bootsnap', require: false
 
 # Use Sass to process CSS
-gem "sassc-rails"
+gem 'sassc-rails'
 
 # Use Bootstrap for CSS
 gem 'bootstrap', '~> 5.2.2'
@@ -118,4 +118,4 @@ group :development do
   # gem "spring"
 end
 
-gem "pundit", "~> 2.3"
+gem 'pundit', '~> 2.3'

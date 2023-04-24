@@ -100,11 +100,9 @@ class InvoicesController < ApplicationController
   def resurrect
     @version = Invoice.find(params[:id]).versions.find(params[:version])
 
-    if @version.reify
-      @version.reify.save
-    else
-      return redirect_to invoice_path(params[:id]), alert: t('.resurrection_failure')
-    end
+    return redirect_to invoice_path(params[:id]), alert: t('.resurrection_failure') unless @version.reify
+
+    @version.reify.save
 
     redirect_to invoice_path(params[:id]), notice: t('.resurrection_success')
   end
