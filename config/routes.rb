@@ -9,16 +9,11 @@ Rails.application.routes.draw do
     # Require users to be signed in to view these resources
     authenticate :user do
       resources :adjustments
-      resources :areas
       resources :children
-      resources :coupons
       resources :csvs
       resources :events
       resources :invoices
-      resources :options, only: [:index]
       resources :price_lists
-      resources :registrations
-      resources :schools
       resources :time_slots
       resources :users
 
@@ -41,10 +36,6 @@ Rails.application.routes.draw do
       # Ensures just the locale also goes to root
       get '/:locale', to: 'users#profile'
     end
-    get 'errors/child_theft', to: 'errors#child_theft', as: :child_theft
-    get 'errors/permission', to: 'errors#permission', as: :no_permission
-    get 'errors/registration_error', to: 'errors#registration_error', as: :reg_error
-    get 'errors/required_user', to: 'errors#required_user', as: :required_user
   end
 
   # Defines the root path route ("/")
