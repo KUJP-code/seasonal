@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Handles flow of information for price lists
 class PriceListsController < ApplicationController
   def index
     @price_lists = authorize(PriceList.all)
@@ -39,7 +40,15 @@ class PriceListsController < ApplicationController
     if @price_list.destroy
       redirect_to price_lists_path, notice: t('.success')
     else
-      
+      redirect_to price_lists_path, notice: t('.failure')
     end
+  end
+
+  private
+
+  def price_list_params
+    params.require(:price_list).permit(:id, :name, :course1, :course5,
+                                       :course10, :course15, :course20,
+                                       :course25, :course30)
   end
 end

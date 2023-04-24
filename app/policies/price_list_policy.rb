@@ -1,3 +1,4 @@
+# Handles authorization for price lists
 class PriceListPolicy < ApplicationPolicy
   def index?
     user.admin?
@@ -22,11 +23,8 @@ class PriceListPolicy < ApplicationPolicy
   def update?
     user.admin?
   end
-  
-  class Scope < Scope
-    # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+
+  def destroy?
+    user.staff?
   end
 end
