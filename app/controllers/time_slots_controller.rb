@@ -3,7 +3,7 @@
 # Handles flow of information for Time Slots
 class TimeSlotsController < ApplicationController
   def index
-    @events = index_for_role
+    @events = policy_scope(TimeSlot).order(:start_date)
   end
 
   def show
@@ -25,19 +25,6 @@ class TimeSlotsController < ApplicationController
   end
 
   private
-
-  def index_for_role
-    case current_user.role
-    when 'admin'
-      Event.all.order(start_date: :asc).includes(:time_slots)
-    when 'area_manager'
-      current_user.area_events.includes(:time_slots)
-    when 'school_manager'
-      current_user.school_events.includes(:time_slots)
-    else
-      current_user.children_events.includes(:time_slots)
-    end
-  end
 
   def slot_params
     params.require(:time_slot).permit(:name, :image, :start_time, :end_time, :description, :category, :closed,

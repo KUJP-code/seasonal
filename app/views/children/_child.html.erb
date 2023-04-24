@@ -11,6 +11,6 @@
         <td>✖</td>
     <% end %>
     <td><%= link_to child.parent.name, user_path(child.parent)  unless child.parent.nil? %></td>
-    <td><%= link_to child.school.name, school_path(child.school) unless child.school.nil? %></td>
+    <td><%= child.school.name %></td>
     <td><%= link_to t('.edit'), edit_child_path(child), class: 'btn btn-primary' unless child.ssid %></td>
 </tr>
