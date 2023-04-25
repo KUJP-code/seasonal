@@ -2,8 +2,6 @@
 
 # Handles data for customer Invoices
 class Invoice < ApplicationRecord
-  include ActionView::Helpers::SanitizeHelper
-
   before_save :update_regs_child
 
   belongs_to :child
@@ -69,13 +67,14 @@ class Invoice < ApplicationRecord
   def best_price(num_regs, courses)
     return 0 if num_regs.zero?
 
-    if num_regs >= 35
-      @breakdown << "<p>- 30回コース: #{courses['30']}円</p>"
-      return courses['30'] + best_price(num_regs - 30, courses)
+    if num_regs >= 55
+      @breakdown << "<p>- 50回コース: #{courses['50']}円</p>"
+      return courses['50'] + best_price(num_regs - 50, courses)
     end
 
     course = nearest_five(num_regs)
     cost = courses[course.to_s]
+
     @breakdown << "<p>- #{course}回コース: #{cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" unless cost.nil?
     return cost + best_price(num_regs - course, courses) unless num_regs < 5
 
@@ -201,7 +200,7 @@ class Invoice < ApplicationRecord
     event.member_prices.courses
   end
 
-  # Decides if we need to apply the dumb 184 円 increase
+  # Decides if we need to apply the dumb 200 円 increase
   def niche_case?
     slot_regs.size - @ignore_slots.size < 5 && child.kindy && child.full_days(event, time_slots.ids).positive?
   end
@@ -216,11 +215,11 @@ class Invoice < ApplicationRecord
     (num / 5).floor(0) * 5
   end
 
-  # Calculates how many times we need to apply the dumb 184円 increase
+  # Calculates how many times we need to apply the dumb 200円 increase
   # This does not deal with the even less likely case of there being two kindy kids registered for one full day each
   def pointless_price(num_regs, courses)
     days = child.full_days(event, time_slots.ids)
-    extension_cost = days * (courses['1'] + 184)
+    extension_cost = days * (courses['1'] + 200)
     @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{extension_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
                                                                                              '\\1,').reverse}円</p>\n"
     spot_cost = spot_use(num_regs - days, courses)

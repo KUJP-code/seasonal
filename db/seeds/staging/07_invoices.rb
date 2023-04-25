@@ -1,32 +1,27 @@
-
-School.all.each do |school|
-  school.children.each do |child|
-    school.events.each do |event|
-      child.invoices.create!([
-        {
-          event: event,
-          total_cost: 0,
-          billing_date: 1.year.from_now
-        },
-        {
-          event: event,
-          total_cost: 0,
-          billing_date: 6.months.from_now,
-          in_ss: true
-        }
-      ])
-    end
-  end
+Child.all.each do |child|
+  child.invoices.create!([
+    {
+      event: child.school.events.first,
+      total_cost: 0,
+      billing_date: 1.year.from_now,
+      in_ss: true
+    },
+    {
+      event: child.school.events.first,
+      total_cost: 0,
+      billing_date: 6.months.from_now
+    }
+  ])
 end
 
-School.all.each do |school|
-  school.time_slots.each do |slot|
-    school.children.each do |child|
-      if slot.id.even?
-        child.registrations.create!(registerable: slot, invoice: Invoice.find_by(child: child, event: slot.event, in_ss: false))
-      else
-        child.registrations.create!(registerable: slot, invoice: Invoice.find_by(child: child, event: slot.event, in_ss: true))
-      end
+Child.all.each do |child|
+  slots = child.school.events.first.time_slots.sample(10)
+
+  slots.each do |slot|
+    if slot.id.even?
+      child.registrations.create!(registerable: slot, invoice: Invoice.find_by(child: child, in_ss: false))
+    else
+      child.registrations.create!(registerable: slot, invoice: Invoice.find_by(child: child, in_ss: true))
     end
   end
 end
