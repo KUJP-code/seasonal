@@ -19,9 +19,11 @@ class Option < ApplicationRecord
   enum :category, regular: 0,
                   arrival: 1,
                   departure: 2,
-                  meal: 3,
-                  event: 4,
-                  extension: 5,
+                  k_arrival: 3,
+                  k_departure: 4,
+                  meal: 5,
+                  event: 6,
+                  extension: 7,
                   default: :regular
 
   validates :name, :description, :cost, presence: true
@@ -29,9 +31,5 @@ class Option < ApplicationRecord
 
   # Scopes
   # For category of option
-  scope :regular, -> { where(category: :regular) }
-  scope :meal, -> { where(category: :meal) }
-  scope :time, -> { where(category: :arrival).or(where(category: :departure)) }
-  scope :arrival, -> { where(category: :arrival) }
-  scope :departure, -> { where(category: :departure) }
+  scope :time, -> { where(category: %i[arrival departure k_arrival k_departure]) }
 end
