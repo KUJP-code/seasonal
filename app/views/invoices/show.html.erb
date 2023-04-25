@@ -26,7 +26,7 @@
 
             <div class="card d-flex flex-column gap-2 text-white text-center bg-secondary p-3 rounded">
                 <h2><%= t('.version_from', date: v.created_at.strftime('%m/%d/%Y %H:%M')) %></h2>
-                <h5><%= t('.changed_by', user: User.find(v.whodunnit).name) %></h5>
+                <h5><%= t('.changed_by', user: User.find(v.whodunnit).name) unless v.whodunnit.nil? %></h5>
                 <h5><%= t('.change', action: v.event.capitalize) %></h5>
             </div>
 
