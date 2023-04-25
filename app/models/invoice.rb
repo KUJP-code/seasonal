@@ -180,9 +180,9 @@ class Invoice < ApplicationRecord
   # TODO: I'm guessing this will not be the final message
   def generate_template
     template = +''
-    template << 'Hello Dear Sir/Madam, this is the start of our email template!'
-    template << strip_tags(@breakdown)
-    template << "That's all folks! End of email"
+    template << '<h3>Hello Dear Sir/Madam, this is the start of our email template!</h3>'
+    template << @breakdown
+    template << "<h3>That's all folks! End of email</h3>"
     self.email_template = template
   end
 

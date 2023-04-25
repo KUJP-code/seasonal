@@ -3,6 +3,8 @@ en:
     event_child:
       reg_for_opt: "Register"
       register: "Register"
+      summaries_for: "Summaries for %{child}"
+      templates_for: "Templates for %{child}"
     form:
       external: "External"
       internal: "Internal"
