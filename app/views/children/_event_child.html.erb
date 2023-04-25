@@ -3,7 +3,7 @@
 <% reg_special = event_child.time_slots.select { |slot| slot.category == 'special' }.sort_by{ |slot| slot.start_time } %>
 <% event_opts = event_child.options.select { |opt| (reg_slots + reg_special).map { |slot| slot.id}.include?(opt.optionable_id) } %>
 <% event_invoices = event_child.invoices.select { |invoice| invoice.event_id == event.id } %>
-<% active_invoice = event_invoices.last %>
+<% active_invoice = event_invoices.reject(&:in_ss).last %>
 
 <tr>
     <th rowspan="2" class="order"><%= event_child_iteration.index + 1 %></th>
