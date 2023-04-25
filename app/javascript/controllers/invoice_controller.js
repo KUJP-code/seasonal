@@ -40,24 +40,26 @@ export default class extends Controller {
       }
     }
 
-    // Add the name of the registration to the registration list
-    const nameContainer = document.getElementById("reg_slots");
-    const nameP = document.createElement("p");
-    nameP.innerText = name.replaceAll("_", " ");
-    nameContainer.appendChild(nameP);
-
-    // Sort the registration list alphabetically
-    const names = [];
-    nameContainer.childNodes.forEach((node) => {
-      names.push(node.innerText);
-    });
-    names.sort();
-    nameContainer.innerHTML = "";
-    names.forEach((name) => {
+    if (name !== null) {
+      // Add the name of the registration to the registration list
+      const nameContainer = document.getElementById("reg_slots");
       const nameP = document.createElement("p");
       nameP.innerText = name.replaceAll("_", " ");
       nameContainer.appendChild(nameP);
-    });
+
+      // Sort the registration list alphabetically
+      const names = [];
+      nameContainer.childNodes.forEach((node) => {
+        names.push(node.innerText);
+      });
+      names.sort();
+      nameContainer.innerHTML = "";
+      names.forEach((name) => {
+        const nameP = document.createElement("p");
+        nameP.innerText = name.replaceAll("_", " ");
+        nameContainer.appendChild(nameP);
+      });
+    }
 
     this.dispatch("add");
   }
@@ -67,7 +69,7 @@ export default class extends Controller {
     const checked = e.detail.checked;
     const cost = e.detail.cost;
     const id = e.detail.id;
-    const name = e.detail.name;
+    const name = e.detail.name ? e.detail.name : null;
     const siblings = e.detail.siblings;
     const type = e.detail.type;
 
@@ -113,12 +115,14 @@ export default class extends Controller {
       }
     }
 
-    const nameContainer = document.getElementById("reg_slots");
-    nameContainer.childNodes.forEach((node) => {
-      if (node.innerText === name.replaceAll("_", " ")) {
-        nameContainer.removeChild(node);
-      }
-    });
+    if (name !== null) {
+      const nameContainer = document.getElementById("reg_slots");
+      nameContainer.childNodes.forEach((node) => {
+        if (node.innerText === name.replaceAll("_", " ")) {
+          nameContainer.removeChild(node);
+        }
+      });
+    }
 
     this.dispatch("remove");
   }
