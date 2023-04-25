@@ -1,5 +1,9 @@
 <tr>
-    <td><%= link_to child.ssid, child_path(child) %></td>
+    <% if child.ssid %>
+        <td><%= link_to child.ssid, child_path(child) %></td>
+    <% else %>
+        <td><%= t('.no_ssid') if child.ssid.nil? %></td>
+    <% end %>
     <td><%= link_to child.name, child_path(child) %></td>
     <td><%= link_to child.katakana_name, child_path(child) %></td>
     <td><%= link_to child.en_name, child_path(child) %></td>

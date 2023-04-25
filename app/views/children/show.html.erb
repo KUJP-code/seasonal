@@ -48,7 +48,7 @@
         </div>
 
 
-        <% if current_user.admin? || current_user.area_manager?  || current_user.id == @child.parent_id %>
+        <% if (current_user.staff? || current_user.id == @child.parent_id) && @child.ssid.nil? %>
             <div class="staff_options">
                 <%= link_to t('.edit_child'), edit_child_path(@child), class: 'btn btn-primary' unless @child.ssid %>
             </div>
