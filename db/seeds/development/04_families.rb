@@ -23,7 +23,10 @@ School.all.each do |school|
         ele_school_name: Faker::GreekPhilosophers.name,
         photos: 'OK',
         allergies: 'peanuts',
-        parent: parent
+        parent: parent,
+        category: :internal,
+        needs_hat: false,
+        received_hat: true
       )
     end
   end

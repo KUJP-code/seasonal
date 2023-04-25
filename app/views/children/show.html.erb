@@ -18,12 +18,11 @@
                     <%= "#{t('.photos')} ✖" unless @child.photos == 'OK' %>
                 </p>
                 <p>
-                    <%= "#{t('.need_hat')} ◯" if @child.needs_hat %>
-                    <%= "#{t('.need_hat')} ✖" unless @child.needs_hat %>
-                </p>
-                <p>
-                    <%= "#{t('.got_hat')} ◯" if @child.received_hat %>
-                    <%= "#{t('.got_hat')} ✖" unless @child.received_hat %>
+                    <% if @child.received_hat %>
+                        <%= "#{t('.has_hat')} ◯" %>
+                    <% else %>
+                        <%= "#{t('.has_hat')} ✖" %>
+                    <% end %>
                 </p>
             </div>
             <div class="school_info">

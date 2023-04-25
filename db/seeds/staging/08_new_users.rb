@@ -25,6 +25,8 @@ non_member.children.create!([
     allergies: '',
     grade: '年中',
     category: :external,
+    needs_hat: true,
+    received_hat: false,
     school: School.all.find_by(name: '大倉山')
   },
   {
@@ -40,6 +42,8 @@ non_member.children.create!([
     allergies: '',
     grade: '小４',
     category: :external,
+    needs_hat: true,
+    received_hat: false,
     school: School.all.find_by(name: '大倉山')
   }
 ])
