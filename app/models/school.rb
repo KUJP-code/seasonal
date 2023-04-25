@@ -20,8 +20,7 @@ class School < ApplicationRecord
   has_many :registrations, through: :time_slots
 
   # Validations
-  validates :name, :address, :phone, presence: true
-  validates :phone, format: { with: /\A[0-9 \-+x.)(]+\Z/, message: I18n.t('schools.validations.phone') }
+  validates :name, presence: true
   validate :managers, :school_manager?
 
   # Instance methods
