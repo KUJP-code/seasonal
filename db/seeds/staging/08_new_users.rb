@@ -18,21 +18,21 @@ non_member.children.create!([
     family_name: Faker::Name.last_name,
     kana_first: Faker::Name.first_name.kana,
     kana_family: Faker::Name.last_name.kana,
-    en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
+    en_name: %w[Timmy Sally Billy Sarah Viktoria Brett Leroy].sample,
     birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
     ssid: Faker::Number.unique.number,
     ele_school_name: Faker::GreekPhilosophers.name,
     allergies: '',
     grade: '年中',
     category: :external,
-    school: School.all.find_by(name: '溝の口')
+    school: School.all.find_by(name: '大倉山')
   },
   {
     first_name: Faker::Name.first_name,
     family_name: Faker::Name.last_name,
     kana_first: Faker::Name.first_name.kana,
     kana_family: Faker::Name.last_name.kana,
-    en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
+    en_name: %w[Timmy Sally Billy Sarah Viktoria Brett Leroy].sample,
     birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
     ssid: Faker::Number.unique.number,
     ele_school_name: Faker::GreekPhilosophers.name,
@@ -40,7 +40,7 @@ non_member.children.create!([
     allergies: '',
     grade: '小４',
     category: :external,
-    school: School.all.find_by(name: '溝の口')
+    school: School.all.find_by(name: '大倉山')
   }
 ])
 
@@ -62,7 +62,7 @@ member.children.create!([
     family_name: Faker::Name.last_name,
     kana_first: Faker::Name.first_name.kana,
     kana_family: Faker::Name.last_name.kana,
-    en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
+    en_name: %w[Timmy Sally Billy Sarah Viktoria Brett Leroy].sample,
     birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
     ssid: Faker::Number.unique.number,
     ele_school_name: Faker::GreekPhilosophers.name,
@@ -71,14 +71,14 @@ member.children.create!([
     allergies: 'milk',
     grade: '年中',
     category: 'internal',
-    school: School.all.find_by(name: '溝の口')
+    school: School.all.find_by(name: '大倉山')
   },
   {
     first_name: Faker::Name.first_name,
     family_name: Faker::Name.last_name,
     kana_first: Faker::Name.first_name.kana,
     kana_family: Faker::Name.last_name.kana,
-    en_name: %w[Timmy Sally Billy Sarah Viktoria Brett].sample,
+    en_name: %w[Timmy Sally Billy Sarah Viktoria Brett Leroy].sample,
     birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
     ssid: Faker::Number.unique.number,
     ele_school_name: Faker::GreekPhilosophers.name,
@@ -86,7 +86,7 @@ member.children.create!([
     allergies: 'milk',
     grade: '小４',
     category: 'internal',
-    school: School.all.find_by(name: '溝の口')
+    school: School.all.find_by(name: '大倉山')
   }
 ])
 
