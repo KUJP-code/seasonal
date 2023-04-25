@@ -18,13 +18,7 @@ class InvoicesController < ApplicationController
 
   def show
     @invoice = authorize(Invoice.find(params[:id]))
-    @previous_versions = @invoice.versions.filter_map do |v|
-      item = v.reify
-      next if item.nil?
-
-      item.id = v.id
-      item
-    end.compact
+    @previous_versions = @invoice.versions.where.not(object: nil)
   end
 
   def update

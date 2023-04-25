@@ -1,37 +1,35 @@
 <div class="card p-3">
-    <% if past %>
-        <h2 class="text-white bg-secondary p-3 rounded"><%= t('.version_from', date: invoice.updated_at.strftime('%m/%d/%Y %H:%M')) %></h2>
-    <% end %>
-
     <%= sanitize invoice.summary, tags: %w[h2 h3 h4 div p], attributes: %w[class id] %>
 
-    <div class="d-flex gap-3 align-items-center flex-wrap">
-        <%= link_to t('.view_history'), invoice_path(invoice), class: 'btn btn-primary' %>
+    <% if index %>
+        <div class="d-flex gap-3 align-items-center flex-wrap">
+            <%= link_to t('.view_history'), invoice_path(invoice), class: 'btn btn-primary' %>
+            <%= link_to t('.edit_registrations'), event_path(id: invoice.event_id, child: invoice.child_id), class: 'btn btn-primary' unless invoice.in_ss %>
 
-        <% if current_user.staff? && !past && show %>
-            <% if invoice.in_ss %>
-                <p class="btn btn-info"><%= t('.in_ss') %></p>
-                <p class="btn btn-info"><%= "Booking##{invoice.id}" %></p>
-            <% else %>
-                <%= link_to t('.edit_registrations'), event_path(id: invoice.event_id, child: invoice.child_id), class: 'btn btn-primary' %>
-                <%= link_to t('.adjustments'), edit_adjustment_path(invoice), class: 'btn btn-primary' %>
-                <%= link_to t('.delete_booking'), invoice_path(invoice), data: { turbo_method: :delete, turbo_confirm: t('.you_sure') }, class: 'btn btn-primary' %>
+            <% if current_user.staff? %>
+                <% if invoice.in_ss %>
+                    <p class="btn btn-info"><%= t('.in_ss') %></p>
+                    <p class="btn btn-info"><%= "Booking##{invoice.id}" %></p>
+                <% else %>
+                    <%= link_to t('.adjustments'), edit_adjustment_path(invoice), class: 'btn btn-primary' %>
+                    <%= link_to t('.delete_booking'), invoice_path(invoice), data: { turbo_method: :delete, turbo_confirm: t('.you_sure') }, class: 'btn btn-primary' %>
 
-                <%= form_with url: merge_invoices_path, html: { class: 'd-flex align-items-center gap-3' } do |f| %>
-                    <%= f.hidden_field :merge_from, value: invoice.id %>
-                    <%# Give the option to merge  %>
-                    <div class="field">
-                        <%= f.label :merge_to, t('.merge_to') %>
-                        <%= f.collection_select :merge_to, Invoice.where(child_id: invoice.child_id, event_id: invoice.event_id).excluding(invoice), :id, :id %>
-                    </div>
-                    <%=
-                        f.submit t('.merge_bookings'), class: 'btn btn-primary',
-                        data: {
-                            turbo_confirm: "Please merge to the booking with adjustments if any, otherwise adjustments will not be included in post-merge calculation. If you merge from an adjusted booking, the adjustments can be correctly included by triggering another calculation through editing the booking and submitting it with no changes."
-                        }
-                    %>
+                    <%= form_with url: merge_invoices_path, html: { class: 'd-flex align-items-center gap-3' } do |f| %>
+                        <%= f.hidden_field :merge_from, value: invoice.id %>
+                        <%# Give the option to merge  %>
+                        <div class="field">
+                            <%= f.label :merge_to, t('.merge_to') %>
+                            <%= f.collection_select :merge_to, Invoice.where(child_id: invoice.child_id, event_id: invoice.event_id).excluding(invoice), :id, :id %>
+                        </div>
+                        <%=
+                            f.submit t('.merge_bookings'), class: 'btn btn-primary',
+                            data: {
+                                turbo_confirm: "Please merge to the booking with adjustments if any, otherwise adjustments will not be included in post-merge calculation. If you merge from an adjusted booking, the adjustments can be correctly included by triggering another calculation through editing the booking and submitting it with no changes."
+                            }
+                        %>
+                    <% end %>
                 <% end %>
             <% end %>
-        <% end %>
-    </div>
+        </div>
+    <% end %>
 </div>

@@ -6,4 +6,7 @@ en:
       in_ss: "In SS, editing locked"
       merge_bookings: "Merge Bookings"
       revert_to: "Revert to this version"
+    show:
+      changed_by: "Changed by: %{user}"
+      change: "Change: %{action}"
       version_from: "Version from: %{date}"

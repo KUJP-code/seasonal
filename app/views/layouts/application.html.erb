@@ -25,7 +25,8 @@
 
         <% unless current_user.customer? %>
           <%= link_to t('nav_bar.children'), children_path %>
-          <%= link_to t('nav_bar.customers'), users_path %>
+          <%= link_to ( current_user.admin? ? t('nav_bar.users') : t('nav_bar.customers')), users_path %>
+
         <% end %>
 
         <%= link_to t('nav_bar.events'), events_path %>

@@ -3,11 +3,34 @@
         <h1><%= t('.current_version') %></h1>
     <% end %>
 
-    <%= render @invoice, show: true, past: false %>
+    <%= render @invoice, index: false %>
+
+    <div class="card d-flex flex-row flex-wrap gap-3 align-items-center">
+        <% if current_user.staff? %>
+            <% if @invoice.in_ss %>
+                <p class="btn btn-info"><%= t('.in_ss') %></p>
+                <p class="btn btn-info"><%= "Booking##{@invoice.id}" %></p>
+            <% else %>
+                <%= link_to t('.edit_registrations'), event_path(id: @invoice.event_id, child: @invoice.child_id), class: 'btn btn-primary' %>
+                <%= link_to t('.adjustments'), edit_adjustment_path(@invoice), class: 'btn btn-primary' %>
+                <%= link_to t('.delete_booking'), invoice_path(@invoice), data: { turbo_method: :delete, turbo_confirm: t('.you_sure') }, class: 'btn btn-primary' %>
+            <% end %>
+        <% end %>
+    </div>
 
     <% unless @previous_versions.empty? %>
         <h1><%= t('.previous_versions') %></h1>
 
-        <%= render partial: 'invoices/invoice', collection: @previous_versions, locals: { show: true, past: true } %>
+        <% @previous_versions.each do |v| %>
+            <% next if v.reify.summary.nil? %>
+
+            <div class="card d-flex flex-column gap-2 text-white text-center bg-secondary p-3 rounded">
+                <h2><%= t('.version_from', date: v.created_at.strftime('%m/%d/%Y %H:%M')) %></h2>
+                <h5><%= t('.changed_by', user: User.find(v.whodunnit).name) %></h5>
+                <h5><%= t('.change', action: v.event.capitalize) %></h5>
+            </div>
+
+            <%= render v.reify, partial: 'invoices/invoice', index: false %>
+        <% end %>
     <% end %>
 </main>
