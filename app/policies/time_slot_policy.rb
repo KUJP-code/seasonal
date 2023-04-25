@@ -2,6 +2,10 @@
 
 # Handles authorisation for TimeSlots
 class TimeSlotPolicy < ApplicationPolicy
+  def show?
+    true
+  end
+
   def edit?
     user.admin?
   end

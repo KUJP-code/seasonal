@@ -50,7 +50,9 @@ export default class extends Controller {
       // Sort the registration list alphabetically
       const names = [];
       nameContainer.childNodes.forEach((node) => {
-        names.push(node.innerText);
+        if (node.innerText !== undefined) {
+          names.push(node.innerText);
+        }
       });
       names.sort();
       nameContainer.innerHTML = "";
