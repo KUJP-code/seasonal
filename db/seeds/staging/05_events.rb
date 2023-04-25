@@ -1,75 +1,13 @@
-choco_descrip = 'Make chocolate, play chocolate related games and learn English!'
-
 School.all.each do |school|
-    school.events.create!([
-      {
-        name: 'Chocolate Day 2024',
-        description: choco_descrip,
-        start_date: 'February 18 2051',
-        end_date: 'February 18 2051',
-        member_prices_id: 1,
-        non_member_prices_id: 2,
-        goal: 500_000
-      },
-      {
-        name: 'Spring School 2023',
-        description: 'See the sakura and celebrate spring with KU!',
-        start_date: 'March 16 2050',
-        end_date: 'April 4 2050',
-        member_prices_id: 1,
-        non_member_prices_id: 2,
-        goal: 1_000_000
-      }
-    ])
-end
-
-Event.where(name: 'Chocolate Day 2024').each do |event|
-  event.time_slots.create!([
-    {
-      name: 'Chocolate Day 9am',
-      morning: true,
-      start_time: '18 Feb 2051 09:00 JST +09:00',
-      end_time: '18 Feb 2051 11:00 JST +09:00',
-      description: choco_descrip,
-      category: :party
-    },
-    {
-      name: 'Chocolate Day 11am',
-      morning: true,
-      start_time: '18 Feb 2051 11:00 JST +09:00',
-      end_time: '18 Feb 2051 12:00 JST +09:00',
-      description: choco_descrip,
-      category: :party
-    },
-    {
-      name: 'Chocolate Day 2pm',
-      morning: true,
-      start_time: '18 Feb 2051 14:00 JST +09:00',
-      end_time: '18 Feb 2051 16:00 JST +09:00',
-      description: choco_descrip,
-      category: :party
-    },
-    {
-      name: 'Chocolate Day 4pm',
-      morning: true,
-      start_time: '18 Feb 2051 16:00 JST +09:00',
-      end_time: '18 Feb 2051 18:00 JST +09:00',
-      description: choco_descrip,
-      category: :party
-    }
-  ])
-  event.image.attach(io: File.open('app/assets/images/chocolate_day_2024.jpg'), filename: 'logo.jpg', content_type: 'image/jpg')
-end
-
-Event.where(name: 'Chocolate Day 2024').each do |event|
-  event.time_slots.each do |slot|
-    slot.options.create!(
-        name: 'Commemorative Badge',
-        description: 'Remember all the fun you had with this shiny badge!',
-        cost: 100
-      )
-    slot.image.attach(io: File.open("app/assets/images/#{slot.name.downcase.gsub(' ', '_').gsub('_pm', '')}.jpg"), filename: 'logo.jpg', content_type: 'image/jpg')
-  end
+  school.events.create!(
+    name: 'Spring School 2023',
+    description: 'See the sakura and celebrate spring with KU!',
+    start_date: 'March 16 2050',
+    end_date: 'April 4 2050',
+    member_prices_id: 1,
+    non_member_prices_id: 2,
+    goal: 1_000_000
+)
 end
 
 Event.where(name: 'Spring School 2023').each do |event|
