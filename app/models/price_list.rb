@@ -3,7 +3,8 @@
 # Handles database records for Price Lists
 class PriceList < ApplicationRecord
   # Allow separate fields for courses
-  attr_accessor :course1, :course5, :course10, :course15, :course20, :course25, :course30
+  attr_accessor :course1, :course5, :course10, :course15, :course20, :course25,
+                :course30, :course35, :course40, :course45, :course50
 
   before_validation :set_courses
 
@@ -27,14 +28,13 @@ class PriceList < ApplicationRecord
   private
 
   def set_courses
+    return unless courses.nil?
+
     hash = {
-      '1' => course1,
-      '5' => course5,
-      '10' => course10,
-      '15' => course15,
-      '20' => course20,
-      '25' => course25,
-      '30' => course30
+      '1' => course1,'5' => course5, '10' => course10,
+      '15' => course15, '20' => course20, '25' => course25,
+      '30' => course30, '35' => course35, '40' => course40,
+      '45' => course45, '50' => course50
     }
 
     self.courses = hash
