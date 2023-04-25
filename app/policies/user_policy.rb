@@ -15,7 +15,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def new?
-    user.admin?
+    user.staff?
   end
 
   def edit?
@@ -23,7 +23,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def create?
-    user.admin?
+    user.staff?
   end
 
   def update?

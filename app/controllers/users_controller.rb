@@ -3,6 +3,7 @@
 # Controls flow of info for Users resource
 class UsersController < ApplicationController
   def index
+    authorize(User)
     @users = policy_scope(User)
   end
 
@@ -31,7 +32,7 @@ class UsersController < ApplicationController
       redirect_to user_path(@user)
     else
       flash_failure
-      render '/auth/sign_up', status: :unprocessable_entity
+      render :new, status: :unprocessable_entity
     end
   end
 

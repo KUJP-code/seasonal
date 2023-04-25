@@ -1,4 +1,6 @@
 <main id="children_index">
+    <%= link_to t('.create_child'), new_child_path, class: 'btn btn-primary' if current_user.staff? %>
+
     <table class="table table-striped">
         <thead>
             <tr class="table-primary">

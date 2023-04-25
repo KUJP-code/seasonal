@@ -20,6 +20,7 @@ en:
     edit:
       update_all: "Update All"
     form:
+      min_length: "Minimum Length: %{length}"
       update_all: "Update All"
     merge_children:
       find_child: "Find Child"
