@@ -2,7 +2,7 @@
     <div class="card">
         <h1><%= @child.name %></h1>
         <h3>SSID: <%= @child.ssid %></h3>
-        <h3><%= link_to "#{t('.parent')} #{@child.parent.name}", user_path(@child.parent) %></h3>
+        <h3><%= link_to "#{t('.parent')} #{@child.parent.name}", user_path(@child.parent) unless @child.parent_id.nil? %></h3>
 
 
         <div class="info">
