@@ -1,4 +1,6 @@
 <main id="invoice_confirm">
+    <%= link_to t('back'), :back, class: 'btn btn-primary align-self-start' %>
+
     <h1><%= t('.please_confirm') %></h1>
 
     <%= render @invoice, index: false %>
