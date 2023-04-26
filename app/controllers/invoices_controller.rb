@@ -127,7 +127,7 @@ class InvoicesController < ApplicationController
 
     og_regs.each do |o_reg|
       # Skip if already on target invoice
-      next if already_registered?(t_regs, o_reg) || o_reg.registerable.closed?
+      next if already_registered?(t_regs, o_reg) || (o_reg.registerable_type == 'TimeSlot' && o_reg.registerable.closed?)
 
       # If not on target invoice, add registration
       target_invoice.registrations.create!(

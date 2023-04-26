@@ -5,8 +5,8 @@
 
     <%= render @invoice, index: false %>
 
-    <div class="card d-flex flex-row flex-wrap gap-3 align-items-center">
-        <% if current_user.staff? %>
+    <% if current_user.staff? %>
+        <div class="card d-flex flex-row flex-wrap gap-3 align-items-center">
             <% if @invoice.in_ss %>
                 <p class="btn btn-info"><%= t('.in_ss') %></p>
                 <p class="btn btn-info"><%= "Booking##{@invoice.id}" %></p>
@@ -15,8 +15,8 @@
                 <%= link_to t('.adjustments'), edit_adjustment_path(@invoice), class: 'btn btn-primary' %>
                 <%= link_to t('.delete_booking'), invoice_path(@invoice), data: { turbo_method: :delete, turbo_confirm: t('.you_sure') }, class: 'btn btn-primary' %>
             <% end %>
-        <% end %>
-    </div>
+        </div>
+    <% end %>
 
     <% unless @previous_versions.empty? %>
         <h1><%= t('.previous_versions') %></h1>
