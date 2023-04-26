@@ -180,7 +180,10 @@
                             <%= slot_f.hidden_field :registerable_type %>
                         </div>
                     <% end %>
-                    <div data-invoice-target="slotTarget"></div>
+
+                    <% unless f.object.in_ss %>
+                        <div data-invoice-target="slotTarget"></div>
+                    <% end %>
                 </div>
 
                 <div class="opt_regs" data-price-target="optRegs">
@@ -194,7 +197,10 @@
                             <div class="opt_cost hidden registered" data-price-target="optCost"><%= @options.find { |opt| opt.id == opt_f.object.registerable_id }.cost %></div>
                         </div>
                     <% end %>
-                    <div data-invoice-target="optTarget"></div>
+
+                    <% unless f.object.in_ss %>
+                        <div data-invoice-target="optTarget"></div>
+                    <% end %>
                 </div>
 
                 <template data-invoice-target="slotTemplate">

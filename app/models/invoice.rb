@@ -165,7 +165,7 @@ class Invoice < ApplicationRecord
                       "<div class='slot_regs'><p>#{slot.name} (午後)</p>\n"
                     end
 
-      slot.options.each do |opt|
+      slot.options.order(:name).each do |opt|
         opt_reg = opt_regs.find_by(registerable_id: opt.id)
         next if opt_reg.nil? || @ignore_opts.include?(opt_reg.id)
 
