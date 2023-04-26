@@ -4,9 +4,11 @@ en:
       confirm_changes: "Confirm Changes"
     invoice:
       in_ss: "In SS, editing locked"
+      mark_in_ss: "Mark In SS"
       merge_bookings: "Merge Bookings"
       revert_to: "Revert to this version"
     show:
       changed_by: "Changed by: %{user}"
       change: "Change: %{action}"
+      mark_in_ss: "Mark In SS"
       version_from: "Version from: %{date}"

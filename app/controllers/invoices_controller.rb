@@ -27,7 +27,7 @@ class InvoicesController < ApplicationController
     if @invoice.update(invoice_params)
       @invoice.calc_cost
       flash_success
-      redirect_to invoices_path(event: @invoice.event_id, user: @invoice.child.parent_id)
+      redirect_to invoice_path(@invoice.event_id)
     else
       flash_failure
       render :new, status: :unprocessable_entity
