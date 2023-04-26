@@ -39,7 +39,7 @@ class Child < ApplicationRecord
   enum :category, internal: 0,
                   reservation: 1,
                   external: 2,
-                  withdrawn: 3,
+                  unknown: 3,
                   default: :external
 
   # Map grade int in table to a grade
@@ -56,7 +56,8 @@ class Child < ApplicationRecord
                '小５' => 10,
                '小６' => 11,
                '中学１年' => 12,
-               '中学２年' => 13
+               '中学２年' => 13,
+               '高校生以上' => 14
 
   # Map photos int in table to a permission
   enum :photos, 'なし' => 0,
