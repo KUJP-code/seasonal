@@ -67,6 +67,7 @@ class InvoicesController < ApplicationController
 
     @invoice = authorize(Invoice.new(invoice_params))
     @invoice.calc_cost(ignore_slots, ignore_opts)
+    @ss_invoices = Invoice.where(event_id: @invoice.event_id, in_ss: true, child_id: @invoice.child_id)
   end
 
   def copy
