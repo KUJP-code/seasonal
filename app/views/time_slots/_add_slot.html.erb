@@ -1,3 +1,5 @@
+<% kindy = child.kindy? %>
+
 <div class="time_slot">
     <p class="date"><%= add_slot.date %></p>
     <%= image_tag(url_for(add_slot.image)) unless add_slot.image.blank? %>
@@ -24,7 +26,9 @@
                 <% end %>
             </div>
             <div class="options<%= ' hidden' unless registered %>" data-popup-target="popup">
-                <% add_slot.options.reject { |opt| opt.arrival? || opt.departure? }.each do |opt| %>
+                <% time_ids = add_slot.options.time.ids %>
+
+                <% add_slot.options.reject { |opt| time_ids.include?(opt.id) }.each do |opt| %>
                     <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
 
                     <% if opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
@@ -43,7 +47,11 @@
                     <% end %>
                 <% end %>
 
-                <% arrival_options = add_slot.options.select { |opt| opt.arrival? }%>
+                <% arrival_options = if kindy
+                                        add_slot.options.select { |opt| opt.k_arrival? }
+                                    else
+                                        add_slot.options.select { |opt| opt.arrival? }
+                                    end %>
 
                 <% if arrival_options.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
                     <% registered_arrival = arrival_options.select { |opt| opts_in_ss.any? {  |reg| reg.registerable_id == opt.id} }.first %>
@@ -99,7 +107,9 @@
                     <% end %>
                 </div>
                 <div class="options<%= ' hidden' unless aft_registered %>" data-popup-target="popup">
-                    <% afternoon_slot.options.reject { |opt| opt.arrival? || opt.departure? }.each do |opt| %>
+                    <% aft_time_ids = afternoon_slot.options.time.ids %>
+
+                    <% afternoon_slot.options.reject { |opt| aft_time_ids.include?(opt.id) }.each do |opt| %>
                         <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
 
                         <% if opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
@@ -118,7 +128,12 @@
                         <% end %>
                     <% end %>
 
-                    <% depart_options = afternoon_slot.options.select { |opt| opt.departure? } %>
+                    <% depart_options = if kindy 
+                                            afternoon_slot.options.select { |opt| opt.k_departure? } 
+                                        else
+                                            afternoon_slot.options.select { |opt| opt.departure? }
+                                        end %>
+                                        
 
                     <% if depart_options.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
                         <% registered_depart = depart_options.select { |opt| opts_in_ss.any? {  |reg| reg.registerable_id == opt.id} }.first %>
