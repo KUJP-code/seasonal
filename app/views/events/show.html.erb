@@ -9,7 +9,8 @@
       data-controller="invoice price"
       data-action="register:toggle->invoice#change invoice:add@window->price#calculate invoice:remove@window->price#calculate"
       data-price-member-price-value=<%= @member_prices.courses.to_json unless @member_prices.nil? %>
-      data-price-non-member-price-value=<%= @non_member_prices.courses.to_json unless @non_member_prices.nil? %>>
+      data-price-non-member-price-value=<%= @non_member_prices.courses.to_json unless @non_member_prices.nil? %>
+      class="d-flex flex-column">
 
     <div id="children">
         <% @children.each do |child| %>
@@ -37,6 +38,8 @@
             <% end %>
         <% end %>
     </div>
+
+    <h1><%= @event.name %></h1>
 
     <div class="wrap-collapsible"> 
         <input id="collapsible" class="toggle" type="checkbox"> 
@@ -135,10 +138,14 @@
     <% end %>
 
     <h2><%= t('.unregistered_slots') %></h2>
-    <%= render partial: 'time_slots/add_slot', collection: unregistered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: [], opts_in_ss: [] } %>
+    <div class="d-flex flex-wrap justify-content-between gap-3 p-3">
+        <%= render partial: 'time_slots/add_slot', collection: unregistered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: [], opts_in_ss: [] } %>
+    </div>
 
     <h2><%= t('.registered_slots') %></h2>
-    <%= render partial: 'time_slots/add_slot', collection: registered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, opts_in_ss: opts_in_ss } %>
+    <div class="d-flex flex-wrap justify-content-between gap-3 p-3">
+        <%= render partial: 'time_slots/add_slot', collection: registered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, opts_in_ss: opts_in_ss } %>
+    </div>
     
 
     <div id="price_bar">
