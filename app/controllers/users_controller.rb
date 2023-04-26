@@ -71,19 +71,15 @@ class UsersController < ApplicationController
   end
 
   def merge_children
-    ss_kid = authorize(Child.find(params[:ss_kid]))
-    non_ss_kid = authorize(Child.find(params[:non_ss_kid]))
-
-    return redirect_to user_path(non_ss_kid.parent) if non_ss_kid.ssid
+    authorize(User)
+    ss_kid = Child.find(params[:ss_kid])
+    non_ss_kid = Child.find(params[:non_ss_kid])
 
     ss_kid.update(parent_id: non_ss_kid.parent_id)
-    non_ss_kid.invoices.each do |invoice|
-      invoice.update(child_id: ss_kid.id)
-    end
+    copy_invoices(non_ss_kid, ss_kid)
     non_ss_kid.update(parent_id: nil)
 
-    flash_success
-    redirect_to user_path(ss_kid.parent_id)
+    redirect_to child_path(ss_kid), notice: t('.success')
   end
 
   def remove_child
@@ -97,6 +93,14 @@ class UsersController < ApplicationController
 
   private
 
+  def copy_invoices(from, to)
+    if to.invoices.empty?
+      move_invoices(from, to)
+    else
+      merge_invoices(from, to)
+    end
+  end
+
   def delete_admin?
     @user.admin? && User.admins.size <= 1
   end
@@ -107,6 +111,19 @@ class UsersController < ApplicationController
 
   def flash_success
     flash.now[:notice] = t('.success')
+  end
+
+  def move_invoices(from, to)
+    from.invoices.each do |invoice|
+      # Change the child associated with the invoice
+      invoice.update(child_id: to.id)
+      # Same for each registration on the invoice
+      invoice.registrations.each do |reg|
+        reg.update(child_id: to.id)
+      end
+      # Update the invoice to reflect its new owner
+      invoice.calc_cost
+    end
   end
 
   def user_params

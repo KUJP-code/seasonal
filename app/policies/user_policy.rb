@@ -35,7 +35,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def merge_children?
-    staff_or_user?(user, record)
+    user.staff?
   end
 
   def remove_child?

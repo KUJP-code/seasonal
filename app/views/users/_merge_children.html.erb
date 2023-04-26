@@ -3,12 +3,28 @@
         <%= form_with url: merge_children_path, html: { class: 'd-grid gap-3 p-5' } do |f| %>
             <%= f.hidden_field :ss_kid, value: @child.id %>
 
-            <%= t('.ss_kid') %>
-            <%= render @child %>
+            <h3><%= t('.ss_kid') %></h3>
+            <table class="table">
+                <thead>
+                    <tr class="table-primary">
+                            <th scope="col"><%= t('.ssid') %></th>
+                            <th scope="col"><%= t('.name') %></th>
+                            <th scope="col"><%=t('.katakana') %></th>
+                            <th scope="col"><%= t('.en') %></th>
+                            <th scope="col"><%= t('.category') %></th>
+                            <th scope="col"><%= t('.allergies') %></th>
+                            <th scope="col"><%= t('.hat') %></th>
+                            <th scope="col"><%= t('.parent') %></th>
+                            <th scope="col"><%= t('.school') %></th>
+                            <th scope="col"><%= t('.edit_info') %></th>
+                        </tr>
+                </thead>
+                <tbody><%= render @child %></tbody>
+            </table>
 
             <div>
-                <%= f.label :non_ss_kid, class: 'form-label' %>
-                <%= f.collection_select :non_ss_kid, @child.parent.children, :id, :name, {}, class: 'form-select' %>
+                <h3><%= f.label :non_ss_kid, class: 'form-label' %></h3>
+                <%= f.collection_select :non_ss_kid, @child.parent.children.where(ssid: nil), :id, :name, {}, class: 'form-select' %>
             </div>
 
             <%= f.submit t('.merge_children'), class: 'btn btn-primary' %>
