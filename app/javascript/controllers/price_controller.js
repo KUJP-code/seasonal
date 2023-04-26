@@ -70,7 +70,7 @@ export default class extends Controller {
   }
 
   calcConnectCost(numRegs) {
-    return Math.ceil(numRegs / 2) * 184;
+    return Math.ceil(numRegs / 2) * 200;
   }
 
   // Calculates course costs if kids are both members/not
@@ -82,7 +82,7 @@ export default class extends Controller {
     const cost = this.slotRegsTargets.reduce((sum, target) => {
       const numRegs = target.querySelectorAll(`.child${id}`).length;
       const courseCost = this.bestCourses(numRegs, courses);
-      // If child is Kindy and has less than 5 registrations, apply the 184 yen
+      // If child is Kindy and has less than 5 registrations, apply the 200 yen
       // increase to half of them so price will only decrease when finalised
       const connectCost =
         member && numRegs < 5 && level === "Kindy"
