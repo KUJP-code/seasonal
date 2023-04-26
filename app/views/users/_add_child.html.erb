@@ -1,6 +1,41 @@
-<%= turbo_frame_tag "add_child" do %>
-    <div class="find_child">
-        <%= form_with url: children_path, method: :get, id: 'claim_child_form', html: { class: 'd-grid gap-3 p-5' } do |f| %>
+<%= turbo_frame_tag "add_child", class: 'd-flex flex-column gap-3' do %>       
+    <% if @child %>
+        <table class="table">
+            <thead>
+                <tr class="table-primary">
+                    <th scope="col"><%= t('.ssid') %></th>
+                    <th scope="col"><%= t('.name') %></th>
+                    <th scope="col"><%= t('.katakana') %></th>
+                    <th scope="col"><%= t('.en_name') %></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td><%= @child.ssid %></td>
+                    <td><%= @child.name %></td>
+                    <td><%= @child.katakana_name %></td>
+                    <td><%= @child.en_name %></td>
+                </tr>
+
+                <% unless @child.parent_id.nil? %>
+                    <tr class="table-danger">
+                        <td colspan="4"><%= t('.already_claimed') %></td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+        
+        <% if @child.parent_id.nil? %>
+            <%= form_with url: add_child_path, id: "add_form" do |f| %>
+                <%= f.hidden_field :child_id, value: @child.id %>
+                <%= f.hidden_field :parent_id, value: parent.id %>
+                <%= f.submit t('.claim_child'), class: 'btn btn-primary', data: { turbo_frame: '_top' } %>
+            <% end %>            
+        <% end %>
+
+    <% else %>
+        <%= form_with url: find_child_path, method: :get, id: 'claim_child_form', html: { class: 'd-grid gap-3 p-5' } do |f| %>
             <%= f.hidden_field :parent_id, value: parent.id %>
             <div class="form-floating">
                 <%= f.search_field :ssid, class: 'form-control', placeholder: t('.ssid') %>
@@ -12,37 +47,9 @@
             </div>
             <%= f.submit t('.find_child'), class: 'btn btn-primary' %>
         <% end %>
-        
-        <% if @child %>
-            <div id="child_results">
-                <div class="child header">
-                    <p class="ssid"><%= t('.ssid') %></p>
-                    <p class="name"><%= t('.name') %></p>
-                    <p class="katakana"><%=t('.katakana') %></p>
-                </div>
-        
-                <div class="child">
-                    <p class="ssid"><%= @child.ssid %></p>
-                    <p class="name"><%= @child.name %></p>
-                    <p class="katakana"><%= @child.katakana_name %></p>
-                </div>
-        
-                <% if @child.parent_id.nil? %>
-                    <%= form_with url: add_child_path, id: "add_form" do |f| %>
-                        <%= f.hidden_field :child_id, value: @child.id %>
-                        <%= f.hidden_field :parent_id, value: parent.id %>
-                        <%= f.submit t('.claim_child'), class: 'btn btn-primary', data: { turbo_frame: '_top' } %>
-                    <% end %>
-                <% end %>
-        
-                <% unless @child.parent_id.nil? %>
-                    <p class="success"><%= t('.child_claimed') %></p>
-                <% end %>
-            </div>
-        <% end %>
-    </div>
 
-    <% unless @child %>
+        <hr>
+
         <div class="add_new_child">
             <%= link_to t('.add_new_child'), new_child_path(parent: parent.id), class: 'btn btn-primary' %>
         </div>

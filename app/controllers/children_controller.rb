@@ -4,9 +4,6 @@
 class ChildrenController < ApplicationController
   def index
     authorize :child, :index?
-    # Find a child to add
-    return find_child if params[:commit] == 'Find Child'
-
     # List children attending an event or time slot
     if params[:all]
       @slots = params[:source].constantize.find(params[:id]).time_slots.morning
@@ -61,6 +58,13 @@ class ChildrenController < ApplicationController
     end
   end
 
+  def find_child
+    @child = search_result
+    return render 'users/_add_child', locals: { parent: User.find(params[:parent_id]) } if params[:bday]
+
+    render 'users/_merge_children', locals: { child: @child } if @child.present?
+  end
+
   private
 
   def child_params
@@ -77,13 +81,6 @@ class ChildrenController < ApplicationController
 
   def customer_show
     @slots = @next_event.time_slots.limit(5)
-  end
-
-  def find_child
-    @child = search_result
-    render 'users/_add_child', locals: { parent: User.find(params[:parent_id]) } if params[:bday]
-
-    render 'users/_merge_children', locals: { child: @child } if @child.present?
   end
 
   def find_children
@@ -115,7 +112,7 @@ class ChildrenController < ApplicationController
   end
 
   def search_result
-    Child.find_by(ssid: params[:ssid], birthday: params[:bday]) if params[:bday]
+    return Child.find_by(ssid: params[:ssid], birthday: params[:bday]) if params[:bday]
 
     Child.find_by(ssid: params[:ssid])
   end

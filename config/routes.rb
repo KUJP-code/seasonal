@@ -18,9 +18,7 @@ Rails.application.routes.draw do
       resources :users
 
       # Non-REST routes for Children controller
-      post 'user/add_child', to: 'users#add_child', as: :add_child
-      post 'user/remove_child', to: 'users#remove_child', as: :remove_child
-      post 'user/merge_children', to: 'users#merge_children', as: :merge_children
+      get 'child/find_child', to: 'children#find_child', as: :find_child
 
       # Non-REST routes for CSVs controller
       post 'csv/upload', to: 'csvs#upload', as: :upload_csv
@@ -32,6 +30,11 @@ Rails.application.routes.draw do
       post 'merge_invoices', to: 'invoices#merge', as: :merge_invoices
       post 'resurrect_invoice', to: 'invoices#resurrect', as: :resurrect_invoice
       post 'seen_invoice', to: 'invoices#seen', as: :seen_invoice
+
+      # Non-REST routes for Users controller
+      post 'user/add_child', to: 'users#add_child', as: :add_child
+      post 'user/remove_child', to: 'users#remove_child', as: :remove_child
+      post 'user/merge_children', to: 'users#merge_children', as: :merge_children
 
       # Ensures just the locale also goes to root
       get '/:locale', to: 'users#profile'
