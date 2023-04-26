@@ -93,6 +93,12 @@ class UsersController < ApplicationController
 
   private
 
+  def already_registered?(t_regs, o_reg)
+    t_regs.any? do |t_reg|
+      t_reg.registerable_id == o_reg.registerable_id && t_reg.registerable_type == o_reg.registerable_type
+    end
+  end
+
   def copy_invoices(from, to)
     if to.invoices.empty?
       move_invoices(from, to)
@@ -111,6 +117,22 @@ class UsersController < ApplicationController
 
   def flash_success
     flash.now[:notice] = t('.success')
+  end
+
+  def merge_invoices(from, to)
+    from_regs = from.invoices.map(&:registrations).flatten
+    to_regs = to.invoices.map(&:registrations).flatten
+    to_active_invoice = to.invoices.find_by(in_ss: false) || to.invoices.create(event_id: from.invoices.first.event_id)
+
+    from_regs.each do |reg|
+      # Skip if already registered
+      next if already_registered?(to_regs, reg)
+
+      # Else associate reg with to child and their open invoice
+      reg.update(child_id: to.id, invoice_id: to_active_invoice.id)
+    end
+
+    to_active_invoice.calc_cost
   end
 
   def move_invoices(from, to)
