@@ -160,6 +160,9 @@ input[type="text"]:disabled {
   background: $primary;
   color: var(--near-white);
   font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   &:hover {
     background: var(--near-white);
     color: $primary;

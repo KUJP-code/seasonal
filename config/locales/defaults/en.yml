@@ -1,5 +1,6 @@
 en:
   contact_info: "Contact Information"
+  delete: "Delete"
   ele_school: "Elementary School"
   enter_pin: "Enter PIN to reveal %{info}"
   nav_bar:
