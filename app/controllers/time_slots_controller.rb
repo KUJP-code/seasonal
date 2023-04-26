@@ -3,6 +3,7 @@
 # Handles flow of information for Time Slots
 class TimeSlotsController < ApplicationController
   def index
+    authorize(TimeSlot)
     @events = policy_scope(TimeSlot).order(:start_date)
   end
 
