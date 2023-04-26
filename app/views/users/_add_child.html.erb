@@ -1,5 +1,7 @@
 <%= turbo_frame_tag "add_child", class: 'd-flex flex-column gap-3' do %>       
     <% if @child %>
+        <%= link_to t('back'), '#add_child', class: 'btn btn-primary align-self-start' %>
+
         <table class="table">
             <thead>
                 <tr class="table-primary">
