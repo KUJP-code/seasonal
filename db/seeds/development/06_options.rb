@@ -1,6 +1,6 @@
 Event.all.each do |event|
   event.options.create!(
-    name: 'Photo Service',
+    name: 'フォトサービス',
     description: "Capture your children's treasured memories!",
     category: :event,
     cost: 1_100

@@ -1,9 +1,12 @@
 <% event_options = slot_attendance.event.options %>
-<% morn_options = slot_attendance.options.reject { |opt| opt.arrival? || opt.departure? } %>
+<% morn_time_ids = slot_attendance.options.time.ids %>
+<% morn_options = slot_attendance.options.reject { |opt| morn_time_ids.include?(opt.id) } %>
 <% aft_options = if slot_attendance.afternoon_slot.nil?
                    []
                  else
-                   slot_attendance.afternoon_slot.options.reject { |opt| opt.arrival? || opt.departure? }
+                   aft_slot = slot_attendance.afternoon_slot
+                   aft_time_ids = aft_slot.options.time.ids
+                   aft_slot.options.reject { |opt| aft_time_ids.include?(opt.id) }
                  end
 %>
 <% children = slot_attendance.children.distinct %>
