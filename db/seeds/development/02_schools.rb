@@ -105,6 +105,43 @@ Area.first.schools.create!([
 
 School.find_by(name: '大倉山').managers << User.find_by(role: 'school_manager')
 
+User.find_by(role: 'customer').children.create!([
+  {
+    first_name: Faker::Name.first_name,
+    family_name: Faker::Name.last_name,
+    kana_first: Faker::Name.first_name.kana,
+    kana_family: Faker::Name.last_name.kana,
+    en_name: %w[Timmy Sally Billy Sarah Viktoria Brett Leroy].sample,
+    birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
+    ssid: Faker::Number.unique.number,
+    ele_school_name: Faker::GreekPhilosophers.name,
+    photos: 'OK',
+    allergies: 'ice cream',
+    school: School.find_by(name: '大倉山'),
+    category: :internal,
+    needs_hat: false,
+    received_hat: true
+  },
+  {
+    first_name: Faker::Name.first_name,
+    family_name: Faker::Name.last_name,
+    kana_first: Faker::Name.first_name.kana,
+    kana_family: Faker::Name.last_name.kana,
+    en_name: %w[Timmy Sally Billy Sarah Viktoria Brett Leroy].sample,
+    birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
+    ssid: Faker::Number.unique.number,
+    ele_school_name: Faker::GreekPhilosophers.name,
+    photos: 'OK',
+    allergies: 'ice cream',
+    school: School.find_by(name: '大倉山'),
+    category: :internal,
+    needs_hat: false,
+    received_hat: true
+  }
+])
+
+puts 'Put Yoshi in charge of Okurayama and gave the test customer 2 kids who go there'
+
 translation_hash = {
   '田園調布雪谷' => 'd-yukigaya@kids-up.jp',
   '蒲田駅前' => 'j-kamata@kids-up.jp',
