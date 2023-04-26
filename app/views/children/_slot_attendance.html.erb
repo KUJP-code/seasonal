@@ -18,7 +18,7 @@
     <table>
         <thead>
             <tr>
-                <th id="arrival_header" class="arrival"><%= t('.arrival_time') %></th>
+                <th id="arrival_header" class="arrival"><%= t('.arrival') %></th>
                 <th id="morning_header" class="morning">
                     <p><%= t('.attend_morning') %></p>
                     <p><%= "K: #{children.select{|c| c.kindy}.size}, E: #{children.reject{|c| c.kindy}.size}" %></p>
@@ -44,7 +44,7 @@
                         <th><%= "#{opt.name}: #{opt.registrations.size}" %></th>
                     <% end %>
                 <% end %>
-                <th id="depart_header" class="depart"><%= t('.depart_time') %></th>
+                <th id="depart_header" class="depart"><%= t('.depart') %></th>
             </tr>
         </thead>
         <%= render partial: 'children/slot_child', collection: children, locals: { slot: slot_attendance, event_options: event_options, morn_options: morn_options, aft_options: aft_options } %>

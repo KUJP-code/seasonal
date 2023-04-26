@@ -1,1 +1,5 @@
 ja:
+  children:
+    slot_attendance:
+      arrival: "延長(前)"
+      depart: "延長(後)"

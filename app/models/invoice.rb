@@ -117,9 +117,7 @@ class Invoice < ApplicationRecord
 
   def calc_option_cost
     # Prevent multiple siblings registering for same event option
-    opt_regs.where(registerable_id: event.options.ids, registerable_type: 'Option').find_each do |reg|
-      reg.destroy if child.siblings.any? { |s| s.options.include?(reg.registerable) }
-    end
+    check_event_opts
     # Ignore options to be deleted on confirmation screen
     opt_cost = opt_regs.reject do |reg|
                  @ignore_opts.include?(reg.id)
@@ -134,6 +132,12 @@ class Invoice < ApplicationRecord
     end
     @breakdown << '</div>'
     opt_cost
+  end
+
+  def check_event_opts
+    opt_regs.where(registerable_id: event.options.ids, registerable_type: 'Option').find_each do |reg|
+      reg.destroy if child.siblings.any? { |s| s.options.include?(reg.registerable) }
+    end
   end
 
   def generate_details

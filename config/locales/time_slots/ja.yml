@@ -1,5 +1,8 @@
 ja:
   time_slots:
+    add_slot:
+      arrival_options: "延長(前)"
+      depart_options: "延長(後)"
     time_slot:
       date: "日にち： %{date}"
       delete: "消去"

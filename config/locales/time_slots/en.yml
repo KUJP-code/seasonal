@@ -1,5 +1,7 @@
 en:
   time_slots:
+    add_slot:
+      arrival_options: "Arrival Options"
     index:
       slots_for: "Slots for %{name} at %{school}"
     time_slot:
