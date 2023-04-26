@@ -1,8 +1,8 @@
 <% attending_kids = time_slot.children.where(parent_id: current_user.id) %>
 
 <div class="card">
-    <h3><%= link_to time_slot.name, time_slot_path(time_slot) %></h3>
-    <%= (link_to image_tag(url_for(time_slot.image), class: 'img-fluid'), time_slot_path(time_slot)) unless time_slot.image.blank? %>
+    <h3><%= time_slot.name %></h3>
+    <%= image_tag(url_for(time_slot.image), class: 'img-fluid') unless time_slot.image.blank? %>
     <p><%= time_slot.description %></p>
     
     <% unless current_user.staff? || attending_kids.empty? %>
