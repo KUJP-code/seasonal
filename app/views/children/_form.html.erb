@@ -110,11 +110,6 @@
                 <% end %>
     
                 <% if current_user.staff? %>
-                    <div>
-                        <%= f.check_box :kindy, class: 'form-check-input' %>
-                        <%= f.label :kindy, t('.kindy'), class: 'form-check-label' %><br />
-                    </div>
-    
                     <div class="form-floating">
                         <%= f.text_field :ssid, placeholder: t('.ssid'), class: 'form-control' %>
                         <%= f.label :ssid, t('.ssid'), class: 'form-label' %><br />
