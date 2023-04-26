@@ -85,7 +85,7 @@ export default class extends Controller {
       // If child is Kindy and has less than 5 registrations, apply the 200 yen
       // increase to half of them so price will only decrease when finalised
       const connectCost =
-        member && numRegs < 5 && level === "Kindy"
+        member && numRegs < 5 && numRegs > 1 && level === "Kindy"
           ? this.calcConnectCost(numRegs)
           : 0;
 
