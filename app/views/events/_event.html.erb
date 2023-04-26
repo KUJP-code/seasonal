@@ -3,7 +3,7 @@
     <div class="card">
         <%= (link_to image_tag(url_for(event.image)), children_path(source: 'Event', id: event.id)) unless event.image.blank? %>
 
-        <h2><%= link_to event.description, children_path(source: 'Event', id: event.id) %></h2>
+        <h2><%= link_to t('.title', name: event.name, school: event.school.name), children_path(source: 'Event', id: event.id) %></h2>
 
         <% if current_user.admin? %>
             <div class="event_management">
@@ -17,14 +17,14 @@
 
     <div class="card">
         <%= (link_to image_tag(url_for(event.image)), event_path(id: event, child: child.id)) unless event.image.blank? %>
-        <h2><%= link_to event.description, event_path(id: event, child: child.id) %></h2>
+        <h2><%= link_to t('.title', name: event.name, school: event.school.name), event_path(id: event, child: child.id) %></h2>
     </div>
 
 <% else %>
 
     <div class="card">
         <%= (link_to image_tag(url_for(event.image)), event_path(id: event, child: current_user.children.first.id)) unless event.image.blank? %>
-            <h2><%= link_to event.description, event_path(id: event, child: current_user.children.first.id) %></h2>
+            <h2><%= link_to t('.title', name: event.name, school: event.school.name), event_path(id: event, child: current_user.children.first.id) %></h2>
     </div>
     
 <% end %>

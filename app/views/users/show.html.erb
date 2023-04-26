@@ -1,4 +1,4 @@
-<% next_event = Event.all.where(school: @user.children.map(&:school)).order(start_date: :asc).first %>
+<% next_event = @user.children.first.school.next_event unless @user.children.empty? %>
 
 <main id="user_show">
     <div class="card">
@@ -94,7 +94,7 @@
         </div>
     <% end %>
 
-    <% if @user.customer? && current_user.staff? %>
+    <% if @user.customer? && current_user.staff? && @user.children.any? { |c| c.ssid.nil? } %>
         <h2><%= t('.merge_children') %></h2>
         <div class="card">
             <%= render 'users/merge_children', parent: @user %>
