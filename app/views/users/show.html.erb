@@ -96,7 +96,7 @@
 
     <% if @user.customer? && current_user.staff? && @user.children.any? { |c| c.ssid.nil? } %>
         <h2><%= t('.merge_children') %></h2>
-        <div class="card">
+        <div class="card" id="merge_children">
             <%= render 'users/merge_children', parent: @user %>
         </div>
     <% end %>
