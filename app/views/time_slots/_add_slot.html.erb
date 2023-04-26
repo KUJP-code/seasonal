@@ -1,4 +1,5 @@
 <% kindy = child.kindy? %>
+<% opt_regs = registrations.select { |reg| reg.registerable_type == 'Option' } %>
 
 <div class="time_slot">
     <p class="date"><%= add_slot.date %></p>
@@ -73,7 +74,7 @@
                                 <input type="radio" 
                                 name=<%= "arrival#{opt.optionable_id}child#{child.id}" %> 
                                 id="<%= "arrival#{opt.optionable_id}opt#{opt.id}" %>" 
-                                <%= 'checked' if opt_registered %>
+                                <%= 'checked' if opt_registered || ( opt.name == 'なし' && arrival_options.none? { |a_opt| opt_regs.include?(a_opt) }) %>
                                 data-register-target='button' data-action="change->register#toggle">
                             </div>
                         <% end %>
@@ -136,7 +137,7 @@
                                         
 
                     <% if depart_options.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
-                        <% registered_depart = depart_options.select { |opt| opts_in_ss.any? {  |reg| reg.registerable_id == opt.id} }.first %>
+                        <% registered_depart = depart_options.select { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id} }.first %>
                         <p><%= "#{registered_depart.name}: ◯" %></p>
                     <% else %>
                         <fieldset>
@@ -155,7 +156,7 @@
                                     <input type="radio" 
                                     name="depart<%= "#{opt.optionable_id}" %>" 
                                     id="<%= "depart#{opt.optionable_id}opt#{opt.id}" %>" 
-                                    <%= 'checked' if opt_registered %>
+                                    <%= 'checked' if opt_registered || ( opt.name == 'なし' && arrival_options.none? { |a_opt| opt_regs.include?(a_opt) }) %>
                                     data-register-target='button' data-action="change->register#toggle">
                                 </div>
                             <% end %>
