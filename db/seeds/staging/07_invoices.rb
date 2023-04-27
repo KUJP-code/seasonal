@@ -38,7 +38,7 @@ Child.all.find_each(batch_size: 100) do |child|
   end
 end
 
-User.all.customer.select{|c| c.id.odd?}.find_each(batch_size: 100) do |user|
+User.all.customer.select{|c| c.id.odd?}.each do |user|
   user.children.first.events.each do |event|
     user.children.first.registrations.create!(registerable: event.options.first, invoice: Invoice.find_by(child: user.children.first, event: event))
   end
