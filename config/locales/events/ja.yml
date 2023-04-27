@@ -1,8 +1,9 @@
 ja:
   events:
     event:
-      title: "%{school}の%{name}"
+      title: "%{name}@%{school}"
     show:
+      adjustments: "調整"
       confirm_invoice: "予約を確認する"
       copy_regs: "%{from}から%{to}に登録をコピーする"
       coupon: "クーポン"
@@ -13,5 +14,5 @@ ja:
       see_more: "詳細を見る"
       total_cost: "合計"
       time_slot: "%{event}のタイムスロット"
-      title: "%{name} at %{school}"
+      title: "%{name} @ %{school}"
       unregistered_slots: "未登録のスロット"

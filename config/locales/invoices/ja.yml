@@ -1,4 +1,6 @@
 ja:
   invoices:
     confirm:
-      confirm_changes: "something"
+      confirm_changes: "確認"
+      in_ss: "他の予約"
+      please_confirm: "「確認」を押すと予約が確定します。"

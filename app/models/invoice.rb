@@ -84,7 +84,7 @@ class Invoice < ApplicationRecord
   end
 
   def calc_adjustments
-    @breakdown << '<h4>Adjustments:</h4>'
+    @breakdown << '<h4>調整:</h4>'
     @breakdown << '<div class="d-flex flex-column gap-1">'
     hat_adjustment if child.needs_hat?
     repeater_discount if !child.member? && child.events.distinct.size > 1 && slot_regs.size - @ignore_slots.size > 9
@@ -108,7 +108,7 @@ class Invoice < ApplicationRecord
                   end
     @breakdown << '</div>'
     @breakdown.prepend(
-      "<h4>Course cost:</h4>
+      "<h4>コース:</h4>
       <div class='d-flex flex-column gap-1'>
       <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{num_regs} registrations</p>"
     )
@@ -122,7 +122,7 @@ class Invoice < ApplicationRecord
     opt_cost = opt_regs.reject do |reg|
                  @ignore_opts.include?(reg.id)
                end.reduce(0) { |sum, reg| sum + reg.registerable.cost }
-    @breakdown << "<h4>Option cost:</h4>
+    @breakdown << "<h4>オプション:</h4>
                    <div class='d-flex flex-column gap-1'>
                    <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
                                                    '\\1,').reverse}円 for #{opt_regs.size - @ignore_opts.size}  options<p>"
@@ -142,9 +142,9 @@ class Invoice < ApplicationRecord
 
   def generate_details
     @breakdown.prepend(
-      "<div class='d-flex gap-3 flex-column'><h2>#{child.name}</h2>\n<h2>For #{event.name} at #{event.school.name}</h3>\n<h5>登録番号: T7-0118-0103-7173</h5>"
+      "<div class='d-flex gap-3 flex-column'><h2>#{child.name}</h2>\n<h2>#{event.name} @ #{event.school.name}</h3>\n<h5>登録番号: T7-0118-0103-7173</h5>"
     )
-    @breakdown << "</div><h2>Booking details:</h2>\n"
+    @breakdown << "</div><h2>予約の詳細:</h2>\n"
 
     e_opt_regs = opt_regs.where(registerable: event.options)
     unless e_opt_regs.empty?
@@ -253,9 +253,9 @@ class Invoice < ApplicationRecord
   # Updates total cost and summary once calculated/generated
   def update_cost(new_cost)
     # Add tax to breakdown
-    @breakdown << "<h3>Tax: #{(new_cost * 0.1).to_i.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</h3>\n"
+    @breakdown << "<h3>税金: #{(new_cost * 0.1).to_i.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</h3>\n"
     self.total_cost = new_cost
-    @breakdown << "<h2 id='final_cost'>Final cost is #{new_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
+    @breakdown << "<h2 id='final_cost'>合計: #{new_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
                                                                                   '\\1,').reverse}円</h2>\n"
     generate_template
     self.summary = @breakdown
