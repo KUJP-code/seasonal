@@ -51,7 +51,7 @@ main {
   justify-content: center;
   align-items: center;
   padding: 1vw;
-  gap: 1vw;
+  gap: $spacer;
   background: var(--bs-gray-300);
   min-height: 100vh;
 }
@@ -82,17 +82,23 @@ a {
   z-index: 10;
 }
 
+// Cards
+
 .card {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-  padding: 1vw;
-  gap: 1vw;
-  border-radius: 1vw;
+  padding: $spacer;
+  gap: $spacer;
+  border-radius: 1rem;
   text-align: center;
   box-shadow: var(--container-shadow);
   background-color: var(--bs-gray-100);
+}
+
+.event-card {
+  flex-flow: row nowrap;
+}
+
+.event-card a {
+  width: 60%;
 }
 
 input[type="text"]:read-only,
@@ -290,55 +296,8 @@ form#new_user {
 
 // Event#index
 
-.card img {
-  width: 90%;
-  border-radius: 2vw;
-}
-
-main#event_index .card a,
 main#event_index .card {
-  width: 80vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-main#event_index .card .options_container {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
-  align-items: center;
-  text-align: center;
-  background: var(--ku-background);
-  border-radius: 1vw;
-  padding: 1vw;
-}
-
-main#event_index .card .options_container h3 {
   width: 90%;
-}
-
-main#event_index .card .option {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-}
-
-main#event_index .card .option .name {
-  font-weight: bold;
-}
-
-main#event_index .card .event_management {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  align-items: center;
-  gap: 1vw;
-}
-
-main#event_index .card .event_management a {
-  width: 100%;
 }
 
 // Event#show
@@ -602,7 +561,7 @@ main#event_index .card .event_management a {
 
 #invoice_index .card,
 #invoice_show .card {
-  width: 80%;
+  width: 90%;
 }
 
 // Forms
@@ -630,21 +589,8 @@ form .input-group-text {
 
 // User#show
 
-main#user_show {
-  gap: 3vw;
-}
-
 main#user_show .card {
   width: 90vw;
-}
-
-main#user_show ul li {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
-  padding: 1vw;
-  gap: 1vw;
 }
 
 main#user_show .user_options {
@@ -653,26 +599,4 @@ main#user_show .user_options {
   justify-content: center;
   padding: 1vw;
   gap: 0.5vw;
-}
-
-main#user_show #add_child {
-  width: 95%;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: stretch;
-  justify-content: center;
-  gap: 1vw;
-  background-color: var(--bs-gray-100);
-}
-
-#add_child .find_child,
-#add_child .add_new_child {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-  gap: 1vw;
-  flex-basis: 40%;
-  background-color: var(--bs-gray-100);
-  padding: 1vw;
 }

@@ -33,6 +33,7 @@ en:
       delete_confirm: "Are you sure you want to delete this user?"
       edit: "Edit User"
       event: "Events"
+      greet: "Hello、%{user}-さん!"
       remove_child: "Remove Child"
       roles:
         admin: "Admin"
@@ -41,7 +42,9 @@ en:
         school_manager: "School Manager"
       managed_areas: "Managed Areas"
       managed_schools: "Managed Schools"
-      school: "School"
+      school: "School:"
+      school_name: "Kids UP %{school}"
+      schools: "Schools:"
       user_bookings: "%{user} Bookings"
     update:
       failure: "Couldn't update user"

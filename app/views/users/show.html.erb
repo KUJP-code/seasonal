@@ -1,17 +1,37 @@
 <% next_event = @user.children.first.school.next_event unless @user.children.empty? %>
 
-<main id="user_show">
+<main id="user_show" class="gap-3">
+    <div class="key_info">
+        <h1 class="fw-bold"><%= t('.greet', user: @user.name.split(' ')[1]) %></h1>
+        <h4><%= t(".roles.#{@user.role}") unless @user.customer? %></h4>
+    </div>
+
     <div class="card">
         <%= turbo_frame_tag "user#{@user.id}" do %>
-            <div class="key_info">
-                <h1><%= @user.name %></h1>
-                <h4><%= t(".roles.#{@user.role}") unless @user.customer? %></h4>
-            </div>
-
             <% if @user.customer? && !@user.children.nil? %>
-                <div class="children">
-                    <h4><%= t(".children") if @user.children.size > 1 %></h4>
-                    <h4><%= t(".child") if @user.children.size == 1 %></h4>
+
+                <% schools = @user.children.map(&:school).map(&:name).uniq %>
+
+                <div class="mb-3">
+                    <% if schools.size > 1 %>
+                        <h4 class="fw-bold"><%= t(".schools") %></h4>
+                    <% else %>
+                        <h4 class="fw-bold"><%= t(".school") %></h4>
+                    <% end %>
+
+                    <ul>
+                        <% schools.each do |school| %>
+                            <li><%= t('.school_name', school: school) %></li>
+                        <% end %>
+                    </ul>
+                </div>
+
+                <div>
+                    <% if @user.children.size > 1 %>
+                        <h4 class="fw-bold"><%= t(".children") %></h4>
+                    <% else %>
+                        <h4 class="fw-bold"><%= t(".child") %></h4>
+                    <% end %>
 
                     <ul>
                         <%= turbo_frame_tag "user#{@user.id}_children" do %>
@@ -37,12 +57,11 @@
     </div>
 
     <% if @user.children? %>
-        <%= link_to t('.user_bookings', user: @user.name), invoices_path(user: @user.id), class: 'btn btn-primary' %>
-
         <% unless next_event.nil? %>
-            <h2><%= t('.next_event') %></h2>
             <%= render next_event, child: nil %>
         <% end %>
+
+        <div class="card"><%= link_to t('.user_bookings', user: @user.name), invoices_path(user: @user.id), class: 'btn btn-primary' %></div>
     <% end %>
 
     <% if @user.admin? && current_user.admin? %>
@@ -80,7 +99,6 @@
     <% end %>
 
     <% unless @user.staff? %>
-        <h2><%= t('.add_children') %></h2>
         <div id="add_child_container" class="card">
             <%= render 'users/add_child', parent: @user %>
         </div>

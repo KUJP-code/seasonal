@@ -37,9 +37,14 @@ class Event < ApplicationRecord
   scope :current_events, -> { where('start_date <= ? and end_date >= ?', Time.zone.today, Time.zone.today) }
   scope :future_events, -> { where('start_date > ?', Time.zone.today).order(start_date: :asc) }
 
+  # Public Methods
   # List children attending from other schools
   def diff_school_children
     children.where.not(school: school).distinct
+  end
+
+  def f_start_date
+    start_date.strftime('%Y年%m月%d日')
   end
 
   # Returns num of registrations for the フォトサービス event option
