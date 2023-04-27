@@ -1,24 +1,31 @@
 <main id="child_show">
     <div class="card">
-        <h1><%= @child.name %></h1>
-        <h3>SSID: <%= if @child.ssid
+        <h1 class="fw-bold"><%= @child.name %></h1>
+        <h5><span class="fw-bold">SSID:</span> <%= if @child.ssid
                         @child.ssid
                       elsif @child.ssid.nil? && @child.parent_id.nil?
                         ''
                       else
                         link_to t('.no_ssid'), user_path(@child.parent, anchor: 'merge_children')
-                      end %></h3>
-        <h3><%= link_to "#{t('.parent')} #{@child.parent.name}", user_path(@child.parent) unless @child.parent_id.nil? %></h3>
+                      end %></h5>
+        <h5><span class="fw-bold"><%= t('.parent') %></span><%= link_to @child.parent.name, user_path(@child.parent) unless @child.parent_id.nil? %></h5>
 
 
-        <div class="info">
-            <div class="personal_info">
+        <div class="d-flex flex-column flex-lg-row gap-3 justify-content-evenly">
+            <div class="d-flex flex-column gap-1">
                 <p><%= "#{t('.kana')} #{@child.katakana_name}" %></p>
                 <p><%= "#{t('.en')} #{@child.en_name}" %></p>
                 <p><%= "#{t('.bday')} #{@child.birthday}" %></p>
                 <p><%= "#{t('.allergies')} #{@child.allergies}" %></p>
             </div>
-            <div class="staff_info">
+            <hr>
+            <div class="d-flex flex-column gap-1">
+                <p>
+                    <%= t(".no_school") if @child.school.nil? %>
+                    <%= "#{t(".school")} #{@child.school.name}" unless @child.school.nil? %>
+                </p>
+                <p><%= "#{t('.category')} #{@child.category.capitalize}" %></p>
+                <p><%= (@child.kindy) ? 'Kindy' : 'Elementary' %></p>
                 <p>
                     <%= "#{t('.photos')} ◯" if @child.photos == 'OK' %>
                     <%= "#{t('.photos')} ✖" unless @child.photos == 'OK' %>
@@ -30,14 +37,6 @@
                         <%= "#{t('.has_hat')} ✖" %>
                     <% end %>
                 </p>
-            </div>
-            <div class="school_info">
-                <p>
-                    <%= t(".no_school") if @child.school.nil? %>
-                    <%= "#{t(".school")} #{@child.school.name}" unless @child.school.nil? %>
-                </p>
-                <p><%= "#{t('.category')} #{@child.category.capitalize}" %></p>
-                <p><%= (@child.kindy) ? 'Kindy' : 'Elementary' %></p>
                 <% if current_user.staff? %>
                     <div data-controller="conditional"
                         data-conditional-pin-value=<%= current_user.pin %>>
@@ -71,7 +70,9 @@
         <% end %>
     </div>
 
-    <%= link_to t('.child_bookings', child: @child.name), invoices_path(child: @child.id), class: 'btn btn-primary' %>
+    <div class="card">
+        <%= link_to t('.child_bookings', child: @child.name), invoices_path(child: @child.id), class: 'btn btn-primary' %>
+    </div>
 
     <% unless @child.school.nil? %>
         <h2><%= t('.next_event') %></h2>

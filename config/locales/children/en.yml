@@ -24,7 +24,7 @@ en:
       kana: "Katakana Name:"
       no_school: "No school assigned"
       only_if_dup: "Only delete a child if they are a duplicate of a child already in the SS!"
-      parent: "Parent:"
+      parent: "Parent: "
       photos: "Photos OK:"
       school: "School:"
     timeslot_index:
