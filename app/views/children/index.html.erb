@@ -1,7 +1,7 @@
 <main id="children_index">
     <%= link_to t('.create_child'), new_child_path, class: 'btn btn-primary' if current_user.staff? %>
 
-    <table class="table table-striped">
+    <table class="table table-hover table-striped text-center">
         <thead>
             <tr class="table-primary">
                 <th scope="col"><%= t('.ssid') %></th>
