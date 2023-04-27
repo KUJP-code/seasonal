@@ -207,12 +207,28 @@ main#child_show .card .staff_info {
   height: 88px;
 }
 
-#event_children_index table td.highlight {
-  background: lightgreen;
+#event_children_index .order {
+  position: sticky;
+  left: 0px;
+  min-width: 30px;
 }
 
-#event_children_index th.no_ssid.ssid {
-  background: red;
+#event_children_index .name {
+  position: sticky;
+  left: 30px;
+  min-width: 150px;
+}
+
+#event_children_index .en-name {
+  position: sticky;
+  left: 180px;
+  min-width: 150px;
+}
+
+#event_children_index .ssid {
+  position: sticky;
+  left: 330px;
+  min-width: 110px;
 }
 
 // Child#time_slot_index

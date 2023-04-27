@@ -6,10 +6,10 @@
 <% active_invoice = event_invoices.reject(&:in_ss).last %>
 
 <tr>
-    <th rowspan="2" class="order"><%= event_child_iteration.index + 1 %></th>
-    <th rowspan="2" class="ja_name"><%= link_to event_child.name, child_path(event_child) %></th>
-    <th rowspan="2" class="en_name"><%= link_to event_child.en_name, child_path(event_child) %></th>
-    <th rowspan="2" class="ssid <%= 'no_ssid' if event_child.ssid.nil? %>">
+    <th scope="row" rowspan="2" class="order"><%= event_child_iteration.index + 1 %></th>
+    <th scope="row" rowspan="2" class="name"><%= link_to event_child.name, child_path(event_child) %></th>
+    <th scope="row" rowspan="2" class="en-name"><%= link_to event_child.en_name, child_path(event_child) %></th>
+    <th scope="row" rowspan="2" class="ssid <%= 'table-danger' if event_child.ssid.nil? %>">
         <% if event_child.ssid %>
             <%= link_to event_child.ssid, child_path(event_child) %>
         <% elsif event_child.ssid.nil? && event_child.parent_id.nil? %>
@@ -52,7 +52,7 @@
     </td>
 
     <% if active_invoice %>
-        <td rowspan="2" id=<%= "child#{event_child.id}changes" %> class="<%= 'highlight' if active_invoice.seen_at.nil? || active_invoice.versions.last.created_at > active_invoice.seen_at %>">
+        <td rowspan="2" id=<%= "child#{event_child.id}changes" %> class="<%= 'table-danger' if active_invoice.seen_at.nil? || active_invoice.versions.last.created_at > active_invoice.seen_at %>">
             <% if active_invoice.seen_at.nil? || active_invoice.versions.last.created_at > active_invoice.seen_at %>
                 <turbo-frame class="d-flex gap-2">
                     <%= link_to t('.view'), invoice_path(active_invoice), data: { 'turbo-frame' => '_top' }, target: '_blank', class: 'btn btn-primary' %>
