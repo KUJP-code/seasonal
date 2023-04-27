@@ -1,11 +1,19 @@
 <main id="event_children_index" data-controller="refresh">
-    <div class="links">
-        <div class="slots p-3 d-flex flex-wrap gap-3 justify-content-between">
-            <h2 class="w-100 text-center"><%= t('.daily_attendance') %></h2>
-            <%= link_to t('.all'), children_path(id: @source.id, source: 'Event', all: true), class: 'btn btn-primary' %>
-            <% @source.time_slots.morning.each do |slot| %>
-                <%= link_to slot.name, children_path(id: slot.id, source: 'TimeSlot'), class: 'btn btn-primary' %>
-            <% end %>
+    <div class="accordion w-100" id="accordionAttendance">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  <%= t('.daily_attendance') %>
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionAttendance">
+                <div class="slots p-3 d-flex flex-wrap gap-3 justify-content-between">
+                    <%= link_to t('.all'), children_path(id: @source.id, source: 'Event', all: true), class: 'btn btn-primary' %>
+                    <% @source.time_slots.morning.each do |slot| %>
+                        <%= link_to slot.name, children_path(id: slot.id, source: 'TimeSlot'), class: 'btn btn-primary' %>
+                    <% end %>
+                </div>
+            </div>
         </div>
     </div>
 
