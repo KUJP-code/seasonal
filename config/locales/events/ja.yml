@@ -3,4 +3,15 @@ ja:
     event:
       title: "%{school}の%{name}"
     show:
+      confirm_invoice: "予約を確認する"
+      copy_regs: "%{from}から%{to}に登録をコピーする"
+      coupon: "クーポン"
+      more_info: "詳細はこちら"
+      num_options: "オプション：%{num}つ"
+      registered_slots: "登録スロット"
+      regs_for: "%{child}の登録"
+      see_more: "詳細を見る"
+      total_cost: "合計"
       time_slot: "%{event}のタイムスロット"
+      title: "%{name} at %{school}"
+      unregistered_slots: "未登録のスロット"

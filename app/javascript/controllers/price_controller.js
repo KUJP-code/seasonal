@@ -32,7 +32,7 @@ export default class extends Controller {
       (sum, target) => sum + target.querySelectorAll(".registered").length,
       0
     );
-    this.optCountTarget.innerHTML = optCount.toString() + " options registered";
+    this.optCountTarget.innerHTML = `オプション：${optCount.toString()}つ`;
 
     const finalCost = optionCost + courseCost + adjustmentChange;
     this.finalCostTarget.innerHTML = `Total Cost: ${finalCost}円`;

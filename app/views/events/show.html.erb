@@ -218,7 +218,7 @@
                         <% end %>
                     </div>
                     <br>
-                    <p data-price-target="optCount"><%= "#{@all_invoices.reduce(0) { |sum, i| sum + i.options.size }} #{t('.num_options')}" %></p>
+                    <p data-price-target="optCount"><%= t('.num_options', num: @all_invoices.reduce(0) { |sum, i| sum + i.options.size  })%></p>
                 </div>
                 <button class="btn btn-primary"
                         type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-expanded="false" aria-controls="collapseSlots">
@@ -282,8 +282,8 @@
                         <div class="collapse multi-collapse w-100">
                             <%= f.fields_for :coupons, f.object.coupons.new do |coup_f| %>
                                 <div class="form-floating">
-                                    <%= coup_f.text_field :code, class: 'form-control', placeholder: t('.coupon_names') %>
-                                    <%= coup_f.label :code, t('coupon_names'), class: 'form-label' %>
+                                    <%= coup_f.text_field :code, class: 'form-control', placeholder: t('.coupon') %>
+                                    <%= coup_f.label :code, t('.coupon'), class: 'form-label' %>
                                 </div>
                             <% end %>
                         </div>
