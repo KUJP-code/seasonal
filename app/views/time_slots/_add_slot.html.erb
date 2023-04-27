@@ -2,19 +2,19 @@
 <% opt_regs = registrations.select { |reg| reg.registerable_type == 'Option' } %>
 
 <div class="card d-flex flex-row flex-nowrap bg-white">
-    <div class="d-flex flex-column w-25">
+    <div class="d-flex flex-column">
         <p class="text-black-50"><%= add_slot.date %></p>
-        <%= image_tag(url_for(add_slot.image), class: 'img-fluid') unless add_slot.image.blank? %>
+        <%= image_tag(url_for(add_slot.image), class: 'img-fluid img-thumbnail') unless add_slot.image.blank? %>
     </div>
 
     <% if add_slot.closed? %>
         <h3 class="fw-bold"><%= t('closed_message') %></h3>
     <% else %>
         <div class="d-flex flex-column gap-2 w-50">
-            <div class="morning" data-controller="popup"
+            <div class="morning w-100" data-controller="popup"
                  data-action="register:toggle->popup#listen">
                 <% registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == add_slot.id } %>
-                <div class="add_reg"
+                <div class="add_reg w-100"
                      data-controller="register"
                      data-register-id-value=<%= add_slot.id %>
                      data-register-type-value="TimeSlot"
@@ -37,7 +37,7 @@
                         <% if opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
                             <p><%= "#{opt.name}: ◯" %></p>
                         <% else %>
-                            <div class="add_reg"
+                            <div class="add_reg w-100"
                                  data-controller="register"
                                  data-register-id-value=<%= opt.id %>
                                  data-register-type-value="Option"
@@ -61,7 +61,7 @@
                             <legend class="fs-6 fw-bold"><%= t('.arrival_options') %></legend>
                             <% arrival_options.each do |opt| %>
                                 <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
-                                <div class="add_reg"
+                                <div class="add_reg w-100"
                                      data-controller="register"
                                      data-register-id-value=<%= opt.id %>
                                      data-register-type-value="Option"
@@ -79,12 +79,12 @@
                     <% end %>
                 </div>
             </div>
-            <div class="afternoon" data-controller="popup"
+            <div class="afternoon w-100" data-controller="popup"
                 data-action="register:toggle->popup#listen">
                 <% afternoon_slot = add_slot.afternoon_slot %>
                 <% unless afternoon_slot.nil? %>
                     <% aft_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == afternoon_slot.id } %>
-                    <div class="add_reg"
+                    <div class="add_reg w-100"
                           data-controller="register"
                           data-register-id-value=<%= afternoon_slot.id %>
                           data-register-type-value="TimeSlot"
@@ -109,7 +109,7 @@
                             <% if opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
                                 <p><%= "#{opt.name}: ◯" %></p>
                             <% else %>
-                                <div class="add_reg"
+                                <div class="add_reg w-100"
                                      data-controller="register"
                                      data-controller="register"
                                      data-register-id-value=<%= opt.id %>
@@ -135,7 +135,7 @@
                                 <legend class="fs-6 fw-bold"><%= t('.depart_options') %></legend>
                                 <% afternoon_slot.options.select { |opt| opt.departure? }.each do |opt| %>
                                     <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
-                                    <div class="add_reg"
+                                    <div class="add_reg w-100"
                                          data-controller="register"
                                          data-register-id-value=<%= opt.id %>
                                          data-register-type-value="Option"

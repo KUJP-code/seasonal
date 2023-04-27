@@ -292,20 +292,18 @@ main#event_index .card {
   border-radius: 1rem;
 }
 
+@media (min-width: 992px) {
+  #event_show .card {
+    width: 45%;
+  }
+}
+
+#event_show .card div:first-child {
+  width: 45%;
+}
+
 #event_show #price_bar {
-  position: sticky;
   bottom: 1vw;
-  left: 1vw;
-  right: 1vw;
-  width: 95vw;
-  padding: 1vw;
-  z-index: 10;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
-  align-items: center;
-  background: var(--near-white);
-  border-radius: 1vw;
 }
 
 // Invoices
