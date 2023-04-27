@@ -20,7 +20,7 @@
     </turbo-frame>
 
     <% if user_signed_in? %>
-      <nav class="navbar navbar-expand-lg bg-secondary">
+      <nav class="navbar navbar-expand-lg bg-secondary sticky-top">
         <div class="container-fluid">
           <a href="<%= user_path(current_user) %>" class="navbar-brand">
             <%= image_tag('white_logo.svg', alt: 'Logo', height: '60') %>

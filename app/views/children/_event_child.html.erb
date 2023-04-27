@@ -157,8 +157,8 @@
         %></td>
         <td><%=
             # FIXME: causing N + 1 queries 
-            if event_opts.include?(event_special.first.options.find_by(name: '昼'))
-                '昼'
+            if event_opts.include?(event_special.first.options.find_by(name: '昼食'))
+                '昼食'
             end
         %></td>
         <td><%=
@@ -189,12 +189,12 @@
             %></td>
 
             <td><%=
-                if event_opts.include?(slot.options.find_by(name: '昼')) && event_opts.include?(slot.options.find_by(name: '晩'))
+                if event_opts.include?(slot.options.find_by(name: '昼食')) && event_opts.include?(slot.options.find_by(name: '夕食'))
                     '昼 / 晩'
-                elsif event_opts.include?(slot.options.find_by(name: '昼'))
-                    '昼'
-                elsif event_opts.include?(slot.options.find_by(name: '晩'))
-                    '晩'
+                elsif event_opts.include?(slot.options.find_by(name: '昼食'))
+                    '昼食'
+                elsif event_opts.include?(slot.options.find_by(name: '夕食'))
+                    '夕食'
                 else
                     ''
                 end
@@ -216,12 +216,12 @@
             <td>午後</td>
 
             <td><%=
-                if event_opts.include?(slot.options.find_by(name: '昼')) && event_opts.include?(slot.options.find_by(name: '晩'))
+                if event_opts.include?(slot.options.find_by(name: '昼食')) && event_opts.include?(slot.options.find_by(name: '夕食'))
                     '昼 / 晩'
-                elsif event_opts.include?(slot.options.find_by(name: '昼'))
-                    '昼'
-                elsif event_opts.include?(slot.options.find_by(name: '晩'))
-                    '晩'
+                elsif event_opts.include?(slot.options.find_by(name: '昼食'))
+                    '昼食'
+                elsif event_opts.include?(slot.options.find_by(name: '夕食'))
+                    '夕食'
                 else
                     ''
                 end
