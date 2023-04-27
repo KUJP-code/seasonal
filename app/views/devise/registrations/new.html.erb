@@ -16,7 +16,7 @@
       
     <div class="form-floating confirmed">
       <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: t('.email') %>
-      <%= f.label :email, class: 'form-label' %><br />
+      <%= f.label :email, t('.email'), class: 'form-label' %><br />
     </div>
 
     <div class="form-floating confirmed">
@@ -54,8 +54,8 @@
     </div>
 
     <div class="form-floating">
-      <%= f.text_field :postcode, size: 8, maxlength: 8, autocomplete: "postcode", class: 'form-control', placeholder: '〒' %>
-      <%= f.label :postcode, '〒', class: 'form-label p-postal-code' %><br />
+      <%= f.text_field :postcode, size: 8, maxlength: 8, autocomplete: "postcode", class: 'form-control', placeholder: t('.postcode') %>
+      <%= f.label :postcode, t('.postcode'), class: 'form-label p-postal-code' %><br />
     </div>
 
     <div class="form-floating">
