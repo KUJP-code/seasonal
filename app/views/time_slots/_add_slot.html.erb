@@ -1,9 +1,9 @@
 <% kindy = child.kindy? %>
 <% opt_regs = registrations.select { |reg| reg.registerable_type == 'Option' } %>
 
-<div class="time_slot">
+<div class="card">
     <p class="date"><%= add_slot.date %></p>
-    <%= image_tag(url_for(add_slot.image)) unless add_slot.image.blank? %>
+    <%= image_tag(url_for(add_slot.image), class: 'img-fluid') unless add_slot.image.blank? %>
 
     <% if add_slot.closed? %>
         <h3><%= t('closed_message') %></h3>

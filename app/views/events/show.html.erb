@@ -10,102 +10,106 @@
       data-action="register:toggle->invoice#change invoice:add@window->price#calculate invoice:remove@window->price#calculate"
       data-price-member-price-value=<%= @member_prices.courses.to_json unless @member_prices.nil? %>
       data-price-non-member-price-value=<%= @non_member_prices.courses.to_json unless @non_member_prices.nil? %>
-      class="d-flex flex-column">
+      class="d-flex flex-column justify-content-center align-items-start text-start bg-white">
 
-    <div id="children">
-        <% @children.each do |child| %>
-            <%= link_to event_path(id: @event.id, child: child.id) do %>
-                <div class="child<%= ' active' if child.id == @child.id %>" <%= "data-price-target=child" if child.id == @child.id %>>
-                    <div class="hidden"><%= "#{child.id}" %></div>
-                    <div class="hidden hat"><%= child.needs_hat %></div>
-                    <p><%= child.name %></p>
-                    <p class="level"><%= (child.kindy) ? 'Kindy' : "Elementary" %></p>
-                    <% if child.member? %>
-                        <p class="membership"><%= t('.member') %></p>
-                    <% else %>
-                        <p class="membership"><%= t('.non_member') %></p>
-                    <% end %>
+    <h1 class="fw-bolder"><%= t('.title', name: @event.name, school: @event.school.name) %></h1>
 
-                    <%= 
-                        link_to t('.copy_regs', child: child.name), 
-                        copy_invoice_path(origin: @child.id, target: child.id, event: @event.id), class: 'btn btn-primary', 
-                        data: { 
-                            turbo_method: :put, 
-                            turbo_confirm: "This will register #{child.name} for all the same time slots and options as #{@child.name}. None of #{child.name}'s existing registrations will be affected"
-                            } unless child.id == @child.id 
+    <div class="d-flex gap-2">
+        <div class="d-flex flex-column justify-content-center text-break w-50">
+            <span class="fw-bold text-secondary"><%= t('.regs_for', child: @child.name) %></span>
+            <% @children.reject{ |c| c.id == @child.id}.each do |child| %>
+                <%=
+                    link_to t('.copy_regs', from: @child.name, to: child.name),
+                    copy_invoice_path(origin: @child.id, target: child.id, event: @event.id), class: 'copy text-black-50',
+                    data: {
+                        turbo_method: :put,
+                        turbo_confirm: "This will register #{child.name} for all the same time slots and options as #{@child.name}. None of #{child.name}'s existing registrations will be affected"
+                        } unless child.id == @child.id
                     %>
-                </div>
             <% end %>
-        <% end %>
+        </div>
+
+        <div class="d-flex flex-column flex-grow-1 gap-3 align-items-center">
+            <% @children.each do |child| %>
+                <%= link_to event_path(id: @event.id, child: child.id) do %>
+                    <div class="d-flex flex-column gap-2">
+                        <div class="child bg-info rounded-pill p-2<%= ' active' if child.id == @child.id %>" <%= "data-price-target=child" if child.id == @child.id %>>
+                            <div class="hidden"><%= "#{child.id}" %></div>
+                            <div class="hidden hat"><%= child.needs_hat %></div>
+                            <p><%= child.name %></p>
+                            <p class="hidden level"><%= (child.kindy) ? 'Kindy' : "Elementary" %></p>
+                            <% if child.member? %>
+                                <p class="hidden membership"><%= t('.member') %></p>
+                            <% else %>
+                                <p class="hidden membership"><%= t('.non_member') %></p>
+                            <% end %>
+                        </div>
+                    </div>
+                <% end %>
+            <% end %>
+        </div>
     </div>
 
-    <h1><%= @event.name %></h1>
+    <hr class="border border-secondary border-1 w-100">
 
-    <div class="wrap-collapsible"> 
-        <input id="collapsible" class="toggle" type="checkbox"> 
-        <label for="collapsible" class="lbl-toggle button"><%= t('.more_info') %></label>
-
-        <div class="collapsible-content">
-            <div class="content-inner">
-                <p> 
-                    <% unless @member_prices.nil? %>
-                        <div class="price_list">
-                            <h3><%= t('.member_prices') %></h3>
-                            <table>
-                                <tr>
-                                    <th><%= t('.course') %></th>
-                                    <th><%= t('.price') %></th>
-                                </tr>
-                                <% @member_prices.courses.each do |course, price| %>
-                                    <tr>
-                                        <td><%= course %></td>
-                                        <td><%= price %></td>
-                                    </tr>
-                                <% end %>
-                            </table>
-                        </div>
-                    <% end %>
-                    <% unless @non_member_prices.nil? %>
-                        <div class="price_list">
-                            <h3><%= t('.non_member_prices') %></h3>
-                            <table>
-                                <tr>
-                                    <th><%= t('.course') %></th>
-                                    <th><%= t('.price') %></th>
-                                </tr>
-                                <% @non_member_prices.courses.each do |course, price| %>
-                                    <tr>
-                                        <td><%= course %></td>
-                                        <td><%= price %></td>
-                                    </tr>
-                                <% end %>
-                            </table>
-                        </div>
-                    <% end %>
-                    <div id="adjustments">
-                        <h3><%= t('.adjustments') %></h3>
-                        <div class="adjustment">
-                            <p><%= t('.change') %></p>
-                            <p><%= t('.reason') %></p>
-                        </div>
-                        <% @all_invoices.each do |invoice| %>
-                            <% invoice.adjustments.each do |adj| %>
-                                <div class="adjustment">
-                                    <p data-price-target="adjChange"><%= adj.change %></p>
-                                    <p><%= adj.reason %></p>
-                                </div>
-                            <% end %>
+    <div>
+        <p> 
+            <% unless @member_prices.nil? %>
+                <div class="price_list">
+                    <h3><%= t('.member_prices') %></h3>
+                    <table>
+                        <tr>
+                            <th><%= t('.course') %></th>
+                            <th><%= t('.price') %></th>
+                        </tr>
+                        <% @member_prices.courses.each do |course, price| %>
+                            <tr>
+                                <td><%= course %></td>
+                                <td><%= price %></td>
+                            </tr>
                         <% end %>
-                    </div>
-                    <% if @child.regular_schedule %>
-                        <div class="schedule">
-                            <h3><%= t('.regular_schedule') %></h3>
-                            <p><%= @child.regular_schedule.days %></p>
+                    </table>
+                </div>
+            <% end %>
+            <% unless @non_member_prices.nil? %>
+                <div class="price_list">
+                    <h3><%= t('.non_member_prices') %></h3>
+                    <table>
+                        <tr>
+                            <th><%= t('.course') %></th>
+                            <th><%= t('.price') %></th>
+                        </tr>
+                        <% @non_member_prices.courses.each do |course, price| %>
+                            <tr>
+                                <td><%= course %></td>
+                                <td><%= price %></td>
+                            </tr>
+                        <% end %>
+                    </table>
+                </div>
+            <% end %>
+            <div id="adjustments">
+                <h3><%= t('.adjustments') %></h3>
+                <div class="adjustment">
+                    <p><%= t('.change') %></p>
+                    <p><%= t('.reason') %></p>
+                </div>
+                <% @all_invoices.each do |invoice| %>
+                    <% invoice.adjustments.each do |adj| %>
+                        <div class="adjustment">
+                            <p data-price-target="adjChange"><%= adj.change %></p>
+                            <p><%= adj.reason %></p>
                         </div>
                     <% end %>
-                </p>
+                <% end %>
             </div>
-        </div>
+            <% if @child.regular_schedule %>
+                <div class="schedule">
+                    <h3><%= t('.regular_schedule') %></h3>
+                    <p><%= @child.regular_schedule.days %></p>
+                </div>
+            <% end %>
+        </p>
     </div>
         
     <% unless @event.options.empty? %>
@@ -148,7 +152,7 @@
     </div>
     
 
-    <div id="price_bar">
+    <div id="price_bar" class="bg-info">
         <h3 id="total_cost" data-price-target="finalCost"><%="#{t('.total_cost')}: #{@all_invoices.reduce(0) {|sum, i| sum + i.total_cost}}円"%></h3>
 
         <div id="reg_details" class="collapse">
@@ -227,7 +231,7 @@
                 <% unless f.object.in_ss %>
                     <%= f.fields_for :coupons, f.object.coupons.new do |coup_f| %>
                         <div class="form-floating">
-                            <%= coup_f.text_field :code, class: 'form-control form-control-sm', placeholder: t('.coupon_names') %>
+                            <%= coup_f.text_field :code, class: 'form-control', placeholder: t('.coupon_names') %>
                             <%= coup_f.label :code, t('coupon_names'), class: 'form-label' %>
                         </div>
                     <% end %>
