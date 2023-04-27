@@ -82,6 +82,8 @@ ja:
       day: 日
       month: 月
       year: 年
+  ele_school: "お通いの保育園／幼稚園／小学校"
+  enter_pin: "ピンを入力すると「%{info}」ボタンが表示されます。"
   errors:
     format: "%{attribute}%{message}"
     messages:

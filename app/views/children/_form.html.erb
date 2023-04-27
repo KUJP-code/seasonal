@@ -27,7 +27,7 @@
                 </div>
     
                 <div>
-                    <%= f.label :kana_first, t('.kana_name'), class: 'form-label' %><br />
+                    <%= f.label :kana_first, t('.kana'), class: 'form-label' %><br />
                     <div class="input-group">
                         <%= text_field_tag "child[kana_first]", (@child.katakana_name.split[0] unless @child.name.nil?), class: 'form-control' %>
                         <span class="input-group-text"></span>
@@ -53,7 +53,7 @@
                     class="form-select">
                         <option value="">-</option>
                         <option value="なし" <%= "selected='selected'" if f.object.allergies == 'なし' %>>なし</option>
-                        <option value="はい">はい</option>
+                        <option value="有">有</option>
                     </select>
                     <%= f.text_field :allergies, value: f.object.allergies, data: { conditional_target: 'target' }, class: 'form-control', readonly: true %>
                 </div>
@@ -99,7 +99,7 @@
     
                 <div>
                     <%= f.label :photos, t('.photos'), class: 'form-label' %><br />
-                    <%= f.select :photos, [['-', nil], %w[OK OK], %w[なし なし]], {}, { class: 'form-select' } %>
+                    <%= f.select :photos, [['-', nil], %w[はい OK], %w[いいえ なし]], {}, { class: 'form-select' } %>
                 </div>
     
                 <% if current_user.customer? && f.object.new_record? %>
@@ -127,7 +127,7 @@
                 <% end %>
             </div>
     
-            <%= f.submit class: 'btn btn-primary', data: { turbo_frame: '_top' } %>
+            <%= f.submit t('.reg_child'), class: 'btn btn-primary', data: { turbo_frame: '_top' } %>
         <% end %>
     <% end %>
 </div>

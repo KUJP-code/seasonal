@@ -1,5 +1,24 @@
 ja:
   children:
+    form:
+      allergies: "アレルギー"
+      birthday: "誕生日"
+      category: "（通学生・予約生・非会員）選択してください。"
+      ele_school: "お通いの保育園／幼稚園／小学校"
+      en_name: "お子様の名前（英語）"
+      external: "非会員（上記以外）"
+      first_seasonal: "初めてのご参加ですか？"
+      grade: "お子様の学年"
+      internal: "通学生（現在Kids UPに通っている）"
+      kana: "お子様の名前（カタカナ）"
+      name: "お子様の氏名（漢字）"
+      personal_info: "個人情報"
+      photos: "お写真の掲載にご承諾いただけますか？  （Facebook等）"
+      reg_child: "子供を登録する"
+      reservation: "予約生（今後Kids UPに通うための予約済み、キャンセル待ち含む）"
+      school: "ご希望の会場"
+      school_info: "学校案内"
+      ssid: "マイページID"
     slot_attendance:
       arrival: "延長(前)"
       depart: "延長(後)"
