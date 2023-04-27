@@ -73,7 +73,7 @@ class TimeSlot < ApplicationRecord
 
   # These convert the start/end datetimes into something more useful for display
   def date
-    start_time.to_date.to_s
+    start_time.strftime('%m月%d日')
   end
 
   def day

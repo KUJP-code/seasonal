@@ -292,74 +292,6 @@ main#event_index .card {
   border-radius: 1rem;
 }
 
-#event_show .event_option {
-  flex: 0 0 auto;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
-  align-items: center;
-  border-radius: 1vw;
-  padding: 1vw;
-  gap: 1vw;
-  box-shadow: var(--container-shadow);
-  background: var(--near-white);
-  font-size: var(--sub-heading-size);
-}
-
-#event_show .time_slot .morning:first-child {
-  display: flex;
-  flex-flow: column nowrap;
-}
-
-#event_show .time_slot .add_reg {
-  flex: 1 1 auto;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5vw;
-}
-
-#event_show .time_slot .add_reg.hidden {
-  display: none;
-}
-
-#event_show .time_slot .morning:first-child {
-  flex: 1 1 55%;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-}
-
-#event_show .time_slot .afternoon .add_reg:first-child {
-  flex: 1 1 100%;
-}
-
-#event_show .time_slot a {
-  width: 40%;
-  border-radius: 2vw;
-}
-
-#event_show .time_slot img {
-  width: 100%;
-  border-radius: 2vw;
-}
-
-#event_show .time_slot {
-  height: fit-content;
-  background: var(--near-white);
-}
-
-#event_show .time_slot ul {
-  list-style-type: none;
-}
-
-#event_show .time_slot li {
-  display: flex;
-  justify-content: center;
-  gap: 1vw;
-}
-
 #event_show #price_bar {
   position: sticky;
   bottom: 1vw;
@@ -374,37 +306,6 @@ main#event_index .card {
   align-items: center;
   background: var(--near-white);
   border-radius: 1vw;
-}
-
-#event_show #price_bar #cost_summary {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(128, 128, 128, 0.7);
-}
-
-#event_show #price_bar #cost_summary:not(.hidden) {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-items: center;
-}
-
-#event_show #price_bar #cost_summary .card {
-  display: flex;
-  flex-flow: column wrap;
-  justify-content: center;
-  align-items: center;
-  border-radius: 2vw;
-  padding: 2vw;
-  gap: 1vw;
-  background: var(--near-white);
-}
-
-#event_show #price_bar #cost_summary .card > .button {
-  align-self: flex-end;
 }
 
 // Invoices
