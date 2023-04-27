@@ -262,7 +262,7 @@ main#sign-up {
 
 main#login {
   background-image: image-url("login_splash.jpg");
-  background-position: top;
+  background-position: 50% -30px;
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -272,7 +272,8 @@ main#login {
 }
 
 main#login form#new_user {
-  border-radius: 4rem 4rem 0 0;
+  border-radius: 2rem 2rem 0 0;
+  max-height: 50%;
 }
 
 main#sign-up form#new_user img {
