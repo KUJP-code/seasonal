@@ -19,6 +19,15 @@ ja:
       school: "ご希望の会場"
       school_info: "学校案内"
       ssid: "マイページID"
+    show:
+      allergies: "アレルギー: "
+      bday: "誕生日: "
+      child_bookings: "%{child}予約内容"
+      has_hat: "帽子"
+      parent: "保護者氏名: "
+      photos: "フォート: "
+      school: "Kids UP %{school}"
+      ssid: "マイページID: "
     slot_attendance:
       arrival: "延長(前)"
       depart: "延長(後)"

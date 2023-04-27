@@ -1,40 +1,45 @@
 <main id="child_show">
     <div class="card">
         <h1 class="fw-bold"><%= @child.name %></h1>
-        <h5><span class="fw-bold">SSID:</span> <%= if @child.ssid
+        <h5><span class="fw-bold"><%= t('.ssid') %></span> <%= if @child.ssid
                         @child.ssid
-                      elsif @child.ssid.nil? && @child.parent_id.nil?
-                        ''
                       else
-                        link_to t('.no_ssid'), user_path(@child.parent, anchor: 'merge_children')
+                        '---'
                       end %></h5>
         <h5><span class="fw-bold"><%= t('.parent') %></span><%= link_to @child.parent.name, user_path(@child.parent) unless @child.parent_id.nil? %></h5>
 
 
         <div class="d-flex flex-column flex-lg-row gap-3 justify-content-evenly">
             <div class="d-flex flex-column gap-1">
-                <p><%= "#{t('.kana')} #{@child.katakana_name}" %></p>
-                <p><%= "#{t('.en')} #{@child.en_name}" %></p>
+                <p><%= @child.katakana_name %></p>
+                <p><%= @child.en_name %></p>
                 <p><%= "#{t('.bday')} #{@child.birthday}" %></p>
                 <p><%= "#{t('.allergies')} #{@child.allergies}" %></p>
             </div>
             <hr>
             <div class="d-flex flex-column gap-1">
                 <p>
-                    <%= t(".no_school") if @child.school.nil? %>
-                    <%= "#{t(".school")} #{@child.school.name}" unless @child.school.nil? %>
+                    <%= t('.school', school: (@child.school_id ? @child.school.name : '---'))  %>
                 </p>
-                <p><%= "#{t('.category')} #{@child.category.capitalize}" %></p>
-                <p><%= (@child.kindy) ? 'Kindy' : 'Elementary' %></p>
+                <p><%= case @child.category
+                       when 'internal'
+                           '通学生'
+                       when 'reservation'
+                           '予約生'
+                       else
+                           '非会員'
+                       end
+                %></p>
+                <p><%= (@child.kindy) ? '幼稚園児' : '小学生' %></p>
                 <p>
-                    <%= "#{t('.photos')} ◯" if @child.photos == 'OK' %>
-                    <%= "#{t('.photos')} ✖" unless @child.photos == 'OK' %>
+                    <%= "#{t('.photos')} OK" if @child.photos == 'OK' %>
+                    <%= "#{t('.photos')} NG" unless @child.photos == 'OK' %>
                 </p>
                 <p>
                     <% if @child.received_hat %>
-                        <%= "#{t('.has_hat')} ◯" %>
+                        <%= "#{t('.has_hat')} あり" %>
                     <% else %>
-                        <%= "#{t('.has_hat')} ✖" %>
+                        <%= "#{t('.has_hat')} なし" %>
                     <% end %>
                 </p>
                 <% if current_user.staff? %>
@@ -75,7 +80,6 @@
     </div>
 
     <% unless @child.school.nil? %>
-        <h2><%= t('.next_event') %></h2>
         <%= render @child.school.next_event, partial: 'events/event', child: @child %>
     <% end %>
 </main>
