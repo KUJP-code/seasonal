@@ -1,4 +1,4 @@
-Child.all.each do |child|
+Child.all.find_each(batch_size: 100) do |child|
   child.invoices.create!([
     {
       event: child.school.events.first,
@@ -14,7 +14,7 @@ Child.all.each do |child|
   ])
 end
 
-Child.all.each do |child|
+Child.all.find_each(batch_size: 100) do |child|
   slots = child.school.events.first.time_slots.sample(10)
 
   slots.each do |slot|
@@ -26,7 +26,7 @@ Child.all.each do |child|
   end
 end
 
-Child.all.each do |child|
+Child.all.find_each(batch_size: 100) do |child|
   child.time_slots.each do |slot|
     if child.id.odd?
       child.registrations.create!(registerable: slot.options.arrival.last, invoice: Invoice.find_by(child: child, event: slot.event)) unless slot.options.arrival.empty?
@@ -38,12 +38,12 @@ Child.all.each do |child|
   end
 end
 
-User.all.customer.select{|c| c.id.odd?}.each do |user|
+User.all.customer.select{|c| c.id.odd?}.find_each(batch_size: 100) do |user|
   user.children.first.events.each do |event|
     user.children.first.registrations.create!(registerable: event.options.first, invoice: Invoice.find_by(child: user.children.first, event: event))
   end
 end
 
-Invoice.all.each do |invoice|
+Invoice.all.find_each(batch_size: 100) do |invoice|
   invoice.calc_cost
 end

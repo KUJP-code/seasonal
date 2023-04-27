@@ -1,4 +1,4 @@
-Child.all.each do |child|
+Child.all.find_each(batch_size: 100) do |child|
   child.invoices.create!([
     {
       event: child.school.events.first,
@@ -16,7 +16,7 @@ end
 
 puts 'Created invoices for each child/event combo at each school'
 
-Child.all.each do |child|
+Child.all.find_each(batch_size: 100) do |child|
   slots = child.school.events.first.time_slots.sample(10)
 
   slots.each do |slot|
@@ -30,14 +30,15 @@ end
 
 puts 'Registered children for 10 random time slots at each event at their school'
 
-Child.all.each do |child|
+Child.all.find_each(batch_size: 100) do |child|
   child.time_slots.each do |slot|
+    invoice = Invoice.find_by(child: child, event: slot.event)
     if child.id.odd?
-      child.registrations.create!(registerable: slot.options.arrival.last, invoice: Invoice.find_by(child: child, event: slot.event)) unless slot.options.arrival.empty?
-      child.registrations.create!(registerable: slot.options.departure.last, invoice: Invoice.find_by(child: child, event: slot.event)) unless slot.options.departure.empty?
+      child.registrations.create!(registerable: slot.options.arrival.last, invoice: invoice) unless slot.options.arrival.empty?
+      child.registrations.create!(registerable: slot.options.departure.last, invoice: invoice) unless slot.options.departure.empty?
     else
-      child.registrations.create!(registerable: slot.options.regular.last, invoice: Invoice.find_by(child: child, event: slot.event)) unless slot.options.regular.empty?
-      child.registrations.create!(registerable: slot.options.meal.last, invoice: Invoice.find_by(child: child, event: slot.event)) unless slot.options.meal.empty?
+      child.registrations.create!(registerable: slot.options.regular.last, invoice: invoice) unless slot.options.regular.empty?
+      child.registrations.create!(registerable: slot.options.meal.last, invoice: invoice) unless slot.options.meal.empty?
     end
   end
 end
@@ -52,7 +53,7 @@ end
 
 puts "Registered a kid from every 2nd family for an event option"
 
-Invoice.all.each do |invoice|
+Invoice.all.find_each(batch_size: 100) do |invoice|
   invoice.calc_cost
 end
 

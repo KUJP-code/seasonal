@@ -8,7 +8,7 @@ Event.all.each do |event|
 end
 
 Event.where(name: 'Spring School 2023').each do |event|
-  event.time_slots.morning.each do |m_slot|
+  event.time_slots.morning.find_each(batch_size: 100) do |m_slot|
     m_slot.options.create!([
       {
         name: '昼食',
@@ -75,7 +75,7 @@ Event.where(name: 'Spring School 2023').each do |event|
     ])
   end
 
-  event.time_slots.afternoon.each do |a_slot|
+  event.time_slots.afternoon.find_each(batch_size: 100) do |a_slot|
     a_slot.options.create!([
       {
         name: '夕食',

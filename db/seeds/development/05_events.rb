@@ -126,7 +126,7 @@ end
 
 puts 'Created time slots for spring school, and added its event image'
 
-TimeSlot.all.morning.each do |slot|
+TimeSlot.all.morning.find_each(batch_size: 10) do |slot|
   slot.image.attach(io: File.open("app/assets/images/#{slot.name.downcase.gsub(' ', '_').gsub('_pm', '')}.jpg"), filename: 'logo.jpg', content_type: 'image/jpg')
 end
 
