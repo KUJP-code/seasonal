@@ -121,11 +121,12 @@ ja:
       submit: 保存する
       update: 更新する
   nav_bar:
-    children: "子供達"
-    customers: "顧客"
-    logout: "ログアウト"
-    profile: "プロフィール"
+    children: "生徒"
+    customers: "お客様"
+    events: "イベント"
+    logout: "サインアウト"
     schools: "学校"
+    time_slots: "開催日"
   number:
     currency:
       format:

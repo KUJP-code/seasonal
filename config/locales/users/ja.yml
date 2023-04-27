@@ -3,6 +3,11 @@ ja:
     event:
       dates: "%{start_date}から %{end_date}まで"
   users:
+    add_child:
+      add_new_child: "新しい子を追加する"
+      bday: 誕生日
+      find_child: "子供を探す"
+      ssid: "マイページID"
     create:
       failure: "%{name}を作成できませんでした"
       success: "%{name}の作成に成功"
@@ -10,10 +15,16 @@ ja:
       failure: "ユーザーを削除できませんでした"
       success: "ユーザーを削除しました"
     show:
+      children: "生徒"
+      delete: "削除"
+      edit: "詳細を編集する"
       event: "イベント"
+      greet: "Hello、%{user}さん!"
       managed_areas: "管理区域"
       managed_schools: "運営する学校"
+      school_name: "Kids UP %{school}"
       time_slot: "タイムスロット"
+      user_bookings: "%{user}予約内容"
     update:
       failure: "ユーザーを更新できませんでした"
       success: "ユーザーが正常に更新されました"

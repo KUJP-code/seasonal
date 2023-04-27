@@ -1,4 +1,6 @@
 <% next_event = @user.children.first.school.next_event unless @user.children.empty? %>
+<% schools = @user.children.map(&:school).map(&:name).uniq %>
+
 
 <main id="user_show" class="gap-3">
     <div class="key_info">
@@ -9,16 +11,7 @@
     <div class="card">
         <%= turbo_frame_tag "user#{@user.id}" do %>
             <% if @user.customer? && !@user.children.nil? %>
-
-                <% schools = @user.children.map(&:school).map(&:name).uniq %>
-
                 <div class="mb-3">
-                    <% if schools.size > 1 %>
-                        <h4 class="fw-bold"><%= t(".schools") %></h4>
-                    <% else %>
-                        <h4 class="fw-bold"><%= t(".school") %></h4>
-                    <% end %>
-
                     <ul>
                         <% schools.each do |school| %>
                             <li><%= t('.school_name', school: school) %></li>
@@ -27,11 +20,7 @@
                 </div>
 
                 <div>
-                    <% if @user.children.size > 1 %>
-                        <h4 class="fw-bold"><%= t(".children") %></h4>
-                    <% else %>
-                        <h4 class="fw-bold"><%= t(".child") %></h4>
-                    <% end %>
+                    <h4 class="fw-bold"><%= t(".children") %></h4>
 
                     <ul>
                         <%= turbo_frame_tag "user#{@user.id}_children" do %>
