@@ -8,9 +8,9 @@
         <h4><%= t(".roles.#{@user.role}") unless @user.customer? %></h4>
     </div>
 
-    <div class="card">
-        <%= turbo_frame_tag "user#{@user.id}" do %>
-            <% if @user.customer? && !@user.children.nil? %>
+    <% if @user.customer? && !@user.children.nil? %>
+        <div class="card">
+            <%= turbo_frame_tag "user#{@user.id}" do %>
                 <div class="mb-3">
                     <ul>
                         <% schools.each do |school| %>
@@ -34,20 +34,19 @@
 
                 </div>
             <% end %>
- 
-            <% if current_user.admin? %>
-                <div class="user_options">
-                    <%= link_to t(".edit"), edit_user_path(@user), class: 'btn btn-primary' %>
+        </div>
+    <% end %>
 
-                    <%= link_to t('.delete'), user_path(@user), data: { turbo_method: :delete, turbo_confirm: t('.delete_confirm'), turbo_frame: '_top' }, class: 'btn btn-primary' %>
-                </div>
-            <% end %>
-        <% end %>
-    </div>
+    <% if current_user.admin? %>
+        <div class="card">
+            <%= link_to t(".edit"), edit_user_path(@user), class: 'btn btn-primary' %>
+            <%= link_to t('.delete'), user_path(@user), data: { turbo_method: :delete, turbo_confirm: t('.delete_confirm'), turbo_frame: '_top' }, class: 'btn btn-primary' %>
+        </div>
+    <% end %>
 
     <% if @user.children? %>
         <% unless next_event.nil? %>
-            <%= render next_event, child: nil %>
+            <%= render next_event, child: @user.children.first %>
         <% end %>
 
         <div class="card"><%= link_to t('.user_bookings', user: @user.name), invoices_path(user: @user.id), class: 'btn btn-primary' %></div>
