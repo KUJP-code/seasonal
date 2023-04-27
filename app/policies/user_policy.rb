@@ -38,10 +38,6 @@ class UserPolicy < ApplicationPolicy
     user.staff?
   end
 
-  def remove_child?
-    user.staff?
-  end
-
   # Defines scopes for user#index
   class Scope < Scope
     def resolve

@@ -58,6 +58,17 @@ class ChildrenController < ApplicationController
     end
   end
 
+  def destroy
+    @child = authorize(Child.find(params[:id]))
+    @parent = @child.parent
+
+    if @child.destroy
+      redirect_to user_path(@parent), notice: t('success')
+    else
+      redirect_to child_path(@child), alert: t('failure')
+    end
+  end
+
   def find_child
     @child = search_result
     return render 'users/_add_child', locals: { parent: User.find(params[:parent_id]) } if params[:bday]

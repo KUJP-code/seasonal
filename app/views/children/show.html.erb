@@ -60,7 +60,7 @@
 
                 <div data-controller="conditional"
                      data-conditional-pin-value="<%= current_user.pin %>">
-                    <%= link_to t('.delete_child'), child_path(@child), data: { turbo_method: :delete, turbo_confirm: t('.only_if_dup') }, class: 'btn btn-primary d-none', data: { 'conditional-target' => 'target' } %>
+                    <%= link_to t('.delete_child'), child_path(@child), class: 'btn btn-danger d-none', data: { 'conditional-target' => 'target', turbo_method: :delete, turbo_confirm: t('.only_if_dup') } %>
 
                     <div class="form-floating" data-conditional-target="target">
                         <%= text_field_tag t('enter_pin', info: t('delete')), '', class: 'form-control', placeholder: t('enter_pin', info: t('delete')), maxlength: 4, data: { 'conditional-target': 'condition', action: 'conditional#pin' } %>

@@ -82,15 +82,6 @@ class UsersController < ApplicationController
     redirect_to child_path(ss_kid), notice: t('.success')
   end
 
-  def remove_child
-    @child = authorize(Child.find(params[:child_id]))
-    @parent = User.find(params[:parent_id])
-    @parent.children.delete(@child)
-
-    flash_success
-    redirect_to user_path(@parent)
-  end
-
   private
 
   def already_registered?(t_regs, o_reg)

@@ -22,6 +22,10 @@ class ChildPolicy < ApplicationPolicy
     staff_or_parent?(user, record)
   end
 
+  def destroy?
+    user.staff?
+  end
+
   # Handles authorisation for children index scopes
   # attendance sheets handled by the controller
   class Scope < Scope

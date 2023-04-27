@@ -18,14 +18,6 @@
                             <% @user.children.each do |child| %>
                                 <li id="<%= "user#{@user.id}_child#{child.id}" %>">
                                     <%= link_to child.name, child_path(child), data: { turbo_frame: '_top' } %>
-
-                                    <% if current_user.admin? %>
-                                        <%= form_with url: remove_child_path do |f| %>
-                                            <%= f.hidden_field :child_id, value: child.id %>
-                                            <%= f.hidden_field :parent_id, value: @user.id %>
-                                            <%= f.submit t('.remove_child'), class: 'btn btn-primary', data: { turbo_frame: '_top' } %>
-                                        <% end %>
-                                    <% end %>
                                 </li>
                             <% end %>             
                         <% end %>
