@@ -1,5 +1,5 @@
 $primary: #f48000;
-$secondary: #707070;
+$secondary: #4e4a4a;
 
 :root {
   --container-shadow: 0px 0.5vw 0.5vw grey;
@@ -17,6 +17,17 @@ $secondary: #707070;
 
 /* Custom bootstrap variables must be set or imported *before* bootstrap. */
 @import "bootstrap";
+
+.nav-link {
+  --bs-nav-link-color: var(--near-white);
+  --bs-nav-link-hover-color: white;
+  @include font-size(1.4rem);
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  color: var(--ku-orange);
+}
 
 @media print {
   .links,
@@ -84,7 +95,6 @@ a {
   flex-flow: row nowrap;
   justify-content: space-around;
   align-items: center;
-  background-color: #4e4a4a;
   box-shadow: 0.8vw 0.8vh 1.6vh grey, -0.8vw 0.8vh 1.6vh grey;
   font-size: var(--sub-heading-size);
 }
@@ -100,34 +110,6 @@ a {
   text-align: center;
   box-shadow: var(--container-shadow);
   background-color: var(--bs-gray-100);
-}
-
-#nav_bar a {
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: var(--near-white);
-  font-weight: bold;
-  height: 100%;
-}
-
-#nav_bar a:hover {
-  color: #4e4a4a;
-  background-color: white;
-}
-
-#nav_bar a:first-child {
-  background-image: image-url("white_logo.svg");
-  background-position: center;
-  background-size: 90% 90%;
-  background-repeat: no-repeat;
-  flex: 1 0 150px;
-}
-
-#nav_bar a:first-child:hover {
-  background-image: url("logo.svg");
 }
 
 input[type="text"]:read-only,
