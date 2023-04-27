@@ -1,5 +1,8 @@
 ja:
   children:
+    event_index:
+      all: "全部"
+      daily_attendance: "アテンダントシート"
     form:
       allergies: "アレルギー"
       birthday: "誕生日"
@@ -29,5 +32,12 @@ ja:
       school: "Kids UP %{school}"
       ssid: "マイページID: "
     slot_attendance:
+      allergy: "アレルギー"
       arrival: "延長(前)"
+      attend_afternoon: "PM"
+      attend_morning: "AM"
+      back_to_event: "イベントに戻る"
       depart: "延長(後)"
+      name: "生徒"
+      photo: "NG"
+      print: "プリント"

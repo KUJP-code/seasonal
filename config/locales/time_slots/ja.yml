@@ -10,3 +10,4 @@ ja:
       delete: "消去"
       delete_confirm: "この登録を削除してもよろしいですか?"
       times: "時間: %{time}"
+      view_attendance: "アテンダンス"
