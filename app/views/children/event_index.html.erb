@@ -9,13 +9,10 @@
         </div>
     </div>
 
-
+    <h1><%= @source.name %></h1>
     <h2 class="counter">Automatic refresh in <span data-refresh-target="counter">10:00</span></h2>
-
+    
     <table class="table table-sm table-light table-striped table-hover table-bordered text-center text-nowrap align-middle">
-        <caption class="caption-top">
-            <h1><%= @source.name %></h1>
-        </caption>
         <%# Minus 1 for special day %>
         <% cols = @source.time_slots.morning.size - 1 %>
         <% special = @source.time_slots.select { |slot| slot.special? } %>

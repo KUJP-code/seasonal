@@ -18,36 +18,37 @@
     </div>
     <h1 class="text-center"><%= "#{slot_attendance.name} (#{slot_attendance.start_time.strftime('%m月%d日')})" %></h1>
     <h2 class="counter text-center">Automatic refresh in <span data-refresh-target="counter">10:00</span></h2>
-    <table>
-        <thead>
-            <tr>
-                <th id="arrival_header" class="arrival"><%= t('.arrival') %></th>
-                <th id="morning_header" class="morning">
+
+    <table class="table table-sm table-light table-striped table-hover table-bordered text-center text-nowrap align-middle">
+        <thead class="sticky-top">
+            <tr class="table-primary">
+                <th class="arrival"><%= t('.arrival') %></th>
+                <th class="morning">
                     <p><%= t('.attend_morning') %></p>
                     <p><%= "K: #{children.select{|c| c.kindy}.size}, E: #{children.reject{|c| c.kindy}.size}" %></p>
                 </th>
-                <th id="name_header" class="name"><%= t('.name') %></th>
-                <th id="allergy_header" class="allergy"><%= t('.allergy') %></th>
-                <th id="photos_header" class="photos"><%= t('.photo') %></th>
+                <th class="name"><%= t('.name') %></th>
+                <th class="allergy"><%= t('.allergy') %></th>
+                <th class="photos"><%= t('.photo') %></th>
                 <% event_options.each do |opt| %>
                     <%# FIXME: n+1 queries %>
-                    <th><%= "#{opt.name}: #{opt.registrations.size + opt.children.reduce(0) { |sum, c| sum + c.siblings.size }} " %></th>
+                    <th scope="col"><%= "#{opt.name}: #{opt.registrations.size + opt.children.reduce(0) { |sum, c| sum + c.siblings.size }} " %></th>
                 <% end %>
                 <% morn_options.each do |opt| %>
                     <%# FIXME: n+1 queries %>
-                    <th><%= "#{opt.name}: #{opt.registrations.size}" %></th>
+                    <th scope="col"><%= "#{opt.name}: #{opt.registrations.size}" %></th>
                 <% end %>
                 <% unless slot_attendance.special? %>
-                    <th id="afternoon_header" class="afternoon">
+                    <th scope="col" id="afternoon_header" class="afternoon">
                         <p><%= t('.attend_afternoon') %></p>
                         <p><%= "K: #{children.select{|c| c.kindy && c.registered?(slot_attendance.afternoon_slot)}.size}, E: #{children.reject(&:kindy).select{|c| c.registered?(slot_attendance.afternoon_slot)}.size}" %></p>
                     </th>
                     <% aft_options.each do |opt| %>
                         <%# FIXME: n+1 queries %>
-                        <th><%= "#{opt.name}: #{opt.registrations.size}" %></th>
+                        <th scope="col"><%= "#{opt.name}: #{opt.registrations.size}" %></th>
                     <% end %>
                 <% end %>
-                <th id="depart_header" class="depart"><%= t('.depart') %></th>
+                <th scope="col" id="depart_header" class="depart"><%= t('.depart') %></th>
             </tr>
         </thead>
         <%= render partial: 'children/slot_child', collection: children, locals: { slot: slot_attendance, event_options: event_options, morn_options: morn_options, aft_options: aft_options } %>

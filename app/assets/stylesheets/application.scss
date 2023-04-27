@@ -235,8 +235,6 @@ main#child_show .card .staff_info {
 
 #slot_children_index {
   justify-content: flex-start;
-  align-items: flex-start;
-  padding-left: 0;
 }
 
 #slot_children_index > h1 {
@@ -247,98 +245,9 @@ main#child_show .card .staff_info {
   align-self: center;
 }
 
-#slot_children_index tr:nth-child(odd) td,
-#slot_children_index tr:nth-child(odd) th {
-  background: white;
-}
-
-#slot_children_index tr:nth-child(even) td,
-#slot_children_index tr:nth-child(even) th {
-  background: var(--near-white);
-}
-
-#slot_children_index table {
-  text-align: center;
-  table-layout: fixed;
-  white-space: nowrap;
-  border-spacing: 0;
-  border-collapse: separate;
-}
-
-#slot_children_index table td,
-#slot_children_index table th {
-  border: 1px solid black;
-  padding: 0.5vw;
-}
-
-#slot_children_index table thead:first-child tr:first-child th {
-  background: var(--ku-orange-hover);
-  color: var(--near-white);
-  font-size: 16px;
-  padding: 1vw;
-  position: sticky;
-  top: 9vh;
-  z-index: 2;
-}
-
-#slot_children_index table thead:first-child tr:nth-child(2) th {
-  background: var(--ku-orange-hover);
-  color: var(--near-white);
-  font-size: 16px;
-  padding: 1vw;
-  position: sticky;
-  top: 13.5vh;
-  z-index: 2;
-}
-
-#slot_children_index table th#arrival_header,
-#slot_children_index table th#morning_header,
-#slot_children_index table th#name_header,
-#slot_children_index table th#allergy_header,
-#slot_children_index table th#photos_header,
-#slot_children_index table th#depart_header {
-  position: sticky;
-  z-index: 3;
-}
-
-#slot_children_index table th.arrival,
-#slot_children_index table th.morning,
-#slot_children_index table th.name,
-#slot_children_index table th.allergy,
-#slot_children_index table th.photos,
-#slot_children_index table th.depart {
-  position: sticky;
-  z-index: 1;
-}
-
-#slot_children_index table th.arrival {
-  left: 0;
-  min-width: 6vw;
-}
-
-#slot_children_index table th.morning {
-  left: 8vw;
-  min-width: 8vw;
-}
-
-#slot_children_index table th.name {
-  left: 18vw;
-  min-width: 13vw;
-}
-
-#slot_children_index table th.allergy {
-  left: 32vw;
-  min-width: 8vw;
-}
-
-#slot_children_index table th.photos {
-  left: 40vw;
-  min-width: 6vw;
-}
-
-#slot_children_index table th.depart {
-  left: 51vw;
-  min-width: 6vw;
+#slot_children_index thead.sticky-top,
+#event_attendance_index thead.sticky-top {
+  top: 86px;
 }
 
 // Devise

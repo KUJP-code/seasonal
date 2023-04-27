@@ -1,9 +1,9 @@
 <tr>
-    <th class="arrival"><%= slot.arrival_time(slot_child) %></th>
-    <th class="morning"><%= (slot_child.kindy) ? 'Kindy' : 'Elementary' %></th>
-    <th class="name"><%= link_to "#{slot_child.katakana_name} (#{slot_child.en_name})", child_path(slot_child) %></th>
-    <th class="allergy"><%= slot_child.allergies %></th>
-    <th class="photos"><%= slot_child.photos unless slot_child.photos == 'OK' %></th>
+    <th scope="row" class="arrival"><%= slot.arrival_time(slot_child) %></th>
+    <th scope="row" class="morning"><%= (slot_child.kindy) ? 'Kindy' : 'Elementary' %></th>
+    <th scope="row" class="name"><%= link_to "#{slot_child.katakana_name} (#{slot_child.en_name})", child_path(slot_child) %></th>
+    <td class="allergy"><%= slot_child.allergies %></td>
+    <td class="photos"><%= slot_child.photos unless slot_child.photos == 'OK' %></td>
     <% event_options.each do |opt| %>
         <td><%= opt.name if slot_child.options.include?(opt) || slot_child.siblings.any? { |sib| sib.registered?(opt) } %></td>
     <% end %>
@@ -11,14 +11,14 @@
         <td><%= opt.name if slot_child.options.include?(opt) %></td>
     <% end %>
     <% unless slot.special? %>
-        <th class="afternoon"><%= '◯' if slot_child.registered?(slot.afternoon_slot) %></th>
+        <td class="afternoon"><%= '◯' if slot_child.registered?(slot.afternoon_slot) %></td>
         <% aft_options.each do |opt| %>
             <td><%= opt.name if slot_child.options.include?(opt) %></td>
         <% end %>
     <% end %>
     <% if slot.special? %>
-        <th class="depart"><%= slot.departure_time(slot_child) %></th>
+        <td class="depart"><%= slot.departure_time(slot_child) %></td>
     <% else %>
-        <th class="depart"><%= slot.afternoon_slot.departure_time(slot_child) unless slot.afternoon_slot.nil? %></th>
+        <td class="depart"><%= slot.afternoon_slot.departure_time(slot_child) unless slot.afternoon_slot.nil? %></td>
     <% end %>
 </tr>

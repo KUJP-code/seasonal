@@ -9,6 +9,9 @@ export default class extends Controller {
     for (let div of divs) {
       div.classList.add("d-none");
     }
+    // Hide navbar
+    const navbar = document.querySelector(".navbar");
+    navbar.classList.add("d-none");
 
     // Reveal target table and heading, then print
     this.printTarget.classList.remove("d-none");
