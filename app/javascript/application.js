@@ -7,6 +7,9 @@ import "@hotwired/turbo-rails";
 import "controllers";
 
 // Initializers for Bootstrap components that need them
+
+// Popovers
+
 document.addEventListener("turbo:load", function () {
   const popoverTriggerList = document.querySelectorAll(
     '[data-bs-toggle="popover"]'
@@ -14,4 +17,11 @@ document.addEventListener("turbo:load", function () {
   [...popoverTriggerList].map(
     (popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl)
   );
+});
+
+// Toasts
+
+document.addEventListener("turbo:load", function () {
+  const toastElList = document.querySelectorAll(".toast");
+  [...toastElList].map((toastEl) => new bootstrap.Toast(toastEl).show());
 });

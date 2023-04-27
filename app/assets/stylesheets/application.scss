@@ -70,28 +70,7 @@ a {
 }
 
 #flash {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   z-index: 10;
-}
-
-.alert,
-.notice {
-  text-align: center;
-  font-weight: bold;
-  padding: 3vh;
-}
-
-.alert {
-  background-color: red;
-  color: white;
-}
-
-.notice {
-  background-color: lightgreen;
-  color: green;
 }
 
 #nav_bar {
@@ -491,7 +470,7 @@ main#sign-up {
 main#login {
   background-image: image-url("login_splash.jpg");
   background-position: top;
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
 }
 
