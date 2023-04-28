@@ -41,6 +41,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # Health check endpoint for EB load balancer
+  get '/health_check', to: proc { [200, {}, ['success']] }
+
   # Defines the root path route ("/")
   authenticated :user do
     root to: 'users#profile', as: :authenticated_root
