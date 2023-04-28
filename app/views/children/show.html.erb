@@ -59,7 +59,7 @@
 
 
         <% if (current_user.staff? || current_user.id == @child.parent_id) && @child.ssid.nil? %>
-            <div class="d-flex gap-3">
+            <div class="d-flex justify-content-center align-items-center gap-3">
                 <%= link_to t('.edit_child'), edit_child_path(@child), class: 'btn btn-primary' unless @child.ssid %>
 
                 <div data-controller="conditional"
@@ -67,8 +67,8 @@
                     <%= link_to t('.delete_child'), child_path(@child), class: 'btn btn-danger d-none', data: { 'conditional-target' => 'target', turbo_method: :delete, turbo_confirm: t('.only_if_dup') } %>
 
                     <div class="form-floating" data-conditional-target="target">
-                        <%= text_field_tag t('enter_pin', info: t('delete')), '', class: 'form-control', placeholder: t('enter_pin', info: t('delete')), maxlength: 4, data: { 'conditional-target': 'condition', action: 'conditional#pin' } %>
-                        <%= label_tag t('enter_pin', info: t('delete')), nil, class: 'form-label' %>
+                        <%= text_field_tag t('enter_pin', info: t('.delete_child')), '', class: 'form-control', placeholder: t('enter_pin', info: t('.delete_child')), maxlength: 4, data: { 'conditional-target': 'condition', action: 'conditional#pin' } %>
+                        <%= label_tag t('enter_pin', info: t('.delete_child')), nil, class: 'form-label' %>
                     </div>
                 </div>
             </div>

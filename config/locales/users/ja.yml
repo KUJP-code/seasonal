@@ -4,9 +4,9 @@ ja:
       dates: "%{start_date}から %{end_date}まで"
   users:
     add_child:
-      add_new_child: "新しい子を追加する"
+      add_new_child: "新しいお子様の情報を追加する"
       bday: 誕生日
-      find_child: "子供を探す"
+      find_child: "お子様の検索"
       ssid: "マイページID"
     create:
       failure: "%{name}を作成できませんでした"
