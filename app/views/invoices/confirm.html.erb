@@ -45,7 +45,7 @@
         <%= f.submit t('.confirm_changes'), class: 'btn btn-primary' %>
     <% end %>
 
-    <% unles @ss_invoices.empty? %>
+    <% unless @ss_invoices.empty? %>
         <h1><%= t('.in_ss') %></h1>
 
         <%= render partial: 'invoices/invoice', collection: @ss_invoices, locals: { index: false } %>
