@@ -70,6 +70,12 @@ class InvoicesController < ApplicationController
     @ss_invoices = Invoice.where(event_id: @invoice.event_id, in_ss: true, child_id: @invoice.child_id)
   end
 
+  def confirmed
+    @invoice = nil
+
+    render 'invoices/confirm'
+  end
+
   def copy
     target = Child.find(params[:target])
     event = Event.find(params[:event])

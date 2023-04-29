@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
       # Non-REST routes for Invoices controller
       patch 'confirm_invoice', to: 'invoices#confirm', as: :confirm_invoice
+      get 'confirm_invoice', to: 'invoices#confirmed', as: :confirmed_invoice
       put 'copy_invoice', to: 'invoices#copy', as: :copy_invoice
       post 'merge_invoices', to: 'invoices#merge', as: :merge_invoices
       post 'resurrect_invoice', to: 'invoices#resurrect', as: :resurrect_invoice

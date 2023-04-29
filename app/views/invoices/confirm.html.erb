@@ -1,53 +1,57 @@
 <main id="invoice_confirm">
-    <%= link_to t('back'), :back, class: 'btn btn-primary align-self-start' %>
+    <% if @invoice %>
+        <%= link_to t('back'), :back, class: 'btn btn-primary align-self-start' %>
 
-    <h1><%= t('.please_confirm') %></h1>
+        <h1><%= t('.please_confirm') %></h1>
 
-    <%= render @invoice, index: false %>
+        <%= render @invoice, index: false %>
 
-    <%= form_for @invoice, url: invoice_path(@invoice), method: :patch do |f| %>
-        <%= f.hidden_field :id %>
-        <%= f.hidden_field :child_id %>
-        <%= f.hidden_field :event_id %>
+        <%= form_for @invoice, url: invoice_path(@invoice), method: :patch do |f| %>
+            <%= f.hidden_field :id %>
+            <%= f.hidden_field :child_id %>
+            <%= f.hidden_field :event_id %>
 
-        <div class="slot_regs">
-            <%= f.fields_for :slot_regs do |slot_f| %>
-                <div>
-                    <%= slot_f.hidden_field :_destroy %>
-                    <%= slot_f.hidden_field :id %>
-                    <%= slot_f.hidden_field :child_id %>
-                    <%= slot_f.hidden_field :registerable_id %>
-                    <%= slot_f.hidden_field :registerable_type %>
-                </div>
-            <% end %>
-        </div>
+            <div class="slot_regs">
+                <%= f.fields_for :slot_regs do |slot_f| %>
+                    <div>
+                        <%= slot_f.hidden_field :_destroy %>
+                        <%= slot_f.hidden_field :id %>
+                        <%= slot_f.hidden_field :child_id %>
+                        <%= slot_f.hidden_field :registerable_id %>
+                        <%= slot_f.hidden_field :registerable_type %>
+                    </div>
+                <% end %>
+            </div>
 
-        <div class="opt_regs">
-            <%= f.fields_for :opt_regs do |opt_f| %>
-                <div>
-                    <%= opt_f.hidden_field :_destroy %>
-                    <%= opt_f.hidden_field :id %>
-                    <%= opt_f.hidden_field :child_id %>
-                    <%= opt_f.hidden_field :registerable_id %>
-                    <%= opt_f.hidden_field :registerable_type %>
-                </div>
-            <% end %>
-        </div>
+            <div class="opt_regs">
+                <%= f.fields_for :opt_regs do |opt_f| %>
+                    <div>
+                        <%= opt_f.hidden_field :_destroy %>
+                        <%= opt_f.hidden_field :id %>
+                        <%= opt_f.hidden_field :child_id %>
+                        <%= opt_f.hidden_field :registerable_id %>
+                        <%= opt_f.hidden_field :registerable_type %>
+                    </div>
+                <% end %>
+            </div>
 
-        <div class="coupons">
-            <%= f.fields_for :coupons do |coup_f| %>
-                <div>
-                    <%= coup_f.hidden_field :code %>
-                </div>
-            <% end %>
-        </div>
+            <div class="coupons">
+                <%= f.fields_for :coupons do |coup_f| %>
+                    <div>
+                        <%= coup_f.hidden_field :code %>
+                    </div>
+                <% end %>
+            </div>
 
-        <%= f.submit t('.confirm_changes'), class: 'btn btn-primary' %>
-    <% end %>
+            <%= f.submit t('.confirm_changes'), class: 'btn btn-primary' %>
+        <% end %>
 
-    <% unless @ss_invoices.empty? %>
-        <h1><%= t('.in_ss') %></h1>
+        <% unless @ss_invoices.empty? %>
+            <h1><%= t('.in_ss') %></h1>
 
-        <%= render partial: 'invoices/invoice', collection: @ss_invoices, locals: { index: false } %>
+            <%= render partial: 'invoices/invoice', collection: @ss_invoices, locals: { index: false } %>
+        <% end %>
+    <% else %>
+        <h1><%= t('.already_confirmed') %></h1>
     <% end %>
 </main>
