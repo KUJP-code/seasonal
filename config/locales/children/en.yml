@@ -22,6 +22,7 @@ en:
       has_hat: "Has Hat:"
       level: "Level:"
       kana: "Katakana Name:"
+      no_photos: "Photos"
       no_school: "No school assigned"
       only_if_dup: "Only delete a child if they are a duplicate of a child already in the SS!"
       parent: "Parent: "

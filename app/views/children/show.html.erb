@@ -31,10 +31,7 @@
                        end
                 %></p>
                 <p><%= (@child.kindy) ? '幼稚園児' : '小学生' %></p>
-                <p>
-                    <%= "#{t('.photos')} OK" if @child.photos == 'OK' %>
-                    <%= "#{t('.photos')} NG" unless @child.photos == 'OK' %>
-                </p>
+                <p><%= "#{t('.photos')} #{@child.photos}" %></p>
                 <p>
                     <% if @child.received_hat %>
                         <%= "#{t('.has_hat')} あり" %>
@@ -74,6 +71,29 @@
             </div>
         <% end %>
     </div>
+
+    <% if current_user.staff? %>
+        <div class="card d-flex justify-content-center align-items-center gap-3">
+            <%  unless @child.received_hat %>
+                <%= form_with model: @child do |f| %>
+                    <%= f.hidden_field :received_hat, value: 1 %>
+
+                    <%= f.submit "#{t('.has_hat')} あり", class: 'btn btn-primary' %>
+                <% end %>
+            <% end %>
+
+            <%= form_with model: @child do |f| %>
+                <% if @child.photos == 'はい' %>
+                    <%= f.hidden_field :photos, value: 'いいえ' %>
+                    <%= f.submit "#{t('.photos')} いいえ", class: 'btn btn-primary' %>
+                <% else %>
+                    <%= f.hidden_field :photos, value: 'はい' %>
+
+                <%= f.submit "#{t('.photos')} はい", class: 'btn btn-primary' %>
+                <% end %>
+            <% end %>
+        </div>
+    <% end %>
 
     <div class="card">
         <%= link_to t('.child_bookings', child: @child.name), invoices_path(child: @child.id), class: 'btn btn-primary' %>

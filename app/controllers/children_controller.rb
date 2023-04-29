@@ -51,7 +51,7 @@ class ChildrenController < ApplicationController
 
     if @child.update(child_params)
       flash_success
-      redirect_to child_path(@child)
+      redirect_to child_path(@child), notice: t('success')
     else
       flash_failure
       render :edit, status: :unprocessable_entity
