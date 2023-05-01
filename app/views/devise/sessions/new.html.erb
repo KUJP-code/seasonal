@@ -3,6 +3,8 @@
     <div id="login_splash" class="col-12 col-lg-8"></div>
     
     <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'col-12 col-lg-4 needs-validation d-grid gap-3 p-3' }) do |f| %>
+      <div id="login_logo" class=""></div>
+
       <h2><%= t('.login') %></h2>
       <div class="form-floating">
         <%= f.email_field :email, class: 'form-control bs-info',
