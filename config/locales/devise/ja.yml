@@ -11,6 +11,7 @@ ja:
         log_in: "ログイン"
         min_length: "最大文字数:%{length}"
         name: "保護者様の氏名（漢字）"
+        password: "パスワード"
         password_confirmation: "パスワードの再入力"
         personal_information: "個人情報"
         postcode: "郵便番号"

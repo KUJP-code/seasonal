@@ -14,9 +14,6 @@
                               placeholder: t('.email'),
                               required: true %>
         <%= f.label :email, t('.email'), class: 'form-label' %><br />
-        <div class="valid-feedback">
-          <%= t('.good') %>
-        </div>
         <div class="invalid-feedback">
           <%= t('.enter_email') %>
         </div>
@@ -30,9 +27,6 @@
                                         'aria-labelledby': 'reset-pass' %>
         <%= f.label :password, class: 'form-label' %>
         <div class=" form-text" id="reset-pass"><%= link_to t('.forgot_password'), new_password_path(resource_name) %></div>
-        <div class="valid-feedback">
-          <%= t('.good') %>
-        </div>
         <div class="invalid-feedback">
           <%= t('.enter_pwd') %>
         </div>
