@@ -1,6 +1,6 @@
 <div class="card">
     <%= turbo_frame_tag "add_child" do %>
-        <%= form_with model: @child, class: 'child_form', html: { class: 'd-grid gap-3' } do |f| %>
+        <%= form_with model: @child, class: 'child_form', html: { class: 'd-grid gap-3 needs-validation', novalidate: true } do |f| %>
             <%= f.hidden_field :parent_id %>
     
             <% if @child.errors.any? %>

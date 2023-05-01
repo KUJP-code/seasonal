@@ -1,5 +1,5 @@
 <main id="adjustments_edit">
-    <%= form_with model: @invoice, html: { class: 'card d-grid gap-3 p-3' }, data: { controller: 'fields' } do |f| %>
+    <%= form_with model: @invoice, html: { class: 'card d-grid gap-3 p-3 needs-validation', novalidate: true }, data: { controller: 'fields' } do |f| %>
         <%= f.fields_for :adjustments do |adj_f| %>
             <%= render 'adjustments/form', adj_f: adj_f %>
         <% end %>

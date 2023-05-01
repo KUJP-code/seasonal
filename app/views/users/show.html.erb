@@ -4,7 +4,8 @@
 
 <main id="user_show" class="gap-3">
     <div class="key_info">
-        <h1 class="fw-bold"><%= t('.greet', user: @user.name.split(' ')[1]) %></h1>
+        <h1 class="fw-bold"><%= t('.greet', user: @user.name.split(' ')[1]) unless @user.admin? %></h1>
+        <h1 class="fw-bold"><%= "yo, #{@user.name}" if @user.admin? %></h1>
         <h4><%= t(".roles.#{@user.role}") unless @user.customer? %></h4>
     </div>
 
@@ -37,7 +38,7 @@
         </div>
     <% end %>
 
-    <% if current_user.admin? %>
+    <% if current_user.admin? && current_user.id != @user.id %>
         <div class="card">
             <%= link_to t(".edit"), edit_user_path(@user), class: 'btn btn-primary' %>
             <%= link_to t('.delete'), user_path(@user), data: { turbo_method: :delete, turbo_confirm: t('.delete_confirm'), turbo_frame: '_top' }, class: 'btn btn-primary' %>
