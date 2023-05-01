@@ -277,7 +277,20 @@ main#sign-up {
   text-align: right;
 }
 
-main#sign-up form#new_user img {
+#sign-up #new_user {
+  border-radius: 0;
+  max-height: 100vh;
+  height: 100vh;
+  @media (min-width: 992px) {
+    height: 90vh;
+    width: 90vw;
+    border-radius: 2rem;
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+  }
+}
+
+#sign-up form#new_user img {
   width: 20%;
 }
 

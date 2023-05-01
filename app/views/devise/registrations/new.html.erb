@@ -1,12 +1,6 @@
-<% content_for :head do %>
-  <script defer src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
-<% end %>
-
 <main id="sign-up">
   
   <%= form_for(resource, as: resource_name, url: user_registration_path, html: { class: 'h-adr d-grid gap-3 p-5' }, data: { controller: 'conditional'}) do |f| %>
-    <span class="p-country-name" style="display:none;">Japan</span>
-
     <div class="text-end"><%= image_tag "favicon.svg" %></div>
 
     <h2 class=''><%= t('.welcome') %></h2>
@@ -55,16 +49,16 @@
 
     <div class="form-floating">
       <%= f.text_field :postcode, size: 8, maxlength: 8, autocomplete: "postcode", class: 'form-control', placeholder: t('.postcode') %>
-      <%= f.label :postcode, t('.postcode'), class: 'form-label p-postal-code' %><br />
+      <%= f.label :postcode, t('.postcode'), class: 'form-label' %><br />
     </div>
 
     <div class="form-floating">
-      <%= f.text_field :prefecture, class: 'p-region form-control', placeholder: t('.prefecture') %>
+      <%= f.text_field :prefecture, class: 'form-control', placeholder: t('.prefecture') %>
       <%= f.label :prefecture, t('.prefecture'), class: 'form-label' %><br />
     </div>
 
     <div class="form-floating">
-      <%= f.text_area :address, class: 'p-locality p-street-address p-extended-address form-control', autocomplete: "address", placeholder: t('.address') %>
+      <%= f.text_area :address, class: 'form-control', autocomplete: "address", placeholder: t('.address') %>
       <%= f.label :address, t('.address'), class: 'form-label' %><br />
     </div>
   
