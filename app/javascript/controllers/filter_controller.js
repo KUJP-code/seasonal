@@ -4,6 +4,7 @@ export default class extends Controller {
   static targets = ["input"];
   static values = {
     col: String,
+    model: String,
   };
 
   change() {
@@ -15,10 +16,38 @@ export default class extends Controller {
       if (
         cells[i].innerText.toLowerCase().indexOf(filter.toLowerCase()) === -1
       ) {
-        cells[i].parentNode.style.display = "none";
+        cells[i].parentNode.classList.add("d-none");
+        if (this.modelValue === "user") {
+          const parentId = cells[i].parentNode.classList[1];
+          this.hideSiblings(parentId);
+        }
       } else {
-        cells[i].parentNode.style.display = "";
+        cells[i].parentNode.classList.remove("d-none");
+        if (this.modelValue === "user") {
+          const parentId = cells[i].parentNode.classList[1];
+          this.showSiblings(parentId);
+        }
       }
+    }
+  }
+
+  hideSiblings(parentId) {
+    // Get siblings by finding elements with parentId in classList
+    const siblings = document.querySelectorAll(`.${parentId}`);
+
+    // Hide siblings
+    for (let i = siblings.length; i--; ) {
+      siblings[i].classList.add("d-none");
+    }
+  }
+
+  showSiblings(parentId) {
+    // Get siblings by finding elements with parentId in classList
+    const siblings = document.querySelectorAll(`.${parentId}`);
+
+    // Show siblings
+    for (let i = siblings.length; i--; ) {
+      siblings[i].classList.remove("d-none");
     }
   }
 }
