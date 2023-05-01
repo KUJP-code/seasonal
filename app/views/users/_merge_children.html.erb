@@ -30,9 +30,9 @@
             <%= f.submit t('.merge_children'), class: 'btn btn-primary' %>
         <% end %>
     <% else %>
-        <%= form_with url: find_child_path, method: :get, id: 'merge_child_form', html: { class: 'd-grid gap-3 p-5' } do |f| %>
+        <%= form_with url: find_child_path, method: :get, id: 'merge_child_form', html: { class: 'd-grid gap-3 p-5 needs-validation', novalidate: true } do |f| %>
             <div class="form-floating">
-                <%= f.search_field :ssid, class: 'form-control', placeholder: t('.ssid') %>
+                <%= f.search_field :ssid, class: 'form-control', placeholder: t('.ssid'), required: true %>
                 <%= f.label :ssid, t('.ssid'), class: 'form-label'  %>
             </div>
 

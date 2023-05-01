@@ -1,17 +1,18 @@
 <main id="price_list_edit">
-    <%= form_with model: @price_list, html: { class: 'card' } do |f| %>
+    <%= form_with model: @price_list, html: { class: 'card needs-validation', novalidate: true } do |f| %>
         <div class="form-floating">
-            <%= f.text_field :name, class: 'form-control', placeholder:  t('.name') %>
+            <%= f.text_field :name, class: 'form-control', placeholder:  t('.name'), required: true %>
             <%= f.label :name, t('.name'), class: 'form-label' %>
         </div>
 
         <h2><%= t('.courses') %></h2>
         <% if @price_list.courses.nil? %>
-            <% courses = [1, 5, 10, 15, 20, 25, 30] %>
+            <% courses = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50] %>
 
             <% courses.each do |course| %>
                 <div class="form-floating input-group">
-                    <%= number_field_tag "price_list[course#{course}]", '', class: 'form-control', placeholder: "Course #{course}" %>
+                    <%= number_field_tag "price_list[course#{course}]", '', class: 'form-control', placeholder: "Course #{course}", required: true %>
+
                     <%= label_tag "price_list[course#{course}]", "Course #{course}", class: 'form-label' %>
                     <span class="input-group-text">円</span>
                 </div>
@@ -19,7 +20,8 @@
         <% else %>
             <% @price_list.courses.each do |k, v| %>
                     <div class="form-floating input-group">
-                        <%= number_field_tag k, v, class: 'form-control', placeholder: k %>
+                        <%= number_field_tag k, v, class: 'form-control', placeholder: k, required: true %>
+
                         <%= label_tag k, k, class: 'form-label' %>
                         <span class="input-group-text">円</span>
                     </div>

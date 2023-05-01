@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "user#{@user.id}" do %>
-    <%= form_with model: @user, data: { controller: :fields }, html: { class: 'card' } do |f| %>
+    <%= form_with model: @user, data: { controller: :fields }, html: { class: 'card needs-validation', novalidate: true } do |f| %>
 
         <% if @user.errors.any? %>
             <div class="errors">
@@ -16,36 +16,31 @@
             <h3><%= t('.account_information') %></h3>
 
             <div class="form-floating">
-                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: t('.email') %>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: t('.email'), required: true %>
                 <%= f.label :email, class: 'form-label' %><br />
             </div>
 
             <div class="form-floating">
-                <%= f.email_field :email_confirmation, value: @user.email, autocomplete: "email", class: 'form-control', placeholder: t('.email_confirm') %>
+                <%= f.email_field :email_confirmation, value: @user.email, autocomplete: "email", class: 'form-control', placeholder: t('.email_confirm'), required: true %>
                 <%= f.label :email_confirmation, class: 'form-label' %><br />
             </div>
 
             <div class="form-floating confirmed">
-              <%= f.password_field :password, autocomplete: "new-password", 'aria-labelledby': 'pwd-length', class: 'form-control', placeholder: t('.password') %>
+              <%= f.password_field :password, autocomplete: "new-password", 'aria-labelledby': 'pwd-length', class: 'form-control', placeholder: t('.password'), required: true %>
               <%= f.label :password, class: 'form-label' %>
               <div id="pwd-length" class="form-text"><%= t('.min_length', length: 10) %></div>
             </div>
 
             <div class="form-floating confirmed">
-              <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', placeholder: t('.password_confirmation') %>
+              <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', placeholder: t('.password_confirmation'), required: true %>
               <%= f.label :password_confirmation, class: 'form-label' %><br />
             </div>
 
-            <% if current_user.admin? %>
+            <% if @user.new_record? && current_user.admin? %>
                 <div>
                     <%= f.label :role, class: 'form-label' %>
-                    <%= f.select :role, [["Admin", "admin"], ["Area Manager", "area_manager"], ["School Manager", "school_manager"], ["Parent", "customer"]], class: 'form-select' %>
+                    <%= f.select :role, [["Admin", "admin"], ["Area Manager", "area_manager"], ["School Manager", "school_manager"], ["Parent", "customer"]], {}, { class: 'form-select' } %>
                 </div>
-            <% end %>
-
-            <%# TODO: Pundit this in controller to not allow changes %>
-            <% if @user.new_record? && !current_user.admin? %>
-                <%= f.hidden_field :role, value: 'customer' %>
             <% end %>
         </div>
 
@@ -55,40 +50,40 @@
             <div>
                 <%= f.label :first_name, t('.name'), class: 'form-label' %><br />
                 <div class="input-group">
-                    <%= text_field_tag "user[first_name]", (@user.name ? @user.name.split[0] : ''), class: 'form-control' %>
+                    <%= text_field_tag "user[first_name]", (@user.name ? @user.name.split[0] : ''), class: 'form-control', required: true %>
                     <span class="input-group-text"></span>
-                    <%= text_field_tag "user[family_name]", (@user.name ? @user.name.split[1] : ''), class: 'form-control' %>
+                    <%= text_field_tag "user[family_name]", (@user.name ? @user.name.split[1] : ''), class: 'form-control', required: true %>
                 </div>
             </div>
 
             <div>
                 <%= f.label :kana_first, t('.kana_name'), class: 'form-label' %><br />
                 <div class="input-group">
-                    <%= text_field_tag "user[kana_first]", (@user.name ? @user.katakana_name.split[0] : ''), class: 'form-control' %>
+                    <%= text_field_tag "user[kana_first]", (@user.name ? @user.katakana_name.split[0] : ''), class: 'form-control', required: true %>
                     <span class="input-group-text"></span>
-                    <%= text_field_tag "user[kana_family]", (@user.name ? @user.katakana_name.split[1] : ''), class: 'form-control' %>
+                    <%= text_field_tag "user[kana_family]", (@user.name ? @user.katakana_name.split[1] : ''), class: 'form-control', required: true %>
                 </div>
             </div>
 
             <% if current_user.staff? %>
                 <% if @user.new_record? %>
                     <div class="form-floating">
-                        <%= f.text_field :postcode, autocomplete: "postcode", class: 'form-control', placeholder: t(',postcode') %>
+                        <%= f.text_field :postcode, autocomplete: "postcode", class: 'form-control', placeholder: t(',postcode'), required: true %>
                         <%= f.label :postcode, t('.postcode'), class: 'form-label' %><br />
                     </div>
 
                     <div class="form-floating">
-                        <%= f.text_field :prefecture, class: 'form-control', placeholder: t('prefecture') %>
+                        <%= f.text_field :prefecture, class: 'form-control', placeholder: t('prefecture'), required: true %>
                         <%= f.label :prefecture, t('.prefecture'), class: 'form-label' %><br />
                     </div>
 
                     <div class="form-floating">
-                        <%= f.text_area :address, autocomplete: "address", class: 'form-control', placeholder: t('.address') %>
+                        <%= f.text_area :address, autocomplete: "address", class: 'form-control', placeholder: t('.address'), required: true %>
                         <%= f.label :address, t('.address'), class: 'form-label' %><br />
                     </div>
 
                     <div class="form-floating">
-                        <%= f.telephone_field :phone, autocomplete: "phone", class: 'form-control', placeholder: t('.phone') %>
+                        <%= f.telephone_field :phone, autocomplete: "phone", class: 'form-control', placeholder: t('.phone'), required: true %>
                         <%= f.label :phone, t('.phone'), class: 'form-label' %><br />
                     </div>
                 <% else %>  
@@ -97,19 +92,19 @@
                         <div class="d-none"
                              data-conditional-target="target">
                             <div class="form-floating">
-                            <%= f.text_field :postcode, autocomplete: "postcode", class: 'form-control', placeholder: t(',postcode') %>
+                            <%= f.text_field :postcode, autocomplete: "postcode", class: 'form-control', placeholder: t(',postcode'), required: true %>
                             <%= f.label :postcode, t('.postcode'), class: 'form-label' %><br />
                             </div>
                             <div class="form-floating">
-                            <%= f.text_field :prefecture, class: 'form-control', placeholder: t('prefecture') %>
+                            <%= f.text_field :prefecture, class: 'form-control', placeholder: t('prefecture'), required: true %>
                             <%= f.label :prefecture, t('.prefecture'), class: 'form-label' %><br />
                             </div>
                             <div class="form-floating">
-                            <%= f.text_area :address, autocomplete: "address", class: 'form-control', placeholder: t('.address') %>
+                            <%= f.text_area :address, autocomplete: "address", class: 'form-control', placeholder: t('.address'), required: true %>
                             <%= f.label :address, t('.address'), class: 'form-label' %><br />
                             </div>
                             <div class="form-floating">
-                                <%= f.telephone_field :phone, autocomplete: "phone", class: 'form-control', placeholder: t('.phone') %>
+                                <%= f.telephone_field :phone, autocomplete: "phone", class: 'form-control', placeholder: t('.phone'), required: true %>
                                 <%= f.label :phone, t('.phone'), class: 'form-label' %><br />
                             </div>
                         </div>

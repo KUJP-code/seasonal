@@ -37,14 +37,14 @@
         <% end %>
 
     <% else %>
-        <%= form_with url: find_child_path, method: :get, id: 'claim_child_form', html: { class: 'd-grid gap-3' } do |f| %>
+        <%= form_with url: find_child_path, method: :get, id: 'claim_child_form', html: { class: 'd-grid gap-3 needs-validation', novalidate: true } do |f| %>
             <%= f.hidden_field :parent_id, value: parent.id %>
             <div class="form-floating">
-                <%= f.search_field :ssid, class: 'form-control', placeholder: t('.ssid') %>
+                <%= f.search_field :ssid, class: 'form-control', placeholder: t('.ssid'), required: true %>
                 <%= f.label :ssid, t('.ssid'), class: 'form-label'  %>
             </div>
             <div class="form-floating">
-                <%= f.date_field :bday, class: 'form-control', placeholder: t('.bday') %>
+                <%= f.date_field :bday, class: 'form-control', placeholder: t('.bday'), required: true %>
                 <%= f.label :bday, t('.bday'), class: 'form-label'  %>
             </div>
             <%= f.submit t('.find_child'), class: 'btn btn-primary' %>
