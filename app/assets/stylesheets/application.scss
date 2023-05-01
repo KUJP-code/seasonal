@@ -234,7 +234,6 @@ main#child_show .card {
 
 // Devise
 
-main#login,
 main#sign-up {
   justify-content: flex-end;
   padding: 0;
@@ -242,11 +241,26 @@ main#sign-up {
   height: 100vh;
 }
 
-main#login {
+#login {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+#login .row {
+  height: 100vh;
+}
+
+#login_splash {
   background-image: image-url("login_splash.jpg");
   background-position: 50% -30px;
   background-size: cover;
   background-repeat: no-repeat;
+  height: 60%;
+  margin-bottom: -20%;
+  @media (min-width: 992px) {
+    background-image: image-url("sm_login_splash.png");
+    background-position: center;
+  }
 }
 
 #reset-pass {
