@@ -1,49 +1,49 @@
-<div class="fields_wrapper" data-new-record="<%= f.object.new_record? %>">
+<div class="fields_wrapper d-grid gap-3 justify-content-center" data-new-record="<%= f.object.new_record? %>">
     <%= f.hidden_field :event_id %>
 
     <h2><%= t('.slot_info') %></h2>
 
-    <div class="field">
-        <%= f.label :image, t('.event_image'), class: 'form-label' %><br />
-        <%= f.file_field :image, class: 'form-control' %>
+    <div>
+        <%= f.label :image, t('.slot_image'), class: 'form-label' %><br />
+        <%= f.file_field :image, class: 'form-control', required: true %>
     </div>
 
-    <div class="field">
-        <%= f.label :name, t('.name') %><br />
-        <%= f.text_field :name %>
+    <div class="form-floating">
+        <%= f.text_field :name, class: 'form-control', placeholder: t('.name'), required: true  %>
+        <%= f.label :name, t('.name'), class: 'form-label' %><br />
     </div>
 
-    <div class="field">
-        <%= f.label :start_time, t('.start_time') %><br />
-        <%= f.datetime_field :start_time %>
+    <div class="form-floating">
+        <%= f.datetime_field :start_time, class: 'form-control', placeholder: t('.start_time'), required: true %>
+        <%= f.label :start_time, t('.start_time'), class: 'form-label' %><br />
     </div>
         
-    <div class="field">
-        <%= f.label :end_time, t('.end_time') %><br />
-        <%= f.datetime_field :end_time %>
+    <div class="form-floating">
+        <%= f.datetime_field :end_time, class: 'form-control', placeholder: t('.end_time'), required: true %>
+        <%= f.label :end_time, t('.end_time'), class: 'form-label' %><br />
     </div>
         
-    <div class="field">
-        <%= f.label :description, t('.description') %><br />
-        <%= f.text_area :description %>
+    <div class="form-floating">
+        <%= f.text_area :description, class: 'form-control', placeholder: t('.description'), required: true %>
+        <%= f.label :description, t('.description'), class: 'form-label' %><br />
     </div>
 
-    <div class="field">
+    <div>
         <%= f.label :category, t('.category') %><br />
-        <%= f.select :category, [%w[Seasonal seasonal], %w[Special special], %w[Party party]] %>
+        <%= f.select :category, [%w[Seasonal seasonal], %w[Special special], %w[Party party]], {}, {class: 'form-select'} %>
     </div>
 
-    <div class="field">
-        <%= f.label :morning, t('.morning') %><br />
-        <%= f.check_box :morning %>
+    <div class="form-check">
+        <%= f.check_box :morning, class: 'form-check-input' %>
+        <%= f.label :morning, t('.morning'), class: 'form-check-label' %><br />
     </div>
 
     <% unless f.object.new_record? %>
-        <div class="field">
-            <%= f.label :_destroy, t('.destroy') %><br />
-            <%= f.check_box :_destroy %>
+        <div class="form-check">
+            <%= f.check_box :_destroy, class: 'form-check-input' %>
+            <%= f.label :_destroy, t('.destroy'), class: 'form-check-label' %><br />
         </div>
     <% end %>
 
-    <%= button_tag t('.remove_slot'), data: { action: "fields#remove" }, class: 'btn btn-primary' if f.object.new_record? %>
+    <%= button_tag t('.remove_slot'), data: { action: "fields#remove" }, class: 'btn btn-danger' if f.object.new_record? %>
 </div>
