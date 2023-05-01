@@ -2,8 +2,8 @@
   <div class="row">
     <div id="login_splash" class="col-12 col-lg-8"></div>
     
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'col-12 col-lg-4 needs-validation d-grid gap-3 p-3' }) do |f| %>
-      <div id="login_logo" class=""></div>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'col-12 col-lg-4 needs-validation d-grid gap-3 p-3', novalidate: true }) do |f| %>
+      <div id="login_logo"></div>
 
       <h2><%= t('.login') %></h2>
       <div class="form-floating">
@@ -14,6 +14,12 @@
                               placeholder: t('.email'),
                               required: true %>
         <%= f.label :email, t('.email'), class: 'form-label' %><br />
+        <div class="valid-feedback">
+          <%= t('.good') %>
+        </div>
+        <div class="invalid-feedback">
+          <%= t('.enter_email') %>
+        </div>
       </div>
     
       <div class="form-floating">
@@ -24,6 +30,12 @@
                                         'aria-labelledby': 'reset-pass' %>
         <%= f.label :password, class: 'form-label' %>
         <div class=" form-text" id="reset-pass"><%= link_to t('.forgot_password'), new_password_path(resource_name) %></div>
+        <div class="valid-feedback">
+          <%= t('.good') %>
+        </div>
+        <div class="invalid-feedback">
+          <%= t('.enter_pwd') %>
+        </div>
       </div>
     
       <% if devise_mapping.rememberable? %>
