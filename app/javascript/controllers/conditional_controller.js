@@ -19,7 +19,7 @@ export default class extends Controller {
         target.value = "なし";
         target.readOnly = true;
         break;
-      case "はい":
+      case "有":
         target.removeAttribute("readOnly");
         target.value = "";
         break;

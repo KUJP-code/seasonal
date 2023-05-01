@@ -1,8 +1,6 @@
 <div class="card">
     <%= turbo_frame_tag "add_child" do %>
-        <%= form_with model: @child, class: 'child_form', html: { class: 'd-grid gap-3 needs-validation', novalidate: true } do |f| %>
-            <%= f.hidden_field :parent_id %>
-    
+        <%= form_with model: @child, class: 'child_form', html: { class: 'd-grid gap-3 needs-validation', novalidate: true } do |f| %>    
             <% if @child.errors.any? %>
                 <div class="errors">
                     <h3><%= t('.unable_to_save', child: @child.name) %></h3>
@@ -16,32 +14,41 @@
     
             <div class="personal_info d-grid gap-3 p-5">
                 <h3><%= t('.personal_info') %></h3>
+
+                <% if @child.parent_id %>
+                    <%= f.hidden_field :parent_id %>
+                <% else %>
+                    <div>
+                        <%= f.label :parent_id, t('.parent') %>
+                        <%= f.collection_select :parent_id, @current_user.managed_schools.reduce([]) { |a, school| a + school.parents }, :id, :name, {}, class: 'form-select' %>
+                    </div>
+                <% end %>
     
                 <div>
                     <%= f.label :first_name, t('.name'), class: 'form-label' %><br />
                     <div class="input-group">
-                        <%= text_field_tag "child[first_name]", (@child.name.split[0] unless @child.name.nil?), class: 'form-control' %>
+                        <%= text_field_tag "child[first_name]", (@child.name.split[0] unless @child.name.nil?), class: 'form-control', required: true %>
                         <span class="input-group-text"></span>
-                        <%= text_field_tag "child[family_name]", (@child.name.split[1] unless @child.name.nil?), class: 'form-control' %>
+                        <%= text_field_tag "child[family_name]", (@child.name.split[1] unless @child.name.nil?), class: 'form-control', required: true %>
                     </div>
                 </div>
     
                 <div>
                     <%= f.label :kana_first, t('.kana'), class: 'form-label' %><br />
                     <div class="input-group">
-                        <%= text_field_tag "child[kana_first]", (@child.katakana_name.split[0] unless @child.name.nil?), class: 'form-control' %>
+                        <%= text_field_tag "child[kana_first]", (@child.katakana_name.split[0] unless @child.name.nil?), class: 'form-control', required: true %>
                         <span class="input-group-text"></span>
-                        <%= text_field_tag "child[kana_family]", (@child.katakana_name.split[1] unless @child.name.nil?), class: 'form-control' %>
+                        <%= text_field_tag "child[kana_family]", (@child.katakana_name.split[1] unless @child.name.nil?), class: 'form-control', required: true %>
                     </div>
                 </div>
     
                 <div class="form-floating">
-                    <%= f.text_field :en_name, autocomplete: "english-name", class: 'form-control', placeholder: t('.en_name') %>
+                    <%= f.text_field :en_name, autocomplete: "english-name", class: 'form-control', placeholder: t('.en_name'), required: true %>
                     <%= f.label :en_name, t('.en_name'), class: 'form-label' %><br />
                 </div>
     
                 <div class="form-floating">
-                    <%= f.date_field :birthday, autocomplete: "birth-date", class: 'form-control', placeholder: t('.birthday') %>
+                    <%= f.date_field :birthday, autocomplete: "birth-date", class: 'form-control', placeholder: t('.birthday'), required: true %>
                     <%= f.label :birthday, t('.birthday'), class: 'form-label' %><br />
                 </div>
     
@@ -55,12 +62,12 @@
                         <option value="なし" <%= "selected='selected'" if f.object.allergies == 'なし' %>>なし</option>
                         <option value="有">有</option>
                     </select>
-                    <%= f.text_field :allergies, value: f.object.allergies, data: { conditional_target: 'target' }, class: 'form-control', readonly: true %>
+                    <%= f.text_field :allergies, value: f.object.allergies, data: { conditional_target: 'target' }, class: 'form-control', readonly: true, required: true %>
                 </div>
     
                 <div>
                     <%= f.label :grade, t('.grade'), class: 'form-label' %><br />
-                    <%= f.select :grade, Child.grades.reject { |k, _| %w[満１歳 満２歳 年々少 中学１年 中学２年].include?(k) }.map { |k, v| v = k }, {}, { class: 'form-select' } %>
+                    <%= f.select :grade, Child.grades.reject { |k, _| %w[満１歳 満２歳 年々少 中学１年 中学２年].include?(k) }.map { |k, v| v = k }, {}, { class: 'form-select', required: true } %>
                 </div>
     
                 <% if @child.new_record? %>
@@ -89,17 +96,17 @@
     
                 <div>
                     <%= f.label :school, t('.school'), class: 'form-label' %><br />
-                    <%= f.collection_select :school_id, School.order(:name), :id, :name, {}, { class: 'form-select' } %>
+                    <%= f.collection_select :school_id, School.order(:name), :id, :name, {}, { class: 'form-select', required: true } %>
                 </div>
     
                 <div>
                     <%= f.label :category, t('.category'), class: 'form-label' %><br />
-                    <%= f.select :category, [["#{t('.external')}", "external"], ["#{t('.internal')}", "internal"], ["#{t('.reservation')}", "reservation"]], {}, { class: 'form-select' } %>
+                    <%= f.select :category, [["#{t('.external')}", "external"], ["#{t('.internal')}", "internal"], ["#{t('.reservation')}", "reservation"]], {}, { class: 'form-select', required: true } %>
                 </div>
     
                 <div>
                     <%= f.label :photos, t('.photos'), class: 'form-label' %><br />
-                    <%= f.select :photos, [['-', nil], %w[はい はい], %w[いいえ いいえ]], {}, { class: 'form-select' } %>
+                    <%= f.select :photos, [['-', nil], %w[はい はい], %w[いいえ いいえ]], {}, { class: 'form-select', required: true } %>
                 </div>
     
                 <% if current_user.customer? && f.object.new_record? %>
@@ -111,7 +118,7 @@
     
                 <% if current_user.staff? %>
                     <div class="form-floating">
-                        <%= f.text_field :ssid, placeholder: t('.ssid'), class: 'form-control' %>
+                        <%= f.text_field :ssid, placeholder: t('.ssid'), class: 'form-control', required: true %>
                         <%= f.label :ssid, t('.ssid'), class: 'form-label' %><br />
                     </div>
     
