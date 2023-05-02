@@ -176,7 +176,7 @@ class InvoicesController < ApplicationController
   end
 
   def send_emails(invoice)
-    InvoiceMailer.updated_notif(invoice).deliver_now
-    InvoiceMailer.sm_updated_notif(invoice).deliver_now
+    InvoiceMailer.with(invoice: invoice, user: invoice.child.parent).updated_notif.deliver_now
+    InvoiceMailer.with(invoice: invoice, user: invoice.school.managers.first).sm_updated_notif.deliver_now
   end
 end

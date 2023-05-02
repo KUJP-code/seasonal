@@ -1,1 +1,4 @@
 <%= yield %>
+
+<%= "#{t('.unsubscribe')}: #{@unsubscribe_url}" if @unsubscribe_url.present? %>
+<%= "#{t('.manage_subscriptions')} #{@mailer_subscription_url}" if @mailer_subscription_url.present? %> 

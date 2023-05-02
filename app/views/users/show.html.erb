@@ -50,7 +50,10 @@
             <%= render next_event, child: @user.children.first %>
         <% end %>
 
-        <div class="card"><%= link_to t('.user_bookings', user: @user.name), invoices_path(user: @user.id), class: 'btn btn-primary' %></div>
+        <div class="card">
+            <%= link_to t('.user_bookings', user: @user.name), invoices_path(user: @user.id), class: 'btn btn-primary' %>
+            <%= link_to t('.email_prefs'), mailer_subscriptions_path, class: 'btn btn-primary' %>
+        </div>
     <% end %>
 
     <% if @user.admin? && current_user.admin? %>
