@@ -26,11 +26,10 @@ class InvoicesController < ApplicationController
 
     if @invoice.update(invoice_params)
       @invoice.calc_cost
-      flash_success
-      redirect_to invoice_path(@invoice)
+      send_emails(@invoice)
+      redirect_to invoice_path(@invoice), notice: t('update_success')
     else
-      flash_failure
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_entity, notice: t('update_failure')
     end
   end
 
@@ -134,7 +133,8 @@ class InvoicesController < ApplicationController
 
     og_regs.each do |o_reg|
       # Skip if already on target invoice
-      next if already_registered?(t_regs, o_reg) || (o_reg.registerable_type == 'TimeSlot' && o_reg.registerable.closed?)
+      next if already_registered?(t_regs,
+                                  o_reg) || (o_reg.registerable_type == 'TimeSlot' && o_reg.registerable.closed?)
 
       # If not on target invoice, add registration
       target_invoice.registrations.create!(
@@ -147,14 +147,6 @@ class InvoicesController < ApplicationController
 
     target_invoice.save
     target_invoice
-  end
-
-  def flash_failure
-    flash.now[:alert] = t('.failure')
-  end
-
-  def flash_success
-    flash.now[:notice] = t('.success')
   end
 
   def merge_invoices(from, to)
@@ -181,5 +173,10 @@ class InvoicesController < ApplicationController
       coupons_attributes: [:code],
       adjustments_attributes: %i[id reason change invoice_id _destroy]
     )
+  end
+
+  def send_emails(invoice)
+    InvoiceMailer.updated_notif(invoice).deliver_later
+    InvoiceMailer.sm_updated_notif(invoice).deliver_later
   end
 end

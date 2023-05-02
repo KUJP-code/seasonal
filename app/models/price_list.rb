@@ -31,7 +31,7 @@ class PriceList < ApplicationRecord
     return unless courses.nil?
 
     hash = {
-      '1' => course1,'5' => course5, '10' => course10,
+      '1' => course1, '5' => course5, '10' => course10,
       '15' => course15, '20' => course20, '25' => course25,
       '30' => course30, '35' => course35, '40' => course40,
       '45' => course45, '50' => course50
