@@ -6,6 +6,7 @@ class Invoice < ApplicationRecord
 
   belongs_to :child
   delegate :parent, to: :child
+  delegate :school, to: :child
   belongs_to :event
 
   has_many :registrations, dependent: :destroy

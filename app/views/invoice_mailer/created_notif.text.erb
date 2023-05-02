@@ -1,0 +1,6 @@
+<%= "Hello, #{@parent.name}" %>
+Your booking has been confirmed!
+
+<%= strip_tags @invoice.summary %>
+
+View your invoice at this URL: <%= invoice_url(id: @invoice.id) %>
