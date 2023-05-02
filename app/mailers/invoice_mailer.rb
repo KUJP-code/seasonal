@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
+# Sends an invoice update notification to the parent and SM
 class InvoiceMailer < ApplicationMailer
-  default from: 'bookings@kids-up.app'
-
   def updated_notif(invoice)
     @invoice = invoice
     @parent = @invoice.child.parent
