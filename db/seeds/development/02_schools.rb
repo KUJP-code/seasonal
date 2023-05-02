@@ -194,3 +194,9 @@ School.all.each do |school|
 end
 
 puts 'Added schools and created a manager for each'
+
+User.all.each do |user|
+  user.confirm
+end
+
+puts 'Confirm emails for all users'

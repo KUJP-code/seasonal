@@ -48,6 +48,8 @@ non_member.children.create!([
   }
 ])
 
+non_member.confirm
+
 member = User.create!(
   email: 'member@gmail.com',
   password: ENV['MEMBER_PASS'],
@@ -93,6 +95,8 @@ member.children.create!([
     school: School.all.find_by(name: '大倉山')
   }
 ])
+
+member.confirm
 
 member.children.each do |child|
 child.create_regular_schedule!(

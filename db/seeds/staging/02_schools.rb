@@ -190,3 +190,7 @@ School.all.each do |school|
     pin: '0000'
   )
 end
+
+User.all.each do |user|
+  user.confirm
+end
