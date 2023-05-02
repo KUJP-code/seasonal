@@ -129,7 +129,7 @@ class User < ApplicationRecord
       user: self,
       mailer: mailer,
       subscribed: false
-    ).present?
+    ).nil?
   end
 
   private
