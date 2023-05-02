@@ -21,7 +21,7 @@ School.all.each do |school|
         birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
         ssid: Faker::Number.unique.number,
         ele_school_name: Faker::GreekPhilosophers.name,
-        photos: 'OK',
+        photos: 'はい',
         allergies: 'peanuts',
         parent: parent,
         category: :internal,
@@ -44,7 +44,7 @@ School.all.each do |school|
     birthday: 'Wed, 20 Feb 2020',
     ssid: Faker::Number.unique.number(digits: 5),
     ele_school_name: Faker::GreekPhilosophers.name,
-    photos: 'OK',
+    photos: 'いいえ',
     allergies: 'pizza',
     parent: nil
   )

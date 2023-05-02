@@ -91,9 +91,9 @@ class User < ApplicationRecord
   }
 
   # Include default devise modules. Others available are:
-  # :confirmable, :trackable and :omniauthable
+  # :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :timeoutable,
-         :recoverable, :rememberable, :validatable, :lockable
+         :recoverable, :rememberable, :validatable, :lockable, :confirmable
 
   # Public methods
   # Finds the list of events at their children's schools
