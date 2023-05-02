@@ -1,6 +1,6 @@
 School.all.each do |school|
   10.times do
-    parent = User.create!(
+    parent = User.new(
       first_name: Faker::Name.first_name,
       family_name: Faker::Name.last_name,
       kana_first: Faker::Name.first_name.kana,
@@ -10,6 +10,9 @@ School.all.each do |school|
       address: Faker::Address.full_address,
       phone: Faker::PhoneNumber.phone_number
     )
+
+    parent.skip_confirmation_notification!
+    parent.save!
 
     2.times do
       school.children.create!(

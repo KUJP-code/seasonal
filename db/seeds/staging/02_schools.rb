@@ -178,7 +178,7 @@ translation_hash = {
 }
 
 School.all.each do |school|
-  school.managers << User.create!(
+  sm = User.new(
     email: translation_hash[school.name],
     password: "schoolschool",
     name: "#{school.name}",
@@ -189,6 +189,10 @@ School.all.each do |school|
     phone: Faker::PhoneNumber.phone_number,
     pin: '0000'
   )
+  sm.skip_confirmation_notification!
+  sm.save!
+
+  school.managers << sm
 end
 
 User.all.each do |user|

@@ -68,7 +68,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_02_071408) do
     t.string "allergies"
     t.bigint "ssid"
     t.string "ele_school_name"
-    t.integer "photos"
+    t.integer "photos", default: 0
     t.boolean "needs_hat", default: true
     t.boolean "received_hat", default: false
     t.datetime "created_at", null: false

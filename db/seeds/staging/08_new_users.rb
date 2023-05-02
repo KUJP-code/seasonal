@@ -1,6 +1,6 @@
 # This file is last to simulate users who have just created an account
 
-non_member = User.create!(
+non_member = User.new(
   email: 'non_member@gmail.com',
   password: ENV['NON_MEMBER_PASS'],
   first_name: Faker::Name.first_name,
@@ -11,6 +11,10 @@ non_member = User.create!(
   address: Faker::Address.full_address,
   phone: Faker::PhoneNumber.phone_number
 )
+
+non_member.skip_confirmation_notification!
+non_member.save!
+non_member.confirm
 
 non_member.children.create!([
   {
@@ -48,9 +52,7 @@ non_member.children.create!([
   }
 ])
 
-non_member.confirm
-
-member = User.create!(
+member = User.new(
   email: 'member@gmail.com',
   password: ENV['MEMBER_PASS'],
   first_name: Faker::Name.first_name,
@@ -61,6 +63,10 @@ member = User.create!(
   address: Faker::Address.full_address,
   phone: Faker::PhoneNumber.phone_number
 )
+
+member.skip_confirmation_notification!
+member.save!
+member.confirm
 
 member.children.create!([
   {
@@ -95,8 +101,6 @@ member.children.create!([
     school: School.all.find_by(name: '大倉山')
   }
 ])
-
-member.confirm
 
 member.children.each do |child|
 child.create_regular_schedule!(

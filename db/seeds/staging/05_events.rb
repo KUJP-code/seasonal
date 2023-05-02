@@ -7,7 +7,7 @@ School.all.each do |school|
     member_prices_id: 1,
     non_member_prices_id: 2,
     goal: 1_000_000
-)
+  )
 end
 
 Event.where(name: 'Spring School 2023').each do |event|
