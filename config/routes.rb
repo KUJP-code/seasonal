@@ -45,6 +45,9 @@ Rails.application.routes.draw do
   # Health check endpoint for EB load balancer
   get '/health_check', to: proc { [200, {}, ['success']] }
 
+  # Route to auto-unsubscribe from emails
+  resources :mailer_subscription_unsubcribes, only: %i[show update]
+
   # Defines the root path route ("/")
   authenticated :user do
     root to: 'users#profile', as: :authenticated_root

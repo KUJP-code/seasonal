@@ -42,6 +42,7 @@ class User < ApplicationRecord
                                 source: :registerable,
                                 source_type: 'Option'
   has_many :events, -> { order(start_date: :asc).distinct }, through: :time_slots
+  has_many :mailer_subscriptions, dependent: :destroy
 
   # Set full name from submitted first and last names
   before_validation :set_name, :set_kana
@@ -120,6 +121,15 @@ class User < ApplicationRecord
   # Checks if User is a member of staff
   def staff?
     admin? || area_manager? || school_manager?
+  end
+
+  # Checks if user is subscribed to a mailer (opt-out strategy)
+  def subscribed_to_mailer?(mailer)
+    MailerSubscription.find_by(
+      user: self,
+      mailer: mailer,
+      subscribed: false
+    ).present?
   end
 
   private

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_02_071408) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -123,6 +123,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
     t.bigint "event_id", null: false
     t.index ["child_id"], name: "index_invoices_on_child_id"
     t.index ["event_id"], name: "index_invoices_on_event_id"
+  end
+
+  create_table "mailer_subscriptions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.boolean "subscribed"
+    t.string "mailer", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "mailer"], name: "index_mailer_subscriptions_on_user_id_and_mailer", unique: true
+    t.index ["user_id"], name: "index_mailer_subscriptions_on_user_id"
   end
 
   create_table "managements", force: :cascade do |t|
@@ -256,6 +266,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_031027) do
   add_foreign_key "events", "schools"
   add_foreign_key "invoices", "children"
   add_foreign_key "invoices", "events"
+  add_foreign_key "mailer_subscriptions", "users"
   add_foreign_key "managements", "users", column: "manager_id"
   add_foreign_key "registrations", "children"
   add_foreign_key "registrations", "invoices"
