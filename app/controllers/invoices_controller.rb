@@ -176,7 +176,7 @@ class InvoicesController < ApplicationController
   end
 
   def send_emails(invoice)
-    InvoiceMailer.updated_notif(invoice).deliver_later
-    InvoiceMailer.sm_updated_notif(invoice).deliver_later
+    InvoiceMailer.updated_notif(invoice).deliver_now
+    InvoiceMailer.sm_updated_notif(invoice).deliver_now
   end
 end
