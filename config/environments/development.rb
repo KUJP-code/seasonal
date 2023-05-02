@@ -47,22 +47,8 @@ Rails.application.configure do
 
   # config.action_mailer.perform_caching = false
 
-  # # Configure default mailer for Devise
-  # config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-
-  # Testing SES in dev
-  config.action_mailer.perform_deliveries = true
-  config.x.mail_from = %(Kids Up Events <no-reply@kids-up.app>)
-  config.action_mailer.default_url_options = { host: 'kids-up.app' }
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { 
-    address: 'email-smtp.ap-northeast-1.amazonaws.com',
-    port: 587,
-    authentication: :plain,
-    user_name: ENV['SES_USERNAME'],
-    password: ENV['SES_PASSWORD'],
-    enable_starttls_auto: true
-  }
+  # Configure default mailer for Devise
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
   # Use Rspec path for mailer previews
   config.action_mailer.preview_path = "#{Rails.root}/spec/mailers/previews"

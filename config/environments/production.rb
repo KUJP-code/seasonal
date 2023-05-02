@@ -64,6 +64,7 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "db_prototype_v2_production"
 
+  config.action_mailer.perform_deliveries = true
   config.x.mail_from = %(Kids Up Events <no-reply@kids-up.app>)
   config.action_mailer.default_url_options = { host: 'kids-up.app' }
   config.action_mailer.delivery_method = :smtp
