@@ -1,0 +1,21 @@
+<% if mailer_subscription.new_record? %>
+  <div class="card justify-content-center align-items-center">
+      <li>
+        <p><%= mailer_subscription.description %></p>
+        <%= button_to mailer_subscriptions_path, class: 'btn btn-primary', params: { mailer_subscription:  mailer_subscription.attributes } do %>
+          <%= mailer_subscription.call_to_action %>
+        <% end %>
+        <hr/>
+      </li>
+  </div>
+<% else %>
+  <div class="card justify-content-center align-items-center">
+      <li>
+        <p><%= mailer_subscription.description %></p>
+        <%= button_to mailer_subscription_path(mailer_subscription), class: 'btn btn-primary', method: :put do %>
+          <%= mailer_subscription.call_to_action %>
+        <% end %>
+        <hr/>
+      </li>
+  </div>
+<% end %>

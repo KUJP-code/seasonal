@@ -17,6 +17,9 @@ Rails.application.routes.draw do
       resources :time_slots
       resources :users
 
+      # Mailer subscription routes
+      resources :mailer_subscriptions, only: %i[index create update]
+
       # Non-REST routes for Children controller
       get 'child/find_child', to: 'children#find_child', as: :find_child
 
