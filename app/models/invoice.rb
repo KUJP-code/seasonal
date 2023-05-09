@@ -186,10 +186,11 @@ class Invoice < ApplicationRecord
                       "<div class='slot_regs'><p>#{slot.name} (午後)</p>\n"
                     end
 
-      slot.options.order(:name).each do |opt|
-        opt_reg = opt_regs.find_by(registerable_id: opt.id)
+      # Show details for all registered options, even unsaved
+      opt_regs.select { |reg| slot.options.ids.include?(reg.registerable_id) }.each do |opt_reg|
         next if opt_reg.nil? || @ignore_opts.include?(opt_reg.id)
 
+        opt = opt_reg.registerable
         @breakdown << "<p> - #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>\n"
       end
       @breakdown << '</div>'
