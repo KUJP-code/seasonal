@@ -21,29 +21,20 @@ Child.all.find_each(batch_size: 100) do |child|
 
   slots.each do |slot|
     if slot.id.even?
-      child.registrations.create!(registerable: slot, invoice: Invoice.find_by(child: child, in_ss: false))
-    else
-      child.registrations.create!(registerable: slot, invoice: Invoice.find_by(child: child, in_ss: true))
-    end
-  end
-end
-
-puts 'Registered children for 10 random time slots at each event at their school'
-
-Child.all.find_each(batch_size: 100) do |child|
-  child.time_slots.each do |slot|
-    invoice = Invoice.find_by(child: child, event: slot.event)
-    if child.id.odd?
-      child.registrations.create!(registerable: slot.options.arrival.last, invoice: invoice) unless slot.options.arrival.empty?
-      child.registrations.create!(registerable: slot.options.departure.last, invoice: invoice) unless slot.options.departure.empty?
-    else
+      invoice = Invoice.find_by(child: child, in_ss: false)
+      child.registrations.create!(registerable: slot, invoice: invoice)
       child.registrations.create!(registerable: slot.options.regular.last, invoice: invoice) unless slot.options.regular.empty?
       child.registrations.create!(registerable: slot.options.meal.last, invoice: invoice) unless slot.options.meal.empty?
+    else
+      invoice = Invoice.find_by(child: child, in_ss: true)
+      child.registrations.create!(registerable: slot, invoice: invoice)
+      child.registrations.create!(registerable: slot.options.arrival.last, invoice: invoice) unless slot.options.arrival.empty?
+      child.registrations.create!(registerable: slot.options.departure.last, invoice: invoice) unless slot.options.departure.empty?
     end
   end
 end
 
-puts "Registered kids for an option at each slot they're attending"
+puts 'Registered children for 10 random time slots at their school and up to 2 options for each'
 
 User.all.customer.select{|c| c.id.odd?}.each do |user|
   user.children.first.events.each do |event|

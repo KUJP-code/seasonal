@@ -19,21 +19,15 @@ Child.all.find_each(batch_size: 100) do |child|
 
   slots.each do |slot|
     if slot.id.even?
-      child.registrations.create!(registerable: slot, invoice: Invoice.find_by(child: child, in_ss: false))
+      invoice = Invoice.find_by(child: child, in_ss: false
+      child.registrations.create!(registerable: slot, invoice: invoice)
+      child.registrations.create!(registerable: slot.options.regular.last, invoice: invoice) unless slot.options.regular.empty?
+      child.registrations.create!(registerable: slot.options.meal.last, invoice: invoice) unless slot.options.meal.empty?
     else
-      child.registrations.create!(registerable: slot, invoice: Invoice.find_by(child: child, in_ss: true))
-    end
-  end
-end
-
-Child.all.find_each(batch_size: 100) do |child|
-  child.time_slots.each do |slot|
-    if child.id.odd?
-      child.registrations.create!(registerable: slot.options.arrival.last, invoice: Invoice.find_by(child: child, event: slot.event)) unless slot.options.arrival.empty?
-      child.registrations.create!(registerable: slot.options.departure.last, invoice: Invoice.find_by(child: child, event: slot.event)) unless slot.options.departure.empty?
-    else
-      child.registrations.create!(registerable: slot.options.regular.last, invoice: Invoice.find_by(child: child, event: slot.event)) unless slot.options.regular.empty?
-      child.registrations.create!(registerable: slot.options.meal.last, invoice: Invoice.find_by(child: child, event: slot.event)) unless slot.options.meal.empty?
+      invoice = Invoice.find_by(child: child, in_ss: true)
+      child.registrations.create!(registerable: slot, invoice: invoice)
+      child.registrations.create!(registerable: slot.options.arrival.last, invoice: invoice) unless slot.options.arrival.empty?
+      child.registrations.create!(registerable: slot.options.departure.last, invoice: invoice) unless slot.options.departure.empty?
     end
   end
 end
