@@ -35,7 +35,7 @@ export default class extends Controller {
     this.optCountTarget.innerHTML = `オプション：${optCount.toString()}つ`;
 
     const finalCost = optionCost + courseCost + adjustmentChange;
-    this.finalCostTarget.innerHTML = `Total Cost: ${finalCost}円`;
+    this.finalCostTarget.innerHTML = `合計: ${finalCost}円`;
   }
 
   // Finds the cheapest price for the given number of regs

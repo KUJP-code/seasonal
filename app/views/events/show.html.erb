@@ -121,7 +121,7 @@
                                     <% @member_prices.courses.each do |course, price| %>
                                         <tr>
                                             <td><%= course %></td>
-                                            <td><%= price %></td>
+                                            <td><%= number_to_currency(price, unit: '円', precision: 0, locale: :ja)  %></td>
                                         </tr>
                                     <% end %>
                                 </tbody>
