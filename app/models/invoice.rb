@@ -127,10 +127,26 @@ class Invoice < ApplicationRecord
                    <div class='d-flex flex-column gap-1'>
                    <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
                                                    '\\1,').reverse}円 for #{opt_regs.size - @ignore_opts.size}  options<p>"
-    options.group(:name).sum(:cost).each do |name, cost|
-      @breakdown << "<p>- #{name} x #{options.where(name: name).count}: #{cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
-                                                                                                 '\\1,').reverse}円</p>"
+
+    # Find the options on this invoice, even if not saved
+    temp_opts = {}
+    opt_regs.each do |reg|
+      opt = reg.registerable
+      if temp_opts[opt.name].nil?
+        temp_opts[opt.name] = {
+          cost: opt.cost,
+          count: 1
+        }
+      else
+        temp_opts[opt.name][:count] += 1
+        temp_opts[opt.name][:cost] += opt.cost
+      end
     end
+    # Display options with count and cost
+    temp_opts.each do |name, _|
+      @breakdown << "<p>- #{name} x #{temp_opts[name][:count]}: #{temp_opts[name][:cost].to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
+    end
+
     @breakdown << '</div>'
     opt_cost
   end

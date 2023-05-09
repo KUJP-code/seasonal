@@ -18,7 +18,7 @@ class InvoicesController < ApplicationController
 
   def show
     @invoice = authorize(Invoice.find(params[:id]))
-    @previous_versions = @invoice.versions.where.not(object: nil)
+    @previous_versions = @invoice.versions.where.not(object: nil).reorder(created_at: :desc)
   end
 
   def update
