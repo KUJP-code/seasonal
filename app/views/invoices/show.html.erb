@@ -1,4 +1,9 @@
 <main id="invoice_show" class="gap-5">
+    <div class="align-self-start d-flex gap-3">
+        <%= link_to t('.customer_invoices'), invoices_path(user: @invoice.child.parent_id), class: 'btn btn-primary' %>
+        <%= link_to t('.child_invoices'), invoices_path(child: @invoice.child_id), class: 'btn btn-primary' %>
+    </div>
+
     <% unless @previous_versions.empty? %>
         <h1><%= t('.current_version') %></h1>
     <% end %>
