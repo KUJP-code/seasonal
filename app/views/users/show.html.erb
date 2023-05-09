@@ -69,7 +69,6 @@
     <% end %>
 
     <% if @user.area_manager? %>
-        <h2><%= t('.event_stats') %></h2>
         <div class="card">
             <% @user.managed_areas.each do |area| %>
                 <% area.schools.each do |school| %>
@@ -81,7 +80,6 @@
     <% end %>
 
     <% if @user.school_manager? %>
-        <h2><%= t('.event_stats') %></h2>
         <div class="card">
             <% @user.managed_schools.each do |school| %>
                 <h3><%= school.name %></h3>
