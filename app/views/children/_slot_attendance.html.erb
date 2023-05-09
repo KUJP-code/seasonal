@@ -36,7 +36,7 @@
                 <% end %>
                 <% morn_options.each do |opt| %>
                     <%# FIXME: n+1 queries %>
-                    <th scope="col"><%= "#{opt.name}: #{opt.registrations.size}" %></th>
+                    <th scope="col"><%= "#{opt.name}: #{opt.registrations.where(child_id: children.ids).size}" %></th>
                 <% end %>
                 <% unless slot_attendance.special? %>
                     <th scope="col" id="afternoon_header" class="afternoon">
@@ -45,7 +45,7 @@
                     </th>
                     <% aft_options.each do |opt| %>
                         <%# FIXME: n+1 queries %>
-                        <th scope="col"><%= "#{opt.name}: #{opt.registrations.size}" %></th>
+                        <th scope="col"><%= "#{opt.name}: #{opt.registrations.where(child_id: children.ids).size}" %></th>
                     <% end %>
                 <% end %>
                 <th scope="col" id="depart_header" class="depart"><%= t('.depart') %></th>
