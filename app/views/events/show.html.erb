@@ -27,9 +27,9 @@
                             <%= @child.name %>
                             <p class="hidden level"><%= (@child.kindy) ? 'Kindy' : "Elementary" %></p>
                             <% if @child.member? %>
-                                <p class="hidden membership"><%= t('.member') %></p>
+                                <p class="hidden membership">Yes</p>
                             <% else %>
-                                <p class="hidden membership"><%= t('.non_member') %></p>
+                                <p class="hidden membership">No</p>
                             <% end %>
                         </div>
                     <% end %>

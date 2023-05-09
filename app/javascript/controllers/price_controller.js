@@ -104,11 +104,7 @@ export default class extends Controller {
   isMember(child) {
     const membership = child.querySelector(".membership").innerHTML;
 
-    if (membership === "Member") {
-      return true;
-    } else {
-      return false;
-    }
+    return membership === "Yes" ? true : false;
   }
 
   // Find the largest course that fits the number of registrations
