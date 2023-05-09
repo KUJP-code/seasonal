@@ -9,4 +9,14 @@ class RegularSchedule < ApplicationRecord
   def days
     "#{'月, ' if monday}#{'火, ' if tuesday}#{'水, ' if wednesday}#{'木, ' if thursday}#{'金' if friday}".chomp(', ')
   end
+
+  def en_days
+    {
+      'Monday' => monday,
+      'Tuesday' => tuesday,
+      'Wednesday' => wednesday,
+      'Thursday' => thursday,
+      'Friday' => friday
+    }
+  end
 end

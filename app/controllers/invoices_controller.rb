@@ -130,11 +130,12 @@ class InvoicesController < ApplicationController
     # Get the target's modifiable invoice, create one if none
     target_invoice = target.invoices.where(event: event).find_by(in_ss: false) || target.invoices.create(event: event)
     t_regs = target.invoices.where(event: event).reduce([]) { |a, i| a + i.registrations }
+    regular_days = target.regular_schedule.en_days
 
     og_regs.each do |o_reg|
-      # Skip if already on target invoice
-      next if already_registered?(t_regs,
-                                  o_reg) || (o_reg.registerable_type == 'TimeSlot' && o_reg.registerable.closed?)
+      # Skip if already on target invoice, slot is closed or
+      # registration is for a regular day of target child
+      next unless valid_copy?(o_reg, t_regs, regular_days)
 
       # If not on target invoice, add registration
       target_invoice.registrations.create!(
@@ -175,8 +176,25 @@ class InvoicesController < ApplicationController
     )
   end
 
+  def regular_day?(regular_days, slot)
+    regular_days[slot.day]
+  end
+
   def send_emails(invoice)
     InvoiceMailer.with(invoice: invoice, user: invoice.child.parent).updated_notif.deliver_now
     InvoiceMailer.with(invoice: invoice, user: invoice.school.managers.first).sm_updated_notif.deliver_now
+  end
+
+  def valid_copy?(o_reg, t_regs, regular_days)
+    if o_reg.registerable_type == 'TimeSlot'
+      # Check if slot is closed (when slot reg)
+      return false if o_reg.registerable.closed?
+      # Check if copying reg for regular day of target child
+      return false if regular_day?(regular_days, o_reg.registerable)
+    end
+    # Check if target already registered
+    return false if already_registered?(t_regs, o_reg)
+
+    true
   end
 end
