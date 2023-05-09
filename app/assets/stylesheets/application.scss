@@ -30,7 +30,9 @@ $info: #9cc1d8;
   font-weight: bold;
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link:focus,
+.nav-link:active {
   color: var(--ku-orange);
 }
 
@@ -277,6 +279,23 @@ main#sign-up {
   text-align: right;
 }
 
+form#new_user {
+  background-color: white;
+  overflow: scroll;
+  width: 100vw;
+  border-radius: 2rem 2rem 0 0;
+  max-height: 50%;
+  @media (min-width: 992px) {
+    border-radius: 0 2rem 2rem 0;
+    width: 33%;
+    height: 80vh;
+  }
+}
+
+#password_new #new_user {
+  border-radius: 2rem;
+}
+
 #sign-up #new_user {
   border-radius: 0;
   max-height: 100vh;
@@ -292,19 +311,6 @@ main#sign-up {
 
 #sign-up form#new_user img {
   width: 20%;
-}
-
-form#new_user {
-  background-color: white;
-  overflow: scroll;
-  width: 100vw;
-  border-radius: 2rem 2rem 0 0;
-  max-height: 50%;
-  @media (min-width: 992px) {
-    border-radius: 0 2rem 2rem 0;
-    width: 33%;
-    height: 80vh;
-  }
 }
 
 #login_logo {
