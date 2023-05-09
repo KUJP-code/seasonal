@@ -7,13 +7,24 @@
         <%= image_tag(url_for(add_slot.image), class: 'img-fluid img-thumbnail') unless add_slot.image.blank? %>
     </div>
 
-    <% if add_slot.closed? %>
-        <h3 class="fw-bold"><%= t('closed_message') %></h3>
-    <% else %>
-        <div class="d-flex flex-column gap-2 w-50">
+    <% in_ss = slots_in_ss.any? { |reg| reg.registerable_id == add_slot.id } %>
+    <% registered = registrations.any? { |reg| reg.registerable_id == add_slot.id } %>
+
+    <div class="d-grid gap-3">
+        <% if add_slot.closed? %>
+            <h3 class="fw-bold"><%= t('closed_message') %></h3>
+        <% elsif in_ss %>
+            <p class="fw-bold fs-5">
+                <%= "#{add_slot.name}: ◯" %>
+            </p>
+            <% add_slot.options.each do |opt| %>
+                <% if registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
+                    <p><%= "#{opt.name}: ◯" %></p>
+                <% end %>
+            <% end %>
+        <% else %>
             <div class="morning w-100" data-controller="popup"
                  data-action="register:toggle->popup#listen">
-                <% registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == add_slot.id } %>
                 <div class="add_reg w-100"
                      data-controller="register"
                      data-register-id-value=<%= add_slot.id %>
@@ -24,29 +35,21 @@
                         class="fw-bold fs-5">
                         <%= add_slot.name %>
                     </p>
-                    <% if slots_in_ss.any? { |reg| reg.registerable_id == add_slot.id } %>
-                        <p>◯</p>
-                    <% else %>
-                        <%= check_box_tag '', '', (true if registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
-                    <% end %>
+                    <%= check_box_tag '', '', (true if registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
                 </div>
                 <div class="options<%= ' hidden' unless registered %>" data-popup-target="popup">
                     <% time_ids = add_slot.options.time.ids %>
                     <% add_slot.options.reject { |opt| time_ids.include?(opt.id) }.each do |opt| %>
-                        <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
-                        <% if opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
-                            <p><%= "#{opt.name}: ◯" %></p>
-                        <% else %>
-                            <div class="add_reg w-100"
-                                 data-controller="register"
-                                 data-register-id-value=<%= opt.id %>
-                                 data-register-type-value="Option"
-                                 data-register-child-value=<%= child.id %>
-                                 data-register-cost-value=<%= opt.cost %>>
-                                <p data-register-target="name"><%= opt.name %></p>
-                                <%= check_box_tag '', '', (true if opt_registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
-                            </div>
-                        <% end %>
+                        <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
+                        <div class="add_reg w-100"
+                             data-controller="register"
+                             data-register-id-value=<%= opt.id %>
+                             data-register-type-value="Option"
+                             data-register-child-value=<%= child.id %>
+                             data-register-cost-value=<%= opt.cost %>>
+                            <p data-register-target="name"><%= opt.name %></p>
+                            <%= check_box_tag '', '', (true if opt_registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
+                        </div>
                     <% end %>
                     <% arrival_options = if kindy
                                             add_slot.options.select { |opt| opt.k_arrival? }
@@ -60,7 +63,7 @@
                         <fieldset>
                             <legend class="fs-6 fw-bold"><%= t('.arrival_options') %></legend>
                             <% arrival_options.each do |opt| %>
-                                <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
+                                <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
                                 <div class="add_reg w-100"
                                      data-controller="register"
                                      data-register-id-value=<%= opt.id %>
@@ -79,11 +82,26 @@
                     <% end %>
                 </div>
             </div>
-            <div class="afternoon w-100" data-controller="popup"
-                data-action="register:toggle->popup#listen">
-                <% afternoon_slot = add_slot.afternoon_slot %>
-                <% unless afternoon_slot.nil? %>
-                    <% aft_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == afternoon_slot.id } %>
+        <% end %>
+
+        <% afternoon_slot = add_slot.afternoon_slot %>
+        <% unless afternoon_slot.nil? %>
+
+            <% in_ss = slots_in_ss.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
+            <% aft_registered = registrations.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
+
+            <% if in_ss %>
+                <p class="fw-bold fs-5">
+                    <%= "#{t('.afternoon')}: ◯" %>
+                </p>
+                <% afternoon_slot.options.each do |opt| %>
+                    <% if registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
+                        <p><%= "#{opt.name}: ◯" %></p>
+                    <% end %>
+                <% end %>
+            <% else %>
+                <div class="afternoon w-100" data-controller="popup"
+                    data-action="register:toggle->popup#listen">
                     <div class="add_reg w-100"
                           data-controller="register"
                           data-register-id-value=<%= afternoon_slot.id %>
@@ -102,10 +120,11 @@
                             <%= check_box_tag '', '', (true if aft_registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
                         <% end %>
                     </div>
+
                     <div class="options<%= ' hidden' unless aft_registered %>" data-popup-target="popup">
                         <% aft_time_ids = afternoon_slot.options.time.ids %>
                         <% afternoon_slot.options.reject { |opt| aft_time_ids.include?(opt.id) }.each do |opt| %>
-                            <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
+                            <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
                             <% if opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
                                 <p><%= "#{opt.name}: ◯" %></p>
                             <% else %>
@@ -126,7 +145,7 @@
                                             else
                                                 afternoon_slot.options.select { |opt| opt.departure? }
                                             end %>
-            
+    
                         <% if depart_options.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
                             <% registered_depart = depart_options.select { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id} }.first %>
                             <p><%= "#{registered_depart.name}: ◯" %></p>
@@ -134,7 +153,7 @@
                             <fieldset>
                                 <legend class="fs-6 fw-bold"><%= t('.depart_options') %></legend>
                                 <% afternoon_slot.options.select { |opt| opt.departure? }.each do |opt| %>
-                                    <% opt_registered = registrations.any? { |reg| reg.child_id == child.id && reg.registerable_id == opt.id } %>
+                                    <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
                                     <div class="add_reg w-100"
                                          data-controller="register"
                                          data-register-id-value=<%= opt.id %>
@@ -145,15 +164,15 @@
                                         <input type="radio"
                                         name="depart<%= "#{opt.optionable_id}" %>"
                                         id="<%= "depart#{opt.optionable_id}opt#{opt.id}" %>"
-                                        <%= 'checked' if opt_registered || ( opt.name == 'なし' && arrival_options.none? { |a_opt| opt_regs.include?(a_opt) }) %>
+                                        <%= 'checked' if opt_registered || ( opt.name == 'なし' && depart_options.none? { |a_opt| opt_regs.include?(a_opt) }) %>
                                         data-register-target='button' data-action="change->register#toggle">
                                     </div>
                                 <% end %>
                             </fieldset>
                         <% end %>
                     </div>
-                <% end %>
-            </div>
-        </div>
-    <% end %>
+                </div>
+            <% end %>
+        <% end %>
+    </div>
 </div>
