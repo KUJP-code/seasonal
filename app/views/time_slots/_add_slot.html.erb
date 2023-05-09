@@ -94,7 +94,7 @@
                             class="fw-bold fs-5">
                             <%= t('.afternoon') %>
                         </p>
-                        <% if slots_in_ss.any? { |reg| reg.registerable_id == add_slot.id } %>
+                        <% if slots_in_ss.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
                             <p>◯</p>
                         <% elsif child.regular_schedule && child.regular_schedule[afternoon_slot.day.downcase] %>
                             <p><%= t('.regular_day') %></p>
