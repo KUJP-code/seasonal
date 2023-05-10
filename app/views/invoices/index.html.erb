@@ -3,7 +3,7 @@
         <% @user.children.each do |child| %>
             <% next if child.events.empty? %>
 
-            <h1><%= child.name %></h1>     
+            <h1><%= link_to child.name, child_path(child) %></h1>     
             <% child.events.order(start_date: :asc).each do |event| %>
                 <%= render event, partial: 'events/event', child: nil %>
 
