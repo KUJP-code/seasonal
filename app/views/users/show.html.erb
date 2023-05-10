@@ -3,10 +3,16 @@
 
 
 <main id="user_show" class="gap-3">
-    <div class="key_info">
-        <h1 class="fw-bold"><%= t('.greet', user: @user.name.split(' ')[1]) unless @user.admin? %></h1>
-        <h1 class="fw-bold"><%= "yo, #{@user.name}" if @user.admin? %></h1>
-        <h4><%= t(".roles.#{@user.role}") unless @user.customer? %></h4>
+    <div class="text-center">
+        <% if @user.admin? %>
+          <h1 class="fw-bold"><%= "yo, #{@user.name}" %></h1>
+        <% else %>
+            <h1 class="fw-bold"><%= t('.greet', user: @user.name.split(' ')[1]) %></h1>
+        <% end %>
+
+        <% unless @user.customer? %>
+            <h4><%= t(".roles.#{@user.role}") %></h4>
+        <% end %>
     </div>
 
     <% if @user.customer? && !@user.children.nil? %>
@@ -59,12 +65,10 @@
     <% if @user.admin? && current_user.admin? %>
         <h1><%= t('.admin_options') %></h1>
 
-        <div id="admin_options">
-            <%= link_to t('.import_export'), csvs_path, class: 'btn btn-primary' %>
-
-            <%= link_to t('.price_lists'), price_lists_path, class: 'btn btn-primary' %>
-
-            <%= link_to t('.create_event'), new_event_path, class: 'btn btn-primary' %>
+        <div class="card gap-3 padding-3">
+            <%= link_to 'Import/Export Data', csvs_path, class: 'btn btn-primary' %>
+            <%= link_to 'Manage Price Lists', price_lists_path, class: 'btn btn-primary' %>
+            <%= link_to 'Create New Event', new_event_path, class: 'btn btn-primary' %>
         </div>
     <% end %>
 

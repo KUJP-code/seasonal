@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
 
   def switch_locale
     locale = params[:locale] || I18n.default_locale
+    locale = :en if current_user&.admin?
     I18n.locale = locale
   end
 

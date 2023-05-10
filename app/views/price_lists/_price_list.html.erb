@@ -4,8 +4,8 @@
     <table class="table">
         <thead>
             <tr class="table-primary">
-                <th><%= t('.num_slots') %></th>
-                <th><%= t('.price') %></th>
+                <th>Course</th>
+                <th>Price</th>
             </tr>
         </thead>
         <% price_list.courses.each do |k, v| %>
@@ -16,9 +16,9 @@
         <% end %>
     </table>
 
-    <div class="d-flex gap-3">
-        <%= link_to t('.edit_price_list'), edit_price_list_path(price_list), class: 'btn btn-primary' %>
+    <div class="d-flex justify-content-center align-items-center gap-3">
+        <%= link_to 'Edit', edit_price_list_path(price_list), class: 'btn btn-primary' %>
         
-        <%= link_to t('.delete'), price_list_path(price_list), data: { turbo_method: :delete, turbo_confirm: t('.delete_confirm'), turbo_frame: '_top' }, class: 'btn btn-primary' %>
+        <%= link_to 'Delete', price_list_path(price_list), data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete #{price_list.name}?", turbo_frame: '_top' }, class: 'btn btn-primary' %>
     </div>
 </div>
