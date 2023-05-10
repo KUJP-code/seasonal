@@ -15,7 +15,7 @@
 
     <h1 class="fw-bolder"><%= t('.title', name: @event.name, school: @event.school.name) %></h1>
 
-    <table class="table table-info table-striped table-hover text-center align-middle w-50">
+    <table class="table table-info table-striped table-hover text-center align-middle">
         <tbody>
             <tr>
                 <td class="fw-bold text-secondary"><%= t('.regs_for', child: @child.name) %></td>
@@ -193,11 +193,11 @@
 
         <div class="accordion-item">
             <h2 class="accordion-header">
-                <button class="accordion-button collapsed text-bg-primary" type="button" data-bs-toggle="collapse" data-bs-target="#event-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                <button class="accordion-button text-bg-primary" type="button" data-bs-toggle="collapse" data-bs-target="#event-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
                     <%= t('.unregistered_slots') %>
                 </button>
             </h2>
-            <div id="event-collapseTwo" class="accordion-collapse collapse">
+            <div id="event-collapseTwo" class="accordion-collapse collapse show">
                 <div class="accordion-body">
                     <div class="d-flex flex-column flex-lg-row flex-lg-wrap justify-content-lg-around gap-3">
                         <%= render partial: 'time_slots/add_slot', collection: unregistered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, opts_in_ss: opts_in_ss } %>
