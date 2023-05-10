@@ -17,9 +17,12 @@ export default class extends Controller {
     this.printTarget.classList.remove("d-none");
     window.print();
 
-    // Make all attendance tables visible
+    // Reveal all attendance tables
     for (let div of divs) {
       div.classList.remove("d-none");
     }
+
+    // Reveal navbar
+    navbar.classList.remove("d-none");
   }
 }
