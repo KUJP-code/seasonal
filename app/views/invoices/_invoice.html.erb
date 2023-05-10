@@ -8,7 +8,7 @@
 
             <% if current_user.staff? %>
                 <% if invoice.in_ss %>
-                    <p class="btn btn-info"><%= t('.in_ss') %></p>
+                    <p class="btn btn-info"><%= t('.confirmed') %></p>
                     <p class="btn btn-info"><%= "Booking##{invoice.id}" %></p>
                 <% else %>
                     <%= link_to t('.adjustments'), edit_adjustment_path(invoice), class: 'btn btn-primary' %>
