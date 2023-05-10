@@ -188,9 +188,9 @@ class Invoice < ApplicationRecord
       slot = slot_reg.registerable
 
       @breakdown << if slot.morning
-                      "<div class='slot_regs'><p>#{slot.name}</p>\n"
+                      "<div class='slot_regs'><p>#{slot.name} (#{slot.date})</p>\n"
                     else
-                      "<div class='slot_regs'><p>#{slot.name} (午後)</p>\n"
+                      "<div class='slot_regs'><p>#{slot.name} (#{slot.date}) (午後)</p>\n"
                     end
 
       # Show details for all registered options, even unsaved
