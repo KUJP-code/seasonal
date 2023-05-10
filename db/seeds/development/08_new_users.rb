@@ -1,4 +1,4 @@
-# This file is last to simulate users who have just created an account
+# This file is last to simulate fresh users
 
 non_member = User.new(
   email: 'non_member@gmail.com',
@@ -26,7 +26,7 @@ non_member.children.create!([
   birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
   ssid: Faker::Number.unique.number,
   ele_school_name: Faker::GreekPhilosophers.name,
-  allergies: '',
+  allergies: 'pizza',
   grade: '年中',
   category: :external,
   needs_hat: true,
@@ -43,7 +43,7 @@ non_member.children.create!([
   ssid: Faker::Number.unique.number,
   ele_school_name: Faker::GreekPhilosophers.name,
   photos: 'はい',
-  allergies: '',
+  allergies: 'spaghetti',
   grade: '小４',
   category: :external,
   needs_hat: true,

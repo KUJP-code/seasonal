@@ -65,10 +65,21 @@ class Child < ApplicationRecord
                 'はい' => 3
 
   # Validations
-  validates :name, :katakana_name, presence: true
+  # Comparison
+  validates :birthday, comparison: { greater_than: 15.years.ago, less_than: 1.year.ago }
+
+  # Format
   validates :katakana_name, format: { with: /\A[ァ-ヶヶ ]+\z/ }
 
-  validates :birthday, comparison: { greater_than: 15.years.ago, less_than: 1.year.ago }
+  # Inclusion
+  validates :category, inclusion: { in: categories.keys }
+  validates :grade, inclusion: { in: grades.keys }
+  validates :photos, inclusion: { in: photos.keys }
+
+  # Presence
+  validates :name, :katakana_name, :en_name, :category, :grade, :birthday, :allergies, :photos, presence: true
+
+  # Uniqueness
   validates :ssid, uniqueness: { allow_blank: true }
 
   # Scopes for children who attend certain days
