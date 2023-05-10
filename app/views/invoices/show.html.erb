@@ -33,7 +33,7 @@
                     <%= f.submit t('.confirm_booking'), class: 'btn btn-primary' %>
                 <% end %>
 
-                <%= link_to t('.delete_booking'), invoice_path(@invoice), data: { turbo_method: :delete, turbo_confirm: t('.you_sure') }, class: 'btn btn-primary' %>
+                <%= link_to t('.delete_booking'), invoice_path(@invoice), data: { turbo_method: :delete, turbo_confirm: t('.you_sure') }, class: 'btn btn-danger' %>
             <% end %>
         </div>
     <% end %>

@@ -2,7 +2,7 @@
 
 # Handles data for customer Invoices
 class Invoice < ApplicationRecord
-  before_save :update_regs_child
+  before_save :update_regs_child, :calc_cost
 
   belongs_to :child
   delegate :parent, to: :child
@@ -284,8 +284,6 @@ class Invoice < ApplicationRecord
                                                                           '\\1,').reverse}円</h2>\n"
     generate_template
     self.summary = @breakdown
-    # To avoid saving on the confirm page
-    save unless new_record?
   end
 
   def update_regs_child

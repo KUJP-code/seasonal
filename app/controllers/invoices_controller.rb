@@ -25,7 +25,6 @@ class InvoicesController < ApplicationController
     @invoice = authorize(Invoice.find(params[:id]))
 
     if @invoice.update(invoice_params)
-      @invoice.calc_cost
       send_emails(@invoice)
       redirect_to invoice_path(@invoice), notice: t('update_success')
     else
@@ -81,7 +80,6 @@ class InvoicesController < ApplicationController
     origin = Child.find(params[:origin])
 
     @target_invoice = authorize(copy_invoice(target, event, origin))
-    @target_invoice.calc_cost
 
     redirect_to invoice_path(@target_invoice)
   end
@@ -93,7 +91,6 @@ class InvoicesController < ApplicationController
     merge_invoices(merge_from, merge_to)
 
     merge_from.reload.destroy
-    merge_to.calc_cost
     redirect_to invoice_path(merge_to)
   end
 
@@ -160,8 +157,10 @@ class InvoicesController < ApplicationController
     from_adj.each do |adj|
       next if to_adj.any? { |ta| ta.reason == adj.reason }
 
-      adj.update(invoice_id: to.id)
+      to.adjustments << adj
     end
+
+    to.save
   end
 
   def invoice_params

@@ -123,7 +123,7 @@ class UsersController < ApplicationController
       reg.update(child_id: to.id, invoice_id: to_active_invoice.id)
     end
 
-    to_active_invoice.calc_cost
+    to_active_invoice.save
   end
 
   def move_invoices(from, to)
@@ -135,7 +135,7 @@ class UsersController < ApplicationController
         reg.update(child_id: to.id)
       end
       # Update the invoice to reflect its new owner
-      invoice.calc_cost
+      invoice.save
     end
   end
 
