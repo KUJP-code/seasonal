@@ -1,13 +1,15 @@
 <div class="toast-container position-fixed top-0 end-0 p-3 text-white">
   <% flash.each do |type, msg| %>
-    <div id="liveToast" class="toast <%= type == 'notice' ? 'bg-success' : 'bg-danger' %>" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="d-flex">
-        <div class="toast-body">
-          <%= msg %>
+    <% unless type.to_s == 'timedout' %>
+      <div id="liveToast" class="toast <%= type == 'notice' ? 'bg-success' : 'bg-danger' %>" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            <%= msg %>
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
-    </div>
+    <% end %>
   <% end %>
 </div>
 
