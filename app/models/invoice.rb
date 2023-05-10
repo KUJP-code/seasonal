@@ -248,19 +248,10 @@ class Invoice < ApplicationRecord
   # This does not deal with the even less likely case of there being two kindy kids registered for one full day each
   def pointless_price(num_regs, courses)
     days = full_days(slot_regs.map(&:registerable_id))
-
-    puts "days: #{days}"
-
     extension_cost = days * (courses['1'] + 200)
-
-    puts "extension_cost: #{extension_cost}"
-
     @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{extension_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
                                                                                              '\\1,').reverse}円</p>\n"
     spot_cost = spot_use(num_regs - days, courses)
-
-    puts "spot_cost: #{spot_cost}"
-
     extension_cost + spot_cost
   end
 
