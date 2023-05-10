@@ -157,6 +157,10 @@ class Invoice < ApplicationRecord
     end
   end
 
+  def full_days(slot_ids)
+    TimeSlot.all.where(event_id: event_id, id: slot_ids, morning_slot_id: slot_ids).size
+  end
+
   def generate_details
     @breakdown.prepend(
       "<div class='d-flex gap-3 flex-column'>\n
@@ -227,7 +231,7 @@ class Invoice < ApplicationRecord
 
   # Decides if we need to apply the dumb 200 円 increase
   def niche_case?
-    slot_regs.size - @ignore_slots.size < 5 && child.kindy && child.full_days(event, time_slots.ids).positive?
+    slot_regs.size - @ignore_slots.size < 5 && child.kindy && full_days(slot_regs.map(&:registerable_id)).positive?
   end
 
   def non_member_prices
@@ -243,11 +247,20 @@ class Invoice < ApplicationRecord
   # Calculates how many times we need to apply the dumb 200円 increase
   # This does not deal with the even less likely case of there being two kindy kids registered for one full day each
   def pointless_price(num_regs, courses)
-    days = child.full_days(event, time_slots.ids)
+    days = full_days(slot_regs.map(&:registerable_id))
+
+    puts "days: #{days}"
+
     extension_cost = days * (courses['1'] + 200)
+
+    puts "extension_cost: #{extension_cost}"
+
     @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{extension_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
                                                                                              '\\1,').reverse}円</p>\n"
     spot_cost = spot_use(num_regs - days, courses)
+
+    puts "spot_cost: #{spot_cost}"
+
     extension_cost + spot_cost
   end
 
