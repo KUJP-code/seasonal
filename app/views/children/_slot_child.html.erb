@@ -5,6 +5,7 @@
     <td class="allergy"><%= slot_child.allergies %></td>
     <td class="photos"><%= slot_child.photos unless slot_child.photos == 'はい' %></td>
     <% event_options.each do |opt| %>
+        <%# Show as registered for photo service if sibling is %>
         <td><%= opt.name if slot_child.options.include?(opt) || slot_child.siblings.any? { |sib| sib.registered?(opt) } %></td>
     <% end %>
     <% morn_options.each do |opt| %>

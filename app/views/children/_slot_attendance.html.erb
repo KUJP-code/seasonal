@@ -32,7 +32,8 @@
                 <th class="photos"><%= t('.photo') %></th>
                 <% event_options.each do |opt| %>
                     <%# FIXME: n+1 queries %>
-                    <th scope="col"><%= "#{opt.name}: #{opt.registrations.size + opt.children.reduce(0) { |sum, c| sum + c.siblings.size }} " %></th>
+                    <%# Count the kids registered for photo service, plus those whose siblings are %>
+                    <th scope="col"><%= "#{opt.name}: #{opt.registrations.where(child_id: children.ids).size + children.select { |c| c.siblings.any? { |s| s.registered?(opt) } }.size }" %></th>
                 <% end %>
                 <% morn_options.each do |opt| %>
                     <%# FIXME: n+1 queries %>
