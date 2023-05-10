@@ -1,4 +1,5 @@
-Child.all.find_each(batch_size: 100) do |child|
+
+invoiceChild.all.find_each(batch_size: 100) do |child|
   child.invoices.create!([
     {
       event: child.school.events.first,
@@ -39,5 +40,5 @@ User.all.customer.select{|c| c.id.odd?}.each do |user|
 end
 
 Invoice.all.find_each(batch_size: 100) do |invoice|
-  invoice.calc_cost
+  invoice.save
 end

@@ -45,7 +45,7 @@ end
 puts "Registered a kid from every 2nd family for an event option"
 
 Invoice.all.find_each(batch_size: 100) do |invoice|
-  invoice.calc_cost
+  invoice.save
 end
 
 puts 'Calculated invoice costs and added to SS now all are created'
