@@ -22,7 +22,7 @@
 
                 <%= form_with model: @invoice do |f| %>
                     <%= f.hidden_field :in_ss, value: true %>
-                    <%= f.submit t('.mark_in_ss'), class: 'btn btn-primary' %>
+                    <%= f.submit t('.confirm_booking'), class: 'btn btn-primary' %>
                 <% end %>
 
                 <%= link_to t('.delete_booking'), invoice_path(@invoice), data: { turbo_method: :delete, turbo_confirm: t('.you_sure') }, class: 'btn btn-primary' %>

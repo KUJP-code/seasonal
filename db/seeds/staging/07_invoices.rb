@@ -19,7 +19,7 @@ Child.all.find_each(batch_size: 100) do |child|
 
   slots.each do |slot|
     if slot.id.even?
-      invoice = Invoice.find_by(child: child, in_ss: false
+      invoice = Invoice.find_by(child: child, in_ss: false)
       child.registrations.create!(registerable: slot, invoice: invoice)
       child.registrations.create!(registerable: slot.options.regular.last, invoice: invoice) unless slot.options.regular.empty?
       child.registrations.create!(registerable: slot.options.meal.last, invoice: invoice) unless slot.options.meal.empty?
