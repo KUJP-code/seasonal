@@ -277,10 +277,8 @@ class Invoice < ApplicationRecord
 
   # Updates total cost and summary once calculated/generated
   def update_cost(new_cost)
-    # Add tax to breakdown
-    @breakdown << "<h3>税金: #{(new_cost * 0.1).to_i.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</h3>\n"
     self.total_cost = new_cost
-    @breakdown << "<h2 id='final_cost'>合計: #{new_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
+    @breakdown << "<h2 id='final_cost'>合計（税込）: #{new_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
                                                                           '\\1,').reverse}円</h2>\n"
     generate_template
     self.summary = @breakdown
