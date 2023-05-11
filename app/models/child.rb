@@ -61,9 +61,10 @@ class Child < ApplicationRecord
                '高校生以上' => 14
 
   # Map photos int in table to a permission
-  enum :photos, 'いいえ' => 0,
+  enum :photos, 'NG' => 0,
                 'マイペイジ' => 1,
-                'はい' => 3
+                'OK' => 3,
+                'Unknown' => 4
 
   # Validations
   # Comparison
