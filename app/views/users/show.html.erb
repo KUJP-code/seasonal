@@ -3,11 +3,19 @@
 
 
 <main id="user_show" class="gap-3">
+    <% unless @user.confirmed? %>
+        <div class="card w-25 align-self-end justify-content-center align-items-center bg-danger">
+            <p><%= t('.please_confirm_email') %></p>
+            <%= button_to t('.resend_confirm_email'), user_confirmation_path(user: { email: @user.email }), class: 'btn btn-primary' %>
+        </div>
+    <% end %>
+
+
     <div class="text-center">
         <% if @user.admin? %>
           <h1 class="fw-bold"><%= "yo, #{@user.name}" %></h1>
         <% else %>
-            <h1 class="fw-bold"><%= t('.greet', user: @user.name.split(' ')[1]) %></h1>
+            <h1 class="fw-bold"><%= t('.greet', user: @user.name) %></h1>
         <% end %>
 
         <% unless @user.customer? %>
