@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '3.0.5'
+ruby '3.0.6'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.4'
@@ -55,6 +55,9 @@ gem 'image_processing', '~> 1.2'
 # Use Devise for authentication
 gem 'devise'
 
+# Use Pundit for authorisation
+gem 'pundit', '~> 2.3'
+
 # Use PaperTrail for backup/reversion of certain models
 gem 'paper_trail'
 
@@ -64,9 +67,6 @@ gem 'devise-i18n'
 # Make using AWS easier with their SDK
 gem 'aws-sdk-rails', '~> 3'
 gem 'aws-sdk-s3', '~> 1'
-
-# Make showing changes easier
-gem 'diffy'
 
 # Can't use 2.8.0 as it causes issues with EB
 gem 'mail', '2.7.1'
@@ -117,5 +117,3 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
-
-gem 'pundit', '~> 2.3'
