@@ -57,7 +57,7 @@ class User < ApplicationRecord
   acts_as_copy_target
 
   # Validations
-  validates :name, :katakana_name, presence: true
+  validates :name, :katakana_name, :postcode, :prefecture, :address, :phone, presence: true
   validates :katakana_name, format: { with: /\A[ァ-ヶヶ ]+\z/ }
 
   validates :email, confirmation: true

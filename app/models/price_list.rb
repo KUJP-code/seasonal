@@ -17,7 +17,7 @@ class PriceList < ApplicationRecord
                                foreign_key: :non_member_prices_id,
                                inverse_of: :non_member_prices
 
-  validates :courses, presence: true
+  validates :name, :courses, presence: true
 
   # Public methods
   # Simplifies getting the list of events using a given price list
