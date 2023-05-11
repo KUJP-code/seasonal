@@ -106,7 +106,7 @@
     
                 <div>
                     <%= f.label :photos, t('.photos'), class: 'form-label' %><br />
-                    <%= f.select :photos, [['-', nil], %w[はい はい], %w[いいえ いいえ]], {}, { class: 'form-select', required: true } %>
+                    <%= f.select :photos, [['-', nil], %w[OK OK], %w[NG NG]], {}, { class: 'form-select', required: true } %>
                 </div>
     
                 <% if current_user.customer? && f.object.new_record? %>

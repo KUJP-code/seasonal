@@ -3,7 +3,7 @@
     <th scope="row" class="morning"><%= (slot_child.kindy) ? 'Kindy' : 'Elementary' %></th>
     <th scope="row" class="name"><%= link_to "#{slot_child.katakana_name} (#{slot_child.en_name})", child_path(slot_child) %></th>
     <td class="allergy"><%= slot_child.allergies %></td>
-    <td class="photos"><%= slot_child.photos unless slot_child.photos == 'はい' %></td>
+    <td class="photos"><%= slot_child.photos unless slot_child.photos == 'OK' %></td>
     <% event_options.each do |opt| %>
         <%# Show as registered for photo service if sibling is %>
         <td><%= opt.name if slot_child.options.include?(opt) || slot_child.siblings.any? { |sib| sib.registered?(opt) } %></td>
