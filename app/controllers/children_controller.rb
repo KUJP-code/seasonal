@@ -15,7 +15,7 @@ class ChildrenController < ApplicationController
     end
 
     # By default, see the list of children current user is responsible for
-    @children = policy_scope(Child).order(:ssid)
+    @children = policy_scope(Child).order(:name)
   end
 
   def show
@@ -99,9 +99,9 @@ class ChildrenController < ApplicationController
     when 'Event'
       @children = @source.children.distinct.includes(
         :regular_schedule, :registrations, :time_slots, :options
-      ).includes(invoices: :versions)
+      ).includes(invoices: :versions).order(:name)
     when 'TimeSlot'
-      @children = @source.children.distinct.includes(options: :registrations)
+      @children = @source.children.distinct.includes(options: :registrations).order(:name)
     else
       render status: :unprocessable_entity
     end
