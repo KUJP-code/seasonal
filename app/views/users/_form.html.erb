@@ -1,60 +1,82 @@
-<%= turbo_frame_tag "user#{@user.id}" do %>
-    <%= form_with model: @user, data: { controller: :fields }, html: { class: 'card needs-validation', novalidate: true } do |f| %>
+<%= form_with model: @user, data: { controller: :fields }, html: { class: 'card needs-validation', novalidate: true } do |f| %>
 
-        <% if @user.errors.any? %>
-            <div class="errors">
-                <h3><%= t('.unable_to_save', user: @user.name) %></h3>
-                <ul>
-                    <% @user.errors.full_messages.each do |error| %>
-                        <li><%= error %></li>
-                    <% end %>
-                </ul>
+    <% if @user.errors.any? %>
+        <div class="errors">
+            <h3><%= t('.unable_to_save', user: @user.name) %></h3>
+            <ul>
+                <% @user.errors.full_messages.each do |error| %>
+                    <li><%= error %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+    <div class="account_info d-grid gap-3 p-5">
+        <h3><%= t('.account_information') %></h3>
+
+        <div class="form-floating">
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: t('.email'), required: true %>
+            <%= f.label :email, class: 'form-label' %><br />
+        </div>
+
+        <div class="form-floating">
+            <%= f.email_field :email_confirmation, value: @user.email, autocomplete: "email", class: 'form-control', placeholder: t('.email_confirmation'), required: true %>
+            <%= f.label :email_confirmation, t('.email_confirmation'), class: 'form-label' %><br />
+        </div>
+
+        <% if @user.new_record? && current_user.admin? %>
+            <div>
+                <%= f.label :role, class: 'form-label' %>
+                <%= f.select :role, [["Admin", "admin"], ["Area Manager", "area_manager"], ["School Manager", "school_manager"], ["Parent", "customer"]], {}, { class: 'form-select' } %>
+            </div>
+        <% end %>
+    </div>
+
+    <div class="personal_info d-grid gap-3 p-5 pt-0">
+        <h3><%= t('.personal_information') %></h3>
+
+        <div>
+            <%= f.label :first_name, t('.name'), class: 'form-label' %><br />
+            <div class="input-group">
+                <%= text_field_tag "user[family_name]", (@user.name ? @user.name.split[1] : ''), class: 'form-control', required: true, placeholder: t('.family_name') %>
+                <span class="input-group-text"></span>
+                <%= text_field_tag "user[first_name]", (@user.name ? @user.name.split[0] : ''), class: 'form-control', required: true, placeholder: t('.first_name') %>
+            </div>
+        </div>
+
+        <div>
+            <%= f.label :kana_first, t('.kana_name'), class: 'form-label' %><br />
+            <div class="input-group">
+                <%= text_field_tag "user[kana_family]", (@user.name ? @user.katakana_name.split[1] : ''), class: 'form-control', required: true, placeholder: t('.kana_family') %>
+                <span class="input-group-text"></span>
+                <%= text_field_tag "user[kana_first]", (@user.name ? @user.katakana_name.split[0] : ''), class: 'form-control', required: true, placeholder: t('.kana_first') %>
+            </div>
+        </div>
+
+        <% if current_user.id == @user.id %>
+            <div class="form-floating">
+                <%= f.text_field :postcode, autocomplete: "postcode", class: 'form-control', placeholder: t(',postcode'), required: true %>
+                <%= f.label :postcode, t('.postcode'), class: 'form-label' %><br />
+            </div>
+
+            <div class="form-floating">
+                <%= f.text_field :prefecture, class: 'form-control', placeholder: t('prefecture'), required: true %>
+                <%= f.label :prefecture, t('.prefecture'), class: 'form-label' %><br />
+            </div>
+
+            <div class="form-floating">
+                <%= f.text_area :address, autocomplete: "address", class: 'form-control', placeholder: t('.address'), required: true %>
+                <%= f.label :address, t('.address'), class: 'form-label' %><br />
+            </div>
+
+            <div class="form-floating">
+                <%= f.telephone_field :phone, autocomplete: "phone", class: 'form-control', placeholder: t('.phone'), required: true %>
+                <%= f.label :phone, t('.phone'), class: 'form-label' %><br />
             </div>
         <% end %>
 
-        <div class="account_info d-grid gap-3 p-5">
-            <h3><%= t('.account_information') %></h3>
-
-            <div class="form-floating">
-                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: t('.email'), required: true %>
-                <%= f.label :email, class: 'form-label' %><br />
-            </div>
-
-            <div class="form-floating">
-                <%= f.email_field :email_confirmation, value: @user.email, autocomplete: "email", class: 'form-control', placeholder: t('.email_confirmation'), required: true %>
-                <%= f.label :email_confirmation, t('.email_confirmation'), class: 'form-label' %><br />
-            </div>
-
-            <% if @user.new_record? && current_user.admin? %>
-                <div>
-                    <%= f.label :role, class: 'form-label' %>
-                    <%= f.select :role, [["Admin", "admin"], ["Area Manager", "area_manager"], ["School Manager", "school_manager"], ["Parent", "customer"]], {}, { class: 'form-select' } %>
-                </div>
-            <% end %>
-        </div>
-
-        <div class="personal_info d-grid gap-3 p-5 pt-0">
-            <h3><%= t('.personal_information') %></h3>
-
-            <div>
-                <%= f.label :first_name, t('.name'), class: 'form-label' %><br />
-                <div class="input-group">
-                    <%= text_field_tag "user[family_name]", (@user.name ? @user.name.split[1] : ''), class: 'form-control', required: true, placeholder: t('.family_name') %>
-                    <span class="input-group-text"></span>
-                    <%= text_field_tag "user[first_name]", (@user.name ? @user.name.split[0] : ''), class: 'form-control', required: true, placeholder: t('.first_name') %>
-                </div>
-            </div>
-
-            <div>
-                <%= f.label :kana_first, t('.kana_name'), class: 'form-label' %><br />
-                <div class="input-group">
-                    <%= text_field_tag "user[kana_family]", (@user.name ? @user.katakana_name.split[1] : ''), class: 'form-control', required: true, placeholder: t('.kana_family') %>
-                    <span class="input-group-text"></span>
-                    <%= text_field_tag "user[kana_first]", (@user.name ? @user.katakana_name.split[0] : ''), class: 'form-control', required: true, placeholder: t('.kana_first') %>
-                </div>
-            </div>
-
-            <% if current_user.id == @user.id %>
+        <% if current_user.staff? %>
+            <% if @user.new_record? %>
                 <div class="form-floating">
                     <%= f.text_field :postcode, autocomplete: "postcode", class: 'form-control', placeholder: t(',postcode'), required: true %>
                     <%= f.label :postcode, t('.postcode'), class: 'form-label' %><br />
@@ -74,60 +96,36 @@
                     <%= f.telephone_field :phone, autocomplete: "phone", class: 'form-control', placeholder: t('.phone'), required: true %>
                     <%= f.label :phone, t('.phone'), class: 'form-label' %><br />
                 </div>
-            <% end %>
-
-            <% if current_user.staff? %>
-                <% if @user.new_record? %>
-                    <div class="form-floating">
+            <% else %>  
+                <div data-controller="conditional" 
+                        data-conditional-pin-value=<%= current_user.pin %>>
+                    <div class="d-none"
+                            data-conditional-target="target">
+                        <div class="form-floating">
                         <%= f.text_field :postcode, autocomplete: "postcode", class: 'form-control', placeholder: t(',postcode'), required: true %>
                         <%= f.label :postcode, t('.postcode'), class: 'form-label' %><br />
-                    </div>
-
-                    <div class="form-floating">
+                        </div>
+                        <div class="form-floating">
                         <%= f.text_field :prefecture, class: 'form-control', placeholder: t('prefecture'), required: true %>
                         <%= f.label :prefecture, t('.prefecture'), class: 'form-label' %><br />
-                    </div>
-
-                    <div class="form-floating">
+                        </div>
+                        <div class="form-floating">
                         <%= f.text_area :address, autocomplete: "address", class: 'form-control', placeholder: t('.address'), required: true %>
                         <%= f.label :address, t('.address'), class: 'form-label' %><br />
-                    </div>
-
-                    <div class="form-floating">
-                        <%= f.telephone_field :phone, autocomplete: "phone", class: 'form-control', placeholder: t('.phone'), required: true %>
-                        <%= f.label :phone, t('.phone'), class: 'form-label' %><br />
-                    </div>
-                <% else %>  
-                    <div data-controller="conditional" 
-                         data-conditional-pin-value=<%= current_user.pin %>>
-                        <div class="d-none"
-                             data-conditional-target="target">
-                            <div class="form-floating">
-                            <%= f.text_field :postcode, autocomplete: "postcode", class: 'form-control', placeholder: t(',postcode'), required: true %>
-                            <%= f.label :postcode, t('.postcode'), class: 'form-label' %><br />
-                            </div>
-                            <div class="form-floating">
-                            <%= f.text_field :prefecture, class: 'form-control', placeholder: t('prefecture'), required: true %>
-                            <%= f.label :prefecture, t('.prefecture'), class: 'form-label' %><br />
-                            </div>
-                            <div class="form-floating">
-                            <%= f.text_area :address, autocomplete: "address", class: 'form-control', placeholder: t('.address'), required: true %>
-                            <%= f.label :address, t('.address'), class: 'form-label' %><br />
-                            </div>
-                            <div class="form-floating">
-                                <%= f.telephone_field :phone, autocomplete: "phone", class: 'form-control', placeholder: t('.phone'), required: true %>
-                                <%= f.label :phone, t('.phone'), class: 'form-label' %><br />
-                            </div>
                         </div>
-                        <div class="form-floating" data-conditional-target="target">
-                            <%= text_field_tag t('enter_pin', info: t('contact_info')), '', class: 'form-control', placeholder: t('enter_pin', info: t('contact_info')), maxlength: 4, data: { 'conditional-target': 'condition', action: 'conditional#pin' } %>
-                                <%= label_tag t('enter_pin', info: t('contact_info')), nil, class: 'form-label' %>
+                        <div class="form-floating">
+                            <%= f.telephone_field :phone, autocomplete: "phone", class: 'form-control', placeholder: t('.phone'), required: true %>
+                            <%= f.label :phone, t('.phone'), class: 'form-label' %><br />
                         </div>
                     </div>
-                <% end %>
+                    <div class="form-floating" data-conditional-target="target">
+                        <%= text_field_tag t('enter_pin', info: t('contact_info')), '', class: 'form-control', placeholder: t('enter_pin', info: t('contact_info')), maxlength: 4, data: { 'conditional-target': 'condition', action: 'conditional#pin' } %>
+                            <%= label_tag t('enter_pin', info: t('contact_info')), nil, class: 'form-label' %>
+                    </div>
+                </div>
             <% end %>
-        </div>
-    
-        <%= f.submit class: 'btn btn-primary', data: { turbo_frame: '_top' } %>
-    <% end %>
+        <% end %>
+    </div>
+
+    <%= f.submit class: 'btn btn-primary' %>
 <% end %>
