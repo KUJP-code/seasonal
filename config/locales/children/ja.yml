@@ -4,7 +4,7 @@ ja:
       all: "全部"
       daily_attendance: "アテンダントシート"
     form:
-      allergies: "アレルギー"
+      allergies: "アレルギーや健康上の注意等"
       birthday: "誕生日"
       category: "（通学生・予約生・非会員）選択してください。"
       ele_school: "お通いの保育園／幼稚園／小学校"
@@ -23,7 +23,7 @@ ja:
       school_info: "スクール情報"
       ssid: "マイページID"
     show:
-      allergies: "アレルギー: "
+      allergies: "アレルギーや健康上の注意等: "
       bday: "生年月日: "
       child_bookings: "%{child}予約内容"
       delete_child: "削除"
@@ -34,7 +34,7 @@ ja:
       school: "Kids UP %{school}"
       ssid: "マイページID: "
     slot_attendance:
-      allergy: "アレルギー"
+      allergy: "アレルギーや健康上の注意等"
       arrival: "延長(前)"
       attend_afternoon: "PM"
       attend_morning: "AM"
