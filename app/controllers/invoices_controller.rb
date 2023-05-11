@@ -180,8 +180,14 @@ class InvoicesController < ApplicationController
   end
 
   def send_emails(invoice)
-    InvoiceMailer.with(invoice: invoice, user: invoice.child.parent).updated_notif.deliver_now
-    InvoiceMailer.with(invoice: invoice, user: invoice.school.managers.first).sm_updated_notif.deliver_now
+    # Send the confirmation email when in_ss is set to true
+    # otherwise notify user and SM the booking has been modified
+    if invoice_params['in_ss'] == 'true'
+      InvoiceMailer.with(invoice: invoice, user: invoice.child.parent).confirmation_notif.deliver_now
+    else
+      InvoiceMailer.with(invoice: invoice, user: invoice.child.parent).updated_notif.deliver_now
+      InvoiceMailer.with(invoice: invoice, user: invoice.school.managers.first).sm_updated_notif.deliver_now
+    end
   end
 
   def valid_copy?(o_reg, t_regs, regular_days)

@@ -1,0 +1,6 @@
+<%= "Hello, #{@parent.name}" %>
+Your booking has been confirmed! The following details now cannot be altered without contacting your school's manager.
+
+<%= strip_tags @invoice.summary %>
+
+View your booking at this URL: <%= invoice_url(id: @invoice.id) %>
