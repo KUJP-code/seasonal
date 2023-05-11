@@ -4,6 +4,12 @@
 # Access changes based on role
 # Can be customer, school manager, area manager or admin
 class User < ApplicationRecord
+  # Set full name from submitted first and last names
+  before_validation :set_name, :set_kana
+
+  # Make sure children are deleted when Parent is
+  before_destroy :destroy_children
+
   # Allow use of separate fields to ensure consistent name formatting
   attr_accessor :first_name, :family_name, :kana_first, :kana_family
 
@@ -43,12 +49,6 @@ class User < ApplicationRecord
                                 source_type: 'Option'
   has_many :events, -> { order(start_date: :asc).distinct }, through: :time_slots
   has_many :mailer_subscriptions, dependent: :destroy
-
-  # Set full name from submitted first and last names
-  before_validation :set_name, :set_kana
-
-  # Make sure children are deleted when Parent is
-  before_destroy :destroy_children
 
   # Track changes with PaperTrail
   has_paper_trail
@@ -143,7 +143,7 @@ class User < ApplicationRecord
     # when directly modifying after creation in seeds file
     return if kana_first.nil? && kana_family.nil?
 
-    self.katakana_name = [kana_first.strip, kana_family.strip].join(' ')
+    self.katakana_name = [kana_family.strip, kana_first.strip].join(' ')
   end
 
   def set_name
@@ -151,6 +151,6 @@ class User < ApplicationRecord
     # when directly modifying after creation in seeds file
     return if first_name.nil? && family_name.nil?
 
-    self.name = [first_name.strip, family_name.strip].join(' ')
+    self.name = [family_name.strip, first_name.strip].join(' ')
   end
 end

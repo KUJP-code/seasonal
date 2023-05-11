@@ -3,6 +3,9 @@
 # Represents a child, or student, enrolled at a school and/or attending an event
 # Must have a parent, and a school
 class Child < ApplicationRecord
+  # Set names, kindy and hat from meta-fields
+  before_validation :set_name, :set_kana, :set_kindy, :set_hat
+
   # Allow use of separate fields to ensure consistent name formatting
   attr_accessor :first_name, :family_name, :kana_first, :kana_family, :first_seasonal
 
@@ -23,8 +26,6 @@ class Child < ApplicationRecord
   has_many :invoices, dependent: :destroy
   has_many :events, -> { distinct }, through: :invoices
   has_many :adjustments, through: :invoices
-
-  before_validation :set_name, :set_kana, :set_kindy, :set_hat
 
   # Track changes with PaperTrail
   has_paper_trail
@@ -148,7 +149,7 @@ class Child < ApplicationRecord
     # when directly modifying after creation in seeds file
     return if kana_first.nil? && kana_family.nil?
 
-    self.katakana_name = [kana_first.strip, kana_family.strip].join(' ')
+    self.katakana_name = [kana_family.strip, kana_first.strip].join(' ')
   end
 
   def set_kindy
@@ -160,6 +161,6 @@ class Child < ApplicationRecord
     # when directly modifying after creation in seeds file
     return if first_name.nil? && family_name.nil?
 
-    self.name = [first_name.strip, family_name.strip].join(' ')
+    self.name = [family_name.strip, first_name.strip].join(' ')
   end
 end
