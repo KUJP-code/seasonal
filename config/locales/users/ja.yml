@@ -14,6 +14,22 @@ ja:
     destroy:
       failure: "ユーザーを削除できませんでした"
       success: "ユーザーを削除しました"
+    form:
+      account_information: "口座情報"
+      address: "ご住所"
+      email: "メールアドレス"
+      email_confirmation: "メールアドレスの再入力"
+      kana_name: "保護者様の氏名（カタカナ）"
+      log_in: "ログイン"
+      min_length: "最大文字数:%{length}"
+      name: "保護者様の氏名（漢字）"
+      password: "パスワード"
+      password_confirmation: "パスワードの再入力"
+      personal_information: "個人情報"
+      postcode: "郵便番号"
+      phone: "携帯電話番号"
+      prefecture: "都道府県"
+      school: "学校"
     show:
       children: "生徒"
       delete: "削除"

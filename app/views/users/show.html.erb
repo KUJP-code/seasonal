@@ -46,8 +46,7 @@
 
     <% if current_user.admin? && current_user.id != @user.id %>
         <div class="card">
-            <%= link_to t(".edit"), edit_user_path(@user), class: 'btn btn-primary' %>
-            <%= link_to t('.delete'), user_path(@user), data: { turbo_method: :delete, turbo_confirm: t('.delete_confirm'), turbo_frame: '_top' }, class: 'btn btn-primary' %>
+            <%= link_to t('.delete'), user_path(@user), data: { turbo_method: :delete, turbo_confirm: t('.delete_confirm'), turbo_frame: '_top' }, class: 'btn btn-danger' %>
         </div>
     <% end %>
 
@@ -59,6 +58,7 @@
         <div class="card">
             <%= link_to t('.user_bookings', user: @user.name), invoices_path(user: @user.id), class: 'btn btn-primary' %>
             <%= link_to t('.email_prefs'), mailer_subscriptions_path, class: 'btn btn-primary' %>
+            <%= link_to t('.edit_info'), edit_user_path(@user), class: 'btn btn-primary' %>
         </div>
     <% end %>
 
