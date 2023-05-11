@@ -295,16 +295,6 @@
                             </div>
                         <% end %>
                     </template>
-                    <% unless f.object.in_ss %>
-                        <div class="collapse multi-collapse w-100">
-                            <%= f.fields_for :coupons, f.object.coupons.new do |coup_f| %>
-                                <div class="form-floating">
-                                    <%= coup_f.text_field :code, class: 'form-control', placeholder: t('.coupon') %>
-                                    <%= coup_f.label :code, t('.coupon'), class: 'form-label' %>
-                                </div>
-                            <% end %>
-                        </div>
-                    <% end %>
                     <%= f.submit t('.confirm_invoice'), class: 'btn btn-primary w-100' unless f.object.in_ss %>
                 <% end %>
             <% end %>
