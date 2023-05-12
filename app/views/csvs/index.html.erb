@@ -1,8 +1,9 @@
-<% models = [%w[Children Child], %w[Users User], %w[Bookings Invoice], ['Regular Schedules', 'RegularSchedule']] %>
+<% models = [%w[Children Child], %w[Users User], %w[Bookings Invoice], %w[Regular\ Schedules RegularSchedule]] %>
 
-<main id="csvs_index">
+<main id="csvs_index" class="flex-row justify-content-around align-items-center flex-wrap">
     <div class="card">
-        <h1><%= t('.import') %></h1>
+        <h1>Import</h1>
+        <p>Only if all imported records are new</p>
         <%= form_with url: upload_csv_path, html: { class: 'd-grid gap-3 p-5' } do |f| %>
             <div class="fields">
                 <%= f.label :model, class: 'form-label' %>
@@ -12,10 +13,27 @@
                 <%= f.label :csv, class: 'form-label' %>
                 <%= f.file_field :csv, class: 'form-control' %>
             </div>
-            <%= f.submit t('.upload_records'), class: 'btn btn-primary' %>
+            <%= f.submit 'Import Records', class: 'btn btn-primary' %>
         <% end %>
     </div>
-    <div class="card d-grid gap-3 p-5">
+
+    <div class="card">
+        <h1>Update</h1>
+        <p>Slower, only if records need to be updated</p>
+        <%= form_with url: update_csv_path, html: { class: 'd-grid gap-3 p-5' } do |f| %>
+            <div class="fields">
+                <%= f.label :model, class: 'form-label' %>
+                <%= f.select :model, [%w[Children Child], %w[Regular\ Schedules RegularSchedule]], {}, class: 'form-select' %>
+            </div>
+            <div class="field">
+                <%= f.label :csv, class: 'form-label' %>
+                <%= f.file_field :csv, class: 'form-control' %>
+            </div>
+            <%= f.submit 'Update Records', class: 'btn btn-primary' %>
+        <% end %>
+    </div>
+
+    <div class="card d-grid gap-3 p-5 w-50">
         <h1><%= t('.export') %></h1>
         <% models.each do |model| %>
             <%= link_to model[0], download_csv_path(model: model[1]), class: 'btn btn-primary', data: { turbolinks: false } %>

@@ -10,6 +10,10 @@ class CsvPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def update?
+    user.admin?
+  end
+
   def upload?
     user.admin?
   end

@@ -12,11 +12,6 @@
     <% end %>
 
     <div class="d-grid gap-3">
-        <div>
-            <%= f.label :image, t('.event_image'), class: 'form-label' %><br />
-            <%= f.file_field :image, class: 'form-control', required: true %>
-        </div>
-
         <div class="form-floating">
             <%= f.text_field :name, class: 'form-control', placeholder: t('.name'), required: true %>
             <%= f.label :name, t('.name'), class: 'form-label' %><br />

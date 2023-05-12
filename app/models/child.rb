@@ -71,7 +71,7 @@ class Child < ApplicationRecord
   validates :birthday, comparison: { greater_than: 15.years.ago, less_than: 1.year.ago }
 
   # Format
-  validates :katakana_name, format: { with: /\A[ァ-ヶヶ ]+\z/ }
+  validates :katakana_name, format: { with: /[ァ-ヶヶ ]+/x }
 
   # Inclusion
   validates :category, inclusion: { in: categories.keys }

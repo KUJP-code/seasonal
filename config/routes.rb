@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 
       # Non-REST routes for CSVs controller
       post 'csv/upload', to: 'csvs#upload', as: :upload_csv
+      post 'csv/update', to: 'csvs#update', as: :update_csv
       get 'csv/download', to: 'csvs#download', as: :download_csv
 
       # Non-REST routes for Invoices controller

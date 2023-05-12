@@ -3,11 +3,6 @@
 
     <h2><%= t('.slot_info') %></h2>
 
-    <div>
-        <%= f.label :image, t('.slot_image'), class: 'form-label' %><br />
-        <%= f.file_field :image, class: 'form-control', required: true %>
-    </div>
-
     <div class="form-floating">
         <%= f.text_field :name, class: 'form-control', placeholder: t('.name'), required: true  %>
         <%= f.label :name, t('.name'), class: 'form-label' %><br />
