@@ -107,11 +107,15 @@ class Invoice < ApplicationRecord
                   else
                     best_price(num_regs, non_member_prices)
                   end
+    # Add cost due to automatic afternoon snacks
+    snack_count = slot_regs.count { |reg| !reg.registerable.morning }
+    course_cost += snack_count * 165
     @breakdown << '</div>'
     @breakdown.prepend(
       "<h4>コース:</h4>
       <div class='d-flex flex-column gap-1'>
-      <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{num_regs} registrations</p>"
+      <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{num_regs} registrations</p>
+      <p>午後コースおやつ代 x #{snack_count}: #{(snack_count * 165).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円"
     )
     course_cost
   end
