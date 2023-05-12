@@ -1,4 +1,4 @@
-<tr class="table-secondary <%= "user#{user.id}" %>">
+<tr class="<%= "user#{user.id}" %> table-secondary">
     <td class="name"><%= link_to user.name, user_path(user) %></td>
     <td class="kana"><%= link_to user.katakana_name, user_path(user) %></td>
     <td class="email"><%= user.email %></td>

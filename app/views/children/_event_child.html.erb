@@ -5,7 +5,7 @@
 <% event_invoices = event_child.invoices.select { |invoice| invoice.event_id == event.id } %>
 <% active_invoice = event_invoices.reject(&:in_ss).last %>
 
-<tr>
+<tr class=<%= "child#{event_child.id}" %>>
     <th scope="row" rowspan="2" class="order"><%= event_child_iteration.index + 1 %></th>
     <th scope="row" rowspan="2" class="name"><%= link_to event_child.name, child_path(event_child) %></th>
     <th scope="row" rowspan="2" class="en-name"><%= link_to event_child.en_name, child_path(event_child) %></th>
@@ -18,10 +18,10 @@
             <%= link_to t('.no_ssid'), user_path(event_child.parent, anchor: 'merge_children') %>
         <% end %>
     </th>
-    <td rowspan="2">
+    <td class="cost" rowspan="2">
         <%= number_to_currency(event_invoices.reduce(0) { |sum, invoice| sum + invoice.total_cost }, unit: '円', precision: 0, locale: :ja) %>
     </td>
-    <td rowspan="2">
+    <td class="summary" rowspan="2">
         <button type="button" class="btn btn-primary" 
             data-bs-toggle="modal" data-bs-target="#<%= "child#{event_child.id}summaries" %>">
             <%= t('.view_summary') %>
@@ -64,7 +64,7 @@
         <td rowspan="2"></td>
     <% end %>
     
-    <td rowspan="2"><% event_invoices.each do |invoice| %>
+    <td class="coupons" rowspan="2"><% event_invoices.each do |invoice| %>
         <% unless invoice.coupons.size.zero? %>
             <p>
             <%= "Booking##{invoice.id}: " %>
@@ -75,7 +75,7 @@
         <% end %>
     <% end %></td>
 
-    <td rowspan="2"><% event_invoices.each do |invoice| %>
+    <td class="invoices" rowspan="2"><% event_invoices.each do |invoice| %>
         <p><%= link_to "##{invoice.id}: #{invoice.f_bill_date}", invoice_path(invoice) unless invoice.billing_date.nil? %></p>
     <% end %></td>
 
@@ -109,9 +109,9 @@
         </div>
     </td>
 
-    <td rowspan="2"><%= event_child.regular_schedule.days if event_child.regular_schedule %></td>
-    <td rowspan="2"><%= event_child.allergies %></td>
-    <td rowspan="2"><%= event_child.photos unless event_child.photos == 'OK' %></td>
+    <td class="regular_schedule" rowspan="2"><%= event_child.regular_schedule.days if event_child.regular_schedule %></td>
+    <td class="allergies" rowspan="2"><%= event_child.allergies %></td>
+    <td class="photos" rowspan="2"><%= event_child.photos unless event_child.photos == 'OK' %></td>
 
     <% if reg_special.size.zero? || event_special.empty? %>
         <td colspan="3"></td>
@@ -137,7 +137,7 @@
         <td colspan="3"></td>
     <% end %>
 </tr>
-<tr>
+<tr class=<%= "child#{event_child.id}" %>>
     <% if reg_special.size.zero? || event_special.empty? %>
         <td></td>
         <td></td>

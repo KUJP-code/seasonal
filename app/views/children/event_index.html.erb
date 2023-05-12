@@ -27,10 +27,10 @@
         
         <thead class="sticky-top">
             <tr class="table-primary">
-                <th scope="col" rowspan="2" class="order"></th>
-                <th scope="col" rowspan="2" class="name">Name (日本語)</th>
-                <th scope="col" rowspan="2" class="en-name">Name (英語)</th>
-                <th scope="col" rowspan="2" class="ssid">SSID</th>
+                <th scope="col" rowspan="2"></th>
+                <th scope="col" rowspan="2">Name (日本語)</th>
+                <th scope="col" rowspan="2">Name (英語)</th>
+                <th scope="col" rowspan="2">SSID</th>
                 <th scope="col" rowspan="2"><%= t('.cost') %></th>
                 <th scope="col" rowspan="2"><%= t('.summary') %></th>
                 <th scope="col" rowspan="2"><%= t('.changes') %></th>
@@ -61,6 +61,97 @@
             </tr>
         </thead>
 
-        <%= render partial: 'children/event_child', collection: @children, locals: { cols: cols, event: @source } %>
+        <tbody>
+            <tr>
+                <td></td>
+                <td data-controller="filter"
+                data-filter-siblings-value="1"
+                data-filter-col-value=".name">
+                    <div class="form-floating">
+                        <%= text_field_tag 'name_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'name_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td data-controller="filter"
+                data-filter-siblings-value="1"
+                data-filter-col-value=".en-name">
+                    <div class="form-floating">
+                        <%= text_field_tag 'en-name', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'en-name', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td data-controller="filter"
+                data-filter-siblings-value="1"
+                data-filter-col-value=".ssid">
+                    <div class="form-floating">
+                        <%= text_field_tag 'ssid_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'ssid_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td data-controller="filter"
+                data-filter-siblings-value="1"
+                data-filter-col-value=".cost">
+                    <div class="form-floating">
+                        <%= text_field_tag 'cost_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'cost_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td data-controller="filter"
+                data-filter-siblings-value="1"
+                data-filter-col-value=".coupons">
+                    <div class="form-floating">
+                        <%= text_field_tag 'coupons_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'coupons_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td data-controller="filter"
+                data-filter-siblings-value="1"
+                data-filter-col-value=".invoices">
+                    <div class="form-floating">
+                        <%= text_field_tag 'invoices_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'invoices_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td></td>
+                <td data-controller="filter"
+                data-filter-siblings-value="1"
+                data-filter-col-value=".regular_schedule">
+                    <div class="form-floating">
+                        <%= text_field_tag 'schedule_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'schedule_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td data-controller="filter"
+                data-filter-siblings-value="1"
+                data-filter-col-value=".allergies">
+                    <div class="form-floating">
+                        <%= text_field_tag 'allergies_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'allergies_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td data-controller="filter"
+                data-filter-siblings-value="1"
+                data-filter-col-value=".photos">
+                    <div class="form-floating">
+                        <%= text_field_tag 'photos_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'photos_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <% unless special.size.zero? %>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                <% end %>
+                <% cols.times do |i| %>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                <% end %>
+            </tr>
+
+            <%= render partial: 'children/event_child', collection: @children, locals: { cols: cols, event: @source } %>
+        </tbody>
     </table>
 </main>

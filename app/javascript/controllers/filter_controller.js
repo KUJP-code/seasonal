@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["input"];
   static values = {
     col: String,
-    model: String,
+    siblings: Boolean,
   };
 
   change() {
@@ -17,14 +17,14 @@ export default class extends Controller {
         cells[i].innerText.toLowerCase().indexOf(filter.toLowerCase()) === -1
       ) {
         cells[i].parentNode.classList.add("d-none");
-        if (this.modelValue === "user") {
-          const parentId = cells[i].parentNode.classList[1];
+        if (this.siblingsValue) {
+          const parentId = cells[i].parentNode.classList[0];
           this.hideSiblings(parentId);
         }
       } else {
         cells[i].parentNode.classList.remove("d-none");
-        if (this.modelValue === "user") {
-          const parentId = cells[i].parentNode.classList[1];
+        if (this.siblingsValue) {
+          const parentId = cells[i].parentNode.classList[0];
           this.showSiblings(parentId);
         }
       }
