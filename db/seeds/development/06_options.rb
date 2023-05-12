@@ -83,7 +83,7 @@ Event.where(name: 'Spring School 2023').each do |event|
         name: '夕食',
         description: 'Top up on energy through the day!',
         category: :meal,
-        cost: 165
+        cost: 660
       },
       {
         name: 'なし',
