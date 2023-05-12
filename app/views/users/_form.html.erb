@@ -95,17 +95,20 @@
                     <div class="d-none"
                             data-conditional-target="target">
                         <div class="form-floating">
-                        <%= f.text_field :postcode, autocomplete: "postcode", class: 'form-control', placeholder: t(',postcode'), required: true %>
-                        <%= f.label :postcode, t('.postcode'), class: 'form-label' %><br />
+                            <%= f.text_field :postcode, autocomplete: "postcode", class: 'form-control', placeholder: t(',postcode'), required: true %>
+                            <%= f.label :postcode, t('.postcode'), class: 'form-label' %><br />
                         </div>
+
                         <div class="form-floating">
-                        <%= f.text_field :prefecture, class: 'form-control', placeholder: t('prefecture'), required: true %>
-                        <%= f.label :prefecture, t('.prefecture'), class: 'form-label' %><br />
+                            <%= f.text_field :prefecture, class: 'form-control', placeholder: t('prefecture'), required: true %>
+                            <%= f.label :prefecture, t('.prefecture'), class: 'form-label' %><br />
                         </div>
+
                         <div class="form-floating">
-                        <%= f.text_area :address, autocomplete: "address", class: 'form-control', placeholder: t('.address'), required: true %>
-                        <%= f.label :address, t('.address'), class: 'form-label' %><br />
+                            <%= f.text_area :address, autocomplete: "address", class: 'form-control', placeholder: t('.address'), required: true %>
+                            <%= f.label :address, t('.address'), class: 'form-label' %><br />
                         </div>
+
                         <div class="form-floating">
                             <%= f.telephone_field :phone, autocomplete: "phone", class: 'form-control', placeholder: t('.phone'), required: true %>
                             <%= f.label :phone, t('.phone'), class: 'form-label' %><br />
