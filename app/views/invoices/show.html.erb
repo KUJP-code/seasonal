@@ -4,6 +4,12 @@
         <%= link_to t('.child_invoices'), invoices_path(child: @invoice.child_id), class: 'btn btn-primary' %>
     </div>
 
+    <% if @updated %>
+      <div class="card bg-success w-100 text-white">
+        <%= t('.confirm_success') %>
+      </div>
+    <% end %>
+
     <h1><%= link_to @invoice.child.name, child_path(@invoice.child_id) %></h1>
 
     <% unless @previous_versions.empty? %>

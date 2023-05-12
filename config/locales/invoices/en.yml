@@ -10,5 +10,6 @@ en:
     show:
       changed_by: "Changed by: %{user}"
       change: "Change: %{action}"
+      confirm_success: "Your booking has been created successfully. You can make changes to your booking on this site until it has been confirmed by the school manager, at which point you will need to contact the school for further changes."
       mark_in_ss: "Mark In SS"
       version_from: "Version from: %{date}"

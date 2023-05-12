@@ -18,6 +18,7 @@ class InvoicesController < ApplicationController
 
   def show
     @invoice = authorize(Invoice.find(params[:id]))
+    @updated = true if params[:updated]
     @previous_versions = @invoice.versions.where.not(object: nil).reorder(created_at: :desc).reject{ |v| v.reify.total_cost.zero? }
   end
 
@@ -26,7 +27,7 @@ class InvoicesController < ApplicationController
 
     if @invoice.update(invoice_params)
       send_emails(@invoice)
-      redirect_to invoice_path(@invoice), notice: t('update_success')
+      redirect_to invoice_path(id: @invoice.id, updated: true), notice: t('update_success')
     else
       render :new, status: :unprocessable_entity, notice: t('update_failure')
     end
