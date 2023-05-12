@@ -8,6 +8,8 @@ School.all.each do |school|
       email: Faker::Internet.unique.email,
       password: Faker::Internet.password(min_length: 10),
       address: Faker::Address.full_address,
+      postcode: Faker::Address.postcode,
+      prefecture: Faker::Address.state,
       phone: Faker::PhoneNumber.phone_number
     )
 

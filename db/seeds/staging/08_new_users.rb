@@ -9,6 +9,8 @@ non_member = User.new(
   kana_family: Faker::Name.last_name.kana,
   role: :customer,
   address: Faker::Address.full_address,
+  postcode: Faker::Address.postcode,
+  prefecture: Faker::Address.state,
   phone: Faker::PhoneNumber.phone_number
 )
 
@@ -61,6 +63,8 @@ member = User.new(
   kana_family: Faker::Name.last_name.kana,
   role: :customer,
   address: Faker::Address.full_address,
+  postcode: Faker::Address.postcode,
+  prefecture: Faker::Address.state,
   phone: Faker::PhoneNumber.phone_number
 )
 

@@ -119,9 +119,34 @@ Event.where(name: 'Spring School 2023').each do |event|
       description: 'Create art with a wave of nostalgia!',
     }
   ])
-  event.image.attach(io: File.open('app/assets/images/spring_school_2023.jpg'), filename: 'logo.jpg', content_type: 'image/jpg')
 end
 
-TimeSlot.all.morning.find_each(batch_size: 10) do |slot|
-  slot.image.attach(io: File.open("app/assets/images/#{slot.name.downcase.gsub(' ', '_').gsub('_pm', '')}.jpg"), filename: 'logo.jpg', content_type: 'image/jpg')
+# Add an image for the first event, and attach it to all of them
+
+event_key = "#{Rails.env}/events/#{Event.first.name.downcase.gsub(' ', '_')}.jpg"
+
+Event.first.image.attach(key: event_key, io: File.open("app/assets/images/spring_school_2023.jpg"), filename: "#{Event.first.name.downcase.gsub(' ', '_')}.jpg", content_type: 'image/jpg')
+
+blob = ActiveStorage::Blob.find_by(key: event_key)
+
+Event.all.excluding(Event.first).each do |event|
+  event.image.attach(blob)
+end
+
+# Add an image for each different (morning) slot, and attach it to all of them
+
+slot_names = TimeSlot.group(:name).count.keys
+
+slot_names.each do |name|
+  filename = "#{name.downcase.gsub(' ', '_')}.jpg"
+  slot_key = "#{Rails.env}/slots/#{filename}.jpg"
+
+  first_slot = TimeSlot.find_by(name: name)
+  first_slot.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/jpg')
+
+  blob = ActiveStorage::Blob.find_by(key: slot_key)
+
+  TimeSlot.where(name: name).excluding(first_slot).each do |slot|
+    slot.image.attach(blob)
+  end
 end
