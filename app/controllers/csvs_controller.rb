@@ -2,14 +2,17 @@
 
 # Facilitates import/export of records for certain models
 class CsvsController < ApplicationController
+  ALLOWED_MODELS = %w[Child RegularSchedule User Invoice].freeze
+
   def index
     authorize(:csv)
   end
 
   def download
     authorize(:csv)
-    model = params[:model].constantize
-    path = "/tmp/#{params[:model].downcase.pluralize}#{Time.zone.now.strftime('%Y%m%d%H%M')}.csv"
+    model = params[:model].constantize if ALLOWED_MODELS.include?(params[:model])
+    model_name = params[:model].downcase.pluralize if ALLOWED_MODELS.include?(params[:model])
+    path = "/tmp/#{model_name}#{Time.zone.now.strftime('%Y%m%d%H%M')}.csv"
 
     File.open(path, 'wb') do |f|
       model.copy_to do |line|
@@ -30,20 +33,20 @@ class CsvsController < ApplicationController
       update_schedule(csv)
     end
 
-    redirect_to csvs_path, notice: "#{params[:model].capitalize} records updated."
+    redirect_to csvs_path, notice: "#{params[:model] if ALLOWED_MODELS.include?(params[:model])} records updated."
   end
 
   def upload
     authorize(:csv)
     csv = params[:csv]
-    model = params[:model].constantize
+    model = params[:model].constantize if ALLOWED_MODELS.include?(params[:model])
 
     model.copy_from(csv.tempfile.path) do |row|
       row[9] = Time.zone.now
       row[10] = Time.zone.now
     end
 
-    redirect_to csvs_path, notice: "#{params[:model].capitalize} records imported."
+    redirect_to csvs_path, notice: "#{params[:model] if ALLOWED_MODELS.include?(params[:model])} records imported."
   end
 
   private

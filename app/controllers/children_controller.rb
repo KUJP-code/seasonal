@@ -2,11 +2,14 @@
 
 # Control flow of data for Children
 class ChildrenController < ApplicationController
+  ALLOWED_SOURCES = %w[User Child Event TimeSlot].freeze
+
   def index
     authorize :child, :index?
     # List children attending an event or time slot
     if params[:all]
-      @slots = params[:source].constantize.find(params[:id]).time_slots.morning
+      @source = params[:source].constantize.find(params[:id]) if ALLOWED_SOURCES.include? params[:source]
+      @slots = @source.time_slots.morning
       return render 'event_attendance_index'
     elsif params[:source]
       find_source
@@ -116,7 +119,7 @@ class ChildrenController < ApplicationController
   end
 
   def find_source
-    @source = params[:source].constantize.find(params[:id])
+    @source = params[:source].constantize.find(params[:id]) if ALLOWED_SOURCES.include? params[:source]
     @children = find_children
 
     @source
