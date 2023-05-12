@@ -101,12 +101,12 @@
     
                 <div>
                     <%= f.label :category, t('.category'), class: 'form-label' %><br />
-                    <%= f.select :category, [["#{t('.external')}", "external"], ["#{t('.internal')}", "internal"], ["#{t('.reservation')}", "reservation"]], {}, { class: 'form-select', required: true } %>
+                    <%= f.select :category, Child.categories.keys.reject { |k| ['unknown', 'default'].include?(k) }.map { |k| [t(".#{k}"), k]}, {}, { class: 'form-select', required: true } %>
                 </div>
     
                 <div>
                     <%= f.label :photos, t('.photos'), class: 'form-label' %><br />
-                    <%= f.select :photos, [['-', nil], %w[OK OK], %w[NG NG]], {}, { class: 'form-select', required: true } %>
+                    <%= f.select :photos, Child.photos.keys.reject { |k| ['マイペイジ', 'Unknown'].include?(k) }, {}, { class: 'form-select', required: true } %>
                 </div>
     
                 <% if current_user.customer? && f.object.new_record? %>

@@ -6,9 +6,10 @@
             <%= adj_f.label :reason, t('.reason'), class: 'form-label' %><br />
         </div>
         
-        <div class="form-floating">
+        <div class="form-floating input-group">
             <%= adj_f.number_field :change, class: 'form-control', placeholder: t('.change'), required: true %>
             <%= adj_f.label :change, t('.change'), class: 'form-label' %>
+            <span class="input-group-text">円</span>
         </div>
         <%= button_tag t('.remove_adj'), data: { action: "fields#remove" }, class: 'btn btn-secondary' %>
     </div>
