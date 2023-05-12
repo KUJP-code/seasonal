@@ -12,6 +12,7 @@ en:
       num_options: "options registered"
       regs_for: "Registrations for %{child}"
       sibling_reg: "Sibling registered"
+      snack_count: "Afternoon Snacks: %{count}"
       title: "%{name} at %{school}"
       total_cost: "Total Cost"
       upcoming_slots: "%{event} Upcoming Time Slots"

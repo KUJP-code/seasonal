@@ -9,6 +9,7 @@ export default class extends Controller {
     "optCost",
     "optCount",
     "slotRegs",
+    "snackCount",
   ];
 
   static values = {
@@ -28,14 +29,28 @@ export default class extends Controller {
 
     const adjustmentChange = this.calcAdjustments();
 
+    // Count the number of options registered for
     const optCount = this.optRegsTargets.reduce(
       (sum, target) => sum + target.querySelectorAll(".registered").length,
       0
     );
     this.optCountTarget.innerHTML = `オプション：${optCount.toString()}つ`;
 
-    const finalCost = optionCost + courseCost + adjustmentChange;
-    this.finalCostTarget.innerHTML = `合計: ${finalCost}円`;
+    // Get a list of all registered.slots
+    const regList = [...document.getElementById("reg_slots").children].reduce(
+      (list, child) => {
+        return list.concat(child.innerHTML);
+      },
+      []
+    );
+    // Count the 午後 ones, as these must be charged for a snack
+    const snackCount = regList.filter((slot) => slot.includes("午後")).length;
+    this.snackCountTarget.innerHTML = `午後コースおやつ代：${snackCount.toString()}つ`;
+    // Get the cost of all those snacks to add to the final price
+    const snackCost = snackCount * 165;
+
+    const finalCost = optionCost + courseCost + adjustmentChange + snackCost;
+    this.finalCostTarget.innerHTML = `合計（税込）: ${finalCost}円`;
   }
 
   // Finds the cheapest price for the given number of regs

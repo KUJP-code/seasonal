@@ -37,11 +37,11 @@
                     </p>
                     <%= check_box_tag '', '', (true if registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
                 </div>
-                <div class="options<%= ' hidden' unless registered %>" data-popup-target="popup">
+                <div class="options mt-2<%= ' hidden' unless registered %>" data-popup-target="popup">
                     <% time_ids = add_slot.options.time.ids %>
                     <% add_slot.options.reject { |opt| time_ids.include?(opt.id) }.each do |opt| %>
                         <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
-                        <div class="add_reg w-100"
+                        <div class="add_reg d-flex justify-content-center align-items-center gap-2 w-100"
                              data-controller="register"
                              data-register-id-value=<%= opt.id %>
                              data-register-type-value="Option"
@@ -60,7 +60,7 @@
                         <% registered_arrival = arrival_options.select { |opt| opts_in_ss.any? {  |reg| reg.registerable_id == opt.id} }.first %>
                         <p><%= "#{registered_arrival.name}: ◯" %></p>
                     <% else %>
-                        <fieldset>
+                        <fieldset class="mt-2">
                             <legend class="fs-6 fw-bold"><%= t('.arrival_options') %></legend>
                             <% arrival_options.each do |opt| %>
                                 <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
@@ -121,14 +121,15 @@
                         <% end %>
                     </div>
 
-                    <div class="options<%= ' hidden' unless aft_registered %>" data-popup-target="popup">
+                    <div class="options mt-2<%= ' hidden' unless aft_registered %>" data-popup-target="popup">
                         <% aft_time_ids = afternoon_slot.options.time.ids %>
+                        <p><%= "#{t('.snack')}: ◯" %></p>
                         <% afternoon_slot.options.reject { |opt| aft_time_ids.include?(opt.id) }.each do |opt| %>
                             <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
                             <% if opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
                                 <p><%= "#{opt.name}: ◯" %></p>
                             <% else %>
-                                <div class="add_reg w-100"
+                                <div class="add_reg d-flex justify-content-center align-items center gap-2 w-100 mt-2"
                                      data-controller="register"
                                      data-controller="register"
                                      data-register-id-value=<%= opt.id %>
@@ -150,7 +151,7 @@
                             <% registered_depart = depart_options.select { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id} }.first %>
                             <p><%= "#{registered_depart.name}: ◯" %></p>
                         <% else %>
-                            <fieldset>
+                            <fieldset class="mt-2">
                                 <legend class="fs-6 fw-bold"><%= t('.depart_options') %></legend>
                                 <% afternoon_slot.options.select { |opt| opt.departure? }.each do |opt| %>
                                     <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>

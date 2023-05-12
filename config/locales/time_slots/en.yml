@@ -3,6 +3,7 @@ en:
     add_slot:
       arrival_options: "Arrival Options"
       depart_options: "Depart Options"
+      snack: "Snack"
     index:
       slots_for: "Slots for %{name} at %{school}"
     time_slot:

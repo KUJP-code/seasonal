@@ -5,6 +5,7 @@ ja:
       arrival_options: "延長(前)"
       depart_options: "延長(後)"
       regular_day: "通常授業日"
+      snack: "午後コースおやつ代"
     index:
       slots_for: "%{name} @ %{school}"
     time_slot:

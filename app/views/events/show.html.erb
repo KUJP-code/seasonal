@@ -235,6 +235,8 @@
                         <% end %>
                     </div>
                     <br>
+                    <p data-price-target="snackCount"><%= t('.snack_count', count: all_registered_slots.afternoon.size) %></p>
+                    <br>
                     <p data-price-target="optCount"><%= t('.num_options', num: @all_invoices.reduce(0) { |sum, i| sum + i.options.size  })%></p>
                 </div>
                 <button class="btn btn-primary"
