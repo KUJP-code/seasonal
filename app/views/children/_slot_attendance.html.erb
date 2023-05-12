@@ -22,14 +22,14 @@
     <table class="table table-sm table-light table-striped table-hover table-bordered text-center text-nowrap align-middle">
         <thead class="sticky-top">
             <tr class="table-primary">
-                <th class="arrival"><%= t('.arrival') %></th>
-                <th class="morning">
+                <th><%= t('.arrival') %></th>
+                <th>
                     <p><%= t('.attend_morning') %></p>
                     <p><%= "K: #{children.select{|c| c.kindy}.size}, E: #{children.reject{|c| c.kindy}.size}" %></p>
                 </th>
-                <th class="name"><%= t('.name') %></th>
-                <th class="allergy"><%= t('.allergy') %></th>
-                <th class="photos"><%= t('.photo') %></th>
+                <th><%= t('.name') %></th>
+                <th><%= t('.allergy') %></th>
+                <th><%= t('.photo') %></th>
                 <% event_options.each do |opt| %>
                     <%# FIXME: n+1 queries %>
                     <%# Count the kids registered for photo service, plus those whose siblings are %>
@@ -40,7 +40,7 @@
                     <th scope="col"><%= "#{opt.name}: #{opt.registrations.where(child_id: children.ids).size}" %></th>
                 <% end %>
                 <% unless slot_attendance.special? %>
-                    <th scope="col" id="afternoon_header" class="afternoon">
+                    <th scope="col" id="afternoon_header">
                         <p><%= t('.attend_afternoon') %></p>
                         <p><%= "K: #{children.select{|c| c.kindy && c.registered?(slot_attendance.afternoon_slot)}.size}, E: #{children.reject(&:kindy).select{|c| c.registered?(slot_attendance.afternoon_slot)}.size}" %></p>
                     </th>
@@ -49,9 +49,101 @@
                         <th scope="col"><%= "#{opt.name}: #{opt.registrations.where(child_id: children.ids).size}" %></th>
                     <% end %>
                 <% end %>
-                <th scope="col" id="depart_header" class="depart"><%= t('.depart') %></th>
+                <th scope="col" id="depart_header"><%= t('.depart') %></th>
             </tr>
         </thead>
-        <%= render partial: 'children/slot_child', collection: children, locals: { slot: slot_attendance, event_options: event_options, morn_options: morn_options, aft_options: aft_options } %>
+        <tbody>
+            <tr class="search">
+                <td data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".arrival">
+                    <div class="form-floating">
+                        <%= text_field_tag 'arrival_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'arrival_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".morning">
+                    <div class="form-floating">
+                        <%= text_field_tag 'morning_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'morning_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".name">
+                    <div class="form-floating">
+                        <%= text_field_tag 'name_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'name_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".allergy">
+                    <div class="form-floating">
+                        <%= text_field_tag 'allergy_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'allergy_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".photos">
+                    <div class="form-floating">
+                        <%= text_field_tag 'photos_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'photos_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <% event_options.each do |opt| %>
+                    <td data-controller="filter"
+                        data-filter-siblings-value="0"
+                        data-filter-col-value=".<%= opt.name %>">
+                        <div class="form-floating">
+                            <%= text_field_tag "#{opt.name}_filter", nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                            <%= label_tag "#{opt.name}_filter", t('.filter'), class: 'form-label' %>
+                        </div>
+                    </td>
+                <% end %>
+                <% morn_options.each do |opt| %>
+                    <td data-controller="filter"
+                        data-filter-siblings-value="0"
+                        data-filter-col-value=".<%= opt.name %>">
+                        <div class="form-floating">
+                            <%= text_field_tag "#{opt.name}_filter", nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                            <%= label_tag "#{opt.name}_filter", t('.filter'), class: 'form-label' %>
+                        </div>
+                    </td>
+                <% end %>
+                <% unless slot_attendance.special? %>
+                    <td data-controller="filter"
+                        data-filter-siblings-value="0"
+                        data-filter-col-value=".afternoon">
+                        <div class="form-floating">
+                            <%= text_field_tag 'afternoon_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                            <%= label_tag 'afternoon_filter', t('.filter'), class: 'form-label' %>
+                        </div>
+                    </td>
+                    <% aft_options.each do |opt| %>
+                        <td data-controller="filter"
+                            data-filter-siblings-value="0"
+                            data-filter-col-value=".<%= opt.name %>">
+                            <div class="form-floating">
+                                <%= text_field_tag "#{opt.name}_filter", nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                                <%= label_tag "#{opt.name}_filter", t('.filter'), class: 'form-label' %>
+                            </div>
+                        </td>
+                    <% end %>
+                <% end %>
+                <td data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".depart">
+                    <div class="form-floating">
+                        <%= text_field_tag 'depart_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'depart_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+            </tr>
+            <%= render partial: 'children/slot_child', collection: children, locals: { slot: slot_attendance, event_options: event_options, morn_options: morn_options, aft_options: aft_options } %>
+        </tbody>
     </table>
 </div>

@@ -12,6 +12,9 @@ export default class extends Controller {
     // Hide navbar
     const navbar = document.querySelector(".navbar");
     navbar.classList.add("d-none");
+    // Hide search bar
+    const search = document.querySelector(".search");
+    search.classList.add("d-none");
 
     // Reveal target table and heading, then print
     this.printTarget.classList.remove("d-none");
@@ -24,5 +27,7 @@ export default class extends Controller {
 
     // Reveal navbar
     navbar.classList.remove("d-none");
+    // Reveal search bar
+    search.classList.remove("d-none");
   }
 }

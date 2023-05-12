@@ -6,15 +6,15 @@
     <td class="photos"><%= slot_child.photos unless slot_child.photos == 'OK' %></td>
     <% event_options.each do |opt| %>
         <%# Show as registered for photo service if sibling is %>
-        <td><%= opt.name if slot_child.options.include?(opt) || slot_child.siblings.any? { |sib| sib.registered?(opt) } %></td>
+        <td class=<%= opt.name %>><%= opt.name if slot_child.options.include?(opt) || slot_child.siblings.any? { |sib| sib.registered?(opt) } %></td>
     <% end %>
     <% morn_options.each do |opt| %>
-        <td><%= opt.name if slot_child.options.include?(opt) %></td>
+        <td class=<%= opt.name %>><%= opt.name if slot_child.options.include?(opt) %></td>
     <% end %>
     <% unless slot.special? %>
         <td class="afternoon"><%= '◯' if slot_child.registered?(slot.afternoon_slot) %></td>
         <% aft_options.each do |opt| %>
-            <td><%= opt.name if slot_child.options.include?(opt) %></td>
+            <td class=<%= opt.name %>><%= opt.name if slot_child.options.include?(opt) %></td>
         <% end %>
     <% end %>
     <% if slot.special? %>
