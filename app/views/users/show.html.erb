@@ -88,12 +88,18 @@
     <% end %>
 
     <% if @user.school_manager? %>
-        <div class="card">
-            <% @user.managed_schools.each do |school| %>
+        <% @user.managed_schools.each do |school| %>
+            <div class="card">
                 <h3><%= school.name %></h3>
                 <%= render partial: 'events/event_stats', collection: school.events %>
-            <% end %>
-        </div>
+            </div>
+
+            <div class="daily-attendance card flex-row flex-wrap justify-content-around gap-3">
+                <h3 class="w-100"><%= t('.daily_attendance') %></h3>
+                <%= render partial: 'events/daily_attendance', locals: { event: school.next_event } %>
+            </div>
+        <% end %>
+
     <% end %>
 
     <% unless @user.staff? %>

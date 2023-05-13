@@ -1,0 +1,8 @@
+<h4 class="w-100"><%= link_to event.name, children_path(source: 'Event', id: event.id) %></h4>
+
+<% event.time_slots.morning.each do |slot| %>
+    <div class="card">
+        <%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'TimeSlot', id: slot.id) %>
+        <%= slot.registrations.size %>
+    </div>
+<% end %>

@@ -25,7 +25,7 @@ class School < ApplicationRecord
 
   # Instance methods
   def next_event
-    events.order(start_date: :asc).limit(1).first
+    events.where('start_date > ?', Time.zone.now).limit(1).first
   end
 
   private

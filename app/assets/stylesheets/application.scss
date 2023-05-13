@@ -400,14 +400,18 @@ form .input-group-text {
 
 // User#show
 
-main#user_show .card {
+#user_show .card {
   width: 90vw;
 }
 
-main#user_show .user_options {
+#user_show .user_options {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   padding: 1vw;
   gap: 0.5vw;
+}
+
+#user_show .daily-attendance > .card {
+  width: 20%;
 }
