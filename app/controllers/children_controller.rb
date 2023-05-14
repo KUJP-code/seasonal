@@ -18,7 +18,7 @@ class ChildrenController < ApplicationController
     end
 
     # By default, see the list of children current user is responsible for
-    @children = policy_scope(Child).order(:name)
+    @children = policy_scope(Child).order(:name).includes(:parent, :school)
   end
 
   def show
