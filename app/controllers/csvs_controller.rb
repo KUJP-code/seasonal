@@ -40,10 +40,13 @@ class CsvsController < ApplicationController
     authorize(:csv)
     csv = params[:csv]
     model = params[:model].constantize if ALLOWED_MODELS.include?(params[:model])
+    time = Time.zone.now
 
     model.copy_from(csv.tempfile.path) do |row|
-      row[9] = Time.zone.now
-      row[10] = Time.zone.now
+      # Data from the SS doesn't come with created_at/updated_at, so we
+      # need to set them ourselves
+      row[12] = time
+      row[13] = time
     end
 
     redirect_to csvs_path, notice: "#{params[:model] if ALLOWED_MODELS.include?(params[:model])} records imported."
