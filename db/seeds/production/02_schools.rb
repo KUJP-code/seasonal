@@ -31,6 +31,10 @@ School.create!([
     area: Area.find_by(name: '小堀エリア')
   },
   {
+    name: '池上',
+    area: Area.find_by(name: '阿部エリア')
+  },
+  {
     name: '長原',
     area: Area.find_by(name: '飯森エリア')
   },
