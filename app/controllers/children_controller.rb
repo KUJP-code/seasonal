@@ -106,6 +106,7 @@ class ChildrenController < ApplicationController
     return unless ALLOWED_SOURCES.include? params[:source]
 
     @source = params[:source].constantize.find(params[:id])
+    @slots = @source.time_slots if params[:source] == 'Event'
     @children = find_children.order(:name)
     render "#{@source.class.name.downcase}_index"
   end
