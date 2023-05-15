@@ -2,7 +2,7 @@
 
 # Control flow of data for Children
 class ChildrenController < ApplicationController
-  ALLOWED_SOURCES = %w[User Child Event TimeSlot].freeze
+  ALLOWED_SOURCES = %w[Event TimeSlot].freeze
 
   def index
     authorize :child, :index?
@@ -18,7 +18,7 @@ class ChildrenController < ApplicationController
     end
 
     # By default, see the list of children current user is responsible for
-    @children = policy_scope(Child).order(:name).includes(:parent, :school)
+    @children = policy_scope(Child).page(params[:page]).per(1_000)
   end
 
   def show
