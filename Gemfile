@@ -78,6 +78,9 @@ gem 'faker_japanese'
 # Use postgres-copy to import/export .csv data
 gem 'postgres-copy'
 
+# Use Kaminari for pagination
+gem 'kaminari'
+
 group :development, :test do
   # Capybara for system/feature testing
   gem 'capybara'
