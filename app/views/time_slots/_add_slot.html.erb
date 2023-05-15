@@ -8,7 +8,7 @@
     </div>
 
     <% in_ss = slots_in_ss.any? { |reg| reg.registerable_id == add_slot.id } %>
-    <% registered = registrations.any? { |reg| reg.registerable_id == add_slot.id } %>
+    <% registered = registrations.any? { |reg| reg.registerable_id == add_slot.id && reg.registerable_type == 'TimeSlot' } %>
 
     <div class="d-grid gap-3">
         <% if add_slot.closed? %>
