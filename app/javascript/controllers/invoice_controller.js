@@ -75,12 +75,12 @@ export default class extends Controller {
     const siblings = e.detail.siblings;
     const type = e.detail.type;
 
-    if (checked && type === "TimeSlot") {
-      this.add(child, cost, id, type, name);
-    } else if (checked) {
-      this.radio(child, cost, id, siblings, type, name);
+    if (checked && (type === "TimeSlot" || type === "Option")) {
+      return this.add(child, cost, id, type, name);
+    } else if (checked && type === "Radio") {
+      return this.radio(child, cost, id, siblings, type, name);
     } else {
-      this.remove(child, id, type, name);
+      return this.remove(child, id, type, name);
     }
   }
 
