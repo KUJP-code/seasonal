@@ -10,6 +10,8 @@ class ChildrenController < ApplicationController
     if params[:all]
       slot_attendance_index
     elsif params[:source]
+      return unless ALLOWED_SOURCES.include? params[:source]
+
       find_source
     else
       # By default, see the list of children current user is responsible for
@@ -89,25 +91,21 @@ class ChildrenController < ApplicationController
     @slots = @next_event.time_slots.limit(5)
   end
 
-  def find_children
-    case params[:source]
-    when 'Event'
-      @children = @source.children.distinct.includes(
-        :regular_schedule, :registrations, :time_slots, :options
-      ).includes(invoices: :versions)
-    when 'TimeSlot'
-      @children = @source.children.distinct.includes(options: :registrations)
-    else
-      render status: :unprocessable_entity
-    end
+  def event_variables
+    @slots = @source.time_slots.includes(:options)
+    @children = @source.children.includes(
+      :options, :regular_schedule, time_slots: %i[options afternoon_slot], invoices: :coupons
+    ).order(:name)
   end
 
   def find_source
-    return unless ALLOWED_SOURCES.include? params[:source]
-
     @source = params[:source].constantize.find(params[:id])
-    @slots = @source.time_slots if params[:source] == 'Event'
-    @children = find_children.order(:name)
+    case params[:source]
+    when 'Event'
+      event_variables
+    when 'TimeSlot'
+      slot_variables
+    end
     render "#{@source.class.name.downcase}_index"
   end
 
@@ -118,11 +116,13 @@ class ChildrenController < ApplicationController
   end
 
   def slot_attendance_index
-    return unless ALLOWED_SOURCES.include? params[:source]
-
     # This is actually an array of slots
     @source = params[:source].constantize.find(params[:id])
     @slots = @source.time_slots.morning
     render 'event_attendance_index'
+  end
+
+  def slot_variables
+    @children = @source.children.distinct.includes(options: :registrations).order(:name)
   end
 end
