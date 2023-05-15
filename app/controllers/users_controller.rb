@@ -4,7 +4,11 @@
 class UsersController < ApplicationController
   def index
     authorize(User)
-    @users = policy_scope(User)
+    @users = if current_user.admin?
+               policy_scope(User).page(params[:page]).per(500)
+             else
+               policy_scope(User)
+             end
   end
 
   def profile

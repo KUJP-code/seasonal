@@ -1,6 +1,8 @@
 <main id="user_index">
     <%= link_to t('.new_customer'), new_user_path, class: 'btn btn-primary' if current_user.staff? %>
 
+    <%= paginate @users %>
+
     <table class="table table-hover text-center">
         <thead>
             <tr class="table-primary">
@@ -50,4 +52,7 @@
             <%= render @users %>
         </tbody>
     </table>
+
+    <%= paginate @users %>
+
 </main>
