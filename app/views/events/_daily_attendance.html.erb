@@ -15,3 +15,5 @@
         <h1><%= regs.size %></h1>
     </div>
 <% end %>
+
+<%= button_tag t('.print'), class: 'btn btn-primary w-100 print', data: { action: "click->print#print" } %>
