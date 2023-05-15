@@ -14,7 +14,7 @@ ja:
         email_confirmation: "メールアドレスの再入力"
         kana_name: "保護者様の氏名（カタカナ）"
         log_in: "ログイン"
-        min_length: "最大文字数:%{length}"
+        min_length: "最大文字数:%{length}, "
         name: "保護者様の氏名（漢字）"
         password: "パスワード"
         password_confirmation: "パスワードの再入力"

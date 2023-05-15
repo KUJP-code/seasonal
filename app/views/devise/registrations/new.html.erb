@@ -18,15 +18,19 @@
       <%= f.label :email_confirmation, t('.email_confirmation'), class: 'form-label' %><br />
     </div>
 
-    <div class="form-floating confirmed">
-      <%= f.password_field :password, autocomplete: "new-password", 'aria-labelledby': 'pwd-length', class: 'form-control', placeholder: t('.password'), required: true %>
+    <div class="form-floating confirmed" data-controller="count">
+      <%= f.password_field :password, autocomplete: "new-password", 'aria-labelledby': 'pwd-length', class: 'form-control', placeholder: t('.password'), required: true, data: { 'count-target' => 'input' } %>
       <%= f.label :password, class: 'form-label' %>
-      <div id="pwd-length" class="form-text"><%= t('.min_length', length: @minimum_password_length) %></div>
+      <div id="pwd-length" class="form-text">
+        <%= t('.min_length', length: @minimum_password_length) %>
+        <span data-count-target="counter"></span>
+      </div>
     </div>
   
-    <div class="form-floating confirmed">
-      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', placeholder: t('.password_confirmation'), required: true %>
-      <%= f.label :password_confirmation, class: 'form-label' %><br />
+    <div class="form-floating confirmed" data-controller="count">
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", 'aria-labelledby': 'confirm-length', class: 'form-control', placeholder: t('.password_confirmation'), required: true, data: { 'count-target' => 'input' } %>
+      <%= f.label :password_confirmation, class: 'form-label' %>
+      <div id="confirm-length" class="form-text"><span  data-count-target="counter"></span></div>
     </div>
     
     <div>

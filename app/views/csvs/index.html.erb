@@ -11,7 +11,7 @@
             </div>
             <div class="field">
                 <%= f.label :csv, class: 'form-label' %>
-                <%= f.file_field :csv, class: 'form-control' %>
+                <%= f.file_field :csv, class: 'form-control', required: true %>
             </div>
             <%= f.submit 'Import Records', class: 'btn btn-primary' %>
         <% end %>
@@ -27,7 +27,7 @@
             </div>
             <div class="field">
                 <%= f.label :csv, class: 'form-label' %>
-                <%= f.file_field :csv, class: 'form-control' %>
+                <%= f.file_field :csv, class: 'form-control', required: true %>
             </div>
             <%= f.submit 'Update Records', class: 'btn btn-primary' %>
         <% end %>

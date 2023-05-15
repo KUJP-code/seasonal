@@ -31,9 +31,10 @@
         <% end %>
     <% else %>
         <%= form_with url: find_child_path, method: :get, id: 'merge_child_form', html: { class: 'd-grid gap-3 p-5 needs-validation', novalidate: true } do |f| %>
-            <div class="form-floating">
-                <%= f.search_field :ssid, class: 'form-control', placeholder: t('.ssid'), required: true %>
+            <div class="form-floating" data-controller="count" data-count-countdown-value="true">
+                <%= f.search_field :ssid, class: 'form-control', placeholder: t('.ssid'), required: true, data: { 'count-target' => 'input' }, maxlength: 10 %>
                 <%= f.label :ssid, t('.ssid'), class: 'form-label'  %>
+                <div id="confirm-length" class="form-text"><span  data-count-target="counter"></span></div>
             </div>
 
             <%= f.submit t('.find_child'), class: 'btn btn-primary' %>
