@@ -1,6 +1,6 @@
-<% registered_slots = @event.time_slots.morning.joins(:registrations).where(registrations: { child_id: @child.id, invoice_id: @all_invoices.ids }).with_attached_image.includes(afternoon_slot: :options).includes(:options) %>
-<% all_registered_slots = @event.time_slots.joins(:registrations).where(registrations: { child_id: @child.id, invoice_id: @all_invoices.ids }) %>
-<% unregistered_slots = @event.time_slots.morning.where.not(id: registered_slots.ids).with_attached_image.includes(afternoon_slot: :options).includes(:options) %>
+<% all_registered_slots = @child.time_slots.where(event_id: @event.id) %>
+<% registered_slots = @child.time_slots.morning.where(event_id: @event.id) %>
+<% unregistered_slots = @event.time_slots.morning.where.not(id: registered_slots.ids) %>
 <% registrations = @all_invoices.reduce([]) { |array, invoice| array + invoice.registrations } %>
 <% adjustments = @all_invoices.reduce([]) { |array, inv| array + inv.adjustments } %>
 <% slots_in_ss = @all_invoices.select { |invoice| invoice.in_ss }.reduce([]) { |array, invoice| array + invoice.slot_regs } %>
