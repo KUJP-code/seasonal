@@ -8,17 +8,13 @@ class ChildrenController < ApplicationController
     authorize :child, :index?
     # List children attending an event or time slot
     if params[:all]
-      @source = params[:source].constantize.find(params[:id]) if ALLOWED_SOURCES.include? params[:source]
-      @slots = @source.time_slots.morning
-      return render 'event_attendance_index'
+      slot_attendance_index
     elsif params[:source]
       find_source
-
-      return render "#{@source.class.name.downcase}_index"
+    else
+      # By default, see the list of children current user is responsible for
+      @children = policy_scope(Child).page(params[:page]).per(1_000)
     end
-
-    # By default, see the list of children current user is responsible for
-    @children = policy_scope(Child).page(params[:page]).per(1_000)
   end
 
   def show
@@ -41,11 +37,9 @@ class ChildrenController < ApplicationController
     @child = authorize(Child.new(child_params))
 
     if @child.save
-      flash_success
-      redirect_to child_path(@child)
+      redirect_to child_path(@child), notice: t('success')
     else
-      flash_failure
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_entity, alert: t('failure')
     end
   end
 
@@ -53,11 +47,9 @@ class ChildrenController < ApplicationController
     @child = authorize(Child.find(params[:id]))
 
     if @child.update(child_params)
-      flash_success
       redirect_to child_path(@child), notice: t('success')
     else
-      flash_failure
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity, alert: t('failure')
     end
   end
 
@@ -102,32 +94,34 @@ class ChildrenController < ApplicationController
     when 'Event'
       @children = @source.children.distinct.includes(
         :regular_schedule, :registrations, :time_slots, :options
-      ).includes(invoices: :versions).order(:name)
+      ).includes(invoices: :versions)
     when 'TimeSlot'
-      @children = @source.children.distinct.includes(options: :registrations).order(:name)
+      @children = @source.children.distinct.includes(options: :registrations)
     else
       render status: :unprocessable_entity
     end
   end
 
-  def flash_failure
-    flash.now[:alert] = t('.failure')
-  end
-
-  def flash_success
-    flash.now[:notice] = t('.success')
-  end
-
   def find_source
-    @source = params[:source].constantize.find(params[:id]) if ALLOWED_SOURCES.include? params[:source]
-    @children = find_children
+    return unless ALLOWED_SOURCES.include? params[:source]
 
-    @source
+    @source = params[:source].constantize.find(params[:id])
+    @children = find_children.order(:name)
+    render "#{@source.class.name.downcase}_index"
   end
 
   def search_result
     return Child.find_by(ssid: params[:ssid], birthday: params[:bday]) if params[:bday]
 
     Child.find_by(ssid: params[:ssid])
+  end
+
+  def slot_attendance_index
+    return unless ALLOWED_SOURCES.include? params[:source]
+
+    # This is actually an array of slots
+    @source = params[:source].constantize.find(params[:id])
+    @slots = @source.time_slots.morning
+    render 'event_attendance_index'
   end
 end
