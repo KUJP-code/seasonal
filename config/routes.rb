@@ -8,13 +8,13 @@ Rails.application.routes.draw do
 
     # Require users to be signed in to view these resources
     authenticate :user do
-      resources :adjustments
+      resources :adjustments, only: %i[edit]
       resources :children
-      resources :csvs
+      resources :csvs, only: %i[index]
       resources :events
-      resources :invoices
-      resources :price_lists
-      resources :time_slots
+      resources :invoices, except: %i[create edit new]
+      resources :price_lists, except: %i[show]
+      resources :time_slots, except: %i[create destroy new]
       resources :users
 
       # Mailer subscription routes
