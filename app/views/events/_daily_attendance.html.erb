@@ -1,8 +1,17 @@
 <h4 class="w-100"><%= link_to event.name, children_path(source: 'Event', id: event.id) %></h4>
 
 <% event.time_slots.morning.each do |slot| %>
-    <div class="card">
-        <%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'TimeSlot', id: slot.id) %>
-        <%= slot.registrations.size %>
+    <% regs = slot.registrations %>
+
+    <div class="card <%= case
+                         when regs.size < 10
+                             'bg-danger'
+                         when regs.size < 20 
+                             'bg-info'
+                         else
+                             'bg-success'
+                         end %> justify-content-between">
+        <h5 class="bg-light rounded-3"><%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'TimeSlot', id: slot.id), class: 'text-break' %></h5>
+        <h1><%= regs.size %></h1>
     </div>
 <% end %>
