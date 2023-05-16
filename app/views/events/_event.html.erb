@@ -6,12 +6,6 @@
         <div class="d-flex justify-content-center align-items-center flex-column flex-grow-1 gap-3">
             <p class="fw-bold"><%= link_to t('.title', name: event.name, school: event.school.name), children_path(source: 'Event', id: event.id) %></p>
             <p><%= event.f_start_date %></p>
-            <% if current_user.admin? %>
-                <div class="event_management">
-                    <%= link_to t('.edit'), edit_event_path(event), class: 'btn btn-primary' %>
-                    <%= link_to t('.delete'), event_path(event), data: {turbo_method: :delete, turbo_confirm: t('.delete_confirm')}, class: 'btn btn-primary' %>
-                </div>
-            <% end %>
         </div>
     
     <% elsif child %>
