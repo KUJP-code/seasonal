@@ -3,6 +3,8 @@
 # Represents an event at a single school, with one or many time slots
 # Must have a school
 class Event < ApplicationRecord
+  after_save :create_afternoons
+
   belongs_to :school
   delegate :area, to: :school
   belongs_to :member_prices, class_name: 'PriceList',
@@ -49,5 +51,22 @@ class Event < ApplicationRecord
     photo_id = options.find_by(name: 'フォトサービス').id
     direct_regs = Registration.all.where(registerable_type: 'Option', registerable_id: photo_id)
     direct_regs.size + direct_regs.reduce(0) { |sum, reg| sum + reg.child.siblings.size }
+  end
+
+  private
+
+  def create_afternoons
+    time_slots.morning.each do |m_slot|
+      next unless m_slot.afternoon_slot.nil?
+
+      m_slot.create_afternoon_slot(
+        name: m_slot.name,
+        start_time: m_slot.start_time + 5.hours,
+        end_time: m_slot.end_time + 7.hours,
+        category: m_slot.category,
+        morning: false,
+        event_id: m_slot.event_id
+      )
+    end
   end
 end
