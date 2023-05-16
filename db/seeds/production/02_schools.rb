@@ -15,6 +15,10 @@ Area.create!([
 
 School.create!([
   {
+    name: 'Test',
+    area: Area.find_by(name: "Test")
+  },
+  {
     name: 'オンラインコース',
     area: Area.find_by(name: "Test")
   },
