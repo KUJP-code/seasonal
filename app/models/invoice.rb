@@ -87,7 +87,7 @@ class Invoice < ApplicationRecord
   def calc_adjustments
     @breakdown << '<h4>調整:</h4>'
     @breakdown << '<div class="d-flex flex-column gap-1">'
-    hat_adjustment if child.needs_hat?
+    hat_adjustment if needs_hat?
     repeater_discount if !child.member? && child.events.distinct.size > 1 && slot_regs.size - @ignore_slots.size > 9
 
     generic_adj = adjustments.reduce(0) { |sum, adj| sum + adj.change }
@@ -231,6 +231,13 @@ class Invoice < ApplicationRecord
 
   def member_prices
     event.member_prices.courses
+  end
+
+  def needs_hat?
+    return false if child.received_hat
+
+    # They only need one if registered for an outdoor activity now
+    time_slots.any? { |slot| slot.category == 'outdoor' }
   end
 
   # Decides if we need to apply the dumb 200 円 increase

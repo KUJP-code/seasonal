@@ -24,8 +24,6 @@ class Event < ApplicationRecord
 
   has_one_attached :image
 
-  after_save :create_afternoons
-
   validates :name, :description, :start_date, :end_date, presence: true
 
   validates :start_date, comparison: { greater_than_or_equal_to: Time.zone.today, less_than_or_equal_to: :end_date }
@@ -58,24 +56,5 @@ class Event < ApplicationRecord
   # plus those attending from different schools
   def possible_children
     children.where.not(school: school).distinct + Child.where(school: school)
-  end
-
-  private
-
-  def create_afternoons
-    time_slots.morning.each do |m_slot|
-      next unless m_slot.seasonal? && m_slot.afternoon_slot.nil?
-
-      m_slot.create_afternoon_slot(
-        name: m_slot.name,
-        start_time: m_slot.start_time + 6.hours,
-        end_time: m_slot.end_time + 6.hours,
-        description: m_slot.description,
-        category: m_slot.category,
-        morning: false,
-        event_id: m_slot.event_id,
-        morning_slot_id: nil
-      )
-    end
   end
 end

@@ -1,5 +1,5 @@
 <%# Slots at this event the child has registered for %>
-<% reg_slots = event_child.time_slots.select { |slot| slot.event_id == event.id && slot.category == 'seasonal' }.sort_by{ |slot| slot.start_time } %>
+<% reg_slots = event_child.time_slots.select { |slot| slot.event_id == event.id && slot.category != 'special' }.sort_by{ |slot| slot.start_time } %>
 <%# Special days for this event %>
 <% event_special = slots.select { |slot| slot.category == 'special' } %>
 <%# Special days the child is registered for %>
