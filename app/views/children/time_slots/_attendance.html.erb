@@ -1,5 +1,5 @@
 <% time_cats = %w[arrival departure k_arrival k_departure] %>
-<% event_options = event.options %>
+<% event.options = event.options %>
 <% morn_time_ids = slot.options.select{ |opt| time_cats.include?(opt.category) }.map(&:id) %>
 <% morn_options = slot.options.reject { |opt| morn_time_ids.include?(opt.id) } %>
 <% aft_options = if slot.afternoon_slot.nil?
@@ -33,7 +33,7 @@
                 <th><%= t('.name') %></th>
                 <th><%= t('.allergy') %></th>
                 <th><%= t('.photo') %></th>
-                <% event_options.each do |opt| %>
+                <% event.options.each do |opt| %>
                     <%# Count the kids registered for photo service, plus those whose siblings are %>
                     <th scope="col"><%= "#{opt.name}: #{opt.registrations.select{ |reg| child_ids.include?(reg.child_id) }.size + children.select { |c| opt.registrations.any? { |reg| c.siblings.map(&:id).include?(reg.child_id) } }.size }" %></th>
                 <% end %>
@@ -94,7 +94,7 @@
                         <%= label_tag 'photos_filter', t('.filter'), class: 'form-label' %>
                     </div>
                 </td>
-                <% event_options.each do |opt| %>
+                <% event.options.each do |opt| %>
                     <td data-controller="filter"
                         data-filter-siblings-value="0"
                         data-filter-col-value=".<%= opt.name %>">
@@ -144,7 +144,7 @@
                 </td>
             </tr>
 
-            <%= render partial: 'children/time_slots/slot_child', collection: children, locals: { slot: slot, event_options: event_options, morn_options: morn_options, aft_options: aft_options } %>
+            <%= render partial: 'children/time_slots/slot_child', collection: children, locals: { slot: slot, event_options: event.options, morn_options: morn_options, aft_options: aft_options } %>
         </tbody>
     </table>
 </div>
