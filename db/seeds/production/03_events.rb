@@ -58,7 +58,8 @@ Event.all.each do |event|
       name: '水鉄砲合＆スイカ割り！',
       morning: true,
       start_time: '29 July 2023 10:00 JST +09:00',
-      end_time: '29 July 2023 13:30 JST +09:00'
+      end_time: '29 July 2023 13:30 JST +09:00',
+      category: :special
     },
     {
       name: 'サボテンクラフト',
@@ -145,7 +146,7 @@ Event.all.each do |event|
       end_time: '25 August 2023 13:30 JST +09:00'
     },
     {
-      name: 'ウォーターベースボール(7月28日)',
+      name: 'ウォーターベースボール(8月28日)',
       morning: true,
       start_time: '28 August 2023 10:00 JST +09:00',
       end_time: '28 August 2023 13:30 JST +09:00'
@@ -218,10 +219,12 @@ end
 # Create all afternoon slots
 Event.all.each do |event|
   event.time_slots.morning.each do |slot|
+    # Make sure the afternoon of the special day gets its own name
+    name = slot.special? ? '巨大なお城のクラフト＆アイスクリーム屋さん' : slot.name
     slot.create_afternoon_slot(
-      name: slot.name,
+      name: name,
       start_time: slot.start_time + 5.hours,
-      end_time: slot.end_time + 7.hours,
+      end_time: slot.end_time + 5.hours,
       category: slot.category,
       morning: false,
       event_id: slot.event_id
