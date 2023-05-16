@@ -33,6 +33,7 @@ Event.all.each do |event|
     {
       name: 'ウォーターベースボール(7月25日)',
       morning: true,
+      category: :outdoor,
       start_time: '25 July 2023 10:00 JST +09:00',
       end_time: '25 July 2023 13:30 JST +09:00'
     },
@@ -76,6 +77,7 @@ Event.all.each do |event|
     {
       name: '水鉄砲合戦!!(8月2日)',
       morning: true,
+      category: :outdoor,
       start_time: '2 August 2023 10:00 JST +09:00',
       end_time: '2 August 2023 13:30 JST +09:00'
     },
@@ -94,6 +96,7 @@ Event.all.each do |event|
     {
       name: '水鉄砲合戦!!(8月8日)',
       morning: true,
+      category: :outdoor,
       start_time: '8 August 2023 10:00 JST +09:00',
       end_time: '8 August 2023 13:30 JST +09:00'
     },
@@ -112,12 +115,14 @@ Event.all.each do |event|
     {
       name: 'ウォーターゲーム対決！',
       morning: true,
+      category: :morning,
       start_time: '18 August 2023 10:00 JST +09:00',
       end_time: '18 August 2023 13:30 JST +09:00'
     },
     {
       name: '水鉄砲合戦!!(8月21日)',
       morning: true,
+      category: :outdoor,
       start_time: '21 August 2023 10:00 JST +09:00',
       end_time: '21 August 2023 13:30 JST +09:00'
     },
@@ -148,6 +153,7 @@ Event.all.each do |event|
     {
       name: 'ウォーターベースボール(8月28日)',
       morning: true,
+      category: :outdoor,
       start_time: '28 August 2023 10:00 JST +09:00',
       end_time: '28 August 2023 13:30 JST +09:00'
     },
