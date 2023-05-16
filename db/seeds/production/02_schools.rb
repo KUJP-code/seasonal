@@ -13,6 +13,75 @@ Area.create!([
   }
 ])
 
+am_one = Area.find_by(name: '飯森エリア').managers.new(
+  email: 'e-iimori@kids-up.jp',
+  password: ENV['TEMP_PASS'],
+  name: '飯森',
+  katakana_name: Faker::Name.name.kana,
+  role: :area_manager,
+  address: Faker::Address.full_address,
+  postcode: Faker::Address.postcode,
+  prefecture: Faker::Address.state,
+  phone: Faker::PhoneNumber.phone_number,
+  pin: Faker::Number.number(digits: 4)
+)
+
+am_one.skip_confirmation_notification!
+am_one.save!
+am_one.confirm
+
+am_two = Area.find_by(name: '阿部エリア').managers.new(
+  email: 'k-abe@kids-up.jp',
+  password: ENV['TEMP_PASS'],
+  name: '阿部',
+  katakana_name: Faker::Name.name.kana,
+  role: :area_manager,
+  address: Faker::Address.full_address,
+  postcode: Faker::Address.postcode,
+  prefecture: Faker::Address.state,
+  phone: Faker::PhoneNumber.phone_number,
+  pin: Faker::Number.number(digits: 4)
+)
+
+am_two.skip_confirmation_notification!
+am_two.save!
+am_two.confirm
+
+am_three = Area.find_by(name: '小堀エリア').managers.new(
+  email: 'y-kobori@kids-up.jp',
+  password: ENV['TEMP_PASS'],
+  name: '小堀',
+  katakana_name: Faker::Name.name.kana,
+  role: :area_manager,
+  address: Faker::Address.full_address,
+  postcode: Faker::Address.postcode,
+  prefecture: Faker::Address.state,
+  phone: Faker::PhoneNumber.phone_number,
+  pin: Faker::Number.number(digits: 4)
+)
+
+am_three.skip_confirmation_notification!
+am_three.save!
+am_three.confirm
+
+am_four = Area.find_by(name: '田中エリア').managers.new(
+  email: 'm-tanaka@kids-up.jp',
+  password: ENV['TEMP_PASS'],
+  name: '田中',
+  katakana_name: Faker::Name.name.kana,
+  role: :area_manager,
+  address: Faker::Address.full_address,
+  postcode: Faker::Address.postcode,
+  prefecture: Faker::Address.state,
+  phone: Faker::PhoneNumber.phone_number,
+  pin: Faker::Number.number(digits: 4)
+)
+
+am_four.skip_confirmation_notification!
+am_four.save!
+am_four.confirm
+
+
 School.create!([
   {
     name: 'Test',
