@@ -26,13 +26,9 @@ class TimeSlot < ApplicationRecord
   has_one_attached :image
 
   # Validations
-  validates :name, :start_time, :end_time, :description, presence: true
+  validates :name, :start_time, :end_time, presence: true
 
-  validates :start_time, comparison: { greater_than_or_equal_to: Time.zone.today.midnight, less_than: :end_time }
-  validates :end_time, comparison: { greater_than_or_equal_to: Time.zone.today.midnight }
   validates_comparison_of :end_time, greater_than: :start_time
-
-  validates :description, length: { minimum: 10 }
 
   # Map category integer in db to a string
   enum :category, seasonal: 0,
@@ -56,18 +52,6 @@ class TimeSlot < ApplicationRecord
   scope :afternoon, -> { where(morning: false).order(start_time: :asc) }
 
   # Public methods
-  # TODO: remove this once slot_index is optimised
-  # Returns arrival time if different to slot start time, otherwise blank string
-  def arrival_time(child)
-    arrival_option = child.options.find_by(category: 'arrival', optionable_id: id, optionable_type: 'TimeSlot')
-
-    if arrival_option
-      "#{(start_time + arrival_option.modifier.minutes).strftime('%I:%M%p')} ~"
-    else
-      ''
-    end
-  end
-
   # Consolidates manual closing and automatic closing into one check
   def closed?
     closed || Time.zone.now > end_time - 1.day
@@ -82,18 +66,6 @@ class TimeSlot < ApplicationRecord
     start_time.strftime('%A')
   end
 
-  # TODO: remove this once slot_index is optimised
-  # Returns departure time if different to slot end time, otherwise blank string
-  def departure_time(child)
-    departure_option = child.options.find_by(category: 'departure', optionable_id: id, optionable_type: 'TimeSlot')
-
-    if departure_option
-      "~ #{(end_time + departure_option.modifier.minutes).strftime('%I:%M%p')}"
-    else
-      ''
-    end
-  end
-
   def f_end_time
     end_time.strftime('%I:%M%p')
   end
@@ -104,11 +76,5 @@ class TimeSlot < ApplicationRecord
 
   def times
     "#{f_start_time} - #{f_end_time}"
-  end
-
-  # List all children at the slot's school,
-  # plus those attending from different schools
-  def possible_children
-    children.where.not(school: school).or(Child.where(school: school)).distinct
   end
 end

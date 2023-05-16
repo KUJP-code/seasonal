@@ -23,11 +23,10 @@ class Event < ApplicationRecord
   has_many :invoices, dependent: :destroy
 
   has_one_attached :image
+  has_one_attached :banner
 
-  validates :name, :description, :start_date, :end_date, presence: true
+  validates :name, :start_date, :end_date, presence: true
 
-  validates :start_date, comparison: { greater_than_or_equal_to: Time.zone.today, less_than_or_equal_to: :end_date }
-  validates :end_date, comparison: { greater_than_or_equal_to: Time.zone.today }
   validates_comparison_of :end_date, greater_than_or_equal_to: :start_date
 
   # Scopes for event time
@@ -50,11 +49,5 @@ class Event < ApplicationRecord
     photo_id = options.find_by(name: 'フォトサービス').id
     direct_regs = Registration.all.where(registerable_type: 'Option', registerable_id: photo_id)
     direct_regs.size + direct_regs.reduce(0) { |sum, reg| sum + reg.child.siblings.size }
-  end
-
-  # List all children at the event's school,
-  # plus those attending from different schools
-  def possible_children
-    children.where.not(school: school).distinct + Child.where(school: school)
   end
 end
