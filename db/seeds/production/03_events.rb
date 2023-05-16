@@ -4,7 +4,7 @@ School.all.each do |school|
     start_date: 'July 20 2023',
     end_date: 'August 31 2023',
     member_prices_id: 1,
-    non_member_prices: 2,
+    non_member_prices_id: 2,
     goal: 100_000_000
   )
 end
@@ -169,7 +169,7 @@ end
 different_schools = %w[新浦安 南町田グランベリーパーク]
 
 School.all.where.not(name: different_schools).each do |school|
-  event.time_slots.create!([
+  school.events.first.time_slots.create!([
     {
       name: 'ペーパーランタン',
       morning: true,
@@ -193,7 +193,7 @@ end
 
 # Create the different slots for Minami-machida and Shin-Urayasu
 School.all.where(name: different_schools).each do |school|
-  event.time_slots.create!([
+  school.events.first.time_slots.create!([
     {
       name: '焼きそばを作ろう',
       morning: true,
@@ -213,4 +213,19 @@ School.all.where(name: different_schools).each do |school|
       end_time: '31 August 2023 13:30 JST +09:00'
     }
   ])
+end
+
+# Create all afternoon slots
+Event.all.each do |event|
+  event.time_slots.morning.each do |slot|
+    slot.create_afternoon_slot(
+      name: slot.name,
+      start_time: slot.start_time + 5.hours,
+      end_time: slot.end_time + 7.hours,
+      category: slot.category,
+      morning: false,
+      event_id: slot.event_id
+    )
+  end
+  puts "#{event.name} at #{event.school.name} done"
 end
