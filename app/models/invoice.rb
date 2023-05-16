@@ -88,8 +88,8 @@ class Invoice < ApplicationRecord
     @breakdown << '<h4>調整:</h4>'
     @breakdown << '<div class="d-flex flex-column gap-1">'
     hat_adjustment if needs_hat?
-    repeater_discount if !child.member? && child.events.distinct.size > 1 && slot_regs.size - @ignore_slots.size > 9
-
+    first_time_adjustment if first_time?
+    repeater_discount if repeater?
     generic_adj = adjustments.reduce(0) { |sum, adj| sum + adj.change }
     adjustments.each do |adj|
       @breakdown << "<p>Adjustment of #{adj.change.to_s.reverse.gsub(/(\d{3})(?=\d)/,
@@ -161,6 +161,19 @@ class Invoice < ApplicationRecord
     end
   end
 
+  def first_time?
+    child.external? && child.events.distinct.size <= 1
+  end
+
+  # TODO: reason needs a translation
+  def first_time_adjustment
+    registration_cost = 1_100
+    reason = 'First Time Registration'
+    return if child.adjustments.any? { |adj| adj.change == registration_cost && adj.reason == reason }
+
+    adjustments.new(change: registration_cost, reason: reason)
+  end
+
   def full_days(slot_ids)
     TimeSlot.all.where(event_id: event_id, id: slot_ids, morning_slot_id: slot_ids).size
   end
@@ -223,10 +236,7 @@ class Invoice < ApplicationRecord
     hat_reason = 'because first time children must purchase a hat'
     return if child.adjustments.any? { |adj| adj.change == hat_cost && adj.reason == hat_reason }
 
-    adjustments.new(
-      change: hat_cost,
-      reason: hat_reason
-    )
+    adjustments.new(change: hat_cost, reason: hat_reason)
   end
 
   def member_prices
@@ -266,15 +276,19 @@ class Invoice < ApplicationRecord
     extension_cost + spot_cost
   end
 
+  def repeater?
+    child.external? && child.events.distinct.size > 1 && slot_regs.size - @ignore_slots.size > 9
+  end
+
+  # TODO: reason needs translation
   def repeater_discount
-    unless child.invoices.where(event: event).any? do |invoice|
-             invoice.adjustments.find_by(change: -10_000, reason: 'repeater discount')
-           end
-      adjustments.new(
-        change: -10_000,
-        reason: 'repeater discount'
-      )
-    end
+    discount = -10_000
+    reason = 'repeater discount'
+    return if child.invoices.where(event: event).any? do |invoice|
+                invoice.adjustments.find_by(change: discount, reason: reason)
+              end
+
+    adjustments.new(change: discount, reason: reason)
   end
 
   def spot_use(num_regs, courses)

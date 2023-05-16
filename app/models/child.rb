@@ -112,7 +112,7 @@ class Child < ApplicationRecord
 
   # Checks which price list the child uses
   def member?
-    return false if category == 'external'
+    return false if external?
 
     true
   end
