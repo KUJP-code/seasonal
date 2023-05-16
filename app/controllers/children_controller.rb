@@ -92,6 +92,7 @@ class ChildrenController < ApplicationController
   end
 
   def event_variables
+    @source = Event.find(params[:id])
     @slots = @source.time_slots.includes(:options)
     @children = @source.children.includes(
       :options, :regular_schedule, time_slots: %i[options afternoon_slot], invoices: :coupons
@@ -99,14 +100,14 @@ class ChildrenController < ApplicationController
   end
 
   def find_source
-    @source = params[:source].constantize.find(params[:id])
     case params[:source]
     when 'Event'
       event_variables
+      render 'children/events/event_sheet'
     when 'TimeSlot'
       slot_variables
+      render 'children/time_slots/slot_sheet'
     end
-    render "#{@source.class.name.downcase}_index"
   end
 
   def search_result
@@ -116,13 +117,14 @@ class ChildrenController < ApplicationController
   end
 
   def slot_attendance_index
-    # This is actually an array of slots
-    @source = params[:source].constantize.find(params[:id])
+    @source = Event.find(params[:id])
     @slots = @source.time_slots.morning
-    render 'event_attendance_index'
+    render 'children/time_slots/slot_sheet_index'
   end
 
   def slot_variables
+    @source = TimeSlot.find(params[:id])
     @children = @source.children.distinct.includes(options: :registrations).order(:name)
+    @event = @source.event
   end
 end
