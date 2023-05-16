@@ -1,22 +1,25 @@
-<% event_options = slot.event.options %>
-<% morn_time_ids = slot.options.time.ids %>
+<% time_cats = %w[arrival departure k_arrival k_departure] %>
+<% event_options = event.options %>
+<% morn_time_ids = slot.options.select{ |opt| time_cats.include?(opt.category) }.map(&:id) %>
 <% morn_options = slot.options.reject { |opt| morn_time_ids.include?(opt.id) } %>
 <% aft_options = if slot.afternoon_slot.nil?
                    []
                  else
                    aft_slot = slot.afternoon_slot
-                   aft_time_ids = aft_slot.options.time.ids
+                   aft_time_ids = aft_slot.options.select{ |opt| time_cats.include?(opt.category) }.map(&:id)
                    aft_slot.options.reject { |opt| aft_time_ids.include?(opt.id) }
                  end
 %>
 <% children = slot.children.distinct %>
+<% child_ids = children.map(&:id) %>
+<% aft_child_ids = slot.afternoon_slot.registrations.map(&:child_id) unless slot.afternoon_slot.nil? %>
 
 <div class="slot mb-5" data-controller="refresh print" data-print-target="print">
     <div class="links d-flex gap-3">
         <%= link_to t('.back_to_event'), children_path(id: slot.event_id, source: 'Event'), class: 'btn btn-primary ms-3' %>
         <%= button_tag t('.print'), class: 'btn btn-primary', data: { action: "click->print#print" } %>
     </div>
-    <h1 class="text-center"><%= "#{slot.name} (#{slot.start_time.strftime('%m月%d日')})" %></h1>
+    <h1 class="text-center"><%= "#{slot.name} (#{slot.date})" %></h1>
     <h2 class="counter text-center"><span data-refresh-target="counter">10:00</span>後にページが更新される。</h2>
 
     <table class="table table-sm table-light table-striped table-hover table-bordered text-center text-nowrap align-middle">
@@ -31,22 +34,19 @@
                 <th><%= t('.allergy') %></th>
                 <th><%= t('.photo') %></th>
                 <% event_options.each do |opt| %>
-                    <%# FIXME: n+1 queries %>
                     <%# Count the kids registered for photo service, plus those whose siblings are %>
-                    <th scope="col"><%= "#{opt.name}: #{opt.registrations.where(child_id: children.ids).size + children.select { |c| c.siblings.any? { |s| s.registered?(opt) } }.size }" %></th>
+                    <th scope="col"><%= "#{opt.name}: #{opt.registrations.select{ |reg| child_ids.include?(reg.child_id) }.size + children.select { |c| opt.registrations.any? { |reg| c.siblings.map(&:id).include?(reg.child_id) } }.size }" %></th>
                 <% end %>
                 <% morn_options.each do |opt| %>
-                    <%# FIXME: n+1 queries %>
-                    <th scope="col"><%= "#{opt.name}: #{opt.registrations.where(child_id: children.ids).size}" %></th>
+                    <th scope="col"><%= "#{opt.name}: #{opt.registrations.select{ |reg| child_ids.include?(reg.child_id) }.size}" %></th>
                 <% end %>
                 <% unless slot.special? %>
                     <th scope="col" id="afternoon_header">
                         <p><%= t('.attend_afternoon') %></p>
-                        <p><%= "K: #{children.select{|c| c.kindy && c.registered?(slot.afternoon_slot)}.size}, E: #{children.reject(&:kindy).select{|c| c.registered?(slot.afternoon_slot)}.size}" %></p>
+                        <p><%= "K: #{children.select{ |c| c.kindy && aft_child_ids.include?(c.id) }.size}, E: #{children.reject(&:kindy).select{ |c| aft_child_ids.include?(c.id) }.size}" %></p>
                     </th>
                     <% aft_options.each do |opt| %>
-                        <%# FIXME: n+1 queries %>
-                        <th scope="col"><%= "#{opt.name}: #{opt.registrations.where(child_id: children.ids).size}" %></th>
+                        <th scope="col"><%= "#{opt.name}: #{opt.registrations.select{ |reg| child_ids.include?(reg.child_id) }.size}" %></th>
                     <% end %>
                 <% end %>
                 <th scope="col" id="depart_header"><%= t('.depart') %></th>
@@ -144,7 +144,7 @@
                 </td>
             </tr>
 
-            <%# <%= render partial: 'children/time_slots/slot_child', collection: children, locals: { slot: slot, event_options: event_options, morn_options: morn_options, aft_options: aft_options } %>
+            <%= render partial: 'children/time_slots/slot_child', collection: children, locals: { slot: slot, event_options: event_options, morn_options: morn_options, aft_options: aft_options } %>
         </tbody>
     </table>
 </div>

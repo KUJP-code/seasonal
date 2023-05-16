@@ -117,14 +117,13 @@ class ChildrenController < ApplicationController
   end
 
   def slot_attendance_index
-    @source = Event.find(params[:id])
-    @slots = @source.time_slots.morning
+    @source = Event.where(id: params[:id]).includes(options: :registrations)
+    @slots = @source.first.time_slots.morning.includes(:children, afternoon_slot: %i[options registrations], options: :registrations)
     render 'children/time_slots/slot_sheet_index'
   end
 
   def slot_variables
-    @source = TimeSlot.find(params[:id])
-    @children = @source.children.distinct.includes(options: :registrations).order(:name)
-    @event = @source.event
+    @source = TimeSlot.where(id: params[:id]).includes(:children, afternoon_slot: %i[options registrations], options: :registrations)
+    @event = Event.where(id: @source.first.event_id).includes(options: :registrations)
   end
 end
