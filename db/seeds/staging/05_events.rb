@@ -143,7 +143,7 @@ slot_names = TimeSlot.group(:name).count.keys
 
 slot_names.each do |name|
   filename = "#{name.downcase.gsub(' ', '_')}.jpg"
-  slot_asset_key = "images/time_slots/#{filename}"
+  slot_asset_key = "images/time_slots/spring_school_2023/#{filename}"
   slot_key = "staging/time_slots/#{filename}"
   slot_image = client.get_object(bucket: bucket_name, key: slot_asset_key)
 
