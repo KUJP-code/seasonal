@@ -123,9 +123,13 @@ end
 
 # Add an image for the first event, and attach it to all of them
 
-event_key = "#{Rails.env}/events/#{Event.first.name.downcase.gsub(' ', '_')}.jpg"
+bucket_name = ENV['S3_BUCKET_NAME']
+client = Aws::S3::Client.new(region: 'ap-northeast-1')
+event_asset_key = "images/events/spring_school_2023.jpg"
+event_key = "staging/events/spring_school_2023.jpg"
+event_image = client.get_object(bucket: bucket_name, key: asset_key)
 
-Event.first.image.attach(key: event_key, io: File.open("app/assets/images/spring_school_2023.jpg"), filename: "#{Event.first.name.downcase.gsub(' ', '_')}.jpg", content_type: 'image/jpg')
+Event.first.image.attach(key: event_key, io: event_image.body, filename: "spring_school_2023.jpg", content_type: 'image/jpg')
 
 blob = ActiveStorage::Blob.find_by(key: event_key)
 
@@ -139,10 +143,12 @@ slot_names = TimeSlot.group(:name).count.keys
 
 slot_names.each do |name|
   filename = "#{name.downcase.gsub(' ', '_')}.jpg"
-  slot_key = "#{Rails.env}/slots/#{filename}.jpg"
+  slot_asset_key = "images/time_slots/#{filename}"
+  slot_key = "staging/time_slots/#{filename}"
+  slot_image = client.get_object(bucket: bucket_name, key: slot_asset_key)
 
   first_slot = TimeSlot.find_by(name: name)
-  first_slot.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/jpg')
+  first_slot.image.attach(key: slot_key, io: slot_image.body, filename: filename, content_type: 'image/jpg')
 
   blob = ActiveStorage::Blob.find_by(key: slot_key)
 

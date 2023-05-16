@@ -1,5 +1,5 @@
 
-invoiceChild.all.find_each(batch_size: 100) do |child|
+Child.all.find_each(batch_size: 100) do |child|
   child.invoices.create!([
     {
       event: child.school.events.first,
