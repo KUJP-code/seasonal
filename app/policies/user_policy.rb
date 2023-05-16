@@ -43,11 +43,15 @@ class UserPolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin'
-        scope.all.includes(:children).order(:name)
+        scope.all.select(:id, :name, :katakana_name, :email).includes(:children).order(:name)
       when 'area_manager'
-        user.managed_areas.reduce([]) { |array, a| array + a.parents.includes(:children).order(:name) }
+        user.managed_areas.reduce([]) do |array, area|
+          array + area.parents.select(:id, :name, :katakana_name, :email).includes(:children).order(:name)
+        end
       else
-        user.managed_schools.reduce([]) { |array, s| array + s.parents.includes(:children).order(:name) }
+        user.managed_schools.reduce([]) do |array, school|
+          array + school.parents.select(:id, :name, :katakana_name, :email).includes(:children).order(:name)
+        end
       end
     end
   end
