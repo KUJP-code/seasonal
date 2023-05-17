@@ -23,7 +23,6 @@
                     <%= link_to event_path(id: @event.id, child: @child.id) do %>
                         <div class="child bg-info rounded-pill p-2 text-white active" data-price-target="child">
                             <div class="hidden"><%= "#{@child.id}" %></div>
-                            <div class="hidden hat"><%= @child.needs_hat %></div>
                             <%= @child.name %>
                             <p class="hidden level"><%= (@child.kindy) ? 'Kindy' : "Elementary" %></p>
                             <% if @child.member? %>
@@ -52,7 +51,6 @@
                         <%= link_to event_path(id: @event.id, child: child.id) do %>
                             <div class="child bg-info rounded-pill p-2 text-white">
                                 <div class="hidden"><%= "#{child.id}" %></div>
-                                <div class="hidden hat"><%= child.needs_hat %></div>
                                 <%= child.name %>
                                 <p class="hidden level"><%= (child.kindy) ? 'Kindy' : "Elementary" %></p>
                                 <% if child.member? %>
@@ -67,6 +65,8 @@
             <% end %>
         </tbody>
     </table>
+
+    <h5 class="text-center">＋ボタンを押すと、お子様の予約内容を他のお子様に反映させることができ、ご兄弟で同じ日程の予約が出来ます。（反映させる前に、1人目の予約を確定させる必要がございます。）</h5>
 
     <hr class="border border-secondary border-1 w-100">
 

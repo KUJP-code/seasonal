@@ -27,18 +27,18 @@
                 <div>
                     <%= f.label :first_name, t('.name'), class: 'form-label' %><br />
                     <div class="input-group">
-                        <%= text_field_tag "child[family_name]", (@child.name.split[1] unless @child.name.nil?), class: 'form-control', required: true, placeholder: t('.family_name') %>
+                        <%= text_field_tag "child[family_name]", (@child.name.strip.split[0] unless @child.name.nil?), class: 'form-control', required: true, placeholder: t('.family_name') %>
                         <span class="input-group-text"></span>
-                        <%= text_field_tag "child[first_name]", (@child.name.split[0] unless @child.name.nil?), class: 'form-control', required: true, placeholder: t('.first_name')%>                        
+                        <%= text_field_tag "child[first_name]", (@child.name.strip.split[1] unless @child.name.nil?), class: 'form-control', required: true, placeholder: t('.first_name')%>                        
                     </div>
                 </div>
     
                 <div>
                     <%= f.label :kana_first, t('.kana'), class: 'form-label' %><br />
                     <div class="input-group">
-                        <%= text_field_tag "child[kana_family]", (@child.katakana_name.split[1] unless @child.name.nil?), class: 'form-control', required: true, placeholder: t('.kana_family') %>
+                        <%= text_field_tag "child[kana_family]", (@child.katakana_name.split[0] unless @child.name.nil?), class: 'form-control', required: true, placeholder: t('.kana_family') %>
                         <span class="input-group-text"></span>
-                        <%= text_field_tag "child[kana_first]", (@child.katakana_name.split[0] unless @child.name.nil?), class: 'form-control', required: true, placeholder: t('.kana_first') %>
+                        <%= text_field_tag "child[kana_first]", (@child.katakana_name.split[1] unless @child.name.nil?), class: 'form-control', required: true, placeholder: t('.kana_first') %>
                     </div>
                 </div>
     
@@ -95,7 +95,7 @@
                 <h3><%= t('.school_info') %></h3>
     
                 <div>
-                    <%= f.label :school, t('.school'), class: 'form-label' %><br />
+                    <%= f.label :school_id, t('.school'), class: 'form-label' %><br />
                     <%= f.collection_select :school_id, School.order(:name), :id, :name, {}, { class: 'form-select', required: true } %>
                 </div>
     
@@ -106,30 +106,25 @@
     
                 <div>
                     <%= f.label :photos, t('.photos'), class: 'form-label' %><br />
-                    <%= f.select :photos, Child.photos.keys.reject { |k| ['マイペイジ', 'Unknown'].include?(k) }, {}, { class: 'form-select', required: true } %>
+                    <%= f.select :photos, Child.photos.keys.reject { |k| ['マイペイジ', 'Unknown'].include?(k) }.unshift(''), {}, { class: 'form-select', required: true } %>
                 </div>
     
                 <% if current_user.customer? && f.object.new_record? %>
                     <div>
-                        <%= f.check_box :first_seasonal, class: 'form-check-input' %>
+                        <%= f.check_box :first_seasonal, {class: 'form-check-input', checked: f.object.needs_hat} %>
                         <%= f.label :first_seasonal, t('.first_seasonal'), class: 'form-check-label' %><br />
                     </div>
                 <% end %>
     
                 <% if current_user.staff? %>
                     <div class="form-floating">
-                        <%= f.text_field :ssid, placeholder: t('.ssid'), class: 'form-control', required: true %>
+                        <%= f.text_field :ssid, placeholder: t('.ssid'), class: 'form-control' %>
                         <%= f.label :ssid, t('.ssid'), class: 'form-label' %><br />
                     </div>
-    
+
                     <div>
-                        <%= f.check_box :needs_hat, class: 'form-check-input' %>
-                        <%= f.label :needs_hat, t('.needs_hat'), class: 'form-check-label' %><br />
-                    </div>
-    
-                    <div>
-                        <%= f.check_box :received_hat, class: 'form-check-input' %>
-                        <%= f.label :received_hat, t('.received_hat'), class: 'form-check-label' %><br />
+                        <%= f.check_box :first_seasonal, {class: 'form-check-input', checked: f.object.needs_hat} %>
+                        <%= f.label :first_seasonal, t('.first_seasonal'), class: 'form-check-label' %><br />
                     </div>
                 <% end %>
             </div>

@@ -5,7 +5,7 @@ ja:
     show:
       adjustments: "調整"
       confirm_invoice: "予約を確認する"
-      copy_regs: "%{from}から%{to}に登録をコピーする"
+      copy_regs: "%{from}と同じ予約内容を%{to}に反映させる"
       coupon: "クーポン"
       course: "コース"
       member_prices: "会員料金"

@@ -7,7 +7,7 @@ class Child < ApplicationRecord
   before_validation :set_name, :set_kana, :set_kindy, :set_hat
 
   # Allow use of separate fields to ensure consistent name formatting
-  attr_accessor :first_name, :family_name, :kana_first, :kana_family, :first_seasonal
+  attr_accessor :first_seasonal, :first_name, :family_name, :kana_first, :kana_family
 
   # List associations to other models
   belongs_to :parent, class_name: 'User', optional: true
@@ -136,10 +136,17 @@ class Child < ApplicationRecord
 
   private
 
+  # Due to a last minute change in requirements and a reluctance on my part to
+  # make database changes the day before it goes live, the needs_hat boolean is
+  # now being used as a stand-in for whether the child is attending their first
+  # seasonal event or not. This can be set by a parent when adding a new child,
+  # or by a staff member at any time if the child is editable.
+  # Will either be toggling it to false during invoice calculation when they
+  # register for their second seasonal, or manually after each seasonal for kids
+  # who attended
   def set_hat
-    return if first_seasonal.nil?
-
-    self.needs_hat = first_seasonal
+    self.needs_hat = true if first_seasonal == '1'
+    self.needs_hat = false if first_seasonal == '0'
   end
 
   def set_kana
