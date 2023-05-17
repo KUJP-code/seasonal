@@ -1,3 +1,9 @@
 ja:
   adjustments:
     edit:
+      add_adj: "調整内容を追加する"
+      update_adj: "調整内容をアップデートする"
+    form:
+      change: "調整額"
+      reason: "調整理由"
+      remove_adj: "調整内容を削除する"
