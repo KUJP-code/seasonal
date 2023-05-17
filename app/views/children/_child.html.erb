@@ -2,13 +2,13 @@
     <% if child.ssid %>
         <td class="ssid"><%= link_to child.ssid, child_path(child) %></td>
     <% elsif child.ssid.nil? && child.parent_id.nil? %>
-        <td class="ssid"><%= link_to t('.no_ssid'), child_path(child) %></td>
+        <td class="ssid"><%= link_to 'なし', child_path(child) %></td>
     <% else %>
-        <td class="ssid"><%= link_to t('.no_ssid'), user_path(child.parent, anchor: 'merge_children') if child.ssid.nil? %></td>
+        <td class="ssid"><%= link_to 'なし', user_path(child.parent, anchor: 'merge_children') if child.ssid.nil? %></td>
     <% end %>
-    <td class="name"><%= link_to (child.name ? child.name : t('.no_name')), child_path(child) %></td>
-    <td class="kana"><%= link_to (child.katakana_name ? child.katakana_name : t('.no_katakana_name')), child_path(child) %></td>
-    <td class="en"><%= link_to (child.en_name ? child.en_name : t('.no_en_name')), child_path(child) %></td>
+    <td class="name"><%= link_to (child.name ? child.name : 'なし'), child_path(child) %></td>
+    <td class="kana"><%= link_to (child.katakana_name ? child.katakana_name : 'なし'), child_path(child) %></td>
+    <td class="en"><%= link_to (child.en_name ? child.en_name : 'なし'), child_path(child) %></td>
     <td class="category"><%= child.category %></td>
     <td class="allergies"><%= child.allergies %></td>
     <% if child.received_hat %>
@@ -20,14 +20,14 @@
         <% if child.parent %>
           <%= link_to child.parent.name, user_path(child.parent) %>
         <% else %>   
-            <%= t('.no_parent') %>
+            なし
         <% end %>
     </td>
     <td class="school">
         <% if child.school %>
             <%= child.school.name %>
         <% else %>
-            None
+            なし
         <% end %>
     </td>
     <td class="edit">

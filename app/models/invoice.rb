@@ -114,7 +114,7 @@ class Invoice < ApplicationRecord
     @breakdown.prepend(
       "<h4>コース:</h4>
       <div class='d-flex flex-column gap-1'>
-      <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 for #{num_regs} registrations</p>
+      <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 (#{num_regs}コマ)</p>
       <p>午後コースおやつ代 x #{snack_count}: #{(snack_count * 165).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円"
     )
     course_cost
@@ -130,7 +130,7 @@ class Invoice < ApplicationRecord
     @breakdown << "<h4>オプション:</h4>
                    <div class='d-flex flex-column gap-1'>
                    <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
-                                                   '\\1,').reverse}円 for #{opt_regs.size - @ignore_opts.size}  options<p>"
+                                                   '\\1,').reverse}円 (#{opt_regs.size - @ignore_opts.size}オプション)<p>"
 
     # Find the options on this invoice, even if not saved
     temp_opts = {}
@@ -165,10 +165,9 @@ class Invoice < ApplicationRecord
     child.external? && child.events.distinct.size <= 1
   end
 
-  # TODO: reason needs a translation
   def first_time_adjustment
     registration_cost = 1_100
-    reason = 'First Time Registration'
+    reason = '初回登録料(初めてシーズナルスクールに参加する非会員の方)'
     return if child.adjustments.any? { |adj| adj.change == registration_cost && adj.reason == reason }
 
     adjustments.new(change: registration_cost, reason: reason)
@@ -197,7 +196,7 @@ class Invoice < ApplicationRecord
       @breakdown << '</div>'
     end
 
-    @breakdown << "<h4>Registration List</h4>\n"
+    @breakdown << "<h4>登録</h4>\n"
     @breakdown << '<div class="d-flex gap-3 p-3 justify-content-center flex-wrap">'
     slot_regs.each do |slot_reg|
       next if @ignore_slots.include?(slot_reg.id)
@@ -233,7 +232,7 @@ class Invoice < ApplicationRecord
 
   def hat_adjustment
     hat_cost = 1_100
-    hat_reason = 'because first time children must purchase a hat'
+    hat_reason = '帽子代(野外アクティビティに参加される方でKids UP帽子をお持ちでない方のみ)'
     return if child.adjustments.any? { |adj| adj.change == hat_cost && adj.reason == hat_reason }
 
     adjustments.new(change: hat_cost, reason: hat_reason)
@@ -280,10 +279,9 @@ class Invoice < ApplicationRecord
     child.external? && child.events.distinct.size > 1 && slot_regs.size - @ignore_slots.size > 9
   end
 
-  # TODO: reason needs translation
   def repeater_discount
     discount = -10_000
-    reason = 'repeater discount'
+    reason = '非会員リピーター割引(以前シーズナルスクールに参加された非会員の方)'
     return if child.invoices.where(event: event).any? do |invoice|
                 invoice.adjustments.find_by(change: discount, reason: reason)
               end

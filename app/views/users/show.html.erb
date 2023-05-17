@@ -4,8 +4,8 @@
 
 <main id="user_show" class="gap-3">
     <% unless @user.confirmed? %>
-        <div class="card w-25 align-self-end justify-content-center align-items-center bg-danger">
-            <p><%= t('.please_confirm_email') %></p>
+        <div class="card justify-content-center align-items-center bg-danger">
+            <h3><%= t('.please_confirm_email') %></h3>
             <%= button_to t('.resend_confirm_email'), user_confirmation_path(user: { email: @user.email }), class: 'btn btn-primary' %>
         </div>
     <% end %>

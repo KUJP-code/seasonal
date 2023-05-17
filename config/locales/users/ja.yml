@@ -5,8 +5,13 @@ ja:
   users:
     add_child:
       add_new_child: "新しいお子様の情報を追加する"
+      back: "戻る"
       bday: 誕生日
+      claim_child: ""
+      en_name: "名前(ローマ字)"
       find_child: "お子様の検索"
+      katakana: "名前(カタカナ)"
+      name: "名前"
       ssid: "マイページID"
     create:
       failure: "%{name}を作成できませんでした"
@@ -19,6 +24,10 @@ ja:
       address: "ご住所"
       email: "メールアドレス"
       email_confirmation: "メールアドレスの再入力"
+      family_name: "姓"
+      first_name: "名"
+      kana_family: "姓(カタカナ)"
+      kana_first: "名(カタカナ)"
       kana_name: "保護者様の氏名（カタカナ）"
       log_in: "ログイン"
       min_length: "最大文字数:%{length}"
@@ -34,10 +43,13 @@ ja:
       children: "生徒"
       delete: "削除"
       edit: "詳細を編集する"
+      edit_info: "登録情報の変更"
+      email_prefs: "自動配信メール"
       event: "イベント"
       greet: "Hello、%{user}さん!"
       managed_areas: "管理区域"
       managed_schools: "運営する学校"
+      resend_confirm_email: "予約内容確認メールをもう一度受け取る"
       school_name: "Kids UP %{school}"
       time_slot: "タイムスロット"
       user_bookings: "%{user}予約内容"

@@ -74,11 +74,11 @@
         <% @event.options.each do |opt| %>
             <% if @child.siblings.any? { |sib| sib.registered?(opt) } %>
                 <div class="d-flex gap-2 align-items-center">
-                    <p><%= "#{opt.name}: #{t('.sibling_reg')}" %></p>
+                    <h4><%= "#{opt.name}: #{t('.sibling_reg', opt: opt.name)}" %></h4>
                 </div>
             <% elsif opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
                 <div class="d-flex gap-2 align-items-center">
-                    <p><%= "#{opt.name} (#{number_to_currency(opt.cost, unit: '円', precision: 0, locale: :ja)}): ◯" %></p>
+                    <h4><%= "#{opt.name} (#{number_to_currency(opt.cost, unit: '円', precision: 0, locale: :ja)}): ◯" %></h4>
                 </div>
             <% else %>
                 <% opt_registered = registrations.any? { |reg| reg.child_id == @child.id && reg.registerable_id == opt.id } %>

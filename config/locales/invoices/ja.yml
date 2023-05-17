@@ -1,6 +1,13 @@
 ja:
   invoices:
     confirm:
+      already_confirmed: "予約は送信されました"
+      apply_coupon: "福利厚生クーポンをお持ちの方はこちら"
       confirm_changes: "確認"
       in_ss: "他の予約"
       please_confirm: "「確認」を押すと予約が確定します。"
+    invoice:
+      edit_registrations: "登録内容の変更"
+      view_history: "履歴を確認する"
+    show:
+      confirm_success: "予約は送信されました。スクールが予約を確定するまで、ログインページより予約内容の変更が可能です。予約の確定後の変更をご希望の場合は、スクールにお問い合わせください。"

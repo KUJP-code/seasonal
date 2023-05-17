@@ -1,8 +1,8 @@
-<main id="password_new">
-  <div class="card">
+<main id="password_new" class="justify-content-center">
+  <div class="card w-50">
     <h2><%= t('.reset_password') %></h2>
   
-    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'd-grid align-items-center justify-content-center gap-3 p-3 w-100' }) do |f| %>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'd-flex flex-column justify-content-center gap-3 p-3 w-100' }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
   
       <div class="form-floating">

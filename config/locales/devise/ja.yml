@@ -1,9 +1,16 @@
 ja:
   devise:
     passwords:
+      edit:
+        change_my_pass: "パスワードを変更する"
+        change_pass: "パスワードを変更する"
+        new_pass: "新しいパスワード"
+        new_pass_confirm: "パスワードを確認する"
       new:
         email: "メールアドレス"
         login: "ログイン"
+        reset_password: "パスワードをリセットする"
+        send_reset: "メールを送信しパスワードをリセットする"
         sign_up: "登録する"
     registrations:
       new:
@@ -12,6 +19,10 @@ ja:
         address: "ご住所"
         email: "メールアドレス"
         email_confirmation: "メールアドレスの再入力"
+        family_name: "姓"
+        first_name: "名"
+        kana_family: "姓(カタカナ)"
+        kana_first: "名(カタカナ)"
         kana_name: "保護者様の氏名（カタカナ）"
         log_in: "ログイン"
         min_length: "最大文字数:%{length}, "

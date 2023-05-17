@@ -19,9 +19,9 @@ export default class extends Controller {
 
   update() {
     if (this.countdownValue) {
-      this.counterTarget.innerHTML = `${this.count.toString()} more required`;
+      this.counterTarget.innerHTML = `あと${this.count.toString()}文字必要`;
     } else {
-      this.counterTarget.innerHTML = `Current length: ${this.count.toString()}`;
+      this.counterTarget.innerHTML = `現在の文字数: ${this.count.toString()}`;
     }
   }
 
