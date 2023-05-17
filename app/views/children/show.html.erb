@@ -55,7 +55,7 @@
         </div>
 
 
-        <% if (current_user.staff? || current_user.id == @child.parent_id) && @child.ssid.nil? %>
+        <% if current_user.staff? && @child.ssid.nil? %>
             <div class="d-flex justify-content-center align-items-center gap-3">
                 <%= link_to t('.edit_child'), edit_child_path(@child), class: 'btn btn-primary' unless @child.ssid %>
 
@@ -95,6 +95,9 @@
     <% end %>
 
     <div class="card">
+        <% if current_user.id == @child.parent_id && @child.ssid.nil? %>
+            <%= link_to t('.edit_child'), edit_child_path(@child), class: 'btn btn-primary' unless @child.ssid %>
+        <% end %>
         <%= link_to t('.child_bookings', child: @child.name), invoices_path(child: @child.id), class: 'btn btn-primary' %>
     </div>
 
