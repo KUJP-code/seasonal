@@ -91,12 +91,10 @@ class CsvsController < ApplicationController
       child_id = get_child_id(row)
       update_times(row)
 
-      puts row
-
       if Child.find_by(ssid: row['ssid'])&.regular_schedule.nil?
         RegularSchedule.create!(row.to_hash)
       else
-        RegularSchedule.find_by(child_id: child_id).update!(row.to_hash)
+        RegularSchedule.find_by(child_id: child_id).regular_schedule.update!(row.to_hash)
       end
     end
   end
