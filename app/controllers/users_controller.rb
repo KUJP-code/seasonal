@@ -69,9 +69,12 @@ class UsersController < ApplicationController
     @child = Child.find(params[:child_id])
     return redirect_to :child_theft unless @child.parent_id.nil?
 
-    @child.update!(parent_id: params[:parent_id])
-    flash_success
-    redirect_to child_path(@child)
+    first_seasonal = params[:first_seasonal] == '1'
+    if @child.update(parent_id: params[:parent_id], needs_hat: first_seasonal)
+      redirect_to child_path(@child), notice: t('success')
+    else
+      redirect_to user_path(current_user), alert: t('failure')
+    end
   end
 
   def merge_children
