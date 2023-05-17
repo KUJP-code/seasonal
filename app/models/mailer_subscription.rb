@@ -7,8 +7,8 @@ class MailerSubscription < ApplicationRecord
       items: [
         {
           class: 'InvoiceMailer',
-          name: 'Booking Emails',
-          description: 'Updates changes to your bookings.'
+          name: '予約内容確認メール',
+          description: '予約内容確認メール'
         }
       ]
     ).freeze
@@ -39,12 +39,12 @@ class MailerSubscription < ApplicationRecord
   # @mailer_subscription.name
   # => "Subscribe to"
   def action
-    subscribed? ? 'Unsubscribe from' : 'Subscribe to'
+    subscribed? ? 'を受信しない' : 'を受信する'
   end
 
   # @mailer_subscription.name
   # => "Subscribe to Marketing Emails"
   def call_to_action
-    "#{action} #{name}"
+    "#{name} #{action}"
   end
 end
