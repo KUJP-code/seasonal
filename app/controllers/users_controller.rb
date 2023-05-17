@@ -79,7 +79,7 @@ class UsersController < ApplicationController
     ss_kid = Child.find(params[:ss_kid])
     non_ss_kid = Child.find(params[:non_ss_kid])
 
-    ss_kid.update(parent_id: non_ss_kid.parent_id)
+    ss_kid.update(parent_id: non_ss_kid.parent_id, needs_hat: non_ss_kid.needs_hat)
     copy_invoices(non_ss_kid, ss_kid)
     non_ss_kid.update(parent_id: nil)
 
