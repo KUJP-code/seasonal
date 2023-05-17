@@ -1,8 +1,31 @@
 ja:
   children:
-    event_index:
-      all: "全部"
-      daily_attendance: "アテンダントシート"
+    child:
+      edit: "編集"
+      external: "非会員"
+      internal: "通学生"
+      reservation: "予約生"
+    events:
+      event_child:
+        no_ssid: "なし"
+        seen: "変更を確認済み"
+        view: "変更を見る"
+        view_summary: "詳細を見る"
+        view_template: "テンプレートを見る"
+      event_sheet:
+        all: "全部"
+        allergy: "アレルギー"
+        billing_date: "予約リスト"
+        changes: "変更"
+        cost: "料金"
+        coupons: "福利厚生クーポン"
+        daily_attendance: "アテンダントシート"
+        email_template: "メールテンプレート"
+        filter: "フィルター"
+        photo: "写真掲載ＯＫ"
+        reg_days: "通学日"
+        ssid: "SSID"
+        summary: "詳細"
     form:
       allergies: "アレルギーや健康上の注意等"
       birthday: "誕生日"
@@ -26,6 +49,19 @@ ja:
       school: "参加ご希望のスクール"
       school_info: "スクール情報"
       ssid: "マイページID"
+    index:
+      allergies: "アレルギー"
+      category: "カテゴリー"
+      create_child: "生徒を追加する"
+      edit_info: "編集"
+      en: "名前(ローマ字)"
+      filter: "フィルター"
+      hat: "帽子を渡す"
+      katakana: "名前(カタカナ)"
+      name: "名前"
+      parent: "保護者名"
+      school: "スクール"
+      ssid: "SSID"
     show:
       allergies: "アレルギーや健康上の注意等: "
       bday: "生年月日: "

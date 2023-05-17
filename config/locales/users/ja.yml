@@ -40,6 +40,13 @@ ja:
       phone: "携帯電話番号"
       prefecture: "都道府県"
       school: "学校"
+    index:
+      edit_info: "編集"
+      email: "メールアドレス"
+      filter: "フィルター"
+      katakana: "名前(カタカナ)"
+      name: "名前"
+      new_customer: "保護者を追加する"
     show:
       children: "生徒"
       delete: "削除"
@@ -50,6 +57,7 @@ ja:
       greet: "Hello、%{user}さん!"
       managed_areas: "管理区域"
       managed_schools: "運営する学校"
+      please_confirm_email: "受け取ったメールより予約内容を確認してください。"
       resend_confirm_email: "予約内容確認メールをもう一度受け取る"
       school_name: "Kids UP %{school}"
       time_slot: "タイムスロット"
@@ -63,6 +71,7 @@ ja:
       delete: "ユーザーを削除"
       delete_confirm: "ユーザーを削除してもよろしいですか?"
       edit: "編集情報"
+      edit_user: "情報を編集する"
       roles:
         admin: "管理者"
         area_manager: "エリアマネージャー"

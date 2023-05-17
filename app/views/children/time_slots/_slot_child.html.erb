@@ -6,7 +6,7 @@
 
 <tr>
     <th scope="row" class="arrival"><%= (slot.start_time + arrival_option.modifier.minutes).strftime('%I:%M%p').concat('~') if arrival_option && arrival_option.modifier.negative? %></th>
-    <th scope="row" class="morning"><%= (slot_child.kindy) ? 'Kindy' : 'Elementary' %></th>
+    <th scope="row" class="morning"><%= (slot_child.kindy) ? '幼児' : '小学生' %></th>
     <th scope="row" class="name"><%= link_to "#{slot_child.katakana_name} (#{slot_child.en_name})", child_path(slot_child) %></th>
     <td class="allergy"><%= slot_child.allergies %></td>
     <td class="photos"><%= slot_child.photos unless slot_child.photos == 'OK' %></td>

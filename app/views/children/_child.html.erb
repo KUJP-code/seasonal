@@ -9,7 +9,7 @@
     <td class="name"><%= link_to (child.name ? child.name : 'なし'), child_path(child) %></td>
     <td class="kana"><%= link_to (child.katakana_name ? child.katakana_name : 'なし'), child_path(child) %></td>
     <td class="en"><%= link_to (child.en_name ? child.en_name : 'なし'), child_path(child) %></td>
-    <td class="category"><%= child.category %></td>
+    <td class="category"><%= t(".#{child.category}") %></td>
     <td class="allergies"><%= child.allergies %></td>
     <% if child.received_hat %>
         <td class="hat">◯</td>
