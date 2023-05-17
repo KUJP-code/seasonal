@@ -10,4 +10,11 @@ ja:
       edit_registrations: "登録内容の変更"
       view_history: "履歴を確認する"
     show:
+      changed_by: "変更者: %{user}"
+      child_invoices: "お子様の予約内容"
       confirm_success: "予約は送信されました。スクールが予約を確定するまで、ログインページより予約内容の変更が可能です。予約の確定後の変更をご希望の場合は、スクールにお問い合わせください。"
+      customer_invoices: "お客様の予約内容"
+      current_version: "現在のバージョン"
+      edit_registrations: "登録内容の変更"
+      previous_versions: "以前のバージョン"
+      version_from: "更新時間: %{date}"
