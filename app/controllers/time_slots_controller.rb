@@ -5,7 +5,7 @@ class TimeSlotsController < ApplicationController
   def index
     authorize(TimeSlot)
     @events = policy_scope(TimeSlot)
-    @event = @events.find { |e| e.id == params[:event].to_i }
+    @event = @events.find { |e| e.id == params[:event].to_i } || @events.first
   end
 
   def show
