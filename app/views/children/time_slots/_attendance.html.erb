@@ -14,10 +14,10 @@
 <% child_ids = children.map(&:id) %>
 <% aft_child_ids = slot.afternoon_slot.registrations.map(&:child_id) unless slot.afternoon_slot.nil? %>
 
-<div class="slot mb-5" data-controller="refresh print" data-print-target="print">
+<div class="slot_attendance mb-5" data-controller="refresh print" data-print-target="print">
     <div class="links d-flex gap-3">
         <%= link_to t('.back_to_event'), children_path(id: slot.event_id, source: 'Event'), class: 'btn btn-primary ms-3' %>
-        <%= button_tag t('.print'), class: 'btn btn-primary', data: { action: "click->print#print" } %>
+        <%= button_tag t('.print'), class: 'btn btn-primary print', data: { action: "click->print#print" } %>
     </div>
     <h1 class="text-center"><%= "#{slot.name} (#{slot.date})" %></h1>
     <h2 class="counter text-center"><span data-refresh-target="counter">10:00</span>後にページが更新される。</h2>

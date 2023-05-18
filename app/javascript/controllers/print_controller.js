@@ -5,10 +5,13 @@ export default class extends Controller {
 
   print() {
     // List all other attendance tables
-    const divs = document.querySelectorAll(".slot_attendance");
+    const sheets = document.querySelectorAll(".slot_attendance");
+
+    console.log(sheets);
+
     // Hide all other attendance tables
-    for (let div of divs) {
-      div.classList.add("d-none");
+    for (let sheet of sheets) {
+      sheet.classList.add("d-none");
     }
     // List all other cards (for User#profile)
     const cards = document.querySelectorAll(".card");
@@ -38,8 +41,8 @@ export default class extends Controller {
     window.print();
 
     // Reveal all attendance tables
-    for (let div of divs) {
-      div.classList.remove("d-none");
+    for (let sheet of sheets) {
+      sheet.classList.remove("d-none");
     }
     // Reveal all cards (for User#profile)
     for (let card of cards) {
