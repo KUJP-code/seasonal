@@ -68,8 +68,12 @@
     <% end %>
 
     <% if @user.admin? && current_user.admin? %>
-        <h1><%= t('.admin_options') %></h1>
+        <h1>All schools</h1>
+        <div class="card">
+            <%= render partial: 'events/stats_summary', as: :all, locals: { children: Child.all, events: Event.all, invoices: Invoice.all, photo_regs: Event.all.reduce(0) { |sum, event| sum + event.photo_regs } } %>
+        </div>
 
+        <h1>Admin Options</h1>
         <div class="card gap-3 padding-3">
             <%= link_to 'Import/Export Data', csvs_path, class: 'btn btn-primary' %>
             <%= link_to 'Manage Price Lists', price_lists_path, class: 'btn btn-primary' %>
