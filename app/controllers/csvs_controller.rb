@@ -63,6 +63,16 @@ class CsvsController < ApplicationController
     child_id
   end
 
+  # Some SS data is missing required fields, so we need to set default values
+  def defaults(row)
+    row['name'] = 'なし' if row['name'].nil?
+    row['katakana_name'] = 'なし' if row['katakana_name'].nil?
+    row['en_name'] = 'なし' if row['en_name'].nil?
+    row['birthday'] = 'なし' if row['birthday'].nil?
+    row['allergies'] = 'Unkown' if row['allergies'].nil?
+    row['photos'] = 'NG' if row['photos'].nil?
+  end
+
   # The CSV method doesn't accept int values for enums, so we need to
   # translate to the string values
   def translate_enums(row)
@@ -76,6 +86,7 @@ class CsvsController < ApplicationController
     CSV.foreach(csv.tempfile.path, headers: true) do |row|
       translate_enums(row)
       update_times(row)
+      defaults(row)
 
       if Child.find_by(ssid: row['ssid'])
         Child.find_by(ssid: row['ssid']).update!(row.to_hash)
