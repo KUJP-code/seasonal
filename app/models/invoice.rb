@@ -85,15 +85,17 @@ class Invoice < ApplicationRecord
   end
 
   def calc_adjustments
-    @breakdown << '<h4>調整:</h4>'
+    return 0 unless adjustments.size.positive? || needs_hat? || first_time? || repeater?
+
+    @breakdown << '<h4 class="fw-semibold">調整:</h4>'
     @breakdown << '<div class="d-flex flex-column gap-1">'
     hat_adjustment if needs_hat?
     first_time_adjustment if first_time?
     repeater_discount if repeater?
     generic_adj = adjustments.reduce(0) { |sum, adj| sum + adj.change }
     adjustments.each do |adj|
-      @breakdown << "<p>Adjustment of #{adj.change.to_s.reverse.gsub(/(\d{3})(?=\d)/,
-                                                                     '\\1,').reverse}円 applied because #{adj.reason}</p>"
+      @breakdown << "<p>#{adj.reason}: #{adj.change.to_s.reverse.gsub(/(\d{3})(?=\d)/,
+                                                                     '\\1,').reverse}円 </p>"
     end
     @breakdown << '</div>'
 
@@ -112,7 +114,7 @@ class Invoice < ApplicationRecord
     course_cost += snack_count * 165
     @breakdown << '</div>'
     @breakdown.prepend(
-      "<h4>コース:</h4>
+      "<h4 class='fw-semibold'>コース:</h4>
       <div class='d-flex flex-column gap-1'>
       <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 (#{num_regs}コマ)</p>
       <p>午後コースおやつ代 x #{snack_count}: #{(snack_count * 165).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円"
@@ -127,7 +129,7 @@ class Invoice < ApplicationRecord
     opt_cost = opt_regs.reject do |reg|
                  @ignore_opts.include?(reg.id)
                end.reduce(0) { |sum, reg| sum + reg.registerable.cost }
-    @breakdown << "<h4>オプション:</h4>
+    @breakdown << "<h4 class='fw-semibold'>オプション:</h4>
                    <div class='d-flex flex-column gap-1'>
                    <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
                                                    '\\1,').reverse}円 (#{opt_regs.size - @ignore_opts.size}オプション)<p>"
@@ -161,8 +163,10 @@ class Invoice < ApplicationRecord
     end
   end
 
+  # The needs hat field here actually represents it being the child's first
+  # seasonal event, for reasons set out in the Child model
   def first_time?
-    child.external? && child.events.distinct.size <= 1
+    child.external? && child.needs_hat
   end
 
   def first_time_adjustment
@@ -180,15 +184,15 @@ class Invoice < ApplicationRecord
   def generate_details
     @breakdown.prepend(
       "<div class='d-flex gap-3 flex-column'>\n
-      <h2>#{child.name}</h2>\n
-      <h3>#{event.name} @ #{event.school.name}</h3>\n
-      <h4>登録番号: T7-0118-0103-7173</h4>\n"
+      <h2 class='fw-semibold'>#{child.name}</h2>\n
+      <h3 class='fw-semibold'>#{event.name} @ #{event.school.name}</h3>\n
+      <h4 class='fw-semibold'>登録番号: T7-0118-0103-7173</h4>\n"
     )
-    @breakdown << "</div><h2>予約の詳細:</h2>\n"
+    @breakdown << "</div><h2 class='fw-semibold'>予約の詳細:</h2>\n"
 
     e_opt_regs = opt_regs.where(registerable: event.options)
     unless e_opt_regs.empty?
-      @breakdown << "<h4>Event Options:</h4>\n"
+      @breakdown << "<h4 class='fw-semibold'>Event Options:</h4>\n"
       @breakdown << '<div class="d-flex gap-3 p-3 justify-content-center flex-wrap">'
       event.options.each do |opt|
         @breakdown << "<p>- #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>\n"
@@ -196,7 +200,7 @@ class Invoice < ApplicationRecord
       @breakdown << '</div>'
     end
 
-    @breakdown << "<h4>登録</h4>\n"
+    @breakdown << "<h4 class='fw-semibold'>登録</h4>\n"
     @breakdown << '<div class="d-flex gap-3 p-3 justify-content-center flex-wrap">'
     slot_regs.each do |slot_reg|
       next if @ignore_slots.include?(slot_reg.id)
@@ -204,9 +208,9 @@ class Invoice < ApplicationRecord
       slot = slot_reg.registerable
 
       @breakdown << if slot.morning
-                      "<div class='slot_regs'><p>#{slot.name} (#{slot.date})</p>\n"
+                      "<div class='slot_regs'><h5>#{slot.name} (#{slot.date})</h5>\n"
                     else
-                      "<div class='slot_regs'><p>#{slot.name} (#{slot.date}) (午後)</p>\n"
+                      "<div class='slot_regs'><h5>#{slot.name} (#{slot.date}) (午後)</h5>\n"
                     end
 
       # Show details for all registered options, even unsaved
@@ -224,7 +228,7 @@ class Invoice < ApplicationRecord
   # TODO: I'm guessing this will not be the final message
   def generate_template
     template = +''
-    template << '<h3>Hello Dear Sir/Madam, this is the start of our email template!</h3>'
+    template << '<h3 class="fw-semibold">Hello Dear Sir/Madam, this is the start of our email template!</h3>'
     template << @breakdown
     template << "<h3>That's all folks! End of email</h3>"
     self.email_template = template
@@ -242,6 +246,7 @@ class Invoice < ApplicationRecord
     event.member_prices.courses
   end
 
+  # This one actually refers to the child needing a hat or not
   def needs_hat?
     return false if child.received_hat
 
@@ -275,8 +280,10 @@ class Invoice < ApplicationRecord
     extension_cost + spot_cost
   end
 
+  # The needs_hat field here actually represents it being the child's first
+  # seasonal, for reasons set out in the Child model
   def repeater?
-    child.external? && child.events.distinct.size > 1 && slot_regs.size - @ignore_slots.size > 9
+    child.external? && child.needs_hat == false && slot_regs.size - @ignore_slots.size > 9
   end
 
   def repeater_discount
@@ -301,7 +308,7 @@ class Invoice < ApplicationRecord
   # Updates total cost and summary once calculated/generated
   def update_cost(new_cost)
     self.total_cost = new_cost
-    @breakdown << "<h2 id='final_cost'>合計（税込）: #{new_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
+    @breakdown << "<h2 id='final_cost' class='fw-semibold'>合計（税込）: #{new_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
                                                                           '\\1,').reverse}円</h2>\n"
     generate_template
     self.summary = @breakdown

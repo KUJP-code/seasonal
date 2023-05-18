@@ -1,5 +1,5 @@
 <% next_event = @user.children.first.school.next_event unless @user.children.empty? %>
-<% schools = @user.children.map(&:school).map(&:name).uniq %>
+<% schools = @user.children.reject{ |c| c.school_id.nil? }.map(&:school).map(&:name).uniq %>
 
 
 <main id="user_show" class="gap-3">
