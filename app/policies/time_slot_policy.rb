@@ -23,13 +23,13 @@ class TimeSlotPolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin'
-        Event.all.includes(:time_slots)
+        Event.all.includes(:school)
       when 'area_manager'
-        user.area_events.includes(:time_slots)
+        user.area_events.includes(:school)
       when 'school_manager'
-        user.school_events.includes(:time_slots)
+        user.school_events.includes(:school)
       else
-        user.children_events.includes(:time_slots)
+        user.children_events.includes(:school)
       end
     end
   end

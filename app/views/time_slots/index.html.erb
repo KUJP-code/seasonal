@@ -1,14 +1,16 @@
 <main id="time_slot_index container">
+    <div class="d-flex flex-row flex-wrap justify-content-center gap-3">
+        <% @events.each do |event| %>
+            <%= link_to time_slots_path(event: event.id) do %>
+                <div class="card">
+                    <%= event.school.name %>
+                </div>
+            <% end %>
+        <% end %>
+    </div>
 
-    <%= paginate @events, window: 34 %>
-
-    <% @events.each do |event| %>
-        <h1><%= t('.slots_for', name: event.name, school: event.school.name) %></h1>
-        <div class="row row-cols-5 justify-content-evenly gap-3">
-            <%= render partial: 'time_slots/time_slot', collection: event.time_slots.morning %>
-        </div>
-    <% end %>
-
-    <%= paginate @events, window: 34 %>
-
+    <h1><%= t('.slots_for', name: @event.name, school: @event.school.name) %></h1>
+    <div class="row row-cols-5 justify-content-evenly gap-3">
+        <%= render partial: 'time_slots/time_slot', collection: @event.time_slots.morning.with_attached_image.order(:start_time) %>
+    </div>
 </main>

@@ -4,7 +4,7 @@
 # Must have an event
 class TimeSlot < ApplicationRecord
   belongs_to :event
-  delegate :school, to: :event
+  has_one :school, through: :event
   delegate :area, to: :event
 
   has_many :options, as: :optionable,

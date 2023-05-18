@@ -4,7 +4,8 @@
 class TimeSlotsController < ApplicationController
   def index
     authorize(TimeSlot)
-    @events = policy_scope(TimeSlot).order(:school_id).page(params[:page]).per(1)
+    @events = policy_scope(TimeSlot)
+    @event = @events.find { |e| e.id == params[:event].to_i }
   end
 
   def show
@@ -19,7 +20,7 @@ class TimeSlotsController < ApplicationController
     @slot = authorize(TimeSlot.find(params[:id]))
 
     if @slot.update(slot_params)
-      redirect_to time_slot_path(@slot), notice: t('success', model: 'Time Slot', action: '更新')
+      redirect_to time_slots_path(event: @slot.event_id), notice: t('success', model: 'Time Slot', action: '更新')
     else
       render :edit, status: :unprocessable_entity, alert: t('failure', model: 'Time Slot', action: '更新')
     end
