@@ -123,7 +123,28 @@ Event.where(name: 'Spring School 2023').each do |event|
   ])
 end
 
-puts 'Created time slots for spring school'
+puts 'Created morning time slots for spring school'
+
+Event.all.each do |event|
+  event.time_slots.morning.each do |slot|
+    name = if slot.special?
+             'Design a Kite & Castle Rush'
+           else
+             slot.name
+           end
+
+    slot.create_afternoon_slot(
+      name: name,
+      morning: false,
+      category: slot.category,
+      start_time: slot.start_time + 5.hours,
+      end_time: slot.end_time + 5.hours,
+      event_id: slot.event_id
+    )
+  end
+end
+
+puts 'Created afternoon time slots for the morning slots'
 
 event_key = "#{Rails.env}/events/#{Event.first.name.downcase.gsub(' ', '_')}.jpg"
 
@@ -140,6 +161,7 @@ puts 'Added the event image to each Spring School (one image, many events)'
 slot_names = TimeSlot.group(:name).count.keys
 
 slot_names.each do |name|
+  next if name == 'Design a Kite & Castle Rush'
   filename = "#{name.downcase.gsub(' ', '_')}.jpg"
   slot_key = "#{Rails.env}/slots/#{filename}.jpg"
 

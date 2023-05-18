@@ -121,6 +121,26 @@ Event.where(name: 'Spring School 2023').each do |event|
   ])
 end
 
+# Create afternoon slots for all the morning slots
+Event.all.each do |event|
+  event.time_slots.morning.each do |slot|
+    name = if slot.special?
+             'Design a Kite & Castle Rush'
+           else
+             slot.name
+           end
+
+    slot.create_afternoon_slot(
+      name: name,
+      morning: false,
+      category: slot.category,
+      start_time: slot.start_time + 5.hours,
+      end_time: slot.end_time + 5.hours,
+      event_id: slot.event_id
+    )
+  end
+end
+
 # Add an image for the first event, and attach it to all of them
 
 bucket_name = ENV['S3_BUCKET_NAME']
@@ -142,6 +162,7 @@ end
 slot_names = TimeSlot.group(:name).count.keys
 
 slot_names.each do |name|
+  next if name == 'Design a Kite & Castle Rush'
   filename = "#{name.downcase.gsub(' ', '_')}.jpg"
   slot_asset_key = "images/time_slots/spring_school_2023/#{filename}"
   slot_key = "staging/time_slots/#{filename}"
