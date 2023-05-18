@@ -23,9 +23,7 @@
             <td class=<%= opt.name %>><%= opt.name if slot_child.registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type = 'Option' } %></td>
         <% end %>
     <% end %>
-    <% if slot.special? %>
-        <td class="depart"><%= slot.departure_time(slot_child) %></td>
-    <% else %>
-        <td class="depart"><%= '~'.concat((slot.afternoon_slot.end_time + depart_option.modifier.minutes).strftime('%I:%M%p')) if depart_option && depart_option.modifier.positive? %></td>
-    <% end %>
+    <td class="depart">
+        <%= '~'.concat((slot.afternoon_slot.end_time + depart_option.modifier.minutes).strftime('%I:%M%p')) if depart_option && depart_option.modifier.positive? %>
+    </td>
 </tr>
