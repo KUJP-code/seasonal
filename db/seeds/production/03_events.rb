@@ -175,7 +175,8 @@ end
 # Create the different slots for normal schools
 different_schools = %w[新浦安 南町田グランベリーパーク]
 
-School.all.where.not(name: different_schools).each do |school|
+# Create the different slots for Minami-machida and Shin-Urayasu
+School.all.where(name: different_schools).each do |school|
   school.events.first.time_slots.create!([
     {
       name: 'ペーパーランタン',
@@ -198,8 +199,8 @@ School.all.where.not(name: different_schools).each do |school|
   ])
 end
 
-# Create the different slots for Minami-machida and Shin-Urayasu
-School.all.where(name: different_schools).each do |school|
+# Create the normal slots
+School.all.where.not(name: different_schools).each do |school|
   school.events.first.time_slots.create!([
     {
       name: '焼きそばを作ろう',

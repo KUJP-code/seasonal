@@ -1,4 +1,4 @@
-<% morn_slots = @slots.select { |s| s.morning } %>
+<% morn_slots = @slots.select { |s| s.morning }.sort_by { |s| s.start_time } %>
 <% special = @slots.select { |slot| slot.special? } %>
 <%# Minus 1 for special day %>
 <% cols = if special.size.zero?

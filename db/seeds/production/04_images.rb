@@ -2,12 +2,12 @@ bucket_name = ENV['S3_BUCKET_NAME']
 client = Aws::S3::Client.new(region: 'ap-northeast-1')
 
 # Attach the calendar image to the first event
-event_asset_key = "images/events/summer_2023.png"
-event_key = "production/events/summer_2023.png"
-event_image = client.get_object(bucket: bucket_name, key: event_asset_key)
+standard_asset_key = "images/events/summer_2023_food.png"
+standard_key = "production/events/summer_2023_food.png"
+standard_image = client.get_object(bucket: bucket_name, key: standard_asset_key)
 
-Event.first.image.attach(key: event_key, io: event_image.body, filename: "summer_2023.png", content_type: 'image/png')
-image_blob = ActiveStorage::Blob.find_by(key: event_key)
+Event.first.image.attach(key: standard_key, io: standard_image.body, filename: "summer_2023_food.png", content_type: 'image/png')
+image_blob = ActiveStorage::Blob.find_by(key: standard_key)
 
 # Attach standard calendar to events at schools other than shin-ura and minami machida
 Event.all.excluding(Event.first).each do |event|
@@ -28,13 +28,13 @@ Event.all.excluding(Event.first).each do |event|
 end
 
 # Get the different calendar images
-calendar_asset_key = "images/events/summer_2023_food.png"
-calendar_key = "production/events/summer_2023_food.png"
-calendar_image = client.get_object(bucket: bucket_name, key: calendar_asset_key)
+diff_asset_key = "images/events/summer_2023.png"
+diff_key = "production/events/summer_2023.png"
+diff_image = client.get_object(bucket: bucket_name, key: diff_asset_key)
 
 # Attach the different event images to minami and shin-ura
-School.find_by(name: '新浦安').events.first.image.attach(key: calendar_key, io: calendar_image.body, filename: "summer_2023_food.png", content_type: 'image/png')
-calendar_blob = ActiveStorage::Blob.find_by(key: calendar_key)
+School.find_by(name: '新浦安').events.first.image.attach(key: diff_key, io: diff_image.body, filename: "summer_2023.png", content_type: 'image/png')
+calendar_blob = ActiveStorage::Blob.find_by(key: diff_key)
 School.find_by(name: '南町田グランベリーパーク').events.first.image.attach(calendar_blob)
 
 # Add an image for each different (morning) slot, and attach it to all of them
