@@ -36,9 +36,9 @@
     <div>
       <%= f.label :first_name, t('.name'), class: 'form-label' %><br />
       <div class="input-group">
-        <%= text_field_tag "user[family_name]", (resource.name.split[1] unless resource.name.nil?), class: 'form-control', required: true, placeholder: t('.family_name') %>
+        <%= text_field_tag "user[family_name]", (resource.name.split[0] unless resource.name.nil?), class: 'form-control', required: true, placeholder: t('.family_name') %>
         <span class="input-group-text"></span>
-        <%= text_field_tag "user[first_name]", (resource.name.split[0] unless resource.name.nil?), class: 'form-control', required: true, placeholder: t('.first_name') %>
+        <%= text_field_tag "user[first_name]", (resource.name.split[1] unless resource.name.nil?), class: 'form-control', required: true, placeholder: t('.first_name') %>
       </div>
     </div>
   

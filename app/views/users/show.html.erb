@@ -13,7 +13,7 @@
 
     <div class="card text-center">
         <% if @user.admin? %>
-          <h1 class="fw-bold"><%= "yo, #{@user.name.split[0]}" %></h1>
+          <h1 class="fw-bold"><%= "yo #{@user.name.split[1]}" %></h1>
         <% else %>
             <h1 class="fw-bold"><%= t('.greet', user: @user.name) %></h1>
         <% end %>
