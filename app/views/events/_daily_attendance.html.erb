@@ -3,7 +3,7 @@
 <% event.time_slots.morning.each do |slot| %>
     <% regs = slot.registrations %>
 
-    <div class="card <%= case
+    <div style="height:140px;" class="card <%= case
                          when regs.size < 10
                              'bg-danger'
                          when regs.size < 20 
@@ -11,8 +11,12 @@
                          else
                              'bg-success'
                          end %> justify-content-between">
-        <h5 class="bg-light rounded-3 p-2"><%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'TimeSlot', id: slot.id), class: 'text-break' %></h5>
-        <h1><%= regs.size %></h1>
+        <h6 class="bg-light rounded-3 p-2">
+            <%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'TimeSlot', id: slot.id), class: 'text-break' %>
+        </h6>
+        <h3>
+            <%= regs.size %>
+        </h3>
     </div>
 <% end %>
 

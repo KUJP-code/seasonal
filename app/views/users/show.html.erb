@@ -97,7 +97,6 @@
             </div>
 
             <div class="daily-attendance card flex-row flex-wrap justify-content-around gap-3" data-controller="print" data-print-target="print">
-                <h3 class="w-100"><%= t('.daily_attendance') %></h3>
                 <%= render partial: 'events/daily_attendance', locals: { event: school.next_event } %>
             </div>
         <% end %>
