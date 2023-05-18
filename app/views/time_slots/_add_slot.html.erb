@@ -10,7 +10,7 @@
     <% in_ss = slots_in_ss.any? { |reg| reg.registerable_id == add_slot.id } %>
     <% registered = registrations.any? { |reg| reg.registerable_id == add_slot.id && reg.registerable_type == 'TimeSlot' } %>
 
-    <div class="d-grid gap-3">
+    <div class="d-grid gap-3 w-50">
         <% if add_slot.closed? %>
             <h3 class="fw-bold"><%= t('closed_message') %></h3>
         <% elsif in_ss %>
