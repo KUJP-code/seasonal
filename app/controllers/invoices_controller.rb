@@ -128,7 +128,7 @@ class InvoicesController < ApplicationController
     # Get the target's modifiable invoice, create one if none
     target_invoice = target.invoices.where(event: event).find_by(in_ss: false) || target.invoices.create(event: event)
     t_regs = target.invoices.where(event: event).reduce([]) { |a, i| a + i.registrations }
-    regular_days = target.regular_schedule.en_days
+    regular_days = target.regular_schedule ? target.regular_schedule.en_days : {}
 
     og_regs.each do |o_reg|
       # Skip if already on target invoice, slot is closed or
