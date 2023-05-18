@@ -57,10 +57,12 @@
     <% if @user.children? %>
         <% unless next_event.nil? %>
             <%= render next_event, child: @user.children.first %>
-        <% end %>
-
-        <div class="card">
             <%= link_to t('.user_bookings', user: @user.name), invoices_path(user: @user.id), class: 'btn btn-primary' %>
+        <% end %>
+    <% end %>
+
+    <% if @user.customer? %>
+        <div class="card">
             <%= link_to t('.email_prefs'), mailer_subscriptions_path, class: 'btn btn-primary' %>
             <%= link_to t('.edit_info'), edit_user_path(@user), class: 'btn btn-primary' %>
         </div>

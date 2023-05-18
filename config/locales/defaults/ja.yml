@@ -60,6 +60,7 @@ ja:
       - :year
       - :month
       - :day
+  contact_info: "個人情報"
   datetime:
     distance_in_words:
       about_x_hours: 約%{count}時間

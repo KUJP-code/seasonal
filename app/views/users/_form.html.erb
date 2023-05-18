@@ -1,3 +1,6 @@
+<% has_pass = @user.encrypted_password.present? %>
+<% temp_pass = SecureRandom.base36(12) unless has_pass %>
+
 <%= form_with model: @user, data: { controller: :fields }, html: { class: 'card needs-validation', novalidate: true } do |f| %>
 
     <% if @user.errors.any? %>
@@ -22,6 +25,16 @@
         <div class="form-floating">
             <%= f.email_field :email_confirmation, value: @user.email, autocomplete: "email", class: 'form-control', placeholder: t('.email_confirmation'), required: true %>
             <%= f.label :email_confirmation, t('.email_confirmation'), class: 'form-label' %><br />
+        </div>
+
+        <div class="form-floating">
+            <%= f.text_field :password, value: (has_pass ? nil : temp_pass), autofocus: true, autocomplete: "password", class: 'form-control', placeholder: t('.password'), required: true, readonly: !has_pass %>
+            <%= f.label :password, class: 'form-label' %><br />
+        </div>
+
+        <div class="form-floating">
+            <%= f.text_field :password_confirmation, value: (has_pass ? nil : temp_pass), autocomplete: "password", class: 'form-control', placeholder: t('.password_confirmation'), required: true, readonly: !has_pass %>
+            <%= f.label :password_confirmation, t('.password_confirmation'), class: 'form-label' %><br />
         </div>
     </div>
 
