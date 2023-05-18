@@ -1,60 +1,42 @@
 Area.first.schools.create!([
   {
-    name: '田園調布雪谷'
-  },
-  {
-    name: '長原'
-  },
-  {
-    name: '池上'
-  },
-  {
-    name: '蒲田駅前'
-  },
-  {
-    name: '門前仲町'
-  },
-  {
-    name: '大森'
-  },
-  {
-    name: '東陽町'
+    name: 'Test'
   },
   {
     name: 'オンラインコース'
   },
   {
-    name: 'りんかい東雲'
+    name: '田園調布雪谷'
+  },
+  {
+    name: '蒲田駅前'
+  },
+  {
+    name: '東陽町'
+  },
+  {
+    name: '池上'
+  },
+  {
+    name: '長原'
+  },
+  {
+    name: '門前仲町'
   },
   {
     name: '戸越'
   },
   {
-    name: '馬込'
-  },
-  {
-    name: '晴海'
-  },
-  {
     name: '成城'
   },
   {
-    name: '大島'
-  },
-  {
-    name: '大井'
+    name: '大森'
   },
   {
     name: '早稲田'
   },
   {
-    name: '四谷'
-  },
-  {
-    name: '三鷹'
-  },
-  {
-    name: '新浦安'
+    name: 'りんかい東雲'
   },
   {
     name: '新川崎'
@@ -63,43 +45,61 @@ Area.first.schools.create!([
     name: '等々力'
   },
   {
-    name: '矢向'
+    name: '大島'
   },
   {
-    name: '海浜幕張'
-  },
-  {
-    name: '天王町'
-  },
-  {
-    name: '北品川'
+    name: '三鷹'
   },
   {
     name: '二俣川'
   },
   {
+    name: '新浦安'
+  },
+  {
+    name: '天王町'
+  },
+  {
     name: '南町田グランベリーパーク'
   },
   {
-    name: '武蔵小杉'
+    name: '大井'
+  },
+  {
+    name: '晴海'
+  },
+  {
+    name: '四谷'
   },
   {
     name: '赤羽'
   },
   {
+    name: '北品川'
+  },
+  {
     name: '溝の口'
   },
   {
-    name: '武蔵新城'
+    name: '矢向'
   },
   {
-    name: '大倉山'
+    name: '南行徳'
   },
   {
     name: '鷺宮'
   },
   {
-    name: '南行徳'
+    name: '馬込'
+  },
+  {
+    name: '大倉山'
+  },
+  {
+    name: '武蔵新城'
+  },
+  {
+    name: '武蔵小杉'
   }
 ])
 
