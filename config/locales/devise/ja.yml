@@ -4,6 +4,7 @@ ja:
       edit:
         change_my_pass: "パスワードを変更する"
         change_pass: "パスワードを変更する"
+        min_length: "最大文字数:%{length}, "
         new_pass: "新しいパスワード"
         new_pass_confirm: "パスワードを確認する"
       new:
