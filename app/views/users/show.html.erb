@@ -1,7 +1,6 @@
 <% next_event = @user.children.first.school.next_event unless @user.children.empty? %>
 <% schools = @user.children.reject{ |c| c.school_id.nil? }.map(&:school).map(&:name).uniq %>
 
-
 <main id="user_show" class="gap-3">
     <% unless @user.confirmed? %>
         <div class="card justify-content-center align-items-center bg-danger">
@@ -79,20 +78,23 @@
     <% end %>
 
     <% if @user.area_manager? %>
-        <div class="card">
-            <% @user.managed_areas.each do |area| %>
+        <% @user.managed_areas.each do |area| %>
+            <div class="card">
+                <h2 class="fw-semibold"><%= area.name %></h2>
+                <%= render partial: 'events/stats_summary', as: :area, locals: { children: area.children, events: area.events, invoices: area.invoices, photo_regs: area.events.reduce(0) { |sum, event| sum + event.photo_regs } } %>
+            </div>
+
+            <div class="card">
                 <% area.schools.each do |school| %>
-                    <h3><%= school.name %></h3>
-                    <%= render partial: 'events/event_stats', collection: school.events %>
+                    <%= render partial: 'events/event_stats', collection: school.events, as: :event %>
                 <% end %>
-            <% end %>
-        </div>
+            </div>
+        <% end %>
     <% end %>
 
     <% if @user.school_manager? %>
         <% @user.managed_schools.each do |school| %>
             <div class="card">
-                <h3><%= school.name %></h3>
                 <%= render partial: 'events/event_stats', collection: school.events, as: :event %>
             </div>
 
