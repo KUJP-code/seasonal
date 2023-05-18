@@ -7,7 +7,7 @@
             <table class="table">
                 <thead>
                     <tr class="table-primary">
-                            <th scope="col"><%= t('.ssid') %></th>
+                            <th scope="col"><%= t('.to_ssid') %></th>
                             <th scope="col"><%= t('.name') %></th>
                             <th scope="col"><%=t('.katakana') %></th>
                             <th scope="col"><%= t('.en') %></th>
@@ -24,16 +24,17 @@
 
             <div>
                 <h3><%= f.label :non_ss_kid, class: 'form-label' %></h3>
-                <%= f.collection_select :non_ss_kid, @child.parent.children.where(ssid: nil), :id, :name, {}, class: 'form-select' %>
+                <%= f.collection_select :non_ss_kid, @parent.children.where(ssid: nil), :id, :name, {}, class: 'form-select' %>
             </div>
 
             <%= f.submit t('.merge_children'), class: 'btn btn-primary' %>
         <% end %>
     <% else %>
         <%= form_with url: find_child_path, method: :get, id: 'merge_child_form', html: { class: 'd-grid gap-3 p-5 needs-validation', novalidate: true } do |f| %>
+            <%= f.hidden_field :parent, value: @user.id %>
             <div class="form-floating" data-controller="count" data-count-countdown-value="true">
-                <%= f.search_field :ssid, class: 'form-control', placeholder: t('.ssid'), required: true, data: { 'count-target' => 'input' }, maxlength: 10 %>
-                <%= f.label :ssid, t('.ssid'), class: 'form-label'  %>
+                <%= f.search_field :ssid, class: 'form-control', placeholder: t('.to_ssid'), required: true, data: { 'count-target' => 'input' }, maxlength: 10 %>
+                <%= f.label :ssid, t('.to_ssid'), class: 'form-label'  %>
                 <div id="confirm-length" class="form-text"><span  data-count-target="counter"></span></div>
             </div>
 

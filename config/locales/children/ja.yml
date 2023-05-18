@@ -24,7 +24,7 @@ ja:
         filter: "フィルター"
         photo: "写真掲載ＯＫ"
         reg_days: "通学日"
-        ssid: "SSID"
+        ssid: "マイページID"
         summary: "詳細"
     form:
       allergies: "アレルギーや健康上の注意等"
@@ -61,7 +61,7 @@ ja:
       name: "名前"
       parent: "保護者名"
       school: "スクール"
-      ssid: "SSID"
+      ssid: "マイページID"
     show:
       allergies: "アレルギーや健康上の注意等: "
       bday: "生年月日: "

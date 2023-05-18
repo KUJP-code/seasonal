@@ -82,9 +82,7 @@ class UsersController < ApplicationController
     ss_kid = Child.find(params[:ss_kid])
     non_ss_kid = Child.find(params[:non_ss_kid])
 
-    ss_kid.update(parent_id: non_ss_kid.parent_id, needs_hat: non_ss_kid.needs_hat)
-    copy_invoices(non_ss_kid, ss_kid)
-    non_ss_kid.update(parent_id: nil)
+    merge_info(non_ss_kid, ss_kid)
 
     redirect_to child_path(ss_kid), notice: t('.success')
   end
@@ -115,6 +113,13 @@ class UsersController < ApplicationController
 
   def flash_success
     flash.now[:notice] = t('.success')
+  end
+
+  def merge_info(from, to)
+    to.update(parent_id: from.parent_id, needs_hat: from.needs_hat)
+    to.update(school_id: from.school_id) if to.school_id.nil?
+    copy_invoices(from, to)
+    from.update(parent_id: nil)
   end
 
   def merge_invoices(from, to)
