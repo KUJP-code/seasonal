@@ -47,7 +47,7 @@
         </div>
     <% end %>
 
-    <% if current_user.admin? && current_user.id != @user.id %>
+    <% if current_user.admin? && !@user.admin? && current_user.id != @user.id %>
         <div class="card">
             <%= link_to t('.delete'), user_path(@user), data: { turbo_method: :delete, turbo_confirm: t('.delete_confirm') }, class: 'btn btn-danger' %>
         </div>
@@ -111,7 +111,7 @@
     <% end %>
 
     <% if @user.customer? && current_user.staff? && @user.children.any? { |c| c.ssid.nil? } %>
-        <h2><%= t('.merge_children') %></h2>
+        <h2 class="text-center w-75"><%= t('.merge_children') %></h2>
         <div class="card" id="merge_children">
             <%= render 'users/merge_children', parent: @user %>
         </div>

@@ -23,7 +23,7 @@
             </table>
 
             <div>
-                <h3><%= f.label :non_ss_kid, class: 'form-label' %></h3>
+                <h3><%= f.label :non_ss_kid, t('.non_ss_kid'), class: 'form-label' %></h3>
                 <%= f.collection_select :non_ss_kid, @parent.children.where(ssid: nil), :id, :name, {}, class: 'form-select' %>
             </div>
 
