@@ -37,10 +37,10 @@
         </button>
 
         <div class="modal fade" id="<%= "child#{event_child.id}summaries" %>" tabindex="-1">
-            <div class="modal-dialog d-grid">
+            <div class="modal-dialog modal-fullscreen d-grid">
                 <div class="modal-content d-grid gap-2">
                     <div class="modal-header">
-                      <h5 class="modal-title"><%= t('.summaries_for', child: event_child.name) %></h5>
+                      <h5 class="modal-title"><%= event_child.name %></h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
@@ -95,7 +95,7 @@
         </button>
 
         <div class="modal fade" id="<%= "child#{event_child.id}templates" %>" tabindex="-1">
-            <div class="modal-dialog d-grid">
+            <div class="modal-dialog modal-fullscreen d-grid">
                 <div class="modal-content d-grid gap-2">
                     <div class="modal-header">
                       <h5 class="modal-title"><%= t('.templates_for', child: event_child.name) %></h5>
