@@ -25,9 +25,9 @@ class ChildrenController < ApplicationController
 
   def new
     @child = if params[:parent]
-               Child.new(parent_id: params[:parent])
+               Child.new(parent_id: params[:parent], photos: nil, needs_hat: false)
              else
-               Child.new
+               Child.new(photos: nil, needs_hat: false)
              end
   end
 

@@ -106,7 +106,7 @@
     
                 <div>
                     <%= f.label :photos, t('.photos'), class: 'form-label' %><br />
-                    <%= f.select :photos, Child.photos.keys.reject { |k| ['マイペイジ', 'Unknown'].include?(k) }.unshift(''), {}, { class: 'form-select', required: true } %>
+                    <%= f.select :photos, Child.photos.keys.reject { |k| ['マイペイジ', 'Unknown'].include?(k) }.unshift(nil), {}, { class: 'form-select', required: true, selected: nil } %>
                 </div>
     
                 <% if current_user.customer? && f.object.new_record? %>
