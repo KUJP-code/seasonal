@@ -22,7 +22,7 @@
         <% end %>
     </div>
 
-    <% if @user.customer? && !@user.children.nil? %>
+    <% if @user.customer? && @user.children.size.positive? %>
         <div class="card">
             <div class="mb-3">
                 <ul>
@@ -33,16 +33,13 @@
             </div>
 
             <div>
-                <h4 class="fw-bold"><%= t(".children") %></h4>
+                <h4 class="fw-bold mb-3"><%= t(".children") %></h4>
 
-                <ul>
+                <div class="d-flex justify-content-center gap-5">
                     <% @user.children.each do |child| %>
-                        <li id="<%= "user#{@user.id}_child#{child.id}" %>">
-                            <%= link_to child.name, child_path(child) %>
-                        </li>
-                    <% end %>             
-                </ul>
-
+                        <%= link_to child.name, child_path(child) %>
+                    <% end %>
+                </div>            
             </div>
         </div>
     <% end %>

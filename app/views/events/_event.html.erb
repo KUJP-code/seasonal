@@ -4,7 +4,9 @@
         <%= (link_to image_tag(url_for(event.image), class: 'img-fluid img-thumbnail'), children_path(source: 'Event', id: event.id)) unless event.image.blank? %>
     
         <div class="d-flex justify-content-center align-items-center flex-column flex-grow-1 gap-3">
-            <p class="fw-bold"><%= link_to t('.title', name: event.name, school: event.school.name), children_path(source: 'Event', id: event.id) %></p>
+            <h2 class="fw-bold">
+                <%= link_to t('.title', name: event.name, school: event.school.name), children_path(source: 'Event', id: event.id) %>
+            </h2>
             <p><%= event.f_start_date %></p>
         </div>
     
@@ -13,7 +15,9 @@
         <%= (link_to image_tag(url_for(event.image), class: 'img-fluid img-thumbnail'), event_path(id: event, child: child.id)) unless event.image.blank? %>
 
         <div class="d-flex justify-content-center align-items-center flex-column flex-grow-1 gap-3">
-            <p class="fw-bold"><%= link_to t('.title', name: event.name, school: event.school.name), event_path(id: event, child: child.id) %></p>
+            <h2 class="fw-bold">
+                <%= link_to t('.title', name: event.name, school: event.school.name), event_path(id: event, child: child.id) %>
+            </h2>
             <p><%= event.f_start_date %></p>
         </div>
     
@@ -22,7 +26,9 @@
         <%= (link_to image_tag(url_for(event.image), class: 'img-fluid img-thumbnail'), event_path(id: event, child: current_user.children.first.id)) unless event.image.blank? %>
 
         <div class="d-flex justify-content-center align-items-center flex-column flex-grow-1 gap-3">
-            <p class="fw-bold"><%= link_to t('.title', name: event.name, school: event.school.name), event_path(id: event, child: current_user.children.first.id) %></p>
+            <h2 class="fw-bold">
+                <%= link_to t('.title', name: event.name, school: event.school.name), event_path(id: event, child: current_user.children.first.id) %>
+            </h2>
             <p><%= event.f_start_date %></p>
         </div>
     
