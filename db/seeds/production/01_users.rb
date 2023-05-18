@@ -65,6 +65,7 @@ Area.first.schools.create!(name: 'Test')
 School.first.managers << User.find_by(role: 'school_manager')
 
 translation_hash = {
+  'Test' => 'bretttanner171@gmail.com',
   '田園調布雪谷' => 'd-yukigaya@kids-up.jp',
   '蒲田駅前' => 'j-kamata@kids-up.jp',
   '池上' => 'ikegami@kids-up.jp',

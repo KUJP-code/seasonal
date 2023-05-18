@@ -141,6 +141,7 @@ User.find_by(role: 'customer').children.create!([
 ])
 
 translation_hash = {
+  'Test' => 'bretttanner171@gmail.com',
   '田園調布雪谷' => 'd-yukigaya@kids-up.jp',
   '蒲田駅前' => 'j-kamata@kids-up.jp',
   '池上' => 'ikegami@kids-up.jp',

@@ -143,6 +143,7 @@ User.find_by(role: 'customer').children.create!([
 puts 'Put Yoshi in charge of Okurayama and gave the test customer 2 kids who go there'
 
 translation_hash = {
+  'Test' => 'bretttanner171@gmail.com',
   '田園調布雪谷' => 'd-yukigaya@kids-up.jp',
   '蒲田駅前' => 'j-kamata@kids-up.jp',
   '池上' => 'ikegami@kids-up.jp',

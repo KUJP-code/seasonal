@@ -4,7 +4,7 @@
 class TimeSlotsController < ApplicationController
   def index
     authorize(TimeSlot)
-    @events = policy_scope(TimeSlot).page(params[:page]).per(1)
+    @events = policy_scope(TimeSlot).order(:school_id).page(params[:page]).per(1)
   end
 
   def show

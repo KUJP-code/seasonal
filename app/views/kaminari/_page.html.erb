@@ -1,7 +1,7 @@
 <% if page.current? %>
   <% if @events %>
     <li class="page-item active">
-      <%= content_tag :a, @events.first.school.name, data: { remote: remote }, rel: page.rel, class: 'page-link' %>
+      <%= content_tag :a, School.find(page).name, data: { remote: remote }, rel: page.rel, class: 'page-link' unless page == 1 %>
     </li>
   <% else %>
     <li class="page-item active">
@@ -11,7 +11,7 @@
 <% else %>
   <% if @events %>
     <li class="page-item">
-      <%= link_to Event.find(page).school.name, url, remote: remote, rel: page.rel, class: 'page-link' %>
+      <%= link_to School.find(page).name, url, remote: remote, rel: page.rel, class: 'page-link' unless page == 1 %>
     </li>
   <% else %>
     <li class="page-item">
