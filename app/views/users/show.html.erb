@@ -93,7 +93,7 @@
         <% @user.managed_schools.each do |school| %>
             <div class="card">
                 <h3><%= school.name %></h3>
-                <%= render partial: 'events/event_stats', collection: school.events %>
+                <%= render partial: 'events/event_stats', collection: school.events, as: :event %>
             </div>
 
             <div class="daily-attendance card flex-row flex-wrap justify-content-around gap-3" data-controller="print" data-print-target="print">

@@ -11,7 +11,7 @@
                          else
                              'bg-success'
                          end %> justify-content-between">
-        <h5 class="bg-light rounded-3"><%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'TimeSlot', id: slot.id), class: 'text-break' %></h5>
+        <h5 class="bg-light rounded-3 p-2"><%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'TimeSlot', id: slot.id), class: 'text-break' %></h5>
         <h1><%= regs.size %></h1>
     </div>
 <% end %>

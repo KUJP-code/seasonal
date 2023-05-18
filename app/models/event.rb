@@ -45,9 +45,9 @@ class Event < ApplicationRecord
   end
 
   # Returns num of registrations for the フォトサービス event option
+  # free regs from siblings being registered not included
   def photo_regs
     photo_id = options.find_by(name: 'フォトサービス').id
-    direct_regs = Registration.all.where(registerable_type: 'Option', registerable_id: photo_id)
-    direct_regs.size + direct_regs.reduce(0) { |sum, reg| sum + reg.child.siblings.size }
+    Registration.all.where(registerable_type: 'Option', registerable_id: photo_id).size
   end
 end
