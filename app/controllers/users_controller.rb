@@ -32,11 +32,9 @@ class UsersController < ApplicationController
     @user = authorize(User.new(user_params))
 
     if @user.save
-      flash_success
-      redirect_to user_path(@user)
+      redirect_to user_path(@user), notice: t('success', model: '保護者', action: '追加')
     else
-      flash_failure
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_entity, alert: t('failure', model: '保護者', action: '追加')
     end
   end
 
@@ -44,11 +42,9 @@ class UsersController < ApplicationController
     @user = authorize(User.find(params[:id]))
 
     if @user.update(user_params)
-      flash_success
-      redirect_to user_path(@user)
+      redirect_to user_path(@user), notice: t('success', model: '保護者', action: '更新')
     else
-      flash_failure
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity, alert: t('failure', model: '保護者', action: '更新')
     end
   end
 
@@ -58,10 +54,9 @@ class UsersController < ApplicationController
     return redirect_to :no_permission if current_user.customer?
 
     if @user.destroy
-      flash_success
-      redirect_to users_path
+      redirect_to users_path, notice: t('success', model: '保護者', action: '削除')
     else
-      flash_failure
+      redirect_to user_path(@user), alert: t('failure', model: '保護者', action: '削除')
     end
   end
 
@@ -71,9 +66,9 @@ class UsersController < ApplicationController
 
     first_seasonal = params[:first_seasonal] == '1'
     if @child.update(parent_id: params[:parent_id], needs_hat: first_seasonal)
-      redirect_to child_path(@child), notice: t('success')
+      redirect_to child_path(@child), notice: t('success', model: '生徒', action: '更新')
     else
-      redirect_to user_path(current_user), alert: t('failure')
+      redirect_to user_path(current_user), alert: t('failure', model: '生徒', action: '更新')
     end
   end
 
@@ -84,7 +79,7 @@ class UsersController < ApplicationController
 
     merge_info(non_ss_kid, ss_kid)
 
-    redirect_to child_path(ss_kid), notice: t('.success')
+    redirect_to child_path(ss_kid), notice: t('success', model: '生徒', action: '更新')
   end
 
   private
@@ -105,14 +100,6 @@ class UsersController < ApplicationController
 
   def delete_admin?
     @user.admin? && User.admins.size <= 1
-  end
-
-  def flash_failure
-    flash.now[:alert] = t('.failure')
-  end
-
-  def flash_success
-    flash.now[:notice] = t('.success')
   end
 
   def merge_info(from, to)

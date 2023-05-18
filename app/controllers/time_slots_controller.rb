@@ -19,9 +19,9 @@ class TimeSlotsController < ApplicationController
     @slot = authorize(TimeSlot.find(params[:id]))
 
     if @slot.update(slot_params)
-      redirect_to time_slot_path(@slot), notice: t('update_success')
+      redirect_to time_slot_path(@slot), notice: t('success', model: 'Time Slot', action: '更新')
     else
-      render :edit, status: :unprocessable_entity, notice: t('update_fail')
+      render :edit, status: :unprocessable_entity, alert: t('failure', model: 'Time Slot', action: '更新')
     end
   end
 

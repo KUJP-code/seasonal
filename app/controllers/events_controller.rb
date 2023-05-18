@@ -36,11 +36,9 @@ class EventsController < ApplicationController
       @event = Event.new(event_params)
 
       if @event.save
-        flash_success
-        redirect_to events_path
+        redirect_to events_path, notice: t('success', model: 'イベント', action: '追加')
       else
-        flash_failure
-        render :new, status: :unprocessable_entity
+        render :new, status: :unprocessable_entity, alert: t('failure', model: 'イベント', action: '追加')
       end
     end
   end
@@ -49,11 +47,9 @@ class EventsController < ApplicationController
     @event = authorize(Event.find(params[:id]))
 
     if @event.update(event_params)
-      flash_success
-      redirect_to events_path
+      redirect_to events_path, notice: t('success', model: 'イベント', action: '更新')
     else
-      flash_failure
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity, alert: t('failure', model: 'イベント', action: '更新')
     end
   end
 
@@ -62,10 +58,9 @@ class EventsController < ApplicationController
     return flash.now[:alert] = t('.event_attended') unless @event.children.empty?
 
     if @event.destroy
-      flash_success
-      redirect_to events_path
+      redirect_to events_path, notice: t('success', model: 'イベント', action: '削除')
     else
-      flash_failure
+      redirect_to event_path(@event), alert: t('failure', model: 'イベント', action: '削除')
     end
   end
 
@@ -77,14 +72,6 @@ class EventsController < ApplicationController
                                   time_slots_attributes:
                                   %i[id name start_time end_time description
                                      category closed event_id morning morning_slot_id image _destroy])
-  end
-
-  def flash_failure
-    flash.now[:alert] = t('.failure')
-  end
-
-  def flash_success
-    flash.now[:notice] = t('.success')
   end
 
   def user_specific_info

@@ -18,9 +18,9 @@ class PriceListsController < ApplicationController
     @price_list = authorize(PriceList.new(price_list_params))
 
     if @price_list.save
-      redirect_to price_lists_path, notice: t('.success')
+      redirect_to price_lists_path, notice: t('success', model: 'Price List ', action: 'created')
     else
-      render :new, status: :unprocessable_entity, notice: t('.failure')
+      render :new, status: :unprocessable_entity, alert: t('.failure')
     end
   end
 
@@ -28,9 +28,9 @@ class PriceListsController < ApplicationController
     @price_list = authorize(PriceList.find(params[:id]))
 
     if @price_list.update(price_list_params)
-      redirect_to price_lists_path, notice: t('.success')
+      redirect_to price_lists_path, notice: t('success', model: 'Price List ', action: 'update')
     else
-      render :edit, status: :unprocessable_entity, notice: t('.failure')
+      render :edit, status: :unprocessable_entity, alert: t('.failure')
     end
   end
 
@@ -38,9 +38,9 @@ class PriceListsController < ApplicationController
     @price_list = authorize(PriceList.find(params[:id]))
 
     if @price_list.destroy
-      redirect_to price_lists_path, notice: t('.success')
+      redirect_to price_lists_path, notice: t('success', model: 'Price List ', action: 'destroyed')
     else
-      redirect_to price_lists_path, notice: t('.failure')
+      redirect_to price_lists_path, alert: t('.failure')
     end
   end
 

@@ -13,7 +13,7 @@ class MailerSubscriptionsController < ApplicationController
     @mailer_subscription = current_user.mailer_subscriptions.build(mailer_subscription_params)
     @mailer_subscription.subscribed = true
     if @mailer_subscription.save
-      redirect_to mailer_subscriptions_path, notice: t('success')
+      redirect_to mailer_subscriptions_path, notice: t('success', model: 'メール配信登録', action: '追加')
     else
       redirect_to mailer_subscriptions_path, alter: @mailer_subscription.errors.full_messages.to_sentence.to_s
     end
@@ -21,7 +21,7 @@ class MailerSubscriptionsController < ApplicationController
 
   def update
     if @mailer_subscription.toggle!(:subscribed)
-      redirect_to mailer_subscriptions_path, notice: t('success')
+      redirect_to mailer_subscriptions_path, notice: t('success', model: 'メール配信登録', action: '更新')
     else
       redirect_to mailer_subscriptions_path, alter: @mailer_subscription.errors.full_messages.to_sentence.to_s
     end

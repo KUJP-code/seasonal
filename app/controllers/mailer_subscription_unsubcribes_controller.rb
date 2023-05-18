@@ -7,17 +7,17 @@ class MailerSubscriptionUnsubcribesController < ApplicationController
 
   def show
     @message = if @mailer_subscription.update(subscribed: false)
-                 "You've successfully unsubscribed from this email."
+                 'メールの配信を停止いたしました。'
                else
-                 'There was an error'
+                 'ユーザーが見つからなかったため、配信を停止できませんでした。'
                end
   end
 
   def update
     if @mailer_subscription.toggle!(:subscribed)
-      redirect_to root_path, notice: t('.subscription_updated')
+      redirect_to root_path, notice: 'メールの配信を停止いたしました。'
     else
-      redirect_to root_path, notice: t('.subscription_not_updated')
+      redirect_to root_path, notice: 'ユーザーが見つからなかったため、配信を停止できませんでした。'
     end
   end
 
@@ -25,7 +25,7 @@ class MailerSubscriptionUnsubcribesController < ApplicationController
 
   def set_user
     @user = GlobalID::Locator.locate_signed params[:id]
-    @message = 'There was an error' if @user.nil?
+    @message = 'ユーザーが見つからなかったため、配信を停止できませんでした。' if @user.nil?
   end
 
   def set_mailer_subscription

@@ -116,6 +116,7 @@ ja:
     template:
       body: 次の項目を確認してください
       header: "%{model}に%{count}個のエラーが発生しました"
+  failure: "%{model}%{action}できませんでした"
   helpers:
     select:
       prompt: 選択してください
@@ -179,6 +180,7 @@ ja:
     precision:
       format:
         delimiter: ""
+  success: "%{model}%{action}されました"
   support:
     array:
       last_word_connector: "、"
