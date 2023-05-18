@@ -27,15 +27,17 @@
             <%= f.label :email_confirmation, t('.email_confirmation'), class: 'form-label' %><br />
         </div>
 
-        <div class="form-floating">
-            <%= f.text_field :password, value: (has_pass ? nil : temp_pass), autofocus: true, autocomplete: "password", class: 'form-control', placeholder: t('.password'), required: true, readonly: !has_pass %>
-            <%= f.label :password, class: 'form-label' %><br />
-        </div>
+        <% if current_user.id == @user.id %>
+            <div class="form-floating">
+                <%= f.password_field :password, value: (has_pass ? nil : temp_pass), autofocus: true, autocomplete: "password", class: 'form-control', placeholder: t('.password'), required: true, readonly: !has_pass %>
+                <%= f.label :password, class: 'form-label' %><br />
+            </div>
 
-        <div class="form-floating">
-            <%= f.text_field :password_confirmation, value: (has_pass ? nil : temp_pass), autocomplete: "password", class: 'form-control', placeholder: t('.password_confirmation'), required: true, readonly: !has_pass %>
-            <%= f.label :password_confirmation, t('.password_confirmation'), class: 'form-label' %><br />
-        </div>
+            <div class="form-floating">
+                <%= f.password_field :password_confirmation, value: (has_pass ? nil : temp_pass), autocomplete: "password", class: 'form-control', placeholder: t('.password_confirmation'), required: true, readonly: !has_pass %>
+                <%= f.label :password_confirmation, t('.password_confirmation'), class: 'form-label' %><br />
+            </div>
+        <% end %>
     </div>
 
     <div class="personal_info d-grid gap-3 p-5 pt-0">
