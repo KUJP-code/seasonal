@@ -85,7 +85,7 @@ export default class extends Controller {
   }
 
   radio(child, cost, id, siblings, type, name) {
-    this.add(child, cost, id, type, name);
+    this.add(child, cost, id, "Option", name);
 
     siblings.forEach((sibling) => {
       const child = sibling.dataset.registerChildValue;
