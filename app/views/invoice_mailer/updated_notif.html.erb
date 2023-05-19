@@ -5,8 +5,12 @@
     </head>
     <body>
         <h2><%= "Hello, #{@parent.name}" %></h2>
-        <h4>Your booking has been updated! Here are your new booking details:</h4>
-
+        <% if @updater.name == @parent.name %>
+          <h4>Your booking has been updated! Here are your new booking details:</h4>
+        <% else %>
+          <h4>Your booking has been updated by <%= @updater.name %>! Here are your new booking details:</h4>
+        <% end %>
+        
         <%= sanitize @invoice.summary, tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id] %>
 
         <%= link_to t('.view_invoice'), invoice_url(id: @invoice.id) %>
