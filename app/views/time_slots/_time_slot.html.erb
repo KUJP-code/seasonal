@@ -8,12 +8,12 @@
             <% if time_slot.closed? %>
                 <%= form_with model: time_slot, html_options: { class: 'w-100' } do |f| %>
                     <%= f.hidden_field :closed, value: 0 %>
-                    <%= f.submit t('.reopen'), class: 'btn btn-primary w-100' %>
+                    <%= f.submit t('.reopen'), class: 'btn btn-danger w-100' %>
                 <% end %>
             <% else %>
                 <%= form_with model: time_slot, html_options: { class: 'w-100' } do |f| %>
                     <%= f.hidden_field :closed, value: 1 %>
-                    <%= f.submit t('.close'), class: 'btn btn-primary w-100' %>
+                    <%= f.submit t('.close'), class: 'btn btn-success w-100' %>
                 <% end %>
             <% end %>
         <% end %>

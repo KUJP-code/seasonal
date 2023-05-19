@@ -15,7 +15,7 @@ class TimeSlotPolicy < ApplicationPolicy
   end
 
   def update?
-    user.admin?
+    user.admin? || user.area_manager?
   end
 
   # Handles scopes for TimeSlot index

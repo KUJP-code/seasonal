@@ -20,9 +20,9 @@ class TimeSlotsController < ApplicationController
     @slot = authorize(TimeSlot.find(params[:id]))
 
     if @slot.update(slot_params)
-      redirect_to time_slots_path(event: @slot.event_id), notice: t('success', model: 'Time Slot', action: '更新')
+      redirect_to time_slots_path(event: @slot.event_id), notice: t('success', model: '開催日', action: '更新')
     else
-      render :edit, status: :unprocessable_entity, alert: t('failure', model: 'Time Slot', action: '更新')
+      render :edit, status: :unprocessable_entity, alert: t('failure', model: '開催日', action: '更新')
     end
   end
 
