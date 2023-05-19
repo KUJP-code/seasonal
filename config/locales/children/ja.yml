@@ -1,4 +1,16 @@
 ja:
+  activerecord:
+    attributes:
+      child:
+        allergies: "アレルギー"
+        category: "（通学生・予約生・非会員）選択してください。"
+        en_name: "お子様の名前（英語）"
+        grade: "お子様の学年"
+        en_name: "お子様の名前（英語）"
+        katakana_name: "お子様の名前（カタカナ）"
+        name: "お子様の氏名（漢字）"
+        photos: "写真"
+        grade: "お子様の学年"
   children:
     child:
       edit: "編集"
@@ -49,6 +61,7 @@ ja:
       school: "参加ご希望のスクール"
       school_info: "スクール情報"
       ssid: "マイページID"
+      unable_to_save: "生徒更新できませんでした"
     index:
       allergies: "アレルギー"
       category: "カテゴリー"

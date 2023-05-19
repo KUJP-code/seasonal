@@ -3,7 +3,7 @@
         <%= form_with model: @child, class: 'child_form', html: { class: 'd-grid gap-3 needs-validation', novalidate: true } do |f| %>    
             <% if @child.errors.any? %>
                 <div class="errors">
-                    <h3><%= t('.unable_to_save', child: @child.name) %></h3>
+                    <h3><%= t('.unable_to_save') %></h3>
                     <ul>
                         <% @child.errors.full_messages.each do |error| %>
                             <li><%= error %></li>

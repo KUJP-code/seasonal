@@ -5,5 +5,5 @@ class Adjustment < ApplicationRecord
   belongs_to :invoice
 
   # Validations
-  validates :reason, :change, presence: true
+  validates :change, :reason, presence: true
 end

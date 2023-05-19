@@ -1,4 +1,13 @@
 ja:
+  activerecord:
+    attributes:
+      user:
+        address: "ご住所"
+        katakana_name: "保護者様の氏名（カタカナ）"
+        name: "保護者様の氏名（漢字）"
+        phone: "携帯電話番号"
+        postcode: "郵便番号"
+        prefecture: "都道府県"
   events:
     event:
       dates: "%{start_date}から %{end_date}まで"

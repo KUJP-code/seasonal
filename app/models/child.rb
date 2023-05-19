@@ -76,7 +76,7 @@ class Child < ApplicationRecord
   validates :photos, inclusion: { in: photos.keys }
 
   # Presence
-  validates :name, :katakana_name, :en_name, :category, :grade, :birthday, :allergies, :photos, presence: true
+  validates :allergies, :category, :en_name, :grade, :katakana_name, :name, :photos, presence: true
 
   # Uniqueness
   validates :ssid, uniqueness: { allow_blank: true }

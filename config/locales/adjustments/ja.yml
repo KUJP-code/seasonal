@@ -1,4 +1,9 @@
 ja:
+  activerecord:
+    attributes:
+      adjustment:
+        change: "調整額"
+        reason: "調整理由"
   adjustments:
     edit:
       add_adj: "調整内容を追加する"
