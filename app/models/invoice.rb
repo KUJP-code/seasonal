@@ -115,7 +115,7 @@ class Invoice < ApplicationRecord
     @breakdown << '</div>'
     @breakdown.prepend(
       "<h4 class='fw-semibold'>コース:</h4>
-      <div class='d-flex flex-column gap-1'>
+      <div class='d-flex flex-column align-items-start gap-1'>
       <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 (#{num_regs}コマ)</p>
       <p>午後コースおやつ代 x #{snack_count}: #{(snack_count * 165).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円"
     )
@@ -130,7 +130,7 @@ class Invoice < ApplicationRecord
                  @ignore_opts.include?(reg.id)
                end.reduce(0) { |sum, reg| sum + reg.registerable.cost }
     @breakdown << "<h4 class='fw-semibold'>オプション:</h4>
-                   <div class='d-flex flex-column gap-1'>
+                   <div class='d-flex flex-column align-items-start gap-1'>
                    <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
                                                    '\\1,').reverse}円 (#{opt_regs.size - @ignore_opts.size}オプション)<p>"
 
@@ -183,34 +183,33 @@ class Invoice < ApplicationRecord
 
   def generate_details
     @breakdown.prepend(
-      "<div class='d-flex gap-3 flex-column'>\n
+      "<div class='d-flex gap-3 flex-column align-items-start'>\n
       <h2 class='fw-semibold'>#{child.name}</h2>\n
-      <h3 class='fw-semibold'>#{event.name} @ #{event.school.name}</h3>\n
-      <h4 class='fw-semibold'>登録番号: T7-0118-0103-7173</h4>\n"
+      <h3 class='fw-semibold'>#{event.name} @ #{event.school.name}</h3>\n"
     )
-    @breakdown << "</div><h2 class='fw-semibold'>予約の詳細:</h2>\n"
+    @breakdown << "</div><h2 class='fw-semibold text-start'>予約の詳細:</h2>\n"
 
     e_opt_regs = opt_regs.where(registerable: event.options)
     unless e_opt_regs.empty?
-      @breakdown << "<h4 class='fw-semibold'>Event Options:</h4>\n"
-      @breakdown << '<div class="d-flex gap-3 p-3 justify-content-center flex-wrap">'
+      @breakdown << "<h4 class='fw-semibold text-start'>イベントのオプション:</h4>\n"
+      @breakdown << '<div class="d-flex gap-3 p-3 justify-content-start flex-wrap">'
       event.options.each do |opt|
         @breakdown << "<p>- #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>\n"
       end
       @breakdown << '</div>'
     end
 
-    @breakdown << "<h4 class='fw-semibold'>登録</h4>\n"
-    @breakdown << '<div class="d-flex gap-3 p-3 justify-content-center flex-wrap">'
+    @breakdown << "<h4 class='fw-semibold text-start'>登録</h4>\n"
+    @breakdown << '<div class="d-flex flex-column gap-3 p-3 justify-content-start flex-wrap">'
     slot_regs.each do |slot_reg|
       next if @ignore_slots.include?(slot_reg.id)
 
       slot = slot_reg.registerable
 
       @breakdown << if slot.morning
-                      "<div class='slot_regs'><h5>#{slot.name} (#{slot.date})</h5>\n"
+                      "<div class='slot_regs d-flex flex-wrap gap-3 text-start'><h5>#{slot.name} (#{slot.date})</h5>\n"
                     else
-                      "<div class='slot_regs'><h5>#{slot.name} (#{slot.date}) (午後)</h5>\n"
+                      "<div class='slot_regs d-flex flex-wrap gap-3 text-start'><h5>#{slot.name} (#{slot.date}) (午後)</h5>\n"
                     end
 
       # Show details for all registered options, even unsaved
@@ -228,9 +227,9 @@ class Invoice < ApplicationRecord
   # TODO: I'm guessing this will not be the final message
   def generate_template
     template = +''
-    template << '<h3 class="fw-semibold">Hello Dear Sir/Madam, this is the start of our email template!</h3>'
+    template << '<h3 class="fw-semibold text-start">Hello Dear Sir/Madam, this is the start of our email template!</h3>'
     template << @breakdown
-    template << "<h3>That's all folks! End of email</h3>"
+    template << "<h3 class='text-start>That's all folks! End of email</h3>"
     self.email_template = template
   end
 
@@ -308,8 +307,8 @@ class Invoice < ApplicationRecord
   # Updates total cost and summary once calculated/generated
   def update_cost(new_cost)
     self.total_cost = new_cost
-    @breakdown << "<h2 id='final_cost' class='fw-semibold'>合計（税込）: #{new_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
-                                                                          '\\1,').reverse}円</h2>\n"
+    @breakdown << "<h2 id='final_cost' class='fw-semibold text-start'>合計（税込）: #{new_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,'\\1,').reverse}円</h2>\n
+    <p class='text-start'>登録番号: T7-0118-0103-7173</p>"
     generate_template
     self.summary = @breakdown
   end

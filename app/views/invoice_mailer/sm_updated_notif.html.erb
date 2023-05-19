@@ -8,7 +8,7 @@
         <% if @updater.name == @parent.name %>
           <h4><%= "#{@parent.name} has updated their booking.  You can contact them for more information at #{@parent.email}" %></h4>
         <% else %>
-          <h4><%= "#{@updater.name} has updated #{parent.name}'s booking.  You can contact them for more information at #{@parent.email}" %></h4>
+          <h4><%= "#{@updater.name} has updated #{@parent.name}'s booking.  You can contact them for more information at #{@updater.email}" %></h4>
         <% end %>
 
         <%= sanitize @invoice.summary, tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id] %>
