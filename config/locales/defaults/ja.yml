@@ -7,6 +7,7 @@ ja:
         restrict_dependent_destroy:
           has_one: "%{record}が存在しているので削除できません"
           has_many: "%{record}が存在しているので削除できません"
+  am_closed: "午前中：申込受付を終了"
   back: "戻る"
   date:
     abbr_day_names:
@@ -181,6 +182,7 @@ ja:
     precision:
       format:
         delimiter: ""
+  pm_closed: "午後：満席の為受付を終了"
   success: "%{model}%{action}されました"
   support:
     array:
