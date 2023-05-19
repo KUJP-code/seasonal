@@ -5,20 +5,22 @@ class InvoiceMailer < ApplicationMailer
   def confirmation_notif
     @invoice = params[:invoice]
     @parent = @invoice.child.parent
-    mail(to: @parent.email, subject: t('.invoice_confirmation'))
+    mail(to: @parent.email, subject: t('.invoice_confirm'))
   end
 
   def updated_notif
     @invoice = params[:invoice]
     @updater = User.find(@invoice.versions.last.whodunnit)
-    @parent = @invoice.child.parent
+    @child = @invoice.child
+    @parent = @child.parent
     mail(to: @parent.email, subject: t('.invoice_updated'))
   end
 
   def sm_updated_notif
     @invoice = params[:invoice]
     @updater = User.find(@invoice.versions.last.whodunnit)
-    @parent = @invoice.child.parent
+    @child = @invoice.child
+    @parent = @child.parent
     @sm = @invoice.school.managers.first || User.new(name: 'Leroy', email: 'h-leroy@kids-up.jp')
     mail(to: @sm.email, subject: t('.invoice_updated'))
   end

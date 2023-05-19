@@ -126,6 +126,10 @@ ja:
       create: 登録する
       submit: 保存する
       update: 更新する
+  layouts:
+    mailer:
+      unsubscribe: "メール配信を停止する"
+      unsubscribe_warning: "（メール配信を停止すると、スクールが予約内容を変更した場合や、予約が確定した際の確認メールも停止されます。）"
   nav_bar:
     children: "生徒"
     customers: "お客様"

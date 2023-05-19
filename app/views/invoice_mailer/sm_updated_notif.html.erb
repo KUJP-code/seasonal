@@ -4,12 +4,8 @@
         <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
     </head>
     <body>
-        <h2><%= "Hello, #{@sm.name}" %></h2>
-        <% if @updater.name == @parent.name %>
-          <h4><%= "#{@parent.name} has updated their booking.  You can contact them for more information at #{@parent.email}" %></h4>
-        <% else %>
-          <h4><%= "#{@updater.name} has updated #{@parent.name}'s booking.  You can contact them for more information at #{@updater.email}" %></h4>
-        <% end %>
+        <h4>新しい申込の追加、または予約内容の変更が行われました。</h4>
+        <h2>名前：</h2>
 
         <%= sanitize @invoice.summary, tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id] %>
 

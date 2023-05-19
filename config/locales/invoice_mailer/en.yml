@@ -1,0 +1,4 @@
+en:
+  invoice_mailer:
+    confirmation_notif:
+      invoice_confirm: "Booking Confirmed"

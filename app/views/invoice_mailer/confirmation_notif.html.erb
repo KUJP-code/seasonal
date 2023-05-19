@@ -4,8 +4,8 @@
         <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
     </head>
     <body>
-        <h2><%= "Hello, #{@parent.name}" %></h2>
-        <h4>Your booking has been confirmed! The following details now cannot be altered without contacting your school's manager.</h4>
+        <h2><%= "#{@parent.name}様" %></h2>
+        <h4><%= "#{@parent.name}" %>様の予約が確定されました。予約内容の変更をご希望の場合はスクールまでお問い合わせください。</h4>
 
         <%= sanitize @invoice.summary, tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id] %>
 

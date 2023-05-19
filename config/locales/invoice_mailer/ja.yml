@@ -1,0 +1,11 @@
+ja:
+  invoice_mailer:
+    confirmation_notif:
+      invoice_confirm: "【Kids UPシーズナル申込フォーム】予約確定のお知らせ"
+      view_invoice: "予約内容を確認する"
+    sm_updated_notif:
+      invoice_updated: "【Kids UPシーズナル申込フォーム】申し込みまたは変更がありました。"
+      view_invoice: "予約内容を確認する"
+    updated_notif:
+      invoice_updated: "【Kids UPシーズナル申込フォーム】予約内容変更のお知らせ"
+      view_invoice: "予約内容を確認する"
