@@ -9,6 +9,14 @@
 
   <body>
     <%= yield %>
+    <p>このメールは自動配信です。</p>
+    <p>ご不明な点がございましたら、下記のスクールまでお問い合わせください。</p>
+
+    <p><%= @parent.children.first.school.name %></p>
+    <p><%= "Email: #{@parent.children.first.school.managers.first.email}" %></p>
+    <p><%= "Tel: #{@parent.children.first.school.phone}" %></p>
+    <%= image_tag "http://localhost:3000/images/logo_gif.gif" %>
+
     <%= link_to t('.unsubscribe'), @unsubscribe_url if @unsubscribe_url.present? %>
     <%= link_to t('.manage_subscriptions'), @mailer_subscription_url if @mailer_subscription_url.present? %> 
   </body>
