@@ -43,7 +43,7 @@
                         copy_invoice_path(origin: @child.id, target: child.id, event: @event.id), class: 'copy text-black-50',
                         data: {
                             turbo_method: :put,
-                            turbo_confirm: "This will register #{child.name} for all the same time slots and options as #{@child.name}. None of #{child.name}'s existing registrations will be affected"
+                            turbo_confirm: "#{@child.name}から#{child.name}に予約内容をコピーしてよろしいですか？「OK」を押すと#{child.name}の予約内容がスクールに送信されます。"
                             } unless child.id == @child.id
                         %>
                     </td>
