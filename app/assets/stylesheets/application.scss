@@ -191,31 +191,31 @@ main#child_show .card {
   height: 88px;
 }
 
-#event_children_index .order {
+#event_children_index .order-header {
   position: sticky;
   left: 0px;
   min-width: 30px;
 }
 
-#event_children_index .name {
+#event_children_index .name-header {
   position: sticky;
   left: 30px;
   min-width: 150px;
 }
 
-#event_children_index .en-name {
+#event_children_index .en-name-header {
   position: sticky;
   left: 180px;
   min-width: 150px;
 }
 
-#event_children_index .ssid {
+#event_children_index .ssid-header {
   position: sticky;
   left: 330px;
   min-width: 110px;
 }
 
-#event_children_index .photos {
+#event_children_index .photos-header {
   min-width: 75px;
 }
 

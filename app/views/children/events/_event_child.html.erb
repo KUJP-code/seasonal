@@ -15,10 +15,10 @@
 <% depart_categories = %w[departure k_departure] %>
 
 <tr class=<%= "child#{event_child.id}" %>>
-    <th scope="row" rowspan="2" class="order"><%= event_child_iteration.index + 1 %></th>
-    <th scope="row" rowspan="2" class="name"><%= link_to event_child.name, child_path(event_child) %></th>
-    <th scope="row" rowspan="2" class="en-name"><%= link_to event_child.en_name, child_path(event_child) %></th>
-    <th scope="row" rowspan="2" class="ssid <%= 'table-danger' if event_child.ssid.nil? %>">
+    <th scope="row" rowspan="2" class="order order-header"><%= event_child_iteration.index + 1 %></th>
+    <th scope="row" rowspan="2" class="name name-header"><%= link_to event_child.name, child_path(event_child) %></th>
+    <th scope="row" rowspan="2" class="en-name en-name-header"><%= link_to event_child.en_name, child_path(event_child) %></th>
+    <th scope="row" rowspan="2" class="ssid ssid-header<%= ' table-danger' if event_child.ssid.nil? %>">
         <% if event_child.ssid %>
             <%= link_to event_child.ssid, child_path(event_child) %>
         <% elsif event_child.ssid.nil? && event_child.parent_id.nil? %>
