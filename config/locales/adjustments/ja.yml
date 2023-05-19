@@ -5,5 +5,6 @@ ja:
       update_adj: "調整内容をアップデートする"
     form:
       change: "調整額"
+      delete: "消去"
       reason: "調整理由"
       remove_adj: "調整内容を削除する"

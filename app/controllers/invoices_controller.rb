@@ -26,6 +26,8 @@ class InvoicesController < ApplicationController
     @invoice = authorize(Invoice.find(params[:id]))
 
     if @invoice.update(invoice_params)
+      # Because otherwise deleted adjustments won't be reflected
+      @invoice.save
       send_emails(@invoice)
       redirect_to invoice_path(id: @invoice.id, updated: true), notice: t('success', model: '予約', action: '更新')
     else

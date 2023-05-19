@@ -11,6 +11,16 @@
             <%= adj_f.label :change, t('.change'), class: 'form-label' %>
             <span class="input-group-text">円</span>
         </div>
-        <%= button_tag t('.remove_adj'), data: { action: "fields#remove" }, class: 'btn btn-secondary' %>
+
+        <% unless adj_f.object.new_record? %>
+            <div>
+                <%= adj_f.check_box :_destroy, class: 'form-check-input' %>
+                <%= adj_f.label :_destroy, t('.delete'), class: 'form-check-label' %>
+            </div>
+        <% end %>
+
+        <% if adj_f.object.new_record? %>
+            <%= button_tag t('.remove_adj'), data: { action: "fields#remove" }, class: 'btn btn-secondary' %>
+        <% end %>
     </div>
 </div>
