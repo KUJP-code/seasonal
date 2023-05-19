@@ -1,5 +1,16 @@
 ja:
   devise:
+    mailer:
+      confirmation_instructions:
+        subject: "【Kids UPシーズナル申込フォーム】仮登録完了及び本登録についてのお知らせ"
+      email_changed:
+        subject: "【Kids UPシーズナル申込フォーム】登録メールアドレス変更のお知らせ"
+      password_change:
+        subject: "【Kids UPシーズナル申込フォーム】登録パスワード変更のお知らせ"
+      reset_password_instructions:
+        subject: "【Kids UPシーズナル申込フォーム】パスワード変更のご案内"
+      unlock_instructions:
+        subject: "【Kids UPシーズナル申込フォーム】アカウントロックのお知らせ"
     passwords:
       edit:
         change_my_pass: "パスワードを変更する"
