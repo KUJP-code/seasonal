@@ -39,9 +39,9 @@ class ChildrenController < ApplicationController
     @child = authorize(Child.new(child_params))
 
     if @child.save
-      redirect_to child_path(@child), notice: t('success')
+      redirect_to child_path(@child), notice: t('success', action: '追加', model: '生徒')
     else
-      render :new, status: :unprocessable_entity, alert: t('failure')
+      render :new, status: :unprocessable_entity, alert: t('failure', action: '追加', model: '生徒')
     end
   end
 
@@ -49,9 +49,9 @@ class ChildrenController < ApplicationController
     @child = authorize(Child.find(params[:id]))
 
     if @child.update(child_params)
-      redirect_to child_path(@child), notice: t('success')
+      redirect_to child_path(@child), notice: t('success', action: '更新', model: '生徒')
     else
-      render :edit, status: :unprocessable_entity, alert: t('failure')
+      render :edit, status: :unprocessable_entity, alert: t('failure', action: '更新', model: '生徒')
     end
   end
 
@@ -60,9 +60,9 @@ class ChildrenController < ApplicationController
     @parent = @child.parent
 
     if @child.destroy
-      redirect_to user_path(@parent), notice: t('success')
+      redirect_to user_path(@parent), notice: t('success', action: '削除', model: '生徒')
     else
-      redirect_to child_path(@child), alert: t('failure')
+      redirect_to child_path(@child), alert: t('failure', action: '削除', model: '生徒')
     end
   end
 

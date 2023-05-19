@@ -67,6 +67,7 @@ ja:
       bday: "生年月日: "
       child_bookings: "%{child}予約内容"
       delete_child: "削除"
+      edit_child: "編集"
       ele_school: "お通いの保育園／幼稚園／小学校"
       has_hat: "Kids UP帽子"
       parent: "保護者氏名: "
