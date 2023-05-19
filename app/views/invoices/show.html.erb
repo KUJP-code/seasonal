@@ -6,7 +6,13 @@
 
     <% if @updated %>
       <div class="card bg-success w-100 text-white">
-        <%= t('.confirm_success') %>
+        <% if current_user.staff? && @invoice.in_ss %>
+          <%= t('.marked_in_ss') %>
+        <% elsif current_user.staff? %>
+          <%= t('.staff_confirm') %>
+        <% else %>
+          <%= t('.confirm_success') %>
+        <% end %>
       </div>
     <% end %>
 
