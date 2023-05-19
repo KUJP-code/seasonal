@@ -9,10 +9,12 @@ ja:
     index:
       slots_for: "%{name} @ %{school}"
     time_slot:
-      close: "申込受付を停止する"
+      aft_close: "PMの申込受付を停止する"
+      aft_reopen: "PMの申込受付を再開する"
+      close: "AMの申込受付を停止する"
       date: "日にち： %{date}"
       delete: "消去"
       delete_confirm: "この登録を削除してもよろしいですか?"
-      reopen: "申込受付を再開する"
+      reopen: "AMの申込受付を再開する"
       times: "時間: %{time}"
       view_attendance: "アテンダンス"
