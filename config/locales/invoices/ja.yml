@@ -4,6 +4,7 @@ ja:
       already_confirmed: "予約は送信されました"
       apply_coupon: "福利厚生クーポンをお持ちの方はこちら"
       confirm_changes: "確認"
+      confirmed: "他の予約"
       coupon: "クーポン"
       in_ss: "他の予約"
       please_confirm: "「確認」を押すと予約が確定します。"
