@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'devise/mailer'
+require 'auth_mailer'
+
 # Handles routing for turbo requests
 class TurboFailureApp < Devise::FailureApp
   def respond
@@ -43,7 +46,7 @@ Devise.setup do |config|
   %(Kids Up Events <bookings@kids-up.app>)
 
   # Configure the class responsible to send e-mails.
-  config.mailer = 'Devise::Mailer'
+  config.mailer = 'AuthMailer'
 
   # Configure the parent class responsible to send e-mails.
   config.parent_mailer = 'ActionMailer::Base'
