@@ -121,6 +121,60 @@ School.all.each do |school|
   school.managers << sm
 end
 
+school = School.find_by(name: 'オンラインコース')
+
+100.times do
+  parent = User.new(
+    name: Faker::Name.name,
+    katakana_name: Faker::Name.name.kana,
+    email: Faker::Internet.unique.email,
+    password: Faker::Internet.password(min_length: 10),
+    address: Faker::Address.full_address,
+    postcode: Faker::Address.postcode,
+    prefecture: Faker::Address.state,
+    phone: Faker::PhoneNumber.phone_number
+  )
+
+  parent.skip_confirmation_notification!
+  parent.save!
+
+  2.times do
+    school.children.create!([
+      {
+        name: Faker::Name.name,
+        katakana_name: Faker::Name.name.kana,
+        en_name: %w[Timmy Sally Billy Sarah Viktoria Brett Leroy].sample,
+        birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
+        ssid: Faker::Number.unique.number(digits: 5),
+        ele_school_name: Faker::GreekPhilosophers.name,
+        photos: 'OK',
+        allergies: 'peanuts',
+        parent: parent,
+        category: :internal,
+        needs_hat: false,
+        received_hat: true
+      },
+      {
+        name: Faker::Name.name,
+        katakana_name: Faker::Name.name.kana,
+        en_name: %w[Timmy Sally Billy Sarah Viktoria Brett Leroy].sample,
+        birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
+        ssid: Faker::Number.unique.number(digits: 5),
+        ele_school_name: Faker::GreekPhilosophers.name,
+        photos: 'NG',
+        allergies: 'ice cream',
+        parent: parent,
+        category: :external,
+        needs_hat: true,
+        received_hat: false
+      }
+    ])
+  end
+
+  puts "Created children for #{parent}"
+end
+
+
 User.all.each do |user|
   user.confirm
 end
