@@ -224,12 +224,10 @@ class Invoice < ApplicationRecord
     @breakdown << '</div>'
   end
 
-  # TODO: I'm guessing this will not be the final message
   def generate_template
     template = +''
-    template << '<h3 class="fw-semibold text-start">Hello Dear Sir/Madam, this is the start of our email template!</h3>'
+    template << "<h2 class='fw-semibold text-start'>#{child.parent.name}様</h2><h4>#{child.parent.name}様の予約が確定されました。予約内容の変更をご希望の場合はスクールまでお問い合わせください。</h4>" unless child.parent.nil? || child.parent.name.nil?
     template << @breakdown
-    template << "<h3 class='text-start>That's all folks! End of email</h3>"
     self.email_template = template
   end
 

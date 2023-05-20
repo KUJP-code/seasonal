@@ -1,6 +1,6 @@
-<%= "Hello, #{@parent.name}" %>
-Your booking has been confirmed! The following details now cannot be altered without contacting your school's manager.
+<%= "#{@parent.name}様" %>
+<%= "#{@parent.name}" %>様の予約が確定されました。予約内容の変更をご希望の場合はスクールまでお問い合わせください。
 
 <%= strip_tags @invoice.summary %>
 
-View your booking at this URL: <%= invoice_url(id: @invoice.id) %>
+予約内容を確認する: <%= invoice_url(id: @invoice.id) %>

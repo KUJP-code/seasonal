@@ -1,5 +1,11 @@
-<%= "Hello, #{@parent.name}" %>
-Your booking has been updated! Here are your new booking details: 
+<%= "#{@parent.name}様" %>
+<% if @updater.name == @parent.name %>
+    Kids UPスクールにより、お客様の予約内容が変更されました。
+    下記、新しい予約内容をご確認ください。
+<% else %>
+    <%= @updater.name %>により、お客様の予約内容が変更されました。
+    下記、新しい予約内容をご確認ください。
+<% end %>
 
 <%= strip_tags @invoice.summary %>
 

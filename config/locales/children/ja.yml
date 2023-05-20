@@ -21,6 +21,7 @@ ja:
       event_child:
         no_ssid: "なし"
         seen: "変更を確認済み"
+        templates_for: "%{child}のテンプレート"
         view: "変更を見る"
         view_summary: "詳細を見る"
         view_template: "テンプレートを見る"

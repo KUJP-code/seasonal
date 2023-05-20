@@ -1,6 +1,6 @@
-<%= "Hello, #{@sm.name}" %>
-<%= "#{@parent.name} has updated their booking. You can contact them for more information at #{@parent.email}" %>
+新しい申込の追加、または予約内容の変更が行われました。
+名前：
 
 <%= strip_tags @invoice.summary %>
 
-View their booking at this URL: <%= invoice_url(id: @invoice.id) %>
+予約内容を確認する: <%= invoice_url(id: @invoice.id) %>
