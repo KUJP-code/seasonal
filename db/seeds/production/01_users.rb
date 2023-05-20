@@ -123,9 +123,9 @@ end
 
 school = School.find_by(name: 'オンラインコース')
 
-100.times do
+100.times do |i|
   parent = User.new(
-    name: Faker::Name.name,
+    name: "Test Parent#{i}",
     katakana_name: Faker::Name.name.kana,
     email: Faker::Internet.unique.email,
     password: Faker::Internet.password(min_length: 10),
@@ -138,10 +138,10 @@ school = School.find_by(name: 'オンラインコース')
   parent.skip_confirmation_notification!
   parent.save!
 
-  2.times do
+  2.times do |j|
     school.children.create!([
       {
-        name: Faker::Name.name,
+        name: "Test Kid#{i}#{j}",
         katakana_name: Faker::Name.name.kana,
         en_name: %w[Timmy Sally Billy Sarah Viktoria Brett Leroy].sample,
         birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
@@ -155,7 +155,7 @@ school = School.find_by(name: 'オンラインコース')
         received_hat: true
       },
       {
-        name: Faker::Name.name,
+        name: "Test Kid#{i}#{j}",
         katakana_name: Faker::Name.name.kana,
         en_name: %w[Timmy Sally Billy Sarah Viktoria Brett Leroy].sample,
         birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
