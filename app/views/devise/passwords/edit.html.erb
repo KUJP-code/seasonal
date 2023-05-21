@@ -1,29 +1,27 @@
 <main id="change_pass">
-  <div class="card w-100">
-    <h2><%= t('.change_pass') %></h2>
+  <h2><%= t('.change_pass') %></h2>
 
-    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: 'd-flex flex-column justify-content-center gap-3 p-3 w-100 rounded' }) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
-      <%= f.hidden_field :reset_password_token %>
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: 'd-flex flex-column justify-content-center gap-3 p-3 w-100 rounded' }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+    <%= f.hidden_field :reset_password_token %>
   
-      <div class="form-floating" data-controller="count">
-        <%= f.password_field :password, autofocus: true, autocomplete: "new-password", 'aria-labelledby': 'pwd-length', class: 'form-control', placeholder: t('.new_pass'), required: true, data: { 'count-target' => 'input' } %>
-        <%= f.label :password, t('.new_pass'), class: 'form-label' %>
-        <div id="pwd-length" class="form-text">
-          <%= t('.min_length', length: @minimum_password_length) %>
-          <span data-count-target="counter"></span>
-        </div>
+    <div class="form-floating" data-controller="count">
+      <%= f.password_field :password, autofocus: true, autocomplete: "new-password", 'aria-labelledby': 'pwd-length', class: 'form-control', placeholder: t('.new_pass'), required: true, data: { 'count-target' => 'input' } %>
+      <%= f.label :password, t('.new_pass'), class: 'form-label' %>
+      <div id="pwd-length" class="form-text">
+        <%= t('.min_length', length: @minimum_password_length) %>
+        <span data-count-target="counter"></span>
       </div>
+    </div>
   
-      <div class="form-floating" data-controller="count">
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", 'aria-labelledby': 'confirm-length', class: 'form-control', placeholder: t('.new_pass_confirm'), required: true, data: { 'count-target' => 'input' }  %>
-        <%= f.label :password_confirmation, t('.new_pass_confirm'), class: 'form-label' %>
-        <div id="confirm-length" class="form-text"><span  data-count-target="counter"></span></div>
-      </div>
+    <div class="form-floating" data-controller="count">
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", 'aria-labelledby': 'confirm-length', class: 'form-control', placeholder: t('.new_pass_confirm'), required: true, data: { 'count-target' => 'input' }  %>
+      <%= f.label :password_confirmation, t('.new_pass_confirm'), class: 'form-label' %>
+      <div id="confirm-length" class="form-text"><span  data-count-target="counter"></span></div>
+    </div>
   
-      <div class="actions">
-        <%= f.submit t('.change_my_pass'), class: 'btn btn-primary w-100' %>
-      </div>
-    <% end %>
-  </div>
+    <div class="actions">
+      <%= f.submit t('.change_my_pass'), class: 'btn btn-primary w-100' %>
+    </div>
+  <% end %>
 </main>

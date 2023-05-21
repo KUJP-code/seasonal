@@ -1,16 +1,14 @@
 <main id="confirmation_new">
   <h2 class="text-center">予約内容確認メールをもう一度受け取る</h2>
   
-  <div class="card">
-    <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, class: 'd-flex flex-column justify-content-center gap-3 p-3 w-100 rounded' }) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
+  <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, class: 'card d-flex flex-column justify-content-center gap-3 p-3 w-100 rounded' }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
     
-      <div class="form-floating w-100">
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'form-control w-100', placeholder: "メール", required: true %>
-        <%= f.label :email, 'メール', class: 'form-label w-100' %>
-      </div>
+    <div class="form-floating w-100">
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'form-control w-100', placeholder: "メール", required: true %>
+      <%= f.label :email, 'メール', class: 'form-label w-100' %>
+    </div>
     
-      <%= f.submit "予約内容確認メールをもう一度受け取る", class: 'btn btn-primary' %>
-    <% end %>
-  </div>
+    <%= f.submit "予約内容確認メールをもう一度受け取る", class: 'btn btn-primary' %>
+  <% end %>
 </main>
