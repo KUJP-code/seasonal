@@ -2,6 +2,8 @@ en:
   invoices:
     confirm:
       confirm_changes: "Confirm Changes"
+    index:
+      event_cost: "Total cost for %{event}: %{cost}"
     invoice:
       in_ss: "In SS, editing locked"
       mark_in_ss: "Mark In SS"

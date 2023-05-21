@@ -8,6 +8,8 @@ ja:
       coupon: "クーポン"
       in_ss: "他の予約"
       please_confirm: "「確認」を押すと予約が確定します。"
+    index:
+      event_cost: "%{event}合計（税込）: %{cost}"
     invoice:
       adjustments: "調整内容を追加する"
       confirm_booking: "予約を確定する"

@@ -1,5 +1,13 @@
 <main id="invoice_index" class="gap-5">
     <% if @user %>
+        <% event_cost = @user.invoices.reduce(0) { |sum, invoice| sum + invoice.total_cost } %>
+
+        <% @user.events.map(&:name).uniq.each do |name| %>
+            <div class="card">
+                <h2><%= t('.event_cost', cost: number_to_currency(event_cost, unit: '円', precision: 0, locale: :ja), event: name) %></h2>
+            </div>
+        <% end %>
+
         <% @user.children.each do |child| %>
             <% next if child.events.empty? %>
 
@@ -11,6 +19,14 @@
             <% end %>
         <% end %>
     <% else %>
+        <% event_cost = @child.invoices.reduce(0) { |sum, invoice| sum + invoice.total_cost } %>
+
+        <% @child.events.map(&:name).uniq.each do |name| %>
+            <div class="card">
+                <h2><%= t('.event_cost', cost: number_to_currency(event_cost, unit: '円', precision: 0, locale: :ja), event: name) %></h2>
+            </div>
+        <% end %>
+
         <h1><%= @child.name %></h1>     
             <% @child.events.order(start_date: :asc).each do |event| %>
                 <%= render event, partial: 'events/event', child: nil %>
