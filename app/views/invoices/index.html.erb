@@ -19,7 +19,7 @@
             <% end %>
         <% end %>
     <% else %>
-        <% event_cost = @child.invoices.reduce(0) { |sum, invoice| sum + invoice.total_cost } %>
+        <% event_cost = @child.parent.invoices.reduce(0) { |sum, invoice| sum + invoice.total_cost } %>
 
         <% @child.events.map(&:name).uniq.each do |name| %>
             <div class="card">

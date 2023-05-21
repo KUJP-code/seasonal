@@ -7,6 +7,7 @@ en:
       confirm_invoice: "Confirm Booking"
       confirm_registrations: "Confirm Registrations"
       copy_regs: "Copy regs from %{from} to %{to}"
+      event_cost: "Total cost for %{event}: %{cost}"
       member: "Member"
       non_member: "Non Member"
       num_options: "options registered"

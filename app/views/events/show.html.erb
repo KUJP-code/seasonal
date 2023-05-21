@@ -5,15 +5,23 @@
 <% adjustments = @all_invoices.reduce([]) { |array, inv| array + inv.adjustments } %>
 <% slots_in_ss = @all_invoices.select { |invoice| invoice.in_ss }.reduce([]) { |array, invoice| array + invoice.slot_regs } %>
 <% opts_in_ss = @all_invoices.select { |invoice| invoice.in_ss }.reduce([]) { |array, invoice| array + invoice.opt_regs } %>
+<% event_cost = @child.parent.invoices.where(event_id: @event.id).reduce(0) { |sum, invoice| sum + invoice.total_cost } %>
+<% others_cost = @child.parent.invoices.where(event_id: @event.id).where.not(child_id: @child.id).reduce(0) { |sum, invoice| sum + invoice.total_cost } %>
+
 
 <main id="event_show" 
       data-controller="invoice price"
       data-action="register:toggle->invoice#change invoice:add@window->price#calculate invoice:remove@window->price#calculate"
       data-price-member-price-value=<%= @member_prices.courses.to_json unless @member_prices.nil? %>
       data-price-non-member-price-value=<%= @non_member_prices.courses.to_json unless @non_member_prices.nil? %>
+      data-price-other-cost-value="<%= others_cost %>"
       class="d-flex flex-column justify-content-start align-items-start text-start bg-white">
 
-    <h1 class="fw-bolder text-center"><%= t('.title', name: @event.name, school: @event.school.name) %></h1>
+    <div class="d-flex flex-wrap gap-3">
+        <h1 class="fw-bolder text-center"><%= t('.title', name: @event.name, school: @event.school.name) %></h1>
+
+        <h4 class="bg-info rounded p-3" data-price-target="eventCost"><%= t('.event_cost', cost: number_to_currency(event_cost, unit: '円', precision: 0, locale: :ja), event: @event.name) %></h4>
+    </div>
 
     <table class="table table-info table-striped table-hover text-center align-middle">
         <tbody>

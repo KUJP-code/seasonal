@@ -4,6 +4,7 @@ export default class extends Controller {
   static targets = [
     "adjChange",
     "child",
+    "eventCost",
     "finalCost",
     "optRegs",
     "optCost",
@@ -15,6 +16,7 @@ export default class extends Controller {
   static values = {
     memberPrice: Object,
     nonMemberPrice: Object,
+    otherCost: Number,
   };
 
   // Base function called when fields added to form
@@ -50,6 +52,11 @@ export default class extends Controller {
     const snackCost = snackCount * 165;
 
     const finalCost = optionCost + courseCost + adjustmentChange + snackCost;
+    this.eventCostTarget.innerHTML = `サマースクール 2023合計（税込）: ${(
+      this.otherCostValue + finalCost
+    )
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}円`;
     this.finalCostTarget.innerHTML = `合計（税込）: ${finalCost}円`;
   }
 
