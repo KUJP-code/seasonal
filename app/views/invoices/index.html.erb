@@ -23,8 +23,9 @@
         <% event_cost = @child.parent.invoices.reduce(0) { |sum, invoice| sum + invoice.total_cost } %>
 
         <% @child.events.map(&:name).uniq.each do |name| %>
-            <div class="card">
+            <div class="card bg-info">
                 <h2><%= t('.event_cost', cost: number_to_currency(event_cost, unit: '円', precision: 0, locale: :ja), event: name) %></h2>
+                <p>複数のお子様のお申し込みをされた場合、合算された金額となります。</p>
             </div>
         <% end %>
 
