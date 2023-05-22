@@ -66,7 +66,7 @@ class CsvsController < ApplicationController
   # Some SS data is missing required fields, so we need to set default values
   def defaults(row)
     row['name'] = 'なし' if row['name'].nil?
-    row['katakana_name'] = 'なし' if row['katakana_name'].nil?
+    row['katakana_name'] = 'ナシ' if row['katakana_name'].nil?
     row['en_name'] = 'なし' if row['en_name'].nil?
     row['birthday'] = 'なし' if row['birthday'].nil?
     row['allergies'] = 'Unkown' if row['allergies'].nil?
