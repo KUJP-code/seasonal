@@ -28,7 +28,7 @@ ja:
       non_member_prices: "非会員料金"
       num_options: "オプション：%{num}つ"
       price: "料金"
-      registered_slots: "登録済の内容"
+      registered_slots: "予約済みの内容"
       regs_for: "%{child}の登録"
       regular_schedule: "通常スケジュール"
       see_more: "詳細を見る"
@@ -37,7 +37,7 @@ ja:
       total_cost: "合計（税込）"
       time_slot: "%{event}のタイムスロット"
       title: "%{name} @ %{school}"
-      unregistered_slots: "未登録の内容"
+      unregistered_slots: "予約可能な日程・アクティビティ"
     stats_summary:
       attendance: "アテンダンス"
       ext_kids: "非会員生人数"
