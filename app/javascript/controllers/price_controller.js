@@ -52,12 +52,12 @@ export default class extends Controller {
     const snackCost = snackCount * 165;
 
     const finalCost = optionCost + courseCost + adjustmentChange + snackCost;
-    this.eventCostTarget.innerHTML = `サマースクール 2023合計（税込）: ${(
+    this.finalCostTarget.innerHTML = `合計（税込）: ${finalCost}円`;
+    this.eventCostTarget.innerHTML = `サマースクール 2023の合計: ${(
       this.otherCostValue + finalCost
     )
       .toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}円`;
-    this.finalCostTarget.innerHTML = `合計（税込）: ${finalCost}円`;
   }
 
   // Finds the cheapest price for the given number of regs

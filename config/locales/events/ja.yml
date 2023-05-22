@@ -22,7 +22,7 @@ ja:
       copy_regs: "%{from}と同じ予約内容を%{to}に反映させる"
       coupon: "クーポン"
       course: "コース"
-      event_cost: "%{event}合計（税込）: %{cost}"
+      event_cost: "%{event}の合計: %{cost}"
       member_prices: "会員料金"
       more_info: "詳細はこちら"
       non_member_prices: "非会員料金"
