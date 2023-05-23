@@ -7,5 +7,6 @@ ja:
       invoice_updated: "【Kids UPシーズナル申込フォーム】申し込みまたは変更がありました。"
       view_invoice: "予約内容を確認する"
     updated_notif:
+      booking_made: "【Kids UPシーズナル申込フォーム】ご予約ありがとうございます。"
       invoice_updated: "【Kids UPシーズナル申込フォーム】予約内容変更のお知らせ"
       view_invoice: "予約内容を確認する"

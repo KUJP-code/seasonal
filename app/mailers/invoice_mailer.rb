@@ -13,7 +13,11 @@ class InvoiceMailer < ApplicationMailer
     @updater = User.find(@invoice.versions.last.whodunnit)
     @child = @invoice.child
     @parent = @child.parent
-    mail(to: @parent.email, subject: t('.invoice_updated'))
+    if @parent.id == @updater.id
+      mail(to: @parent.email, subject: t('.booking_made'))
+    else
+      mail(to: @parent.email, subject: t('.invoice_updated'))
+    end
   end
 
   def sm_updated_notif
