@@ -135,7 +135,6 @@ ja:
     customers: "お客様"
     events: "イベント"
     logout: "サインアウト"
-    schools: "学校"
     time_slots: "開催日"
   not_authorized: "この操作は出来ません。"
   number:

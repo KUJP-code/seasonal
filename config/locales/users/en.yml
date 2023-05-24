@@ -23,7 +23,12 @@ en:
       min_length: "Minimum Length: %{length}"
       update_all: "Update All"
     index:
+      edit_info: "Edit Info"
+      email: "Email"
       filter: "Filter"
+      katakana: "Katakana Name"
+      name: "Name"
+      new_customer: "Create Customer Account"
     merge_children:
       find_child: "Find Child"
       merge_children: "Merge Children"

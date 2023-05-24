@@ -4,11 +4,14 @@ en:
   ele_school: "Elementary School"
   enter_pin: "Enter PIN to reveal %{info}"
   nav_bar:
-    child_list: "Children"
+    children: "Children"
     customers: "Customers"
+    events: "Events"
     logout: "Sign Out"
     profile: "My Profile"
     schools: "Schools"
+    time_slots: "Daily Activities"
+    users: "Users"
   register: "Register"
   roles:
     admin: "admin"
