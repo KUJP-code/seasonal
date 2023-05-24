@@ -12,6 +12,7 @@ class InvoicesController < ApplicationController
                 else
                   current_user.invoices
                 end
+    @invoices.order(updated_at: :desc)
     authorize(@invoices)
     params[:user] ? @user = User.find(params[:user]) : @child = Child.find(params[:child])
   end
