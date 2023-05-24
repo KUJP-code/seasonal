@@ -3,7 +3,6 @@
 
     <% if index %>
         <div class="d-flex gap-3 justify-content-center align-items-center flex-wrap">
-            <%= button_to t('.recalculate'), recalculate_invoice_path(id: invoice.id), class: 'btn btn-info' %>
             <%= link_to t('.edit_registrations'), event_path(id: invoice.event_id, child: invoice.child_id), class: 'btn btn-primary' unless invoice.in_ss %>
             <%= link_to t('.view_history'), invoice_path(invoice), class: 'btn btn-primary' %>
 

@@ -30,10 +30,6 @@ class InvoicePolicy < ApplicationPolicy
     user.staff?
   end
 
-  def recalculate?
-    staff_or_parent?(user, record)
-  end
-
   def seen?
     user.staff?
   end

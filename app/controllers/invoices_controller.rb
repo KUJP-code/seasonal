@@ -19,6 +19,9 @@ class InvoicesController < ApplicationController
 
   def show
     @invoice = authorize(Invoice.find(params[:id]))
+    # FIXME: bandaid to cover for the fact that some callbacks don't
+    # update the summary (adjustments, option registrations)
+    @invoice.calc_cost && @invoice.save
     @updated = true if params[:updated]
     @previous_versions = @invoice.versions.where.not(object: nil).reorder(created_at: :desc).reject{ |v| v.reify.total_cost.zero? }
   end
@@ -96,14 +99,6 @@ class InvoicesController < ApplicationController
 
     merge_from.reload.destroy
     redirect_to invoice_path(merge_to), notice: t('success', model: '予約', action: '更新')
-  end
-
-  # Because some callbacks work but don't update the summary, 
-  # give users the option to recalculate the summary
-  def recalculate
-    @invoice = authorize(Invoice.find(params[:id]))
-    @invoice.save
-    redirect_to invoice_path(@invoice), notice: t('success', model: '予約', action: '再計算')
   end
 
   def seen
