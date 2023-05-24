@@ -174,7 +174,7 @@ class Invoice < ApplicationRecord
   def first_time_adjustment
     registration_cost = 1_100
     reason = '初回登録料(初めてシーズナルスクールに参加する非会員の方)'
-    return if child.adjustments.any? { |adj| adj.change == registration_cost && adj.reason == reason }
+    return if adjustments.any? { |adj| adj.change == registration_cost && adj.reason == reason } || child.adjustments.any? { |adj| adj.change == registration_cost && adj.reason == reason }
 
     adjustments.new(change: registration_cost, reason: reason)
   end
@@ -236,7 +236,7 @@ class Invoice < ApplicationRecord
   def hat_adjustment
     hat_cost = 1_100
     hat_reason = '帽子代(野外アクティビティに参加される方でKids UP帽子をお持ちでない方のみ)'
-    return if child.adjustments.any? { |adj| adj.change == hat_cost && adj.reason == hat_reason }
+    return if adjustments.any? { |adj| adj.change == hat_cost && adj.reason == hat_reason } || child.adjustments.any? { |adj| adj.change == hat_cost && adj.reason == hat_reason }
 
     adjustments.new(change: hat_cost, reason: hat_reason)
   end
@@ -288,9 +288,9 @@ class Invoice < ApplicationRecord
   def repeater_discount
     discount = -10_000
     reason = '非会員リピーター割引(以前シーズナルスクールに参加された非会員の方)'
-    return if child.invoices.where(event: event).any? do |invoice|
-                invoice.adjustments.find_by(change: discount, reason: reason)
-              end
+    return if adjustments.any? { |adj| adj.change == discount && adj.reason == reason } || child.invoices.where(event: event).any? do |invoice|
+                  invoice.adjustments.find_by(change: discount, reason: reason)
+                end
 
     adjustments.new(change: discount, reason: reason)
   end
