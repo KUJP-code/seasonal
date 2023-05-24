@@ -30,7 +30,7 @@ ja:
       failure: "ユーザーを削除できませんでした"
       success: "ユーザーを削除しました"
     form:
-      account_information: "口座情報"
+      account_information: "お客様情報"
       address: "ご住所"
       email: "メールアドレス"
       email_confirmation: "メールアドレスの再入力"

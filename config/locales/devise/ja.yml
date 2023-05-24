@@ -27,7 +27,7 @@ ja:
     registrations:
       new:
         accept_policy: "P-UPプライバシーポリシーに同意する"
-        account_information: "口座情報"
+        account_information: "お客様情報"
         address: "ご住所"
         email: "メールアドレス"
         email_confirmation: "メールアドレスの再入力"
