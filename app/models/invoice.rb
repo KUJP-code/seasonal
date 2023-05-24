@@ -88,7 +88,7 @@ class Invoice < ApplicationRecord
     return 0 unless adjustments.size.positive? || needs_hat? || first_time? || repeater?
 
     @breakdown << '<h4 class="fw-semibold">調整:</h4>'
-    @breakdown << '<div class="d-flex flex-column gap-1">'
+    @breakdown << '<div class="d-flex flex-column align-items-start gap-1">'
     hat_adjustment if needs_hat?
     first_time_adjustment if first_time?
     repeater_discount if repeater?
