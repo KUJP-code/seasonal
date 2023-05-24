@@ -68,7 +68,7 @@ class Child < ApplicationRecord
 
   # Validations
   # Format
-  validates :katakana_name, format: { with: /[ァ-ヶヶ ]+/x }
+  validates :katakana_name, format: { with: /\A[ァ-ヶヶ　ー ]+\z/ }
 
   # Inclusion
   validates :category, inclusion: { in: categories.keys }

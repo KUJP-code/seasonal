@@ -58,7 +58,7 @@ class User < ApplicationRecord
 
   # Validations
   validates :address, :katakana_name, :name, :phone, :postcode, :prefecture, presence: true
-  validates :katakana_name, format: { with: /\A[ァ-ヶヶ ]+\z/ }
+  validates :katakana_name, format: { with: /\A[ァ-ヶヶ　ー ]+\z/ }
 
   validates :email, confirmation: true
 
