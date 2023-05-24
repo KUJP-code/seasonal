@@ -27,14 +27,14 @@
             <%= f.label :email_confirmation, t('.email_confirmation'), class: 'form-label' %><br />
         </div>
 
-        <% if current_user.id == @user.id %>
+        <% if f.object.new_record? %>
             <div class="form-floating">
-                <%= f.password_field :password, value: (has_pass ? nil : temp_pass), autofocus: true, autocomplete: "password", class: 'form-control', placeholder: t('.password'), required: true, readonly: !has_pass %>
+                <%= f.text_field :password, value: (has_pass ? nil : temp_pass), autofocus: true, autocomplete: "password", class: 'form-control', placeholder: t('.password'), required: true, readonly: true %>
                 <%= f.label :password, class: 'form-label' %><br />
             </div>
 
             <div class="form-floating">
-                <%= f.password_field :password_confirmation, value: (has_pass ? nil : temp_pass), autocomplete: "password", class: 'form-control', placeholder: t('.password_confirmation'), required: true, readonly: !has_pass %>
+                <%= f.text_field :password_confirmation, value: (has_pass ? nil : temp_pass), autocomplete: "password", class: 'form-control', placeholder: t('.password_confirmation'), required: true, readonly: true %>
                 <%= f.label :password_confirmation, t('.password_confirmation'), class: 'form-label' %><br />
             </div>
         <% end %>
