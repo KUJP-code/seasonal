@@ -122,7 +122,7 @@
                         <% if @child.member? && !@member_prices.nil? %>
                             <table class="table table-sm table-info table-striped table-hover text-center">
                                 <caption class="caption-top text-center">
-                                    <h3><%= t('.member_prices') %></h3>
+                                    <h3 class="text-start"><%= t('.member_prices') %></h3>
                                 </caption>
                                 <thead>
                                     <tr>
@@ -143,7 +143,7 @@
                         <% unless @child.member? || @non_member_prices.nil? %>
                             <table class="table table-sm table-info table-striped table-hover text-center">
                                 <caption class="caption-top text-center">
-                                    <h3><%= t('.non_member_prices') %></h3>
+                                    <h3 class="text-start"><%= t('.non_member_prices') %></h3>
                                 </caption>
                                 <thead>
                                     <tr>
