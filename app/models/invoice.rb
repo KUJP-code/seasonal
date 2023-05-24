@@ -137,6 +137,8 @@ class Invoice < ApplicationRecord
     # Find the options on this invoice, even if not saved
     temp_opts = {}
     opt_regs.each do |reg|
+      next if @ignore_opts.include?(reg.id)
+
       opt = reg.registerable
       if temp_opts[opt.name].nil?
         temp_opts[opt.name] = {
