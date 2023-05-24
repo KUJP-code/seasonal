@@ -33,7 +33,7 @@ Rails.application.routes.draw do
       get 'confirm_invoice', to: 'invoices#confirmed', as: :confirmed_invoice
       put 'copy_invoice', to: 'invoices#copy', as: :copy_invoice
       post 'merge_invoices', to: 'invoices#merge', as: :merge_invoices
-      post 'resurrect_invoice', to: 'invoices#resurrect', as: :resurrect_invoice
+      post 'recalculate', to: 'invoices#recalculate', as: :recalculate_invoice
       post 'seen_invoice', to: 'invoices#seen', as: :seen_invoice
 
       # Non-REST routes for Users controller

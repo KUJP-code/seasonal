@@ -30,8 +30,8 @@ class InvoicePolicy < ApplicationPolicy
     user.staff?
   end
 
-  def resurrect?
-    user.staff?
+  def recalculate?
+    staff_or_parent?(user, record)
   end
 
   def seen?

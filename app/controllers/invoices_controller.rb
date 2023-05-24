@@ -97,14 +97,12 @@ class InvoicesController < ApplicationController
     redirect_to invoice_path(merge_to), notice: t('success', model: '予約', action: '更新')
   end
 
-  def resurrect
-    @version = Invoice.find(params[:id]).versions.find(params[:version])
-
-    return redirect_to invoice_path(params[:id]), alert: t('.resurrection_failure') unless @version.reify
-
-    @version.reify.save
-
-    redirect_to invoice_path(params[:id]), notice: t('.resurrection_success')
+  # Because some callbacks work but don't update the summary, 
+  # give users the option to recalculate the summary
+  def recalculate
+    @invoice = authorize(Invoice.find(params[:id]))
+    @invoice.save
+    redirect_to invoice_path(@invoice), notice: t('success', model: '予約', action: '再計算')
   end
 
   def seen

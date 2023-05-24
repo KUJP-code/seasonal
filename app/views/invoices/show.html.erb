@@ -24,15 +24,14 @@
 
     <%= render @invoice, index: false %>
 
-    <% if current_user.customer? %>
-        <div class="card d-flex flex-row flex-wrap gap-3 justify-content-around align-items-center">
-            <%= link_to t('.edit_registrations'), event_path(id: @invoice.event_id, child: @invoice.child_id), class: 'btn btn-primary' %>
-        </div>
-    <% end %>
+    <div class="card d-flex flex-row flex-wrap gap-3 justify-content-around align-items-center">
+        <%= button_to t('.recalculate'), recalculate_invoice_path(id: @invoice.id), class: 'btn btn-info' %>
 
-    <% if current_user.staff? %>
-        <div class="card d-flex flex-row flex-wrap gap-3 justify-content-around align-items-center">
+        <%= link_to t('.edit_registrations'), event_path(id: @invoice.event_id, child: @invoice.child_id), class: 'btn btn-primary' %>
+
+        <% if current_user.staff? %>
             <% if @invoice.in_ss %>
+            
                 <%= form_with model: @invoice do |f| %>
                     <%= f.hidden_field :in_ss, value: false %>
                     <%= f.submit t('.unconfirm_booking'), class: 'btn btn-primary', data: { turbo_confirm: t('.makes_editable') } %>
@@ -40,8 +39,6 @@
 
                 <p class="btn btn-info"><%= "Booking##{@invoice.id}" %></p>
             <% else %>
-                <%= link_to t('.edit_registrations'), event_path(id: @invoice.event_id, child: @invoice.child_id), class: 'btn btn-primary' %>
-
                 <%= link_to t('.adjustments'), edit_adjustment_path(@invoice), class: 'btn btn-primary' %>
 
                 <%= form_with model: @invoice do |f| %>
@@ -51,8 +48,8 @@
 
                 <%= link_to t('.delete_booking'), invoice_path(@invoice), data: { turbo_method: :delete, turbo_confirm: t('.you_sure') }, class: 'btn btn-danger' %>
             <% end %>
-        </div>
-    <% end %>
+        <% end %>
+    </div>
 
     <% unless @previous_versions.empty? %>
         <h1><%= t('.previous_versions') %></h1>
