@@ -65,11 +65,6 @@
     <% end %>
 
     <% if @user.admin? && current_user.admin? %>
-        <h1>All schools</h1>
-        <div class="card">
-            <%= render partial: 'events/stats_summary', as: :all, locals: { children: Child.all, events: Event.all, invoices: Invoice.all, photo_regs: Event.all.reduce(0) { |sum, event| sum + event.photo_regs } } %>
-        </div>
-
         <h1>Admin Options</h1>
         <div class="card gap-3 padding-3">
             <%= link_to 'Import/Export Data', csvs_path, class: 'btn btn-primary' %>
@@ -80,11 +75,6 @@
 
     <% if @user.area_manager? %>
         <% @user.managed_areas.each do |area| %>
-            <div class="card">
-                <h2 class="fw-semibold"><%= area.name %></h2>
-                <%= render partial: 'events/stats_summary', as: :area, locals: { children: area.children, events: area.events, invoices: area.invoices, photo_regs: area.events.reduce(0) { |sum, event| sum + event.photo_regs } } %>
-            </div>
-
             <div class="card">
                 <% area.schools.each do |school| %>
                     <%= render partial: 'events/event_stats', collection: school.events, as: :event %>
