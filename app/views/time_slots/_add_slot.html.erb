@@ -96,7 +96,7 @@
 
                 <% if in_ss %>
                     <p class="fw-bold fs-5">
-                        <%= "#{t('.afternoon')}: ◯" %>
+                        <%= "#{afternoon_slot.special? ? afternoon_slot.name : t('.afternoon')}: ◯" %>
                     </p>
                     <% afternoon_slot.options.each do |opt| %>
                         <% if registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
@@ -114,7 +114,7 @@
                             data-register-child-value=<%= child.id %>>
                             <p data-register-target="name"
                                 class="fw-bold fs-5">
-                                <%= t('.afternoon') %>
+                                <%= afternoon_slot.special? ? afternoon_slot.name : t('.afternoon') %>
                             </p>
                             <% if slots_in_ss.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
                                 <p>◯</p>
