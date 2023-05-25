@@ -3,11 +3,11 @@ ja:
     confirm:
       already_confirmed: "お申込は送信されました"
       apply_coupon: "福利厚生クーポンをお持ちの方はこちら"
-      confirm_changes: "お申込を送信する"
+      confirm_changes: "お申込"
       confirmed: "他のお申込"
       coupon: "クーポン"
       in_ss: "他のお申込"
-      please_confirm: "「お申込を送信する」を押すとお申込がスクールに送信されます。"
+      please_confirm: "お申込」を押すとお申込内容がスクールに送信されます。"
     index:
       event_cost: "%{event}の合計: %{cost}"
     invoice:
@@ -40,3 +40,5 @@ ja:
       unconfirm_booking: "お申込を未確定にする"
       version_from: "更新時間: %{date}"
       you_sure: "お申込内容を削除してよろしいですか？削除した後に復元させることは出来ません。"
+    update:
+      no_parent: ""
