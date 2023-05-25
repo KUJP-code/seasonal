@@ -19,9 +19,6 @@ class InvoicesController < ApplicationController
 
   def show
     @invoice = authorize(Invoice.find(params[:id]))
-    # FIXME: bandaid to cover for the fact that some callbacks don't
-    # update the summary (adjustments, option registrations)
-    @invoice.calc_cost && @invoice.save
     @updated = true if params[:updated]
     @previous_versions = @invoice.versions.where.not(object: nil).reorder(created_at: :desc).reject{ |v| v.reify.total_cost.zero? }
   end
@@ -30,8 +27,9 @@ class InvoicesController < ApplicationController
     @invoice = authorize(Invoice.find(params[:id]))
 
     if @invoice.update(invoice_params)
-      # Because otherwise deleted adjustments won't be reflected
-      @invoice.save
+      # FIXME: bandaid to cover for the fact that some callbacks don't
+      # update the summary (adjustments, option registrations)
+      @invoice.reload.calc_cost && @invoice.save
       send_emails(@invoice)
       redirect_to invoice_path(id: @invoice.id, updated: true), notice: t('success', model: '予約', action: '更新')
     else
