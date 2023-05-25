@@ -25,6 +25,7 @@ class InvoicesController < ApplicationController
 
   def update
     @invoice = authorize(Invoice.find(params[:id]))
+    return redirect_to child_path(@invoice.child), alert: t('.no_parent') if @invoice.child.parent_id.nil?
 
     if @invoice.update(invoice_params)
       # FIXME: bandaid to cover for the fact that some callbacks don't
