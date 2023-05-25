@@ -116,7 +116,7 @@ class Invoice < ApplicationRecord
     @breakdown.prepend(
       "<h4 class='fw-semibold'>コース:</h4>
       <div class='d-flex flex-column align-items-start gap-1'>
-      <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 (#{num_regs}コマ)</p>
+      <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 (#{num_regs}回)</p>
       <p>午後コースおやつ代 x #{snack_count}: #{(snack_count * 165).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円"
     )
     course_cost
