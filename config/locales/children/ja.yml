@@ -6,11 +6,9 @@ ja:
         category: "（通学生・予約生・非会員）選択してください。"
         en_name: "お子様の名前（英語）"
         grade: "お子様の学年"
-        en_name: "お子様の名前（英語）"
         katakana_name: "お子様の名前（カタカナ）"
         name: "お子様の氏名（漢字）"
         photos: "写真"
-        grade: "お子様の学年"
   children:
     child:
       edit: "編集"
@@ -28,7 +26,7 @@ ja:
       event_sheet:
         all: "全部"
         allergy: "アレルギー"
-        billing_date: "予約リスト"
+        billing_date: "お申込リスト"
         changes: "変更"
         cost: "料金"
         coupons: "福利厚生クーポン"
@@ -79,7 +77,7 @@ ja:
     show:
       allergies: "アレルギーや健康上の注意等: "
       bday: "生年月日: "
-      child_bookings: "%{child}予約内容"
+      child_bookings: "%{child}お申込内容"
       delete_child: "削除"
       edit_child: "編集"
       ele_school: "お通いの保育園／幼稚園／小学校"

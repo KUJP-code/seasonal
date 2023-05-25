@@ -31,9 +31,9 @@ class InvoicesController < ApplicationController
       # update the summary (adjustments, option registrations)
       @invoice.reload.calc_cost && @invoice.save
       send_emails(@invoice)
-      redirect_to invoice_path(id: @invoice.id, updated: true), notice: t('success', model: '予約', action: '更新')
+      redirect_to invoice_path(id: @invoice.id, updated: true), notice: t('success', model: 'お申込', action: '更新')
     else
-      render :new, status: :unprocessable_entity, notice: t('failure', model: '予約', action: '更新')
+      render :new, status: :unprocessable_entity, notice: t('failure', model: 'お申込', action: '更新')
     end
   end
 
@@ -42,9 +42,9 @@ class InvoicesController < ApplicationController
     child = @invoice.child
 
     if @invoice.destroy
-      redirect_to invoices_path(child: child.id), notice: t('success', model: '予約', action: '削除')
+      redirect_to invoices_path(child: child.id), notice: t('success', model: 'お申込', action: '削除')
     else
-      redirect_to invoice_path(@invoice), notice: t('failure', model: '予約', action: '削除')
+      redirect_to invoice_path(@invoice), notice: t('failure', model: 'お申込', action: '削除')
     end
   end
 
@@ -86,7 +86,7 @@ class InvoicesController < ApplicationController
 
     @target_invoice = authorize(copy_invoice(target, event, origin))
 
-    redirect_to invoice_path(@target_invoice), notice: t('success', model: '予約', action: '更新')
+    redirect_to invoice_path(@target_invoice), notice: t('success', model: 'お申込', action: '更新')
   end
 
   def merge
@@ -96,7 +96,7 @@ class InvoicesController < ApplicationController
     merge_invoices(merge_from, merge_to)
 
     merge_from.reload.destroy
-    redirect_to invoice_path(merge_to), notice: t('success', model: '予約', action: '更新')
+    redirect_to invoice_path(merge_to), notice: t('success', model: 'お申込', action: '更新')
   end
 
   def seen

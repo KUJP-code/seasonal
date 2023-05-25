@@ -1,5 +1,5 @@
 <main id="confirmation_new">
-  <h2 class="text-center">予約内容確認メールをもう一度受け取る</h2>
+  <h2 class="text-center">お申込内容確認メールをもう一度受け取る</h2>
   
   <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, class: 'card d-flex flex-column justify-content-center gap-3 p-3 w-100 rounded' }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
@@ -9,6 +9,6 @@
       <%= f.label :email, 'メール', class: 'form-label w-100' %>
     </div>
     
-    <%= f.submit "予約内容確認メールをもう一度受け取る", class: 'btn btn-primary' %>
+    <%= f.submit "お申込内容確認メールをもう一度受け取る", class: 'btn btn-primary' %>
   <% end %>
 </main>

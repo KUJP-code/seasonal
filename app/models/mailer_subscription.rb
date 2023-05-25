@@ -7,8 +7,8 @@ class MailerSubscription < ApplicationRecord
       items: [
         {
           class: 'InvoiceMailer',
-          name: '予約内容確認メール',
-          description: '予約内容確認メール'
+          name: 'お申込内容確認メール',
+          description: 'お申込内容確認メール'
         }
       ]
     ).freeze

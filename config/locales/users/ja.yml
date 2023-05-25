@@ -88,7 +88,7 @@ ja:
       resend_confirm_email: "予約内容確認メールをもう一度受け取る"
       school_name: "Kids UP %{school}"
       time_slot: "タイムスロット"
-      user_bookings: "%{user}予約内容"
+      user_bookings: "%{user}お申込内容"
     update:
       failure: "ユーザーを更新できませんでした"
       success: "ユーザーが正常に更新されました"

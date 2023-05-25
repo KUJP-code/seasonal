@@ -18,8 +18,8 @@ ja:
       total_revenue: "合計売上"
     show:
       adjustments: "調整"
-      confirm_invoice: "予約を確認する"
-      copy_regs: "%{from}と同じ予約内容を%{to}に反映させる"
+      confirm_invoice: "お申込を確認する"
+      copy_regs: "%{from}と同じお申込内容を%{to}に反映させる"
       coupon: "クーポン"
       course: "コース"
       change: "調整額"
@@ -30,7 +30,7 @@ ja:
       num_options: "オプション：%{num}つ"
       price: "料金"
       reason: "調整理由"
-      registered_slots: "予約済みの内容"
+      registered_slots: "お申込済みの内容"
       regs_for: "%{child}の登録"
       regular_schedule: "通常スケジュール"
       see_more: "詳細を見る"
@@ -39,7 +39,7 @@ ja:
       total_cost: "合計（税込）"
       time_slot: "%{event}のタイムスロット"
       title: "%{name} @ %{school}"
-      unregistered_slots: "予約可能な日程・アクティビティ"
+      unregistered_slots: "お申込可能な日程・アクティビティ"
     stats_summary:
       attendance: "アテンダンス"
       ext_kids: "非会員生人数"

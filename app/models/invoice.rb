@@ -189,7 +189,7 @@ class Invoice < ApplicationRecord
       <h2 class='fw-semibold'>#{child.name}</h2>\n
       <h3 class='fw-semibold'>#{event.name} @ #{event.school.name}</h3>\n"
     )
-    @breakdown << "</div><h2 class='fw-semibold text-start'>予約の詳細:</h2>\n"
+    @breakdown << "</div><h2 class='fw-semibold text-start'>お申込内容:</h2>\n"
 
     e_opt_regs = opt_regs.where(registerable: event.options)
     unless e_opt_regs.empty?
@@ -228,7 +228,7 @@ class Invoice < ApplicationRecord
 
   def generate_template
     template = +''
-    template << "<h2 class='fw-semibold text-start'>#{child.parent.name}様</h2><h4>#{child.parent.name}様の予約が確定されました。予約内容の変更をご希望の場合はスクールまでお問い合わせください。</h4>" unless child.parent.nil? || child.parent.name.nil?
+    template << "<h2 class='fw-semibold text-start'>#{child.parent.name}様</h2><h4>#{child.parent.name}様のお申込が確定されました。お申込内容の変更をご希望の場合はスクールまでお問い合わせください。</h4>" unless child.parent.nil? || child.parent.name.nil?
     template << @breakdown
     self.email_template = template
   end

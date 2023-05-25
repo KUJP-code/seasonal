@@ -5,7 +5,7 @@
     </head>
     <body>
         <h2><%= "#{@parent.name}様" %></h2>
-        <h4><%= "#{@parent.name}" %>様の予約が確定されました。予約内容の変更をご希望の場合はスクールまでお問い合わせください。</h4>
+        <h4><%= "#{@parent.name}" %>様のお申込が確定されました。お申込内容の変更をご希望の場合はスクールまでお問い合わせください。</h4>
 
         <%= sanitize @invoice.summary, tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id] %>
 

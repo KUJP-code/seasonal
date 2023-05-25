@@ -129,7 +129,7 @@ ja:
   layouts:
     mailer:
       unsubscribe: "メール配信を停止する"
-      unsubscribe_warning: "（メール配信を停止すると、スクールが予約内容を変更した場合や、予約が確定した際の確認メールも停止されます。）"
+      unsubscribe_warning: "（メール配信を停止すると、スクールがお申込内容を変更した場合や、お申込が確定した際の確認メールも停止されます。）"
   nav_bar:
     children: "生徒"
     customers: "お客様"
