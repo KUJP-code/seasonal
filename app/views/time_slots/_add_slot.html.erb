@@ -39,7 +39,8 @@
                 </div>
                 <div class="options mt-2<%= ' hidden' unless registered %>" data-popup-target="popup">
                     <% time_ids = add_slot.options.time.ids %>
-                    <% add_slot.options.reject { |opt| time_ids.include?(opt.id) }.each do |opt| %>
+                    <% extension_ids = add_slot.options.extension.ids %>
+                    <% add_slot.options.reject { |opt| time_ids.include?(opt.id) || extension_ids.include?(opt.id) }.each do |opt| %>
                         <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
                         <div class="add_reg d-flex justify-content-center align-items-center gap-2 w-100"
                              data-controller="register"
@@ -51,6 +52,27 @@
                             <%= check_box_tag '', '', (true if opt_registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
                         </div>
                     <% end %>
+
+                    <% if add_slot.special? %>
+                        <% ext_opt = if kindy
+                                        add_slot.options.extension.find_by(category: 'k_extension')
+                                        else
+                                        add_slot.options.extension.find_by(category: 'extension')
+                                        end %>
+                        <% ext_opt_registered = registrations.any? { |reg| reg.registerable_id == ext_opt.id && reg.registerable_type == 'Option' } %>
+                        
+                        <div class="add_reg d-flex justify-content-center align-items center gap-2 w-100 mt-2"
+                            data-controller="register"
+                            data-controller="register"
+                            data-register-id-value=<%= ext_opt.id %>
+                            data-register-type-value="Option"
+                            data-register-child-value=<%= child.id %>
+                            data-register-cost-value=<%= ext_opt.cost %>>
+                            <p data-register-target="name"><%= ext_opt.name %></p>
+                            <%= check_box_tag '', '', (true if ext_opt_registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
+                        </div>
+                    <% end %>
+
                     <% arrival_options = if kindy
                                             add_slot.options.select { |opt| opt.k_arrival? }
                                         else
@@ -145,6 +167,7 @@
                                     </div>
                                 <% end %>
                             <% end %>
+
                             <% depart_options = if kindy
                                                     afternoon_slot.options.select { |opt| opt.k_departure? }
                                                 else

@@ -159,12 +159,20 @@ Event.where(name: 'Spring School 2023').each do |event|
   end
   
   event.time_slots.morning.where(category: :special).each do |sp_slot|
-    sp_slot.options.create!(
-      name: '中延長',
-      description: 'Spend the whole day with friends!',
-      category: :extension,
-      cost: 1_500
-      )
+    sp_slot.options.create!([
+      {
+        name: '中延長',
+        description: 'Spend the whole day with friends!',
+        category: :extension,
+        cost: 1_380
+      },
+      {
+        name: '中延長',
+        description: 'Spend the whole day with friends!',
+        category: :k_extension,
+        cost: 1_740
+      }
+    ])
   end
 end
 

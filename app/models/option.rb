@@ -24,6 +24,7 @@ class Option < ApplicationRecord
                   meal: 5,
                   event: 6,
                   extension: 7,
+                  k_extension: 8,
                   default: :regular
 
   validates :name, :description, :cost, presence: true
@@ -32,4 +33,5 @@ class Option < ApplicationRecord
   # Scopes
   # For category of option
   scope :time, -> { where(category: %i[arrival departure k_arrival k_departure]) }
+  scope :extension, -> { where(category: %i[extension k_extension]) }
 end

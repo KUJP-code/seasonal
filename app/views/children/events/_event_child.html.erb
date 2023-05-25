@@ -153,7 +153,7 @@
         <td></td>
     <% else %>
         <% arrival_option = event_opts.find { |opt| arrive_categories.include?(opt.category) && opt.optionable_id == event_special.first.id } %>
-        <% extend_option = event_opts.find { |opt| opt.category == 'extension' && opt.optionable_id == event_special.first.id } %>
+        <% extend_option = event_opts.find { |opt| (opt.category == 'extension' || opt.category == 'k_extension') && opt.optionable_id == event_special.first.id } %>
         <% departure_option = event_opts.find { |opt| depart_categories.include?(opt.category) && opt.optionable_id == event_special.last.id } %>
         <td><%=
             if reg_special.include?(event_special.first) && reg_special.include?(event_special.last)
