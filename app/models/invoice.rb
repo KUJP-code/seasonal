@@ -111,10 +111,10 @@ class Invoice < ApplicationRecord
                     best_price(num_regs, non_member_prices)
                   end
     # Add cost due to automatic afternoon snacks
-    snack_count = slot_regs.count { |reg| !reg.registerable.morning }
+    snack_count = slot_regs.count { |reg| !reg._destroy && !reg.registerable.morning }
     course_cost += snack_count * 165
     # Add cost due to special day registrations
-    special_count = slot_regs.count { |reg| reg.registerable.special? }
+    special_count = slot_regs.count { |reg| !reg._destroy && reg.registerable.special? }
     course_cost += special_count * 1_500
     @breakdown << '</div>'
     @breakdown.prepend(
