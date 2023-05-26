@@ -1,4 +1,5 @@
 <% next_event = @user.children.first.school.next_event unless @user.children.empty? %>
+<% online_event = School.find(2).events.first %>
 <% schools = @user.children.reject{ |c| c.school_id.nil? }.map(&:school).map(&:name).uniq %>
 
 <main id="user_show" class="gap-3">
@@ -70,7 +71,7 @@
         <% end %>
     <% end %>
 
-    <% if @user.customer? %>
+    <% if @user.customer? %>x``
         <div class="card">
             <%= link_to t('.user_bookings', user: @user.name), invoices_path(user: @user.id), class: 'btn btn-primary' if @user.children %>
             <%= link_to t('.email_prefs'), mailer_subscriptions_path, class: 'btn btn-primary' %>
@@ -80,12 +81,12 @@
 
     <% if @user.admin? && current_user.admin? %>
         <div class="card">
-            <%= render partial: 'events/stats_summary', locals: { events: Event.all } %>
+            <%= render partial: 'events/stats_summary', locals: { events: Event.all.excluding(online_event) } %>
         </div>
 
         <div class="card">
             <% School.all.each do |school| %>
-                <%= render partial: 'events/event_stats', collection: school.events, as: :event %>
+                <%= render partial: 'events/event_stats', collection: school.events.excluding(online_event), as: :event %>
             <% end %>
         </div>
 
@@ -100,12 +101,12 @@
     <% if @user.area_manager? %>
         <% @user.managed_areas.each do |area| %>
             <div class="card">
-                <%= render partial: 'events/stats_summary', locals: { events: area.events } %>
+                <%= render partial: 'events/stats_summary', locals: { events: area.events.excluding(online_event) } %>
             </div>
 
             <div class="card">
                 <% area.schools.each do |school| %>
-                    <%= render partial: 'events/event_stats', collection: school.events, as: :event %>
+                    <%= render partial: 'events/event_stats', collection: school.events.excluding(online_event), as: :event %>
                 <% end %>
             </div>
         <% end %>
