@@ -1,11 +1,11 @@
 <% int_kids = event.children.where(category: 'internal') %>
-<% int_revenue = int_kids.reduce(0) { |sum, kid| sum + kid.invoices.where(event_id: event.id).where('total_cost > ?', 3_000).sum(:total_cost) } %>
+<% int_revenue = Invoice.all.where(child_id: int_kids.map(&:id), event_id: event.id).where('total_cost > ?', 3_000).sum(:total_cost) %>
 
 <% res_kids = event.children.where(category: 'reservation') %>
-<% res_revenue = res_kids.reduce(0) { |sum, kid| sum + kid.invoices.where(event_id: event.id).where('total_cost > ?', 3_000).sum(:total_cost) } %>
+<% res_revenue = Invoice.all.where(child_id: res_kids.map(&:id), event_id: event.id).where('total_cost > ?', 3_000).sum(:total_cost) %>
 
 <% ext_kids = event.children.where(category: 'external') %>
-<% ext_revenue = ext_kids.reduce(0) { |sum, kid| sum + kid.invoices.where(event_id: event.id).where('total_cost > ?', 3_000).sum(:total_cost) } %>
+<% ext_revenue = Invoice.all.where(child_id: ext_kids.map(&:id), event_id: event.id).where('total_cost > ?', 3_000).sum(:total_cost) %>
 
 <% total_revenue = int_revenue + res_revenue + ext_revenue %>
 <% goal_percent = (total_revenue / event.goal.to_f * 100).truncate %>

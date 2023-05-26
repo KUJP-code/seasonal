@@ -21,7 +21,7 @@
             <h4><%= t(".roles.#{@user.role}") %></h4>
         <% end %>
 
-        <% if current_user.staff? %>
+        <% if current_user.staff? && current_user.id != @user.id %>
             <div data-controller="conditional"
                 data-conditional-pin-value=<%= current_user.pin %>>
                 <div class="d-none" data-conditional-target="target">
@@ -79,6 +79,10 @@
     <% end %>
 
     <% if @user.admin? && current_user.admin? %>
+        <div class="card">
+            <%= render partial: 'events/stats_summary', locals: { events: Event.all } %>
+        </div>
+
         <h1>Admin Options</h1>
         <div class="card gap-3 padding-3">
             <%= link_to 'Import/Export Data', csvs_path, class: 'btn btn-primary' %>
@@ -89,6 +93,10 @@
 
     <% if @user.area_manager? %>
         <% @user.managed_areas.each do |area| %>
+            <div class="card">
+                <%= render partial: 'events/stats_summary', locals: { events: area.events } %>
+            </div>
+
             <div class="card">
                 <% area.schools.each do |school| %>
                     <%= render partial: 'events/event_stats', collection: school.events, as: :event %>

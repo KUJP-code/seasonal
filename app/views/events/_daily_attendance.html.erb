@@ -1,12 +1,12 @@
 <h4 class="w-100"><%= link_to event.name, children_path(source: 'Event', id: event.id) %></h4>
 
 <% event.time_slots.morning.each do |slot| %>
-    <% regs = slot.registrations %>
+    <% regs = slot.registrations.size %>
 
     <div style="height:140px;" class="card <%= case
-                         when regs.size < 10
+                         when regs < 10
                              'bg-danger'
-                         when regs.size < 20 
+                         when regs < 20 
                              'bg-info'
                          else
                              'bg-success'
@@ -15,7 +15,7 @@
             <%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'TimeSlot', id: slot.id), class: 'text-break' %>
         </h6>
         <h3>
-            <%= regs.size %>
+            <%= regs %>
         </h3>
     </div>
 <% end %>
