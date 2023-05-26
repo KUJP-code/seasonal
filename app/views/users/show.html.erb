@@ -100,6 +100,8 @@
 
     <% if @user.area_manager? %>
         <% @user.managed_areas.each do |area| %>
+            <% next if area.schools.size.zero? %>
+
             <%# <div class="card">
                 <%= render partial: 'events/stats_summary', locals: { events: area.events.excluding(online_event) } %>
             <%# </div> %>
