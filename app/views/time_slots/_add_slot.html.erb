@@ -17,6 +17,9 @@
             <p class="fw-bold fs-5">
                 <%= "#{add_slot.name}: ◯" %>
             </p>
+            <% if add_slot.special? %>
+                <p>スペシャルデー: ◯</p>
+            <% end %>
             <% add_slot.options.each do |opt| %>
                 <% if registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
                     <p><%= "#{opt.name}: ◯" %></p>
@@ -40,6 +43,11 @@
                 <div class="options mt-2<%= ' hidden' unless registered %>" data-popup-target="popup">
                     <% time_ids = add_slot.options.time.ids %>
                     <% extension_ids = add_slot.options.extension.ids %>
+
+                    <% if add_slot.special? %>
+                        <p>スペシャルデー: ◯</p>
+                    <% end %>
+
                     <% add_slot.options.reject { |opt| time_ids.include?(opt.id) || extension_ids.include?(opt.id) }.each do |opt| %>
                         <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
                         <div class="add_reg d-flex justify-content-center align-items-center gap-2 w-100"
@@ -120,6 +128,9 @@
                     <p class="fw-bold fs-5">
                         <%= "#{afternoon_slot.special? ? afternoon_slot.name : t('.afternoon')}: ◯" %>
                     </p>
+                    <% if afternoon_slot.special? %>
+                        <p>スペシャルデー: ◯</p>
+                    <% end %>
                     <% afternoon_slot.options.each do |opt| %>
                         <% if registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
                             <p><%= "#{opt.name}: ◯" %></p>
@@ -150,6 +161,9 @@
                         <div class="options mt-2<%= ' hidden' unless aft_registered %>" data-popup-target="popup">
                             <% aft_time_ids = afternoon_slot.options.time.ids %>
                             <p><%= "#{t('.snack')}: ◯" %></p>
+                             <% if afternoon_slot.special? %>
+                                <p>スペシャルデー: ◯</p>
+                            <% end %>
                             <% afternoon_slot.options.reject { |opt| aft_time_ids.include?(opt.id) }.each do |opt| %>
                                 <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
                                 <% if opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
