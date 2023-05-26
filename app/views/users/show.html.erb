@@ -83,6 +83,12 @@
             <%= render partial: 'events/stats_summary', locals: { events: Event.all } %>
         </div>
 
+        <div class="card">
+            <% School.all.each do |school| %>
+                <%= render partial: 'events/event_stats', collection: school.events, as: :event %>
+            <% end %>
+        </div>
+
         <h1>Admin Options</h1>
         <div class="card gap-3 padding-3">
             <%= link_to 'Import/Export Data', csvs_path, class: 'btn btn-primary' %>
