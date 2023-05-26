@@ -85,7 +85,11 @@
     <% end %></td>
 
     <td class="invoices" rowspan="2"><% event_invoices.each do |invoice| %>
-        <p><%= link_to "##{invoice.id}: #{invoice.f_bill_date}", invoice_path(invoice) unless invoice.billing_date.nil? %></p>
+        <% if invoice.in_ss %>
+            <p><%= link_to "##{invoice.id}", invoice_path(invoice), class: 'text-info' %></p>
+        <% else %>
+            <p><%= link_to "##{invoice.id}", invoice_path(invoice), class: 'text-danger fw-bold' %></p>
+        <% end %>
     <% end %></td>
 
     <td rowspan="2">

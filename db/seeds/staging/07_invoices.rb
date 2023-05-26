@@ -4,13 +4,11 @@ Child.all.find_each(batch_size: 100) do |child|
     {
       event: child.school.events.first,
       total_cost: 0,
-      billing_date: 1.year.from_now,
       in_ss: true
     },
     {
       event: child.school.events.first,
-      total_cost: 0,
-      billing_date: 6.months.from_now
+      total_cost: 0
     }
   ])
 end
