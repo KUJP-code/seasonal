@@ -7,7 +7,7 @@ ja:
       confirmed: "他のお申込"
       coupon: "クーポン"
       in_ss: "他のお申込"
-      please_confirm: "お申込」を押すとお申込内容がスクールに送信されます。"
+      please_confirm: "「お申込」を押すとお申込内容がスクールに送信されます。"
     index:
       event_cost: "%{event}の合計: %{cost}"
     invoice:
