@@ -50,8 +50,18 @@ export default class extends Controller {
     this.snackCountTarget.innerHTML = `午後コースおやつ代：${snackCount.toString()}つ`;
     // Get the cost of all those snacks to add to the final price
     const snackCost = snackCount * 165;
+    // Count the days in the list of special days
+    const specialCount = regList.filter(
+      (slot) =>
+        slot.includes("Banana Party") ||
+        slot.includes("Design a Kite") ||
+        slot.includes("水鉄砲合") ||
+        slot.includes("巨大なお城のクラフト")
+    ).length;
+    const specialCost = specialCount * 1500;
 
-    const finalCost = optionCost + courseCost + adjustmentChange + snackCost;
+    const finalCost =
+      optionCost + courseCost + adjustmentChange + snackCost + specialCost;
     this.finalCostTarget.innerHTML = `合計（税込）: ${finalCost}円`;
     this.eventCostTarget.innerHTML = `サマースクール 2023の合計: ${(
       this.otherCostValue + finalCost
