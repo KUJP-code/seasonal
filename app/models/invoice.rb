@@ -70,7 +70,7 @@ class Invoice < ApplicationRecord
     return 0 if num_regs.zero?
 
     if num_regs >= 55
-      @breakdown << "<p>- 50回コース: #{courses['50']}円</p>"
+      @breakdown << "<p>- 50回コース: #{courses['50'].to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
       return courses['50'] + best_price(num_regs - 50, courses)
     end
 
