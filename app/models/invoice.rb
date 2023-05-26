@@ -20,7 +20,8 @@ class Invoice < ApplicationRecord
            class_name: 'Registration',
            dependent: :destroy,
            inverse_of: :invoice
-  accepts_nested_attributes_for :opt_regs, allow_destroy: true
+  accepts_nested_attributes_for :opt_regs, allow_destroy: true,
+                                           reject_if: :orphan_option
   has_many :time_slots, through: :slot_regs,
                         source: :registerable,
                         source_type: 'TimeSlot'
@@ -112,12 +113,16 @@ class Invoice < ApplicationRecord
     # Add cost due to automatic afternoon snacks
     snack_count = slot_regs.count { |reg| !reg.registerable.morning }
     course_cost += snack_count * 165
+    # Add cost due to special day registrations
+    special_count = slot_regs.count { |reg| reg.registerable.special? }
+    course_cost += special_count * 1_500
     @breakdown << '</div>'
     @breakdown.prepend(
       "<h4 class='fw-semibold'>コース:</h4>
       <div class='d-flex flex-column align-items-start gap-1'>
       <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 (#{num_regs}回)</p>
-      <p>午後コースおやつ代 x #{snack_count}: #{(snack_count * 165).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円"
+      <p>スペシャルデー x #{special_count}: #{(special_count * 1_500).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>
+      <p>午後コースおやつ代 x #{snack_count}: #{(snack_count * 165).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
     )
     course_cost
   end
@@ -266,6 +271,11 @@ class Invoice < ApplicationRecord
   # Because courses are in multiples of 5, other than spot use
   def nearest_five(num)
     (num / 5).floor(0) * 5
+  end
+
+  # Remove options where the slot is no longer registered for
+  def orphan_option(opt_reg)
+    slot_regs.none? { |s_reg| s_reg.registerable_id == Option.find(opt_reg['registerable_id']).optionable_id }
   end
 
   # Calculates how many times we need to apply the dumb 200円 increase
