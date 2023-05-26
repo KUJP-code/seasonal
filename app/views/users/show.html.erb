@@ -20,6 +20,20 @@
         <% unless @user.customer? %>
             <h4><%= t(".roles.#{@user.role}") %></h4>
         <% end %>
+
+        <% if current_user.staff? %>
+            <div data-controller="conditional"
+                data-conditional-pin-value=<%= current_user.pin %>>
+                <div class="d-none" data-conditional-target="target">
+                    <p><%= "#{t('.phone')}: #{@user.phone}" %></p>
+                    <p><%= "#{t('.email')}: #{@user.email}" %></p>
+                </div>
+                <div class="form-floating" data-conditional-target="target">
+                    <%= text_field_tag t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"), '', class: 'form-control', placeholder: t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"), maxlength: 4, data: { 'conditional-target': 'condition', action: 'conditional#pin' } %>
+                    <%= label_tag t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"), nil, class: 'form-label' %>
+                </div>
+            </div>
+        <% end %>
     </div>
 
     <% if @user.customer? && @user.children.size.positive? %>
