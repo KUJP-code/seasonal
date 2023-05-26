@@ -11,6 +11,7 @@ export default class extends Controller {
     "optCount",
     "slotRegs",
     "snackCount",
+    "specialCount",
   ];
 
   static values = {
@@ -58,6 +59,8 @@ export default class extends Controller {
         slot.includes("水鉄砲合") ||
         slot.includes("巨大なお城のクラフト")
     ).length;
+    this.specialCountTarget.innerHTML = `スペシャルデー: ${specialCount.toString()}つ`;
+    // Get cost of all of them to add to the final price
     const specialCost = specialCount * 1500;
 
     const finalCost =
