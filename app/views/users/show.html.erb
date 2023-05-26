@@ -71,7 +71,7 @@
         <% end %>
     <% end %>
 
-    <% if @user.customer? %>x``
+    <% if @user.customer? %>
         <div class="card">
             <%= link_to t('.user_bookings', user: @user.name), invoices_path(user: @user.id), class: 'btn btn-primary' if @user.children %>
             <%= link_to t('.email_prefs'), mailer_subscriptions_path, class: 'btn btn-primary' %>
