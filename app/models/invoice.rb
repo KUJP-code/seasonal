@@ -185,7 +185,7 @@ class Invoice < ApplicationRecord
   end
 
   def full_days(slot_ids)
-    TimeSlot.all.where(event_id: event_id, id: slot_ids, morning_slot_id: slot_ids).size
+    TimeSlot.all.where(event_id: event_id, id: slot_ids, morning_slot_id: slot_ids).where.not(category: :special).size
   end
 
   def generate_details
