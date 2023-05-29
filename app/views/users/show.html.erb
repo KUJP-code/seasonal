@@ -1,6 +1,6 @@
-<% next_event = @user.children.first.school.next_event unless @user.children.empty? %>
-<% online_event = School.find(2).events.first %>
-<% schools = @user.children.reject{ |c| c.school_id.nil? }.map(&:school).map(&:name).uniq %>
+<% next_event = @user.children.first.school.next_event if @user.customer? %>
+<% online_event = School.find(2).events.first if @user.admin? || @user.area_manager? %>
+<% schools = @user.children.reject{ |c| c.school_id.nil? }.map(&:school).map(&:name).uniq if @user.customer? %>
 
 <main id="user_show" class="gap-3">
     <% unless @user.confirmed? %>
@@ -80,13 +80,14 @@
     <% end %>
 
     <% if @user.admin? && current_user.admin? %>
-        <%# <div class="card">
-            <%= render partial: 'events/stats_summary', locals: { events: Event.all.excluding(online_event) } %>
-        <%# </div> %>
+        <div class="card">
+            <h2>All Schools Summary</h2>
+            <%= render partial: 'events/stats_summary', locals: { events: Event.all.excluding(online_event).order(:school_id) } %>
+        </div>
 
         <div class="card">
             <% School.all.each do |school| %>
-                <%= render partial: 'events/event_stats', collection: school.events.excluding(online_event), as: :event %>
+                <%= render partial: 'events/event_stats', collection: school.events.excluding(online_event).order(:school_id), as: :event %>
             <% end %>
         </div>
 
@@ -102,13 +103,15 @@
         <% @user.managed_areas.each do |area| %>
             <% next if area.schools.size.zero? %>
 
-            <%# <div class="card">
-                <%= render partial: 'events/stats_summary', locals: { events: area.events.excluding(online_event) } %>
-            <%# </div> %>
+            <div class="card">
+                <h2 class="fw-semibold"><%= area.name %></h2>
+
+                <%= render partial: 'events/stats_summary', locals: { events: area.events.excluding(online_event).order(:school_id) } %>
+            </div>
 
             <div class="card">
                 <% area.schools.each do |school| %>
-                    <%= render partial: 'events/event_stats', collection: school.events.excluding(online_event), as: :event %>
+                    <%= render partial: 'events/event_stats', collection: school.events.excluding(online_event).order(:school_id), as: :event %>
                 <% end %>
             </div>
         <% end %>

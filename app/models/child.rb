@@ -23,7 +23,9 @@ class Child < ApplicationRecord
   has_many :options, through: :registrations,
                      source: :registerable,
                      source_type: 'Option'
-  has_many :invoices, dependent: :destroy
+  has_many :invoices, -> { where('total_cost > ?', 3_000) },
+                      dependent: :destroy,
+                      inverse_of: :child
   has_many :events, -> { distinct }, through: :invoices
   has_many :adjustments, through: :invoices
 

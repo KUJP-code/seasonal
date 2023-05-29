@@ -19,8 +19,10 @@ class Event < ApplicationRecord
                           source: :options
   has_many :option_registrations, through: :time_slots
   has_many :registrations, through: :time_slots
-  has_many :children, -> { distinct }, through: :registrations
-  has_many :invoices, dependent: :destroy
+  has_many :invoices, -> { where('total_cost > ?', 3_000) },
+                      dependent: :destroy,
+                      inverse_of: :event
+  has_many :children, -> { distinct }, through: :invoices
 
   has_one_attached :image
   has_one_attached :banner

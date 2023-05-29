@@ -1,10 +1,12 @@
-<% int_kids = event.children.where(category: 'internal') %>
+<% children = event.children.includes(:invoices) %>
+
+<% int_kids = children.select { |c| c.category == 'internal' } %>
 <% int_revenue = Invoice.all.where(child_id: int_kids.map(&:id), event_id: event.id).where('total_cost > ?', 3_000).sum(:total_cost) %>
 
-<% res_kids = event.children.where(category: 'reservation') %>
+<% res_kids = children.select { |c| c.category == 'reservation' } %>
 <% res_revenue = Invoice.all.where(child_id: res_kids.map(&:id), event_id: event.id).where('total_cost > ?', 3_000).sum(:total_cost) %>
 
-<% ext_kids = event.children.where(category: 'external') %>
+<% ext_kids = children.select { |c| c.category == 'external' } %>
 <% ext_revenue = Invoice.all.where(child_id: ext_kids.map(&:id), event_id: event.id).where('total_cost > ?', 3_000).sum(:total_cost) %>
 
 <% total_revenue = int_revenue + res_revenue + ext_revenue %>
@@ -37,7 +39,7 @@
             <td><%= int_kids.size %></td>
             <td><%= res_kids.size %></td>
             <td><%= ext_kids.size %></td>
-            <td><%= event.children.count %></td>
+            <td><%= children.count %></td>
             <td><%= number_to_currency(int_revenue + res_revenue, unit: '円', precision: 0, locale: :ja) %></td>
             <td><%= number_to_currency(ext_revenue, unit: '円', precision: 0, locale: :ja) %></td>
             <td><%= number_to_currency(total_revenue, unit: '円', precision: 0, locale: :ja) %></td>

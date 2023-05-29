@@ -1,6 +1,6 @@
 <% event_ids = events.map(&:id) %>
-<% children = Child.all.joins(:invoices).includes(:invoices) %>
-<% photo_ids = Option.all.where(name: 'フォトサービス', optionable_id: event_ids)%>
+<% children = Child.all.where.not(school_id: 2).joins(:invoices).includes(:invoices) %>
+<% photo_ids = Option.all.where(optionable_id: event_ids, optionable_type: 'Event')%>
 <% photo_regs = Registration.all.where(registerable_id: photo_ids, registerable_type: 'Option').count %>
 
 <% int_kids = children.select { |c| c.category == 'internal' } %>
@@ -41,7 +41,7 @@
             <td><%= int_kids.size %></td>
             <td><%= res_kids.size %></td>
             <td><%= ext_kids.size %></td>
-            <td><%= events.reduce(0) { |sum, e| sum + e.children.size }  %></td>
+            <td><%= children.size %></td>
             <td><%= number_to_currency(int_revenue + res_revenue, unit: '円', precision: 0, locale: :ja) %></td>
             <td><%= number_to_currency(ext_revenue, unit: '円', precision: 0, locale: :ja) %></td>
             <td><%= number_to_currency(total_revenue, unit: '円', precision: 0, locale: :ja) %></td>
