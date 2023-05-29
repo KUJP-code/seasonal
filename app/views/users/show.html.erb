@@ -1,4 +1,4 @@
-<% next_event = @user.children.first.school.next_event if @user.customer? %>
+<% next_event = @user.children.first.school.next_event unless @user.children.empty? %>
 <% online_event = School.find(2).events.first if @user.admin? || @user.area_manager? %>
 <% schools = @user.children.reject{ |c| c.school_id.nil? }.map(&:school).map(&:name).uniq if @user.customer? %>
 
