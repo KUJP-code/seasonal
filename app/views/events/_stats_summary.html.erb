@@ -1,16 +1,17 @@
 <% event_ids = events.map(&:id) %>
-<% children = Child.all.where.not(school_id: 2).joins(:invoices).includes(:invoices) %>
+<%# Include kids without a school %>
+<% children = events.all.reduce([]) { |array, event| array + event.children.includes(:invoices) } %>
 <% photo_ids = Option.all.where(optionable_id: event_ids, optionable_type: 'Event')%>
 <% photo_regs = Registration.all.where(registerable_id: photo_ids, registerable_type: 'Option').count %>
 
 <% int_kids = children.select { |c| c.category == 'internal' } %>
-<% int_revenue = Invoice.all.where(child_id: int_kids.map(&:id), event_id: event_ids).where('total_cost > ?', 3_000).sum(:total_cost) %>
+<% int_revenue = int_kids.reduce(0) { |sum, c| sum + c.invoices.reduce(0) { |cost, i| cost + i.total_cost} } %>
 
 <% res_kids = children.select { |c| c.category == 'reservation' } %>
-<% res_revenue = Invoice.all.where(child_id: res_kids.map(&:id), event_id: event_ids).where('total_cost > ?', 3_000).sum(:total_cost) %>
+<% res_revenue = res_kids.reduce(0) { |sum, c| sum + c.invoices.reduce(0) { |cost, i| cost + i.total_cost} } %>
 
 <% ext_kids = children.select { |c| c.category == 'external' } %>
-<% ext_revenue = Invoice.all.where(child_id: ext_kids.map(&:id), event_id: event_ids).where('total_cost > ?', 3_000).sum(:total_cost) %>
+<% ext_revenue = ext_kids.reduce(0) { |sum, c| sum + c.invoices.reduce(0) { |cost, i| cost + i.total_cost} } %>
 
 <% total_revenue = int_revenue + res_revenue + ext_revenue %>
 <% area_goal = events.reduce(0) { |sum, e| sum + e.goal  } %>
