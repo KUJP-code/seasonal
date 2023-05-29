@@ -25,7 +25,7 @@
     <%= render @invoice, index: false %>
 
     <div class="card d-flex flex-row flex-wrap gap-3 justify-content-around align-items-center">
-        <%= link_to t('.edit_registrations'), event_path(id: @invoice.event_id, child: @invoice.child_id), class: 'btn btn-primary' %>
+        <%= link_to t('.edit_registrations'), event_path(id: @invoice.event_id, child: @invoice.child_id), class: 'btn btn-primary' unless @invoice.in_ss %>
 
         <% if current_user.staff? %>
             <% if @invoice.in_ss %>
