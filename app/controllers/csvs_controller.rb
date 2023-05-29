@@ -69,7 +69,7 @@ class CsvsController < ApplicationController
     row['katakana_name'] = 'ナシ' if row['katakana_name'].nil?
     row['en_name'] = 'なし' if row['en_name'].nil?
     row['birthday'] = 'なし' if row['birthday'].nil?
-    row['allergies'] = 'Unkown' if row['allergies'].nil?
+    row['allergies'] = 'Unknown' if row['allergies'].nil?
     row['photos'] = 'NG' if row['photos'].nil?
   end
 
