@@ -41,7 +41,7 @@
         <% end %>
 
     <% else %>
-        <%= form_with url: find_child_path, method: :get, id: 'claim_child_form', html: { class: 'd-grid gap-3 needs-validation', novalidate: true } do |f| %>
+        <%= form_with url: find_child_path, method: :get, id: 'claim_child_form', html: { class: 'd-grid gap-3'} do |f| %>
             <%= f.hidden_field :parent_id, value: parent.id %>
             <div class="form-floating" data-controller="count" data-count-countdown-value="true">
                 <%= f.search_field :ssid, class: 'form-control', placeholder: t('.ssid'), required: true, data: { 'count-target' => 'input' }, maxlength: 10 %>
