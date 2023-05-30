@@ -6,8 +6,9 @@ ja:
       confirm_changes: "お申込"
       confirmed: "他のお申込"
       coupon: "クーポン"
+      email_will_send: "「お申込」を押すとお申込み内容がスクールに送信されます。"
       in_ss: "他のお申込"
-      please_confirm: "「お申込」を押すとお申込内容がスクールに送信されます。"
+      not_done: "(今の時点ではまだお申込が完了しておりません。)"
     index:
       event_cost: "%{event}の合計: %{cost}"
     invoice:

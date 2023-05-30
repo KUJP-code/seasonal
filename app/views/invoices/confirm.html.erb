@@ -2,7 +2,8 @@
     <% if @invoice %>
         <%= link_to t('back'), :back, class: 'btn btn-primary align-self-start' %>
 
-        <h1 class="text-center"><%= t('.please_confirm') %></h1>
+        <h1 class="text-center"><%= t('.email_will_send') %></h1>
+        <h4 class="w-75 text-center bg-warning rounded p-3 shadow"><%= t('.not_done') %></h4>
 
         <%= render @invoice, index: false %>
 
