@@ -56,7 +56,7 @@ export default class extends Controller {
       (slot) =>
         slot.includes("Banana Party") ||
         slot.includes("Design a Kite") ||
-        slot.includes("水鉄砲合") ||
+        slot.includes("水鉄砲合＆スイカ割り") ||
         slot.includes("巨大なお城のクラフト")
     ).length;
     this.specialCountTarget.innerHTML = `スペシャルデー: ${specialCount.toString()}つ`;
