@@ -49,9 +49,9 @@
     <div>
       <%= f.label :kana_first, t('.kana_name'), class: 'form-label' %>
       <div class="input-group">
-        <%= text_field_tag "user[kana_family]", '', class: 'form-control', required: true, placeholder: t('.kana_family') %>
+        <%= text_field_tag "user[kana_family]", (resource.katakana_name.split[0] unless resource.katakana_name.nil?), class: 'form-control', required: true, placeholder: t('.kana_family') %>
         <span class="input-group-text"></span>
-        <%= text_field_tag "user[kana_first]", '', class: 'form-control', required: true, placeholder: t('.kana_first') %>
+        <%= text_field_tag "user[kana_first]", (resource.katakana_name.split[1] unless resource.katakana_name.nil?), class: 'form-control', required: true, placeholder: t('.kana_first') %>
       </div>
     </div>
 
