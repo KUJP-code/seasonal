@@ -1,11 +1,7 @@
 <% morn_slots = @slots.select { |s| s.morning }.sort_by { |s| s.start_time } %>
 <% special = @slots.select { |slot| slot.special? } %>
-<%# Minus 1 for special day %>
-<% cols = if special.size.zero?
-            morn_slots.size
-          else
-            morn_slots.size - special.size 
-          end %>
+<%# Special day always has an afternoon slot so / 2 %>
+<% cols = morn_slots.size - special.size / 2 %>
 
 
 <main id="event_children_index" data-controller="refresh">
