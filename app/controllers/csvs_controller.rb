@@ -85,7 +85,6 @@ class CsvsController < ApplicationController
   def update_child(csv)
     CSV.foreach(csv.tempfile.path, headers: true) do |row|
       translate_enums(row)
-      update_times(row)
       defaults(row)
 
       if Child.find_by(ssid: row['ssid'])
@@ -100,7 +99,6 @@ class CsvsController < ApplicationController
   def update_schedule(csv)
     CSV.foreach(csv.tempfile.path, headers: true) do |row|
       child_id = get_child_id(row)
-      update_times(row)
 
       if Child.find(child_id)&.regular_schedule.nil?
         Child.find(child_id).create_regular_schedule(row.to_hash)
@@ -108,11 +106,5 @@ class CsvsController < ApplicationController
         RegularSchedule.find_by(child_id: child_id).update!(row.to_hash)
       end
     end
-  end
-
-  # These aren't set automatically, so set them manually
-  def update_times(row)
-    row['created_at'] = Time.zone.now
-    row['updated_at'] = Time.zone.now
   end
 end
