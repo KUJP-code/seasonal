@@ -275,6 +275,8 @@ class Invoice < ApplicationRecord
 
   # Remove options where the slot is no longer registered for
   def orphan_option(opt_reg)
+    return false if event.options.ids.include?(opt_reg['registerable_id'].to_i)
+
     slot_regs.none? { |s_reg| s_reg.registerable_id == Option.find(opt_reg['registerable_id']).optionable_id }
   end
 
