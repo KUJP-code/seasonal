@@ -137,7 +137,7 @@ class Invoice < ApplicationRecord
     @breakdown << "<h4 class='fw-semibold'>オプション:</h4>
                    <div class='d-flex flex-column align-items-start gap-1'>
                    <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
-                                                   '\\1,').reverse}円 (#{opt_regs.size - @ignore_opts.size}オプション)<p>"
+                                                   '\\1,').reverse}円 (#{opt_regs.reject { |r| r.registerable.name == 'なし' }.size - @ignore_opts.size}オプション)<p>"
 
     # Find the options on this invoice, even if not saved
     temp_opts = {}
@@ -145,6 +145,8 @@ class Invoice < ApplicationRecord
       next if @ignore_opts.include?(reg.id)
 
       opt = reg.registerable
+      next if opt.name == 'なし'
+
       if temp_opts[opt.name].nil?
         temp_opts[opt.name] = {
           cost: opt.cost,
@@ -224,6 +226,8 @@ class Invoice < ApplicationRecord
         next if opt_reg.nil? || @ignore_opts.include?(opt_reg.id)
 
         opt = opt_reg.registerable
+        next if opt.name == 'なし'
+
         @breakdown << "<p> - #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>\n"
       end
       @breakdown << '</div>'
