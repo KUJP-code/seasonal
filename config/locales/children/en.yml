@@ -31,6 +31,7 @@ en:
       category: "Category:"
       child_bookings: "%{child} Bookings"
       ele_school: "Elementary School:"
+      email: "Email"
       en: "English Name:"
       has_hat: "Has Hat:"
       level: "Level:"
@@ -39,7 +40,8 @@ en:
       no_school: "No school assigned"
       only_if_dup: "Only delete a child if they are a duplicate of a child already in the SS!"
       parent: "Parent: "
+      phone: "Phone"
       photos: "Photos OK:"
-      school: "School:"
+      school: "Kids Up %{school}"
     timeslot_index:
       level_count: "Elementary: %{ele}, Kindy: %{kindy}"

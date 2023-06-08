@@ -81,7 +81,7 @@
 
     <% if @user.admin? && current_user.admin? %>
         <div class="card">
-            <h2>All Schools Summary</h2>
+            <h2>All Schools</h2>
             <%= render partial: 'events/stats_summary', locals: { events: Event.all.excluding(online_event) } %>
         </div>
 
@@ -100,12 +100,10 @@
     <% end %>
 
     <% if @user.area_manager? && (current_user.area_manager? || current_user.admin?) %>
-        <% if @user.id == 157 %>
-            <div class="card">
-                <h2>All Schools Summary</h2>
-                <%= render partial: 'events/stats_summary', locals: { events: Event.all.excluding(online_event) } %>
-            </div>
-        <% end %>
+        <div class="card">
+            <h2>All Schools</h2>
+            <%= render partial: 'events/stats_summary', locals: { events: Event.all.excluding(online_event) } %>
+        </div>
 
         <% @user.managed_areas.each do |area| %>
             <% next if area.schools.size.zero? %>

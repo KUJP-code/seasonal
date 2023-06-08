@@ -1,9 +1,9 @@
 ja:
   events:
     event:
-      diff_school: "登録する学校"
-      diff_school_reg: "別の学校に登録する"
-      reg_at_selected: "選択した学校に登録する"
+      diff_school: "スクールを以下よりお選びください"
+      diff_school_reg: "別のスクールにお申込みの方はこちら"
+      reg_at_selected: "お申込はこちら"
       title: "%{name}@%{school}"
     event_stats:
       attendance: "アテンダンス"
