@@ -7,7 +7,7 @@ Event.all.each do |event|
   )
 end
 
-Event.where(name: 'Summer School').each do |event|
+Event.all.each do |event|
   event.time_slots.morning.find_each(batch_size: 100) do |m_slot|
     m_slot.options.create!([
       {

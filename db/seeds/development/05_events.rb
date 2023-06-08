@@ -1,154 +1,251 @@
 School.all.each do |school|
   school.events.create!(
-    name: 'Spring School 2023',
-    description: 'See the sakura and celebrate spring with KU!',
-    start_date: 'March 16 2050',
-    end_date: 'April 4 2050',
+    name: 'Summer School',
+    start_date: 'July 20 2023',
+    end_date: 'August 31 2023',
     member_prices_id: 1,
     non_member_prices_id: 2,
-    goal: 1_000_000
+    goal: 3_000_000
   )
 end
 
-puts 'Created Spring school at each school'
+puts 'Created Summer school at each school'
 
-Event.where(name: 'Spring School 2023').each do |event|
+Event.all.each do |event|
   event.time_slots.create!([
     {
-      name: 'Paint a Puzzle',
+      name: 'Colorful Tape Art',
       morning: true,
-      start_time: '16 Mar 2050 09:00 JST +09:00',
-      end_time: '16 Mar 2050 13:00 JST +09:00',
-      description: 'Paint your own jigsaw puzzle!',
+      start_time: '20 July 2023 10:00 JST +09:00',
+      end_time: '20 July 2023 13:30 JST +09:00'
     },
     {
-      name: 'Butterfly Finger Puppet',
+      name: 'Picture Keychain',
       morning: true,
-      start_time: '17 Mar 2050 9:00 JST +09:00',
-      end_time: '17 Mar 2050 13:00 JST +09:00',
-      description: 'Make a cute butterfly puppet to take home and enjoy!',
+      start_time: '21 July 2023 10:00 JST +09:00',
+      end_time: '21 July 2023 13:30 JST +09:00'
     },
     {
-      name: 'Magic Day',
+      name: "Explorer Quest",
       morning: true,
-      start_time: '20 Mar 2050 9:00 JST +09:00',
-      end_time: '20 Mar 2050 13:00 JST +09:00',
-      description: 'Learn magic tricks that will dazzle your family!',
+      start_time: '24 July 2023 10:00 JST +09:00',
+      end_time: '24 July 2023 13:30 JST +09:00'
     },
     {
-      name: 'Vegetable Stamps',
+      name: 'Water Balloon Baseball (7/25)',
       morning: true,
-      start_time: '22 Mar 2050 9:00 JST +09:00',
-      end_time: '22 Mar 2050 13:00 JST +09:00',
-      description: 'Create some beautiful (and healthy) artwork!',
+      category: :outdoor,
+      start_time: '25 July 2023 10:00 JST +09:00',
+      end_time: '25 July 2023 13:30 JST +09:00'
     },
     {
-      name: 'Spider Web Race',
+      name: 'Ninja Day!',
       morning: true,
-      start_time: '23 Mar 2050 9:00 JST +09:00',
-      end_time: '23 Mar 2050 13:00 JST +09:00',
-      description: 'Race out of a sticky situation!',
+      start_time: '26 July 2023 10:00 JST +09:00',
+      end_time: '26 July 2023 13:30 JST +09:00'
     },
     {
-      name: 'Easter Egg Craft',
+      name: 'Fruit Smoothie',
       morning: true,
-      start_time: '24 Mar 2050 9:00 JST +09:00',
-      end_time: '24 Mar 2050 13:00 JST +09:00',
-      description: 'Create your own special Easter Egg! No eating though!',
+      start_time: '27 July 2023 10:00 JST +09:00',
+      end_time: '27 July 2023 13:30 JST +09:00'
     },
     {
-      name: 'Banana Party & Banana Split',
+      name: 'Games of the World',
       morning: true,
-      start_time: '25 Mar 2050 9:00 JST +09:00',
-      end_time: '25 Mar 2050 13:00 JST +09:00',
-      description: 'Party like a banana then split!',
-      category: 'special'
+      start_time: '28 July 2023 10:00 JST +09:00',
+      end_time: '28 July 2023 13:30 JST +09:00'
     },
     {
-      name: 'Cherry Blossom Picnic',
+      name: 'Water Gun Fight & Watermelon Smash',
       morning: true,
-      start_time: '27 Mar 2050 9:00 JST +09:00',
-      end_time: '27 Mar 2050 13:00 JST +09:00',
-      description: 'Enjoy a nice picnic under the cherry blossoms!',
+      start_time: '29 July 2023 10:00 JST +09:00',
+      end_time: '29 July 2023 13:30 JST +09:00',
+      category: :special
     },
     {
-      name: 'Cute Grass Head',
+      name: 'Cactus Craft',
       morning: true,
-      start_time: '28 Mar 2050 9:00 JST +09:00',
-      end_time: '28 Mar 2050 13:00 JST +09:00',
-      description: "Make your own little friend, in case you're ever stranded on a deserted island!",
+      start_time: '31 July 2023 10:00 JST +09:00',
+      end_time: '31 July 2023 13:30 JST +09:00'
     },
     {
-      name: 'Photo Frame',
+      name: 'Hawaiian Shaved Ice',
       morning: true,
-      start_time: '29 Mar 2050 9:00 JST +09:00',
-      end_time: '29 Mar 2050 13:00 JST +09:00',
-      description: 'Make a special photo frame to store your most precious memories!',
+      start_time: '1 August 2023 10:00 JST +09:00',
+      end_time: '1 August 2023 13:30 JST +09:00'
     },
     {
-      name: 'Marble Pencil Holder',
+      name: 'Water Gun (8/2)',
       morning: true,
-      start_time: '30 Mar 2050 9:00 JST +09:00',
-      end_time: '30 Mar 2050 13:00 JST +09:00',
-      description: "Don't like holding pencils? Make something to do it for you!",
+      category: :outdoor,
+      start_time: '2 August 2023 10:00 JST +09:00',
+      end_time: '2 August 2023 13:30 JST +09:00'
     },
     {
-      name: 'Spring Terrarium',
+      name: "Ocean Slime",
       morning: true,
-      start_time: '31 Mar 2050 9:00 JST +09:00',
-      end_time: '31 Mar 2050 13:00 JST +09:00',
-      description: 'Create your own personal ecosystem to rule over!',
+      start_time: '4 August 2023 10:00 JST +09:00',
+      end_time: '4 August 2023 13:30 JST +09:00'
     },
     {
-      name: 'Ninja Master',
+      name: 'Game Center',
       morning: true,
-      start_time: '3 Apr 2050 9:00 JST +09:00',
-      end_time: '3 Apr 2050 13:00 JST +09:00',
-      description: 'Become a ninja master!',
+      start_time: '7 August 2023 10:00 JST +09:00',
+      end_time: '7 August 2023 13:30 JST +09:00'
     },
     {
-      name: 'DIY Tic-Tac-Toe',
+      name: 'Water Gun (8/8)',
       morning: true,
-      start_time: '4 Apr 2050 9:00 JST +09:00',
-      end_time: '4 Apr 2050 13:00 JST +09:00',
-      description: 'Make a game, then play it!',
+      category: :outdoor,
+      start_time: '8 August 2023 10:00 JST +09:00',
+      end_time: '8 August 2023 13:30 JST +09:00'
     },
     {
-      name: 'Colorful Sand Art',
+      name: 'Design a Bag',
       morning: true,
-      start_time: '5 Apr 2050 9:00 JST +09:00',
-      end_time: '5 Apr 2050 13:00 JST +09:00',
-      description: 'Create art with a wave of nostalgia!',
+      start_time: '16 August 2023 10:00 JST +09:00',
+      end_time: '16 August 2023 13:30 JST +09:00'
+    },
+    {
+      name: 'Dessert Slime',
+      morning: true,
+      start_time: '17 August 2023 10:00 JST +09:00',
+      end_time: '17 August 2023 13:30 JST +09:00'
+    },
+    {
+      name: 'Water Games',
+      morning: true,
+      category: :outdoor,
+      start_time: '18 August 2023 10:00 JST +09:00',
+      end_time: '18 August 2023 13:30 JST +09:00'
+    },
+    {
+      name: 'Water Gun (8/21)',
+      morning: true,
+      category: :outdoor,
+      start_time: '21 August 2023 10:00 JST +09:00',
+      end_time: '21 August 2023 13:30 JST +09:00'
+    },
+    {
+      name: 'Bandana Tie-Dye',
+      morning: true,
+      start_time: '22 August 2023 10:00 JST +09:00',
+      end_time: '22 August 2023 13:30 JST +09:00'
+    },
+    {
+      name: 'Glow Slime',
+      morning: true,
+      start_time: '23 August 2023 10:00 JST +09:00',
+      end_time: '23 August 2023 13:30 JST +09:00'
+    },
+    {
+      name: 'DIY Aquarium',
+      morning: true,
+      start_time: '24 August 2023 10:00 JST +09:00',
+      end_time: '24 August 2023 13:30 JST +09:00'
+    },
+    {
+      name: 'Shell Pendant',
+      morning: true,
+      start_time: '25 August 2023 10:00 JST +09:00',
+      end_time: '25 August 2023 13:30 JST +09:00'
+    },
+    {
+      name: 'Water Balloon Baseball (8/28)',
+      morning: true,
+      category: :outdoor,
+      start_time: '28 August 2023 10:00 JST +09:00',
+      end_time: '28 August 2023 13:30 JST +09:00'
+    },
+    {
+      name: 'Rainbow Bag Charm',
+      morning: true,
+      start_time: '29 August 2023 10:00 JST +09:00',
+      end_time: '29 August 2023 13:30 JST +09:00'
+    },
+    {
+      name: 'Beach Diorama',
+      morning: true,
+      start_time: '30 August 2023 10:00 JST +09:00',
+      end_time: '30 August 2023 13:30 JST +09:00'
     }
   ])
 end
 
-puts 'Created morning time slots for spring school'
+puts 'Created morning time slots for Summer school'
 
+# Create the different slots for normal schools
+different_schools = %w[新浦安 南町田グランベリーパーク]
+
+# Create the different slots for Minami-machida and Shin-Urayasu
+School.all.where(name: different_schools).each do |school|
+  school.events.first.time_slots.create!([
+    {
+      name: 'Paper Lantern',
+      morning: true,
+      start_time: '3 August 2023 10:00 JST +09:00',
+      end_time: '3 August 2023 13:30 JST +09:00'
+    },
+    {
+      name: 'Oreo Milkshake',
+      morning: true,
+      start_time: '9 August 2023 10:00 JST +09:00',
+      end_time: '9 August 2023 13:30 JST +09:00'
+    },
+    {
+      name: 'Icecream Store',
+      morning: true,
+      start_time: '31 August 2023 10:00 JST +09:00',
+      end_time: '31 August 2023 13:30 JST +09:00'
+    }
+  ])
+end
+
+# Create the normal slots
+School.all.where.not(name: different_schools).each do |school|
+  school.events.first.time_slots.create!([
+    {
+      name: 'BBQ Yakisoba!',
+      morning: true,
+      start_time: '3 August 2023 10:00 JST +09:00',
+      end_time: '3 August 2023 13:30 JST +09:00'
+    },
+    {
+      name: 'Hot Dogs',
+      morning: true,
+      start_time: '9 August 2023 10:00 JST +09:00',
+      end_time: '9 August 2023 13:30 JST +09:00'
+    },
+    {
+      name: 'French Crepe',
+      morning: true,
+      start_time: '31 August 2023 10:00 JST +09:00',
+      end_time: '31 August 2023 13:30 JST +09:00'
+    }
+  ])
+end
+
+# Create all afternoon slots
 Event.all.each do |event|
   event.time_slots.morning.each do |slot|
-    name = if slot.special?
-             'Design a Kite & Castle Rush'
-           else
-             slot.name
-           end
-
+    # Make sure the afternoon of the special day gets its own name
+    name = slot.special? ? 'Giant Castle & Icecream Store' : slot.name
     slot.create_afternoon_slot(
       name: name,
-      morning: false,
-      category: slot.category,
       start_time: slot.start_time + 5.hours,
       end_time: slot.end_time + 5.hours,
+      category: slot.category,
+      morning: false,
       event_id: slot.event_id
     )
   end
 end
 
-puts 'Created afternoon time slots for the morning slots'
+# Add event images for no food events
+event_key = "#{Rails.env}/events/summer_2023.png"
 
-event_key = "#{Rails.env}/events/#{Event.first.name.downcase.gsub(' ', '_')}.jpg"
-
-Event.first.image.attach(key: event_key, io: File.open("app/assets/images/spring_school_2023.jpg"), filename: "#{Event.first.name.downcase.gsub(' ', '_')}.jpg", content_type: 'image/jpg')
+Event.all.select { |e| different_schools.include?(e.school.name) }.first.image.attach(key: event_key, io: File.open("app/assets/images/summer_2023.png"), filename: "summer_2023.png", content_type: 'image/png')
 
 blob = ActiveStorage::Blob.find_by(key: event_key)
 
@@ -156,17 +253,30 @@ Event.all.excluding(Event.first).each do |event|
   event.image.attach(blob)
 end
 
-puts 'Added the event image to each Spring School (one image, many events)'
+
+# Add event images for regular events
+event_key = "#{Rails.env}/events/summer_2023_food.png"
+
+Event.all.reject { |e| different_schools.include?(e.school.name) }.first.image.attach(key: event_key, io: File.open("app/assets/images/summer_2023_food.png"), filename: "summer_2023_food.png", content_type: 'image/png')
+
+blob = ActiveStorage::Blob.find_by(key: event_key)
+
+Event.all.excluding(Event.first).each do |event|
+  event.image.attach(blob)
+end
+
+puts 'Added the event image to each Summer School'
 
 slot_names = TimeSlot.group(:name).count.keys
 
 slot_names.each do |name|
-  next if name == 'Design a Kite & Castle Rush'
-  filename = "#{name.downcase.gsub(' ', '_')}.jpg"
-  slot_key = "#{Rails.env}/slots/#{filename}.jpg"
+  next if name == 'Giant Castle & Icecream Store'
 
-  first_slot = TimeSlot.find_by(name: name)
-  first_slot.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/jpg')
+  filename = name == 'Water Gun Fight & Watermelon Smash' ? 'special_day.png' : "#{name.downcase.gsub(' ', '_').gsub(/[()\/]/, '')}.png"
+  slot_key = "#{Rails.env}/slots/#{filename}.png"
+
+  first_slot = TimeSlot.find_by(name: name, morning: true)
+  first_slot.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/png')
 
   blob = ActiveStorage::Blob.find_by(key: slot_key)
 

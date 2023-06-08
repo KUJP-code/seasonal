@@ -9,7 +9,7 @@ end
 
 puts 'Added the photo service option to each event'
 
-Event.where(name: 'Spring School 2023').each do |event|
+Event.all.each do |event|
   event.time_slots.morning.find_each(batch_size: 100) do |m_slot|
     m_slot.options.create!([
       {

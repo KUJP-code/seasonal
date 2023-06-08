@@ -61,7 +61,7 @@
                         </div>
                     <% end %>
 
-                    <% if add_slot.special? %>
+                    <% if add_slot.special? && add_slot.morning %>
                         <% ext_opt = if kindy
                                         add_slot.options.extension.find_by(category: 'k_extension')
                                         else

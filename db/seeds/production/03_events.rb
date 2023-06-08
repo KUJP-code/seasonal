@@ -115,7 +115,7 @@ Event.all.each do |event|
     {
       name: 'ウォーターゲーム対決！',
       morning: true,
-      category: :morning,
+      category: :outdoor,
       start_time: '18 August 2023 10:00 JST +09:00',
       end_time: '18 August 2023 13:30 JST +09:00'
     },
