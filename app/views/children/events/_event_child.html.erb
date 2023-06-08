@@ -76,7 +76,7 @@
     <td class="coupons" rowspan="2"><% event_invoices.each do |invoice| %>
         <% unless invoice.coupons.size.zero? %>
             <p>
-            <%= "Booking##{invoice.id}: " %>
+            <%= "#{invoice.id}: " %>
             <% invoice.coupons.each do |coupon| %>
                 <%= coupon.code %>
             <% end %>
