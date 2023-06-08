@@ -176,4 +176,4 @@ Event.all.each do |event|
   end
 end
 
-puts 'Created options for spring school'
+puts 'Created options for Summer school'

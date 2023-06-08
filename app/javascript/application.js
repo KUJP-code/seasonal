@@ -50,3 +50,21 @@ document.addEventListener("turbo:load", function () {
   const toastElList = document.querySelectorAll(".toast");
   [...toastElList].map((toastEl) => new bootstrap.Toast(toastEl).show());
 });
+
+// Tracking from Microsoft Clarity
+
+document.addEventListener(
+  "turbo:load",
+  (function (c, l, a, r, i, t, y) {
+    c[a] =
+      c[a] ||
+      function () {
+        (c[a].q = c[a].q || []).push(arguments);
+      };
+    t = l.createElement(r);
+    t.async = 1;
+    t.src = "https://www.clarity.ms/tag/" + i;
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+  })(window, document, "clarity", "script", "hghp07f095")
+);
