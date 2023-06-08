@@ -96,14 +96,6 @@ a {
   background-color: var(--bs-gray-100);
 }
 
-.event-card {
-  flex-flow: row nowrap;
-}
-
-.event-card a {
-  width: 60%;
-}
-
 input[type="text"]:read-only,
 input[type="text"]:disabled {
   background: grey;

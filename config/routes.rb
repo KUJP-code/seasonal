@@ -28,6 +28,9 @@ Rails.application.routes.draw do
       post 'csv/update', to: 'csvs#update', as: :update_csv
       get 'csv/download', to: 'csvs#download', as: :download_csv
 
+      # Non-REST routes for Events controller
+      get 'event/diff_school', to: 'events#show', as: :diff_school_path
+
       # Non-REST routes for Invoices controller
       patch 'confirm_invoice', to: 'invoices#confirm', as: :confirm_invoice
       get 'confirm_invoice', to: 'invoices#confirmed', as: :confirmed_invoice
