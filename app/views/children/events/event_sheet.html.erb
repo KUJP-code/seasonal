@@ -33,6 +33,7 @@
                 <th scope="col" rowspan="2" class="name-header">Name (日本語)</th>
                 <th scope="col" rowspan="2" class="en-name-header">Name (英語)</th>
                 <th scope="col" rowspan="2" class="ssid-header">SSID</th>
+                <th scope="col" rowspan="2">担当校舎</th>
                 <th scope="col" rowspan="2"><%= t('.cost') %></th>
                 <th scope="col" rowspan="2"><%= t('.summary') %></th>
                 <th scope="col" rowspan="2"><%= t('.changes') %></th>
@@ -88,6 +89,14 @@
                     <div class="form-floating">
                         <%= text_field_tag 'ssid_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
                         <%= label_tag 'ssid_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td data-controller="filter"
+                    data-filter-siblings-value="1"
+                    data-filter-col-value=".diff-school">
+                    <div class="form-floating">
+                        <%= text_field_tag 'diff_school_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'diff_school_filter', t('.filter'), class: 'form-label' %>
                     </div>
                 </td>
                 <td data-controller="filter"
