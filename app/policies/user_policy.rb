@@ -45,13 +45,15 @@ class UserPolicy < ApplicationPolicy
       when 'admin'
         scope.all.select(:id, :name, :katakana_name, :email).includes(:children).order(:name)
       when 'area_manager'
-        user.managed_areas.reduce([]) do |array, area|
-          array + area.parents.select(:id, :name, :katakana_name, :email).includes(:children).order(:name)
-        end
+        a_users = user.managed_areas.reduce([]) do |array, area|
+                  array + area.parents.select(:id, :name, :katakana_name, :email).includes(:children).order(:name)
+                end
+        a_users + User.all.customer.where.missing(:children)
       else
-        user.managed_schools.reduce([]) do |array, school|
-          array + school.parents.select(:id, :name, :katakana_name, :email).includes(:children).order(:name)
-        end
+        s_users = user.managed_schools.reduce([]) do |array, school|
+                    array + school.parents.select(:id, :name, :katakana_name, :email).includes(:children).order(:name)
+                  end
+        s_users + User.all.customer.where.missing(:children)
       end
     end
   end
