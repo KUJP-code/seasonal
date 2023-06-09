@@ -172,7 +172,7 @@ class InvoicesController < ApplicationController
   end
 
   def regular_day?(regular_days, slot)
-    regular_days[slot.day]
+    !slot.morning && regular_days[slot.day]
   end
 
   def send_emails(invoice)
