@@ -14,6 +14,8 @@
 
             <h1><%= link_to child.name, child_path(child) %></h1>     
             <% child.events.order(start_date: :asc).each do |event| %>
+                <% next unless @invoices.find { |i| i.event_id == event.id } %>
+
                 <%= render event, partial: 'events/event', child: nil %>
 
                 <%= render partial: 'invoices/invoice', collection: @invoices.select { |invoice| invoice.child_id == child.id && invoice.event_id == event.id }, locals: { index: true } %>
@@ -30,10 +32,12 @@
         <% end %>
 
         <h1><%= @child.name %></h1>     
-            <% @child.events.order(start_date: :asc).each do |event| %>
-                <%= render event, partial: 'events/event', child: nil %>
+        <% @child.events.order(start_date: :asc).each do |event| %>
+            <% next unless @invoices.find { |i| i.event_id == event.id } %>
 
-                <%= render partial: 'invoices/invoice', collection: @invoices.select { |invoice| invoice.child_id == @child.id && invoice.event_id == event.id }, locals: { index: true } %>
-            <% end %>
+            <%= render event, partial: 'events/event', child: nil %>
+
+            <%= render partial: 'invoices/invoice', collection: @invoices.select { |invoice| invoice.child_id == @child.id && invoice.event_id == event.id }, locals: { index: true } %>
+        <% end %>
     <% end %>
 </main>

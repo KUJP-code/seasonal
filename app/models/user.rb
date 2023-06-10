@@ -38,6 +38,7 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :children, allow_destroy: true
   validates_associated :children
   has_many :invoices, through: :children
+  has_many :real_invoices, through: :children
   has_many :registrations, through: :children
   has_many :schools, -> { distinct }, through: :children
   has_many :areas, -> { distinct }, through: :schools

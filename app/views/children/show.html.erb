@@ -107,7 +107,7 @@
 
     <% unless @child.school.nil? %>
         <% diff_school_event = @child.events.where.not(school_id: @child.school_id).order(start_date: :desc).first %>
-        <% if diff_school_event %>
+        <% if diff_school_event && @child.real_invoices.find_by(event_id: diff_school_event.id) %>
             <%= render diff_school_event, partial: 'events/event', child: @child %>
         <% else %>
             <%= render @child.school.next_event, partial: 'events/event', child: @child %>

@@ -4,11 +4,11 @@
 class InvoicesController < ApplicationController
   def index
     @invoices = if params[:event] && params[:user]
-                  User.find(params[:user]).invoices.where(event: Event.find(params[:event]))
+                  User.find(params[:user]).real_invoices.where(event: Event.find(params[:event]))
                 elsif params[:user]
-                  User.find(params[:user]).invoices
+                  User.find(params[:user]).real_invoices
                 elsif params[:child]
-                  Child.find(params[:child]).invoices
+                  Child.find(params[:child]).real_invoices
                 else
                   current_user.invoices
                 end
