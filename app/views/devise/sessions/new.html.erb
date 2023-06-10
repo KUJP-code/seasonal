@@ -38,9 +38,9 @@
           <%= f.label :remember_me, t('.remember'), class: 'form-check-label' %>
         </div>
       <% end %>
-      <div class="d-grid gap-3">
+      <div class="d-grid gap-3 mb-4">
         <%= f.submit t('.login'), class: 'btn btn-primary' %>
-        <%= link_to t('.sign_up'), new_registration_path(resource_name), class: 'btn btn-secondary' %>
+        <%= link_to t('.sign_up'), new_registration_path(resource_name), class: 'btn btn-secondary mb-3' %>
       </div>
     <% end %>
   </div>
