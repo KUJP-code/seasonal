@@ -102,7 +102,7 @@
         <% if current_user.id == @child.parent_id && @child.ssid.nil? %>
             <%= link_to t('.edit_child'), edit_child_path(@child), class: 'btn btn-primary' unless @child.ssid %>
         <% end %>
-        <%= link_to t('.child_bookings', child: @child.name), invoices_path(child: @child.id), class: 'btn btn-primary' %>
+        <%= link_to t('.child_bookings', child: @child.name), invoices_path(child: @child.id), class: 'btn btn-primary' unless @child.real_invoices.empty? %>
     </div>
 
     <% unless @child.school.nil? %>
