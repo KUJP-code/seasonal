@@ -128,11 +128,15 @@ class UsersController < ApplicationController
   end
 
   def move_invoices(from, to)
+    regular_days = to.regular_schedule ? to.regular_schedule.en_days : {}
+
     from.invoices.each do |invoice|
       # Change the child associated with the invoice
       invoice.update(child_id: to.id)
       # Same for each registration on the invoice
       invoice.registrations.each do |reg|
+        return reg.destroy if reg.registerable_type == 'TimeSlot' && regular_day?(regular_days, reg.registerable)
+
         reg.update(child_id: to.id)
       end
       # Update the invoice to reflect its new owner
