@@ -124,6 +124,7 @@ class UsersController < ApplicationController
       reg.update(child_id: to.id, invoice_id: to_active_invoice.id)
     end
 
+    # Update the newly merged invoice
     to_active_invoice.reload && to_active_invoice.save
   end
 
@@ -135,7 +136,7 @@ class UsersController < ApplicationController
       invoice.update(child_id: to.id)
       # Same for each registration on the invoice
       invoice.registrations.each do |reg|
-        return reg.destroy if reg.registerable_type == 'TimeSlot' && regular_day?(regular_days, reg.registerable)
+        next remove_registrations(reg, to) if reg.registerable_type == 'TimeSlot' && regular_day?(regular_days, reg.registerable)
 
         reg.update(child_id: to.id)
       end
@@ -146,6 +147,13 @@ class UsersController < ApplicationController
 
   def regular_day?(regular_days, slot)
     !slot.morning && regular_days[slot.day]
+  end
+
+  def remove_registrations(reg, to)
+    slot_options = reg.registerable.options.ids
+    opt_registrations = to.registrations.where(registerable_type: 'Option', registerable_id: slot_options)
+    opt_registrations.destroy_all
+    reg.destroy
   end
 
   def user_params
