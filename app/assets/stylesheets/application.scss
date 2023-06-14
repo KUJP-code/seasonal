@@ -132,6 +132,15 @@ input[type="text"]:disabled {
   }
 }
 
+.btn-grey {
+  background: #d9d6d3;
+  font-weight: bold;
+  &:hover {
+    background: var(--near-white);
+    border: 1px inset $secondary;
+  }
+}
+
 .button-ku-registered {
   background: linear-gradient(lightgreen, green);
   border: 1px outset green;
@@ -239,12 +248,25 @@ main#sign-up {
   height: 100vh;
 }
 
+#login .btn-primary img,
+#sign-up .btn-primary img {
+  filter: invert(1);
+}
+
+#login .btn-primary:hover img,
+#sign-up .btn-primary:hover img {
+  filter: invert(46%) sepia(51%) saturate(1917%) hue-rotate(8deg)
+    brightness(103%) contrast(103%);
+}
+
+#login .btn-primary:active img,
+#sign-up .btn-primary:active img {
+  filter: invert(0);
+}
+
 #login {
   padding-top: 0;
   padding-bottom: 0;
-  @media (min-width: 992px) {
-    max-width: 90%;
-  }
 }
 
 #login .row {
@@ -261,13 +283,13 @@ main#sign-up {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  height: 40%;
+  height: 60%;
   margin-bottom: -50%;
   @media (min-width: 992px) {
     background-image: image-url("sm_login_splash.jpg");
     background-position: center;
     border-radius: 2rem 0 0 2rem;
-    height: 80vh;
+    height: 90vh;
   }
 }
 
@@ -275,7 +297,7 @@ main#sign-up {
   text-align: right;
 }
 
-form#new_user {
+#new_user {
   background-color: white;
   overflow: scroll;
   width: 100vw;
@@ -283,8 +305,12 @@ form#new_user {
   @media (min-width: 992px) {
     border-radius: 0 2rem 2rem 0;
     width: 33%;
-    height: 80vh;
+    height: 90vh;
   }
+}
+
+#new_user p {
+  font-size: 13px;
 }
 
 #sign-up #new_user {
@@ -292,11 +318,11 @@ form#new_user {
   max-height: 100vh;
   height: 100vh;
   @media (min-width: 992px) {
-    height: 90vh;
-    width: 90vw;
+    height: 95vh;
+    width: 95vw;
     border-radius: 2rem;
-    margin-top: 10vh;
-    margin-bottom: 10vh;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
   }
 }
 
@@ -305,13 +331,15 @@ form#new_user {
 }
 
 #login_logo {
+  display: none;
   @media (min-width: 992px) {
+    display: block;
     background-image: image-url("favicon.svg");
     background-position: cover;
     background-repeat: no-repeat;
     align-self: center;
-    width: 10vw;
-    height: 10vw;
+    width: 15vw;
+    height: 15vw;
     justify-self: center;
   }
 }
