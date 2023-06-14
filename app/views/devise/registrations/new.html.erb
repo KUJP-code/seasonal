@@ -249,9 +249,9 @@
     </div>
 
 
-    <div class="form-check mb-3">
+    <div class="form-check">
       <%= check_box_tag 'privacy', nil, false, class: "form-check-input", data: { action: 'conditional#allowSubmit', 'conditional-target' => 'condition' }, required: true %>
-      <label for="privacy" class="form-check-label"><%= t('.accept_policy') %></label>
+      <label for="privacy" class="form-check-label" style="font-size:14px;"><%= t('.accept_policy') %></label>
     </div>
   
     <div class="d-grid gap-3">
