@@ -11,6 +11,11 @@ class ApplicationController < ActionController::Base
 
   private
 
+  # Overwriting the Devise sign_out redirect path method
+  def after_sign_out_path_for(_resource_or_scope)
+    new_user_session_path
+  end
+
   def default_url_options
     { locale: I18n.locale }
   end

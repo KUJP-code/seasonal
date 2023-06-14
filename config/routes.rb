@@ -58,5 +58,5 @@ Rails.application.routes.draw do
   authenticated :user do
     root to: 'users#profile', as: :authenticated_root
   end
-  root to: redirect('/auth/sign_in')
+  root to: 'splashes#landing'
 end

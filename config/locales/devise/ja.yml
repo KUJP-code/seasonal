@@ -23,7 +23,7 @@ ja:
         login: "ログイン"
         reset_password: "パスワードをリセットする"
         send_reset: "メールを送信しパスワードをリセットする"
-        sign_up: "登録する"
+        sign_up: "新規登録"
     registrations:
       new:
         accept_policy: "P-UPプライバシーポリシーに同意する"
@@ -46,7 +46,7 @@ ja:
         phone: "携帯電話番号"
         prefecture: "都道府県"
         school: "学校"
-        sign_up: "登録する"
+        sign_up: "新規登録"
         sign_up_msg: "新規にアカウントを作成する場合は、以下にお客様の情報を入力してください。"
         view_policy: "プライバシーポリシーはこちら"
         welcome: "Welcome"
@@ -56,4 +56,8 @@ ja:
         forgot_password: "パスワードを忘れた場合はこちら"
         login: "ログイン"
         remember: "次回ログイン情報の入力を省略する"
-        sign_up: "登録する"
+        sign_up: "新規登録"
+  splashes:
+    landing:
+      log_in: "ログイン"
+      sign_up: "新規登録"
