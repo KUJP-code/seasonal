@@ -1,7 +1,19 @@
 <main id="children_index">
-    <%= link_to t('.create_child'), new_child_path, class: 'btn btn-primary' if current_user.staff? %>
+    <%= link_to t('.create_child'), new_child_path, class: 'btn btn-primary' %>
 
-    <%= paginate @children, window: 20 %>
+    <%= paginate @children, window: 20 unless current_user.admin? %>
+
+    <% if current_user.admin? %>
+        <div class="d-flex flex-row flex-wrap justify-content-center gap-3">
+            <% @schools.each do |school| %>
+                <%= link_to children_path(school: school.id) do %>
+                    <div class="card<%= ' bg-primary text-white fw-semibold' if school.id == @school.id %>">
+                        <%= school.name %>
+                    </div>
+                <% end %>
+            <% end %>
+        </div>
+    <% end %>
 
     <table class="table table-hover table-striped text-center">
         <thead>
@@ -102,10 +114,14 @@
         </thead>
 
         <tbody>
-            <%= render @children %>
+            <% if current_user.admin? %>
+                <%= render partial: 'children/child', collection: @school.children %>
+            <% else %>
+                <%= render partial: 'children/child', collection: @children %>
+            <% end %>
         </tbody>
     </table>
 
-    <%= paginate @children, window: 20 %>
+    <%= paginate @children, window: 20 unless current_user.admin? %>
 
 </main>

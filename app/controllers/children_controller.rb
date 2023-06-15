@@ -13,6 +13,10 @@ class ChildrenController < ApplicationController
       return unless ALLOWED_SOURCES.include? params[:source]
 
       find_source
+    elsif current_user.admin?
+      # Admins need schools instead for pagination
+      @schools = policy_scope(Child).page(params[:page]).per(1_000)
+      @school = @schools.find { |s| s.id == params[:school].to_i } || @schools.first
     else
       # By default, see the list of children current user is responsible for
       @children = policy_scope(Child).page(params[:page]).per(1_000)

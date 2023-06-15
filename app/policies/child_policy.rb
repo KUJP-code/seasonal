@@ -31,7 +31,7 @@ class ChildPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user.admin?
-        scope.all.order(:name).includes(:parent, :school)
+        School.all.includes(children: %i[parent school]).order(:id)
       elsif user.area_manager?
         area_schools = user.managed_areas.reduce([]) { |schools, area| schools + area.schools.ids }
         scope.where(school_id: area_schools).order(:name).includes(:parent, :school)
