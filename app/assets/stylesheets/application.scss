@@ -241,11 +241,18 @@ main#child_show .card {
 
 // Devise
 
-main#sign-up {
-  justify-content: flex-end;
+#sign-up {
   padding: 0;
+  @media (min-width: 992px) {
+    padding: 5vh 10vw;
+    margin: 0;
+  }
+}
+
+#login {
+  padding-top: 0;
+  padding-bottom: 0;
   margin: 0;
-  height: 100vh;
 }
 
 #login .btn-primary img,
@@ -262,12 +269,6 @@ main#sign-up {
 #login .btn-primary:active img,
 #sign-up .btn-primary:active img {
   filter: invert(0);
-}
-
-#login {
-  padding-top: 0;
-  padding-bottom: 0;
-  margin: 0;
 }
 
 #login .row {
@@ -316,19 +317,18 @@ main#sign-up {
 
 #sign-up #new_user {
   border-radius: 0;
-  max-height: 100vh;
-  height: 100vh;
   @media (min-width: 992px) {
-    height: 95vh;
-    width: 95vw;
     border-radius: 2rem;
-    margin-top: 5vh;
-    margin-bottom: 5vh;
+    width: 100%;
+    height: 100%;
   }
 }
 
 #sign-up form#new_user img {
-  width: 20%;
+  width: 25%;
+  @media (min-width: 992px) {
+    width: 10%;
+  }
 }
 
 #login_logo {
