@@ -7,7 +7,7 @@
 <%# Options the child has registered for at this event %>
 <% event_opts = event_child.options.select { |opt| (reg_slots + reg_special).map { |slot| slot.id}.include?(opt.optionable_id) } %>
 <%# Child's invoices for this event %>
-<% event_invoices = event_child.invoices.select { |invoice| invoice.event_id == event.id } %>
+<% event_invoices = event_child.real_invoices.select { |invoice| invoice.event_id == event.id } %>
 <%# The invoice that's still available to edit %>
 <% active_invoice = event_invoices.reject(&:in_ss).last %>
 <%# Categories for arrival/departure times %>
@@ -91,9 +91,9 @@
 
     <td class="invoices" rowspan="2"><% event_invoices.each do |invoice| %>
         <% if invoice.in_ss %>
-            <p><%= link_to "##{invoice.id}", invoice_path(invoice), class: 'text-info' %></p>
+            <p><%= link_to number_to_currency(invoice.total_cost, unit: '円', precision: 0, locale: :ja), invoice_path(invoice), class: 'text-info' %></p>
         <% else %>
-            <p><%= link_to "##{invoice.id}", invoice_path(invoice), class: 'text-danger fw-bold' %></p>
+            <p><%= link_to number_to_currency(invoice.total_cost, unit: '円', precision: 0, locale: :ja), invoice_path(invoice), class: 'text-danger fw-bold' %></p>
         <% end %>
     <% end %></td>
 
