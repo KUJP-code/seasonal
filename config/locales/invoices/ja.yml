@@ -35,6 +35,8 @@ ja:
       edit_registrations: "登録内容の変更"
       makes_editable: "(同じ生徒の)他のお申込があるのに他のお申込が未確認の場合、が壊れてしまいます。もし2つの請求書がある場合、編集のために未確認にする前にマージする必要があります。"
       marked_in_ss: "お申込が確認されました。お客様に通知する自動メールが送信されました。"
+      merge_bookings: "お申込内容を一つにする"
+      merge_warning: "お申込内容を合体させますか？（この操作は元に戻せません。）"
       previous_versions: "以前のバージョン"
       recalculate: "再計算する"
       staff_confirm: "お申込が送信されました。"

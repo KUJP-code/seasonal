@@ -12,8 +12,10 @@ en:
     show:
       changed_by: "Changed by: %{user}"
       change: "Change: %{action}"
+      confirm_booking: "Confirm Booking"
       confirm_success: "Your booking has been created successfully. You can make changes to your booking on this site until it has been confirmed by the school manager, at which point you will need to contact the school for further changes."
       makes_editable: "Don't do this if there's already an unconfirmed invoice for this child. Bad things will happen and Brett will have to fix them. Instead, first merge this with the unconfirmed invoice and edit the result."
       mark_in_ss: "Mark In SS"
+      merge_bookings: "Merge Bookings"
       unconfirm_booking: "Unconfirm Booking"
       version_from: "Version from: %{date}"

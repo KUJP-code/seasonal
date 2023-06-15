@@ -32,8 +32,7 @@
                             <%= f.hidden_field :merge_from, value: invoice.id %>
                             <%# Give the option to merge  %>
                             <div class="field">
-                                <%= f.label :merge_to, t('.merge_to') %>
-                                <%= f.collection_select :merge_to, Invoice.where(child_id: invoice.child_id, event_id: invoice.event_id).excluding(invoice), :id, :id %>
+                                <%= f.collection_select :merge_to, Invoice.where(child_id: invoice.child_id, event_id: invoice.event_id).excluding(invoice), :id, :id_and_cost  %>
                             </div>
                             <%= f.submit t('.merge_bookings'), class: 'btn btn-primary', data: { turbo_confirm: t('.merge_warning') }
                             %>

@@ -61,6 +61,10 @@ class Invoice < ApplicationRecord
     billing_date.strftime('%Y/%m/%d')
   end
 
+  def id_and_cost
+    "##{id}, #{total_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円"
+  end
+
   private
 
   # Recursively finds the next largest course for given number of registrations
