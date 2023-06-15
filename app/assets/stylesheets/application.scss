@@ -267,6 +267,7 @@ main#sign-up {
 #login {
   padding-top: 0;
   padding-bottom: 0;
+  margin: 0;
 }
 
 #login .row {
@@ -299,7 +300,7 @@ main#sign-up {
 
 #new_user {
   background-color: white;
-  overflow: scroll;
+  overflow-y: auto;
   width: 100vw;
   border-radius: 2rem 2rem 0 0;
   @media (min-width: 992px) {
