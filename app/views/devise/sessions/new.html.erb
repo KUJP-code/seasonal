@@ -1,8 +1,8 @@
-<main id="login" class="container">
+<main id="login" class="container-fluid">
   <div class="row">
     <div id="login_splash" class="col-12 col-lg-8"></div>
     
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'col-12 col-lg-4 needs-validation d-flex flex-column gap-3 p-3', novalidate: true }) do |f| %>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'col-12 col-lg-4 needs-validation d-flex flex-column justify-content-center gap-3 p-3', novalidate: true }) do |f| %>
       <div id="login_logo"></div>
 
       <h2 class="mt-1"><%= t('.login') %></h2>
