@@ -8,12 +8,13 @@
 
             <% if current_user.staff? %>
                 <% if invoice.in_ss %>
-                    <%= form_with model: invoice do |f| %>
-                        <%= f.hidden_field :in_ss, value: false %>
+                    <% if invoice.child.invoices.all?(&:in_ss) %>
+                        <%= form_with model: invoice do |f| %>
+                            <%= f.hidden_field :in_ss, value: false %>
 
-                        <%= f.submit t('.unconfirm_booking'), class: 'btn btn-primary', data: { turbo_confirm: t('.makes_editable') } %>
+                            <%= f.submit t('.unconfirm_booking'), class: 'btn btn-primary', data: { turbo_confirm: t('.makes_editable') } %>
+                        <% end %>
                     <% end %>
-
                     
                     <p class="btn btn-info"><%= "Booking##{invoice.id}" %></p>
                 <% else %>
