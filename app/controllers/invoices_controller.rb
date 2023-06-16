@@ -27,7 +27,7 @@ class InvoicesController < ApplicationController
     @invoice = authorize(Invoice.find(params[:id]))
     return redirect_to child_path(@invoice.child), alert: t('.no_parent') if @invoice.child.parent_id.nil?
 
-    if params[:commit] == '' || params[:commit] == '変更を確認済み'
+    if params[:commit] == '' || params[:commit] == '✔' || params[:commit] == '変更を確認済み'
       status_update
     else
       full_update

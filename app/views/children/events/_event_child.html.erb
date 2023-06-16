@@ -79,33 +79,48 @@
     <% end %>
 
     <td rowspan="2" id=<%= "child#{event_child.id}entered" %>>
-        <% event_invoices.each do |i| %>
+        <% if event_invoices.size == 1 %>
+            <% i = event_invoices.first %>
             <% if i.entered %>
-                <% if event_child.invoices.all?(&:in_ss) %>
-                    <%= form_with model: i do |f| %>
-                        <%= f.hidden_field :entered, value: false %>
-                        <%= f.hidden_field :in_ss, value: false %>
-                        <div class="d-flex gap-1">
-                            <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
-                            <%= f.submit '', class: 'form-check-input rounded entered text-center', data: { turbo_confirm: t('.makes_editable') } %>
-                        </div>
-                    <% end %>
-                <% else %>
-                    <%= form_with url: url_for do |f| %>
-                        <div class="d-flex gap-1">
-                            <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
-                            <%= f.submit '', class: 'form-check-input rounded entered text-center', data: { turbo_confirm: t('.unconfirmed_invoice') } %>
-                        </div>
-                    <% end %>
+                <%= form_with model: i do |f| %>
+                    <%= f.hidden_field :entered, value: false %>
+                    <%= f.submit '✔', class: 'form-check-input w-50 h-50 rounded entered text-center' %>
                 <% end %>
             <% else %>
                 <%= form_with model: i do |f| %>
                     <%= f.hidden_field :entered, value: true %>
                     <%= f.hidden_field :in_ss, value: true %>
-                    <div class="d-flex gap-1">
-                        <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
-                        <%= f.submit '', class: 'form-check-input rounded not-entered' %>
-                    </div>
+                    <%= f.submit '', class: 'form-check-input rounded w-50 h-50 not-entered' %>
+                <% end %>
+            <% end %>
+        <% else %>
+            <% event_invoices.each do |i| %>
+                <% if i.entered %>
+                    <% if event_child.invoices.all?(&:in_ss) %>
+                        <%= form_with model: i, class: 'd-flex d-column justify-content-center align-items-center gap-1' do |f| %>
+                            <%= f.hidden_field :entered, value: false %>
+                            <div class="d-flex gap-1">
+                                <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
+                                <%= f.submit '', class: 'form-check-input rounded entered text-center' %>
+                            </div>
+                        <% end %>
+                    <% else %>
+                        <%= form_with url: url_for do |f| %>
+                            <div class="d-flex gap-1">
+                                <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
+                                <%= f.submit '', class: 'form-check-input rounded entered text-center' %>
+                            </div>
+                        <% end %>
+                    <% end %>
+                <% else %>
+                    <%= form_with model: i, class: 'd-flex d-column justify-content-center align-items-center gap-1' do |f| %>
+                        <%= f.hidden_field :entered, value: true %>
+                        <%= f.hidden_field :in_ss, value: true %>
+                        <div class="d-flex gap-1">
+                            <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
+                            <%= f.submit '', class: 'form-check-input rounded not-entered' %>
+                        </div>
+                    <% end %>
                 <% end %>
             <% end %>
         <% end %>
