@@ -81,6 +81,15 @@
                 <%= f.submit '', class: 'form-check-input rounded h-50 w-50 not-entered' %>
             <% end %>
         </td>
+    <% elsif event_child.invoices.sort_by? { |i| i.updated_at }.last.entered == false %>
+        <td rowspan="2"></td>
+        <td rowspan="2" id=<%= "child#{event_child.id}entered" %>>
+            <%= form_with model: active_invoice do |f| %>
+                <%= f.hidden_field :entered, value: true %>
+                <%= f.hidden_field :in_ss, value: true %>
+                <%= f.submit '', class: 'form-check-input rounded h-50 w-50 not-entered' %>
+            <% end %>
+        </td>
     <% else %>
         <td rowspan="2"></td>
         <td rowspan="2" id=<%= "child#{event_child.id}entered" %>>
