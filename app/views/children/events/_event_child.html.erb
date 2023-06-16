@@ -66,10 +66,10 @@
     </td>
 
     <% if active_invoice %>
-        <td rowspan="2" id=<%= "child#{event_child.id}changes" %> class="<%= 'table-danger' if active_invoice.seen_at.nil? || active_invoice.versions.last.created_at > active_invoice.seen_at %>">
-            <% if active_invoice.seen_at.nil? || active_invoice.versions.last.created_at > active_invoice.seen_at %>
+        <td rowspan="2" id=<%= "child#{event_child.id}changes" %> class="<%= 'table-danger' if active_invoice.seen_at.nil? || active_invoice.updated_at > active_invoice.seen_at %>">
+            <% if active_invoice.seen_at.nil? || active_invoice.updated_at > active_invoice.seen_at %>
                 <div class="d-flex gap-2">
-                    <%= link_to t('.view'), invoice_path(active_invoice), data: { 'turbo-frame' => '_top' }, target: '_blank', class: 'btn btn-primary' %>
+                    <%= link_to t('.view'), invoice_path(active_invoice), target: '_blank', class: 'btn btn-primary' %>
                     <%= button_to t('.seen'), seen_invoice_path(id: active_invoice.id, child: event_child.id), class: 'btn btn-secondary' %>
                 </div>
             <% end %>
@@ -87,10 +87,15 @@
                     <%= f.submit '✔', class: 'form-check-input w-50 h-50 rounded entered text-center' %>
                 <% end %>
             <% else %>
-                <%= form_with model: i do |f| %>
-                    <%= f.hidden_field :entered, value: true %>
-                    <%= f.hidden_field :in_ss, value: true %>
-                    <%= f.submit '', class: 'form-check-input rounded w-50 h-50 not-entered' %>
+                <% if i.in_ss %>
+                    <%= form_with model: i do |f| %>
+                        <%= f.hidden_field :entered, value: true %>
+                        <%= f.submit '', class: 'form-check-input rounded w-50 h-50 not-entered' %>
+                    <% end %>
+                <% else %>
+                    <div class="d-flex justify-content-center align-items-center gap-1">
+                        <div class="form-check-input rounded cant-enter"></div>
+                    </div>
                 <% end %>
             <% end %>
         <% else %>
@@ -104,12 +109,19 @@
                         </div>
                     <% end %>
                 <% else %>
-                    <%= form_with model: i, class: 'd-flex d-column justify-content-center align-items-center gap-1' do |f| %>
-                        <%= f.hidden_field :entered, value: true %>
-                        <%= f.hidden_field :in_ss, value: true %>
-                        <div class="d-flex gap-1">
+                    <% if i.in_ss %>
+                        <%= form_with model: i, class: 'd-flex d-column justify-content-center align-items-center gap-1' do |f| %>
+                            <%= f.hidden_field :entered, value: true %>
+                            <div class="d-flex gap-1">
+                                <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
+                                <%= f.submit '', class: 'form-check-input rounded not-entered' %>
+                            </div>
+                        <% end %>
+                    <% else %>
+                        <div class="d-flex justify-content-center align-items-center gap-1">
                             <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
-                            <%= f.submit '', class: 'form-check-input rounded not-entered' %>
+                            <div class="form-check-input rounded" style="width:16px;height:16px;background:#bfbfbf">
+                            </div>
                         </div>
                     <% end %>
                 <% end %>

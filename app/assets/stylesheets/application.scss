@@ -238,6 +238,12 @@ main#child_show .card {
   transform: scale(110%);
 }
 
+#event_children_index .cant-enter {
+  background: #bfbfbf;
+  width: 30px;
+  height: 30px;
+}
+
 // Child#time_slot_index
 
 #slot_children_index {
