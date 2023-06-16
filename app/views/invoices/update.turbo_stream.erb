@@ -25,21 +25,12 @@
         <% else %>
             <% child_invoices.select { |i| i.total_cost > 3_000 }.each do |i| %>
                 <% if i.entered %>
-                    <% if child_invoices.all?(&:in_ss) %>
-                        <%= form_with model: i, class: 'd-flex d-column justify-content-center align-items-center gap-1' do |f| %>
-                            <%= f.hidden_field :entered, value: false %>
-                            <div class="d-flex gap-1">
-                                <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
-                                <%= f.submit '', class: 'form-check-input rounded entered text-center' %>
-                            </div>
-                        <% end %>
-                    <% else %>
-                        <%= form_with url: url_for do |f| %>
-                            <div class="d-flex gap-1">
-                                <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
-                                <%= f.submit '', class: 'form-check-input rounded entered text-center', data: { turbo_confirm: t('.unconfirmed_invoice') } %>
-                            </div>
-                        <% end %>
+                    <%= form_with model: i, class: 'd-flex d-column justify-content-center align-items-center gap-1' do |f| %>
+                        <%= f.hidden_field :entered, value: false %>
+                        <div class="d-flex gap-1">
+                            <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
+                            <%= f.submit '', class: 'form-check-input rounded entered text-center' %>
+                        </div>
                     <% end %>
                 <% else %>
                     <%= form_with model: i, class: 'd-flex d-column justify-content-center align-items-center gap-1' do |f| %>
