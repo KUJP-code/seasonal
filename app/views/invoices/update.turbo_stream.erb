@@ -7,31 +7,38 @@
 <% end %>
 
 <%= turbo_stream.replace "child#{@invoice.child_id}entered" do %>
-    <% if @invoice.entered %>
-        <% if child_invoices.all?(&:in_ss) %>
-            <td rowspan="2" id=<%= "child#{@invoice.child_id}entered" %>>
-                <%= form_with model: @invoice do |f| %>
-                    <%= f.hidden_field :entered, value: false %>
-                    <%= f.hidden_field :in_ss, value: false %>
-                    <%= f.submit '✔', class: 'form-check-input w-50 h-50 rounded entered text-center', data: { turbo_confirm: t('.makes_editable') } %>
+   <td rowspan="2" id=<%= "child#{@invoice.child_id}entered" %>>
+       <% child_invoices.select { |i| i.total_cost > 3_000 }.each do |i| %>
+            <% if i.entered %>
+                <% if child_invoices.all?(&:in_ss) %>
+                    <%= form_with model: i do |f| %>
+                        <%= f.hidden_field :entered, value: false %>
+                        <%= f.hidden_field :in_ss, value: false %>
+                        <div class="d-flex gap-1">
+                            <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
+                            <%= f.submit '', class: 'form-check-input rounded entered text-center', data: { turbo_confirm: t('.makes_editable') } %>
+                        </div>
+                    <% end %>
+                <% else %>
+                    <%= form_with url: url_for do |f| %>
+                        <div class="d-flex gap-1">
+                            <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
+                            <%= f.submit '', class: 'form-check-input rounded entered text-center', data: { turbo_confirm: t('.unconfirmed_invoice') } %>
+                        </div>
+                    <% end %>
                 <% end %>
-            </td>
-        <% else %>
-            <td rowspan="2" id=<%= "child#{@invoice.child_id}entered" %>>
-                <%= form_with model: @invoice do |f| %>
-                    <%= f.submit '✔', class: 'form-check-input w-50 h-50 rounded entered text-center', data: { turbo_confirm: t('.unconfirmed_invoice') } %>
+            <% else %>
+                <%= form_with model: i do |f| %>
+                    <%= f.hidden_field :entered, value: true %>
+                    <%= f.hidden_field :in_ss, value: true %>
+                    <div class="d-flex gap-1">
+                        <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
+                        <%= f.submit '', class: 'form-check-input rounded not-entered' %>
+                    </div>
                 <% end %>
-            </td>
-        <% end %>
-    <% else %>
-        <td rowspan="2" id=<%= "child#{@invoice.child_id}entered" %>>
-            <%= form_with model: @invoice do |f| %>
-                <%= f.hidden_field :entered, value: true %>
-                <%= f.hidden_field :in_ss, value: true %>
-                <%= f.submit '', class: 'form-check-input rounded h-50 w-50 not-entered' %>
             <% end %>
-        </td>   
-    <% end %>
+        <% end %>
+   </td>
 <% end %>
 
 <%= turbo_stream.replace "child#{@invoice.child_id}invoices" do %>
