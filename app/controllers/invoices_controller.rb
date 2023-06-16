@@ -4,11 +4,11 @@
 class InvoicesController < ApplicationController
   def index
     @invoices = if params[:event] && params[:user]
-                  User.find(params[:user]).real_invoices.where(event: Event.find(params[:event]))
+                  User.find(params[:user]).invoices.where(event: Event.find(params[:event]))
                 elsif params[:user]
-                  User.find(params[:user]).real_invoices
+                  User.find(params[:user]).invoices
                 elsif params[:child]
-                  Child.find(params[:child]).real_invoices
+                  Child.find(params[:child]).invoices
                 else
                   current_user.invoices
                 end
@@ -27,14 +27,10 @@ class InvoicesController < ApplicationController
     @invoice = authorize(Invoice.find(params[:id]))
     return redirect_to child_path(@invoice.child), alert: t('.no_parent') if @invoice.child.parent_id.nil?
 
-    if @invoice.update(invoice_params)
-      # FIXME: bandaid to cover for the fact that some callbacks don't
-      # update the summary (adjustments, option registrations)
-      @invoice.reload.calc_cost && @invoice.save
-      send_emails(@invoice)
-      redirect_to invoice_path(id: @invoice.id, updated: true), notice: t('success', model: 'お申込', action: '更新')
+    if params[:commit] == '' || params[:commit] == '✔' || params[:commit] == '変更を確認済み'
+      status_update
     else
-      render :new, status: :unprocessable_entity, notice: t('failure', model: 'お申込', action: '更新')
+      full_update
     end
   end
 
@@ -143,6 +139,18 @@ class InvoicesController < ApplicationController
     target_invoice
   end
 
+  def full_update
+    if @invoice.update(invoice_params)
+      # FIXME: bandaid to cover for the fact that some callbacks don't
+      # update the summary (adjustments, option registrations)
+      @invoice.reload.calc_cost && @invoice.save
+      send_emails(@invoice)
+      redirect_to invoice_path(id: @invoice.id, updated: true), notice: t('success', model: 'お申込', action: '更新')
+    else
+      render :new, status: :unprocessable_entity, notice: t('failure', model: 'お申込', action: '更新')
+    end
+  end
+
   def merge_invoices(from, to)
     from.registrations.each do |reg|
       reg.update(invoice_id: to.id)
@@ -161,7 +169,7 @@ class InvoicesController < ApplicationController
 
   def invoice_params
     params.require(:invoice).permit(
-      :id, :child_id, :event_id, :billing_date, :in_ss,
+      :id, :child_id, :event_id, :billing_date, :in_ss, :entered,
       slot_regs_attributes: %i[id child_id _destroy invoice_id registerable_id
                                registerable_type],
       opt_regs_attributes: %i[id child_id _destroy invoice_id registerable_id
@@ -183,6 +191,16 @@ class InvoicesController < ApplicationController
     else
       InvoiceMailer.with(invoice: invoice, user: invoice.child.parent).updated_notif.deliver_now
       InvoiceMailer.with(invoice: invoice, user: invoice.school.managers.first).sm_updated_notif.deliver_now
+    end
+  end
+
+  def status_update
+    if @invoice.update(invoice_params)
+      respond_to do |format|
+        format.turbo_stream
+      end
+    else
+      redirect_to invoice_path(@invoice), status: :unprocessable_entity, notice: t('failure', model: 'お申込', action: '更新')
     end
   end
 

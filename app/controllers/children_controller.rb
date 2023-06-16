@@ -100,7 +100,7 @@ class ChildrenController < ApplicationController
     @source = Event.find(params[:id])
     @slots = @source.time_slots.includes(:options)
     @children = @source.children.includes(
-      :options, :regular_schedule, time_slots: %i[options afternoon_slot], invoices: :coupons
+      :options, :invoices, :regular_schedule, time_slots: %i[options afternoon_slot], real_invoices: :coupons
     ).order(:name)
   end
 

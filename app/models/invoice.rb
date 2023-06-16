@@ -35,7 +35,7 @@ class Invoice < ApplicationRecord
   accepts_nested_attributes_for :coupons, reject_if: :all_blank
 
   # Track changes with Paper Trail
-  has_paper_trail ignore: [:seen_at]
+  has_paper_trail ignore: %i[entered in_ss seen_at]
 
   # Allow export/import with postgres-copy
   acts_as_copy_target

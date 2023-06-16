@@ -1,0 +1,47 @@
+<% child_invoices = @invoice.child.invoices.where(event_id: @invoice.event_id) %>
+
+<% if @invoice.seen_at.present? && @invoice.seen_at > @invoice.updated_at %>
+    <%= turbo_stream.replace "child#{@invoice.child_id}changes" do %>
+        <td rowspan="2"></td>
+    <% end %>
+<% end %>
+
+<%= turbo_stream.replace "child#{@invoice.child_id}entered" do %>
+    <% if @invoice.entered %>
+        <% if child_invoices.all?(&:in_ss) %>
+            <td rowspan="2" id=<%= "child#{@invoice.child_id}entered" %>>
+                <%= form_with model: @invoice do |f| %>
+                    <%= f.hidden_field :entered, value: false %>
+                    <%= f.hidden_field :in_ss, value: false %>
+                    <%= f.submit '✔', class: 'form-check-input w-50 h-50 rounded entered text-center', data: { turbo_confirm: t('.makes_editable') } %>
+                <% end %>
+            </td>
+        <% else %>
+            <td rowspan="2" id=<%= "child#{@invoice.child_id}entered" %>>
+                <%= form_with model: @invoice do |f| %>
+                    <%= f.submit '✔', class: 'form-check-input w-50 h-50 rounded entered text-center', data: { turbo_confirm: t('.unconfirmed_invoice') } %>
+                <% end %>
+            </td>
+        <% end %>
+    <% else %>
+        <td rowspan="2" id=<%= "child#{@invoice.child_id}entered" %>>
+            <%= form_with model: @invoice do |f| %>
+                <%= f.hidden_field :entered, value: true %>
+                <%= f.hidden_field :in_ss, value: true %>
+                <%= f.submit '', class: 'form-check-input rounded h-50 w-50 not-entered' %>
+            <% end %>
+        </td>   
+    <% end %>
+<% end %>
+
+<%= turbo_stream.replace "child#{@invoice.child_id}invoices" do %>
+    <td rowspan="2" class="invoices" id=<%= "child#{@invoice.child_id}invoices" %>>
+        <% child_invoices.select { |i| i.total_cost > 3_000}.each do |invoice| %>
+            <% if invoice.in_ss %>
+                <p><%= link_to number_to_currency(invoice.total_cost, unit: '円', precision: 0, locale: :ja), invoice_path(invoice), class: 'text-info' %></p>
+            <% else %>
+                <p><%= link_to number_to_currency(invoice.total_cost, unit: '円', precision: 0, locale: :ja), invoice_path(invoice), class: 'text-danger fw-bold' %></p>
+            <% end %>
+        <% end %>
+    </td>
+<% end %>

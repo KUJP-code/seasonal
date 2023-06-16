@@ -37,6 +37,7 @@
                 <th scope="col" rowspan="2"><%= t('.cost') %></th>
                 <th scope="col" rowspan="2"><%= t('.summary') %></th>
                 <th scope="col" rowspan="2"><%= t('.changes') %></th>
+                <th scope="col" rowspan="2">SS登録済</th>
                 <th scope="col" rowspan="2"><%= t('.coupons') %></th>
                 <th scope="col" rowspan="2"><%= t('.billing_date') %></th>
                 <th scope="col" rowspan="2"><%= t('.email_template') %></th>
@@ -107,6 +108,7 @@
                         <%= label_tag 'cost_filter', t('.filter'), class: 'form-label' %>
                     </div>
                 </td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td data-controller="filter"
