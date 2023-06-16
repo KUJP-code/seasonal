@@ -1,0 +1,5 @@
+<% if @invoice.seen_at.present? && @invoice.seen_at >= @invoice.versions.last.created_at %>
+    <%= turbo_stream.replace "child#{@invoice.child_id}changes" do %>
+        <td rowspan="2"></td>
+    <% end %>
+<% end %>

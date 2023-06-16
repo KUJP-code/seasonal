@@ -66,8 +66,8 @@
     </td>
 
     <% if active_invoice %>
-        <td rowspan="2" id=<%= "child#{event_child.id}changes" %> class="<%= 'table-danger' if active_invoice.seen_at.nil? || active_invoice.updated_at > active_invoice.seen_at %>">
-            <% if active_invoice.seen_at.nil? || active_invoice.updated_at > active_invoice.seen_at %>
+        <td rowspan="2" id=<%= "child#{event_child.id}changes" %> class="<%= 'table-danger' if active_invoice.seen_at.nil? || active_invoice.versions.last.created_at > active_invoice.seen_at %>">
+            <% if active_invoice.seen_at.nil? || active_invoice.versions.last.created_at > active_invoice.seen_at %>
                 <div class="d-flex gap-2">
                     <%= link_to t('.view'), invoice_path(active_invoice), target: '_blank', class: 'btn btn-primary' %>
                     <%= button_to t('.seen'), seen_invoice_path(id: active_invoice.id, child: event_child.id), class: 'btn btn-secondary' %>

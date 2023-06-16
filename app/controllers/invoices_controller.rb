@@ -27,7 +27,7 @@ class InvoicesController < ApplicationController
     @invoice = authorize(Invoice.find(params[:id]))
     return redirect_to child_path(@invoice.child), alert: t('.no_parent') if @invoice.child.parent_id.nil?
 
-    if params[:commit] == '' || params[:commit] == '✔' || params[:commit] == '変更を確認済み'
+    if params[:commit] == '' || params[:commit] == '✔'
       status_update
     else
       full_update
@@ -97,8 +97,8 @@ class InvoicesController < ApplicationController
   end
 
   def seen
-    Invoice.find(params[:id]).update(seen_at: Time.current)
-    @child_id = params[:child]
+    @invoice = Invoice.find(params[:id])
+    @invoice.update(seen_at: Time.current)
 
     respond_to do |format|
       format.turbo_stream
@@ -195,6 +195,8 @@ class InvoicesController < ApplicationController
   end
 
   def status_update
+    @child_invoices = @invoice.child.invoices.where(event_id: @invoice.event_id)
+
     if @invoice.update(invoice_params)
       respond_to do |format|
         format.turbo_stream

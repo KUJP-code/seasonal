@@ -1,23 +1,14 @@
-<% child_invoices = @invoice.child.invoices.where(event_id: @invoice.event_id) %>
-
-<% if @invoice.seen_at.present? && @invoice.seen_at > @invoice.updated_at %>
-    <%= turbo_stream.replace "child#{@invoice.child_id}changes" do %>
-        <td rowspan="2"></td>
-    <% end %>
-<% end %>
-
 <%= turbo_stream.replace "child#{@invoice.child_id}entered" do %>
    <td rowspan="2" id=<%= "child#{@invoice.child_id}entered" %>>
-        <% if child_invoices.size == 1 %>
-            <% i = child_invoices.first %>
-            <% if i.entered %>
-                <%= form_with model: i do |f| %>
+        <% if @child_invoices.size == 1 %>
+            <% if @invoice.entered %>
+                <%= form_with model:@invoice do |f| %>
                     <%= f.hidden_field :entered, value: false %>
                     <%= f.submit '✔', class: 'form-check-input w-50 h-50 rounded entered text-center' %>
                 <% end %>
             <% else %>
-                <% if i.in_ss %>
-                    <%= form_with model: i do |f| %>
+                <% if @invoice.in_ss %>
+                    <%= form_with model: @invoice do |f| %>
                         <%= f.hidden_field :entered, value: true %>
                         <%= f.submit '', class: 'form-check-input rounded w-50 h-50 not-entered' %>
                     <% end %>
@@ -28,7 +19,7 @@
                 <% end %>
             <% end %>
         <% else %>
-            <% child_invoices.select { |i| i.total_cost > 3_000 }.each do |i| %>
+            <% @child_invoices.select { |i| i.total_cost > 3_000 }.each do |i| %>
                 <% if i.entered %>
                     <%= form_with model: i, class: 'd-flex d-column justify-content-center align-items-center gap-1' do |f| %>
                         <%= f.hidden_field :entered, value: false %>
