@@ -189,8 +189,10 @@ class InvoicesController < ApplicationController
     if invoice_params['in_ss'] == 'true'
       InvoiceMailer.with(invoice: invoice, user: invoice.child.parent).confirmation_notif.deliver_now
     else
-      InvoiceMailer.with(invoice: invoice, user: invoice.child.parent).updated_notif.deliver_now
-      InvoiceMailer.with(invoice: invoice, user: invoice.school.managers.first).sm_updated_notif.deliver_now
+      unless current_user.admin?
+        InvoiceMailer.with(invoice: invoice, user: invoice.child.parent).updated_notif.deliver_now
+        InvoiceMailer.with(invoice: invoice, user: invoice.school.managers.first).sm_updated_notif.deliver_now
+      end
     end
   end
 
