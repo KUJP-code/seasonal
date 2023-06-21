@@ -97,17 +97,17 @@
                 <% if current_user.admin? %>
                     <div>
                         <%= f.label :school_id, t('.school'), class: 'form-label' %><br />
-                        <%= f.collection_select :school_id, School.all.order(:name), :id, :name, {}, { class: 'form-select', required: true } %>
+                        <%= f.collection_select :school_id, School.all.order(:name), :id, :name, {}, { class: 'form-select' } %>
                     </div>
                 <% elsif current_user.school_manager? %>
                     <div>
                         <%= f.label :school_id, t('.school'), class: 'form-label' %><br />
-                        <%= f.collection_select :school_id, current_user.managed_schools.order(:name), :id, :name, { selected: current_user.managed_schools.first.id }, { class: 'form-select', required: true } %>
+                        <%= f.collection_select :school_id, current_user.managed_schools.order(:name), :id, :name, { selected: current_user.managed_schools.first.id }, { class: 'form-select' } %>
                     </div>
                 <% else %>
                     <div>
                         <%= f.label :school_id, t('.school'), class: 'form-label' %><br />
-                        <%= f.collection_select :school_id, School.where.not(name: 'オンラインコース').order(:name), :id, :name, {}, { class: 'form-select', required: true } %>
+                        <%= f.collection_select :school_id, School.where.not(name: 'オンラインコース').order(:name), :id, :name, {}, { class: 'form-select' } %>
                     </div>
                 <% end %>
     
