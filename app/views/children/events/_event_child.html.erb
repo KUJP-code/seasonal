@@ -150,6 +150,26 @@
         <% end %>
     </td>
 
+    <td class="kindy" rowspan="2">
+        <% if event_child.kindy %>
+          幼児
+        <% else %>
+          小学生
+        <% end %>
+    </td>
+
+    <td class="membership" rowspan="2">
+        <%= case event_child.category
+            when 'internal'
+                '通学生'
+            when 'reservation'
+                '予約生'
+            else
+                '非会員'
+            end
+        %>
+    </td>
+
     <td class="regular_schedule" rowspan="2"><%= event_child.regular_schedule.days if event_child.regular_schedule %></td>
     <td class="allergies" rowspan="2"><%= event_child.allergies %></td>
     <td class="photos" rowspan="2"><%= event_child.photos unless event_child.photos == 'OK' %></td>

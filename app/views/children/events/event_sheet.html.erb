@@ -40,6 +40,15 @@
                 <th scope="col" rowspan="2">SS登録済</th>
                 <th scope="col" rowspan="2"><%= t('.coupons') %></th>
                 <th scope="col" rowspan="2"><%= t('.billing_date') %></th>
+                <th scope="col" rowspan="2">
+                    <p>幼児</p>
+                    <p>小学生</p>
+                </th>
+                <th scope="col" rowspan="2">
+                    <p>通学生</p>
+                    <p>予約生</p>
+                    <p>非会員</p>
+                </th>
                 <th scope="col" rowspan="2"><%= t('.reg_days') %></th>
                 <th scope="col" rowspan="2"><%= t('.allergy') %></th>
                 <th scope="col" rowspan="2"><%= t('.photo') %></th>
@@ -124,6 +133,22 @@
                     <div class="form-floating">
                         <%= text_field_tag 'invoices_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
                         <%= label_tag 'invoices_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td data-controller="filter"
+                    data-filter-siblings-value="1"
+                    data-filter-col-value=".kindy">
+                    <div class="form-floating">
+                        <%= text_field_tag 'kindy_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'kindy_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td data-controller="filter"
+                    data-filter-siblings-value="1"
+                    data-filter-col-value=".membership">
+                    <div class="form-floating">
+                        <%= text_field_tag 'membership_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'membership_filter', t('.filter'), class: 'form-label' %>
                     </div>
                 </td>
                 <td data-controller="filter"
