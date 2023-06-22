@@ -41,6 +41,13 @@
         <% end %>
 
     <% else %>
+        <% if @failed %>
+            <div class="bg-danger text-white fw-semibold rounded p-2">
+                <p>お子様の情報が見つかりません。</p>
+                <p>マイページIDと生年月日をお確かめください。</p>
+            </div>    
+        <% end %>
+
         <%= form_with url: find_child_path, method: :get, id: 'claim_child_form', html: { class: 'd-grid gap-3'} do |f| %>
             <%= f.hidden_field :parent_id, value: parent.id %>
             <div class="form-floating" data-controller="count" data-count-countdown-value="true">
