@@ -4,7 +4,7 @@ ja:
       afternoon: "午後（通常レッスン）"
       arrival_options: "延長(前)"
       depart_options: "延長(後)"
-      regular_day: "通常授業日"
+      regular_day: "ご通学日"
       snack: "午後コースおやつ代"
     index:
       slots_for: "%{name} @ %{school}"
