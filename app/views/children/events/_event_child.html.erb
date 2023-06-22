@@ -134,12 +134,9 @@
     
     <td class="coupons" rowspan="2"><% event_invoices.each do |invoice| %>
         <% unless invoice.coupons.size.zero? %>
-            <p>
-            <%= "#{invoice.id}: " %>
             <% invoice.coupons.each do |coupon| %>
-                <%= coupon.code %>
+                <p><%= coupon.code %></p>
             <% end %>
-            </p>
         <% end %>
     <% end %></td>
 
