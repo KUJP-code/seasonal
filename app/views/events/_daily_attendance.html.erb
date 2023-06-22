@@ -1,23 +1,25 @@
-<h4 class="w-100"><%= link_to event.name, children_path(source: 'Event', id: event.id) %></h4>
+<div class="daily-attendance card flex-column flex-lg-row flex-wrap justify-content-around gap-3" data-controller="print" data-print-target="print">
+    <h3 class="w-100"><%= link_to event.name, children_path(source: 'Event', id: event.id) %></h3>
 
-<% event.time_slots.morning.each do |slot| %>
-    <% regs = slot.registrations.size %>
+    <% event.time_slots.morning.each do |slot| %>
+        <% regs = slot.registrations.size %>
 
-    <div style="height:140px;" class="card <%= case
-                         when regs < 10
-                             'bg-danger'
-                         when regs < 20 
-                             'bg-warning'
-                         else
-                             'bg-success'
-                         end %> justify-content-between">
-        <h6 class="bg-light rounded-3 p-2">
-            <%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'TimeSlot', id: slot.id), class: 'text-break' %>
-        </h6>
-        <h3>
-            <%= regs %>
-        </h3>
-    </div>
-<% end %>
+        <div class="card <%= case
+                            when regs < 10
+                                'bg-danger'
+                            when regs < 20 
+                                'bg-warning'
+                            else
+                                'bg-success'
+                            end %> justify-content-between text-white fw-semibold">
+            <h6 class="bg-light rounded-3 p-2">
+                <%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'TimeSlot', id: slot.id), class: 'fw-semibold' %>
+            </h6>
+            <h3>
+                <%= regs %>
+            </h3>
+        </div>
+    <% end %>
 
-<%= button_tag t('.print'), class: 'btn btn-primary w-100 print', data: { action: "click->print#print" } %>
+    <%= button_tag t('.print'), class: 'btn btn-primary w-100 print', data: { action: "click->print#print" } %>
+</div>

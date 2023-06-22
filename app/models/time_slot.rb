@@ -59,7 +59,7 @@ class TimeSlot < ApplicationRecord
 
   # These convert the start/end datetimes into something more useful for display
   def date
-    start_time.strftime('%m月%d日') + ja_day
+    start_time.strftime('%m月%d日') + " #{ja_day}"
   end
 
   def day
@@ -77,7 +77,7 @@ class TimeSlot < ApplicationRecord
   def ja_day
     en_day = start_time.strftime('%A')
 
-    "（#{DAYS[en_day]}）"
+    "(#{DAYS[en_day]})"
   end
 
   def times
