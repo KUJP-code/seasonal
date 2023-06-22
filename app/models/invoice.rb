@@ -198,6 +198,15 @@ class Invoice < ApplicationRecord
     @breakdown.prepend(
       "<div class='d-flex gap-3 flex-column align-items-start'>\n
       <h2 class='fw-semibold'>#{child.name}</h2>\n
+      <h4 class-'fw-semibold'>#{child.kindy ? '幼児' : '小学生'}</h4>\n
+      <h4 class-'fw-semibold'>#{case child.category
+                                when 'internal'
+                                    '通学生'
+                                when 'reservation'
+                                    '予約生'
+                                else
+                                    '非会員'
+                                end}</h4>\n
       <h3 class='fw-semibold'>#{event.name} @ #{event.school.name}</h3>\n"
     )
     @breakdown << "</div><h2 class='fw-semibold text-start'>お申込内容:</h2>\n"
