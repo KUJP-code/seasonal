@@ -411,8 +411,12 @@ main#event_index .card {
 
 #invoice_index .card,
 #invoice_show .card,
-#invoice_confirm .card {
+#event_show .card.card-invoice {
   width: 90%;
+}
+
+#event_show .card.card-invoice div {
+  width: 100%;
 }
 
 // Forms
