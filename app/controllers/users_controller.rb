@@ -4,6 +4,8 @@
 class UsersController < ApplicationController
   def index
     authorize(User)
+    return new_users if params[:ids]
+
     @users = if current_user.admin?
                policy_scope(User).page(params[:page]).per(500)
              else
@@ -137,6 +139,10 @@ class UsersController < ApplicationController
       # Update the invoice to reflect its new owner
       invoice.reload && invoice.save
     end
+  end
+
+  def new_users
+    @users = authorize(User.where(id: params[:ids]))
   end
 
   def user_params
