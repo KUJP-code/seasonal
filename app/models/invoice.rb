@@ -32,7 +32,7 @@ class Invoice < ApplicationRecord
   accepts_nested_attributes_for :adjustments, allow_destroy: true
   has_many :coupons, as: :couponable,
                      dependent: :destroy
-  accepts_nested_attributes_for :coupons, reject_if: :all_blank
+  accepts_nested_attributes_for :coupons, reject_if: :blank_or_dup
 
   # Track changes with Paper Trail
   has_paper_trail ignore: %i[entered in_ss seen_at]
@@ -87,6 +87,12 @@ class Invoice < ApplicationRecord
     return spot_use(num_regs, courses) unless child.member? && niche_case?
 
     pointless_price(num_regs, courses)
+  end
+
+  def blank_or_dup(coupon)
+    return true if coupon['code'].nil? || coupons.map(&:code).include?(coupon['code'])
+
+    false
   end
 
   def calc_adjustments
