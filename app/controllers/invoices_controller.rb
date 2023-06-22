@@ -139,7 +139,7 @@ class InvoicesController < ApplicationController
       )
     end
 
-    target_invoice.save
+    target_invoice.reload.save
     target_invoice
   end
 
