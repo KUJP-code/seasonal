@@ -51,7 +51,10 @@
 
                     <div class="modal-body">
                         <% event_invoices.each do |invoice| %>
-                            <div class="card mb-3">
+                            <div class="card mb-3" 
+                                 data-controller="clipboard" data-clipboard-success-content="コピーされました" 
+                                 data-clipboard-target="source">
+                                 <button type="button" class="btn btn-primary" data-action="clipboard#copy" data-clipboard-target="button">コピー</button>
                                 <%= sanitize invoice.summary, tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id] %>
                             </div>
                         <% end %>
@@ -148,37 +151,6 @@
                 <p><%= link_to number_to_currency(invoice.total_cost, unit: '円', precision: 0, locale: :ja), invoice_path(invoice), class: 'text-danger fw-bold' %></p>
             <% end %>
         <% end %>
-    </td>
-
-    <td rowspan="2">
-        <button type="button" class="btn btn-primary" 
-            data-bs-toggle="modal" data-bs-target="#<%= "child#{event_child.id}templates" %>">
-            <%= t('.view_template') %>
-        </button>
-
-        <div class="modal fade" id="<%= "child#{event_child.id}templates" %>" tabindex="-1">
-            <div class="modal-dialog modal-fullscreen d-grid">
-                <div class="modal-content d-grid gap-2">
-                    <div class="modal-header">
-                      <h5 class="modal-title"><%= t('.templates_for', child: event_child.name) %></h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <div class="modal-body">
-                        <% event_invoices.each do |invoice| %>
-                            <div class="card mb-3" data-controller="clipboard" data-clipboard-success-content="コピーされました" data-clipboard-target="source">
-                                <button type="button" class="btn btn-primary" data-action="clipboard#copy" data-clipboard-target="button">コピー</button>
-                                <%= sanitize invoice.email_template, tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id] %>
-                            </div>
-                        <% end %>
-                    </div>
-
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t('.close') %></button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </td>
 
     <td class="regular_schedule" rowspan="2"><%= event_child.regular_schedule.days if event_child.regular_schedule %></td>
