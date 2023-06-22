@@ -142,7 +142,11 @@ class UsersController < ApplicationController
   end
 
   def new_users
-    @users = authorize(User.where(id: params[:ids]))
+    @users = if current_user.admin?
+               authorize(User.where(id: params[:ids])).page(params[:page]).per(500)
+             else
+               authorize(User.where(id: params[:ids]))
+             end
   end
 
   def user_params
