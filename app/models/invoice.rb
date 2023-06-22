@@ -260,7 +260,7 @@ class Invoice < ApplicationRecord
 
   # This one actually refers to the child needing a hat or not
   def needs_hat?
-    return false if child.received_hat
+    return false if child.received_hat || child.internal?
 
     # They only need one if registered for an outdoor activity now
     time_slots.any? { |slot| slot.category == 'outdoor' }
