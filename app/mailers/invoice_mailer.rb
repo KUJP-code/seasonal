@@ -10,7 +10,7 @@ class InvoiceMailer < ApplicationMailer
 
   def updated_notif
     @invoice = params[:invoice]
-    @updater = User.find(@invoice.versions.last.whodunnit)
+    @updater = @invoice.versions.last.whodunnit ? User.find(@invoice.versions.last.whodunnit) : User.new(name: 'Admin')
     @child = @invoice.child
     @parent = @child.parent
     if @parent.id == @updater.id
@@ -22,7 +22,7 @@ class InvoiceMailer < ApplicationMailer
 
   def sm_updated_notif
     @invoice = params[:invoice]
-    @updater = User.find(@invoice.versions.last.whodunnit)
+    @updater = @invoice.versions.last.whodunnit ? User.find(@invoice.versions.last.whodunnit) : User.new(name: 'Admin')
     @child = @invoice.child
     @parent = @child.parent
     @sm = @invoice.school.managers.first || User.new(name: 'Leroy', email: 'h-leroy@kids-up.jp')
