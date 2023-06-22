@@ -12,7 +12,7 @@
                 </div>
             <% end %>
     
-            <div class="personal_info d-grid gap-3 p-5">
+            <div class="personal_info d-grid gap-3">
                 <h3><%= t('.personal_info') %></h3>
 
                 <% if @child.parent_id %>
@@ -91,7 +91,7 @@
                 <% end %>
             </div>
     
-            <div class="school_info d-grid gap-3 p-5 pt-0">
+            <div class="school_info d-grid gap-3 pt-0">
                 <h3><%= t('.school_info') %></h3>
     
                 <% if current_user.admin? %>
