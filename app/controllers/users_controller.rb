@@ -113,12 +113,10 @@ class UsersController < ApplicationController
     from_regs = from.invoices.map(&:registrations).flatten
     to_regs = to.invoices.map(&:registrations).flatten
     to_active_invoice = to.invoices.find_by(in_ss: false) || to.invoices.create(event_id: from.invoices.first.event_id)
-    regular_days = to.regular_schedule ? to.regular_schedule.en_days : {}
 
     from_regs.each do |reg|
-      # Skip if already registered or on a regular day
+      # Skip if already registered
       next if already_registered?(to_regs, reg)
-      next if reg.registerable_type == 'TimeSlot' && (reg.registerable.closed? || regular_day?(regular_days, reg.registerable))
 
       # Else associate reg with to child and their open invoice
       reg.update(child_id: to.id, invoice_id: to_active_invoice.id)
@@ -129,31 +127,16 @@ class UsersController < ApplicationController
   end
 
   def move_invoices(from, to)
-    regular_days = to.regular_schedule ? to.regular_schedule.en_days : {}
-
     from.invoices.each do |invoice|
       # Change the child associated with the invoice
       invoice.update(child_id: to.id)
       # Same for each registration on the invoice
       invoice.registrations.each do |reg|
-        next remove_registrations(reg, to) if reg.registerable_type == 'TimeSlot' && regular_day?(regular_days, reg.registerable)
-
         reg.update(child_id: to.id)
       end
       # Update the invoice to reflect its new owner
       invoice.reload && invoice.save
     end
-  end
-
-  def regular_day?(regular_days, slot)
-    !slot.morning && regular_days[slot.day]
-  end
-
-  def remove_registrations(reg, to)
-    slot_options = reg.registerable.options.ids
-    opt_registrations = to.registrations.where(registerable_type: 'Option', registerable_id: slot_options)
-    opt_registrations.destroy_all
-    reg.destroy
   end
 
   def user_params

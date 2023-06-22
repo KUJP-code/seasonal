@@ -85,13 +85,6 @@ class Child < ApplicationRecord
   # Uniqueness
   validates :ssid, uniqueness: { allow_blank: true }
 
-  # Scopes for children who attend certain days
-  scope :attend_monday, -> { joins(:regular_schedule).where('regular_schedule.monday' => true) }
-  scope :attend_tuesday, -> { joins(:regular_schedule).where('regular_schedule.tuesday' => true) }
-  scope :attend_wednesday, -> { joins(:regular_schedule).where('regular_schedule.wednesday' => true) }
-  scope :attend_thursday, -> { joins(:regular_schedule).where('regular_schedule.thursday' => true) }
-  scope :attend_friday, -> { joins(:regular_schedule).where('regular_schedule.friday' => true) }
-
   # Model methods
   def arrival_time(slot)
     arr_opt = options.find_by(optionable: slot, category: :arrival)

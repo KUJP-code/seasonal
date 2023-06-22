@@ -157,9 +157,10 @@
                             </label>
                             <% if slots_in_ss.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
                                 <p>◯</p>
-                            <% elsif child.regular_schedule && child.regular_schedule[afternoon_slot.day.downcase] %>
-                                <p><%= t('.regular_day') %></p>
                             <% else %>
+                                <% if child.regular_schedule && child.regular_schedule[afternoon_slot.day.downcase] %>
+                                    <p class="bg-danger text-white rounded p-1"><%= t('.regular_day')  %></p>
+                                <% end %>
                                 <%= check_box_tag "a_slot#{afternoon_slot.id}", '', (true if aft_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
                             <% end %>
                         </div>
