@@ -124,10 +124,16 @@ class InvoicesController < ApplicationController
       # Skip if already on target invoice or slot is closed
       next unless valid_copy?(o_reg, t_regs)
 
+      registerable_id = if o_reg.registerable_type == 'Option' && origin.kindy != target.kindy
+                          find_equivalent_id(o_reg.registerable)
+                        else
+                          o_reg.registerable_id
+                        end
+
       # If not on target invoice, add registration
       target_invoice.registrations.create!(
         child: target,
-        registerable_id: o_reg.registerable_id,
+        registerable_id: registerable_id,
         registerable_type: o_reg.registerable_type,
         invoice: target_invoice
       )
@@ -135,6 +141,19 @@ class InvoicesController < ApplicationController
 
     target_invoice.save
     target_invoice
+  end
+
+  def find_equivalent_id(option)
+    # Switch the category to the correct one for target's kindy/elementary
+    category = option.category
+    equivalent_category = if category.start_with?('k_')
+                            category.gsub('k_', '')
+                          else
+                            "k_#{category}"
+                          end
+
+    # Find and return the equivalent option's id
+    option.optionable.options.find_by(name: option.name, category: equivalent_category).id
   end
 
   def full_update
@@ -163,18 +182,6 @@ class InvoicesController < ApplicationController
     end
 
     to.save
-  end
-
-  def invoice_params
-    params.require(:invoice).permit(
-      :id, :child_id, :event_id, :billing_date, :in_ss, :entered,
-      slot_regs_attributes: %i[id child_id _destroy invoice_id registerable_id
-                               registerable_type],
-      opt_regs_attributes: %i[id child_id _destroy invoice_id registerable_id
-                              registerable_type],
-      coupons_attributes: [:code],
-      adjustments_attributes: %i[id reason change invoice_id _destroy]
-    )
   end
 
   def send_emails(invoice)
@@ -209,5 +216,17 @@ class InvoicesController < ApplicationController
     return false if already_registered?(t_regs, o_reg)
 
     true
+  end
+
+  def invoice_params
+    params.require(:invoice).permit(
+      :id, :child_id, :event_id, :billing_date, :in_ss, :entered,
+      slot_regs_attributes: %i[id child_id _destroy invoice_id registerable_id
+                               registerable_type],
+      opt_regs_attributes: %i[id child_id _destroy invoice_id registerable_id
+                              registerable_type],
+      coupons_attributes: [:code],
+      adjustments_attributes: %i[id reason change invoice_id _destroy]
+    )
   end
 end
