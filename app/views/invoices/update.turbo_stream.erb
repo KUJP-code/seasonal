@@ -49,3 +49,15 @@
         <% end %>
    </td>
 <% end %>
+
+<%= turbo_stream.replace "child#{@invoice.child_id}invoices" do %>
+    <td class="invoices" rowspan="2" id=<%= "child#{@invoice.child_id}invoices" %>>
+        <% @child_invoices.each do |invoice| %>
+            <% if invoice.in_ss %>
+                <p><%= link_to number_to_currency(invoice.total_cost, unit: '円', precision: 0, locale: :ja), invoice_path(invoice), class: 'text-info' %></p>
+            <% else %>
+                <p><%= link_to number_to_currency(invoice.total_cost, unit: '円', precision: 0, locale: :ja), invoice_path(invoice), class: 'text-danger fw-bold' %></p>
+            <% end %>
+        <% end %>
+    </td>
+<% end %>
