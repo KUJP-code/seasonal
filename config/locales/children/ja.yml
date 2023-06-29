@@ -77,6 +77,7 @@ ja:
       school: "スクール"
       ssid: "マイページID"
     show:
+      address: "ご住所"
       allergies: "アレルギーや健康上の注意等: "
       bday: "生年月日: "
       child_bookings: "%{child}お申込内容"

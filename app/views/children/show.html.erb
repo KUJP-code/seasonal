@@ -9,7 +9,7 @@
         <h5><span class="fw-bold"><%= t('.parent') %></span><%= link_to @child.parent.name, user_path(@child.parent) unless @child.parent_id.nil? %></h5>
 
 
-        <div class="d-flex flex-column flex-lg-row gap-3 justify-content-evenly">
+        <div class="d-flex flex-column flex-lg-row flex-lg-wrap gap-3 justify-content-evenly">
             <div class="d-flex flex-column gap-1">
                 <p><%= @child.katakana_name %></p>
                 <p><%= @child.en_name %></p>
@@ -39,23 +39,25 @@
                         <%= "#{t('.has_hat')} なし" %>
                     <% end %>
                 </p>
-                <% if current_user.staff? %>
-                    <div data-controller="conditional"
-                        data-conditional-pin-value=<%= current_user.pin %>>
-                        <div class="d-none" data-conditional-target="target">
-                            <p><%= "#{t('ele_school')}: #{@child.ele_school_name}" %></p>
-                            <% unless @child.parent.nil? %>
-                                <p><%= "#{t('.phone')}: #{@child.parent.phone}" %></p>
-                                <p><%= "#{t('.email')}: #{@child.parent.email}" %></p>
-                            <% end %>
-                        </div>
-                        <div class="form-floating" data-conditional-target="target">
-                            <%= text_field_tag t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"), '', class: 'form-control', placeholder: t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"), maxlength: 4, data: { 'conditional-target': 'condition', action: 'conditional#pin' } %>
-                            <%= label_tag t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"), nil, class: 'form-label' %>
-                        </div>
-                    </div>
-                <% end %>
             </div>
+            <% if current_user.staff? %>
+                <div data-controller="conditional"
+                    data-conditional-pin-value=<%= current_user.pin %>
+                    class="w-100">
+                    <div class="d-none" data-conditional-target="target">
+                        <p><%= "#{t('ele_school')}: #{@child.ele_school_name}" %></p>
+                        <% unless @child.parent.nil? %>
+                            <p><%= "#{t('.phone')}: #{@child.parent.phone}" %></p>
+                            <p><%= "#{t('.email')}: #{@child.parent.email}" %></p>
+                            <%= "#{t('.address')}: #{@child.parent.prefecture}, #{@child.parent.address}, #{@child.parent.postcode}" %>
+                        <% end %>
+                    </div>
+                    <div class="form-floating" data-conditional-target="target">
+                        <%= text_field_tag t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"), '', class: 'form-control', placeholder: t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"), maxlength: 4, data: { 'conditional-target': 'condition', action: 'conditional#pin' } %>
+                        <%= label_tag t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"), nil, class: 'form-label' %>
+                    </div>
+                </div>
+            <% end %>
         </div>
 
 
