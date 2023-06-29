@@ -65,26 +65,6 @@
                         </div>
                     <% end %>
 
-                    <% if add_slot.special? && add_slot.morning %>
-                        <% ext_opt = if kindy
-                                        add_slot.options.extension.find_by(category: 'k_extension')
-                                        else
-                                        add_slot.options.extension.find_by(category: 'extension')
-                                        end %>
-                        <% ext_opt_registered = registrations.any? { |reg| reg.registerable_id == ext_opt.id && reg.registerable_type == 'Option' } %>
-                        
-                        <div class="add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100"
-                            data-controller="register"
-                            data-controller="register"
-                            data-register-id-value=<%= ext_opt.id %>
-                            data-register-type-value="Option"
-                            data-register-child-value=<%= child.id %>
-                            data-register-cost-value=<%= ext_opt.cost %>>
-                            <label for=<%= "opt#{ext_opt.id}" %> class="form-check-label" data-register-target="name"><%= ext_opt.name %></label>
-                            <%= check_box_tag "opt#{ext_opt.id}", '', (true if ext_opt_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
-                        </div>
-                    <% end %>
-
                     <% arrival_options = if kindy
                                             add_slot.options.select { |opt| opt.k_arrival? }
                                         else
@@ -121,6 +101,26 @@
                         <% end %>
                     <% end %>
                 </div>
+            </div>
+        <% end %>
+
+        <% if add_slot.special? && add_slot.morning %>
+            <% ext_opt = if kindy
+                            add_slot.options.extension.find_by(category: 'k_extension')
+                            else
+                            add_slot.options.extension.find_by(category: 'extension')
+                            end %>
+            <% ext_opt_registered = registrations.any? { |reg| reg.registerable_id == ext_opt.id && reg.registerable_type == 'Option' } %>
+            
+            <div class="add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100 border border"
+                data-controller="register"
+                data-controller="register"
+                data-register-id-value=<%= ext_opt.id %>
+                data-register-type-value="Option"
+                data-register-child-value=<%= child.id %>
+                data-register-cost-value=<%= ext_opt.cost %>>
+                <label for=<%= "opt#{ext_opt.id}" %> class="form-check-label" data-register-target="name"><%= ext_opt.name %></label>
+                <%= check_box_tag "opt#{ext_opt.id}", '', (true if ext_opt_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
             </div>
         <% end %>
 

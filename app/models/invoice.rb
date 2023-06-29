@@ -302,13 +302,17 @@ class Invoice < ApplicationRecord
 
   # Remove options where the slot is no longer registered for
   def orphan_option(opt_reg)
+    # Exclude event options from the check
     return false if event.options.ids.include?(opt_reg['registerable_id'].to_i)
 
-    slot_regs.none? { |s_reg| s_reg.registerable_id == Option.find(opt_reg['registerable_id']).optionable_id }
+    registerable = Option.find(opt_reg['registerable_id'])
+    # If for special day extension, only delete if neither registered
+    return slot_regs.none? { |r| r.registerable.special? } if registerable.extension? || registerable.k_extension?
+
+    slot_regs.none? { |s_reg| s_reg.registerable_id == registerable.optionable_id }
   end
 
   # Calculates how many times we need to apply the dumb 200円 increase
-  # This does not deal with the even less likely case of there being two kindy kids registered for one full day each
   def pointless_price(num_regs, courses)
     days = full_days(slot_regs.map(&:registerable_id))
     extension_cost = days * (courses['1'] + 200)
