@@ -66,7 +66,7 @@ class Child < ApplicationRecord
 
   # Map photos int in table to a permission
   enum :photos, 'NG' => 0,
-                'マイペイジ' => 1,
+                'マイページOK' => 1,
                 'OK' => 3,
                 'Unknown' => 4
 
