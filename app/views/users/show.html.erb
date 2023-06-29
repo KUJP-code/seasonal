@@ -85,9 +85,29 @@
         </div>
 
         <div class="card">
-            <% School.all.each do |school| %>
-                <%= render partial: 'events/event_stats', collection: school.events.excluding(online_event), as: :event %>
-            <% end %>
+            <div class="table-responsive-lg">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="table-primary">
+                            <th scope="col">School</th>
+                            <th scope="col"><%= t('.int_kids') %></th>
+                            <th scope="col"><%= t('.res_kids') %></th>
+                            <th scope="col"><%= t('.ext_kids') %></th>
+                            <th scope="col"><%= t('.total_kids') %></th>
+                            <th scope="col"><%= t('.photo_sales') %></th>
+                            <th scope="col"><%= t('.total_revenue') %></th>
+                            <th scope="col"><%= t('.goal_revenue') %></th>
+                            <th scope="col"><%= t('.goal_percent') %></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% School.all.each do |school| %>
+                            <%= render partial: 'events/condensed_stats', collection: school.events.excluding(online_event), as: :event %>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <h1>Admin Options</h1>
@@ -114,9 +134,29 @@
             </div>
 
             <div class="card">
-                <% area.schools.each do |school| %>
-                    <%= render partial: 'events/event_stats', collection: school.events.excluding(online_event), as: :event %>
-                <% end %>
+                <div class="table-responsive-lg">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr class="table-primary">
+                                <th scope="col">School</th>
+                                <th scope="col"><%= t('.int_kids') %></th>
+                                <th scope="col"><%= t('.res_kids') %></th>
+                                <th scope="col"><%= t('.ext_kids') %></th>
+                                <th scope="col"><%= t('.total_kids') %></th>
+                                <th scope="col"><%= t('.photo_sales') %></th>
+                                <th scope="col"><%= t('.total_revenue') %></th>
+                                <th scope="col"><%= t('.goal_revenue') %></th>
+                                <th scope="col"><%= t('.goal_percent') %></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <% area.schools.each do |school| %>
+                                <%= render partial: 'events/condensed_stats', collection: school.events.excluding(online_event), as: :event %>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         <% end %>
     <% end %>

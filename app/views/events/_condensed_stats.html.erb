@@ -1,0 +1,34 @@
+<% children = event.children %>
+
+<% int_kids = children.select { |c| c.category == 'internal' }.size %>
+<% res_kids = children.select { |c| c.category == 'reservation' }.size %>
+<% ext_kids = children.select { |c| c.category == 'external' }.size %>
+
+<% total_revenue = Invoice.real.where(child_id: children.ids, event_id: event.id).sum(&:total_cost) %>
+<% goal_percent = (total_revenue / event.goal.to_f * 100).truncate %>
+
+<tr>
+    <td><%= link_to event.school.name, children_path(source: 'Event', id: event.id) %></td>
+    <td><%= int_kids %></td>
+    <td><%= res_kids %></td>
+    <td><%= ext_kids %></td>
+    <td><%= children.size %></td>
+    <td><%= event.photo_regs %></td>
+    <td><%= number_to_currency(total_revenue, unit: '円', precision: 0, locale: :ja) %></td>
+    <td><%= number_to_currency(event.goal, unit: '円', precision: 0, locale: :ja) %></td>
+    <td class=<%=
+            case goal_percent
+            when (100..)
+                'table-success'
+            when (50..99)
+                'table-warning'
+            else
+                'table-danger'
+            end
+        %>>
+            <%= "#{goal_percent}%" %>
+        </td>
+    </tr>
+</tr>
+
+

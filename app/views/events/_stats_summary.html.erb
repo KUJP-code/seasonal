@@ -13,7 +13,7 @@
 
 <% ext_kids = children.select { |c| c.category == 'external' } %>
 <% first_ext = ext_kids.select { |k| k.needs_hat && k.parent_id } %>
-<% ext_revenue = Invoice.real.where(child_id: ext_kids.map(&:id), event_id: event_ids).real.sum(&:total_cost) %>
+<% ext_revenue = Invoice.real.where(child_id: ext_kids.map(&:id), event_id: event_ids).sum(&:total_cost) %>
 
 <% total_revenue = int_revenue + res_revenue + ext_revenue %>
 <% area_goal = events.reduce(0) { |sum, e| sum + e.goal  } %>

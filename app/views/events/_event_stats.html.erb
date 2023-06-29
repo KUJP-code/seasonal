@@ -2,7 +2,7 @@
 
 <% int_kids = children.select { |c| c.category == 'internal' } %>
 <% first_int = int_kids.select { |k| k.needs_hat && k.parent_id } %>
-<% int_revenue = Invoice.real.where(child_id: int_kids.map(&:id), event_id: event.id).real.sum(&:total_cost) %>
+<% int_revenue = Invoice.real.where(child_id: int_kids.map(&:id), event_id: event.id).sum(&:total_cost) %>
 
 <% res_kids = children.select { |c| c.category == 'reservation' } %>
 <% first_res = res_kids.select { |k| k.needs_hat && k.parent_id } %>
@@ -10,7 +10,7 @@
 
 <% ext_kids = children.select { |c| c.category == 'external' } %>
 <% first_ext = ext_kids.select { |k| k.needs_hat && k.parent_id } %>
-<% ext_revenue = Invoice.real.where(child_id: ext_kids.map(&:id), event_id: event.id).real.sum(&:total_cost) %>
+<% ext_revenue = Invoice.real.where(child_id: ext_kids.map(&:id), event_id: event.id).sum(&:total_cost) %>
 
 <% total_revenue = int_revenue + res_revenue + ext_revenue %>
 <% goal_percent = (total_revenue / event.goal.to_f * 100).truncate %>
