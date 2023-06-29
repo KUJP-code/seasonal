@@ -31,7 +31,7 @@
             </div>
         <% end %>
 
-        <h1><%= @child.name %></h1>     
+        <h1><%= link_to @child.name, child_path(@child) %></h1>     
         <% @child.events.order(start_date: :asc).each do |event| %>
             <% next unless @invoices.find { |i| i.event_id == event.id } %>
 

@@ -104,6 +104,21 @@ class UsersController < ApplicationController
     @user.admin? && User.admins.size <= 1
   end
 
+  def find_equivalent_id(option)
+    return option.id unless %w[arrival k_arrival departure k_departure extension k_extension].include?(option.category)
+
+    # Switch the category to the correct one for target's kindy/elementary
+    category = option.category
+    equivalent_category = if category.start_with?('k_')
+                            category.gsub('k_', '')
+                          else
+                            "k_#{category}"
+                          end
+
+    # Find and return the equivalent option's id
+    option.optionable.options.find_by(name: option.name, category: equivalent_category).id
+  end
+
   def merge_info(from, to)
     to.update(parent_id: from.parent_id, needs_hat: from.needs_hat)
     to.update(school_id: from.school_id) if to.school_id.nil?
@@ -120,8 +135,15 @@ class UsersController < ApplicationController
       # Skip if already registered
       next if already_registered?(to_regs, reg)
 
+      # Check the created and SS child are same level, adjust options if not
+      registerable_id = if reg.registerable_type == 'Option' && from.kindy != to.kindy
+                          find_equivalent_id(reg.registerable)
+                        else
+                          reg.registerable_id
+                        end
+
       # Else associate reg with to child and their open invoice
-      reg.update(child_id: to.id, invoice_id: to_active_invoice.id)
+      reg.update(child_id: to.id, invoice_id: to_active_invoice.id, registerable_id: registerable_id)
     end
 
     # Update the newly merged invoice
@@ -134,7 +156,14 @@ class UsersController < ApplicationController
       invoice.update(child_id: to.id)
       # Same for each registration on the invoice
       invoice.registrations.each do |reg|
-        reg.update(child_id: to.id)
+        # Check the created and SS child are same level, adjust options if not
+        registerable_id = if reg.registerable_type == 'Option' && from.kindy != to.kindy
+                            find_equivalent_id(reg.registerable)
+                          else
+                            reg.registerable_id
+                          end
+
+        reg.update(child_id: to.id, registerable_id: registerable_id)
       end
       # Update the invoice to reflect its new owner
       invoice.reload && invoice.save

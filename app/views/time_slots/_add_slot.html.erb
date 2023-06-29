@@ -202,7 +202,7 @@
                                 <% unless depart_options.size.zero? %>
                                     <fieldset class="mt-2">
                                         <legend class="fs-6 fw-bold"><%= t('.depart_options') %></legend>
-                                        <% afternoon_slot.options.select { |opt| opt.departure? }.each do |opt| %>
+                                        <% depart_options.each do |opt| %>
                                             <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
                                             <div class="add_reg w-100 form-check d-flex justify-content-center align-items-center"
                                                 data-controller="register"

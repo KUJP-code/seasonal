@@ -144,6 +144,8 @@ class InvoicesController < ApplicationController
   end
 
   def find_equivalent_id(option)
+    return option.id unless %w[arrival k_arrival departure k_departure extension k_extension].include?(option.category)
+
     # Switch the category to the correct one for target's kindy/elementary
     category = option.category
     equivalent_category = if category.start_with?('k_')

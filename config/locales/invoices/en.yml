@@ -5,6 +5,7 @@ en:
     index:
       event_cost: "Total cost for %{event}: %{cost}"
     invoice:
+      confirm_booking: "Confirm Booking"
       in_ss: "In SS, editing locked"
       mark_in_ss: "Mark In SS"
       merge_bookings: "Merge Bookings"
