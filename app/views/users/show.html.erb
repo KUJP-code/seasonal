@@ -59,12 +59,6 @@
         </div>
     <% end %>
 
-    <% if current_user.admin? && !@user.admin? && current_user.id != @user.id %>
-        <div class="card">
-            <%= link_to t('.delete'), user_path(@user), data: { turbo_method: :delete, turbo_confirm: t('.delete_confirm') }, class: 'btn btn-danger' %>
-        </div>
-    <% end %>
-
     <% if @user.children? %>
         <% unless next_event.nil? %>
             <%= render next_event, child: @user.children.first %>
