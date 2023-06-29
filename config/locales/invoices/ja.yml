@@ -25,8 +25,8 @@ ja:
       you_sure: "お申込内容を削除してよろしいですか？削除した後に復元させることは出来ません。"
     recent_invoices:
       child_name: "お子様"
-      num_slots: "開催日"
-      total_cost: "合計"
+      num_slots: "合計お申込スポット数"
+      total_cost: "合計金額"
     show:
       adjustments: "調整内容を追加する"
       changed_by: "変更者: %{user}"
