@@ -1,12 +1,15 @@
 en:
   time_slots:
     add_slot:
+      afternoon: "Afternoon"
       arrival_options: "Arrival Options"
       depart_options: "Depart Options"
       snack: "Snack"
     index:
       slots_for: "Slots for %{name} at %{school}"
     time_slot:
+      aft_close: "Close Afternoon"
+      aft_reopen: "Reopen Afternoon"
       am_reg: "AM Registrations"
       date: "Date: %{date}"
       close: "Close"

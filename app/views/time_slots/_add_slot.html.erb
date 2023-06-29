@@ -11,7 +11,7 @@
     <% registered = registrations.any? { |reg| reg.registerable_id == add_slot.id && reg.registerable_type == 'TimeSlot' } %>
 
     <div class="d-grid gap-3 w-50">
-        <% if add_slot.closed? %>
+        <% if add_slot.closed? && current_user.customer? %>
             <h3 class="fw-bold"><%= t('am_closed') %></h3>
         <% elsif in_ss %>
             <p class="fw-bold fs-5">
@@ -39,6 +39,9 @@
                            class="fw-bold fs-5 form-check-label">
                         <%= add_slot.name %>
                     </label>
+                    <% if add_slot.closed? %>
+                        <p class="bg-danger text-white rounded p-1"><%= t('am_closed')  %></p>
+                    <% end %>
                     <%= check_box_tag "m_slot#{add_slot.id}", '', (true if registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
                 </div>
                 <div class="options mt-2<%= ' hidden' unless registered %>" data-popup-target="popup">
@@ -123,7 +126,7 @@
 
         <% afternoon_slot = add_slot.afternoon_slot %>
         <% unless afternoon_slot.nil? %>
-            <% if afternoon_slot.closed? %>
+            <% if afternoon_slot.closed? && current_user.customer? %>
                 <h3 class="fw-bold"><%= t('pm_closed') %></h3>
             <% else %>
                 <% in_ss = slots_in_ss.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
@@ -159,10 +162,14 @@
                                 <p>◯</p>
                             <% else %>
                                 <% if child.regular_schedule && child.regular_schedule[afternoon_slot.day.downcase] %>
-                                    <p class="bg-danger text-white rounded p-1"><%= t('.regular_day')  %></p>
+                                    <p class="bg-danger text-white rounded p-1"><%= t('.regular_day') %></p>
+                                <% end %>
+                                <% if afternoon_slot.closed? %>
+                                    <p class="bg-danger text-white rounded p-1"><%= t('pm_closed')  %></p>
                                 <% end %>
                                 <%= check_box_tag "a_slot#{afternoon_slot.id}", '', (true if aft_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
                             <% end %>
+
                         </div>
 
                         <div class="options mt-2<%= ' hidden' unless aft_registered %>" data-popup-target="popup">
