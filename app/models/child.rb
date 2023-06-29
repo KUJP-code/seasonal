@@ -24,7 +24,7 @@ class Child < ApplicationRecord
                      source: :registerable,
                      source_type: 'Option'
   has_many :invoices, dependent: :destroy
-  has_many :real_invoices, -> { where('total_cost > ?', 3_000) },
+  has_many :real_invoices, -> { where.associated(:time_slots).distinct },
                           class_name: 'Invoice',
                           dependent: nil,
                           inverse_of: :child

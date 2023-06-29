@@ -198,7 +198,7 @@ class InvoicesController < ApplicationController
   end
 
   def status_update
-    @child_invoices = @invoice.child.invoices.where(event_id: @invoice.event_id)
+    @child_invoices = @invoice.child.real_invoices.where(event_id: @invoice.event_id)
 
     if @invoice.update(invoice_params)
       respond_to do |format|

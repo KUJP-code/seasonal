@@ -19,7 +19,7 @@
                 <% end %>
             <% end %>
         <% else %>
-            <% @child_invoices.select { |i| i.total_cost > 3_000 }.each do |i| %>
+            <% @child_invoices.each do |i| %>
                 <% if i.entered %>
                     <%= form_with model: i, class: 'd-flex d-column justify-content-center align-items-center gap-1' do |f| %>
                         <%= f.hidden_field :entered, value: false %>
