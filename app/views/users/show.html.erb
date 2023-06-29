@@ -80,6 +80,11 @@
         </div>
 
         <div class="card">
+            <h2>Recent Bookings</h2>
+            <%= render partial: 'invoices/recent_invoices', locals: { recent_invoices: Invoice.all.real.order(created_at: :desc).limit(5).includes(:child, :time_slots) } %>
+        </div>
+
+        <div class="card">
             <% School.all.each do |school| %>
                 <%= render partial: 'events/event_stats', collection: school.events.excluding(online_event), as: :event %>
             <% end %>
@@ -120,6 +125,11 @@
         <% @user.managed_schools.each do |school| %>
             <div class="card">
                 <%= render partial: 'events/event_stats', collection: school.events, as: :event %>
+            </div>
+
+            <div class="card">
+                <h2><%= t('.recent_bookings') %></h2>
+                <%= render partial: 'invoices/recent_invoices', locals: { recent_invoices: school.next_event.invoices.order(created_at: :desc).limit(5).includes(:child, :time_slots) } %>
             </div>
 
             <%= render partial: 'events/daily_attendance', locals: { event: school.next_event } %>

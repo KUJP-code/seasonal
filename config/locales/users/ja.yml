@@ -87,6 +87,7 @@ ja:
       merge_children: "生徒の情報を統合する（SSIDがある生徒で、保護者がマイページでSSIDから生徒を追加しなかった場合）"
       phone: "携帯電話番号"
       please_confirm_email: "受け取ったメールより予約内容を確認してください。"
+      recent_bookings: "最近のお申込み内容"
       resend_confirm_email: "予約内容確認メールをもう一度受け取る"
       school_name: "Kids UP %{school}"
       time_slot: "タイムスロット"
