@@ -188,4 +188,34 @@
             <%= render 'users/merge_children', parent: @user %>
         </div>
     <% end %>
+
+    <% if @user.id == 36 %>
+        <% badge_invoices = Invoice.where(event_id: 32).includes(:time_slots, :child).select { |i| i.time_slots.select{ |s| s.morning }.size >= 5 } %>
+
+      <div class="card">
+        <h3>Badge Kids</h3>
+
+        <div class="table-responsive-lg">
+            <table class="table table-striped table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Japanese Name</th>
+                        <th>English Name</th>
+                        <th>Number of Activities</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% badge_invoices.each do |i| %>
+                        <tr>
+                            <td><%= i.child.name %></td>
+                            <td><%= i.child.en_name %></td>
+                            <td><%= i.time_slots.select{ |s| s.morning }.size %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+      </div>      
+    <% end %>
 </main>
