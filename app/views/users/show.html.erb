@@ -206,7 +206,7 @@
                 </thead>
 
                 <tbody>
-                    <% badge_invoices.each do |i| %>
+                    <% badge_invoices.sort_by { |i| i.time_slots.select{ |s| s.morning }.size }.reverse!.each do |i| %>
                         <tr>
                             <td><%= i.child.name %></td>
                             <td><%= i.child.en_name %></td>
