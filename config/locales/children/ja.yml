@@ -32,7 +32,7 @@ ja:
         cost: "合計金額"
         coupons: "福利厚生クーポン"
         daily_attendance: "アテンダントシート"
-        email_template: "メールテンプレート"
+        email_sent: "確定メール送信"
         filter: "フィルター"
         invoices: "お申込リスト"
         photo: "写真掲載ＯＫ"

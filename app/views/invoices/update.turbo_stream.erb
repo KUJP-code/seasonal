@@ -4,13 +4,13 @@
             <% if @invoice.entered %>
                 <%= form_with model:@invoice do |f| %>
                     <%= f.hidden_field :entered, value: false %>
-                    <%= f.submit '✔', class: 'form-check-input w-50 h-50 rounded entered text-center' %>
+                    <%= f.submit '✔', class: 'form-check-input rounded entered text-center' %>
                 <% end %>
             <% else %>
                 <% if @invoice.in_ss %>
                     <%= form_with model: @invoice do |f| %>
                         <%= f.hidden_field :entered, value: true %>
-                        <%= f.submit '', class: 'form-check-input rounded w-50 h-50 not-entered' %>
+                        <%= f.submit '', class: 'form-check-input rounded not-entered' %>
                     <% end %>
                 <% else %>
                     <div class="d-flex justify-content-center align-items-center gap-1">
@@ -25,7 +25,7 @@
                         <%= f.hidden_field :entered, value: false %>
                         <div class="d-flex gap-1">
                             <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
-                            <%= f.submit '', class: 'form-check-input rounded entered text-center' %>
+                            <%= f.submit '', class: 'form-check-input rounded entered text-center small-entered' %>
                         </div>
                     <% end %>
                 <% else %>
@@ -34,13 +34,13 @@
                             <%= f.hidden_field :entered, value: true %>
                             <div class="d-flex gap-1">
                                 <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
-                                <%= f.submit '', class: 'form-check-input rounded not-entered' %>
+                                <%= f.submit '', class: 'form-check-input rounded not-entered small-entered' %>
                             </div>
                         <% end %>
                     <% else %>
                         <div class="d-flex justify-content-center align-items-center gap-1">
                             <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
-                            <div class="form-check-input rounded" style="width:16px;height:16px;background:#bfbfbf">
+                            <div class="form-check-input rounded cant-enter small-entered">
                             </div>
                         </div>
                     <% end %>
@@ -48,6 +48,59 @@
             <% end %>
         <% end %>
    </td>
+<% end %>
+
+<%= turbo_stream.replace "child#{@invoice.child_id}sent" do %>
+    <td rowspan="2" id=<%= "child#{@invoice.child_id}sent" %>>
+        <% if @child_invoices.size == 1 %>
+            <% i = @child_invoices.first %>
+            <% if i.email_sent %>
+                <%= form_with model: i do |f| %>
+                    <%= f.hidden_field :email_sent, value: false %>
+                    <%= f.submit '✔', class: 'form-check-input rounded entered text-center' %>
+                <% end %>
+            <% else %>
+                <% if i.in_ss %>
+                    <%= form_with model: i do |f| %>
+                        <%= f.hidden_field :email_sent, value: true %>
+                        <%= f.submit '', class: 'form-check-input rounded not-entered' %>
+                    <% end %>
+                <% else %>
+                    <div class="d-flex justify-content-center align-items-center gap-1">
+                        <div class="form-check-input rounded cant-enter"></div>
+                    </div>
+                <% end %>
+            <% end %>
+        <% else %>
+            <% @child_invoices.each do |i| %>
+                <% if i.email_sent %>
+                    <%= form_with model: i, class: 'd-flex d-column justify-content-center align-items-center gap-1' do |f| %>
+                        <%= f.hidden_field :email_sent, value: false %>
+                        <div class="d-flex gap-1">
+                            <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
+                            <%= f.submit '', class: 'form-check-input rounded entered text-center small-entered' %>
+                        </div>
+                    <% end %>
+                <% else %>
+                    <% if i.in_ss %>
+                        <%= form_with model: i, class: 'd-flex d-column justify-content-center align-items-center gap-1' do |f| %>
+                            <%= f.hidden_field :email_sent, value: true %>
+                            <div class="d-flex gap-1">
+                                <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
+                                <%= f.submit '', class: 'form-check-input rounded not-entered small-entered' %>
+                            </div>
+                        <% end %>
+                    <% else %>
+                        <div class="d-flex justify-content-center align-items-center gap-1">
+                            <%= number_to_currency(i.total_cost, unit: '円', precision: 0, locale: :ja) %>
+                            <div class="form-check-input rounded cant-enter small-entered">
+                            </div>
+                        </div>
+                    <% end %>
+                <% end %>
+            <% end %>
+        <% end %>
+    </td>
 <% end %>
 
 <%= turbo_stream.replace "child#{@invoice.child_id}invoices" do %>
