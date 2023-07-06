@@ -40,10 +40,18 @@
             <% else %>
                 <%= link_to t('.adjustments'), edit_adjustment_path(@invoice), class: 'btn btn-primary' %>
 
-                <%= form_with model: @invoice do |f| %>
-                    <%= f.hidden_field :in_ss, value: true %>
-                    <%= f.submit t('.confirm_booking'), class: 'btn btn-primary' %>
-                <% end %>
+                    <%= form_with model: @invoice do |f| %>
+                        <%= f.hidden_field :in_ss, value: true %>
+                        <%= f.hidden_field :email_sent, value: true %>
+
+                        <%= f.submit t('.confirm_w_email'), class: 'btn btn-primary' %>
+                    <% end %>
+
+                    <%= form_with model: @invoice do |f| %>
+                        <%= f.hidden_field :in_ss, value: true %>
+
+                        <%= f.submit t('.confirm_no_email'), class: 'btn btn-primary' %>
+                    <% end %>
 
                 <% unless Invoice.where(child_id: @invoice.child_id, event_id: @invoice.event_id).excluding(@invoice).empty? %>
                     <%= form_with url: merge_invoices_path, html: { class: 'd-flex align-items-center gap-3' } do |f| %>

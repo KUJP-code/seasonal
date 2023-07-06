@@ -163,7 +163,7 @@ class InvoicesController < ApplicationController
       # FIXME: bandaid to cover for the fact that some callbacks don't
       # update the summary (adjustments, option registrations)
       @invoice.reload.calc_cost && @invoice.save
-      send_emails(@invoice)
+      send_emails(@invoice) if @invoice.email_sent
       redirect_to invoice_path(id: @invoice.id, updated: true), notice: t('success', model: 'お申込', action: '更新')
     else
       render :new, status: :unprocessable_entity, notice: t('failure', model: 'お申込', action: '更新')
