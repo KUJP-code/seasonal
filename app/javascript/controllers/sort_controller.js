@@ -7,15 +7,27 @@ export default class extends Controller {
   };
 
   ascending(tableBody, colValue, rows) {
-    rows.sort(function (a, b) {
-      return a.querySelector(colValue).innerHTML ==
-        b.querySelector(colValue).innerHTML
-        ? 0
-        : a.querySelector(colValue).innerHTML >
+    if (colValue == ".school") {
+      rows.sort(function (a, b) {
+        return a.querySelector(colValue).innerHTML ==
           b.querySelector(colValue).innerHTML
-        ? 1
-        : -1;
-    });
+          ? 0
+          : a.querySelector(colValue).innerHTML >
+            b.querySelector(colValue).innerHTML
+          ? 1
+          : -1;
+      });
+    } else {
+      rows.sort(function (a, b) {
+        let numA = parseInt(
+          a.querySelector(colValue).innerHTML.replace(/[円,%]/g, "")
+        );
+        let numB = parseInt(
+          b.querySelector(colValue).innerHTML.replace(/[円,%]/g, "")
+        );
+        return numA == numB ? 0 : numA > numB ? 1 : -1;
+      });
+    }
 
     for (let i = 0; i < rows.length; ++i) {
       tableBody.appendChild(rows[i]);
@@ -23,15 +35,27 @@ export default class extends Controller {
   }
 
   descending(tableBody, colValue, rows) {
-    rows.sort(function (a, b) {
-      return a.querySelector(colValue).innerHTML ==
-        b.querySelector(colValue).innerHTML
-        ? 0
-        : a.querySelector(colValue).innerHTML >
+    if (colValue == ".school") {
+      rows.sort(function (a, b) {
+        return a.querySelector(colValue).innerHTML ==
           b.querySelector(colValue).innerHTML
-        ? -1
-        : 1;
-    });
+          ? 0
+          : a.querySelector(colValue).innerHTML >
+            b.querySelector(colValue).innerHTML
+          ? -1
+          : 1;
+      });
+    } else {
+      rows.sort(function (a, b) {
+        let numA = parseInt(
+          a.querySelector(colValue).innerHTML.replace(/[円,%]/g, "")
+        );
+        let numB = parseInt(
+          b.querySelector(colValue).innerHTML.replace(/[円,%]/g, "")
+        );
+        return numA == numB ? 0 : numA > numB ? -1 : 1;
+      });
+    }
 
     for (let i = 0; i < rows.length; ++i) {
       tableBody.appendChild(rows[i]);
