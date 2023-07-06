@@ -111,7 +111,7 @@
         </div>
 
         <div class="card">
-            <% popularity_hash = TimeSlot.where(morning: true).joins(:registrations).group(:name).count %>
+            <% popularity_hash = TimeSlot.where(morning: true, category: %i[seasonal outdoor]).or(TimeSlot.where(category: :special)).left_joins(:registrations).group(:name).count %>
 
             <h2>Activities by Popularity</h2>
 
@@ -128,7 +128,8 @@
                         <% popularity_hash.sort_by { |_k, v| v }.reverse.each do |slot| %>
                             <tr>
                                 <td><%= slot.first %></td>
-                                <td><%= slot.last %></td>
+                                <%# The minus 1 is becuase we're using left joins to catch slots with no registrations, but this adds an extra slot to everything %>
+                                <td><%= slot.last - 1 %></td>
                             </tr>
                         <% end %>
                     </tbody>
