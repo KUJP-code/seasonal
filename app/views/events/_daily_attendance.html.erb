@@ -1,7 +1,7 @@
 <div class="daily-attendance card flex-column flex-lg-row flex-wrap justify-content-around gap-3" data-controller="print" data-print-target="print">
     <h3 class="w-100"><%= link_to event.name, children_path(source: 'Event', id: event.id) %></h3>
 
-    <% event.time_slots.morning.each do |slot| %>
+    <% event.time_slots.morning.or(event.time_slots.where(category: :special)).each do |slot| %>
         <% regs = slot.registrations.size %>
 
         <div class="card <%= case

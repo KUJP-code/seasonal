@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_16_025546) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_06_045307) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -121,8 +121,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_16_025546) do
     t.datetime "updated_at", null: false
     t.bigint "child_id", null: false
     t.bigint "event_id", null: false
-    t.boolean "customer_confirmed", default: false
     t.boolean "entered", default: false
+    t.boolean "email_sent", default: false
     t.index ["child_id"], name: "index_invoices_on_child_id"
     t.index ["event_id"], name: "index_invoices_on_event_id"
   end
