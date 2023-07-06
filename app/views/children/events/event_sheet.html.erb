@@ -34,12 +34,12 @@
                 <th scope="col" rowspan="2" class="en-name-header">Name (英語)</th>
                 <th scope="col" rowspan="2" class="ssid-header">SSID</th>
                 <th scope="col" rowspan="2">担当校舎</th>
+                <th scope="col" rowspan="2"><%= t('.invoices') %></th>
                 <th scope="col" rowspan="2"><%= t('.cost') %></th>
                 <th scope="col" rowspan="2"><%= t('.summary') %></th>
                 <th scope="col" rowspan="2"><%= t('.changes') %></th>
                 <th scope="col" rowspan="2">SS登録済</th>
                 <th scope="col" rowspan="2"><%= t('.coupons') %></th>
-                <th scope="col" rowspan="2"><%= t('.billing_date') %></th>
                 <th scope="col" rowspan="2">
                     <p>幼児</p>
                     <p>小学生</p>
@@ -110,6 +110,14 @@
                 </td>
                 <td data-controller="filter"
                     data-filter-siblings-value="1"
+                    data-filter-col-value=".invoices">
+                    <div class="form-floating">
+                        <%= text_field_tag 'invoices_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'invoices_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td data-controller="filter"
+                    data-filter-siblings-value="1"
                     data-filter-col-value=".cost">
                     <div class="form-floating">
                         <%= text_field_tag 'cost_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
@@ -125,14 +133,6 @@
                     <div class="form-floating">
                         <%= text_field_tag 'coupons_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
                         <%= label_tag 'coupons_filter', t('.filter'), class: 'form-label' %>
-                    </div>
-                </td>
-                <td data-controller="filter"
-                    data-filter-siblings-value="1"
-                    data-filter-col-value=".invoices">
-                    <div class="form-floating">
-                        <%= text_field_tag 'invoices_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
-                        <%= label_tag 'invoices_filter', t('.filter'), class: 'form-label' %>
                     </div>
                 </td>
                 <td data-controller="filter"
