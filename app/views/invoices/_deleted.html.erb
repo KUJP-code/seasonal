@@ -1,0 +1,55 @@
+<div class="card">
+    <h2><%= t('.deleted_bookings') %></h2>
+
+    <div class="table-responsive-lg">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-primary">
+                <tr>
+                    <th><%= t('.name') %></th>
+                    <th><%= t('.en_name') %></th>
+                    <th><%= t('.cost') %></th>
+                    <th><%= t('.summary') %></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% deleted_invoices.each do |invoice| %>
+                    <% child = invoice.child %>
+                    <% next if child.nil? %>
+
+                    <tr>
+                        <td><%= link_to child.name, child_path(child) %></td>
+                        <td><%= link_to child.en_name, child_path(child) %></td>
+                        <td><%= number_to_currency(invoice.total_cost, unit: '円', precision: 0, locale: :ja) %></td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <button type="button" class="btn btn-primary"
+                                data-bs-toggle="modal" data-bs-target="#<%= "invoice#{invoice.id}summary" %>">
+                                    <%= t('.view_summary') %>
+                                </button>
+                            </div>
+
+                            <div class="modal fade" id="<%= "invoice#{invoice.id}summary" %>" tabindex="-1">
+                                <div class="modal-dialog modal-fullscreen d-grid">
+                                    <div class="modal-content d-grid gap-2">
+                                        <div class="modal-header">
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <%= sanitize invoice.summary, tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id] %>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t('.close') %></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+</div>
