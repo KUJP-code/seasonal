@@ -280,7 +280,7 @@
     <% end %>
 
     <% if @user.school_manager? %>
-        <% deleted_invoices = PaperTrail::Version.where(whodunnit: @user.id, event: 'destroy').order(created_at: :desc).map(&:reify).compact %>
+        <% deleted_invoices = PaperTrail::Version.where(whodunnit: @user.id, event: 'destroy', item_type: 'Invoice').order(created_at: :desc).map(&:reify).compact.select { |i| i.total_cost.positive? } %>
 
         <% @user.managed_schools.each do |school| %>
             <div class="card">
