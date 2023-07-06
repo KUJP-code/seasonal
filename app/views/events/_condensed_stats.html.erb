@@ -8,24 +8,24 @@
 <% goal_percent = (total_revenue / event.goal.to_f * 100).truncate %>
 
 <tr>
-    <td><%= link_to event.school.name, children_path(source: 'Event', id: event.id) %></td>
-    <td><%= int_kids %></td>
-    <td><%= res_kids %></td>
-    <td><%= ext_kids %></td>
-    <td><%= children.size %></td>
-    <td><%= event.photo_regs %></td>
-    <td><%= number_to_currency(total_revenue, unit: '円', precision: 0, locale: :ja) %></td>
-    <td><%= number_to_currency(event.goal, unit: '円', precision: 0, locale: :ja) %></td>
-    <td class=<%=
+    <td class="school"><%= link_to event.school.name, children_path(source: 'Event', id: event.id) %></td>
+    <td class="int_kids"><%= int_kids %></td>
+    <td class="res_kids"><%= res_kids %></td>
+    <td class="ext_kids"><%= ext_kids %></td>
+    <td class="total_kids"><%= children.size %></td>
+    <td class="photo_sales"><%= event.photo_regs %></td>
+    <td class="total_revenue"><%= number_to_currency(total_revenue, unit: '円', precision: 0, locale: :ja) %></td>
+    <td class="goal_revenue"><%= number_to_currency(event.goal, unit: '円', precision: 0, locale: :ja) %></td>
+    <td class="goal_percent<%=
             case goal_percent
             when (100..)
-                'table-success'
+                ' table-success'
             when (50..99)
-                'table-warning'
+                ' table-warning'
             else
-                'table-danger'
+                ' table-danger'
             end
-        %>>
+        %>">
             <%= "#{goal_percent}%" %>
         </td>
     </tr>

@@ -141,19 +141,14 @@ input[type="text"]:disabled {
   }
 }
 
-.button-ku-registered {
-  background: linear-gradient(lightgreen, green);
-  border: 1px outset green;
+.btn-sort {
+  background: $primary;
+  border: none;
+  transition: all 0.5s ease-out;
 }
 
-.button-ku-registered:hover {
-  background: linear-gradient(red, darkred);
-  border: 1px inset darkred;
-}
-
-.button-ku:active,
-input:active {
-  border-style: inset;
+.btn-sort.descending {
+  transform: rotateX(180deg);
 }
 
 // Tables
