@@ -128,7 +128,12 @@ class Invoice < ApplicationRecord
     snack_count = slot_regs.count { |reg| !reg._destroy && !reg.registerable.morning }
     course_cost += snack_count * 165
     # Add cost due to special day registrations
-    special_count = slot_regs.count { |reg| !reg._destroy && reg.registerable.special? }
+    # Now also has to handle Minami Machida's dumb different special day
+    # Morning has no extra cost, but afternoon is 1100 for some reason
+    special_count = slot_regs.count { |reg| !reg._destroy && reg.registerable.special? && !%w[バンダナの絞り染め 夏祭り].include?(reg.registerable.name) }
+    # Add the 1100 if MM's afternoon special day registered
+    minami_aft = slot_regs.any? { |reg| reg.registerable.name == '夏祭り' }
+    course_cost += 1100 if minami_aft
     course_cost += special_count * 1_500
     @breakdown << '</div>'
     @breakdown.prepend(
@@ -136,6 +141,7 @@ class Invoice < ApplicationRecord
       <div class='d-flex flex-column align-items-start gap-1'>
       <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 (#{num_regs}回)</p>
       <p>スペシャルデー x #{special_count}: #{(special_count * 1_500).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>
+      #{"<p>南町田スペシャルデー x 1: #{1100.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if minami_aft}
       <p>午後コースおやつ代 x #{snack_count}: #{(snack_count * 165).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
     )
     course_cost

@@ -17,7 +17,7 @@
             <p class="fw-bold fs-5">
                 <%= "#{add_slot.name}: ◯" %>
             </p>
-            <% if add_slot.special? %>
+            <% if add_slot.special? && add_slot.name != "バンダナの絞り染め (午前)" %>
                 <p>スペシャルデー: ◯</p>
             <% end %>
             <% add_slot.options.each do |opt| %>
@@ -48,7 +48,7 @@
                     <% time_ids = add_slot.options.time.ids %>
                     <% extension_ids = add_slot.options.extension.ids %>
 
-                    <% if add_slot.special? %>
+                    <% if add_slot.special? && add_slot.name != "バンダナの絞り染め (午前)" %>
                         <p>スペシャルデー: ◯</p>
                     <% end %>
 

@@ -61,7 +61,13 @@ export default class extends Controller {
     ).length;
     this.specialCountTarget.innerHTML = `スペシャルデー: ${specialCount.toString()}つ`;
     // Get cost of all of them to add to the final price
-    const specialCost = specialCount * 1500;
+    let specialCost = specialCount * 1500;
+    // Add Minami Machida's dumb special price if it exists
+    if (regList.includes("夏祭り (午後)")) {
+      specialCost += 1100;
+      this.specialCountTarget.appendChild(document.createElement("br"));
+      this.specialCountTarget.innerHTML += "南町田スペシャルデー：1つ";
+    }
 
     const finalCost =
       optionCost + courseCost + adjustmentChange + snackCost + specialCost;
