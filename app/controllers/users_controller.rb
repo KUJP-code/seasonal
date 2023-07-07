@@ -80,6 +80,7 @@ class UsersController < ApplicationController
     non_ss_kid = Child.find(params[:non_ss_kid])
 
     merge_info(non_ss_kid, ss_kid)
+    non_ss_kid.reload.destroy
 
     redirect_to child_path(ss_kid), notice: t('success', model: '生徒', action: '更新')
   end
