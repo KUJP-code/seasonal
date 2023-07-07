@@ -100,6 +100,10 @@ class Child < ApplicationRecord
     (slot.end_time + dep_opt.modifier.minutes).strftime('%I:%M%p')
   end
 
+  def names_string
+    "#{name}, #{katakana_name}, #{en_name}"
+  end
+
   def diff_school_events
     events.where.not(school: school).distinct
   end

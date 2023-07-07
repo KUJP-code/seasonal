@@ -16,7 +16,7 @@
                             <th scope="col"><%= t('.hat') %></th>
                             <th scope="col"><%= t('.parent') %></th>
                             <th scope="col"><%= t('.school') %></th>
-                            <th scope="col"><%= t('.edit_info') %></th>
+                            <th scope="col"></th>
                         </tr>
                 </thead>
                 <tbody><%= render @child %></tbody>
@@ -24,7 +24,7 @@
 
             <div>
                 <h3><%= f.label :non_ss_kid, t('.non_ss_kid'), class: 'form-label' %></h3>
-                <%= f.collection_select :non_ss_kid, @parent.children.where(ssid: nil), :id, :name, {}, class: 'form-select' %>
+                <%= f.collection_select :non_ss_kid, @parent.children.where(ssid: nil), :id, :names_string, {}, class: 'form-select' %>
             </div>
 
             <%= f.submit t('.merge_children'), class: 'btn btn-primary' %>
