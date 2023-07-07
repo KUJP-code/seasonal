@@ -64,9 +64,9 @@ class ChildrenController < ApplicationController
     @parent = @child.parent
 
     if @child.destroy
-      redirect_to user_path(@parent), notice: t('success', action: '削除', model: '生徒')
+      redirect_to user_path(current_user), notice: t('success', action: '削除', model: '生徒')
     else
-      redirect_to child_path(@child), alert: t('failure', action: '削除', model: '生徒')
+      redirect_to user_path(current_user), alert: t('failure', action: '削除', model: '生徒')
     end
   end
 
