@@ -1,5 +1,5 @@
-<% next_event = @user.children.first.school.next_event unless @user.children.empty? %>
-<% online_event = School.find(2).events.first if @user.admin? || @user.area_manager? %>
+<% next_event = @user.children.first.school.next_event if @user.customer? && @user.children.size.positive? %>
+<% next_event = @user.children.first.school.next_event unless @user.children.empty? %><% online_event = School.find(2).events.first if @user.admin? || @user.area_manager? %>
 <% schools = @user.children.reject{ |c| c.school_id.nil? }.map(&:school).map(&:name).uniq if @user.customer? %>
 
 <main id="user_show" class="gap-3">
@@ -81,7 +81,7 @@
 
         <div class="card">
             <h2>Recent Bookings</h2>
-            <%= render partial: 'invoices/recent_invoices', locals: { recent_invoices: Invoice.all.real.order(created_at: :desc).limit(5).includes(:child, :time_slots) } %>
+            <%= render partial: 'invoices/recent_invoices', locals: { recent_invoices: Invoice.all.real.order(created_at: :desc).limit(5).includes(:child, :time_slots) } unless next_event.nil? %>
         </div>
 
         <div class="card">
@@ -283,6 +283,8 @@
         <% deleted_invoices = PaperTrail::Version.where(whodunnit: @user.id, event: 'destroy', item_type: 'Invoice').order(created_at: :desc).map(&:reify).compact.select { |i| i.total_cost.positive? } %>
 
         <% @user.managed_schools.each do |school| %>
+            <% next_event = school.next_event %>
+
             <div class="card">
                 <%= render partial: 'events/event_stats', collection: school.events, as: :event %>
             </div>
