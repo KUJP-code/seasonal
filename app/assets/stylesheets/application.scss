@@ -444,6 +444,29 @@ form .input-group-text {
   background-color: var(--bs-gray-300);
 }
 
+// Print
+
+@media print {
+  #user_show .card.daily-attendance {
+    width: 100%;
+  }
+
+  .slot_attendance a,
+  .daily-attendance a {
+    color: black;
+  }
+
+  .slot_attendance {
+    transform: scale(95%);
+  }
+
+  .slot_attendance td,
+  .slot_attendance th,
+  .slot_attendance thead th {
+    border: 3px black solid;
+  }
+}
+
 // Users
 
 // User#show
