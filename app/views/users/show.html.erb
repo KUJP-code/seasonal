@@ -81,7 +81,7 @@
 
         <div class="card">
             <h2>Recent Bookings</h2>
-            <%= render partial: 'invoices/recent_invoices', locals: { recent_invoices: Invoice.all.real.order(created_at: :desc).limit(5).includes(:child, :time_slots) } unless next_event.nil? %>
+            <%= render partial: 'invoices/recent_invoices', locals: { recent_invoices: Invoice.all.real.order(created_at: :desc).limit(5).includes(:child, :time_slots) } %>
         </div>
 
         <div class="card">
