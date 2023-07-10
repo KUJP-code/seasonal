@@ -17,12 +17,20 @@
     <% morn_options.each do |opt| %>
         <td class=<%= opt.name %>><%= opt.name if slot_child.registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type = 'Option' } %></td>
     <% end %>
-    <% unless slot.special? %>
-        <td class="afternoon"><%= '◯' if slot_child.registrations.find { |reg| reg.registerable_type == 'TimeSlot' && reg.registerable_id == slot.afternoon_slot.id } %></td>
-        <% aft_options.each do |opt| %>
-            <td class=<%= opt.name %>><%= opt.name if slot_child.registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type = 'Option' } %></td>
-        <% end %>
+
+    <% if slot.special? %>
+      <% if slot_child.registrations.any? { |reg| extension_ids.include?(reg.registerable_id) && reg.registerable_type == 'Option' } %>
+        <td class="extend">中延長</td>
+      <% else %>
+        <td class="extend"></td>
+      <% end %>
     <% end %>
+    
+    <td class="afternoon"><%= '◯' if slot_child.registrations.find { |reg| reg.registerable_type == 'TimeSlot' && reg.registerable_id == slot.afternoon_slot.id } %></td>
+    <% aft_options.each do |opt| %>
+        <td class=<%= opt.name %>><%= opt.name if slot_child.registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type = 'Option' } %></td>
+    <% end %>
+    
     <td class="depart">
         <%= '~'.concat((slot.afternoon_slot.end_time + depart_option.modifier.minutes).strftime('%I:%M%p')) if depart_option && depart_option.modifier.positive? %>
     </td>

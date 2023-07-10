@@ -1,7 +1,10 @@
 <% time_cats = %w[arrival departure k_arrival k_departure] %>
+<% ext_cats = %w[extension k_extension] %>
 <% event.options = event.options %>
-<% morn_time_ids = slot.options.select{ |opt| time_cats.include?(opt.category) }.map(&:id) %>
-<% morn_options = slot.options.reject { |opt| morn_time_ids.include?(opt.id) } %>
+<% morn_time_ids = slot.options.select { |opt| time_cats.include?(opt.category) }.map(&:id) %>
+<% extensions = slot.options.select { |opt| ext_cats.include?(opt.category) } %>
+<% extension_ids = extensions.map(&:id) %>
+<% morn_options = slot.options.reject { |opt| morn_time_ids.include?(opt.id) || extension_ids.include?(opt.id) } %>
 <% aft_options = if slot.afternoon_slot.nil?
                    []
                  else
@@ -40,15 +43,19 @@
                 <% morn_options.each do |opt| %>
                     <th scope="col"><%= "#{opt.name}: #{opt.registrations.select{ |reg| child_ids.include?(reg.child_id) }.size}" %></th>
                 <% end %>
-                <% unless slot.special? %>
-                    <th scope="col" id="afternoon_header">
-                        <p><%= t('.attend_afternoon') %></p>
-                        <p><%= "K: #{children.select{ |c| c.kindy && aft_child_ids.include?(c.id) }.size}, E: #{children.reject(&:kindy).select{ |c| aft_child_ids.include?(c.id) }.size}" %></p>
-                    </th>
-                    <% aft_options.each do |opt| %>
-                        <th scope="col"><%= "#{opt.name}: #{opt.registrations.select{ |reg| child_ids.include?(reg.child_id) }.size}" %></th>
-                    <% end %>
+
+                <% if slot.special? %>
+                    <th scope="col"><%= "中延長: #{extensions.reduce(0) { |sum, opt| sum + opt.registrations.select { |reg| child_ids.include?(reg.child_id)}.size }}" %></th> 
                 <% end %>
+
+                <th scope="col" id="afternoon_header">
+                    <p><%= t('.attend_afternoon') %></p>
+                    <p><%= "K: #{children.select{ |c| c.kindy && aft_child_ids.include?(c.id) }.size}, E: #{children.reject(&:kindy).select{ |c| aft_child_ids.include?(c.id) }.size}" %></p>
+                </th>
+                <% aft_options.each do |opt| %>
+                    <th scope="col"><%= "#{opt.name}: #{opt.registrations.select{ |reg| child_ids.include?(reg.child_id) }.size}" %></th>
+                <% end %>
+                
                 <th scope="col" id="depart_header"><%= t('.depart') %></th>
             </tr>
         </thead>
@@ -114,26 +121,37 @@
                         </div>
                     </td>
                 <% end %>
-                <% unless slot.special? %>
+
+                <% if slot.special? %>
                     <td data-controller="filter"
                         data-filter-siblings-value="0"
-                        data-filter-col-value=".afternoon">
+                        data-filter-col-value=".extend">
                         <div class="form-floating">
-                            <%= text_field_tag 'afternoon_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
-                            <%= label_tag 'afternoon_filter', t('.filter'), class: 'form-label' %>
+                            <%= text_field_tag 'extend_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                            <%= label_tag 'extend_filter', t('.filter'), class: 'form-label' %>
                         </div>
                     </td>
-                    <% aft_options.each do |opt| %>
-                        <td data-controller="filter"
-                            data-filter-siblings-value="0"
-                            data-filter-col-value=".<%= opt.name %>">
-                            <div class="form-floating">
-                                <%= text_field_tag "#{opt.name}_filter", nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
-                                <%= label_tag "#{opt.name}_filter", t('.filter'), class: 'form-label' %>
-                            </div>
-                        </td>
-                    <% end %>
                 <% end %>
+                
+                <td data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".afternoon">
+                    <div class="form-floating">
+                        <%= text_field_tag 'afternoon_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'afternoon_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <% aft_options.each do |opt| %>
+                    <td data-controller="filter"
+                        data-filter-siblings-value="0"
+                        data-filter-col-value=".<%= opt.name %>">
+                        <div class="form-floating">
+                            <%= text_field_tag "#{opt.name}_filter", nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                            <%= label_tag "#{opt.name}_filter", t('.filter'), class: 'form-label' %>
+                        </div>
+                    </td>
+                <% end %>
+                
                 <td data-controller="filter"
                     data-filter-siblings-value="0"
                     data-filter-col-value=".depart">
@@ -144,7 +162,7 @@
                 </td>
             </tr>
 
-            <%= render partial: 'children/time_slots/slot_child', collection: children, locals: { slot: slot, event_options: event.options, morn_options: morn_options, aft_options: aft_options } %>
+            <%= render partial: 'children/time_slots/slot_child', collection: children, locals: { slot: slot, event_options: event.options, morn_options: morn_options, aft_options: aft_options, extension_ids: extension_ids } %>
         </tbody>
     </table>
 </div>
