@@ -54,7 +54,12 @@ class TimeSlot < ApplicationRecord
   # Public methods
   # Consolidates manual closing and automatic closing into one check
   def closed?
-    closed || Time.zone.now > end_time - 1.day
+    return true if closed
+
+    close_date = CLOSE_DATES[name]
+    return false if close_date.nil?
+
+    Time.zone.now > close_date
   end
 
   # These convert the start/end datetimes into something more useful for display
@@ -91,6 +96,42 @@ class TimeSlot < ApplicationRecord
     'Wednesday' => '水',
     'Thursday' => '木',
     'Friday' => '金',
-    'Saturday' => '土' 
-  }
+    'Saturday' => '土'
+  }.freeze
+
+  CLOSE_DATES = {
+    'カラフルテープアート' => 'Wed, 19 Jul 2023 14:00 JST +9:00',
+    'ピクチャーキーホルダー' => 'Thu, 20 Jul 2023 14:00 JST +9:00',
+    '冒険者のクエスト！' => 'Fri, 21 Jul 2023 14:00 JST +9:00',
+    'ウォーターベースボール(7月25日)' => 'Mon, 24 Jul 2023 14:00 JST +9:00',
+    '忍者になろう！' => 'Tue, 25 Jul 2023 14:00 JST +9:00',
+    'フルーツスムージー★' => 'Wed, 26 Jul 2023 14:00 JST +9:00',
+    '世界のゲームを体験しよう' => 'Thu, 27 Jul 2023 14:00 JST +9:00',
+    '水鉄砲合＆スイカ割り！' => 'Fri, 28 Jul 2023 14:00 JST +9:00',
+    '巨大なお城のクラフト＆アイスクリーム屋さん' => 'Fri, 28 Jul 2023 14:00 JST +9:00',
+    'サボテンクラフト' => 'Fri, 28 Jul 2023 14:00 JST +9:00',
+    'ハワイアンかき氷' => 'Mon, 31 Jul 2023 14:00 JST +9:00',
+    '水鉄砲合戦!!(8月2日)' => 'Tue, 1 Aug 2023 14:00 JST +9:00',
+    'BBQ風焼きそば' => 'Wed, 2 Aug 2023 14:00 JST +9:00',
+    'ペーパーランタン' => 'Wed, 2 Aug 2023 14:00 JST +9:00',
+    '海のスライム' => 'Thu, 3 Aug 2023 14:00 JST +9:00',
+    'Kids Up★ゲームセンター' => 'Fri, 4 Aug 2023 14:00 JST +9:00',
+    '水鉄砲合戦!!(8月8日)' => 'Mon, 7 Aug 2023 14:00 JST +9:00',
+    'アメリカン★ホットドッグ' => 'Tue, 8 Aug 2023 14:00 JST +9:00',
+    'オレオシェイク' => 'Tue, 8 Aug 2023 14:00 JST +9:00',
+    'オリジナルバッグ作り' => 'Wed, 9 Aug 2023 14:00 JST +9:00',
+    'デザートスライム' => 'Wed, 16 Aug 2023 14:00 JST +9:00',
+    'ウォーターゲーム対決！' => 'Thu, 17 Aug 2023 14:00 JST +9:00',
+    '水鉄砲合戦!!(8月21日)' => 'Fri, 18 Aug 2023 14:00 JST +9:00',
+    '暗闇で光るスライム' => 'Tue, 22 Aug 2023 14:00 JST +9:00',
+    'DIY水族館' => 'Wed, 23 Aug 2023 14:00 JST +9:00',
+    '貝殻ペンダント' => 'Thu, 24 Aug 2023 14:00 JST +9:00',
+    'ウォーターベースボール(8月28日)' => 'Fri, 25 Aug 2023 14:00 JST +9:00',
+    'バンダナの絞り染め' => 'Fri, 25 Aug 2023 14:00 JST +9:00',
+    '夏祭り' => 'Fri, 25 Aug 2023 14:00 JST +9:00',
+    'レインボーキーホルダー' => 'Mon, 28 Aug 2023 14:00 JST +9:00',
+    'ビーチジオラマ' => 'Tue, 29 Aug 2023 14:00 JST +9:00',
+    'フレンチクレープ' => 'Wed, 30 Aug 2023 14:00 JST +9:00',
+    'アイスクリーム屋さん' => 'Wed, 30 Aug 2023 14:00 JST +9:00'
+  }.freeze
 end
