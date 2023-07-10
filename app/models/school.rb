@@ -25,7 +25,7 @@ class School < ApplicationRecord
 
   # Instance methods
   def next_event
-    events.where('start_date > ?', Time.zone.now).limit(1).first
+    events.where('end_date > ?', Time.zone.now).limit(1).first
   end
 
   private

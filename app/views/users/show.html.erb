@@ -289,10 +289,10 @@
 
             <div class="card">
                 <h2><%= t('.recent_bookings') %></h2>
-                <%= render partial: 'invoices/recent_invoices', locals: { recent_invoices: school.next_event.invoices.order(created_at: :desc).limit(5).includes(:child, :time_slots) } %>
+                <%= render partial: 'invoices/recent_invoices', locals: { recent_invoices: school.next_event.invoices.order(created_at: :desc).limit(5).includes(:child, :time_slots) } unless next_event.nil? %>
             </div>
 
-            <%= render partial: 'events/daily_attendance', locals: { event: school.next_event } %>
+            <%= render partial: 'events/daily_attendance', locals: { event: school.next_event } unless next_event.nil? %>
 
             <% if deleted_invoices.size.positive? %>
               <%= render partial: 'invoices/deleted', locals: { deleted_invoices: deleted_invoices } %>

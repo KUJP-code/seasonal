@@ -93,10 +93,6 @@ class ChildrenController < ApplicationController
                                   ])
   end
 
-  def customer_show
-    @slots = @next_event.time_slots.limit(5)
-  end
-
   def event_variables
     @source = Event.find(params[:id])
     @slots = @source.time_slots.includes(:options)

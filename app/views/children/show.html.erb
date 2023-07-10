@@ -112,7 +112,7 @@
         <% if diff_school_event && @child.real_invoices.find_by(event_id: diff_school_event.id) %>
             <%= render diff_school_event, partial: 'events/event', child: @child %>
         <% else %>
-            <%= render @child.school.next_event, partial: 'events/event', child: @child %>
+            <%= render @child.school.next_event, partial: 'events/event', child: @child unless @child.school.next_event.nil? %>
         <% end %>
     <% end %>
 </main>
