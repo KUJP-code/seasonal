@@ -129,11 +129,6 @@
                 <% end %>
     
                 <% if current_user.staff? %>
-                    <div class="form-floating">
-                        <%= f.text_field :ssid, placeholder: t('.ssid'), class: 'form-control' %>
-                        <%= f.label :ssid, t('.ssid'), class: 'form-label' %><br />
-                    </div>
-
                     <div>
                         <%= f.check_box :first_seasonal, {class: 'form-check-input', checked: f.object.needs_hat} %>
                         <%= f.label :first_seasonal, t('.first_seasonal'), class: 'form-check-label' %><br />
