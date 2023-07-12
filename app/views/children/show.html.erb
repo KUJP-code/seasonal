@@ -79,12 +79,23 @@
     </div>
 
     <% if current_user.staff? %>
-        <div class="card d-flex justify-content-center align-items-center gap-3">
+        <div class="card d-flex flex-lg-row justify-content-center align-items-center gap-3">
             <%  unless @child.received_hat %>
                 <%= form_with model: @child do |f| %>
                     <%= f.hidden_field :received_hat, value: 1 %>
 
                     <%= f.submit "#{t('.has_hat')} あり", class: 'btn btn-primary' %>
+                <% end %>
+            <% end %>
+
+            <%# Allows toggling 'first seasonal' status %>
+            <%= form_with model: @child do |f| %>
+                <% if @child.needs_hat %>
+                    <%= f.hidden_field :needs_hat, value: 0 %>
+                    <%= f.submit '初めてのご参加: ✖', class: 'btn btn-primary' %>
+                <% else %>
+                    <%= f.hidden_field :needs_hat, value: 1 %>
+                    <%= f.submit '初めてのご参加: ✓', class: 'btn btn-primary' %>
                 <% end %>
             <% end %>
 
