@@ -1,87 +1,31 @@
 <%= turbo_frame_tag "merge_child" do %>
     <% if @child %>
+        <%= link_to "戻る", user_path(@parent), class: 'btn btn-primary w-25' %>
 
-        <h3></h3>
+        <h2 class="text-bg-info mt-2 rounded p-1">
+            <span>入力したSSIDの生徒と同じ生徒を下から選んでください。</span>
+            <br>
+            <span class='fs-3'>（兄弟がいる場合は複数の選択肢が表示されます）</span>
+        </h2>
+
         <table class="table align-middle mt-3">
             <thead>
                 <tr class="table-primary">
-                        <th scope="col"><%= t('.to_ssid') %></th>
-                        <th scope="col"><%= t('.name') %></th>
-                        <th scope="col"><%=t('.katakana') %></th>
-                        <th scope="col"><%= t('.en') %></th>
-                        <th scope="col"><%= t('.category') %></th>
-                        <th scope="col"><%= t('.allergies') %></th>
-                        <th scope="col"><%= t('.parent') %></th>
-                        <th scope="col"><%= t('.school') %></th>
-                        <th scope="col"></th>
-                    </tr>
+                    <th scope="col">SSID</th>
+                    <th scope="col"><%= t('.name') %></th>
+                    <th scope="col"><%=t('.katakana') %></th>
+                    <th scope="col"><%= t('.en') %></th>
+                    <th scope="col"><%= t('.category') %></th>
+                    <th scope="col"><%= t('.allergies') %></th>
+                    <th scope="col"><%= t('.parent') %></th>
+                    <th scope="col"><%= t('.school') %></th>
+                    <th scope="col"></th>
+                </tr>
             </thead>
             <tbody>
-                <tr class='table-success'>
-                    <% if @child.ssid %>
-                        <td class="ssid"><%= link_to @child.ssid, child_path(@child) %></td>
-                    <% elsif @child.ssid.nil? && @child.parent_id.nil? %>
-                        <td class="ssid"><%= link_to 'なし', child_path(@child) %></td>
-                    <% else %>
-                        <td class="ssid"><%= link_to 'なし', user_path(@child.parent, anchor: 'merge_children') if @child.ssid.nil? %></td>
-                    <% end %>
-                    <td class="name"><%= link_to (@child.name ? @child.name : 'なし'), child_path(@child) %></td>
-                    <td class="kana"><%= link_to (@child.katakana_name ? @child.katakana_name : 'なし'), child_path(@child) %></td>
-                    <td class="en"><%= link_to (@child.en_name ? @child.en_name : 'なし'), child_path(@child) %></td>
-                    <td class="category"><%= t(".#{@child.category}") %></td>
-                    <td class="allergies"><%= @child.allergies %></td>
-                    <td class="parent">
-                        <% if @child.parent %>
-                        <%= link_to @child.parent.name, user_path(@child.parent) %>
-                        <% else %>   
-                            なし
-                        <% end %>
-                    </td>
-                    <td class="school">
-                        <% if @child.school %>
-                            <%= @child.school.name %>
-                        <% else %>
-                            なし
-                        <% end %>
-                    </td>
-                    <td><%= t('.ss_kid') %></td>
-                </tr>
+                <%= render partial: 'children/mergeable_child', locals: { child: @child } %>
                 <% @parent.children.where(ssid: nil).each do |parent_child| %>
-                    <tr class='table-warning'>
-                        <% if parent_child.ssid %>
-                            <td class="ssid"><%= link_to parent_child.ssid, child_path(parent_child) %></td>
-                        <% elsif parent_child.ssid.nil? && parent_child.parent_id.nil? %>
-                            <td class="ssid"><%= link_to 'なし', child_path(parent_child) %></td>
-                        <% else %>
-                            <td class="ssid"><%= link_to 'なし', user_path(parent_child.parent, anchor: 'merge_children') if parent_child.ssid.nil? %></td>
-                        <% end %>
-                        <td class="name"><%= link_to (parent_child.name ? parent_child.name : 'なし'), child_path(parent_child) %></td>
-                        <td class="kana"><%= link_to (parent_child.katakana_name ? parent_child.katakana_name : 'なし'), child_path(parent_child) %></td>
-                        <td class="en"><%= link_to (parent_child.en_name ? parent_child.en_name : 'なし'), child_path(parent_child) %></td>
-                        <td class="category"><%= t(".#{parent_child.category}") %></td>
-                        <td class="allergies"><%= parent_child.allergies %></td>
-                        <td class="parent">
-                            <% if parent_child.parent %>
-                            <%= link_to parent_child.parent.name, user_path(parent_child.parent) %>
-                            <% else %>
-                                なし
-                            <% end %>
-                        </td>
-                        <td class="school">
-                            <% if parent_child.school %>
-                                <%= parent_child.school.name %>
-                            <% else %>
-                                なし
-                            <% end %>
-                        </td>
-                        <td>
-                            <%= form_with url: merge_children_path, html: { class: 'd-grid' } do |f| %>
-                                <%= f.hidden_field :ss_kid, value: @child.id %>
-                                <%= f.hidden_field :non_ss_kid, value: parent_child.id %>
-                                <%= f.submit t('.merge_children'), class: 'btn btn-primary' %>
-                            <% end %>
-                        </td>
-                    </tr>
+                    <%= render partial: 'children/mergeable_child', locals: { child: parent_child, ss_child: @child } %>
                 <% end %>
             </tbody>
         </table>

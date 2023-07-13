@@ -1,0 +1,140 @@
+<tr class=<%= child.ssid ? 'table-success' : 'table-warning' %>>
+    <% if child.ssid %>
+        <td class="ssid"><%= link_to child.ssid, child_path(child) %></td>
+    <% elsif child.ssid.nil? && child.parent_id.nil? %>
+        <td class="ssid"><%= link_to 'なし', child_path(child) %></td>
+    <% else %>
+        <td class="ssid"><%= link_to 'なし', user_path(child.parent, anchor: 'merge_children') if child.ssid.nil? %></td>
+    <% end %>
+    <td class="name"><%= link_to (child.name ? child.name : 'なし'), child_path(child) %></td>
+    <td class="kana"><%= link_to (child.katakana_name ? child.katakana_name : 'なし'), child_path(child) %></td>
+    <td class="en"><%= link_to (child.en_name ? child.en_name : 'なし'), child_path(child) %></td>
+    <td class="category"><%= t(".#{child.category}") %></td>
+    <td class="allergies"><%= child.allergies %></td>
+    <td class="parent">
+        <% if child.parent %>
+        <%= link_to child.parent.name, user_path(child.parent) %>
+        <% else %>   
+            なし
+        <% end %>
+    </td>
+    <td class="school">
+        <% if child.school %>
+            <%= child.school.name %>
+        <% else %>
+            なし
+        <% end %>
+    </td>
+    <td><% if child.ssid %>
+            <%= t('.ss_kid') %>
+        <% else %>
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-primary"
+                    data-bs-toggle="modal" data-bs-target="#<%= "merge#{child.id}" %>">
+                    <%= t('.merge_this') %>
+                </button>
+            </div>
+
+            <div class="modal fade" id="<%= "merge#{child.id}" %>" tabindex="-1">
+                <div class="modal-dialog modal-xl d-flex">
+                    <div class="modal-content d-flex gap-2">
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body flex-grow-1 d-flex flex-column justify-content-center">
+                            <h1 class='text-bg-danger p-3 rounded'>
+                                <span>SSと申込生徒の名前は一緒ですか？</span>
+                                <br>
+                                <span>同一名であることを確認してください</span>
+                            </h1>
+
+                            <table class="table table-striped table-hover align-middle mt-3">
+                                <thead>
+                                    <tr class="table-primary">
+                                        <th scope="col">SSID</th>
+                                        <th scope="col"><%= t('.name') %></th>
+                                        <th scope="col"><%=t('.katakana') %></th>
+                                        <th scope="col"><%= t('.en') %></th>
+                                        <th scope="col"><%= t('.category') %></th>
+                                        <th scope="col"><%= t('.allergies') %></th>
+                                        <th scope="col"><%= t('.parent') %></th>
+                                        <th scope="col"><%= t('.school') %></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <% if ss_child.ssid %>
+                                            <td class="ssid"><%= link_to ss_child.ssid, child_path(ss_child) %></td>
+                                        <% elsif ss_child.ssid.nil? && ss_child.parent_id.nil? %>
+                                            <td class="ssid"><%= link_to 'なし', child_path(ss_child) %></td>
+                                        <% else %>
+                                            <td class="ssid"><%= link_to 'なし', user_path(ss_child.parent, anchor: 'merge_children') if ss_child.ssid.nil? %></td>
+                                        <% end %>
+                                        <td class="name"><%= link_to (ss_child.name ? ss_child.name : 'なし'), child_path(ss_child) %></td>
+                                        <td class="kana"><%= link_to (ss_child.katakana_name ? ss_child.katakana_name : 'なし'), child_path(ss_child) %></td>
+                                        <td class="en"><%= link_to (ss_child.en_name ? ss_child.en_name : 'なし'), child_path(ss_child) %></td>
+                                        <td class="category"><%= t(".#{ss_child.category}") %></td>
+                                        <td class="allergies"><%= ss_child.allergies %></td>
+                                        <td class="parent">
+                                            <% if ss_child.parent %>
+                                            <%= link_to ss_child.parent.name, user_path(ss_child.parent) %>
+                                            <% else %>   
+                                                なし
+                                            <% end %>
+                                        </td>
+                                        <td class="school">
+                                            <% if ss_child.school %>
+                                                <%= ss_child.school.name %>
+                                            <% else %>
+                                                なし
+                                            <% end %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <% if child.ssid %>
+                                            <td class="ssid"><%= link_to child.ssid, child_path(child) %></td>
+                                        <% elsif child.ssid.nil? && child.parent_id.nil? %>
+                                            <td class="ssid"><%= link_to 'なし', child_path(child) %></td>
+                                        <% else %>
+                                            <td class="ssid"><%= link_to 'なし', user_path(child.parent, anchor: 'merge_children') if child.ssid.nil? %></td>
+                                        <% end %>
+                                        <td class="name"><%= link_to (child.name ? child.name : 'なし'), child_path(child) %></td>
+                                        <td class="kana"><%= link_to (child.katakana_name ? child.katakana_name : 'なし'), child_path(child) %></td>
+                                        <td class="en"><%= link_to (child.en_name ? child.en_name : 'なし'), child_path(child) %></td>
+                                        <td class="category"><%= t(".#{child.category}") %></td>
+                                        <td class="allergies"><%= child.allergies %></td>
+                                        <td class="parent">
+                                            <% if child.parent %>
+                                            <%= link_to child.parent.name, user_path(child.parent) %>
+                                            <% else %>   
+                                                なし
+                                            <% end %>
+                                        </td>
+                                        <td class="school">
+                                            <% if child.school %>
+                                                <%= child.school.name %>
+                                            <% else %>
+                                                なし
+                                            <% end %>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="modal-footer d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">戻る</button>
+
+                            <%= form_with url: merge_children_path, html: { class: 'd-grid' } do |f| %>
+                                <%= f.hidden_field :ss_kid, value: @child.id %>
+                                <%= f.hidden_field :non_ss_kid, value: child.id %>
+                                <%= f.submit t('.merge_children'), class: 'btn btn-primary' %>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% end %>
+    </td>
+</tr>

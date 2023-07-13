@@ -25,6 +25,10 @@ en:
       parent: "Parent"
       school: "School"
       ssid: "SSID"
+    mergeable_child:
+      merge_children: "Merge these children"
+      merge_these: "Merge %{non_ss} into %{ss}?"
+      merge_this: "Merge this child"
     show:
       allergies: "Allergies:"
       bday: "Birthday:"
