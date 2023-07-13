@@ -5,7 +5,7 @@ class ChartsController < ApplicationController
   def index
     authorize(:chart)
     @invoices = Invoice.real
-    @children = Child.joins(:real_invoices)
+    @children = Child.joins(:real_invoices).distinct
     @slot_registrations = Registration.all.where(registerable_type: 'TimeSlot')
   end
 
