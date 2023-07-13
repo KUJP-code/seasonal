@@ -20,9 +20,9 @@
         </div>
     </div>
 
-    <%= column_chart @invoices.group(:event_id).average(:total_cost).to_h { |k, v| [@school_hash[k], v] }.sort_by { |_k, v| v }.reverse, title: 'Average Booking Cost by School', round: 0, max: 70_000, suffix: "円" %>
+    <%= column_chart @invoices.group(:event_id).average(:total_cost).to_h { |k, v| [@school_hash[k], v] }.sort_by { |_k, v| v }.reverse, title: 'Average Booking Cost by School', round: 0, max: 50_000, suffix: "円" %>
 
-    <%= column_chart @invoices.group(:event_id).average(:total_cost).map { |k, v| [@school_hash[k], (v / Invoice.where(event_id: k).count )] }.to_h.sort_by { |_k, v| v }.reverse, title: 'Number of Activities per Booking by School', round: 0 %>
+    <%= column_chart @invoices.joins(:time_slots).group(:event_id).count.map { |k, v| [@school_hash[k], (v.to_f / Invoice.where(event_id: k).count )] }.to_h.sort_by { |_k, v| v }.reverse, title: 'Number of Activities per Booking by School', round: 2 %>
 
     <%= pie_chart @children.group(:grade).count, title: 'Attendees by Grade', donut: true %>
 </main>
