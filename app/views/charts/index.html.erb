@@ -1,0 +1,26 @@
+<main id="charts_index">
+    <%= line_chart @invoices.group_by_day(:created_at).count, title: 'Daily Bookings' %>
+
+    <%= line_chart @invoices.group_by_day(:created_at).sum(:total_cost), title: 'Daily Revenue' %>
+
+    <%= line_chart @invoices.group_by_week(:created_at).count, title: 'Weekly Bookings' %>
+
+    <%= line_chart @invoices.group_by_week(:created_at).sum(:total_cost), title: 'Weekly Revenue' %>
+
+    <%= column_chart @invoices.group_by_day_of_week(:created_at, format: '%A').count, title: 'Bookings by Day of the Week' %>
+
+    <div class="d-flex justify-content-center align-items-center gap-3 w-75">
+        <div class="card w-50">
+            <h5>Average cost for all Bookings</h5>
+            <%= number_to_currency(@invoices.average(:total_cost), unit: '円', precision: 0, locale: :ja) %>
+        </div>
+        <div class="card w-50">
+            <h5>Average Number of Activities for all Bookings</h5>
+            <%= (@slot_registrations.count.to_f / @invoices.count).round(2) %>
+        </div>
+    </div>
+
+    <%= column_chart @invoices.group(:event_id).average(:total_cost).map { |k, v| [School.find(k).name, v] }.to_h.sort_by { |_k, v| v }.reverse, title: 'Average Booking Cost by School', round: 0 %>
+
+    <%= pie_chart @children.group(:category).count, title: 'Attendees by Grade' %>
+</main>

@@ -9,6 +9,7 @@ class School < ApplicationRecord
                          dependent: :destroy
   has_many :managers, through: :managements
   has_many :children, dependent: nil
+  has_many :invoices, through: :children
   has_many :parents, -> { distinct }, through: :children,
                                       class_name: 'User',
                                       foreign_key: :parent_id

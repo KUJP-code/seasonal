@@ -81,6 +81,12 @@ gem 'postgres-copy'
 # Use Kaminari for pagination
 gem 'kaminari'
 
+# Create charts from DB
+gem 'chartkick'
+
+# Allow easy grouping by time periods
+gem 'groupdate'
+
 group :development, :test do
   # Capybara for system/feature testing
   gem 'capybara'

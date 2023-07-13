@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     # Require users to be signed in to view these resources
     authenticate :user do
       resources :adjustments, only: %i[edit]
+      resources :charts, only: %i[show index]
       resources :children
       resources :csvs, only: %i[index]
       resources :events
