@@ -9,14 +9,14 @@
 
     <%= column_chart @invoices.group_by_day_of_week(:created_at, format: '%A').count, title: 'Bookings by Day of the Week', time_zone: false %>
 
-    <div class="d-flex justify-content-center align-items-center gap-3 w-75">
-        <div class="card w-50">
-            <h5>Average cost for all Bookings</h5>
-            <%= number_to_currency(@invoices.average(:total_cost), unit: '円', precision: 0, locale: :ja) %>
+    <div class="d-flex justify-content-center align-items-center gap-5 p-3 w-100 text-center">
+        <div class="d-flex flex-column">
+            <h2 class="fw-semibold text-primary"><%= number_to_currency(@invoices.average(:total_cost), unit: '円', precision: 0, locale: :ja) %></h2>
+            <p>Average Booking Cost</p>
         </div>
-        <div class="card w-50">
-            <h5>Average Number of Activities for all Bookings</h5>
-            <%= (@slot_registrations.count.to_f / @invoices.count).round(2) %>
+        <div class="d-flex flex-column">
+            <h2 class="fw-semibold text-primary"><%= (@slot_registrations.count.to_f / @invoices.count).round(2) %></h2>
+            <p>Average Activities per Booking</p>
         </div>
     </div>
 
