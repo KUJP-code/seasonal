@@ -1,13 +1,13 @@
 <main id="charts_index">
-    <%= line_chart @invoices.group_by_day(:created_at).count, title: 'Daily Bookings' %>
+    <%= line_chart @invoices.group_by_day(:created_at).count, title: 'Daily Bookings', time_zone: false %>
 
-    <%= line_chart @invoices.group_by_day(:created_at).sum(:total_cost), title: 'Daily Revenue', suffix: "円" %>
+    <%= line_chart @invoices.group_by_day(:created_at).sum(:total_cost), title: 'Daily Revenue', suffix: "円", time_zone: false %>
 
-    <%= line_chart @invoices.group_by_week(:created_at).count, title: 'Weekly Bookings' %>
+    <%= line_chart @invoices.group_by_week(:created_at).count, title: 'Weekly Bookings', time_zone: false %>
 
-    <%= line_chart @invoices.group_by_week(:created_at).sum(:total_cost), title: 'Weekly Revenue', suffix: "円" %>
+    <%= line_chart @invoices.group_by_week(:created_at).sum(:total_cost), title: 'Weekly Revenue', suffix: "円", time_zone: false %>
 
-    <%= column_chart @invoices.group_by_day_of_week(:created_at, format: '%A').count, title: 'Bookings by Day of the Week' %>
+    <%= column_chart @invoices.group_by_day_of_week(:created_at, format: '%A').count, title: 'Bookings by Day of the Week', time_zone: false %>
 
     <div class="d-flex justify-content-center align-items-center gap-3 w-75">
         <div class="card w-50">
@@ -22,9 +22,9 @@
 
     <%= column_chart @invoices.group(:event_id).average(:total_cost).to_h { |k, v| [@school_hash[k], v] }.sort_by { |_k, v| v }.reverse, title: 'Average Booking Cost by School', round: 0, max: 50_000, suffix: "円", height: '75dvh' %>
 
-    <%= column_chart @invoices.joins(:time_slots).group(:event_id).count.map { |k, v| [@school_hash[k], (v.to_f / Invoice.where(event_id: k).count )] }.to_h.sort_by { |_k, v| v }.reverse, title: 'Number of Activities per Booking by School', round: 2 %>
+    <%= column_chart @invoices.joins(:time_slots).group(:event_id).count.map { |k, v| [@school_hash[k], (v.to_f / Invoice.where(event_id: k).count )] }.to_h.sort_by { |_k, v| v }.reverse, title: 'Number of Activities per Booking by School', round: 2, height: '50dvh', min: 3, max: 8 %>
 
-    <%= bar_chart @time_slots.left_joins(:registrations).group(:name).count.sort_by { |_k, v| v }.reverse, title: 'Activity Popularity', height: '75dvh' %>
+    <%= column_chart @time_slots.left_joins(:registrations).group(:name).count.sort_by { |_k, v| v }.reverse, title: 'Activity Popularity', height: '85dvh' %>
 
     <%= pie_chart @children.group(:grade).count, title: 'Attendees by Grade', donut: true, height: '50dvh' %>
 </main>
