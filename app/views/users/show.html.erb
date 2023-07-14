@@ -201,33 +201,6 @@
             </div>
         </div>
 
-        <div class="card">
-            <% popularity_hash = TimeSlot.where(morning: true, category: %i[seasonal outdoor]).or(TimeSlot.where(category: :special)).left_joins(:registrations).group(:name).count %>
-
-            <h2>Activities by Popularity</h2>
-
-            <div class="tbale-responsive-lg">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr class="table-primary">
-                            <th scope="col">Activity</th>
-                            <th scope="col">Registrations</th>
-                        </tr>
-                    </thead>
-                    
-                    <tbody>
-                        <% popularity_hash.sort_by { |_k, v| v }.reverse.each do |slot| %>
-                            <tr>
-                                <td><%= slot.first %></td>
-                                <%# The minus 1 is becuase we're using left joins to catch slots with no registrations, but this adds an extra slot to everything %>
-                                <td><%= slot.last - 1 %></td>
-                            </tr>
-                        <% end %>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
         <h1>Admin Options</h1>
         <div class="card gap-3 padding-3">
             <%= link_to 'Import/Export Data', csvs_path, class: 'btn btn-primary' %>
