@@ -26,9 +26,11 @@ export default class extends Controller {
     const printButton = document.querySelector(".print");
     printButton.classList.add("d-none");
     // Hide search bar
-    const search = document.querySelector(".search");
+    const search = document.querySelectorAll(".search");
     if (search) {
-      search.classList.add("d-none");
+      search.forEach((row) => {
+        row.classList.add("d-none");
+      });
     }
 
     // Reveal target table and heading, then print
@@ -55,7 +57,9 @@ export default class extends Controller {
     printButton.classList.remove("d-none");
     // Reveal search bar
     if (search) {
-      search.classList.remove("d-none");
+      search.forEach((row) => {
+        row.classList.remove("d-none");
+      });
     }
   }
 }

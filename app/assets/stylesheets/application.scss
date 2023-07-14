@@ -451,12 +451,19 @@ form .input-group-text {
     width: 100%;
   }
 
+  #slot_children_index thead.sticky-top,
+  #event_attendance_index thead.sticky-top {
+    top: 0;
+  }
+
   .slot_attendance a,
   .daily-attendance a {
     color: black;
   }
 
   .slot_attendance {
+    position: absolute;
+    top: 0;
     transform: scale(95%);
   }
 
