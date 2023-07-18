@@ -262,9 +262,11 @@ main#child_show .card {
   align-self: center;
 }
 
-#slot_children_index thead.sticky-top,
-#event_attendance_index thead.sticky-top {
-  top: 86px;
+.slot_attendance .allergy {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 // Devise
