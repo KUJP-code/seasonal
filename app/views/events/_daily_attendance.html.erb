@@ -13,7 +13,11 @@
                                 'bg-success'
                             end %> justify-content-between text-white fw-semibold">
             <h6 class="bg-light rounded-3 p-2">
-                <%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'TimeSlot', id: slot.id), class: 'fw-semibold' %>
+                <% if slot.special? && slot.morning == false %>
+                    <%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'TimeSlot', id: slot.morning_slot_id), class: 'fw-semibold' %>
+                <% else %>
+                    <%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'TimeSlot', id: slot.id), class: 'fw-semibold' %>
+                <% end %>
             </h6>
             <h3>
                 <%= regs %>
