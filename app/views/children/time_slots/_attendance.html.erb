@@ -13,9 +13,10 @@
                    aft_slot.options.reject { |opt| aft_time_ids.include?(opt.id) }
                  end
 %>
-<% children = slot.children.distinct %>
+<% children = (slot.children + slot.afternoon_slot.children).uniq %>
 <% child_ids = children.map(&:id) %>
-<% aft_child_ids = slot.afternoon_slot.registrations.map(&:child_id) unless slot.afternoon_slot.nil? %>
+<% morn_child_ids = slot.children.map(&:id) %>
+<% aft_child_ids = slot.afternoon_slot.children.map(&:id) unless slot.afternoon_slot.nil? %>
 
 <div class="slot_attendance mb-5" data-controller="refresh print" data-print-target="print">
     <div class="links d-flex gap-3">
@@ -31,9 +32,10 @@
                 <th><%= t('.arrival') %></th>
                 <th>
                     <p><%= t('.attend_morning') %></p>
-                    <p><%= "K: #{children.select{|c| c.kindy}.size}, E: #{children.reject{|c| c.kindy}.size}" %></p>
+                    <p><%= "K: #{children.select { |c| c.kindy && morn_child_ids.include?(c.id) }.size}, E: #{children.select { |c| !c.kindy && morn_child_ids.include?(c.id) }.size}" %></p>
                 </th>
                 <th><%= t('.name') %></th>
+                <th>幼児/小学生</th>
                 <th><%= t('.allergy') %></th>
                 <th><%= t('.photo') %></th>
                 <% event.options.each do |opt| %>
@@ -83,6 +85,14 @@
                     <div class="form-floating">
                         <%= text_field_tag 'name_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
                         <%= label_tag 'name_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </td>
+                <td data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".category">
+                    <div class="form-floating">
+                        <%= text_field_tag 'category_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'category_filter', t('.filter'), class: 'form-label' %>
                     </div>
                 </td>
                 <td data-controller="filter"

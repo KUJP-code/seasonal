@@ -121,8 +121,7 @@ class ChildrenController < ApplicationController
   def slot_attendance_index
     @source = Event.where(id: params[:id]).includes(options: :registrations)
     @slots = @source.first.time_slots.morning.includes(
-      children: :registrations, afternoon_slot: %i[options registrations],
-      options: :registrations
+      children: :registrations, afternoon_slot: %i[options registrations children], options: :registrations
     )
     render 'children/time_slots/slot_sheet_index'
   end
