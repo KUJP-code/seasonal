@@ -21,7 +21,14 @@ export default class extends Controller {
     const text = this.sourceTarget.innerHTML || this.sourceTarget.value;
     const strippedText = text
       .replace(/(<([^>]+)>)/gi, "")
-      .replace("コピー", "");
+      .replace("コピー", "")
+      .replace("\t", "")
+      .split("\n")
+      .map((line) => {
+        return line.trim();
+      })
+      .join("\n")
+      .trim();
 
     navigator.clipboard.writeText(strippedText).then(() => this.copied());
   }
