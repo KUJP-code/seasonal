@@ -1,42 +1,19 @@
-<%= form_with model: @slot, html: { class: 'card' } do |f| %>
-    <div class="form-floating">
-        <%= f.text_field :name, class: 'form-control', placeholder: t('.name') %>
-        <%= f.label :name, t('.name'), class: 'form-label' %>
-    </div>
+<%= form_with model: @event, html: { class: 'card' } do |f| %>
 
-    <div>
-        <%= f.time_field :start_time, class: 'form-control' %>
-        <%= f.label :start_time, t('.start_time'), class: 'form-label' %>
-    </div>
+    <%= f.fields_for :time_slots do |slot_f| %>
+        <%= render 'time_slots/slot_fields', f: slot_f %>
+    <% end %>
 
-    <div>
-        <%= f.time_field :end_time, class: 'form-control' %>
-        <%= f.label :end_time, t('.end_time'), class: 'form-label' %>
-    </div>
+    <template data-fields-target="template">
+        <%= f.fields_for :time_slots, TimeSlot.new(event_id: @event.id), child_index: 'CHILD' do |slot_f| %>
+            <%= render 'time_slots/slot_fields', f: slot_f %>
+        <% end %>
+    </template>
+        
+    <div data-fields-target="target"></div>
 
-    <div class="form-floating">
-        <%= f.text_area :description, class: 'form-control', placeholder: t('.description') %>
-        <%= f.label :description, t('.description'), class: 'form-label' %>
+    <div class="d-flex gap-3 align-items-center justify-content-around">
+        <%= button_tag t('.add_time_slot'), data: { action: "fields#add" }, class: 'btn btn-primary' %>
+        <%= f.submit class: 'btn btn-primary' %>
     </div>
-
-    <div>
-        <%= f.label :category, t('.category'), class: 'form-label' %>
-        <%= f.select :category, [
-                [t('.seasonal'), 'seasonal'],
-                [t('.special'), 'special'],
-                [t('.party'), 'party'],
-            ], class: 'form-select' %>
-    </div>
-
-    <div class="form-check">
-        <%= f.check_box :closed, class: 'form-check-input' %>
-        <%= f.label :closed, t('.closed'), class: 'form-check-label' %>
-    </div>
-
-    <div class="form-check">
-        <%= f.check_box :morning, class: 'form-check-input' %>
-        <%= f.label :morning, t('.morning'), class: 'form-check-label' %>
-    </div>
-
-    <%= f.submit class: 'btn btn-primary' %>
 <% end %>

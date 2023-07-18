@@ -18,6 +18,9 @@ class EventsController < ApplicationController
 
   def new
     @event = authorize(Event.new)
+    @images = ActiveStorage::Blob.where('key LIKE ?', '%events%').map { |blob| [blob.key, blob.id] }
+    @prices = PriceList.order(:name)
+    @schools = [%w[All all]] + School.order(:id).map { |school| [school.name, school.id] }
   end
 
   def edit
@@ -25,18 +28,18 @@ class EventsController < ApplicationController
   end
 
   def create
-    authorize(Event)
+    authorize(:event)
 
     if params[:event][:school_id] == 'all'
       School.all.each do |school|
         school.events.create(event_params)
       end
-      redirect_to events_path
+      redirect_to new_time_slot_path(event: 'all'), notice: t('success', model: 'イベント', action: '追加')
     else
       @event = Event.new(event_params)
 
       if @event.save
-        redirect_to events_path, notice: t('success', model: 'イベント', action: '追加')
+        redirect_to new_time_slot_path(event: @event.id), notice: t('success', model: 'イベント', action: '追加')
       else
         render :new, status: :unprocessable_entity, alert: t('failure', model: 'イベント', action: '追加')
       end
@@ -67,11 +70,12 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:id, :name, :description, :start_date, :image,
-                                  :end_date, :school_id, :member_prices_id, :goal, :non_member_prices_id,
-                                  time_slots_attributes:
-                                  %i[id name start_time end_time description
-                                     category closed event_id morning morning_slot_id image _destroy])
+    params.require(:event).permit(
+      :id, :name, :description, :start_date, :image_id, :end_date, :school_id,
+      :member_prices_id, :goal, :non_member_prices_id, time_slots_attributes:
+      %i[id name start_time end_time description
+         category closed event_id morning morning_slot_id image _destroy]
+    )
   end
 
   def user_specific_info

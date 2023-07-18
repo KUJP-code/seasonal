@@ -3,6 +3,10 @@
 # Represents an event at a single school, with one or many time slots
 # Must have a school
 class Event < ApplicationRecord
+  # Set the image from the ID provided by a form
+  before_validation :set_image
+  attr_accessor :image_id
+
   belongs_to :school
   delegate :area, to: :school
   belongs_to :member_prices, class_name: 'PriceList',
@@ -51,5 +55,13 @@ class Event < ApplicationRecord
   def photo_regs
     photo_id = options.find_by(name: 'フォトサービス').id
     Registration.all.where(registerable_type: 'Option', registerable_id: photo_id).size
+  end
+
+  private
+
+  def set_image
+    return if image_id.nil?
+
+    image.attach(ActiveStorage::Blob.find(image_id))
   end
 end

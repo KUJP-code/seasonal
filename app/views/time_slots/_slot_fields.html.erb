@@ -24,8 +24,8 @@
     </div>
 
     <div>
-        <%= f.label :category, t('.category') %><br />
-        <%= f.select :category, [%w[Seasonal seasonal], %w[Special special], %w[Party party], %w[Outdoor outdoor]], {}, {class: 'form-select'} %>
+        <%= f.label :category, t('.category'), class: 'form-label' %><br />
+        <%= f.select :category, TimeSlot.categories.map { |k, _v| [k.capitalize, k] } , {}, {class: 'form-select'} %>
     </div>
 
     <div class="form-check">

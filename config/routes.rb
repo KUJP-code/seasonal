@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       resources :events
       resources :invoices, except: %i[create edit new]
       resources :price_lists, except: %i[show]
-      resources :time_slots, except: %i[create destroy new]
+      resources :time_slots
       resources :users
 
       # Mailer subscription routes

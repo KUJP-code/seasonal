@@ -12,8 +12,16 @@ class TimeSlotsController < ApplicationController
     @slot = authorize(TimeSlot.find(params[:id]))
   end
 
+  def new
+    @event = authorize(Event.find(params[:event]))
+  end
+
   def edit
     @slot = authorize(TimeSlot.find(params[:id]))
+  end
+
+  def create
+    @event = authorize(Event.find(params[:event]))
   end
 
   def update
@@ -29,7 +37,9 @@ class TimeSlotsController < ApplicationController
   private
 
   def slot_params
-    params.require(:time_slot).permit(:name, :image, :start_time, :end_time, :description, :category, :closed,
-                                      :morning, :event_id)
+    params.require(:time_slot).permit(
+      :name, :image, :start_time, :end_time, :description, :category, :closed,
+      :morning, :event_id
+    )
   end
 end

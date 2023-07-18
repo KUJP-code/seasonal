@@ -34,8 +34,7 @@ class TimeSlot < ApplicationRecord
   enum :category, seasonal: 0,
                   special: 1,
                   party: 2,
-                  outdoor: 3,
-                  default: :seasonal
+                  outdoor: 3
 
   # Scopes
   # For time slot status
