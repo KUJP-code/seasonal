@@ -13,7 +13,12 @@ class TimeSlotsController < ApplicationController
   end
 
   def new
-    @event = authorize(Event.find(params[:event]))
+    if params[:event] == 'all'
+      @events = authorize(Event.where(id: params[:event]))
+    else
+      @event = authorize(Event.find(params[:event]))
+    end
+    @images = ActiveStorage::Blob.where('key LIKE ?', '%slots%').map { |blob| [blob.key, blob.id] }
   end
 
   def edit
@@ -22,6 +27,12 @@ class TimeSlotsController < ApplicationController
 
   def create
     @event = authorize(Event.find(params[:event]))
+
+    if @event.save
+      redirect_to events_path, notice: t('success', model: '開催日', action: '追加')
+    else
+      render :new, status: :unprocessable_entity, alert: t('failure', model: '開催日', action: '追加')
+    end
   end
 
   def update

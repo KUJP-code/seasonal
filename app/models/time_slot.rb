@@ -3,6 +3,10 @@
 # Represents an event time slot
 # Must have an event
 class TimeSlot < ApplicationRecord
+  # Set the image from the ID provided in the form
+  before_validation :set_image
+  attr_accessor :image_id
+
   belongs_to :event
   has_one :school, through: :event
   delegate :area, to: :event
@@ -86,6 +90,14 @@ class TimeSlot < ApplicationRecord
 
   def times
     "#{f_start_time} - #{f_end_time}"
+  end
+
+  private
+
+  def set_image
+    return if image_id.nil?
+
+    image.attach(ActiveStorage::Blob.find(image_id))
   end
 
   DAYS = {

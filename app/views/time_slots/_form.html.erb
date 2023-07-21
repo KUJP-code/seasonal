@@ -1,19 +1,32 @@
-<%= form_with model: @event, html: { class: 'card' } do |f| %>
+<%# TODO: Seems to be an issue with the form/cards being off center, try on a bigger screen %>
 
-    <%= f.fields_for :time_slots do |slot_f| %>
-        <%= render 'time_slots/slot_fields', f: slot_f %>
-    <% end %>
-
-    <template data-fields-target="template">
-        <%= f.fields_for :time_slots, TimeSlot.new(event_id: @event.id), child_index: 'CHILD' do |slot_f| %>
+<%= form_with model: @event, html: { class: 'flex-row flex-wrap card justify-content-center gap-3' }, data: { controller: 'fields' } do |f| %>
+    <% if @event %>
+        <%= f.fields_for :time_slots do |slot_f| %>
             <%= render 'time_slots/slot_fields', f: slot_f %>
         <% end %>
-    </template>
-        
+
+        <template data-fields-target="template">
+            <%= f.fields_for :time_slots, TimeSlot.new(event_id: @event.id), child_index: 'CHILD' do |slot_f| %>
+                <%= render 'time_slots/slot_fields', f: slot_f %>
+            <% end %>
+        </template>
+    <% else %>
+        <%= f.fields_for :time_slots do |slot_f| %>
+            <%= render 'time_slots/slot_fields', f: slot_f %>
+        <% end %>
+
+        <template data-fields-target="template">
+            <%= f.fields_for :time_slots, TimeSlot.new(event_id: @event.id), child_index: 'CHILD' do |slot_f| %>
+                <%= render 'time_slots/slot_fields', f: slot_f %>
+            <% end %>
+        </template>
+    <% end %>
+
     <div data-fields-target="target"></div>
 
-    <div class="d-flex gap-3 align-items-center justify-content-around">
-        <%= button_tag t('.add_time_slot'), data: { action: "fields#add" }, class: 'btn btn-primary' %>
-        <%= f.submit class: 'btn btn-primary' %>
+    <div class="d-flex gap-3 align-items-center justify-content-around w-100">
+        <%= button_tag t('.add_time_slot'), type: 'button', data: { action: "fields#add" }, class: 'btn btn-primary' %>
+        <%= f.submit 'Update Time Slots', class: 'btn btn-primary' %>
     </div>
 <% end %>

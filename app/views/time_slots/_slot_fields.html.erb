@@ -1,7 +1,10 @@
 <div class="fields_wrapper d-grid gap-3 justify-content-center" data-new-record="<%= f.object.new_record? %>">
     <%= f.hidden_field :event_id %>
 
-    <h2><%= t('.slot_info') %></h2>
+    <div>
+        <%= label_tag :image_id, t('.image'), class: 'form-label' %>
+        <%= f.select :image_id, @images, {}, { class: 'form-select' } %>
+    </div>
 
     <div class="form-floating">
         <%= f.text_field :name, class: 'form-control', placeholder: t('.name'), required: true  %>
