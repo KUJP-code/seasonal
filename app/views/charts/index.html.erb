@@ -24,7 +24,7 @@
 
     <%= column_chart @invoices.joins(:time_slots).group(:event_id).count.map { |k, v| [@school_hash[k], (v.to_f / Invoice.where(event_id: k).count )] }.to_h.sort_by { |_k, v| v }.reverse, title: 'Number of Activities per Booking by School', round: 2, height: '50dvh', min: 3, max: 8 %>
 
-    <%= column_chart @time_slots.left_joins(:registrations).group(:name).count.sort_by { |_k, v| v }.reverse, title: 'Activity Popularity', height: '85dvh' %>
+    <%= column_chart @time_slots.left_joins(:registrations).group(:name).count.sort_by { |_k, v| v }.reverse, title: 'Activity Popularity', height: '85dvh', max: 1_100 %>
 
     <%= pie_chart @children.group(:grade).count, title: 'Attendees by Grade', donut: true, height: '50dvh' %>
 </main>
