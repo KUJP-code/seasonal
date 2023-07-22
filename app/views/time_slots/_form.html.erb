@@ -1,6 +1,6 @@
 <%# TODO: Seems to be an issue with the form/cards being off center, try on a bigger screen %>
 
-<%= form_with model: @event, html: { class: 'flex-row flex-wrap card justify-content-center gap-3' }, data: { controller: 'fields' } do |f| %>
+<%= form_with model: @event, html: { class: 'flex-row flex-wrap card justify-content-around gap-3' }, data: { controller: 'fields' } do |f| %>
     <% if @event %>
         <%= f.fields_for :time_slots do |slot_f| %>
             <%= render 'time_slots/slot_fields', f: slot_f %>
@@ -23,7 +23,7 @@
         </template>
     <% end %>
 
-    <div data-fields-target="target"></div>
+    <div data-fields-target="target" class="d-none w-100"></div>
 
     <div class="d-flex gap-3 align-items-center justify-content-around w-100">
         <%= button_tag t('.add_time_slot'), type: 'button', data: { action: "fields#add" }, class: 'btn btn-primary' %>
