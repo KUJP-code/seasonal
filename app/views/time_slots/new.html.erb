@@ -1,4 +1,4 @@
-<main id="time_slot_new" class="flex-row justify-content-around gap-3">
+<main id="time_slot_new" class="flex-row justify-content-around align-items-start gap-3">
     <div class="event-sidebar sticky-top">
         <% if @events %>
             <%= render partial: 'events/event', collection: @events, locals: { child: nil } %>
