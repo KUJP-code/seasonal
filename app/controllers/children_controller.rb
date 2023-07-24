@@ -128,7 +128,7 @@ class ChildrenController < ApplicationController
 
   def slot_variables
     @source = TimeSlot.where(id: params[:id]).includes(
-      children: :registrations, afternoon_slot: %i[options registrations],
+      children: %i[registrations regular_schedule], afternoon_slot: %i[options registrations],
       options: :registrations
     )
     @event = Event.where(id: @source.first.event_id).includes(options: :registrations)
