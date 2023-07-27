@@ -25,6 +25,9 @@ class EventsController < ApplicationController
 
   def edit
     @event = authorize(Event.find(params[:id]))
+    @images = ActiveStorage::Blob.where('key LIKE ?', '%events%').map { |blob| [blob.key, blob.id] }
+    @prices = PriceList.order(:name)
+    @schools = [%w[All all]] + School.order(:id).map { |school| [school.name, school.id] }
   end
 
   def create
@@ -34,12 +37,14 @@ class EventsController < ApplicationController
       School.all.each do |school|
         school.events.create(event_params)
       end
-      redirect_to new_time_slot_path(event: 'all'), notice: t('success', model: 'イベント', action: '追加')
+      redirect_to new_time_slot_path(event: 'all'), notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Event'
+      redirect_to events_path, notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Time Slots'
     else
       @event = Event.new(event_params)
 
       if @event.save
-        redirect_to new_time_slot_path(event: @event.id), notice: t('success', model: 'イベント', action: '追加')
+        redirect_to new_time_slot_path(event: @event.id), notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Event'
+        redirect_to events_path, notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Time Slots'
       else
         render :new, status: :unprocessable_entity, alert: t('failure', model: 'イベント', action: '追加')
       end
@@ -47,12 +52,23 @@ class EventsController < ApplicationController
   end
 
   def update
-    @event = authorize(Event.find(params[:id]))
+    authorize(:event)
 
-    if @event.update(event_params)
-      redirect_to events_path, notice: t('success', model: 'イベント', action: '更新')
+    if params[:event][:school_id] == 'all'
+      School.all.each do |school|
+        school.events.update(event_params)
+      end
+      redirect_to new_time_slot_path(event: 'all'), notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Event'
+      redirect_to events_path, notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Time Slots'
     else
-      render :edit, status: :unprocessable_entity, alert: t('failure', model: 'イベント', action: '更新')
+      @event = authorize(Event.find(params[:id]))
+
+      if @event.save
+        redirect_to new_time_slot_path(event: @event.id), notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Event'
+        redirect_to events_path, notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Time Slots'
+      else
+        render :edit, status: :unprocessable_entity, alert: t('failure', model: 'イベント', action: '追加')
+      end
     end
   end
 

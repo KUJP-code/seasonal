@@ -1,0 +1,19 @@
+<%= form_with model: @slot, html: { class: 'flex-row flex-wrap card justify-content-around gap-3' }, data: { controller: 'fields' } do |f| %>
+    <%= f.fields_for :options do |slot_f| %>
+        <%= render 'options/opt_fields', f: slot_f %>
+    <% end %>
+
+    <template data-fields-target="template">
+        <%= f.fields_for :options, TimeSlot.new(event_id: @slot.id), child_index: 'CHILD' do |slot_f| %>
+            <%= render 'options/opt_fields', f: slot_f %>
+        <% end %>
+    </template>
+
+
+    <div data-fields-target="target" class="d-none w-100"></div>
+
+    <div class="d-flex gap-3 align-items-center justify-content-around w-100">
+        <%= button_tag t('.add_time_slot'), type: 'button', data: { action: "fields#add" }, class: 'btn btn-primary' %>
+        <%= f.submit 'Update Options', class: 'btn btn-primary' %>
+    </div>
+<% end %>

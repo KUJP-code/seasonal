@@ -480,13 +480,15 @@ form .input-group-text {
 
 // Time Slot#new
 
-#time_slot_new .event-sidebar {
+#time_slot_new .event-sidebar,
+#option_new .event-sidebar {
   align-self: flex-start;
   width: 20%;
   top: 15vh;
 }
 
-#time_slot_new form {
+#time_slot_new form,
+#option_new form {
   width: 75%;
 }
 

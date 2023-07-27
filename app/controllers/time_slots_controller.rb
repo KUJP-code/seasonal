@@ -25,16 +25,6 @@ class TimeSlotsController < ApplicationController
     @slot = authorize(TimeSlot.find(params[:id]))
   end
 
-  def create
-    @event = authorize(Event.find(params[:event]))
-
-    if @event.save
-      redirect_to events_path, notice: t('success', model: '開催日', action: '追加')
-    else
-      render :new, status: :unprocessable_entity, alert: t('failure', model: '開催日', action: '追加')
-    end
-  end
-
   def update
     @slot = authorize(TimeSlot.find(params[:id]))
 
@@ -50,7 +40,8 @@ class TimeSlotsController < ApplicationController
   def slot_params
     params.require(:time_slot).permit(
       :name, :image, :start_time, :end_time, :description, :category, :closed,
-      :morning, :event_id
+      :morning, :event_id, options_attributes:
+      %i[id name cost category modifier optionable_type optionable_id]
     )
   end
 end

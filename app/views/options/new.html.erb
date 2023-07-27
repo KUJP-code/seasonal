@@ -1,0 +1,11 @@
+<main id="option_new" class="flex-row justify-content-around align-items-start gap-3">
+    <div class="event-sidebar sticky-top">
+        <% if @events %>
+            <%= render partial: 'events/event', collection: @events, locals: { child: nil } %>
+        <% else %>
+            <%= render @event, child: nil %>
+        <% end %>
+    </div>
+
+    <%= render 'options/form' %>
+</main>

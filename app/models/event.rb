@@ -53,7 +53,10 @@ class Event < ApplicationRecord
   # Returns num of registrations for the フォトサービス event option
   # free regs from siblings being registered not included
   def photo_regs
-    photo_id = options.find_by(name: 'フォトサービス').id
+    photo_opt = options.find_by(name: 'フォトサービス')
+    return 0 if photo_opt.nil?
+
+    photo_id = photo_opt.id
     Registration.all.where(registerable_type: 'Option', registerable_id: photo_id).size
   end
 

@@ -14,8 +14,9 @@ Rails.application.routes.draw do
       resources :csvs, only: %i[index]
       resources :events
       resources :invoices, except: %i[create edit new]
+      resources :options, only: %i[new]
       resources :price_lists, except: %i[show]
-      resources :time_slots
+      resources :time_slots, except: %i[create]
       resources :users
 
       # Mailer subscription routes

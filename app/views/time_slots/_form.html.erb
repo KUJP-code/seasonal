@@ -1,5 +1,3 @@
-<%# TODO: Seems to be an issue with the form/cards being off center, try on a bigger screen %>
-
 <%= form_with model: @event, html: { class: 'flex-row flex-wrap card justify-content-around gap-3' }, data: { controller: 'fields' } do |f| %>
     <% if @event %>
         <%= f.fields_for :time_slots do |slot_f| %>
