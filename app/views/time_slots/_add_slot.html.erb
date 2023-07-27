@@ -100,6 +100,43 @@
                             </fieldset>
                         <% end %>
                     <% end %>
+
+                    <% morn_depart_options = if kindy
+                                                add_slot.options.select { |opt| opt.k_departure? }
+                                            else
+                                                add_slot.options.select { |opt| opt.departure? }
+                                            end %>
+
+                    <% if morn_depart_options.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
+                        <% registered_depart = morn_depart_options.select { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id} }.first %>
+                        <p><%= "#{registered_depart.name}: ◯" %></p>
+                    <% else %>
+                        <% unless morn_depart_options.size.zero? %>
+                            <fieldset class="mt-2">
+                                <legend class="fs-6 fw-bold"><%= t('.depart_options') %></legend>
+                                <% morn_depart_options.each do |opt| %>
+                                    <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
+                                    <div class="add_reg w-100 form-check d-flex justify-content-center align-items-center"
+                                        data-controller="register"
+                                        data-register-id-value=<%= opt.id %>
+                                        data-register-type-value="Radio"
+                                        data-register-child-value=<%= child.id %>
+                                        data-register-cost-value=<%= opt.cost %>>
+                                        <label for="<%= "depart#{opt.optionable_id}opt#{opt.id}" %>" data-register-target="name"
+                                        class="form-check-label">
+                                            <%= opt.name %>
+                                        </label>
+                                        <input type="radio"
+                                        name="depart<%= "#{opt.optionable_id}" %>"
+                                        id="<%= "depart#{opt.optionable_id}opt#{opt.id}" %>"
+                                        <%= 'checked' if opt_registered || ( opt.name == 'なし' && morn_depart_options.none? { |a_opt| opt_regs.include?(a_opt) }) %>
+                                        data-register-target='button' data-action="change->register#toggle"
+                                        class="form-check-input m-0">
+                                    </div>
+                                <% end %>
+                            </fieldset>
+                        <% end %>
+                    <% end %>
                 </div>
             </div>
         <% end %>
