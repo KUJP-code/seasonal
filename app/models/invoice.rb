@@ -288,7 +288,7 @@ class Invoice < ApplicationRecord
     return false if child.received_hat || child.internal?
 
     # They only need one if registered for an outdoor activity now
-    time_slots.any? { |slot| slot.category == 'outdoor' }
+    slot_regs.any? { |reg| reg.registerable.category == 'outdoor' }
   end
 
   # Decides if we need to apply the dumb 200 円 increase

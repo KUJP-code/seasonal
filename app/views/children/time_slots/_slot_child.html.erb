@@ -16,7 +16,13 @@
       <th scope="row" class="arrival"><%= (slot.start_time + arrival_option.modifier.minutes).strftime('%I:%M%p').concat('~') if arrival_option && arrival_option.modifier.negative? %></th>
     <% end %>
     <th scope="row" class="morning"><%= '◯' if slot_child.time_slots.include?(slot) %></th>
-    <th scope="row" class="name"><%= link_to "#{slot_child.katakana_name} (#{slot_child.en_name})", child_path(slot_child) %></th>
+    <th scope="row" class="name">
+      <% if slot.outdoor? && slot_child.adjustments.find_by(reason: '帽子代(野外アクティビティに参加される方でKids UP帽子をお持ちでない方のみ)', change: 1_100) %>
+        <%= link_to "(H) #{slot_child.katakana_name} (#{slot_child.en_name})", child_path(slot_child) %>
+      <% else %>
+        <%= link_to "#{slot_child.katakana_name} (#{slot_child.en_name})", child_path(slot_child) %>
+      <% end %>
+    </th>
     <th scope="row" class="category"><%=
       if slot_child.time_slots.include?(slot)
         slot_child.kindy ? '幼児' : '小学生'        
