@@ -3,7 +3,7 @@
 # Handles flow of information for events
 class EventsController < ApplicationController
   def index
-    @events = policy_scope(Event).order(:start_date)
+    @events = policy_scope(Event).order(start_date: :desc)
   end
 
   def show
@@ -43,10 +43,10 @@ class EventsController < ApplicationController
       @event = Event.new(event_params)
 
       if @event.save
-        redirect_to new_time_slot_path(event: @event.id), notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Event'
+        redirect_to new_time_slot_path(event: @event.id), notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Create Event'
         redirect_to events_path, notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Time Slots'
       else
-        render :new, status: :unprocessable_entity, alert: t('failure', model: 'イベント', action: '追加')
+        redirect_to new_event_path(@event), status: :unprocessable_entity, alert: t('failure', model: 'イベント', action: '追加')
       end
     end
   end
@@ -63,7 +63,7 @@ class EventsController < ApplicationController
     else
       @event = authorize(Event.find(params[:id]))
 
-      if @event.update(event_params)
+      if @event.update!(event_params)
         redirect_to new_time_slot_path(event: @event.id), notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Event'
         redirect_to events_path, notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Time Slots'
       else
@@ -90,8 +90,10 @@ class EventsController < ApplicationController
       :name, :description, :start_date, :image_id, :end_date, :school_id,
       :member_prices_id, :goal, :non_member_prices_id,
       time_slots_attributes:
-        %i[id name start_time end_time category event_id morning morning_slot_id image_id _destroy],
-      options_attributes:
+        [:id, :name, :start_time, :end_time, :category, :event_id, :morning, :morning_slot_id, :image_id, :_destroy, { afternoon_slot_attributes:
+          %i[id name image start_time end_time description category closed
+             morning event_id] }],
+        options_attributes:
         %i[id name cost category modifier optionable_type optionable_id _destroy]
     )
   end

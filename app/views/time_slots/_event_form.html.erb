@@ -1,22 +1,25 @@
 <%= form_with model: @event, html: { class: 'flex-row flex-wrap card justify-content-around gap-3' }, data: { controller: 'fields' } do |f| %>
     <% if @event %>
-        <%= f.fields_for :time_slots do |slot_f| %>
-            <%= render 'time_slots/slot_fields', f: slot_f %>
+        <% @slots.each do |s| %>
+            <%= f.fields_for :time_slots, s do |slot_f| %>
+                <%= render 'time_slots/event_slot_fields', f: slot_f %>
+            <% end %>
         <% end %>
 
         <template data-fields-target="template">
             <%= f.fields_for :time_slots, TimeSlot.new(event_id: @event.id), child_index: 'CHILD' do |slot_f| %>
-                <%= render 'time_slots/slot_fields', f: slot_f %>
+                <%= render 'time_slots/event_slot_fields', f: slot_f %>
             <% end %>
         </template>
     <% else %>
+    <%# TODO: Handle updates for all events here %>
         <%= f.fields_for :time_slots do |slot_f| %>
-            <%= render 'time_slots/slot_fields', f: slot_f %>
+            <%= render 'time_slots/event_slot_fields', f: slot_f %>
         <% end %>
 
         <template data-fields-target="template">
             <%= f.fields_for :time_slots, TimeSlot.new(event_id: @event.id), child_index: 'CHILD' do |slot_f| %>
-                <%= render 'time_slots/slot_fields', f: slot_f %>
+                <%= render 'time_slots/event_slot_fields', f: slot_f %>
             <% end %>
         </template>
     <% end %>

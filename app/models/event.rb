@@ -65,7 +65,7 @@ class Event < ApplicationRecord
   private
 
   def set_image
-    return if image_id.nil? || image_id == image.blob.id
+    return if image_id.nil?
 
     self.image = ActiveStorage::Blob.find(image_id)
   end

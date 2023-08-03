@@ -1,0 +1,45 @@
+<%= form_with model: @slot do |f| %>
+    <% if @slot.special %>
+        <%= f.fields_for :afternoon_slot, f.object.afternoon_slot || TimeSlot.new do |aft_f| %>
+
+            <button type="button" 
+                    class="btn btn-info" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#afternoon<%= aft_f.object.id %>" 
+                    aria-expanded="false" 
+                    aria-controls="afternoon<%= aft_f.object.id %>">
+                Customise afternoon slot
+            </button>
+
+            <div class="collapse" id="afternoon<%= aft_f.object.id %>">
+                <div class="d-grid gap-3">
+                    <%= aft_f.hidden_field :id %>
+                    <%= aft_f.hidden_field :event_id %>
+                    <%= aft_f.hidden_field :morning_slot_id %>
+
+                    <h3>Afternoon Slot</h3>
+
+                    <div class="form-floating">
+                        <%= aft_f.text_field :name, class: 'form-control', placeholder: t('.name')  %>
+                        <%= aft_f.label :name, t('.name'), class: 'form-label' %>
+                    </div>
+
+                    <div class="form-floating">
+                        <%= aft_f.datetime_field :start_time, class: 'form-control', placeholder: t('.start_time') %>
+                        <%= aft_f.label :start_time, t('.start_time'), class: 'form-label' %>
+                    </div>
+
+                    <div class="form-floating">
+                        <%= aft_f.datetime_field :end_time, class: 'form-control', placeholder: t('.end_time') %>
+                        <%= aft_f.label :end_time, t('.end_time'), class: 'form-label' %>
+                    </div>
+                    
+                    <div>
+                        <%= aft_f.label :category, t('.category'), class: 'form-label' %>
+                        <%= aft_f.select :category, TimeSlot.categories.map { |k, _v| [k.capitalize, k] } , {}, {class: 'form-select'} %>
+                    </div>
+                </div>
+            </div>
+        <% end %>
+    <% end %>
+<% end %>

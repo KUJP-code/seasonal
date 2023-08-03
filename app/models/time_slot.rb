@@ -5,6 +5,8 @@
 class TimeSlot < ApplicationRecord
   # Set the image from the ID provided in the form
   before_validation :set_image
+  after_create :create_default_opts, :create_aft_slot
+
   attr_accessor :image_id
 
   belongs_to :event
@@ -28,6 +30,8 @@ class TimeSlot < ApplicationRecord
                            foreign_key: :morning_slot_id,
                            dependent: :destroy,
                            inverse_of: :morning_slot
+  accepts_nested_attributes_for :afternoon_slot, allow_destroy: true,
+                                                 reject_if: :all_blank
 
   has_one_attached :image
 
@@ -96,8 +100,30 @@ class TimeSlot < ApplicationRecord
 
   private
 
+  def create_aft_slot
+    return if !morning || special?
+
+    create_afternoon_slot(
+      name: name,
+      start_time: start_time + 5.hours,
+      end_time: end_time + 5.hours,
+      category: category,
+      morning: false,
+      event_id: event_id
+    )
+  end
+
+  def create_default_opts
+    if morning
+      options.create(DEFAULT_MORN_OPTS)
+      options.create(DEFAULT_SPECIAL_OPTS) if special?
+    else
+      options.create(DEFAULT_AFT_OPTS)
+    end
+  end
+
   def set_image
-    return if image_id.nil? || image_id == image.blob.id
+    return if image_id.nil?
 
     self.image = (ActiveStorage::Blob.find(image_id))
   end
@@ -148,7 +174,7 @@ class TimeSlot < ApplicationRecord
     'Saturday' => '土'
   }.freeze
 
-  STANDARD_AFT_OPTS = [
+  DEFAULT_AFT_OPTS = [
     {
       name: '夕食',
       category: :meal,
@@ -216,7 +242,7 @@ class TimeSlot < ApplicationRecord
     }
   ].freeze
 
-  STANDARD_EXT_OPTS = [
+  DEFAULT_SPECIAL_OPTS = [
     {
       name: '中延長',
       category: :extension,
@@ -229,7 +255,7 @@ class TimeSlot < ApplicationRecord
     }
   ].freeze
 
-  STANDARD_MORN_OPTS = [
+  DEFAULT_MORN_OPTS = [
     {
       name: '昼食',
       category: :meal,

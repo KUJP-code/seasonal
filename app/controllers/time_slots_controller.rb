@@ -17,6 +17,7 @@ class TimeSlotsController < ApplicationController
       @events = authorize(Event.where(id: params[:event]))
     else
       @event = authorize(Event.find(params[:event]))
+      @slots = @event.time_slots.morning
     end
     @images = ActiveStorage::Blob.where('key LIKE ?', '%slots%').map { |blob| [blob.key, blob.id] }
   end
@@ -40,7 +41,8 @@ class TimeSlotsController < ApplicationController
   def slot_params
     params.require(:time_slot).permit(
       :name, :image, :start_time, :end_time, :description, :category, :closed,
-      :morning, :event_id, options_attributes:
+      :morning, :event_id,
+      options_attributes:
       %i[id name cost category modifier optionable_type optionable_id]
     )
   end
