@@ -453,6 +453,14 @@ form .input-group-text {
     width: 100%;
   }
 
+  #user_show #hat_kids {
+    width: 100%;
+  }
+
+  #hat_kids button {
+    display: none;
+  }
+
   #slot_children_index thead.sticky-top,
   #event_attendance_index thead.sticky-top {
     top: 0;

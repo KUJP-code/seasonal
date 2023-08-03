@@ -1,0 +1,27 @@
+<div id="hat_kids" class="card" data-controller="print" data-print-target="print">
+    <h3><%= t('.hat_kids') %></h3>
+
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr class="table-primary">
+                <th><%= t('.name') %></th>
+                <th><%= t('.kana_name') %></th>
+                <th><%= t('.en_name') %></th>
+                <th><%= t('.parent') %></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% children.each do |c| %>
+                <tr>
+                    <td><%= link_to c.name, child_path(c) %></td>
+                    <td><%= link_to c.katakana_name, child_path(c) %></td>
+                    <td><%= link_to c.en_name, child_path(c) %></td>
+                    <td><%= link_to c.parent.name, user_path(c.parent_id) unless c.parent_id.nil? %></td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+
+    <%= button_tag t('.print'), class: 'btn btn-primary w-100 print', data: { action: "click->print#print" } %>
+</div>

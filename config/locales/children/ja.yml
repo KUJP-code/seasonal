@@ -63,6 +63,12 @@ ja:
       school_info: "スクール情報"
       ssid: "マイページID"
       unable_to_save: "生徒更新できませんでした"
+    hat_kids:
+      en_name: "名前(ローマ字)"
+      hat_kids: "帽子が必要なお子様"
+      kana_name: "名前(カタカナ)"
+      name: "名前"
+      parent: "保護者名"
     index:
       allergies: "アレルギー"
       category: "カテゴリー"
