@@ -97,9 +97,9 @@ class TimeSlot < ApplicationRecord
   private
 
   def set_image
-    return if image_id.nil?
+    return if image_id.nil? || image_id == image.blob.id
 
-    image.attach(ActiveStorage::Blob.find(image_id))
+    self.image = (ActiveStorage::Blob.find(image_id))
   end
 
   CLOSE_DATES = {
