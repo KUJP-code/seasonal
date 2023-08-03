@@ -214,7 +214,7 @@
 
                         <div class="options mt-2<%= ' hidden' unless aft_registered %>" data-popup-target="popup">
                             <% aft_time_ids = afternoon_slot.options.time.ids %>
-                            <% unless afternoon_slot.name == "スペシャル遠足@品川アクアパーク (午後)" %>
+                            <% unless afternoon_slot.name.include?("アクアパーク") %>
                               <p><%= "#{t('.snack')}: ◯" %></p>
                             <% end %>
                              <% if afternoon_slot.special? %>

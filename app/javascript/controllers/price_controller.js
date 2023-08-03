@@ -75,6 +75,28 @@ export default class extends Controller {
         "スペシャル遠足@品川アクアパーク：1つ";
       snackCount--;
     }
+    // Handle the two shit events
+    if (
+      regList.includes("遠足＠うんこミュージアム &amp; スペシャルランチ (午前)")
+    ) {
+      // The cost needs to be 6 000 no matter what, so adjust for int/ext
+      if (this.isMember(this.childTarget)) {
+        specialCost += 1580;
+      } else {
+        specialCost -= 930;
+      }
+      this.specialCountTarget.appendChild(document.createElement("br"));
+      this.specialCountTarget.innerHTML += "遠足＠うんこミュージアム：1つ";
+    }
+    // Handle the Kitashinagawa/Oi aquarium trip
+    if (regList.includes("スペシャル遠足@アクアパーク品川 (午後)")) {
+      // The cost needs to be 7 000 no matter what, so adjust for int/ext
+      specialCost += this.isMember(this.childTarget) ? 2580 : 70;
+      this.specialCountTarget.appendChild(document.createElement("br"));
+      this.specialCountTarget.innerHTML +=
+        "スペシャル遠足@アクアパーク品川：1つ";
+      snackCount--;
+    }
     // Get the cost of all those snacks to add to the final price
     const snackCost = snackCount * 165;
     this.snackCountTarget.innerHTML = `午後コースおやつ代：${snackCount.toString()}つ`;

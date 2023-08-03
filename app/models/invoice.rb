@@ -127,6 +127,7 @@ class Invoice < ApplicationRecord
     # Add cost due to automatic afternoon snacks
     snack_count = slot_regs.count { |reg| !reg._destroy && !reg.registerable.morning }
     snack_count -= 1 if event_id == 16 && slot_regs.any? { |r| r.registerable.name.include?("アクアパーク") }
+    snack_count -= 1 if [22, 26].include?(event_id) && slot_regs.any? { |r| r.registerable.name.include?('スペシャル遠足@アクアパーク品川') }
     course_cost += snack_count * 165
     # Add cost due to special day registrations
     # Now also has to handle Minami Machida's dumb different special day
@@ -136,7 +137,23 @@ class Invoice < ApplicationRecord
     summer_festival = slot_regs.any? { |reg| reg.registerable.name == '夏祭り' }
     course_cost += 1100 if summer_festival
     # Handle Ojima's aquarium cost being 3000 rather than 1500
-    course_cost += 1500 if event_id == 16 && slot_regs.any? { |r| r.registerable.name.include?("スペシャル遠足@品川アクアパーク") }
+    course_cost += 1500 if event_id == 16 && slot_regs.any? { |r| r.registerable.name.include?('スペシャル遠足@品川アクアパーク') }
+    # Handle the shit days
+    if [22, 26].include?(event_id) && slot_regs.any? { |r| r.registerable.name.include?('遠足＠うんこミュージアム') }
+      if child.external?
+        course_cost -= 2430
+      else
+        course_cost += 80
+      end
+    end
+    # Handle Oi and Kitashinagawa's aquarium visits
+    if [22, 26].include?(event_id) && slot_regs.any? { |r| r.registerable.name.include?('スペシャル遠足@アクアパーク品川') }
+      if child.external?
+        course_cost -= 1430
+      else
+        course_cost += 1080
+      end
+    end
     course_cost += special_count * 1_500
     @breakdown << '</div>'
     @breakdown.prepend(
