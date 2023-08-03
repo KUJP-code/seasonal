@@ -147,18 +147,21 @@
                             else
                             add_slot.options.extension.find_by(category: 'extension')
                             end %>
-            <% ext_opt_registered = registrations.any? { |reg| reg.registerable_id == ext_opt.id && reg.registerable_type == 'Option' } %>
             
-            <div class="add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100 border border"
-                data-controller="register"
-                data-controller="register"
-                data-register-id-value=<%= ext_opt.id %>
-                data-register-type-value="Option"
-                data-register-child-value=<%= child.id %>
-                data-register-cost-value=<%= ext_opt.cost %>>
-                <label for=<%= "opt#{ext_opt.id}" %> class="form-check-label" data-register-target="name"><%= ext_opt.name %></label>
-                <%= check_box_tag "opt#{ext_opt.id}", '', (true if ext_opt_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
-            </div>
+            <% if ext_opt  %>
+              <% ext_opt_registered = registrations.any? { |reg| reg.registerable_id == ext_opt.id && reg.registerable_type == 'Option' } %>
+                
+                <div class="add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100 border border"
+                    data-controller="register"
+                    data-controller="register"
+                    data-register-id-value=<%= ext_opt.id %>
+                    data-register-type-value="Option"
+                    data-register-child-value=<%= child.id %>
+                    data-register-cost-value=<%= ext_opt.cost %>>
+                    <label for=<%= "opt#{ext_opt.id}" %> class="form-check-label" data-register-target="name"><%= ext_opt.name %></label>
+                    <%= check_box_tag "opt#{ext_opt.id}", '', (true if ext_opt_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
+                </div>
+            <% end %> 
         <% end %>
 
         <% afternoon_slot = add_slot.afternoon_slot %>
@@ -211,7 +214,9 @@
 
                         <div class="options mt-2<%= ' hidden' unless aft_registered %>" data-popup-target="popup">
                             <% aft_time_ids = afternoon_slot.options.time.ids %>
-                            <p><%= "#{t('.snack')}: ◯" %></p>
+                            <% unless afternoon_slot.name == "スペシャル遠足@品川アクアパーク (午後)" %>
+                              <p><%= "#{t('.snack')}: ◯" %></p>
+                            <% end %>
                              <% if afternoon_slot.special? %>
                                 <p>スペシャルデー: ◯</p>
                             <% end %>

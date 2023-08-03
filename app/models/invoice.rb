@@ -126,6 +126,7 @@ class Invoice < ApplicationRecord
                   end
     # Add cost due to automatic afternoon snacks
     snack_count = slot_regs.count { |reg| !reg._destroy && !reg.registerable.morning }
+    snack_count -= 1 if event_id == 16 && slot_regs.any? { |r| r.registerable.name.include?("アクアパーク") }
     course_cost += snack_count * 165
     # Add cost due to special day registrations
     # Now also has to handle Minami Machida's dumb different special day
@@ -134,6 +135,8 @@ class Invoice < ApplicationRecord
     # Add the 1100 if MM's afternoon special day registered
     summer_festival = slot_regs.any? { |reg| reg.registerable.name == '夏祭り' }
     course_cost += 1100 if summer_festival
+    # Handle Ojima's aquarium cost being 3000 rather than 1500
+    course_cost += 1500 if event_id == 16 && slot_regs.any? { |r| r.registerable.name.include?("スペシャル遠足@品川アクアパーク") }
     course_cost += special_count * 1_500
     @breakdown << '</div>'
     @breakdown.prepend(

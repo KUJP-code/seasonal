@@ -47,17 +47,13 @@ export default class extends Controller {
       []
     );
     // Count the 午後 ones, as these must be charged for a snack
-    const snackCount = regList.filter((slot) => slot.includes("午後")).length;
-    this.snackCountTarget.innerHTML = `午後コースおやつ代：${snackCount.toString()}つ`;
-    // Get the cost of all those snacks to add to the final price
-    const snackCost = snackCount * 165;
+    let snackCount = regList.filter((slot) => slot.includes("午後")).length;
     // Count the days in the list of special days
     const specialCount = regList.filter(
       (slot) =>
         slot.includes("水鉄砲合＆スイカ割り") ||
         slot.includes("巨大なお城のクラフト") ||
-        slot.includes("Watermelon Smash") ||
-        slot.includes("Icecream Store")
+        slot.includes("フルーツサンド作り")
     ).length;
     this.specialCountTarget.innerHTML = `スペシャルデー: ${specialCount.toString()}つ`;
     // Get cost of all of them to add to the final price
@@ -69,9 +65,19 @@ export default class extends Controller {
     ) {
       specialCost += 1100;
       this.specialCountTarget.appendChild(document.createElement("br"));
-      this.specialCountTarget.innerHTML += "南町田スペシャルデー：1つ";
+      this.specialCountTarget.innerHTML += "夏祭りスペシャルデー：1つ";
     }
-
+    // Handle Ojima aquarium trip
+    if (regList.includes("スペシャル遠足@品川アクアパーク (午後)")) {
+      specialCost += 3000;
+      this.specialCountTarget.appendChild(document.createElement("br"));
+      this.specialCountTarget.innerHTML +=
+        "スペシャル遠足@品川アクアパーク：1つ";
+      snackCount--;
+    }
+    // Get the cost of all those snacks to add to the final price
+    const snackCost = snackCount * 165;
+    this.snackCountTarget.innerHTML = `午後コースおやつ代：${snackCount.toString()}つ`;
     const finalCost =
       optionCost + courseCost + adjustmentChange + snackCost + specialCost;
     this.finalCostTarget.innerHTML = `合計（税込）: ${finalCost}円`;
