@@ -63,11 +63,11 @@ class EventsController < ApplicationController
     else
       @event = authorize(Event.find(params[:id]))
 
-      if @event.save
+      if @event.update(event_params)
         redirect_to new_time_slot_path(event: @event.id), notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Event'
         redirect_to events_path, notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Time Slots'
       else
-        render :edit, status: :unprocessable_entity, alert: t('failure', model: 'イベント', action: '追加')
+        redirect_to edit_event_path(@event), status: :unprocessable_entity, alert: t('failure', model: 'イベント', action: '追加')
       end
     end
   end
@@ -87,10 +87,12 @@ class EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(
-      :id, :name, :description, :start_date, :image_id, :end_date, :school_id,
-      :member_prices_id, :goal, :non_member_prices_id, time_slots_attributes:
-      %i[id name start_time end_time description
-         category closed event_id morning morning_slot_id image _destroy]
+      :name, :description, :start_date, :image_id, :end_date, :school_id,
+      :member_prices_id, :goal, :non_member_prices_id,
+      time_slots_attributes:
+        %i[id name start_time end_time category event_id morning morning_slot_id image_id _destroy],
+      options_attributes:
+        %i[id name cost category modifier optionable_type optionable_id _destroy]
     )
   end
 

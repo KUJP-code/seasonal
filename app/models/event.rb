@@ -19,6 +19,8 @@ class Event < ApplicationRecord
                                              reject_if: :all_blank
   has_many :options, as: :optionable,
                      dependent: :destroy
+  accepts_nested_attributes_for :options, allow_destroy: true,
+                                          reject_if: :all_blank
   has_many :slot_options, through: :time_slots,
                           source: :options
   has_many :option_registrations, through: :time_slots
@@ -63,8 +65,8 @@ class Event < ApplicationRecord
   private
 
   def set_image
-    return if image_id.nil?
+    return if image_id.nil? || image_id == image.blob.id
 
-    image.attach(ActiveStorage::Blob.find(image_id))
+    self.image = ActiveStorage::Blob.find(image_id)
   end
 end

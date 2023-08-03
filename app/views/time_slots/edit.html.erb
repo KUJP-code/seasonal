@@ -1,5 +1,9 @@
 <main id="time_slot_edit">
     <%= render partial: 'events/event', collection: @events, locals: { child: nil } %>
     
-    <%# <%= render 'time_slots/form' %>
+    <% if @events || @event %>
+        <%= render 'time_slots/event_form' %>
+    <% else %>
+        <%= render 'time_slots/form' %>    
+    <% end %>
 </main>

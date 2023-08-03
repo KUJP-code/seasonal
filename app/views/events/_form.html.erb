@@ -12,6 +12,8 @@
     <% end %>
 
     <div class="d-grid gap-3">
+        <h3>Event Fields</h3>
+
         <div class="form-floating">
             <%= f.text_field :name, class: 'form-control', placeholder: t('.name'), required: true %>
             <%= f.label :name, t('.name'), class: 'form-label' %>
@@ -20,11 +22,6 @@
         <div>
             <%= label_tag :image_id, t('.image'), class: 'form-label' %>
             <%= f.select :image_id, @images, {}, { class: 'form-select' } %>
-        </div>
-
-        <div class="form-floating">
-            <%= f.text_area :description, class: 'form-control', placeholder: t('.description'), required: true  %>
-            <%= f.label :description, t('.description'), class: 'form-label' %>
         </div>
 
         <div class="form-floating">
@@ -58,5 +55,23 @@
         </div>
     </div>
 
+    <div class="d-grid gap-3">
+        <h3>Event Option Fields</h3>
+
+        <%= f.fields_for :options do |opt_f| %>
+            <%= render 'options/opt_fields', f: opt_f %>
+        <% end %>
+
+        <template data-fields-target="template">
+            <%= f.fields_for :options, Option.new(optionable_id: @event.id, optionable_type: 'Event', category: :event), child_index: 'CHILD' do |opt_f| %>
+                <%= render 'options/opt_fields', f: opt_f %>
+            <% end %>
+        </template>
+
+        <div data-fields-target="target" class="d-none w-100"></div>
+
+    </div>
+
+    <%= button_tag 'Add Event Option', type: 'button', data: { action: "fields#add" }, class: 'btn btn-info' %>
     <%= f.submit class: 'btn btn-primary' %>
 <% end %>

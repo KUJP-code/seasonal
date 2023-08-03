@@ -102,16 +102,6 @@ class TimeSlot < ApplicationRecord
     image.attach(ActiveStorage::Blob.find(image_id))
   end
 
-  DAYS = {
-    'Sunday' => '日',
-    'Monday' => '月',
-    'Tuesday' => '火',
-    'Wednesday' => '水',
-    'Thursday' => '木',
-    'Friday' => '金',
-    'Saturday' => '土'
-  }.freeze
-
   CLOSE_DATES = {
     'カラフルテープアート' => 'Wed, 19 Jul 2023 14:00 JST +9:00',
     'ピクチャーキーホルダー' => 'Thu, 20 Jul 2023 14:00 JST +9:00',
@@ -147,4 +137,151 @@ class TimeSlot < ApplicationRecord
     'フレンチクレープ' => 'Wed, 30 Aug 2023 14:00 JST +9:00',
     'アイスクリーム屋さん' => 'Wed, 30 Aug 2023 14:00 JST +9:00'
   }.freeze
+
+  DAYS = {
+    'Sunday' => '日',
+    'Monday' => '月',
+    'Tuesday' => '火',
+    'Wednesday' => '水',
+    'Thursday' => '木',
+    'Friday' => '金',
+    'Saturday' => '土'
+  }.freeze
+
+  STANDARD_AFT_OPTS = [
+    {
+      name: '夕食',
+      category: :meal,
+      cost: 660
+    },
+    {
+      name: 'なし',
+      category: :departure,
+      modifier: 0,
+      cost: 0
+    },
+    {
+      name: '~19:00（1コマ）',
+      category: :departure,
+      modifier: 30,
+      cost: 460
+    },
+    {
+      name: '~19:30（2コマ）',
+      category: :departure,
+      modifier: 60,
+      cost: 920
+    },
+    {
+      name: '~20:00（3コマ）',
+      category: :departure,
+      modifier: 90,
+      cost: 1_380
+    },
+    {
+      name: '~20:30（4コマ）',
+      category: :departure,
+      modifier: 120,
+      cost: 1_840
+    },
+    {
+      name: 'なし',
+      category: :k_departure,
+      modifier: 0,
+      cost: 0
+    },
+    {
+      name: '~19:00（1コマ）',
+      category: :k_departure,
+      modifier: 30,
+      cost: 580
+    },
+    {
+      name: '~19:30（2コマ）',
+      category: :k_departure,
+      modifier: 60,
+      cost: 1_160
+    },
+    {
+      name: '~20:00（3コマ）',
+      category: :k_departure,
+      modifier: 90,
+      cost: 1_740
+    },
+    {
+      name: '~20:30（4コマ）',
+      category: :k_departure,
+      modifier: 120,
+      cost: 2_320
+    }
+  ].freeze
+
+  STANDARD_EXT_OPTS = [
+    {
+      name: '中延長',
+      category: :extension,
+      cost: 1_380
+    },
+    {
+      name: '中延長',
+      category: :k_extension,
+      cost: 1_740
+    }
+  ].freeze
+
+  STANDARD_MORN_OPTS = [
+    {
+      name: '昼食',
+      category: :meal,
+      cost: 660
+    },
+    {
+      name: 'なし',
+      category: :arrival,
+      modifier: 0,
+      cost: 0
+    },
+    {
+      name: '9:30~（1コマ）',
+      category: :arrival,
+      modifier: -30,
+      cost: 460
+    },
+    {
+      name: '9:00~（2コマ）',
+      category: :arrival,
+      modifier: -60,
+      cost: 920
+    },
+    {
+      name: '8:30~（3コマ）',
+      category: :arrival,
+      modifier: -90,
+      cost: 1_380
+    },
+    {
+      name: 'なし',
+      category: :k_arrival,
+      modifier: 0,
+      cost: 0
+    },
+    {
+      name: '9:30~（1コマ）',
+      category: :k_arrival,
+      modifier: -30,
+      cost: 580
+    },
+    {
+      name: '9:00~（2コマ）',
+      category: :k_arrival,
+      modifier: -60,
+      cost: 1_160
+    },
+    {
+      name: '8:30~（3コマ）',
+      category: :k_arrival,
+      modifier: -90,
+      cost: 1_740
+    }
+  ].freeze
 end

@@ -2,10 +2,14 @@
     <div class="event-sidebar sticky-top">
         <% if @events %>
             <%= render partial: 'events/event', collection: @events, locals: { child: nil } %>
-        <% else %>
+        <% elsif @event %>
             <%= render @event, child: nil %>
         <% end %>
     </div>
 
-    <%= render 'time_slots/form' %>
+    <% if @events || @event %>
+        <%= render 'time_slots/event_form' %>
+    <% else %>
+        <%= render 'time_slots/form' %>    
+    <% end %>
 </main>
