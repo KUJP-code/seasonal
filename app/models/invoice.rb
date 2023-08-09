@@ -172,7 +172,7 @@ class Invoice < ApplicationRecord
       end
     end
     # Don't count Toyocho's extra specials as special cos no extra charge
-    if event_id == 5
+    if event_id == 6
       toyo_fakes = ['水鉄砲合戦＆ビーチジオラマ', '貝殻ペンダント ＆ フレンチクレープ']
       toyo_fakes_count = slot_regs.count { |r| toyo_fakes.include?(r.registerable.name) }
       special_count -= toyo_fakes_count

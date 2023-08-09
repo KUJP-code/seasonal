@@ -1,3 +1,6 @@
+bucket_name = ENV['S3_BUCKET_NAME']
+client = Aws::S3::Client.new(region: 'ap-northeast-1')
+
 # Rinkai Triple
 event = School.find_by(name: "りんかい東雲").events.first
 
@@ -30,8 +33,6 @@ slot_key = "production/slots/#{filename}"
 am.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/jpeg')
 
 # Prod
-bucket_name = ENV['S3_BUCKET_NAME']
-client = Aws::S3::Client.new(region: 'ap-northeast-1')
 filename = "rinkai.jpg"
 slot_asset_key = "images/time_slots/summer_2023/#{filename}"
 slot_key = "production/time_slots/#{filename}"
@@ -53,8 +54,6 @@ pm.options.destroy_all
 # Monzen
 event = School.find_by(name: "門前仲町").events.first
 
-# TODO: Get a list of the kids registered for the afternoons before doing this, then close them and re-register them for the new afternoon activities when done
-
 # 18th
 
 og_18th = event.time_slots.find_by(name: "ウォーターゲーム対決！")
@@ -66,10 +65,9 @@ slot_key = "production/slots/#{filename}"
 og_18th.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/png')
 
 # Prod
-bucket_name = ENV['S3_BUCKET_NAME']
-client = Aws::S3::Client.new(region: 'ap-northeast-1')
 filename = "monzen18.png"
 slot_asset_key = "images/time_slots/summer_2023/#{filename}"
+slot_key = "production/time_slots/#{filename}"
 slot_key = "production/time_slots/#{filename}"
 slot_image = client.get_object(bucket: bucket_name, key: slot_asset_key)
 og_18th.image.attach(key: slot_key, io: slot_image.body, filename: filename, content_type: 'image/png')
@@ -98,8 +96,6 @@ slot_key = "production/slots/#{filename}"
 og_21st.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/png')
 
 # Prod
-bucket_name = ENV['S3_BUCKET_NAME']
-client = Aws::S3::Client.new(region: 'ap-northeast-1')
 filename = "monzen21.png"
 slot_asset_key = "images/time_slots/summer_2023/#{filename}"
 slot_key = "production/time_slots/#{filename}"
@@ -118,8 +114,6 @@ og_21st.create_afternoon_slot(
 
 pm = og_21st.afternoon_slot
 pm.options.destroy_all
-
-# TODO: Re-register aft kids now
 
 # Monzen real special
 
@@ -140,8 +134,6 @@ slot_key = "production/slots/#{filename}"
 am.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/png')
 
 # Prod
-bucket_name = ENV['S3_BUCKET_NAME']
-client = Aws::S3::Client.new(region: 'ap-northeast-1')
 filename = "monzen_special.png"
 slot_asset_key = "images/time_slots/summer_2023/#{filename}"
 slot_key = "production/time_slots/#{filename}"
@@ -181,8 +173,6 @@ slot_key = "production/slots/#{filename}"
 am.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/png')
 
 # Prod
-bucket_name = ENV['S3_BUCKET_NAME']
-client = Aws::S3::Client.new(region: 'ap-northeast-1')
 filename = "ikegami.png"
 slot_asset_key = "images/time_slots/summer_2023/#{filename}"
 slot_key = "production/time_slots/#{filename}"
@@ -222,8 +212,6 @@ slot_key = "production/slots/#{filename}"
 am.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/png')
 
 # Prod
-bucket_name = ENV['S3_BUCKET_NAME']
-client = Aws::S3::Client.new(region: 'ap-northeast-1')
 filename = "magome.png"
 slot_asset_key = "images/time_slots/summer_2023/#{filename}"
 slot_key = "production/time_slots/#{filename}"
@@ -263,8 +251,6 @@ slot_key = "production/slots/#{filename}"
 am.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/png')
 
 # Prod
-bucket_name = ENV['S3_BUCKET_NAME']
-client = Aws::S3::Client.new(region: 'ap-northeast-1')
 filename = "nagahara.png"
 slot_asset_key = "images/time_slots/summer_2023/#{filename}"
 slot_key = "production/time_slots/#{filename}"
@@ -316,8 +302,6 @@ slot_key = "production/slots/#{filename}"
 am.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/png')
 
 # Prod
-bucket_name = ENV['S3_BUCKET_NAME']
-client = Aws::S3::Client.new(region: 'ap-northeast-1')
 filename = "todoroki.png"
 slot_asset_key = "images/time_slots/summer_2023/#{filename}"
 slot_key = "production/time_slots/#{filename}"
@@ -356,8 +340,6 @@ slot_key = "production/slots/#{filename}"
 am.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/png')
 
 # Prod
-bucket_name = ENV['S3_BUCKET_NAME']
-client = Aws::S3::Client.new(region: 'ap-northeast-1')
 filename = "toyocho.png"
 slot_asset_key = "images/time_slots/summer_2023/#{filename}"
 slot_key = "production/time_slots/#{filename}"
