@@ -55,7 +55,9 @@ export default class extends Controller {
         slot.includes("巨大なお城のクラフト") ||
         slot.includes("フルーツサンド作り") ||
         slot.includes("BBQ風やきそば/コーラの噴射実験") ||
-        slot.includes("暗闇で光るスライム/フルーツスムージー")
+        slot.includes("暗闇で光るスライム/フルーツスムージー") ||
+        slot.includes("イングリッシュスポーツイベント") ||
+        slot.includes("スペシャルクッキングイベント")
     ).length;
     this.specialCountTarget.innerHTML = `スペシャルデー: ${specialCount.toString()}つ`;
     // Get cost of all of them to add to the final price
