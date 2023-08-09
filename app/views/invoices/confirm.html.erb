@@ -45,7 +45,7 @@
                                 <%= f.fields_for :coupons, f.object.coupons.new do |coup_f| %>
                                     <div class="d-flex flex-column justify-content-around align-items-center gap-3">
                                         <%= coup_f.label :code, t('.coupon'), class: 'form-label text-center' %>
-                                        <%= coup_f.select :code, [['', nil], %w[WELBOX WELBOX], %w[すくすくえいど すくすくえいど]], {}, class: 'form-select' %>
+                                        <%= coup_f.select :code, [['', nil], %w[WELBOX WELBOX], %w[すくすくえいど すくすくえいど], ['Thank youクーポン', 'Thank youクーポン']], {}, class: 'form-select' %>
                                     </div>
                                 <% end %>
                             </div>

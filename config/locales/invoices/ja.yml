@@ -2,7 +2,7 @@ ja:
   invoices:
     confirm:
       already_confirmed: "お申込は送信されました"
-      apply_coupon: "福利厚生クーポンをお持ちの方はこちら"
+      apply_coupon: "クーポンをお持ちの方はこちら"
       confirm_changes: "お申込"
       confirmed: "他のお申込"
       coupon: "クーポン"
