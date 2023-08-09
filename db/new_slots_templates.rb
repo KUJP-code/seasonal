@@ -200,3 +200,32 @@ am.create_afternoon_slot(
 
 pm = am.afternoon_slot
 pm.options.destroy_all
+
+# Magome
+
+event = School.find_by(name: "馬込").events.first
+
+event.time_slots.create!(
+  name: "3校対決！Englishスポーツ大会",
+  morning: true,
+  category: :special,
+  start_time: '2 September 2023 9:30 JST +09:00',
+  end_time: '2 September 2023 13:00 JST +09:00'
+)
+
+am = TimeSlot.find_by(name: "3校対決！Englishスポーツ大会")
+am.options.where(category: [:extension, :k_extension]).destroy_all
+
+# Local
+filename = "magome.png"
+slot_key = "production/slots/#{filename}"
+am.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/png')
+
+# Prod
+bucket_name = ENV['S3_BUCKET_NAME']
+client = Aws::S3::Client.new(region: 'ap-northeast-1')
+filename = "magome.png"
+slot_asset_key = "images/time_slots/summer_2023/#{filename}"
+slot_key = "production/time_slots/#{filename}"
+slot_image = client.get_object(bucket: bucket_name, key: slot_asset_key)
+am.image.attach(key: slot_key, io: slot_image.body, filename: filename, content_type: 'image/png')
