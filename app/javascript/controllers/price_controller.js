@@ -60,7 +60,9 @@ export default class extends Controller {
         slot.includes("スペシャルクッキングイベント") ||
         slot.includes("3校対決！Englishスポーツ大会") ||
         slot.includes("スクール対抗スポーツ大会") ||
-        slot.includes("遠足＠しながわ水族館")
+        slot.includes("遠足＠しながわ水族館") ||
+        slot.includes("具だくさんスライム＆光るタピオカパーティー☆彡") ||
+        slot.includes("親子で参加可能♪浴衣OK♡うちわ作り体験＆KidsUP夏祭り")
     ).length;
     this.specialCountTarget.innerHTML = `スペシャルデー: ${specialCount.toString()}つ`;
     // Get cost of all of them to add to the final price
@@ -105,6 +107,16 @@ export default class extends Controller {
       specialCost += this.isMember(this.childTarget) ? 2580 : 70;
       this.specialCountTarget.appendChild(document.createElement("br"));
       this.specialCountTarget.innerHTML += "遠足＠アクアパーク品川：1つ";
+      snackCount--;
+    }
+    // Decrement snack cost for all the PM with no snack charge
+    if (
+      regList.includes(
+        "親子で参加可能♪浴衣OK♡うちわ作り体験＆KidsUP夏祭り (午後)"
+      ) ||
+      regList.includes("スペシャルクッキングイベント (午後)") ||
+      regList.includes("サマーモンスター (午後)")
+    ) {
       snackCount--;
     }
     // Get the cost of all those snacks to add to the final price

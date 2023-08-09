@@ -126,6 +126,9 @@ class Invoice < ApplicationRecord
                   end
     # Add cost due to automatic afternoon snacks
     snack_count = slot_regs.count { |reg| !reg._destroy && !reg.registerable.morning }
+
+    # FIXME: Abandon all hope, ye who enter!
+
     snack_count -= 1 if event_id == 16 && slot_regs.any? { |r| r.registerable.name.include?("アクアパーク") }
     # Check for Oi and Kitashinagawa's aquarium visits
     oi_kita_aquarium = [22, 26].include?(event_id) && slot_regs.any? { |r| r.registerable.name.include?('遠足＠アクアパーク品川') }
@@ -134,9 +137,11 @@ class Invoice < ApplicationRecord
     # Check for Rinkai's fixed price days
     rinkai_morn = event_id == 13 && slot_regs.any? { |r| r.registerable.name.include?('キッズアップハンター') }
     rinkai_aft = event_id == 13 && slot_regs.any? { |r| r.registerable.name.include?('サマーモンスター') }
-    # Don't charge for snak on Ikegami's cooking PM
+    # Don't charge for snack on Ikegami's cooking PM
     ikegami_cooking = event_id == 6 && slot_regs.any? { |r| r.registerable.name.include?('スペシャルクッキングイベント') }
-    snack_count -= 1 if oi_kita_aquarium || rinkai_aft || ikegami_cooking
+    # Or Todoroki's fan for some reason
+    todoroki_fan = event_id == 15 && slot_regs.any? { |r| r.registerable.name.include?('親子で参加可能♪浴衣OK♡うちわ作り体験＆KidsUP夏祭り') }
+    snack_count -= 1 if oi_kita_aquarium || rinkai_aft || ikegami_cooking || todoroki_fan
     course_cost += snack_count * 165
     # Add cost due to special day registrations
     # Now also has to handle Minami Machida's dumb different special day
@@ -172,6 +177,8 @@ class Invoice < ApplicationRecord
       fakes_count = slot_regs.count { |r| fakes.include?(r.registerable.name) }
       special_count -= fakes_count
     end
+
+
     course_cost += special_count * 1_500
     @breakdown << '</div>'
     @breakdown.prepend(

@@ -282,3 +282,56 @@ am.create_afternoon_slot(
 
 pm = am.afternoon_slot
 pm.options.destroy_all
+
+# Todoroki
+
+event = School.find_by(name: "等々力").events.first
+
+event.time_slots.create!(
+  name: "具だくさんスライム＆光るタピオカパーティー☆彡",
+  morning: true,
+  category: :special,
+  start_time: '27 August 2023 9:30 JST +09:00',
+  end_time: '27 August 2023 13:00 JST +09:00'
+)
+
+am = TimeSlot.find_by(name: "具だくさんスライム＆光るタピオカパーティー☆彡")
+am.options.where(category: [:extension, :k_extension, :arrival, :k_arrival]).destroy_all
+am.options.create!([
+  {
+    name: '中延長',
+    category: :extension,
+    cost: 920
+  },
+  {
+    name: '中延長',
+    category: :k_extension,
+    cost: 1_160
+  }
+])
+
+# Local
+filename = "todoroki.png"
+slot_key = "production/slots/#{filename}"
+am.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/png')
+
+# Prod
+bucket_name = ENV['S3_BUCKET_NAME']
+client = Aws::S3::Client.new(region: 'ap-northeast-1')
+filename = "todoroki.png"
+slot_asset_key = "images/time_slots/summer_2023/#{filename}"
+slot_key = "production/time_slots/#{filename}"
+slot_image = client.get_object(bucket: bucket_name, key: slot_asset_key)
+am.image.attach(key: slot_key, io: slot_image.body, filename: filename, content_type: 'image/png')
+
+am.create_afternoon_slot(
+  name: "親子で参加可能♪浴衣OK♡うちわ作り体験＆KidsUP夏祭り",
+  category: :special,
+  morning: false,
+  start_time: '27 August 2023 15:00 JST +09:00',
+  end_time: '27 August 2023 18:30 JST +09:00',
+  event_id: am.event_id
+)
+
+pm = am.afternoon_slot
+pm.options.destroy_all
