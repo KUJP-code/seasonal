@@ -229,3 +229,56 @@ slot_asset_key = "images/time_slots/summer_2023/#{filename}"
 slot_key = "production/time_slots/#{filename}"
 slot_image = client.get_object(bucket: bucket_name, key: slot_asset_key)
 am.image.attach(key: slot_key, io: slot_image.body, filename: filename, content_type: 'image/png')
+
+# Nagahara
+
+event = School.find_by(name: "長原").events.first
+
+event.time_slots.create!(
+  name: "スクール対抗スポーツ大会",
+  morning: true,
+  category: :special,
+  start_time: '2 September 2023 9:30 JST +09:00',
+  end_time: '2 September 2023 13:00 JST +09:00'
+)
+
+am = TimeSlot.find_by(name: "スクール対抗スポーツ大会")
+am.options.where(category: [:extension, :k_extension]).destroy_all
+am.options.create!([
+  {
+    name: '中延長',
+    category: :extension,
+    cost: 920
+  },
+  {
+    name: '中延長',
+    category: :k_extension,
+    cost: 1_160
+  }
+])
+
+# Local
+filename = "nagahara.png"
+slot_key = "production/slots/#{filename}"
+am.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/png')
+
+# Prod
+bucket_name = ENV['S3_BUCKET_NAME']
+client = Aws::S3::Client.new(region: 'ap-northeast-1')
+filename = "nagahara.png"
+slot_asset_key = "images/time_slots/summer_2023/#{filename}"
+slot_key = "production/time_slots/#{filename}"
+slot_image = client.get_object(bucket: bucket_name, key: slot_asset_key)
+am.image.attach(key: slot_key, io: slot_image.body, filename: filename, content_type: 'image/png')
+
+am.create_afternoon_slot(
+  name: "遠足＠しながわ水族館",
+  category: :special,
+  morning: false,
+  start_time: '2 September 2023 15:00 JST +09:00',
+  end_time: '2 September 2023 18:30 JST +09:00',
+  event_id: am.event_id
+)
+
+pm = am.afternoon_slot
+pm.options.destroy_all
