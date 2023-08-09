@@ -127,7 +127,9 @@ class Invoice < ApplicationRecord
     # Add cost due to automatic afternoon snacks
     snack_count = slot_regs.count { |reg| !reg._destroy && !reg.registerable.morning }
     snack_count -= 1 if event_id == 16 && slot_regs.any? { |r| r.registerable.name.include?("アクアパーク") }
-    snack_count -= 1 if [22, 26].include?(event_id) && slot_regs.any? { |r| r.registerable.name.include?('スペシャル遠足@アクアパーク品川') }
+    # Check for Oi and Kitashinagawa's aquarium visits
+    oi_kita_aquarium = [22, 26].include?(event_id) && slot_regs.any? { |r| r.registerable.name.include?('遠足＠アクアパーク品川') }
+    snack_count -= 1 if oi_kita_aquarium
     course_cost += snack_count * 165
     # Add cost due to special day registrations
     # Now also has to handle Minami Machida's dumb different special day
@@ -147,8 +149,8 @@ class Invoice < ApplicationRecord
         course_cost += 80
       end
     end
-    # Handle Oi and Kitashinagawa's aquarium visits
-    if [22, 26].include?(event_id) && slot_regs.any? { |r| r.registerable.name.include?('スペシャル遠足@アクアパーク品川') }
+    # 
+    if oi_kita_aquarium
       if child.external?
         course_cost -= 1430
       else
@@ -163,6 +165,7 @@ class Invoice < ApplicationRecord
       <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 (#{num_regs}回)</p>
       <p>スペシャルデー x #{special_count}: #{(special_count * 1_500).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>
       #{"<p>夏祭りスペシャルデー x 1: #{1100.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if summer_festival}
+      #{"<p>夏祭りスペシャルデー x 1: #{7000.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if oi_kita_aquarium}
       <p>午後コースおやつ代 x #{snack_count}: #{(snack_count * 165).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
     )
     course_cost
