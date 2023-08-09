@@ -114,8 +114,7 @@ export default class extends Controller {
       regList.includes(
         "親子で参加可能♪浴衣OK♡うちわ作り体験＆KidsUP夏祭り (午後)"
       ) ||
-      regList.includes("スペシャルクッキングイベント (午後)") ||
-      regList.includes("サマーモンスター (午後)")
+      regList.includes("スペシャルクッキングイベント (午後)")
     ) {
       snackCount--;
     }
