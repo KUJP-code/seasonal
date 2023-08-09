@@ -171,13 +171,18 @@ class Invoice < ApplicationRecord
         course_cost += 2580
       end
     end
+    # Don't count Toyocho's extra specials as special cos no extra charge
+    if event_id == 5
+      toyo_fakes = ['水鉄砲合戦＆ビーチジオラマ', '貝殻ペンダント ＆ フレンチクレープ']
+      toyo_fakes_count = slot_regs.count { |r| toyo_fakes.include?(r.registerable.name) }
+      special_count -= toyo_fakes_count
+    end
     # Don't count monzen's fake special days
     if event_id == 8
-      fakes = ['ウォーターゲーム対決！', 'フレンチクレープ', '水鉄砲合戦!!(8月21日)', 'ハワイアンかき氷 ']
-      fakes_count = slot_regs.count { |r| fakes.include?(r.registerable.name) }
-      special_count -= fakes_count
+      monzen_fakes = ['ウォーターゲーム対決！', 'フレンチクレープ', '水鉄砲合戦!!(8月21日)', 'ハワイアンかき氷 ']
+      monzen_fakes_count = slot_regs.count { |r| monzen_fakes.include?(r.registerable.name) }
+      special_count -= monzen_fakes_count
     end
-
 
     course_cost += special_count * 1_500
     @breakdown << '</div>'
