@@ -164,6 +164,12 @@ class Invoice < ApplicationRecord
         course_cost += 2580
       end
     end
+    # Don't count monzen's fake special days
+    if event_id == 8
+      fakes = ['ウォーターゲーム対決！', 'フレンチクレープ', '水鉄砲合戦!!(8月21日)', 'ハワイアンかき氷 ']
+      fakes_count = slot_regs.count { |r| fakes.include?(r.registerable.name) }
+      special_count -= fakes_count
+    end
     course_cost += special_count * 1_500
     @breakdown << '</div>'
     @breakdown.prepend(

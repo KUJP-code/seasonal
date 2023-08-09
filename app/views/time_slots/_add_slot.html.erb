@@ -48,7 +48,7 @@
                     <% time_ids = add_slot.options.time.ids %>
                     <% extension_ids = add_slot.options.extension.ids %>
 
-                    <% if add_slot.special? && add_slot.name != "バンダナの絞り染め (午前)" %>
+                    <% if add_slot.special? && ["バンダナの絞り染め (午前)", 'ウォーターゲーム対決！ (午前)', '水鉄砲合戦!!(8月21日) (午前)'].exclude?(add_slot.name) %>
                         <p>スペシャルデー: ◯</p>
                     <% end %>
 
@@ -209,7 +209,6 @@
                                 <% end %>
                                 <%= check_box_tag "a_slot#{afternoon_slot.id}", '', (true if aft_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
                             <% end %>
-
                         </div>
 
                         <div class="options mt-2<%= ' hidden' unless aft_registered %>" data-popup-target="popup">
@@ -217,7 +216,7 @@
                             <% unless afternoon_slot.name.include?("アクアパーク") %>
                               <p><%= "#{t('.snack')}: ◯" %></p>
                             <% end %>
-                             <% if afternoon_slot.special? %>
+                             <% if afternoon_slot.special? && ['フレンチクレープ (午後)', 'ハワイアンかき氷  (午後)'].exclude?(afternoon_slot.name) %>
                                 <p>スペシャルデー: ◯</p>
                             <% end %>
                             <% afternoon_slot.options.reject { |opt| aft_time_ids.include?(opt.id) }.each do |opt| %>
