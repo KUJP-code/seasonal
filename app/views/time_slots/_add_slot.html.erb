@@ -151,7 +151,7 @@
             <% if ext_opt  %>
               <% ext_opt_registered = registrations.any? { |reg| reg.registerable_id == ext_opt.id && reg.registerable_type == 'Option' } %>
                 
-                <div class="add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100 border border"
+                <div class="add_reg form-check form-switch p-0 d-flex flex-column justify-content-center align-items-center gap-2 w-100 border border"
                     data-controller="register"
                     data-controller="register"
                     data-register-id-value=<%= ext_opt.id %>
