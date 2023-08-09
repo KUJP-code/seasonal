@@ -134,7 +134,9 @@ class Invoice < ApplicationRecord
     # Check for Rinkai's fixed price days
     rinkai_morn = event_id == 13 && slot_regs.any? { |r| r.registerable.name.include?('キッズアップハンター') }
     rinkai_aft = event_id == 13 && slot_regs.any? { |r| r.registerable.name.include?('サマーモンスター') }
-    snack_count -= 1 if oi_kita_aquarium || rinkai_aft
+    # Don't charge for snak on Ikegami's cooking PM
+    ikegami_cooking = event_id == 6 && slot_regs.any? { |r| r.registerable.name.include?('スペシャルクッキングイベント') }
+    snack_count -= 1 if oi_kita_aquarium || rinkai_aft || ikegami_cooking
     course_cost += snack_count * 165
     # Add cost due to special day registrations
     # Now also has to handle Minami Machida's dumb different special day
