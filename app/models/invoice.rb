@@ -129,6 +129,8 @@ class Invoice < ApplicationRecord
     snack_count -= 1 if event_id == 16 && slot_regs.any? { |r| r.registerable.name.include?("アクアパーク") }
     # Check for Oi and Kitashinagawa's aquarium visits
     oi_kita_aquarium = [22, 26].include?(event_id) && slot_regs.any? { |r| r.registerable.name.include?('遠足＠アクアパーク品川') }
+    # Same for their unko museum trip
+    shit_days = [22, 26].include?(event_id) && slot_regs.any? { |r| r.registerable.name.include?('遠足＠うんこミュージアム') }
     snack_count -= 1 if oi_kita_aquarium
     course_cost += snack_count * 165
     # Add cost due to special day registrations
@@ -142,19 +144,21 @@ class Invoice < ApplicationRecord
     # Handle Ojima's aquarium cost being 3000 rather than 1500
     course_cost += 1500 if event_id == 16 && slot_regs.any? { |r| r.registerable.name.include?('スペシャル遠足@品川アクアパーク') }
     # Handle the shit days
-    if [22, 26].include?(event_id) && slot_regs.any? { |r| r.registerable.name.include?('遠足＠うんこミュージアム') }
+    if shit_days
+      special_count -= 1
       if child.external?
-        course_cost -= 2430
+        course_cost -= 930
       else
-        course_cost += 80
+        course_cost += 1580
       end
     end
-    # 
+    # Handle the aquarium trip for Oi and Kitashina
     if oi_kita_aquarium
+      special_count -= 1
       if child.external?
-        course_cost -= 1430
+        course_cost += 70
       else
-        course_cost += 1080
+        course_cost += 2580
       end
     end
     course_cost += special_count * 1_500
@@ -165,7 +169,8 @@ class Invoice < ApplicationRecord
       <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 (#{num_regs}回)</p>
       <p>スペシャルデー x #{special_count}: #{(special_count * 1_500).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>
       #{"<p>夏祭りスペシャルデー x 1: #{1100.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if summer_festival}
-      #{"<p>夏祭りスペシャルデー x 1: #{7000.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if oi_kita_aquarium}
+      #{"<p>遠足＠うんこミュージアム x 1: #{(child.external? ? -930 : 1580).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if shit_days}
+      #{"<p>遠足＠アクアパーク品川 x 1: #{(child.external? ? 70 : 2580).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if oi_kita_aquarium}
       <p>午後コースおやつ代 x #{snack_count}: #{(snack_count * 165).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
     )
     course_cost
