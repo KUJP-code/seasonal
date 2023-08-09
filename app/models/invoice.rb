@@ -132,9 +132,10 @@ class Invoice < ApplicationRecord
     # Add cost due to special day registrations
     # Now also has to handle Minami Machida's dumb different special day
     # Morning has no extra cost, but afternoon is 1100 for some reason
-    special_count = slot_regs.count { |reg| !reg._destroy && reg.registerable.special? && !%w[バンダナの絞り染め 夏祭り].include?(reg.registerable.name) }
+    special_count = slot_regs.count { |reg| !reg._destroy && reg.registerable.special? && %w[バンダナの絞り染め 夏祭り].exclude?(reg.registerable.name) }
     # Add the 1100 if MM's or Futatamagawa's afternoon special day registered
-    summer_festival = [18, 21].include?(event_id) && slot_regs.any? { |reg| reg.registerable.name == '夏祭り' }
+    summer_names = %w[夏祭り@南町田グランベリーパーク 夏祭り@二俣川]
+    summer_festival = [18, 21].include?(event_id) && slot_regs.any? { |reg| summer_names.include?(reg.registerable.name) }
     course_cost += 1100 if summer_festival
     # Handle Ojima's aquarium cost being 3000 rather than 1500
     course_cost += 1500 if event_id == 16 && slot_regs.any? { |r| r.registerable.name.include?('スペシャル遠足@品川アクアパーク') }
