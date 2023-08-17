@@ -63,7 +63,8 @@ export default class extends Controller {
         slot.includes("遠足＠しながわ水族館") ||
         slot.includes("具だくさんスライム＆光るタピオカパーティー☆彡") ||
         slot.includes("親子で参加可能♪浴衣OK♡うちわ作り体験＆KidsUP夏祭り") ||
-        slot.includes("宝探し&amp;夏祭り (午後)")
+        slot.includes("宝探し&amp;夏祭り") ||
+        slot.includes("KidsUP大夏祭り/時計作り")
     ).length;
     this.specialCountTarget.innerHTML = `スペシャルデー: ${specialCount.toString()}つ`;
     // Get cost of all of them to add to the final price
