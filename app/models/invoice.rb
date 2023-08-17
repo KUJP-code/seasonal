@@ -142,11 +142,14 @@ class Invoice < ApplicationRecord
     yako_aft = event_id == 28 && slot_regs.any? { |r| r.registerable.name.include?('Kids UP縁日') }
     # Check for Shinjo's afternoon
     shinjo_aft = event_id == 33 && slot_regs.any? { |r| r.registerable.name.include?('宝探し&夏祭り') }
+    # Check for Kamata's actvities
+    kamata_morn = event_id == 4 && slot_regs.any? { |r| r.registerable.name.include?('大人気アクティビティアンコールイベント') }
+    kamata_aft = event_id == 4 && slot_regs.any? { |r| r.registerable.name.include?('夏祭り@蒲田') }
     # Don't charge for snack on Ikegami's cooking PM
     ikegami_cooking = event_id == 6 && slot_regs.any? { |r| r.registerable.name.include?('スペシャルクッキングイベント') }
     # Or Todoroki's fan for some reason
     todoroki_fan = event_id == 15 && slot_regs.any? { |r| r.registerable.name.include?('親子で参加可能♪浴衣OK♡うちわ作り体験＆KidsUP夏祭り') }
-    snack_count -= 1 if oi_kita_aquarium || rinkai_aft || ikegami_cooking || todoroki_fan || yako_aft || shinjo_aft
+    snack_count -= 1 if oi_kita_aquarium || rinkai_aft || ikegami_cooking || todoroki_fan || yako_aft || shinjo_aft || kamata_aft
     course_cost += snack_count * 165
     # Add cost due to special day registrations
     # Now also has to handle Minami Machida's dumb different special day
@@ -167,6 +170,7 @@ class Invoice < ApplicationRecord
         course_cost += 1580
       end
     end
+    # Rinkai morn and aft can be registered together, so handle separately
     if rinkai_aft
       special_count -= 1
       if child.external?
@@ -178,15 +182,13 @@ class Invoice < ApplicationRecord
     # Handle the aquarium trip for Oi and Kitashina
     if oi_kita_aquarium
       special_count -= 1
-      if child.external?
-        course_cost += 70
-      else
-        course_cost += 2580
-      end
+      course_cost += child.external? ? 70 : 2580
     end
     # Handle Yako's days
     course_cost += 500 if yako_morn
     course_cost -= 400 if yako_aft
+    # Handle Kamata's special morning
+    course_cost -= 400 if kamata_morn
     # Don't count Toyocho's extra specials as special cos no extra charge
     if event_id == 6
       toyo_fakes = ['水鉄砲合戦＆ビーチジオラマ', '貝殻ペンダント ＆ フレンチクレープ']
@@ -214,6 +216,7 @@ class Invoice < ApplicationRecord
       #{"<p>サマーモンスター x 1: #{(child.external? ? -930 : 1580).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if rinkai_aft}
       #{"<p>カワスイ 川崎水族館 遠足 x 1: #{500.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if yako_morn}
       #{"<p>Kids UP縁日 x 1: #{-400.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if yako_aft}
+      #{"<p>大人気アクティビティアンコールイベント x 1: #{-400.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if kamata_morn}
       <p>午後コースおやつ代 x #{snack_count}: #{(snack_count * 165).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
     )
     course_cost

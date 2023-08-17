@@ -64,7 +64,8 @@ export default class extends Controller {
         slot.includes("具だくさんスライム＆光るタピオカパーティー☆彡") ||
         slot.includes("親子で参加可能♪浴衣OK♡うちわ作り体験＆KidsUP夏祭り") ||
         slot.includes("宝探し&amp;夏祭り") ||
-        slot.includes("KidsUP大夏祭り/時計作り")
+        slot.includes("KidsUP大夏祭り/時計作り") ||
+        slot.includes("夏祭り@蒲田")
     ).length;
     this.specialCountTarget.innerHTML = `スペシャルデー: ${specialCount.toString()}つ`;
     // Get cost of all of them to add to the final price
@@ -73,7 +74,8 @@ export default class extends Controller {
     if (
       regList.includes("夏祭り@南町田グランベリーパーク (午後)") ||
       regList.includes("夏祭り@二俣川 (午前)") ||
-      regList.includes("Kids UP縁日 (午後)")
+      regList.includes("Kids UP縁日 (午後)") ||
+      regList.includes("大人気アクティビティアンコールイベント (午前)")
     ) {
       specialCost += 1100;
       this.specialCountTarget.appendChild(document.createElement("br"));
@@ -134,7 +136,8 @@ export default class extends Controller {
       regList.includes("Kids UP縁日 (午後)") ||
       regList.includes("スペシャル遠足@品川アクアパーク (午後)") ||
       regList.includes("遠足＠アクアパーク品川 (午後)") ||
-      regList.includes("宝探し&amp;夏祭り (午後)")
+      regList.includes("宝探し&amp;夏祭り (午後)") ||
+      regList.includes("夏祭り@蒲田 (午後)")
     ) {
       snackCount--;
     }

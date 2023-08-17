@@ -457,3 +457,38 @@ slot_asset_key = "images/time_slots/summer_2023/#{filename}"
 slot_key = "production/time_slots/#{filename}"
 slot_image = client.get_object(bucket: bucket_name, key: slot_asset_key)
 am.image.attach(key: slot_key, io: slot_image.body, filename: filename, content_type: 'image/png')
+
+# Kamata
+
+event = School.find_by(name: "蒲田駅前").events.first
+
+event.time_slots.create!(
+  name: "大人気アクティビティアンコールイベント",
+  morning: true,
+  category: :special,
+  start_time: '26 August 2023 9:30 JST +09:00',
+  end_time: '26 August 2023 13:00 JST +09:00'
+)
+
+am = TimeSlot.find_by(name: "大人気アクティビティアンコールイベント")
+
+# Local
+filename = "kamata.png"
+slot_key = "production/slots/#{filename}"
+am.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/png')
+
+# Prod
+filename = "kamata.png"
+slot_asset_key = "images/time_slots/summer_2023/#{filename}"
+slot_key = "production/time_slots/#{filename}"
+slot_image = client.get_object(bucket: bucket_name, key: slot_asset_key)
+am.image.attach(key: slot_key, io: slot_image.body, filename: filename, content_type: 'image/png')
+
+am.create_afternoon_slot(
+  name: "夏祭り@蒲田",
+  category: :special,
+  morning: false,
+  start_time: '26 August 2023 15:00 JST +09:00',
+  end_time: '26 August 2023 18:30 JST +09:00',
+  event_id: am.event_id
+)
