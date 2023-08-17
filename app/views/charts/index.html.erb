@@ -38,7 +38,7 @@
 
     <%= column_chart @time_slots.where(id: new_slots.ids).left_joins(:registrations).group(:name).count.sort_by { |_k, v| v }.reverse, title: 'New Activity Popularity', height: '85dvh' %>
 
-    <%= line_chart @coupons.group(:code).group_by_day(:created_at).count, title: "Daily Coupon Use", time_zone: false %>
+    <%= line_chart @coupons.where.not(code: "").group(:code).group_by_day(:created_at).count, title: "Daily Coupon Use", time_zone: false %>
 
     <%# Calculate the revenue from Leroy's coupon by school, only including schools that are allowed to use it %>
 
