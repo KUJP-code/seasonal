@@ -140,11 +140,13 @@ class Invoice < ApplicationRecord
     # Check for Yako's days
     yako_morn = event_id == 28 && slot_regs.any? { |r| r.registerable.name.include?('カワスイ 川崎水族館 遠足') }
     yako_aft = event_id == 28 && slot_regs.any? { |r| r.registerable.name.include?('Kids UP縁日') }
+    # Check for Shinjo's afternoon
+    shinjo_aft = event_id == 33 && slot_regs.any? { |r| r.registerable.name.include?('宝探し&夏祭り') }
     # Don't charge for snack on Ikegami's cooking PM
     ikegami_cooking = event_id == 6 && slot_regs.any? { |r| r.registerable.name.include?('スペシャルクッキングイベント') }
     # Or Todoroki's fan for some reason
     todoroki_fan = event_id == 15 && slot_regs.any? { |r| r.registerable.name.include?('親子で参加可能♪浴衣OK♡うちわ作り体験＆KidsUP夏祭り') }
-    snack_count -= 1 if oi_kita_aquarium || rinkai_aft || ikegami_cooking || todoroki_fan || yako_aft
+    snack_count -= 1 if oi_kita_aquarium || rinkai_aft || ikegami_cooking || todoroki_fan || yako_aft || shinjo_aft
     course_cost += snack_count * 165
     # Add cost due to special day registrations
     # Now also has to handle Minami Machida's dumb different special day
