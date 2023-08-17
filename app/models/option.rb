@@ -25,6 +25,7 @@ class Option < ApplicationRecord
                   event: 6,
                   extension: 7,
                   k_extension: 8,
+                  plusone: 9,
                   default: :regular
 
   validates :name, :cost, presence: true

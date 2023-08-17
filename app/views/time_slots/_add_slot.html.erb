@@ -47,12 +47,13 @@
                 <div class="options mt-2<%= ' hidden' unless registered %>" data-popup-target="popup">
                     <% time_ids = add_slot.options.time.ids %>
                     <% extension_ids = add_slot.options.extension.ids %>
+                    <% plusone_ids = add_slot.options.plusone.ids %>
 
                     <% if add_slot.special? && ["バンダナの絞り染め (午前)", 'ウォーターゲーム対決！ (午前)', '水鉄砲合戦!!(8月21日) (午前)'].exclude?(add_slot.name) %>
                         <p>スペシャルデー: ◯</p>
                     <% end %>
 
-                    <% add_slot.options.reject { |opt| time_ids.include?(opt.id) || extension_ids.include?(opt.id) }.each do |opt| %>
+                    <% add_slot.options.reject { |opt| (time_ids + extension_ids + plusone_ids).include?(opt.id) }.each do |opt| %>
                         <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
                         <div class="add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100"
                              data-controller="register"
@@ -93,6 +94,39 @@
                                         name=<%= "arrival#{opt.optionable_id}child#{child.id}" %>
                                         id="<%= "arrival#{opt.optionable_id}opt#{opt.id}" %>"
                                         <%= 'checked' if opt_registered || ( opt.name == 'なし' && arrival_options.none? { |a_opt| opt_regs.include?(a_opt) }) %>
+                                        data-register-target='button' data-action="change->register#toggle"
+                                        class="form-check-input m-0">
+                                    </div>
+                                <% end %>
+                            </fieldset>
+                        <% end %>
+                    <% end %>
+
+                    <% if add_slot.name == "親子参加型！サイエンスアイスクリームを作ろう♪ (午前)" %>
+                        <% plusone_opts = add_slot.options.select { |opt| opt.plusone? } %>
+
+                        <% if plusone_opts.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
+                            <% registered_plusone = plusone_opts.select { |opt| opts_in_ss.any? {  |reg| reg.registerable_id == opt.id} }.first %>
+                            <p><%= "#{registered_plusone.name}: ◯" %></p>
+                        <% else %>                          
+                            <fieldset class="mt-2">
+                                <legend class="fs-6 fw-bold"><%= t('.plusone_opts') %></legend>
+                                <% plusone_opts.each do |opt| %>
+                                    <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
+                                    <div class="add_reg w-100 form-check d-flex justify-content-center align-items-center"
+                                        data-controller="register"
+                                        data-register-id-value=<%= opt.id %>
+                                        data-register-type-value="Radio"
+                                        data-register-child-value=<%= child.id %>
+                                        data-register-cost-value=<%= opt.cost %>>
+                                        <label for="<%= "plusone#{opt.optionable_id}opt#{opt.id}" %>" data-register-target="name"
+                                        class="form-check-label">
+                                            <%= opt.name %>
+                                        </label>
+                                        <input type="radio"
+                                        name=<%= "plusone#{opt.optionable_id}child#{child.id}" %>
+                                        id="<%= "plusone#{opt.optionable_id}opt#{opt.id}" %>"
+                                        <%= 'checked' if opt_registered || ( opt.name == 'なし' && plusone_opts.none? { |opt| opt_regs.include?(opt) }) %>
                                         data-register-target='button' data-action="change->register#toggle"
                                         class="form-check-input m-0">
                                     </div>
@@ -211,15 +245,17 @@
                             <% end %>
                         </div>
 
+                        <% aft_time_ids = afternoon_slot.options.time.ids %>
+                        <% aft_plusone_ids = afternoon_slot.options.plusone.ids %>
+
                         <div class="options mt-2<%= ' hidden' unless aft_registered %>" data-popup-target="popup">
-                            <% aft_time_ids = afternoon_slot.options.time.ids %>
                             <% unless afternoon_slot.name.include?("アクアパーク") %>
                               <p><%= "#{t('.snack')}: ◯" %></p>
                             <% end %>
                              <% if afternoon_slot.special? && ['フレンチクレープ (午後)', 'ハワイアンかき氷  (午後)'].exclude?(afternoon_slot.name) %>
                                 <p>スペシャルデー: ◯</p>
                             <% end %>
-                            <% afternoon_slot.options.reject { |opt| aft_time_ids.include?(opt.id) }.each do |opt| %>
+                            <% afternoon_slot.options.reject { |opt| (aft_time_ids + aft_plusone_ids).include?(opt.id) }.each do |opt| %>
                                 <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
                                 <% if opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
                                     <p><%= "#{opt.name}: ◯" %></p>
@@ -266,6 +302,39 @@
                                                 name="depart<%= "#{opt.optionable_id}" %>"
                                                 id="<%= "depart#{opt.optionable_id}opt#{opt.id}" %>"
                                                 <%= 'checked' if opt_registered || ( opt.name == 'なし' && depart_options.none? { |a_opt| opt_regs.include?(a_opt) }) %>
+                                                data-register-target='button' data-action="change->register#toggle"
+                                                class="form-check-input m-0">
+                                            </div>
+                                        <% end %>
+                                    </fieldset>
+                                <% end %>
+                            <% end %>
+
+                            <% if afternoon_slot.name == "親子参加型！サイエンスアイスクリームを作ろう♪ (午後)" %>
+                                <% plusone_opts = afternoon_slot.options.select { |opt| opt.plusone? } %>
+
+                                <% if plusone_opts.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
+                                    <% registered_plusone = plusone_opts.select { |opt| opts_in_ss.any? {  |reg| reg.registerable_id == opt.id} }.first %>
+                                    <p><%= "#{registered_plusone.name}: ◯" %></p>
+                                <% else %>                          
+                                    <fieldset class="mt-2">
+                                        <legend class="fs-6 fw-bold"><%= t('.plusone_opts') %></legend>
+                                        <% plusone_opts.each do |opt| %>
+                                            <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
+                                            <div class="add_reg w-100 form-check d-flex justify-content-center align-items-center"
+                                                data-controller="register"
+                                                data-register-id-value=<%= opt.id %>
+                                                data-register-type-value="Radio"
+                                                data-register-child-value=<%= child.id %>
+                                                data-register-cost-value=<%= opt.cost %>>
+                                                <label for="<%= "plusone#{opt.optionable_id}opt#{opt.id}" %>" data-register-target="name"
+                                                class="form-check-label">
+                                                    <%= opt.name %>
+                                                </label>
+                                                <input type="radio"
+                                                name=<%= "plusone#{opt.optionable_id}child#{child.id}" %>
+                                                id="<%= "plusone#{opt.optionable_id}opt#{opt.id}" %>"
+                                                <%= 'checked' if opt_registered || ( opt.name == 'なし' && plusone_opts.none? { |opt| opt_regs.include?(opt) }) %>
                                                 data-register-target='button' data-action="change->register#toggle"
                                                 class="form-check-input m-0">
                                             </div>

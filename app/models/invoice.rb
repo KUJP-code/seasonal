@@ -145,11 +145,14 @@ class Invoice < ApplicationRecord
     # Check for Kamata's actvities
     kamata_morn = event_id == 4 && slot_regs.any? { |r| r.registerable.name.include?('大人気アクティビティアンコールイベント') }
     kamata_aft = event_id == 4 && slot_regs.any? { |r| r.registerable.name.include?('夏祭り@蒲田') }
+    # Check for Gyotoku's family day
+    gyotoku_fam = event_id == 29 && slot_regs.any? { |r| r.registerable.name.include?('親子参加型！サイエンスアイスクリームを作ろう♪') }
     # Don't charge for snack on Ikegami's cooking PM
     ikegami_cooking = event_id == 6 && slot_regs.any? { |r| r.registerable.name.include?('スペシャルクッキングイベント') }
     # Or Todoroki's fan for some reason
     todoroki_fan = event_id == 15 && slot_regs.any? { |r| r.registerable.name.include?('親子で参加可能♪浴衣OK♡うちわ作り体験＆KidsUP夏祭り') }
-    snack_count -= 1 if oi_kita_aquarium || rinkai_aft || ikegami_cooking || todoroki_fan || yako_aft || shinjo_aft || kamata_aft
+    snack_count -= 1 if oi_kita_aquarium || rinkai_aft || ikegami_cooking || todoroki_fan || yako_aft || shinjo_aft || kamata_aft || gyotoku_fam
+    snack_count = 0 unless snack_count.positive?
     course_cost += snack_count * 165
     # Add cost due to special day registrations
     # Now also has to handle Minami Machida's dumb different special day
@@ -161,6 +164,15 @@ class Invoice < ApplicationRecord
     course_cost += 1100 if summer_festival
     # Handle Ojima's aquarium cost being 3000 rather than 1500
     course_cost += 1500 if event_id == 16 && slot_regs.any? { |r| r.registerable.name.include?('スペシャル遠足@品川アクアパーク') }
+    # Handle the 4500 yen days
+    if gyotoku_fam
+      special_count -= 1
+      if child.external?
+        course_cost -= 1430
+      else
+        course_cost += 80
+      end
+    end
     # Handle the 6000 yen days
     if shit_days || rinkai_morn
       special_count -= 1
@@ -217,6 +229,7 @@ class Invoice < ApplicationRecord
       #{"<p>カワスイ 川崎水族館 遠足 x 1: #{500.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if yako_morn}
       #{"<p>Kids UP縁日 x 1: #{-400.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if yako_aft}
       #{"<p>大人気アクティビティアンコールイベント x 1: #{-400.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if kamata_morn}
+      #{"<p>親子参加型！サイエンスアイスクリームを作ろう♪ x 1: #{(child.external? ? -1430 : 80).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if gyotoku_fam}
       <p>午後コースおやつ代 x #{snack_count}: #{(snack_count * 165).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
     )
     course_cost

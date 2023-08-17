@@ -93,6 +93,21 @@ export default class extends Controller {
       this.specialCountTarget.appendChild(document.createElement("br"));
       this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
     }
+    // Handle 4500 fixed cost
+    if (
+      regList.includes(
+        "親子参加型！サイエンスアイスクリームを作ろう♪ (午後)"
+      ) ||
+      regList.includes("親子参加型！サイエンスアイスクリームを作ろう♪ (午前)")
+    ) {
+      if (this.isMember(this.childTarget)) {
+        specialCost += 80;
+      } else {
+        specialCost -= 1430;
+      }
+      this.specialCountTarget.appendChild(document.createElement("br"));
+      this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
+    }
     // Handle 6 000 fixed cost
     if (
       regList.includes("遠足＠うんこミュージアム (午前)") ||
@@ -137,7 +152,8 @@ export default class extends Controller {
       regList.includes("スペシャル遠足@品川アクアパーク (午後)") ||
       regList.includes("遠足＠アクアパーク品川 (午後)") ||
       regList.includes("宝探し&amp;夏祭り (午後)") ||
-      regList.includes("夏祭り@蒲田 (午後)")
+      regList.includes("夏祭り@蒲田 (午後)") ||
+      regList.includes("親子参加型！サイエンスアイスクリームを作ろう♪ (午後)")
     ) {
       snackCount--;
     }

@@ -492,3 +492,78 @@ am.create_afternoon_slot(
   end_time: '26 August 2023 18:30 JST +09:00',
   event_id: am.event_id
 )
+
+# Minami Gyotoku
+
+event = School.find_by(name: "南行徳").events.first
+
+event.time_slots.create!(
+  name: "親子参加型！サイエンスアイスクリームを作ろう♪",
+  morning: true,
+  category: :special,
+  start_time: '2 September 2023 9:30 JST +09:00',
+  end_time: '2 September 2023 13:00 JST +09:00'
+)
+
+am = TimeSlot.find_by(name: "親子参加型！サイエンスアイスクリームを作ろう♪")
+am.options.destroy_all
+
+# Local
+filename = "gyotoku.png"
+slot_key = "production/slots/#{filename}"
+am.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/png')
+
+# Prod
+filename = "gyotoku.png"
+slot_asset_key = "images/time_slots/summer_2023/#{filename}"
+slot_key = "production/time_slots/#{filename}"
+slot_image = client.get_object(bucket: bucket_name, key: slot_asset_key)
+am.image.attach(key: slot_key, io: slot_image.body, filename: filename, content_type: 'image/png')
+
+am.create_afternoon_slot(
+  name: "親子参加型！サイエンスアイスクリームを作ろう♪",
+  category: :special,
+  morning: false,
+  start_time: '2 September 2023 15:00 JST +09:00',
+  end_time: '2 September 2023 18:30 JST +09:00',
+  event_id: am.event_id
+)
+
+pm = am.afternoon_slot
+pm.options.destroy_all
+
+family_slots = [am, pm]
+family_slots.each do |slot|
+  slot.options.create!([
+    {
+      name: 'なし',
+      category: :plusone,
+      cost: 0
+    },
+    {
+      name: '兄弟姉妹×1',
+      category: :plusone,
+      cost: 4_500
+    },
+    {
+      name: '兄弟姉妹×2',
+      category: :plusone,
+      cost: 9_000
+    },
+    {
+      name: '親×1',
+      category: :plusone,
+      cost: 1_500
+    },
+    {
+      name: '親×2',
+      category: :plusone,
+      cost: 3_000
+    },
+    {
+      name: '兄弟姉妹×1 + 親×1',
+      category: :plusone,
+      cost: 6_000
+    }
+  ])
+end

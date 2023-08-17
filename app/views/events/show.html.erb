@@ -218,7 +218,12 @@
             <div id="event-collapseTwo" class="accordion-collapse collapse show">
                 <div class="accordion-body">
                     <div class="d-flex flex-column flex-lg-row flex-lg-wrap justify-content-lg-around gap-3">
-                        <%= render partial: 'time_slots/add_slot', collection: unregistered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, opts_in_ss: opts_in_ss } %>
+                        <%# Only internal kids can register for the family ice cream %>
+                        <% if @event.id == 29 && !@child.internal? %>
+                            <%= render partial: 'time_slots/add_slot', collection: unregistered_slots.reject { |slot| slot.name == "親子参加型！サイエンスアイスクリームを作ろう♪" }, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, opts_in_ss: opts_in_ss } %>
+                        <% else %>                        
+                            <%= render partial: 'time_slots/add_slot', collection: unregistered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, opts_in_ss: opts_in_ss } %>
+                        <% end %>
                     </div>
                 </div>
             </div>
