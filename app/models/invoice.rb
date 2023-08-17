@@ -154,7 +154,7 @@ class Invoice < ApplicationRecord
     # Handle Ojima's aquarium cost being 3000 rather than 1500
     course_cost += 1500 if event_id == 16 && slot_regs.any? { |r| r.registerable.name.include?('スペシャル遠足@品川アクアパーク') }
     # Handle the shit days
-    if shit_days || rinkai_morn
+    if shit_days || rinkai_morn || rinkai_aft
       special_count -= 1
       if child.external?
         course_cost -= 930
@@ -163,7 +163,7 @@ class Invoice < ApplicationRecord
       end
     end
     # Handle the aquarium trip for Oi and Kitashina
-    if oi_kita_aquarium || rinkai_aft
+    if oi_kita_aquarium
       special_count -= 1
       if child.external?
         course_cost += 70

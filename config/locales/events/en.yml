@@ -1,6 +1,7 @@
 en:
   events:
     event:
+      reg_at_selected: "Register at the school selected above"
       title: "%{name} at %{school}"
     show:
       all_slots: "See all time slots for %{event}"
