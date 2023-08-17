@@ -87,8 +87,7 @@ export default class extends Controller {
     // Handle the two shit events (and rinkai morning)
     if (
       regList.includes("遠足＠うんこミュージアム (午前)") ||
-      regList.includes("キッズアップハンター (午前)") ||
-      regList.includes("サマーモンスター (午後)")
+      regList.includes("キッズアップハンター (午前)")
     ) {
       // The cost needs to be 6 000 no matter what, so adjust for int/ext
       if (this.isMember(this.childTarget)) {
@@ -98,6 +97,21 @@ export default class extends Controller {
       }
       this.specialCountTarget.appendChild(document.createElement("br"));
       this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
+    }
+    // Rinkai morn and aft can both be registered, so handle separately
+    if (regList.includes("サマーモンスター (午後)")) {
+      // The cost needs to be 6 000 no matter what, so adjust for int/ext
+      if (this.isMember(this.childTarget)) {
+        specialCost += 1580;
+      } else {
+        specialCost -= 930;
+      }
+      this.specialCountTarget.appendChild(document.createElement("br"));
+      if (regList.includes("キッズアップハンター (午前)")) {
+        this.specialCountTarget.innerHTML += "スペシャルデー：2つ";
+      } else {
+        this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
+      }
     }
     // Handle the Kitashinagawa/Oi aquarium trip (and rinkai afternoon)
     if (regList.includes("遠足＠アクアパーク品川 (午後)")) {

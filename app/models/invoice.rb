@@ -153,8 +153,16 @@ class Invoice < ApplicationRecord
     course_cost += 1100 if summer_festival
     # Handle Ojima's aquarium cost being 3000 rather than 1500
     course_cost += 1500 if event_id == 16 && slot_regs.any? { |r| r.registerable.name.include?('スペシャル遠足@品川アクアパーク') }
-    # Handle the shit days
-    if shit_days || rinkai_morn || rinkai_aft
+    # Handle the 6000 yen days
+    if shit_days || rinkai_morn
+      special_count -= 1
+      if child.external?
+        course_cost -= 930
+      else
+        course_cost += 1580
+      end
+    end
+    if rinkai_aft
       special_count -= 1
       if child.external?
         course_cost -= 930
@@ -195,7 +203,7 @@ class Invoice < ApplicationRecord
       #{"<p>遠足＠うんこミュージアム x 1: #{(child.external? ? -930 : 1580).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if shit_days}
       #{"<p>遠足＠アクアパーク品川 x 1: #{(child.external? ? 70 : 2580).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if oi_kita_aquarium}
       #{"<p>キッズアップハンター x 1: #{(child.external? ? -930 : 1580).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if rinkai_morn}
-      #{"<p>サマーモンスター x 1: #{(child.external? ? 70 : 2580).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if rinkai_aft}
+      #{"<p>サマーモンスター x 1: #{(child.external? ? -930 : 1580).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if rinkai_aft}
       <p>午後コースおやつ代 x #{snack_count}: #{(snack_count * 165).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
     )
     course_cost
@@ -365,11 +373,13 @@ class Invoice < ApplicationRecord
     # Exclude event options from the check
     return false if event.options.ids.include?(opt_reg['registerable_id'].to_i)
 
-    registerable = Option.find(opt_reg['registerable_id'])
+    option = Option.find(opt_reg['registerable_id'])
+    # Allow the pizza party 'option' to be chosen without a corresponding activity
+    return false if option.name == 'ティーチャーみずきとのピザパーティ'
     # If for special day extension, only delete if neither registered
-    return slot_regs.none? { |r| r.registerable.special? } if registerable.extension? || registerable.k_extension?
+    return slot_regs.none? { |r| r.registerable.special? } if option.extension? || option.k_extension?
 
-    slot_regs.none? { |s_reg| s_reg.registerable_id == registerable.optionable_id }
+    slot_regs.none? { |s_reg| s_reg.registerable_id == option.optionable_id }
   end
 
   # Calculates how many times we need to apply the dumb 200円 increase
