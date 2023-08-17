@@ -1,14 +1,13 @@
 <main id="charts_index">
     <% internal_invoices = @invoices.select { |i| i.child.member? }.map(&:id) %>
-    <% external_invoices = (@invoices - internal_invoices).map(&:id) %>
+    <% external_invoices = @invoices.reject { |i| i.child.member? }.map(&:id) %>
     <% coupon_revenue_data = 
     School.where(id: [3, 9, 10, 11, 17, 20, 21, 25, 30, 34]).map do |school| 
             [school.name, (school.coupons.where(code: 'Thank youクーポン', couponable_id: internal_invoices).count * 3_000) + 
             (school.coupons.where(code: 'Thank youクーポン', couponable_id: external_invoices).count * 5_000)]
             end.sort_by {|s| s[1]}.reverse %>
     <% new_slots = TimeSlot.where('created_at > ?', "1 July 2023") %>
-    <%# <%= new_slots.map(&:name) %>
-    
+
     <%= line_chart @invoices.group_by_day(:created_at).count, title: 'Daily Bookings', time_zone: false %>
 
     <%= line_chart @invoices.group_by_day(:created_at).sum(:total_cost), title: 'Daily Revenue', suffix: "円", time_zone: false %>
@@ -30,9 +29,9 @@
         </div>
     </div>
 
-    <%= column_chart @invoices.group(:event_id).average(:total_cost).to_h { |k, v| [@school_hash[k], v] }.sort_by { |_k, v| v }.reverse, title: 'Average Booking Cost by School', round: 0, max: 50_000, suffix: "円", height: '75dvh' %>
+    <%= column_chart @invoices.group(:event_id).average(:total_cost).to_h { |k, v| [@school_hash[k], v] }.sort_by { |_k, v| v }.reverse, title: 'Average Booking Cost by School', round: 0, max: 40_000, suffix: "円", height: '75dvh' %>
 
-    <%= column_chart @invoices.joins(:time_slots).group(:event_id).count.map { |k, v| [@school_hash[k], (v.to_f / Invoice.where(event_id: k).count )] }.to_h.sort_by { |_k, v| v }.reverse, title: 'Number of Activities per Booking by School', round: 2, height: '50dvh', min: 3, max: 8 %>
+    <%= column_chart @invoices.joins(:time_slots).group(:event_id).count.map { |k, v| [@school_hash[k], (v.to_f / Invoice.where(event_id: k).count )] }.to_h.sort_by { |_k, v| v }.reverse, title: 'Number of Activities per Booking by School', round: 2, height: '50dvh', min: 3, max: 6 %>
 
     <%= column_chart @time_slots.where.not(id: new_slots.ids).left_joins(:registrations).group(:name).count.sort_by { |_k, v| v }.reverse, title: 'OG Activity Popularity', height: '85dvh', max: 1_100 %>
 
@@ -48,8 +47,8 @@
             <p>Thank youクーポン Revenue</p>
         </div>
         <div class="d-flex flex-column">
-            <h2 class="fw-semibold text-primary"><%= number_to_currency(0, unit: '円', precision: 0, locale: :ja) %></h2>
-            <p>New Activity Revenue</p>
+            <h2 class="fw-semibold text-primary"><%= @coupons.select { |coupon| coupon.code ==  'Thank youクーポン' }.size %></h2>
+            <p>Thank youクーポン Count</p>
         </div>
     </div>
 
