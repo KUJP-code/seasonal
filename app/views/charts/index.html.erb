@@ -1,4 +1,9 @@
 <main id="charts_index">
+    <% internal_invoices = @invoices.select { |i| i.child.member? }.map(&:id) %>
+    <% external_invoices = (@invoices - internal_invoices).map(&:id) %>
+    <% new_slots = TimeSlot.where('created_at > ?', "1 July 2023") %>
+    <%= new_slots.map(&:name) %>
+    
     <%= line_chart @invoices.group_by_day(:created_at).count, title: 'Daily Bookings', time_zone: false %>
 
     <%= line_chart @invoices.group_by_day(:created_at).sum(:total_cost), title: 'Daily Revenue', suffix: "円", time_zone: false %>
@@ -25,6 +30,29 @@
     <%= column_chart @invoices.joins(:time_slots).group(:event_id).count.map { |k, v| [@school_hash[k], (v.to_f / Invoice.where(event_id: k).count )] }.to_h.sort_by { |_k, v| v }.reverse, title: 'Number of Activities per Booking by School', round: 2, height: '50dvh', min: 3, max: 8 %>
 
     <%= column_chart @time_slots.left_joins(:registrations).group(:name).count.sort_by { |_k, v| v }.reverse, title: 'Activity Popularity', height: '85dvh', max: 1_100 %>
+
+    <%= line_chart @coupons.group(:code).group_by_day(:created_at).count, title: "Daily Coupon Use", time_zone: false %>
+
+    <%# Calculate the revenue from Leroy's coupon by school, only including schools that are allowed to use it %>
+
+    <% coupon_revenue_data = 
+    School.where(id: [3, 9, 10, 11, 17, 20, 21, 25, 30, 34]).map do |school| 
+            [school.name, (school.coupons.where(code: 'Thank youクーポン', couponable_id: internal_invoices).count * 3_000) + 
+            (school.coupons.where(code: 'Thank youクーポン', couponable_id: external_invoices).count * 5_000)] 
+            end %>
+
+    <div class="d-flex justify-content-center align-items-center gap-5 p-3 w-100 text-center">
+        <div class="d-flex flex-column">
+            <h2 class="fw-semibold text-primary"><%= number_to_currency(coupon_revenue_data.reduce(0) { |sum, point| sum + point[1] }, unit: '円', precision: 0, locale: :ja) %></h2>
+            <p>Thank youクーポン Revenue</p>
+        </div>
+        <div class="d-flex flex-column">
+            <h2 class="fw-semibold text-primary"><%= number_to_currency(0, unit: '円', precision: 0, locale: :ja) %></h2>
+            <p>New Activity Revenue</p>
+        </div>
+    </div>
+
+    <%= bar_chart coupon_revenue_data, title: "Coupon Revenue by School", suffix: "円" %>
 
     <%= pie_chart @children.group(:grade).count, title: 'Attendees by Grade', donut: true, height: '50dvh' %>
 </main>

@@ -4,7 +4,8 @@
 class ChartsController < ApplicationController
   def index
     authorize(:chart)
-    @invoices = Invoice.where('total_cost > 3000').where.not(event_id: TEST_SCHOOLS)
+    @invoices = Invoice.where('total_cost > 3000').where.not(event_id: TEST_SCHOOLS).includes(:child)
+    @coupons = Coupon.where(couponable_id: @invoices.ids)
     @children = Child.where.not(school_id: TEST_SCHOOLS).joins(:real_invoices).distinct
     @slot_registrations = Registration.all.where(registerable_type: 'TimeSlot', child_id: @children.ids)
     @school_hash = School.where.not(id: TEST_SCHOOLS).to_h { |school| [school.id, school.name] }
