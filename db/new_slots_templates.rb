@@ -357,3 +357,39 @@ am.create_afternoon_slot(
 
 pm = am.afternoon_slot
 pm.options.where(category: [:departure, :k_departure]).destroy_all
+
+# Yako
+
+event = School.find_by(name: "矢向").events.first
+
+event.time_slots.create!(
+  name: "カワスイ 川崎水族館 遠足",
+  morning: true,
+  category: :special,
+  start_time: '2 September 2023 9:30 JST +09:00',
+  end_time: '2 September 2023 13:00 JST +09:00'
+)
+
+am = TimeSlot.find_by(name: "カワスイ 川崎水族館 遠足")
+am.options.find_by(category: :meal).destroy
+
+# Local
+filename = "yako.png"
+slot_key = "production/slots/#{filename}"
+am.image.attach(key: slot_key, io: File.open("app/assets/images/#{filename}"), filename: filename, content_type: 'image/png')
+
+# Prod
+filename = "yako.png"
+slot_asset_key = "images/time_slots/summer_2023/#{filename}"
+slot_key = "production/time_slots/#{filename}"
+slot_image = client.get_object(bucket: bucket_name, key: slot_asset_key)
+am.image.attach(key: slot_key, io: slot_image.body, filename: filename, content_type: 'image/png')
+
+am.create_afternoon_slot(
+  name: "Kids UP縁日",
+  category: :special,
+  morning: false,
+  start_time: '2 September 2023 15:00 JST +09:00',
+  end_time: '2 September 2023 18:30 JST +09:00',
+  event_id: am.event_id
+)

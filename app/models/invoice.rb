@@ -137,11 +137,14 @@ class Invoice < ApplicationRecord
     # Check for Rinkai's fixed price days
     rinkai_morn = event_id == 13 && slot_regs.any? { |r| r.registerable.name.include?('キッズアップハンター') }
     rinkai_aft = event_id == 13 && slot_regs.any? { |r| r.registerable.name.include?('サマーモンスター') }
+    # Check for Yako's days
+    yako_morn = event_id == 28 && slot_regs.any? { |r| r.registerable.name.include?('カワスイ 川崎水族館 遠足') }
+    yako_aft = event_id == 28 && slot_regs.any? { |r| r.registerable.name.include?('Kids UP縁日') }
     # Don't charge for snack on Ikegami's cooking PM
     ikegami_cooking = event_id == 6 && slot_regs.any? { |r| r.registerable.name.include?('スペシャルクッキングイベント') }
     # Or Todoroki's fan for some reason
     todoroki_fan = event_id == 15 && slot_regs.any? { |r| r.registerable.name.include?('親子で参加可能♪浴衣OK♡うちわ作り体験＆KidsUP夏祭り') }
-    snack_count -= 1 if oi_kita_aquarium || rinkai_aft || ikegami_cooking || todoroki_fan
+    snack_count -= 1 if oi_kita_aquarium || rinkai_aft || ikegami_cooking || todoroki_fan || yako_aft
     course_cost += snack_count * 165
     # Add cost due to special day registrations
     # Now also has to handle Minami Machida's dumb different special day
@@ -179,6 +182,9 @@ class Invoice < ApplicationRecord
         course_cost += 2580
       end
     end
+    # Handle Yako's days
+    course_cost += 500 if yako_morn
+    course_cost -= 400 if yako_aft
     # Don't count Toyocho's extra specials as special cos no extra charge
     if event_id == 6
       toyo_fakes = ['水鉄砲合戦＆ビーチジオラマ', '貝殻ペンダント ＆ フレンチクレープ']
@@ -204,6 +210,8 @@ class Invoice < ApplicationRecord
       #{"<p>遠足＠アクアパーク品川 x 1: #{(child.external? ? 70 : 2580).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if oi_kita_aquarium}
       #{"<p>キッズアップハンター x 1: #{(child.external? ? -930 : 1580).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if rinkai_morn}
       #{"<p>サマーモンスター x 1: #{(child.external? ? -930 : 1580).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if rinkai_aft}
+      #{"<p>カワスイ 川崎水族館 遠足 x 1: #{500.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if yako_morn}
+      #{"<p>Kids UP縁日 x 1: #{-400.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if yako_aft}
       <p>午後コースおやつ代 x #{snack_count}: #{(snack_count * 165).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
     )
     course_cost

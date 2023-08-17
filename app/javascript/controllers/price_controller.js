@@ -67,29 +67,33 @@ export default class extends Controller {
     this.specialCountTarget.innerHTML = `スペシャルデー: ${specialCount.toString()}つ`;
     // Get cost of all of them to add to the final price
     let specialCost = specialCount * 1500;
-    // Add Minami Machida/Futa's dumb special price if it exists
+    // Handle + 1100 fees
     if (
       regList.includes("夏祭り@南町田グランベリーパーク (午後)") ||
-      regList.includes("夏祭り@二俣川 (午前)")
+      regList.includes("夏祭り@二俣川 (午前)") ||
+      regList.includes("Kids UP縁日 (午後)")
     ) {
       specialCost += 1100;
       this.specialCountTarget.appendChild(document.createElement("br"));
-      this.specialCountTarget.innerHTML += "夏祭りスペシャルデー：1つ";
+      this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
     }
-    // Handle Ojima aquarium trip
+    // Handle + 2000 fees
+    if (regList.includes("カワスイ 川崎水族館 遠足 (午前)")) {
+      specialCost += 2000;
+      this.specialCountTarget.appendChild(document.createElement("br"));
+      this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
+    }
+    // Handle + 3000 fees
     if (regList.includes("スペシャル遠足@品川アクアパーク (午後)")) {
       specialCost += 3000;
       this.specialCountTarget.appendChild(document.createElement("br"));
-      this.specialCountTarget.innerHTML +=
-        "スペシャル遠足@品川アクアパーク：1つ";
-      snackCount--;
+      this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
     }
-    // Handle the two shit events (and rinkai morning)
+    // Handle 6 000 fixed cost
     if (
       regList.includes("遠足＠うんこミュージアム (午前)") ||
       regList.includes("キッズアップハンター (午前)")
     ) {
-      // The cost needs to be 6 000 no matter what, so adjust for int/ext
       if (this.isMember(this.childTarget)) {
         specialCost += 1580;
       } else {
@@ -100,7 +104,6 @@ export default class extends Controller {
     }
     // Rinkai morn and aft can both be registered, so handle separately
     if (regList.includes("サマーモンスター (午後)")) {
-      // The cost needs to be 6 000 no matter what, so adjust for int/ext
       if (this.isMember(this.childTarget)) {
         specialCost += 1580;
       } else {
@@ -113,13 +116,11 @@ export default class extends Controller {
         this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
       }
     }
-    // Handle the Kitashinagawa/Oi aquarium trip (and rinkai afternoon)
+    // Handle 7 000 fixed cost
     if (regList.includes("遠足＠アクアパーク品川 (午後)")) {
-      // The cost needs to be 7 000 no matter what, so adjust for int/ext
       specialCost += this.isMember(this.childTarget) ? 2580 : 70;
       this.specialCountTarget.appendChild(document.createElement("br"));
-      this.specialCountTarget.innerHTML += "遠足＠アクアパーク品川：1つ";
-      snackCount--;
+      this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
     }
     // Decrement snack cost for all the PM with no snack charge
     if (
@@ -127,7 +128,10 @@ export default class extends Controller {
         "親子で参加可能♪浴衣OK♡うちわ作り体験＆KidsUP夏祭り (午後)"
       ) ||
       regList.includes("スペシャルクッキングイベント (午後)") ||
-      regList.includes("サマーモンスター (午後)")
+      regList.includes("サマーモンスター (午後)") ||
+      regList.includes("Kids UP縁日 (午後)") ||
+      regList.includes("スペシャル遠足@品川アクアパーク (午後)") ||
+      regList.includes("遠足＠アクアパーク品川 (午後)")
     ) {
       snackCount--;
     }
