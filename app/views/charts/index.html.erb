@@ -58,9 +58,9 @@
 
     <%= bar_chart coupon_revenue_data, title: "Coupon Revenue by School", suffix: "円" %>
 
-    <%= bar_chart Option.joins(:registrations).group("options.name").count("options.name").except("なし").sort_by { |_k, v| v }.reverse, title: "Option Popularity" %>
+    <%= column_chart Option.joins(:registrations).group("options.name").count("options.name").except("なし").sort_by { |_k, v| v }.reverse, title: "Option Popularity" %>
 
-    <%= bar_chart Option.joins(:registrations).group("options.name").sum("options.cost").except("なし").sort_by { |_k, v| v }.reverse, title: "Option Revenue", suffix: "円" %>
+    <%= column_chart Option.joins(:registrations).group("options.name").sum("options.cost").except("なし").sort_by { |_k, v| v }.reverse, title: "Option Revenue", suffix: "円" %>
 
     <div class="d-flex gap-3 justify-items-center">
         <%= pie_chart Option.where(category: [:arrival, :k_arrival]).joins(:registrations).group("options.name").count("options.name").except("なし"), title: "Arrival Option Popularity" %>
