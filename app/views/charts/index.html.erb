@@ -8,6 +8,8 @@
             end.sort_by {|s| s[1]}.reverse %>
     <% new_slots = TimeSlot.where('created_at > ?', "1 July 2023") %>
 
+    <%= line_chart @slot_registrations.group_by_day(:created_at).count, title: 'Daily Registrations', time_zone: false %>
+
     <%= line_chart @invoices.group_by_day(:created_at).count, title: 'Daily Bookings', time_zone: false %>
 
     <%= line_chart @invoices.group_by_day(:created_at).sum(:total_cost), title: 'Daily Revenue', suffix: "円", time_zone: false %>
@@ -37,6 +39,8 @@
 
     <%= column_chart @time_slots.where(id: new_slots.ids).left_joins(:registrations).group(:name).count.sort_by { |_k, v| v }.reverse, title: 'New Activity Popularity', height: '85dvh' %>
 
+    <%= pie_chart @children.group(:grade).count, title: 'Attendees by Grade', donut: true, height: '50dvh' %>
+
     <%= line_chart @coupons.where.not(code: "").group(:code).group_by_day(:created_at).count, title: "Daily Coupon Use", time_zone: false %>
 
     <%# Calculate the revenue from Leroy's coupon by school, only including schools that are allowed to use it %>
@@ -54,5 +58,18 @@
 
     <%= bar_chart coupon_revenue_data, title: "Coupon Revenue by School", suffix: "円" %>
 
-    <%= pie_chart @children.group(:grade).count, title: 'Attendees by Grade', donut: true, height: '50dvh' %>
+    <%= bar_chart Option.joins(:registrations).group("options.name").count("options.name").except("なし").sort_by { |_k, v| v }.reverse, title: "Option Popularity" %>
+
+    <%= bar_chart Option.joins(:registrations).group("options.name").sum("options.cost").except("なし").sort_by { |_k, v| v }.reverse, title: "Option Revenue", suffix: "円" %>
+
+    <div class="d-flex gap-3 justify-items-center">
+        <%= pie_chart Option.where(category: [:arrival, :k_arrival]).joins(:registrations).group("options.name").count("options.name").except("なし"), title: "Arrival Option Popularity" %>
+        <%= pie_chart Option.where(category: [:departure, :k_departure]).joins(:registrations).group("options.name").count("options.name").except("なし"), title: "Departure Option Popularity" %>
+    </div>
+
+
+    <% customers = User.customer.ids %>
+    <%= line_chart @versions.where(whodunnit: customers).group_by_day(:created_at).count, title: "Customer Edits by Day" %>
+    <% staff = User.where(role: %i[area_manager school_manager admin]).ids %>
+    <%= line_chart @versions.where(whodunnit: staff).group_by_day(:created_at).count, title: "Staff Edits by Day" %>
 </main>

@@ -10,6 +10,7 @@ class ChartsController < ApplicationController
     @slot_registrations = Registration.all.where(registerable_type: 'TimeSlot', child_id: @children.ids)
     @school_hash = School.where.not(id: TEST_SCHOOLS).to_h { |school| [school.id, school.name] }
     @time_slots = TimeSlot.where(morning: true, category: %i[seasonal outdoor]).or(TimeSlot.where(category: :special))
+    @versions = PaperTrail::Version.where(item_type: 'Invoice', event: 'update')
   end
 
   def show; end
