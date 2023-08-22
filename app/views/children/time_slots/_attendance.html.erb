@@ -49,7 +49,7 @@
                 <% end %>
 
                 <% if slot.special? %>
-                    <th><%= slot.name == "夏祭り" ? t('.depart') : "中延長: #{extensions.reduce(0) { |sum, opt| sum + opt.registrations.select { |reg| child_ids.include?(reg.child_id)}.size }}"  %></th>
+                    <th><%= slot.name == "夏祭り" ? t('.depart') : "#{extensions.first.name}: #{extensions.reduce(0) { |sum, opt| sum + opt.registrations.select { |reg| child_ids.include?(reg.child_id)}.size }}"  %></th>
                 <% end %>
 
                 <% if slot.afternoon_slot %>
