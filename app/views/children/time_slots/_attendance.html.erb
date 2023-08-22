@@ -48,7 +48,7 @@
                     <th scope="col"><%= "#{opt.name}: #{opt.registrations.select{ |reg| child_ids.include?(reg.child_id) }.size}" %></th>
                 <% end %>
 
-                <% if slot.special? %>
+                <% if slot.special? && extensions.size.positive? %>
                     <th><%= slot.name == "夏祭り" ? t('.depart') : "#{extensions.first.name}: #{extensions.reduce(0) { |sum, opt| sum + opt.registrations.select { |reg| child_ids.include?(reg.child_id)}.size }}"  %></th>
                 <% end %>
 
@@ -148,7 +148,7 @@
                     </td>
                 <% end %>
 
-                <% if slot.special? %>
+                <% if slot.special? && extensions.size.positive? %>
                     <% if slot.name == "夏祭り" %>
                         <td data-controller="filter"
                         data-filter-siblings-value="0"
