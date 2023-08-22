@@ -4,13 +4,17 @@
 <% morn_time_ids = slot.options.select { |opt| time_cats.include?(opt.category) }.map(&:id) %>
 <% extensions = slot.options.select { |opt| ext_cats.include?(opt.category) } %>
 <% extension_ids = extensions.map(&:id) %>
-<% morn_options = slot.options.reject { |opt| morn_time_ids.include?(opt.id) || extension_ids.include?(opt.id) } %>
+<% plusones = slot.options.select { |opt| opt.plusone? } %>
+<% plusone_ids = plusones.map(&:id) %>
+<% morn_options = slot.options.reject { |opt| morn_time_ids.include?(opt.id) || extension_ids.include?(opt.id)  || plusone_ids.include?(opt.id) } %>
 <% aft_options = if slot.afternoon_slot.nil?
                    []
                  else
                    aft_slot = slot.afternoon_slot
                    aft_time_ids = aft_slot.options.select{ |opt| time_cats.include?(opt.category) }.map(&:id)
-                   aft_slot.options.reject { |opt| aft_time_ids.include?(opt.id) }
+                   aft_plusones = aft_slot.options.select { |opt| opt.plusone? } 
+                   aft_plusone_ids = aft_plusones.map(&:id) 
+                   aft_slot.options.reject { |opt| aft_time_ids.include?(opt.id) || aft_plusone_ids.include?(opt.id) }
                  end
 %>
 <% children = (slot.children + (slot.afternoon_slot ? slot.afternoon_slot.children : [])).uniq %>
@@ -48,6 +52,10 @@
                     <th scope="col"><%= "#{opt.name}: #{opt.registrations.select{ |reg| child_ids.include?(reg.child_id) }.size}" %></th>
                 <% end %>
 
+                <% if slot.name == "親子参加型！サイエンスアイスクリームを作ろう♪" %>
+                  <th scope="col">家族の参加</th>
+                <% end %>
+
                 <% if slot.special? && extensions.size.positive? %>
                     <th><%= slot.name == "夏祭り" ? t('.depart') : "#{extensions.first.name}: #{extensions.reduce(0) { |sum, opt| sum + opt.registrations.select { |reg| child_ids.include?(reg.child_id)}.size }}"  %></th>
                 <% end %>
@@ -57,8 +65,13 @@
                         <p><%= t('.attend_afternoon') %></p>
                         <p><%= "K: #{children.select{ |c| c.kindy && aft_child_ids.include?(c.id) }.size}, E: #{children.reject(&:kindy).select{ |c| aft_child_ids.include?(c.id) }.size}" %></p>
                     </th>
+
                     <% aft_options.each do |opt| %>
                         <th scope="col"><%= "#{opt.name}: #{opt.registrations.select{ |reg| child_ids.include?(reg.child_id) }.size}" %></th>
+                    <% end %>
+                        
+                    <% if slot.name == "親子参加型！サイエンスアイスクリームを作ろう♪" %>
+                        <th scope="col">家族の参加</th>
                     <% end %>
 
                     <th scope="col" id="depart_header"><%= t('.depart') %></th>
@@ -148,6 +161,18 @@
                     </td>
                 <% end %>
 
+                
+                <% if slot.name == "親子参加型！サイエンスアイスクリームを作ろう♪" %>
+                    <td data-controller="filter"
+                        data-filter-siblings-value="0"
+                        data-filter-col-value=".家族の参加">
+                        <div class="form-floating">
+                            <%= text_field_tag "家族の参加_filter", nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                            <%= label_tag "家族の参加_filter", t('.filter'), class: 'form-label' %>
+                        </div>
+                    </td>
+                <% end %>
+
                 <% if slot.special? && extensions.size.positive? %>
                     <% if slot.name == "夏祭り" %>
                         <td data-controller="filter"
@@ -186,6 +211,17 @@
                             <div class="form-floating">
                                 <%= text_field_tag "#{opt.name}_filter", nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
                                 <%= label_tag "#{opt.name}_filter", t('.filter'), class: 'form-label' %>
+                            </div>
+                        </td>
+                    <% end %>
+
+                    <% if slot.name == "親子参加型！サイエンスアイスクリームを作ろう♪" %>
+                        <td data-controller="filter"
+                            data-filter-siblings-value="0"
+                            data-filter-col-value=".家族の参加_aft">
+                            <div class="form-floating">
+                                <%= text_field_tag "家族の参加_aft_filter", nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                                <%= label_tag "家族の参加_aft_filter", t('.filter'), class: 'form-label' %>
                             </div>
                         </td>
                     <% end %>

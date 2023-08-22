@@ -38,6 +38,12 @@
         <td class=<%= opt.name %>><%= opt.name if slot_child.registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type = 'Option' } %></td>
     <% end %>
 
+    <% if slot.name == "親子参加型！サイエンスアイスクリームを作ろう♪" %>
+      <% morn_plusones = slot.options.select { |opt| opt.plusone? }.map(&:id) %>
+      <% registered_plusone = slot_child.options.select { |opt| morn_plusones.include?(opt.id) }.first %>
+        <td class="家族の参加"><%= registered_plusone ? registered_plusone.name : "" %></td>
+    <% end %>
+
     <% if slot.special? && extension_ids.size.positive? %>
       <% if slot.name == "夏祭り" %>
         <th scope="row" class="depart"><%= '~'.concat((slot.end_time + festival_depart_option.modifier.minutes).strftime('%I:%M%p')) if festival_depart_option && festival_depart_option.modifier.positive? %></th>
@@ -57,6 +63,12 @@
       </td>
       <% aft_options.each do |opt| %>
           <td class=<%= opt.name %>><%= opt.name if slot_child.registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type = 'Option' } %></td>
+      <% end %>
+
+      <% if slot.name == "親子参加型！サイエンスアイスクリームを作ろう♪" %>
+        <% aft_plusones = slot.afternoon_slot.options.select { |opt| opt.plusone? }.map(&:id) %>
+        <% aft_registered_plusone = slot_child.options.select { |opt| aft_plusones.include?(opt.id) }.first %>
+          <td class="家族の参加_aft"><%= aft_registered_plusone ? aft_registered_plusone.name : "" %></td>
       <% end %>
       
       <td class="depart">
