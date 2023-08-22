@@ -183,6 +183,13 @@ class InvoicesController < ApplicationController
       to.adjustments << adj
     end
 
+    from_coupons = from.coupons
+    to_coupons = to.coupons
+    from_coupons.each do |coupon|
+      next if to_coupons.any? { |to_coupon| to_coupon.code == coupon.code }
+
+      to.coupons << coupon
+    end
     to.save
   end
 
