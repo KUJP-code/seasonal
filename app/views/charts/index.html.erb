@@ -33,7 +33,7 @@
 
     <%= column_chart @invoices.group(:event_id).average(:total_cost).to_h { |k, v| [@school_hash[k], v] }.sort_by { |_k, v| v }.reverse, title: 'Average Booking Cost by School', round: 0, max: 40_000, suffix: "円", height: '75dvh' %>
 
-    <%= column_chart @invoices.joins(:time_slots).group(:event_id).count.map { |k, v| [@school_hash[k], (v.to_f / Invoice.where(event_id: k).count )] }.to_h.sort_by { |_k, v| v }.reverse, title: 'Number of Activities per Booking by School', round: 2, height: '50dvh', min: 3, max: 6 %>
+    <%= column_chart @invoices.joins(:time_slots).group(:event_id).count.map { |k, v| [@school_hash[k], (v.to_f / Invoice.where(event_id: k).count )] }.to_h.sort_by { |_k, v| v }.reverse, title: 'Number of Activities per Booking by School', round: 2, height: '50dvh', min: 3, max: 6.5 %>
 
     <%= column_chart @time_slots.where.not(id: new_slots.ids).left_joins(:registrations).group(:name).count.sort_by { |_k, v| v }.reverse, title: 'OG Activity Popularity', height: '85dvh', max: 1_100 %>
 
