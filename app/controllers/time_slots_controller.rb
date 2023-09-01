@@ -24,6 +24,7 @@ class TimeSlotsController < ApplicationController
 
   def edit
     @slot = authorize(TimeSlot.find(params[:id]))
+    @images = ActiveStorage::Blob.where('key LIKE ?', '%slots%').map { |blob| [blob.key, blob.id] }
   end
 
   def update
@@ -40,8 +41,11 @@ class TimeSlotsController < ApplicationController
 
   def slot_params
     params.require(:time_slot).permit(
-      :name, :image, :start_time, :end_time, :description, :category, :closed,
-      :morning, :event_id,
+      :name, :image_id, :start_time, :end_time, :description, :category,
+      :closed, :_destroy, :morning, :event_id,
+      afternoon_slot_attributes:
+      %i[name image_id start_time end_time description category
+         closed _destroy morning event_id],
       options_attributes:
       %i[id name cost category modifier optionable_type optionable_id]
     )

@@ -1,5 +1,41 @@
-<%= form_with model: @slot do |f| %>
-    <% if @slot.special %>
+<div class="event-sidebar w-50">
+    <%= render partial: 'events/event', locals: { child: nil, event: @slot.event } %>
+</div>
+
+<%= form_with model: @slot, class: "card" do |f| %>
+    <%= f.hidden_field :event_id %>
+    <%= f.hidden_field :morning, value: true %>
+
+    <div>
+        <%= label_tag :image_id, t('.image'), class: 'form-label' %>
+        <%= f.select :image_id, @images, {}, { class: 'form-select' } %>
+    </div>
+
+    <div class="form-floating">
+        <%= f.text_field :name, class: 'form-control', placeholder: t('.name'), required: true  %>
+        <%= f.label :name, t('.name'), class: 'form-label' %>
+    </div>
+
+    <div class="form-floating">
+        <%= f.datetime_field :start_time, class: 'form-control', placeholder: t('.start_time'), required: true %>
+        <%= f.label :start_time, t('.start_time'), class: 'form-label' %>
+    </div>
+        
+    <div class="form-floating">
+        <%= f.datetime_field :end_time, class: 'form-control', placeholder: t('.end_time'), required: true %>
+        <%= f.label :end_time, t('.end_time'), class: 'form-label' %>
+    </div>
+
+    <div>
+        <%= f.label :category, t('.category'), class: 'form-label' %>
+        <%= f.select :category, TimeSlot.categories.map { |k, _v| [k.capitalize, k] } , {}, {class: 'form-select'} %>
+    </div>
+
+    <%= button_tag t('.remove_slot'), data: { action: "fields#remove" }, class: 'btn btn-danger' if f.object.new_record? %>
+
+    <hr>
+
+    <% if @slot.special? %>
         <%= f.fields_for :afternoon_slot, f.object.afternoon_slot || TimeSlot.new do |aft_f| %>
 
             <button type="button" 
@@ -13,9 +49,7 @@
 
             <div class="collapse" id="afternoon<%= aft_f.object.id %>">
                 <div class="d-grid gap-3">
-                    <%= aft_f.hidden_field :id %>
-                    <%= aft_f.hidden_field :event_id %>
-                    <%= aft_f.hidden_field :morning_slot_id %>
+                    <%= aft_f.hidden_field :event_id, value: @slot.event_id %>
 
                     <h3>Afternoon Slot</h3>
 
@@ -42,4 +76,6 @@
             </div>
         <% end %>
     <% end %>
+
+    <%= f.submit class: "btn btn-primary" %>
 <% end %>
