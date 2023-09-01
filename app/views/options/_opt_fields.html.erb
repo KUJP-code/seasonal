@@ -18,6 +18,10 @@
         <%= f.select :category, Option.categories.map { |k, v| [k.capitalize, k] } , {}, { class: 'form-select' } %>
     </div>
 
+    <div class="form-floating">
+        <%= f.number_field :modifier, class: 'form-control', placeholder: t('.modifier') %>
+        <%= f.label :modifier, t('.modifier'), class: 'form-label' %>
+    </div>
 
     <% unless f.object.new_record? %>
         <div class="form-check d-flex justify-content-center gap-3">
@@ -28,5 +32,5 @@
 
     <%= button_tag 'Remove Option', data: { action: "fields#remove" }, class: 'btn btn-danger' if f.object.new_record? %>
 
-    <hr>
+    <hr class="text-primary opacity-75">
 </div>

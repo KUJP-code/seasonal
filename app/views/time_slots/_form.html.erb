@@ -2,7 +2,7 @@
     <%= render partial: 'events/event', locals: { child: nil, event: @slot.event } %>
 </div>
 
-<%= form_with model: @slot, class: "card" do |f| %>
+<%= form_with model: @slot, html: {class: "card", data: { controller: "fields" } } do |f| %>
     <%= f.hidden_field :event_id %>
     <%= f.hidden_field :morning, value: true %>
 
@@ -48,41 +48,18 @@
         <h3>Options</h3>
 
         <%= f.fields_for :options, f.object.options do |opt_f| %>
-            <div class="d-grid gap-3">
-                <%= opt_f.hidden_field :id %>
-                <%= opt_f.hidden_field :optionable_id, value: @slot.id %>
-                <%= opt_f.hidden_field :optionable_type, value: 'TimeSlot' %>
-
-                <div class="form-floating">
-                    <%= opt_f.text_field :name, class: 'form-control', placeholder: t('.name')  %>
-                    <%= opt_f.label :name, t('.name'), class: 'form-label' %>
-                </div>
-
-                <div class="form-floating">
-                    <%= opt_f.number_field :cost, class: 'form-control', placeholder: t('.cost') %>
-                    <%= opt_f.label :cost, t('.cost'), class: 'form-label' %>
-                </div>
-
-                <div>
-                    <%= opt_f.label :category, t('.category'), class: 'form-label' %>
-                    <%= opt_f.select :category, Option.categories.map { |k, _v| [k.capitalize, k] } , {}, {class: 'form-select'} %>
-                </div>
-                
-                <div class="form-floating">
-                    <%= opt_f.number_field :modifier, class: 'form-control', placeholder: t('.modifier') %>
-                    <%= opt_f.label :modifier, t('.modifier'), class: 'form-label' %>
-                </div>
-
-                <% unless opt_f.object.new_record? %>
-                    <div class="form-check">
-                        <%= opt_f.check_box :_destroy, class: 'form-check-input' %>
-                        <%= opt_f.label :_destroy, t('.destroy'), class: 'form-check-label' %>
-                    </div>
-                <% end %>
-
-                <hr class="text-primary opacity-75">
-            </div>
+            <%= render 'options/opt_fields', f: opt_f %>
         <% end %>
+
+        <template data-fields-target="template">
+            <%= f.fields_for :options, Option.new(optionable_id: @slot.id), child_index: 'CHILD' do |opt_f| %>
+                <%= render 'options/opt_fields', f: opt_f %>
+            <% end %>
+        </template>
+
+        <div data-fields-target="target" class="d-none w-100"></div>
+
+        <%= button_tag t('.add_option'), type: 'button', data: { action: "fields#add" }, class: 'btn btn-primary w-100' %>
     </div>
 
     <% if @slot.special? && @slot.morning %>
