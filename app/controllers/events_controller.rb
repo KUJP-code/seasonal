@@ -37,7 +37,7 @@ class EventsController < ApplicationController
       School.all.each do |school|
         school.events.create(event_params)
       end
-      redirect_to new_time_slot_path(event: 'all'), notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Event'
+      redirect_to new_time_slot_path(event: 'all'), notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Create Event'
       redirect_to events_path, notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Time Slots'
     else
       @event = Event.new(event_params)

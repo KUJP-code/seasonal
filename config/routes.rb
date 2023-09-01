@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       resources :options, only: %i[new]
       resources :price_lists, except: %i[show]
       resources :time_slots, except: %i[create]
+      resources :uploads, only: %i[create new]
       resources :users
 
       # Mailer subscription routes

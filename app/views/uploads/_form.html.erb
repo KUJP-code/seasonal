@@ -1,0 +1,20 @@
+<%= form_with url: uploads_path, class: "card" do |f| %>
+    <h2>Upload Assets</h2>
+
+    <div>
+        <%= label_tag :uploads, t('.uploads'), class: 'form-label' %>
+        <%= f.file_field :uploads, class: 'form-control', multiple: true, include_hidden: false %>
+    </div>
+
+    <div>
+        <%= label_tag :folder, t('.folder'), class: 'form-label' %>
+        <%= f.select :folder, @folders, {}, { class: 'form-select' } %>
+    </div>
+
+    <div>
+        <%= label_tag :event, t('.event'), class: 'form-label' %>
+        <%= f.select :event, @events, {}, { class: 'form-select' } %>
+    </div>
+
+    <%= f.submit "Upload", class: "btn btn-primary" %>
+<% end %>
