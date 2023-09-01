@@ -33,9 +33,59 @@
 
     <%= button_tag t('.remove_slot'), data: { action: "fields#remove" }, class: 'btn btn-danger' if f.object.new_record? %>
 
-    <hr>
+    <hr class="text-primary opacity-75">
 
-    <% if @slot.special? %>
+    <button type="button" 
+            class="btn btn-info" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#options<%= f.object.id %>" 
+            aria-expanded="false" 
+            aria-controls="options<%= f.object.id %>">
+        Customise Options
+    </button>
+
+    <div class="collapse" id="options<%= f.object.id %>">
+        <h3>Options</h3>
+
+        <%= f.fields_for :options, f.object.options do |opt_f| %>
+            <div class="d-grid gap-3">
+                <%= opt_f.hidden_field :id %>
+                <%= opt_f.hidden_field :optionable_id, value: @slot.id %>
+                <%= opt_f.hidden_field :optionable_type, value: 'TimeSlot' %>
+
+                <div class="form-floating">
+                    <%= opt_f.text_field :name, class: 'form-control', placeholder: t('.name')  %>
+                    <%= opt_f.label :name, t('.name'), class: 'form-label' %>
+                </div>
+
+                <div class="form-floating">
+                    <%= opt_f.number_field :cost, class: 'form-control', placeholder: t('.cost') %>
+                    <%= opt_f.label :cost, t('.cost'), class: 'form-label' %>
+                </div>
+
+                <div>
+                    <%= opt_f.label :category, t('.category'), class: 'form-label' %>
+                    <%= opt_f.select :category, Option.categories.map { |k, _v| [k.capitalize, k] } , {}, {class: 'form-select'} %>
+                </div>
+                
+                <div class="form-floating">
+                    <%= opt_f.number_field :modifier, class: 'form-control', placeholder: t('.modifier') %>
+                    <%= opt_f.label :modifier, t('.modifier'), class: 'form-label' %>
+                </div>
+
+                <% unless opt_f.object.new_record? %>
+                    <div class="form-check">
+                        <%= opt_f.check_box :_destroy, class: 'form-check-input' %>
+                        <%= opt_f.label :_destroy, t('.destroy'), class: 'form-check-label' %>
+                    </div>
+                <% end %>
+
+                <hr class="text-primary opacity-75">
+            </div>
+        <% end %>
+    </div>
+
+    <% if @slot.special? && @slot.morning %>
         <%= f.fields_for :afternoon_slot, f.object.afternoon_slot || TimeSlot.new do |aft_f| %>
 
             <button type="button" 
@@ -44,12 +94,15 @@
                     data-bs-target="#afternoon<%= aft_f.object.id %>" 
                     aria-expanded="false" 
                     aria-controls="afternoon<%= aft_f.object.id %>">
-                Customise afternoon slot
+                Customise Afternoon Slot
             </button>
 
             <div class="collapse" id="afternoon<%= aft_f.object.id %>">
                 <div class="d-grid gap-3">
                     <%= aft_f.hidden_field :event_id, value: @slot.event_id %>
+                    <%= aft_f.hidden_field :id %>
+                    <%= aft_f.hidden_field :category, value: "special" %>
+
 
                     <h3>Afternoon Slot</h3>
 
@@ -66,11 +119,6 @@
                     <div class="form-floating">
                         <%= aft_f.datetime_field :end_time, class: 'form-control', placeholder: t('.end_time') %>
                         <%= aft_f.label :end_time, t('.end_time'), class: 'form-label' %>
-                    </div>
-                    
-                    <div>
-                        <%= aft_f.label :category, t('.category'), class: 'form-label' %>
-                        <%= aft_f.select :category, TimeSlot.categories.map { |k, _v| [k.capitalize, k] } , {}, {class: 'form-select'} %>
                     </div>
                 </div>
             </div>

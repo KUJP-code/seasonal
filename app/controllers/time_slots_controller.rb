@@ -44,10 +44,10 @@ class TimeSlotsController < ApplicationController
       :name, :image_id, :start_time, :end_time, :description, :category,
       :closed, :_destroy, :morning, :event_id,
       afternoon_slot_attributes:
-      %i[name image_id start_time end_time description category
+      %i[id name image_id start_time end_time description category
          closed _destroy morning event_id],
       options_attributes:
-      %i[id name cost category modifier optionable_type optionable_id]
+      %i[id _destroy name cost category modifier optionable_type optionable_id]
     )
   end
 end
