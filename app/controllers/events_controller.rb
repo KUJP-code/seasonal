@@ -72,17 +72,6 @@ class EventsController < ApplicationController
     end
   end
 
-  def destroy
-    @event = authorize(Event.find(params[:id]))
-    return flash.now[:alert] = t('.event_attended') unless @event.children.empty?
-
-    if @event.destroy
-      redirect_to events_path, notice: t('success', model: 'イベント', action: '削除')
-    else
-      redirect_to event_path(@event), alert: t('failure', model: 'イベント', action: '削除')
-    end
-  end
-
   private
 
   def event_params

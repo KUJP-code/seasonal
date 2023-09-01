@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       resources :charts, only: %i[show index]
       resources :children
       resources :csvs, only: %i[index]
-      resources :events
+      resources :events, except: %i[destroy]
       resources :invoices, except: %i[create edit new]
       resources :options, only: %i[new]
       resources :price_lists, except: %i[show]
