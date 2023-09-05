@@ -10,6 +10,11 @@
     </div>
 
     <h1><%= t('.slots_for', name: @event.name, school: @event.school.name) %></h1>
+
+    <% if current_user.admin? %>
+      <%= link_to 'Add an activity to this event', new_time_slot_path(event: @event.id), class: 'btn btn-primary' %>
+    <% end %>
+
     <div class="row row-cols-5 justify-content-evenly gap-3">
         <%= render partial: 'time_slots/time_slot', collection: @event.time_slots.morning.or(@event.time_slots.special).includes(:afternoon_slot).with_attached_image.order(:start_time) %>
     </div>

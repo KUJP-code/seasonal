@@ -6,7 +6,7 @@ en:
       depart_options: "Depart Options"
       snack: "Snack"
     index:
-      slots_for: "Slots for %{name} at %{school}"
+      slots_for: "Activities for %{name} at %{school}"
     time_slot:
       aft_close: "Close Afternoon"
       aft_reopen: "Reopen Afternoon"

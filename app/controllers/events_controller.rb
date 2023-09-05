@@ -34,7 +34,7 @@ class EventsController < ApplicationController
         event = school.events.new(event_params)
 
         # Return an object with the creation result & school name
-        { created: event.save, school: event.school.name }
+        { created: event.save!, school: event.school.name }
       end
 
       if results.all? { |r| r[:created] }
