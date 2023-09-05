@@ -7,7 +7,7 @@ class TimeSlot < ApplicationRecord
   before_validation :set_image
   after_create :create_default_opts, :create_aft_slot
 
-  attr_accessor :image_id
+  attr_accessor :apply_all, :image_id
 
   belongs_to :event
   has_one :school, through: :event

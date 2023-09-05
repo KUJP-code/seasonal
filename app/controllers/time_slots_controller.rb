@@ -32,7 +32,26 @@ class TimeSlotsController < ApplicationController
   def update
     @slot = authorize(TimeSlot.find(params[:id]))
 
-    if @slot.update(slot_params)
+    if params[:time_slot][:apply_all] == '1'
+      same_name_slots = TimeSlot.where(name: @slot.name,
+                                       morning: @slot.morning,
+                                       category: @slot.category)
+
+      results = same_name_slots.map do |s|
+        afternoon_attr = slot_params[:afternoon_slot_attributes]
+        afternoon_attr[:event_id] = s.event_id
+        { updated: s.create_afternoon_slot(afternoon_attr).persisted?, school: s.name }
+      end
+
+      if results.all? { |r| r[:updated] }
+        redirect_to time_slots_path, notice: "All #{@slot.name} activities updated"
+      else
+        failed_aft_slots = results.reject { |r| r[:created] }.pluck(:school)
+        render :edit,
+               status: :unprocessable_entity,
+               alert: "Afternoon activities for #{failed_aft_slots.join(', ')} could not be created"
+      end
+    elsif @slot.update(slot_params)
       redirect_to time_slots_path(event: @slot.event_id), notice: t('success', model: '開催日', action: '更新')
     else
       render :edit, status: :unprocessable_entity, alert: t('failure', model: '開催日', action: '更新')
@@ -43,10 +62,10 @@ class TimeSlotsController < ApplicationController
 
   def slot_params
     params.require(:time_slot).permit(
-      :name, :image_id, :start_time, :end_time, :description, :category,
+      :name, :start_time, :end_time, :category, :apply_all,
       :closed, :_destroy, :morning, :event_id,
       afternoon_slot_attributes:
-      %i[id name image_id start_time end_time description category
+      %i[id name image_id start_time end_time category
          closed _destroy morning event_id],
       options_attributes:
       %i[id _destroy name cost category modifier optionable_type optionable_id]
