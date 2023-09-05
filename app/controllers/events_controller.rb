@@ -61,7 +61,8 @@ class EventsController < ApplicationController
           redirect_to new_time_slot_path(event: @event.id), 
                       notice: "Created #{@event.name} at #{@event.school.name}"
         else
-          redirect_to events_path, notice: "Created activities for #{@event.name} ay #{@event.school.name}"
+          redirect_to time_slots_path(event: @event),
+                      notice: "Created activities for #{@event.name} at #{@event.school.name}"
         end
       else
         render :new,
@@ -94,7 +95,7 @@ class EventsController < ApplicationController
       @event = Event.find(params[:id])
 
       if @event.update(event_params)
-        redirect_to events_path, notice: "Updated #{@event.name} at #{@event.school.name}"
+        redirect_to time_slots_path(event: @event.id), notice: "Updated #{@event.name} at #{@event.school.name}"
       else
         render :edit,
                status: :unprocessable_entity,
