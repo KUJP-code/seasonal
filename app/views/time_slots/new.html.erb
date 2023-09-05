@@ -1,15 +1,13 @@
 <main id="time_slot_new" class="flex-row justify-content-around align-items-start gap-3">
-    <div class="event-sidebar sticky-top">
-        <% if @events %>
+    <% if @events %>
+        <div class="event-sidebar d-flex flex-column gap-3">
             <%= render partial: 'events/event', collection: @events, locals: { child: nil } %>
-        <% elsif @event %>
+        </div>
+    <% elsif @event %>
+        <div class="event-sidebar sticky-top">
             <%= render @event, child: nil %>
-        <% end %>
-    </div>
-
-    <% if @events || @event %>
-        <%= render 'time_slots/event_form' %>
-    <% else %>
-        <%= render 'time_slots/form' %>    
+        </div>
     <% end %>
+
+    <%= render 'time_slots/event_form' %>
 </main>

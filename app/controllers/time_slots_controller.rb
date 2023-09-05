@@ -13,18 +13,20 @@ class TimeSlotsController < ApplicationController
   end
 
   def new
-    if params[:event] == 'all'
-      @events = authorize(Event.where(id: params[:event]))
+    authorize(:time_slot)
+    if params[:all_schools]
+      @events = Event.where(name: params[:event])
+                     .includes(:school)
+                     .with_attached_image
     else
-      @event = authorize(Event.find(params[:event]))
-      @slots = @event.time_slots.morning
+      @event = Event.find(params[:event])
     end
-    @images = ActiveStorage::Blob.where('key LIKE ?', '%slots%').map { |blob| [blob.key, blob.id] }
+    @images = slot_blobs
   end
 
   def edit
     @slot = authorize(TimeSlot.find(params[:id]))
-    @images = ActiveStorage::Blob.where('key LIKE ?', '%slots%').map { |blob| [blob.key, blob.id] }
+    @images = slot_blobs
   end
 
   def update
@@ -49,5 +51,18 @@ class TimeSlotsController < ApplicationController
       options_attributes:
       %i[id _destroy name cost category modifier optionable_type optionable_id]
     )
+  end
+
+  def slot_blobs
+    blobs = ActiveStorage::Blob.where('key LIKE ?', '%slots%').map { |blob| [blob.key, blob.id] }
+    # Create hash of parent folders
+    path_hash = blobs.to_h { |b| [b.first.split('/')[0..-2].join('/'), []] }
+    # Send the blobs to their parent folder, with only the filename and id left
+    blobs.each do |b|
+      path_hash[b.first.split('/')[0..-2].join('/')]
+        .push([b.first.split('/').last, b.last])
+    end
+
+    path_hash
   end
 end

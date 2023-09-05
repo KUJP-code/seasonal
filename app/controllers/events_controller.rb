@@ -18,35 +18,55 @@ class EventsController < ApplicationController
 
   def new
     @event = authorize(Event.new)
-    @images = ActiveStorage::Blob.where('key LIKE ?', '%events%').map { |blob| [blob.key, blob.id] }
-    @prices = PriceList.order(:name)
-    @schools = [%w[All all]] + School.order(:id).map { |school| [school.name, school.id] }
+    new_edit_shared_info
   end
 
   def edit
     @event = authorize(Event.find(params[:id]))
-    @images = ActiveStorage::Blob.where('key LIKE ?', '%events%').map { |blob| [blob.key, blob.id] }
-    @prices = PriceList.order(:name)
-    @schools = [%w[All all]] + School.order(:id).map { |school| [school.name, school.id] }
+    new_edit_shared_info
   end
 
   def create
     authorize(:event)
 
     if params[:event][:school_id] == 'all'
-      School.all.each do |school|
-        school.events.create(event_params)
+      results = School.all.map do |school|
+        event = school.events.new(event_params)
+
+        # Return an object with the creation result & school name
+        { created: event.save, school: event.school.name }
       end
-      redirect_to new_time_slot_path(event: 'all'), notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Create Event'
-      redirect_to events_path, notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Time Slots'
+
+      if results.all? { |r| r[:created] }
+        if params[:commit] == 'Create Event'
+          redirect_to new_time_slot_path(
+                        event: params[:event][:name], 
+                        all_schools: true
+                      ),
+                      notice: "#{params[:event][:name]} created for all schools"
+        else
+          redirect_to events_path, notice: "Created activities for #{params[:event][:name]} at all schools"
+        end
+      else
+        failed_schools = results.reject { |r| r[:created] }.pluck(:school)
+        redirect_to new_event_path,
+                    status: :unprocessable_entity,
+                    alert: "Events for #{failed_schools.join(', ')} could not be created"
+      end
     else
       @event = Event.new(event_params)
 
       if @event.save
-        redirect_to new_time_slot_path(event: @event.id), notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Create Event'
-        redirect_to events_path, notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Time Slots'
+        if params[:commit] == 'Create Event'
+          redirect_to new_time_slot_path(event: @event.id), 
+                      notice: "Created #{@event.name} at #{@event.school.name}"
+        else
+          redirect_to events_path, notice: "Created activities for #{@event.name} ay #{@event.school.name}"
+        end
       else
-        redirect_to new_event_path(@event), status: :unprocessable_entity, alert: t('failure', model: 'イベント', action: '追加')
+        render :new,
+               status: :unprocessable_entity,
+               alert: "#{@event.name} could not be created at #{@event.school.name}"
       end
     end
   end
@@ -54,20 +74,31 @@ class EventsController < ApplicationController
   def update
     authorize(:event)
 
-    if params[:event][:school_id] == 'all'
-      School.all.each do |school|
-        school.events.update(event_params)
-      end
-      redirect_to new_time_slot_path(event: 'all'), notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Event'
-      redirect_to events_path, notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Time Slots'
-    else
-      @event = authorize(Event.find(params[:id]))
+    if params[:event][:school_id] == 'all' || params[:event][:school_id].nil?
+      results = School.all.map do |school|
+        event = school.events.find_by(name: params[:event][:name])
+        params[:event][:school_id] = event.school_id
 
-      if @event.update!(event_params)
-        redirect_to new_time_slot_path(event: @event.id), notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Event'
-        redirect_to events_path, notice: t('success', model: 'イベント', action: '追加') if params[:commit] == 'Update Time Slots'
+        { updated: event.update(event_params), school: school.name }
+      end
+
+      if results.all? { |r| r[:updated] }
+        redirect_to events_path, notice: "All events with name: #{params[:event][:name]} updated"
       else
-        redirect_to edit_event_path(@event), status: :unprocessable_entity, alert: t('failure', model: 'イベント', action: '追加')
+        failed_schools = results.reject { |r| r[:updated] }.pluck(:school)
+        redirect_to new_event_path,
+                    status: :unprocessable_entity,
+                    alert: "Events for #{failed_schools.join(', ')} could not be created"
+      end
+    else
+      @event = Event.find(params[:id])
+
+      if @event.update(event_params)
+        redirect_to events_path, notice: "Updated #{@event.name} at #{@event.school.name}"
+      else
+        render :edit,
+               status: :unprocessable_entity,
+               alert: "Failed to update #{@event.name} at #{@event.school.name}"
       end
     end
   end
@@ -79,12 +110,18 @@ class EventsController < ApplicationController
       :name, :description, :start_date, :image_id, :end_date, :school_id,
       :member_prices_id, :goal, :non_member_prices_id,
       time_slots_attributes:
-        [:id, :name, :start_time, :end_time, :category, :event_id, :morning, :morning_slot_id, :image_id, :_destroy, { afternoon_slot_attributes:
-          %i[id name image start_time end_time description category closed
-             morning event_id] }],
-        options_attributes:
-        %i[id name cost category modifier optionable_type optionable_id _destroy]
+        %i[id name start_time end_time category event_id morning
+           morning_slot_id image_id _destroy],
+      options_attributes:
+        %i[id name cost category modifier optionable_type optionable_id
+           _destroy]
     )
+  end
+
+  def new_edit_shared_info
+    @images = ActiveStorage::Blob.where('key LIKE ?', '%events%').map { |blob| [blob.key, blob.id] }
+    @prices = PriceList.order(:name)
+    @schools = [%w[All all]] + School.order(:id).map { |school| [school.name, school.id] }
   end
 
   def user_specific_info
