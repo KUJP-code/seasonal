@@ -52,9 +52,9 @@ class TimeSlotsController < ApplicationController
                alert: "Afternoon activities for #{failed_aft_slots.join(', ')} could not be created"
       end
     elsif @slot.update(slot_params)
-      redirect_to time_slots_path(event: @slot.event_id), notice: t('success', model: '開催日', action: '更新')
+      redirect_to time_slots_path(event: @slot.event_id), notice: "Updated #{@slot.name} at #{@slot.school.name}"
     else
-      render :edit, status: :unprocessable_entity, alert: t('failure', model: '開催日', action: '更新')
+      render :edit, status: :unprocessable_entity, alert: "#{@slot.name} at #{@slot.school.name} couldn't be updated"
     end
   end
 
@@ -62,8 +62,8 @@ class TimeSlotsController < ApplicationController
 
   def slot_params
     params.require(:time_slot).permit(
-      :name, :start_time, :end_time, :category, :apply_all,
-      :closed, :_destroy, :morning, :event_id,
+      :id, :name, :start_time, :end_time, :category, :apply_all,
+      :closed, :_destroy, :morning, :event_id, :image_id,
       afternoon_slot_attributes:
       %i[id name image_id start_time end_time category
          closed _destroy morning event_id],

@@ -3,11 +3,9 @@
 # Represents an event time slot
 # Must have an event
 class TimeSlot < ApplicationRecord
-  # Set the image from the ID provided in the form
-  before_validation :set_image
   after_create :create_default_opts, :create_aft_slot
 
-  attr_accessor :apply_all, :image_id
+  attr_accessor :apply_all
 
   belongs_to :event
   has_one :school, through: :event
@@ -88,6 +86,18 @@ class TimeSlot < ApplicationRecord
     start_time.strftime('%I:%M%p')
   end
 
+  def image_id
+    return nil if image.blob.nil?
+
+    image.blob.id
+  end
+
+  def image_id=(image_id)
+    return if image_id.nil?
+
+    self.image = ActiveStorage::Blob.find(image_id)
+  end
+
   def ja_day
     en_day = start_time.strftime('%A')
 
@@ -120,12 +130,6 @@ class TimeSlot < ApplicationRecord
     else
       options.create(DEFAULT_AFT_OPTS)
     end
-  end
-
-  def set_image
-    return if image_id.nil?
-
-    self.image = (ActiveStorage::Blob.find(image_id))
   end
 
   CLOSE_DATES = {

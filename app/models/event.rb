@@ -3,10 +3,6 @@
 # Represents an event at a single school, with one or many time slots
 # Must have a school
 class Event < ApplicationRecord
-  # Set the image from the ID provided by a form
-  before_validation :set_image
-  attr_accessor :image_id
-
   belongs_to :school
   delegate :area, to: :school
   belongs_to :member_prices, class_name: 'PriceList',
@@ -52,6 +48,18 @@ class Event < ApplicationRecord
     start_date.strftime('%Y年%m月%d日')
   end
 
+  def image_id
+    return nil if image.blob.nil?
+
+    image.blob.id
+  end
+
+  def image_id=(image_id)
+    return if image_id.nil?
+
+    self.image = ActiveStorage::Blob.find(image_id)
+  end
+
   # Returns num of registrations for the フォトサービス event option
   # free regs from siblings being registered not included
   def photo_regs
@@ -60,13 +68,5 @@ class Event < ApplicationRecord
 
     photo_id = photo_opt.id
     Registration.all.where(registerable_type: 'Option', registerable_id: photo_id).size
-  end
-
-  private
-
-  def set_image
-    return if image_id.nil?
-
-    self.image = ActiveStorage::Blob.find(image_id)
   end
 end
