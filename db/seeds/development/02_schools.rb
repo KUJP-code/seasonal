@@ -119,7 +119,7 @@ User.find_by(role: 'customer').children.create!([
     allergies: 'ice cream',
     school: School.find_by(name: '大倉山'),
     category: :internal,
-    needs_hat: false,
+    first_seasonal: false,
     received_hat: true
   },
   {
@@ -135,7 +135,7 @@ User.find_by(role: 'customer').children.create!([
     allergies: 'ice cream',
     school: School.find_by(name: '大倉山'),
     category: :internal,
-    needs_hat: false,
+    first_seasonal: false,
     received_hat: true
   }
 ])

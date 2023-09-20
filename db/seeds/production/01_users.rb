@@ -151,7 +151,7 @@ school = School.find_by(name: 'オンラインコース')
         allergies: 'peanuts',
         parent: parent,
         category: :internal,
-        needs_hat: false,
+        first_seasonal: false,
         received_hat: true
       },
       {
@@ -165,7 +165,7 @@ school = School.find_by(name: 'オンラインコース')
         allergies: 'ice cream',
         parent: parent,
         category: :external,
-        needs_hat: true,
+        first_seasonal: true,
         received_hat: false
       }
     ])

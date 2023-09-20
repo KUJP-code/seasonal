@@ -276,10 +276,8 @@ class Invoice < ApplicationRecord
     end
   end
 
-  # The needs hat field here actually represents it being the child's first
-  # seasonal event, for reasons set out in the Child model
   def first_time?
-    child.external? && child.needs_hat
+    child.external? && child.first_seasonal
   end
 
   def first_time_adjustment
@@ -407,10 +405,8 @@ class Invoice < ApplicationRecord
     extension_cost + spot_cost
   end
 
-  # The needs_hat field here actually represents it being the child's first
-  # seasonal, for reasons set out in the Child model
   def repeater?
-    child.external? && child.needs_hat == false && slot_regs.size - @ignore_slots.size > 9
+    child.external? && child.first_seasonal == false && slot_regs.size - @ignore_slots.size > 9
   end
 
   def repeater_discount

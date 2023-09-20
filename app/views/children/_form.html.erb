@@ -123,14 +123,14 @@
     
                 <% if current_user.customer? && f.object.new_record? %>
                     <div>
-                        <%= f.check_box :first_seasonal, {class: 'form-check-input', checked: f.object.needs_hat} %>
+                        <%= f.check_box :first_seasonal, {class: 'form-check-input', checked: f.object.first_seasonal} %>
                         <%= f.label :first_seasonal, t('.first_seasonal'), class: 'form-check-label' %><br />
                     </div>
                 <% end %>
     
                 <% if current_user.staff? %>
                     <div>
-                        <%= f.check_box :first_seasonal, {class: 'form-check-input', checked: f.object.needs_hat} %>
+                        <%= f.check_box :first_seasonal, {class: 'form-check-input', checked: f.object.first_seasonal} %>
                         <%= f.label :first_seasonal, t('.first_seasonal'), class: 'form-check-label' %><br />
                     </div>
                 <% end %>

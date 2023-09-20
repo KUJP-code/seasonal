@@ -64,10 +64,11 @@ class UsersController < ApplicationController
 
   def add_child
     @child = Child.find(params[:child_id])
-    return redirect_to :child_theft unless @child.parent_id.nil?
 
-    first_seasonal = params[:first_seasonal] == '1'
-    if @child.update(parent_id: params[:parent_id], needs_hat: first_seasonal)
+    if @child.update(
+      parent_id: params[:parent_id],
+      first_seasonal: params[:first_seasonal]
+    )
       redirect_to child_path(@child), notice: t('success', model: '生徒', action: '更新')
     else
       redirect_to user_path(current_user), alert: t('failure', model: '生徒', action: '更新')
@@ -121,7 +122,7 @@ class UsersController < ApplicationController
   end
 
   def merge_info(from, to)
-    to.update(parent_id: from.parent_id, needs_hat: from.needs_hat)
+    to.update(parent_id: from.parent_id, first_seasonal: from.first_seasonal)
     to.update(school_id: from.school_id) if to.school_id.nil?
     copy_invoices(from, to)
     from.update(parent_id: nil)

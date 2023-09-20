@@ -4,15 +4,15 @@
 <% photo_regs = Registration.all.where(registerable_id: photo_ids, registerable_type: 'Option').count %>
 
 <% int_kids = children.select { |c| c.category == 'internal' } %>
-<% first_int = int_kids.select { |k| k.needs_hat && k.parent_id } %>
+<% first_int = int_kids.select { |k| k.first_seasonal && k.parent_id } %>
 <% int_revenue = Invoice.real.where(child_id: int_kids.map(&:id), event_id: event_ids).sum(&:total_cost) %>
 
 <% res_kids = children.select { |c| c.category == 'reservation' } %>
-<% first_res = res_kids.select { |k| k.needs_hat && k.parent_id } %>
+<% first_res = res_kids.select { |k| k.first_seasonal && k.parent_id } %>
 <% res_revenue = Invoice.real.where(child_id: res_kids.map(&:id), event_id: event_ids).sum(&:total_cost) %>
 
 <% ext_kids = children.select { |c| c.category == 'external' } %>
-<% first_ext = ext_kids.select { |k| k.needs_hat && k.parent_id } %>
+<% first_ext = ext_kids.select { |k| k.first_seasonal && k.parent_id } %>
 <% ext_revenue = Invoice.real.where(child_id: ext_kids.map(&:id), event_id: event_ids).sum(&:total_cost) %>
 
 <% total_revenue = int_revenue + res_revenue + ext_revenue %>

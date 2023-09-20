@@ -31,7 +31,7 @@ non_member.children.create!([
   allergies: 'pizza',
   grade: '年中',
   category: :external,
-  needs_hat: true,
+  first_seasonal: true,
   received_hat: false,
   school: School.all.find_by(name: '大倉山')
 },
@@ -48,7 +48,7 @@ non_member.children.create!([
   allergies: 'spaghetti',
   grade: '小４',
   category: :external,
-  needs_hat: true,
+  first_seasonal: true,
   received_hat: false,
   school: School.all.find_by(name: '大倉山')
 }
@@ -83,7 +83,7 @@ member.children.create!([
     ssid: Faker::Number.unique.number,
     ele_school_name: Faker::GreekPhilosophers.name,
     photos: 'OK',
-    needs_hat: false,
+    first_seasonal: false,
     allergies: 'milk',
     grade: '年中',
     category: 'internal',
@@ -98,7 +98,7 @@ member.children.create!([
     birthday: Faker::Date.birthday(min_age: 2, max_age: 13),
     ssid: Faker::Number.unique.number,
     ele_school_name: Faker::GreekPhilosophers.name,
-    needs_hat: false,
+    first_seasonal: false,
     allergies: 'milk',
     grade: '小４',
     category: 'internal',

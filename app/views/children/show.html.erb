@@ -78,13 +78,12 @@
                 <% end %>
             <% end %>
 
-            <%# Allows toggling 'first seasonal' status %>
             <%= form_with model: @child do |f| %>
-                <% if @child.needs_hat %>
-                    <%= f.hidden_field :needs_hat, value: 0 %>
-                    <%= f.submit '初めてのご参加: ✖', class: 'btn btn-primary' %>
+                <% if @child.first_seasonal %>
+                    <%= f.hidden_field :first_seasonal, value: 0 %>
+                    <%= f.submit '初めてのご参加: 𐌢', class: 'btn btn-primary' %>
                 <% else %>
-                    <%= f.hidden_field :needs_hat, value: 1 %>
+                    <%= f.hidden_field :first_seasonal, value: 1 %>
                     <%= f.submit '初めてのご参加: 〇', class: 'btn btn-primary' %>
                 <% end %>
             <% end %>

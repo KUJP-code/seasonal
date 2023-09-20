@@ -30,7 +30,7 @@ School.all.each do |school|
         allergies: 'peanuts',
         parent: parent,
         category: :internal,
-        needs_hat: false,
+        first_seasonal: false,
         received_hat: true
       )
     end
