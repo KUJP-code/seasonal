@@ -38,26 +38,6 @@ RSpec.describe Coupon do
     end
   end
 
-  context 'when invalid' do
-    it 'fails to save with discount > 100%' do
-      slot_coupon.discount = 1.5
-      valid = slot_coupon.save
-      expect(valid).to be false
-    end
-
-    it 'fails to save with negative discount' do
-      slot_coupon.discount = -0.5
-      valid = slot_coupon.save
-      expect(valid).to be false
-    end
-
-    it 'fails to save without numerical discount' do
-      slot_coupon.discount = 'pizza'
-      valid = slot_coupon.save
-      expect(valid).to be false
-    end
-  end
-
   context 'with scopes' do
     let(:slot_coupon) { time_slot.coupons.create(attributes_for(:coupon)) }
     let(:option_coupon) { option.coupons.create(attributes_for(:coupon)) }

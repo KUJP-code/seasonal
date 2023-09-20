@@ -166,7 +166,9 @@ class InvoicesController < ApplicationController
       send_emails(@invoice) if current_user.customer? || @invoice.email_sent
       redirect_to invoice_path(id: @invoice.id, updated: true), notice: t('success', model: 'お申込', action: '更新')
     else
-      render :new, status: :unprocessable_entity, notice: t('failure', model: 'お申込', action: '更新')
+      redirect_to event_path(id: @invoice.event_id, child: @invoice.child_id),
+                  status: :unprocessable_entity,
+                  notice: t('failure', model: 'お申込', action: '更新')
     end
   end
 
