@@ -34,12 +34,6 @@ RSpec.describe Event do
       expect(valid).to be false
     end
 
-    it "doesn't save without a description" do
-      no_description = build(:event, description: nil)
-      valid = no_description.save
-      expect(valid).to be false
-    end
-
     it "doesn't save without a start date" do
       no_start_date = build(:event, start_date: nil)
       valid = no_start_date.save

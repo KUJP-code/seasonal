@@ -4,7 +4,6 @@ FactoryBot.define do
   factory :coupon do
     code { Faker::Code.asin }
     name { Faker::Games::LeagueOfLegends.champion }
-    description { Faker::Games::LeagueOfLegends.quote }
     discount { 0.33 }
     combinable { false }
 

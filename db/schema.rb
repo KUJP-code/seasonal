@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_20_025356) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_20_043058) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -84,7 +84,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_025356) do
   create_table "coupons", force: :cascade do |t|
     t.string "code"
     t.string "name"
-    t.string "description"
     t.decimal "discount", precision: 3, scale: 2
     t.boolean "combinable", default: false
     t.string "couponable_type", null: false
@@ -96,7 +95,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_025356) do
 
   create_table "events", force: :cascade do |t|
     t.string "name"
-    t.string "description"
     t.integer "goal"
     t.date "start_date"
     t.date "end_date"
@@ -147,7 +145,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_025356) do
 
   create_table "options", force: :cascade do |t|
     t.string "name"
-    t.string "description"
     t.integer "cost"
     t.integer "category", default: 0
     t.integer "modifier"
@@ -204,7 +201,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_025356) do
     t.string "name"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.string "description"
     t.integer "category", default: 0
     t.boolean "closed", default: false
     t.boolean "morning", default: false

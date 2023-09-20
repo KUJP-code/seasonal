@@ -3,7 +3,6 @@
 <div class="card justify-content-between">
     <h3><%= time_slot.name %></h3>
     <%= image_tag(url_for(time_slot.image), class: 'img-fluid') unless time_slot.image.blank? %>
-    <p><%= time_slot.description %></p>
 
     <div class="d-grid gap-3 w-100">
         <% if current_user.area_manager? || current_user.admin? %>

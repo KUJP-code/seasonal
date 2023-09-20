@@ -51,18 +51,6 @@ RSpec.describe TimeSlot do
       valid = end_before.save
       expect(valid).to be false
     end
-
-    it 'without description' do
-      no_description = build(:time_slot, description: nil)
-      valid = no_description.save
-      expect(valid).to be false
-    end
-
-    it 'with short description' do
-      short_description = build(:time_slot, description: '123456789')
-      valid = short_description.save
-      expect(valid).to be false
-    end
   end
 
   context 'with scopes' do

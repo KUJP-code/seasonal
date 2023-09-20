@@ -28,12 +28,6 @@ RSpec.describe Option do
       expect(valid).to be false
     end
 
-    it 'without a description' do
-      no_description = build(:option, description: nil)
-      valid = no_description.save
-      expect(valid).to be false
-    end
-
     it 'without cost' do
       no_cost = build(:option, cost: nil)
       valid = no_cost.save
