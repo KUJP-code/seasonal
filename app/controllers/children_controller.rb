@@ -29,9 +29,9 @@ class ChildrenController < ApplicationController
 
   def new
     @child = if params[:parent]
-               Child.new(parent_id: params[:parent], photos: nil, needs_hat: false)
+               Child.new(parent_id: params[:parent], photos: nil, first_seasonal: true)
              else
-               Child.new(photos: nil, needs_hat: false)
+               Child.new(photos: nil, first_seasonal: true)
              end
   end
 
@@ -85,7 +85,7 @@ class ChildrenController < ApplicationController
     params.require(:child).permit(:id, :first_name, :family_name,
                                   :kana_first, :kana_family, :en_name, :category, :birthday, :level, :allergies,
                                   :grade, :ssid, :ele_school_name,
-                                  :photos, :needs_hat, :first_seasonal,
+                                  :photos, :first_seasonal,
                                   :received_hat, :parent_id, :school_id,
                                   registrations_attributes: %i[
                                     child_id registerable_type

@@ -3,11 +3,11 @@
 # Represents a child, or student, enrolled at a school and/or attending an event
 # Must have a parent, and a school
 class Child < ApplicationRecord
-  # Set names, kindy and hat from meta-fields
-  before_validation :set_name, :set_kana, :set_kindy, :set_hat
+  # Set names, kindy from meta-fields
+  before_validation :set_name, :set_kana, :set_kindy
 
   # Allow use of separate fields to ensure consistent name formatting
-  attr_accessor :first_seasonal, :first_name, :family_name, :kana_first, :kana_family
+  attr_accessor :first_name, :family_name, :kana_first, :kana_family
 
   # List associations to other models
   belongs_to :parent, class_name: 'User', optional: true
@@ -25,9 +25,9 @@ class Child < ApplicationRecord
                      source_type: 'Option'
   has_many :invoices, dependent: :destroy
   has_many :real_invoices, -> { real },
-                          class_name: 'Invoice',
-                          dependent: nil,
-                          inverse_of: :child
+                           class_name: 'Invoice',
+                           dependent: nil,
+                           inverse_of: :child
   has_many :events, -> { distinct }, through: :invoices
   has_many :adjustments, through: :invoices
 
@@ -38,9 +38,6 @@ class Child < ApplicationRecord
   acts_as_copy_target
 
   # Map category int in table to a category
-  # TODO: check this being different from db default is fine.
-  # Logic for them being different was for direct imports from SS we want
-  # internal default, but when creating in app we want external default
   enum :category, internal: 0,
                   reservation: 1,
                   external: 2,
@@ -136,19 +133,6 @@ class Child < ApplicationRecord
   end
 
   private
-
-  # Due to a last minute change in requirements and a reluctance on my part to
-  # make database changes the day before it goes live, the needs_hat boolean is
-  # now being used as a stand-in for whether the child is attending their first
-  # seasonal event or not. This can be set by a parent when adding a new child,
-  # or by a staff member at any time if the child is editable.
-  # Will either be toggling it to false during invoice calculation when they
-  # register for their second seasonal, or manually after each seasonal for kids
-  # who attended
-  def set_hat
-    self.needs_hat = true if first_seasonal == '1'
-    self.needs_hat = false if first_seasonal == '0'
-  end
 
   def set_kana
     # Guard clause should never happen in prod because required field, but does
