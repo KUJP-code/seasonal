@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_20_083006) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_20_085243) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -149,6 +149,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_083006) do
     t.bigint "optionable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "registrations_count"
     t.index ["optionable_type", "optionable_id"], name: "index_options_on_optionable"
   end
 
@@ -205,6 +206,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_083006) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "morning_slot_id"
+    t.integer "int_modifier", default: 0
+    t.integer "ext_modifier", default: 0
+    t.boolean "snack"
+    t.integer "registrations_count"
     t.index ["event_id"], name: "index_time_slots_on_event_id"
     t.index ["morning"], name: "index_time_slots_on_morning"
     t.index ["morning_slot_id"], name: "index_time_slots_on_morning_slot_id"
