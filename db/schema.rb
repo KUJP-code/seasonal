@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_20_071105) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_20_083006) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -69,7 +69,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_071105) do
     t.bigint "ssid"
     t.string "ele_school_name"
     t.integer "photos", default: 0
-    t.boolean "needs_hat", default: true
     t.boolean "received_hat", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
