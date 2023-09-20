@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_06_045307) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_20_025356) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -112,9 +112,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_06_045307) do
 
   create_table "invoices", force: :cascade do |t|
     t.integer "total_cost", default: 0
-    t.datetime "billing_date"
     t.string "summary"
-    t.string "email_template"
     t.boolean "in_ss", default: false
     t.datetime "seen_at"
     t.datetime "created_at", null: false

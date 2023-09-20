@@ -61,10 +61,6 @@ class Invoice < ApplicationRecord
     update_cost(calculated_cost)
   end
 
-  def f_bill_date
-    billing_date.strftime('%Y/%m/%d')
-  end
-
   def id_and_cost
     "##{id}, #{total_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円"
   end
@@ -352,13 +348,6 @@ class Invoice < ApplicationRecord
     @breakdown << '</div>'
   end
 
-  def generate_template
-    template = +''
-    template << "<h2 class='fw-semibold text-start'>#{child.parent.name}様</h2><h4>#{child.parent.name}様のお申込が確定されました。お申込内容の変更をご希望の場合はスクールまでお問い合わせください。</h4>" unless child.parent.nil? || child.parent.name.nil?
-    template << @breakdown
-    self.email_template = template
-  end
-
   def hat_adjustment
     hat_cost = 1_100
     hat_reason = '帽子代(野外アクティビティに参加される方でKids UP帽子をお持ちでない方のみ)'
@@ -448,7 +437,6 @@ class Invoice < ApplicationRecord
     self.total_cost = new_cost
     @breakdown << "<h2 id='final_cost' class='fw-semibold text-start'>合計（税込）: #{new_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,'\\1,').reverse}円</h2>\n
     <p class='text-start'>登録番号: T7-0118-0103-7173</p>"
-    generate_template
     self.summary = @breakdown
   end
 

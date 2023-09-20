@@ -22,10 +22,6 @@ class Registration < ApplicationRecord
   scope :slot_registrations, -> { where(registerable_type: 'TimeSlot') }
   scope :option_registrations, -> { where(registerable_type: 'Option') }
 
-  def f_billing_date
-    billing_date.strftime('%Y/%m/%d')
-  end
-
   def slot_registration?
     return true if registerable_type == 'TimeSlot'
 
