@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_20_052326) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_20_071105) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -75,6 +75,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_052326) do
     t.datetime "updated_at", null: false
     t.bigint "parent_id"
     t.bigint "school_id"
+    t.boolean "first_seasonal", default: true
     t.index ["birthday"], name: "index_children_on_birthday"
     t.index ["parent_id"], name: "index_children_on_parent_id"
     t.index ["school_id"], name: "index_children_on_school_id"
