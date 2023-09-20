@@ -120,113 +120,33 @@ class Invoice < ApplicationRecord
                   else
                     best_price(num_regs, non_member_prices)
                   end
-    # Add cost due to automatic afternoon snacks
-    snack_count = slot_regs.count { |reg| !reg._destroy && !reg.registerable.morning }
 
-    # FIXME: Abandon all hope, ye who enter!
+    snack_count = slot_regs.count do |reg|
+      !reg._destroy && reg.registerable.snack
+    end
+    snack_cost = snack_count * 165
 
-    snack_count -= 1 if event_id == 16 && slot_regs.any? { |r| r.registerable.name.include?("アクアパーク") }
-    # Check for Oi and Kitashinagawa's aquarium visits
-    oi_kita_aquarium = [22, 26].include?(event_id) && slot_regs.any? { |r| r.registerable.name.include?('遠足＠アクアパーク品川') }
-    # Same for their unko museum trip
-    shit_days = [22, 26].include?(event_id) && slot_regs.any? { |r| r.registerable.name.include?('遠足＠うんこミュージアム') }
-    # Check for Rinkai's fixed price days
-    rinkai_morn = event_id == 13 && slot_regs.any? { |r| r.registerable.name.include?('キッズアップハンター') }
-    rinkai_aft = event_id == 13 && slot_regs.any? { |r| r.registerable.name.include?('サマーモンスター') }
-    # Check for Yako's days
-    yako_morn = event_id == 28 && slot_regs.any? { |r| r.registerable.name.include?('カワスイ 川崎水族館 遠足') }
-    yako_aft = event_id == 28 && slot_regs.any? { |r| r.registerable.name.include?('Kids UP縁日') }
-    # Check for Shinjo's afternoon
-    shinjo_aft = event_id == 33 && slot_regs.any? { |r| r.registerable.name.include?('宝探し&夏祭り') }
-    # Check for Kamata's actvities
-    kamata_morn = event_id == 4 && slot_regs.any? { |r| r.registerable.name.include?('大人気アクティビティアンコールイベント') }
-    kamata_aft = event_id == 4 && slot_regs.any? { |r| r.registerable.name.include?('夏祭り@蒲田') }
-    # Check for Gyotoku's family day
-    gyotoku_fam = event_id == 29 && slot_regs.any? { |r| r.registerable.name.include?('親子参加型！サイエンスアイスクリームを作ろう♪') }
-    # Don't charge for snack on Ikegami's cooking PM
-    ikegami_cooking = event_id == 6 && slot_regs.any? { |r| r.registerable.name.include?('スペシャルクッキングイベント') }
-    # Or Todoroki's fan for some reason
-    todoroki_fan = event_id == 15 && slot_regs.any? { |r| r.registerable.name.include?('親子で参加可能♪浴衣OK♡うちわ作り体験＆KidsUP夏祭り') }
-    snack_count -= 1 if oi_kita_aquarium || rinkai_aft || ikegami_cooking || todoroki_fan || yako_aft || shinjo_aft || kamata_aft || gyotoku_fam
-    snack_count = 0 unless snack_count.positive?
-    course_cost += snack_count * 165
-    # Add cost due to special day registrations
-    # Now also has to handle Minami Machida's dumb different special day
-    # Morning has no extra cost, but afternoon is 1100 for some reason
-    special_count = slot_regs.count { |reg| !reg._destroy && reg.registerable.special? && %w[バンダナの絞り染め 夏祭り@南町田グランベリーパーク 夏祭り@二俣川].exclude?(reg.registerable.name) }
-    # Add the 1100 if MM's or Futatamagawa's afternoon special day registered
-    summer_names = %w[夏祭り@南町田グランベリーパーク 夏祭り@二俣川]
-    summer_festival = [18, 21].include?(event_id) && slot_regs.any? { |reg| summer_names.include?(reg.registerable.name) }
-    course_cost += 1100 if summer_festival
-    # Handle Ojima's aquarium cost being 3000 rather than 1500
-    course_cost += 1500 if event_id == 16 && slot_regs.any? { |r| r.registerable.name.include?('スペシャル遠足@品川アクアパーク') }
-    # Handle the 4500 yen days
-    if gyotoku_fam
-      special_count -= 1
-      if child.external?
-        course_cost -= 1430
-      else
-        course_cost += 80
-      end
+    extra_cost_slots = slot_regs.map do |reg|
+      slot = reg.registerable
+
+      next if reg.destroy
+      next if (child.external? && slot.ext_modifier != 0) || (child.internal? && slot.int_modifier != 0)
+
+      slot
     end
-    # Handle the 6000 yen days
-    if shit_days || rinkai_morn
-      special_count -= 1
-      if child.external?
-        course_cost -= 930
-      else
-        course_cost += 1580
-      end
-    end
-    # Rinkai morn and aft can be registered together, so handle separately
-    if rinkai_aft
-      special_count -= 1
-      if child.external?
-        course_cost -= 930
-      else
-        course_cost += 1580
-      end
-    end
-    # Handle the aquarium trip for Oi and Kitashina
-    if oi_kita_aquarium
-      special_count -= 1
-      course_cost += child.external? ? 70 : 2580
-    end
-    # Handle Yako's days
-    course_cost += 500 if yako_morn
-    course_cost -= 400 if yako_aft
-    # Handle Kamata's special morning
-    course_cost -= 400 if kamata_morn
-    # Don't count Toyocho's extra specials as special cos no extra charge
-    if event_id == 6
-      toyo_fakes = ['水鉄砲合戦＆ビーチジオラマ', '貝殻ペンダント ＆ フレンチクレープ']
-      toyo_fakes_count = slot_regs.count { |r| toyo_fakes.include?(r.registerable.name) }
-      special_count -= toyo_fakes_count
-    end
-    # Don't count monzen's fake special days
-    if event_id == 8
-      monzen_fakes = ['ウォーターゲーム対決！', 'フレンチクレープ', '水鉄砲合戦!!(8月21日)', 'ハワイアンかき氷 ']
-      monzen_fakes_count = slot_regs.count { |r| monzen_fakes.include?(r.registerable.name) }
-      special_count -= monzen_fakes_count
+    extra_cost = extra_cost_slots.reduce(0) do |sum, slot|
+      child.external? ? sum + slot.ext_modifier : sum + slot.int_modifier
     end
 
-    course_cost += special_count * 1_500
+    course_cost += extra_cost + snack_cost
+
     @breakdown << '</div>'
     @breakdown.prepend(
       "<h4 class='fw-semibold'>コース:</h4>
       <div class='d-flex flex-column align-items-start gap-1'>
       <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 (#{num_regs}回)</p>
-      <p>スペシャルデー x #{special_count}: #{(special_count * 1_500).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>
-      #{"<p>夏祭りスペシャルデー x 1: #{1100.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if summer_festival}
-      #{"<p>遠足＠うんこミュージアム x 1: #{(child.external? ? -930 : 1580).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if shit_days}
-      #{"<p>遠足＠アクアパーク品川 x 1: #{(child.external? ? 70 : 2580).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if oi_kita_aquarium}
-      #{"<p>キッズアップハンター x 1: #{(child.external? ? -930 : 1580).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if rinkai_morn}
-      #{"<p>サマーモンスター x 1: #{(child.external? ? -930 : 1580).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if rinkai_aft}
-      #{"<p>カワスイ 川崎水族館 遠足 x 1: #{500.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if yako_morn}
-      #{"<p>Kids UP縁日 x 1: #{-400.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if yako_aft}
-      #{"<p>大人気アクティビティアンコールイベント x 1: #{-400.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if kamata_morn}
-      #{"<p>親子参加型！サイエンスアイスクリームを作ろう♪ x 1: #{(child.external? ? -1430 : 80).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" if gyotoku_fam}
-      <p>午後コースおやつ代 x #{snack_count}: #{(snack_count * 165).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
+      <p>スペシャルデー x #{extra_cost_slots.size}: #{extra_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>
+      <p>午後コースおやつ代 x #{snack_count}: #{snack_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
     )
     course_cost
   end
@@ -241,7 +161,7 @@ class Invoice < ApplicationRecord
     @breakdown << "<h4 class='fw-semibold'>オプション:</h4>
                    <div class='d-flex flex-column align-items-start gap-1'>
                    <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
-                                                   '\\1,').reverse}円 (#{opt_regs.reject { |r| r.registerable.name == 'なし' }.size - @ignore_opts.size}オプション)<p>"
+                                                   '\\1,').reverse}円 (#{opt_regs.count { |r| r.registerable.name != 'なし' } - @ignore_opts.size}オプション)<p>"
 
     # Find the options on this invoice, even if not saved
     temp_opts = {}
@@ -283,7 +203,8 @@ class Invoice < ApplicationRecord
   def first_time_adjustment
     registration_cost = 1_100
     reason = '初回登録料(初めてシーズナルスクールに参加する非会員の方)'
-    return if adjustments.any? { |adj| adj.change == registration_cost && adj.reason == reason } || child.adjustments.any? { |adj| adj.change == registration_cost && adj.reason == reason }
+    return if adjustments.any? { |adj| adj.change == registration_cost && adj.  reason == reason } ||
+              child.adjustments.any? { |adj| adj.change == registration_cost && adj.reason == reason }
 
     adjustments.new(change: registration_cost, reason: reason)
   end

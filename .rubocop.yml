@@ -14,3 +14,6 @@ AllCops:
     - "spec/helpers"
     - !ruby/regexp /old_and_unused\.rb$/
   NewCops: enable
+
+Metrics/ClassLength:
+  Enabled: false
