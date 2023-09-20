@@ -1,9 +1,15 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["slotTemplate", "slotTarget", "optTemplate", "optTarget"];
+  static targets = [
+    "slotTemplate",
+    "slotTarget",
+    "optTemplate",
+    "optTarget",
+    "snackCount",
+  ];
 
-  add(child, cost, id, type, name) {
+  add(child, cost, id, snack, type, modifier, name) {
     const wrapper =
       type === "TimeSlot"
         ? document.getElementById(`slot${id}`.concat(`child${child}`))
@@ -44,23 +50,21 @@ export default class extends Controller {
       // Add the name of the registration to the registration list
       const nameContainer = document.getElementById("reg_slots");
       const nameP = document.createElement("p");
+      nameP.dataset.modifier = modifier;
       nameP.innerText = name.replaceAll("_", " ");
       nameContainer.appendChild(nameP);
 
       // Sort the registration list alphabetically
-      const names = [];
-      nameContainer.childNodes.forEach((node) => {
-        if (node.innerText !== undefined) {
-          names.push(node.innerText);
-        }
+      const sortedActivities = [...nameContainer.children].sort((a, b) => {
+        return a.innerText > b.innerText;
       });
-      names.sort();
       nameContainer.innerHTML = "";
-      names.forEach((name) => {
-        const nameP = document.createElement("p");
-        nameP.innerText = name.replaceAll("_", " ");
-        nameContainer.appendChild(nameP);
-      });
+      nameContainer.append(...sortedActivities);
+    }
+
+    if (snack === "true") {
+      const snackCount = parseInt(this.snackCountTarget.innerText);
+      this.snackCountTarget.innerText = (snackCount + 1).toString();
     }
 
     this.dispatch("add");
@@ -71,16 +75,18 @@ export default class extends Controller {
     const checked = e.detail.checked;
     const cost = e.detail.cost;
     const id = e.detail.id;
+    const modifier = e.detail.modifier;
     const name = e.detail.name ? e.detail.name : null;
     const siblings = e.detail.siblings;
+    const snack = e.detail.snack;
     const type = e.detail.type;
 
     if (checked && (type === "TimeSlot" || type === "Option")) {
-      return this.add(child, cost, id, type, name);
+      return this.add(child, cost, id, snack, type, modifier, name);
     } else if (checked && type === "Radio") {
       return this.radio(child, cost, id, siblings, type, name);
     } else {
-      return this.remove(child, id, type, name);
+      return this.remove(child, id, snack, type, name);
     }
   }
 
@@ -95,7 +101,7 @@ export default class extends Controller {
     });
   }
 
-  remove(child, id, type, name) {
+  remove(child, id, snack, type, name) {
     const wrapper =
       type === "TimeSlot"
         ? document.getElementById(`slot${id}`.concat(`child${child}`))
@@ -124,6 +130,11 @@ export default class extends Controller {
           nameContainer.removeChild(node);
         }
       });
+    }
+
+    if (snack === "true") {
+      const snackCount = parseInt(this.snackCountTarget.innerText);
+      this.snackCountTarget.innerText = (snackCount - 1).toString();
     }
 
     this.dispatch("remove");

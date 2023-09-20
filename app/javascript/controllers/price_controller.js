@@ -11,7 +11,7 @@ export default class extends Controller {
     "optCount",
     "slotRegs",
     "snackCount",
-    "specialCount",
+    "extraCount",
   ];
 
   static values = {
@@ -20,7 +20,7 @@ export default class extends Controller {
     otherCost: Number,
   };
 
-  // Base function called when fields added to form
+  // Base function called when form modified
   calculate() {
     const courseCost = this.isMember(this.childTarget)
       ? this.calcCourseCost(true)
@@ -30,7 +30,7 @@ export default class extends Controller {
       .filter((cost) => cost.classList.contains("registered"))
       .reduce((sum, option) => sum + parseInt(option.innerHTML), 0);
 
-    const adjustmentChange = this.calcAdjustments();
+    const adjustmentCost = this.calcAdjustments();
 
     // Count the number of options registered for
     const optCount = this.optRegsTargets.reduce(
@@ -39,129 +39,22 @@ export default class extends Controller {
     );
     this.optCountTarget.innerHTML = `オプション：${optCount.toString()}つ`;
 
-    // Get a list of all registered.slots
-    const regList = [...document.getElementById("reg_slots").children].reduce(
-      (list, child) => {
-        return list.concat(child.innerHTML);
-      },
-      []
+    const registeredNodes = [...document.getElementById("reg_slots").children];
+    // Count slots with an extra cost
+    const extraCostNodes = registeredNodes.filter(
+      (slot) => slot.dataset.modifier !== "0"
     );
-    // Count the 午後 ones, as these must be charged for a snack
-    let snackCount = regList.filter((slot) => slot.includes("午後")).length;
-    // Count the days in the list of special days
-    const specialCount = regList.filter(
-      (slot) =>
-        slot.includes("水鉄砲合＆スイカ割り") ||
-        slot.includes("巨大なお城のクラフト") ||
-        slot.includes("フルーツサンド作り") ||
-        slot.includes("BBQ風やきそば/コーラの噴射実験") ||
-        slot.includes("暗闇で光るスライム/フルーツスムージー") ||
-        slot.includes("イングリッシュスポーツイベント") ||
-        slot.includes("スペシャルクッキングイベント") ||
-        slot.includes("3校対決！Englishスポーツ大会") ||
-        slot.includes("スクール対抗スポーツ大会") ||
-        slot.includes("遠足＠しながわ水族館") ||
-        slot.includes("具だくさんスライム＆光るタピオカパーティー☆彡") ||
-        slot.includes("親子で参加可能♪浴衣OK♡うちわ作り体験＆KidsUP夏祭り") ||
-        slot.includes("宝探し&amp;夏祭り") ||
-        slot.includes("KidsUP大夏祭り/時計作り") ||
-        slot.includes("夏祭り@蒲田")
-    ).length;
-    this.specialCountTarget.innerHTML = `スペシャルデー: ${specialCount.toString()}つ`;
-    // Get cost of all of them to add to the final price
-    let specialCost = specialCount * 1500;
-    // Handle + 1100 fees
-    if (
-      regList.includes("夏祭り@南町田グランベリーパーク (午後)") ||
-      regList.includes("夏祭り@二俣川 (午前)") ||
-      regList.includes("Kids UP縁日 (午後)") ||
-      regList.includes("大人気アクティビティアンコールイベント (午前)")
-    ) {
-      specialCost += 1100;
-      this.specialCountTarget.appendChild(document.createElement("br"));
-      this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
-    }
-    // Handle + 2000 fees
-    if (regList.includes("カワスイ 川崎水族館 遠足 (午前)")) {
-      specialCost += 2000;
-      this.specialCountTarget.appendChild(document.createElement("br"));
-      this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
-    }
-    // Handle + 3000 fees
-    if (regList.includes("スペシャル遠足@品川アクアパーク (午後)")) {
-      specialCost += 3000;
-      this.specialCountTarget.appendChild(document.createElement("br"));
-      this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
-    }
-    // Handle 4500 fixed cost
-    if (
-      regList.includes(
-        "親子参加型！サイエンスアイスクリームを作ろう♪ (午後)"
-      ) ||
-      regList.includes("親子参加型！サイエンスアイスクリームを作ろう♪ (午前)")
-    ) {
-      if (this.isMember(this.childTarget)) {
-        specialCost += 80;
-      } else {
-        specialCost -= 1430;
-      }
-      this.specialCountTarget.appendChild(document.createElement("br"));
-      this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
-    }
-    // Handle 6 000 fixed cost
-    if (
-      regList.includes("遠足＠うんこミュージアム (午前)") ||
-      regList.includes("キッズアップハンター (午前)")
-    ) {
-      if (this.isMember(this.childTarget)) {
-        specialCost += 1580;
-      } else {
-        specialCost -= 930;
-      }
-      this.specialCountTarget.appendChild(document.createElement("br"));
-      this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
-    }
-    // Rinkai morn and aft can both be registered, so handle separately
-    if (regList.includes("サマーモンスター (午後)")) {
-      if (this.isMember(this.childTarget)) {
-        specialCost += 1580;
-      } else {
-        specialCost -= 930;
-      }
-      this.specialCountTarget.appendChild(document.createElement("br"));
-      if (regList.includes("キッズアップハンター (午前)")) {
-        this.specialCountTarget.innerHTML += "スペシャルデー：2つ";
-      } else {
-        this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
-      }
-    }
-    // Handle 7 000 fixed cost
-    if (regList.includes("遠足＠アクアパーク品川 (午後)")) {
-      specialCost += this.isMember(this.childTarget) ? 2580 : 70;
-      this.specialCountTarget.appendChild(document.createElement("br"));
-      this.specialCountTarget.innerHTML += "スペシャルデー：1つ";
-    }
-    // Decrement snack cost for all the PM with no snack charge
-    if (
-      regList.includes(
-        "親子で参加可能♪浴衣OK♡うちわ作り体験＆KidsUP夏祭り (午後)"
-      ) ||
-      regList.includes("スペシャルクッキングイベント (午後)") ||
-      regList.includes("サマーモンスター (午後)") ||
-      regList.includes("Kids UP縁日 (午後)") ||
-      regList.includes("スペシャル遠足@品川アクアパーク (午後)") ||
-      regList.includes("遠足＠アクアパーク品川 (午後)") ||
-      regList.includes("宝探し&amp;夏祭り (午後)") ||
-      regList.includes("夏祭り@蒲田 (午後)") ||
-      regList.includes("親子参加型！サイエンスアイスクリームを作ろう♪ (午後)")
-    ) {
-      snackCount--;
-    }
-    // Get the cost of all those snacks to add to the final price
-    const snackCost = snackCount * 165;
-    this.snackCountTarget.innerHTML = `午後コースおやつ代：${snackCount.toString()}つ`;
+    this.extraCountTarget.innerHTML = extraCostNodes.length.toString();
+    // Get their total effect on the cost
+    const extraCost = extraCostNodes.reduce((sum, node) => {
+      return sum + parseInt(node.dataset.modifier);
+    }, 0);
+
+    // Inner text set in the invoice controller if the time slot has a snack fee
+    const snackCost = parseInt(this.snackCountTarget.innerText) * 165;
+
     const finalCost =
-      optionCost + courseCost + adjustmentChange + snackCost + specialCost;
+      optionCost + courseCost + adjustmentCost + snackCost + extraCost;
     this.finalCostTarget.innerHTML = `合計（税込）: ${finalCost}円`;
     this.eventCostTarget.innerHTML = `サマースクール 2023の合計: ${(
       this.otherCostValue + finalCost

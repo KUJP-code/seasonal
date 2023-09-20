@@ -7,7 +7,9 @@ export default class extends Controller {
     child: String,
     cost: String,
     id: String,
+    modifier: String,
     name: String,
+    snack: String,
     type: String,
   };
 
@@ -18,8 +20,10 @@ export default class extends Controller {
     const checked = this.buttonTarget.checked;
     const cost = this.costValue;
     const id = this.idValue;
+    const modifier = this.modifierValue;
     const name = this.nameValue;
     const siblings = getSiblings(this.element);
+    const snack = this.snackValue;
     const type = this.typeValue;
 
     if (checked) {
@@ -34,8 +38,10 @@ export default class extends Controller {
         checked: checked,
         cost: cost,
         id: id,
+        modifier: modifier,
         name: name,
         siblings: siblings,
+        snack: snack,
         type: type,
       },
     });

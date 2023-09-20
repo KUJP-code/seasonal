@@ -17,7 +17,9 @@
             <p class="fw-bold fs-5">
                 <%= "#{add_slot.name}: ◯" %>
             </p>
-            <% if add_slot.special? && add_slot.name != "バンダナの絞り染め (午前)" %>
+            <% if add_slot.special? ||
+                  (add_slot.int_modifier != 0 && child.internal?) ||
+                  (add_slot.ext_modifier != 0 && child.external?) %>
                 <p>スペシャルデー: ◯</p>
             <% end %>
             <% add_slot.options.each do |opt| %>
@@ -32,8 +34,10 @@
                      data-controller="register"
                      data-register-id-value=<%= add_slot.id %>
                      data-register-type-value="TimeSlot"
+                     data-register-modifier-value=<%= child.external? ? add_slot.ext_modifier : add_slot.int_modifier %>
                      data-register-name-value=<%= add_slot.name.concat(' (午前)').gsub(' ', '_') %>
-                     data-register-child-value=<%= child.id %>>
+                     data-register-child-value=<%= child.id %>
+                     data-register-snack-value="false">
                     <label for=<%= "m_slot#{add_slot.id}" %>
                            data-register-target="name"
                            class="fw-bold fs-5 form-check-label">
@@ -49,7 +53,9 @@
                     <% extension_ids = add_slot.options.extension.ids %>
                     <% plusone_ids = add_slot.options.plusone.ids %>
 
-                    <% if add_slot.special? && ["バンダナの絞り染め (午前)", 'ウォーターゲーム対決！ (午前)', '水鉄砲合戦!!(8月21日) (午前)'].exclude?(add_slot.name) %>
+                    <% if add_slot.special? ||
+                          (add_slot.int_modifier != 0 && child.internal?) ||
+                          (add_slot.ext_modifier != 0 && child.external?) %>
                         <p>スペシャルデー: ◯</p>
                     <% end %>
 
@@ -210,8 +216,13 @@
                     <p class="fw-bold fs-5">
                         <%= "#{afternoon_slot.special? ? afternoon_slot.name : t('.afternoon')}: ◯" %>
                     </p>
-                    <% if afternoon_slot.special? %>
+                    <% if afternoon_slot.special? ||
+                            (afternoon_slot.int_modifier != 0 && child.internal?) ||
+                            (afternoon_slot.ext_modifier != 0 && child.external?) %>
                         <p>スペシャルデー: ◯</p>
+                    <% end %>
+                    <% if afternoon_slot.snack %>
+                        <p><%= "#{t('.snack')}: ◯" %></p>
                     <% end %>
                     <% afternoon_slot.options.each do |opt| %>
                         <% if registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
@@ -225,8 +236,10 @@
                             data-controller="register"
                             data-register-id-value=<%= afternoon_slot.id %>
                             data-register-type-value="TimeSlot"
+                            data-register-modifier-value=<%= child.external? ? afternoon_slot.ext_modifier : afternoon_slot.int_modifier %>
                             data-register-name-value=<%= afternoon_slot.name.concat(' (午後)').gsub(' ', '_') %>
-                            data-register-child-value=<%= child.id %>>
+                            data-register-child-value=<%= child.id %>
+                            data-register-snack-value=<%= afternoon_slot.snack %>>
                             <label for=<%= "a_slot#{afternoon_slot.id}" %> 
                                 data-register-target="name"
                                 class="fw-bold fs-5 form-check-label">
@@ -249,10 +262,13 @@
                         <% aft_plusone_ids = afternoon_slot.options.plusone.ids %>
 
                         <div class="options mt-2<%= ' hidden' unless aft_registered %>" data-popup-target="popup">
-                            <% unless afternoon_slot.name.include?("アクアパーク") %>
+                            <% if afternoon_slot.snack %>
                               <p><%= "#{t('.snack')}: ◯" %></p>
                             <% end %>
-                             <% if afternoon_slot.special? && ['フレンチクレープ (午後)', 'ハワイアンかき氷  (午後)'].exclude?(afternoon_slot.name) %>
+
+                            <% if afternoon_slot.special? ||
+                                  (afternoon_slot.int_modifier != 0 && child.internal?) ||
+                                  (afternoon_slot.ext_modifier != 0 && child.external?) %>
                                 <p>スペシャルデー: ◯</p>
                             <% end %>
                             <% afternoon_slot.options.reject { |opt| (aft_time_ids + aft_plusone_ids).include?(opt.id) }.each do |opt| %>

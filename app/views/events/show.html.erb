@@ -257,8 +257,20 @@
                             <p><%= slot.name + (slot.morning ? ' (午前)' : ' (午後)') %></p>
                         <% end %>
                     </div>
-                    <p data-price-target="specialCount"><%= t('.special_count', count: all_registered_slots.where(category: :special).size) %></p>
-                    <p data-price-target="snackCount"><%= t('.snack_count', count: all_registered_slots.afternoon.size) %></p>
+                    <p>
+                        スペシャルデー: 
+                        <span data-price-target="extraCount">
+                            <%= all_registered_slots.count do |s|
+                                                @child.external? ?
+                                                s.ext_modifier != 0 :
+                                                s.int_modifier != 0
+                                               end %>
+                        </span>つ
+                    </p>
+                    <p>
+                        午後コースおやつ代： <span data-price-target="snackCount"
+                       data-invoice-target="snackCount"><%= all_registered_slots.count { |s| s.snack } %></span>つ
+                    </p>
                     <p data-price-target="optCount"><%= t('.num_options', num: @all_invoices.reduce(0) { |sum, i| sum + i.options.size  })%></p>
                 </div>
                 <button class="btn btn-primary"

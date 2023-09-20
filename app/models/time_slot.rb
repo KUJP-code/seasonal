@@ -119,7 +119,8 @@ class TimeSlot < ApplicationRecord
       end_time: end_time + 5.hours,
       category: category,
       morning: false,
-      event_id: event_id
+      event_id: event_id,
+      snack: true
     )
   end
 
