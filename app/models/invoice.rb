@@ -126,14 +126,17 @@ class Invoice < ApplicationRecord
     end
     snack_cost = snack_count * 165
 
-    extra_cost_slots = slot_regs.map do |reg|
+    # Needs to be filter_map because next in #map returns nil
+    extra_cost_slots = slot_regs.filter_map do |reg|
       slot = reg.registerable
 
-      next if reg.destroy
-      next if (child.external? && slot.ext_modifier != 0) || (child.internal? && slot.int_modifier != 0)
+      next if reg._destroy
+      next if child.external? && slot.ext_modifier.zero?
+      next if child.internal? && slot.int_modifier.zero?
 
       slot
     end
+
     extra_cost = extra_cost_slots.reduce(0) do |sum, slot|
       child.external? ? sum + slot.ext_modifier : sum + slot.int_modifier
     end
