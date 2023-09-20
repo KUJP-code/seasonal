@@ -117,7 +117,7 @@ class TimeSlot < ApplicationRecord
       name: name,
       start_time: start_time + 5.hours,
       end_time: end_time + 5.hours,
-      category: category,
+      category: :seasonal,
       morning: false,
       event_id: event_id,
       snack: true
