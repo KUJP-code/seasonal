@@ -1,5 +1,7 @@
 $primary: #f48000;
 $secondary: #4e4a4a;
+$success: #198754;
+$danger: #dc3545;
 $info: #9cc1d8;
 
 :root {
@@ -149,6 +151,16 @@ input[type="text"]:disabled {
 
 .btn-sort.descending {
   transform: rotateX(180deg);
+}
+
+.btn-success:hover,
+.btn-success:active {
+  background-color: $danger !important;
+}
+
+.btn-danger:hover,
+.btn-danger:active {
+  background-color: $success !important;
 }
 
 // Tables
