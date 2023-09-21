@@ -37,7 +37,7 @@
                 <div>
                     <%= f.label :id, t('.diff_school') %>
                     <%= f.collection_select :id,
-                                            School.all.where.not(id: [1, 2]),
+                                            School.real,
                                             proc { |s| s.next_event.id },
                                             :name,
                                             {},

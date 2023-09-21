@@ -1,5 +1,5 @@
 <% event_ids = events.map(&:id) %>
-<% children = events.all.reduce([]) { |array, event| array + event.children.includes(:real_invoices) } %>
+<% children = events.reduce([]) { |array, event| array + event.children.includes(:real_invoices) } %>
 <% photo_ids = Option.all.where(optionable_id: event_ids, optionable_type: 'Event')%>
 <% photo_regs = Registration.all.where(registerable_id: photo_ids, registerable_type: 'Option').count %>
 
