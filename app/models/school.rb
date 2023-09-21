@@ -34,7 +34,7 @@ class School < ApplicationRecord
   end
 
   def next_event
-    events.where('end_date > ?', Time.zone.now).limit(1).first
+    events.where('end_date > ?', Time.zone.now).limit(1).first || nil
   end
 
   private

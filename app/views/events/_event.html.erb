@@ -27,27 +27,29 @@
           <%= t('.diff_school_reg') %>
         </button>
 
-        <div class="collapse" id="school_select">
-            <%= form_with method: :get, 
-                          url: :diff_school_path,
-                          html: { class: 'd-grid gap-3' } do |f| %>
-                <%= f.hidden_field :child, value: child.id %>
+        <% unless Event.upcoming.empty? %>
+            <div class="collapse" id="school_select">
+                <%= form_with method: :get, 
+                            url: :diff_school_path,
+                            html: { class: 'd-grid gap-3' } do |f| %>
+                    <%= f.hidden_field :child, value: child.id %>
 
-                <%# For all schools other than test and online, create an option with the text as the school name and the value as id of the next event at that school %>
-                <div>
-                    <%= f.label :id, t('.diff_school') %>
-                    <%= f.collection_select :id,
-                                            School.real,
-                                            proc { |s| s.next_event.id },
-                                            :name,
-                                            {},
-                                            class: 'form-select' %>
-                </div>
+                    <%# For all schools other than test and online, create an option with the text as the school name and the value as id of the next event at that school %>
+                    <div>
+                        <%= f.label :id, t('.diff_school') %>
+                        <%= f.collection_select :id,
+                                                School.real,
+                                                proc { |s| s.next_event.id },
+                                                :name,
+                                                {},
+                                                class: 'form-select' %>
+                    </div>
 
-                <%= f.submit t('.reg_at_selected'), class: 'btn btn-primary' %>
-            <% end %>
-        </div>
-    
+                    <%= f.submit t('.reg_at_selected'), class: 'btn btn-primary' %>
+                <% end %>
+            </div>
+        <% end %>
+
     <% else %>
     
         <%= (link_to image_tag(url_for(event.image), class: 'img-fluid img-thumbnail'), event_path(id: event, child: current_user.children.first.id)) unless event.image.blank? %>

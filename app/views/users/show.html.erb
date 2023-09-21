@@ -1,6 +1,5 @@
 <% next_event = @user.children.first.school.next_event if @user.customer? && @user.children.size.positive? %>
-<% next_event = @user.children.first.school.next_event unless @user.children.empty? %>
-<% upcoming_events = School.real.map(&:next_event) if @user.admin? || @user.area_manager? %>
+<% upcoming_events = School.real.map(&:next_event).compact if @user.admin? || @user.area_manager? %>
 <% schools = @user.children.reject{ |c| c.school_id.nil? }.map(&:school).map(&:name).uniq if @user.customer? %>
 
 <main id="user_show" class="gap-3">
@@ -83,10 +82,12 @@
     <% end %>
 
     <% if @user.admin? && current_user.admin? %>
-        <div class="card">
-            <h2>All Schools</h2>
-            <%= render partial: 'events/stats_summary', locals: { events: upcoming_events } %>
-        </div>
+        <% unless upcoming_events.empty? %>
+            <div class="card">
+                <h2>All Schools</h2>
+                <%= render partial: 'events/stats_summary', locals: { events: upcoming_events } %>
+            </div>
+        <% end %>
 
         <div class="card">
             <h3>Recent Bookings</h3>
@@ -203,6 +204,8 @@
 
                     <tbody id="condensed_stats">
                         <% School.real.each do |school| %>
+                            <% next if school.next_event.nil? %>
+
                             <%= render partial: 'events/condensed_stats', locals: { event: school.next_event } %>
                         <% end %>
                     </tbody>
@@ -219,7 +222,9 @@
         </div>
     <% end %>
 
-    <% if @user.area_manager? && (current_user.area_manager? || current_user.admin?) %>
+    <% if @user.area_manager? &&
+          (current_user.area_manager? || current_user.admin?) &&
+          upcoming_events.size.positive? %>
         <div class="card">
             <h2>All Schools</h2>
             <%= render partial: 'events/stats_summary', locals: { events: upcoming_events } %>
@@ -268,6 +273,7 @@
 
         <% @user.managed_schools.each do |school| %>
             <% next_event = school.next_event %>
+            <% next if next_event.nil? %>
 
             <div class="card">
                 <%= render partial: 'events/event_stats', locals: { event: school.next_event } %>
@@ -275,10 +281,15 @@
 
             <div class="card">
                 <h2><%= t('.recent_bookings') %></h2>
-                <%= render partial: 'invoices/recent_invoices', locals: { recent_invoices: school.next_event.invoices.order(created_at: :desc).limit(5).includes(:child, :time_slots) } unless next_event.nil? %>
+                <%= render partial: 'invoices/recent_invoices', locals: {
+                        recent_invoices: school.next_event
+                                                .invoices
+                                                .order(created_at: :desc)
+                                                .limit(5)
+                                                .includes(:child, :time_slots) } %>
             </div>
 
-            <%= render partial: 'events/daily_attendance', locals: { event: school.next_event } unless next_event.nil? %>
+            <%= render partial: 'events/daily_attendance', locals: { event: school.next_event } %>
 
             <%= render partial: 'children/hat_kids', locals: { children: hat_kids } if hat_kids.size.positive? %>
 

@@ -1,18 +1,23 @@
 <main id="invoice_index" class="gap-5 py-5">
     <% if @user %>
-        <% child_events = @user.children.map(&:school).map(&:next_event).uniq %>
+        <% child_events = @user.children
+                                .map(&:school)
+                                .map(&:next_event)
+                                .uniq.compact %>
         
-        <div class="card bg-info">
-            <% event_cost = @user.invoices
-                            .where(event_id: child_events)
-                            .reduce(0) { |sum, i| sum + i.total_cost } %>
-            <h2>
-                <%= t('.event_cost', cost: number_to_currency(event_cost, unit: '円', precision: 0, locale: :ja), event: child_events.first.name) %>
-            </h2>
-            <p>
-                複数のお子様のお申し込みをされた場合、合算された金額となります。
-            </p>
-        </div>
+        <% unless child_events.empty? %>
+            <div class="card bg-info">
+                <% event_cost = @user.invoices
+                                .where(event_id: child_events)
+                                .reduce(0) { |sum, i| sum + i.total_cost } %>
+                <h2>
+                    <%= t('.event_cost', cost: number_to_currency(event_cost, unit: '円', precision: 0, locale: :ja), event: child_events.first.name) %>
+                </h2>
+                <p>
+                    複数のお子様のお申し込みをされた場合、合算された金額となります。
+                </p>
+            </div>
+        <% end %>
 
         <% @user.children.each do |child| %>
             <% next if child.real_invoices.empty? %>
@@ -28,19 +33,21 @@
         <% end %>
     <% else %>
         <% next_event = @child.school.next_event %>
-        <% event_cost = @child.invoices
-                        .select { |i| i.event_id == next_event.id }
-                        .reduce(0) { |sum, i| sum + i.total_cost } %>
 
+        <% unless next_event.nil? %>
+            <% event_cost = @child.invoices
+                    .select { |i| i.event_id == next_event.id }
+                    .reduce(0) { |sum, i| sum + i.total_cost } %>
 
-        <div class="card bg-info">
-            <h2>
-                <%= t('.event_cost', cost: number_to_currency(event_cost, unit: '円', precision: 0, locale: :ja), event: next_event.name) %>
-            </h2>
-            <p>
-                複数のお子様のお申し込みをされた場合、合算された金額となります。
-            </p>
-        </div>
+            <div class="card bg-info">
+                <h2>
+                    <%= t('.event_cost', cost: number_to_currency(event_cost, unit: '円', precision: 0, locale: :ja), event: next_event.name) %>
+                </h2>
+                <p>
+                    複数のお子様のお申し込みをされた場合、合算された金額となります。
+                </p>
+            </div>
+        <% end %>
 
         <h1><%= link_to @child.name, child_path(@child) %></h1>     
         <% @child.events.order(start_date: :desc).each do |event| %>

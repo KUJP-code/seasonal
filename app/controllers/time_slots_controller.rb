@@ -5,11 +5,15 @@ class TimeSlotsController < ApplicationController
   def index
     @events = policy_scope(TimeSlot).order(:school_id)
     @event = @events.find { |e| e.id == params[:event].to_i } || @events.last
-    @slots = @event.time_slots.morning
-                   .or(@event.time_slots.special)
-                   .includes(:afternoon_slot)
-                   .with_attached_image
-                   .order(:start_time)
+    @slots = if @event.nil?
+               nil
+             else
+               @event.time_slots.morning
+                     .or(@event.time_slots.special)
+                     .includes(:afternoon_slot)
+                     .with_attached_image
+                     .order(:start_time)
+             end
   end
 
   def show
