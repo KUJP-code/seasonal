@@ -254,7 +254,9 @@
                 <div id="reg_details" class="collapse multi-collapse text-white">
                     <div id="reg_slots">
                         <% all_registered_slots.each do |slot| %>
-                            <p><%= slot.name + (slot.morning ? ' (午前)' : ' (午後)') %></p>
+                            <p data-modifier=<%= @child.external? ? slot.ext_modifier : slot.int_modifier %> >
+                                <%= slot.name + (slot.morning ? ' (午前)' : ' (午後)') %>
+                            </p>
                         <% end %>
                     </div>
                     <p>
