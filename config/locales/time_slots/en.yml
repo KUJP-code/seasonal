@@ -4,6 +4,7 @@ en:
       afternoon: "Afternoon"
       arrival_options: "Arrival Options"
       depart_options: "Depart Options"
+      extra_charge: "Extra Charge: %{cost}"
       snack: "Snack"
     index:
       slots_for: "Activities for %{name} at %{school}"
