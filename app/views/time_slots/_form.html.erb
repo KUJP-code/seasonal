@@ -1,11 +1,15 @@
-<div class="event-sidebar w-50">
+<div class="event-sidebar d-flex flex-column w-50 gap-3">
+    <p class="bg-warning rounded p-3 fw-semibold text-center">
+        Do not refresh this page!<br>
+        Autofilled values like the current image will be lost and a bunch of stuff will break.<br>
+        Instead go back, then click the edit button again.<br>
+    </p>
     <%= render partial: 'events/event', locals: { child: nil, event: @slot.event } %>
 </div>
 
 <%= form_with model: @slot, html: {class: "card", data: { controller: "fields" } } do |f| %>
     <%= f.hidden_field :id  %>
     <%= f.hidden_field :event_id %>
-    <%= f.hidden_field :morning, value: true %>
 
     <div class="form-floating">
         <%= f.text_field :name, class: 'form-control', placeholder: 'Name', required: true %>
@@ -43,6 +47,13 @@
         <%= f.label :ext_modifier, 'External Extra Charge', class: 'form-label' %>
         <span class="input-group-text">円</span>
     </div>
+
+    <% if @slot.morning == false %>
+        <div class="form-check">
+            <%= f.check_box :snack, class: 'form-check-input' %>
+            <%= f.label :snack, 'Snack?', class: 'form-check-label' %>
+        </div>
+    <% end %>
 
     <% if @slot.special? && @slot.morning %>
         <div class="form-check">
@@ -98,7 +109,6 @@
                     <%= aft_f.hidden_field :id %>
                     <%= aft_f.hidden_field :category, value: "special" %>
 
-
                     <h3>Afternoon Slot</h3>
 
                     <div class="form-floating">
@@ -131,6 +141,11 @@
                         <%= aft_f.number_field :ext_modifier, class: 'form-control', placeholder: 0 %>
                         <%= aft_f.label :ext_modifier, 'External Extra Charge', class: 'form-label' %>
                         <span class="input-group-text">円</span>
+                    </div>
+
+                    <div class="form-check">
+                        <%= aft_f.check_box :snack, class: 'form-check-input' %>
+                        <%= aft_f.label :snack, 'Snack?', class: 'form-check-label' %>
                     </div>
                 </div>
             </div>

@@ -1,10 +1,20 @@
 <main id="time_slot_new" class="flex-row justify-content-around align-items-start gap-3">
     <% if @events %>
-        <div class="event-sidebar d-flex flex-column gap-3">
+        <div class="event-sidebar d-flex flex-column gap-3 sticky-top">
+            <p class="bg-warning rounded p-3 fw-semibold text-center">
+                Do not refresh this page!<br>
+                Autofilled values like the current image will be lost and a bunch of stuff will break.<br>
+                Instead go back, then click the edit button again.<br>
+            </p>
             <%= render partial: 'events/event', collection: @events, locals: { child: nil } %>
         </div>
     <% elsif @event %>
-        <div class="event-sidebar sticky-top">
+        <div class="event-sidebar d-flex flex-column gap-3 sticky-top">
+            <p class="bg-warning rounded p-3 fw-semibold text-center">
+                Do not refresh this page!<br>
+                Autofilled values like the current image will be lost and a bunch of stuff will break.<br>
+                Instead go back, then click the edit button again.<br>
+            </p>
             <%= render @event, child: nil %>
         </div>
     <% end %>
