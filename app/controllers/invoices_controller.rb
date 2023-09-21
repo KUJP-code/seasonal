@@ -188,13 +188,12 @@ class InvoicesController < ApplicationController
   end
 
   def parent_or_child_invoices
-    if params[:user]
-      User.find(params[:user]).real_invoices.distinct
-    elsif params[:child]
-      Child.find(params[:child]).real_invoices.distinct
-    else
-      current_user.real_invoices.distinct
-    end
+    invoices = if params[:user]
+                 User.find(params[:user]).real_invoices
+               elsif params[:child]
+                 Child.find(params[:child]).real_invoices
+               end
+    invoices.distinct.order(updated_at: :desc)
   end
 
   def send_emails(invoice)
