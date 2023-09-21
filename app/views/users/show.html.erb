@@ -1,5 +1,6 @@
 <% next_event = @user.children.first.school.next_event if @user.customer? && @user.children.size.positive? %>
-<% next_event = @user.children.first.school.next_event unless @user.children.empty? %><% online_event = School.find(2).events.first if @user.admin? || @user.area_manager? %>
+<% next_event = @user.children.first.school.next_event unless @user.children.empty? %>
+<% upcoming_events = School.real.map(&:next_event) if @user.admin? || @user.area_manager? %>
 <% schools = @user.children.reject{ |c| c.school_id.nil? }.map(&:school).map(&:name).uniq if @user.customer? %>
 
 <main id="user_show" class="gap-3">
@@ -84,7 +85,7 @@
     <% if @user.admin? && current_user.admin? %>
         <div class="card">
             <h2>All Schools</h2>
-            <%= render partial: 'events/stats_summary', locals: { events: Event.all.excluding(online_event) } %>
+            <%= render partial: 'events/stats_summary', locals: { events: upcoming_events } %>
         </div>
 
         <div class="card">
@@ -201,8 +202,8 @@
                     </thead>
 
                     <tbody id="condensed_stats">
-                        <% School.all.each do |school| %>
-                            <%= render partial: 'events/condensed_stats', collection: school.events.excluding(online_event), as: :event %>
+                        <% School.real.each do |school| %>
+                            <%= render partial: 'events/condensed_stats', locals: { event: school.next_event } %>
                         <% end %>
                     </tbody>
                 </table>
@@ -221,7 +222,7 @@
     <% if @user.area_manager? && (current_user.area_manager? || current_user.admin?) %>
         <div class="card">
             <h2>All Schools</h2>
-            <%= render partial: 'events/stats_summary', locals: { events: Event.all.excluding(online_event) } %>
+            <%= render partial: 'events/stats_summary', locals: { events: upcoming_events } %>
         </div>
 
         <% @user.managed_areas.each do |area| %>
@@ -230,7 +231,7 @@
             <div class="card">
                 <h2 class="fw-semibold"><%= area.name %></h2>
 
-                <%= render partial: 'events/stats_summary', locals: { events: area.events.excluding(online_event) } %>
+                <%= render partial: 'events/stats_summary', locals: { events: upcoming_events } %>
             </div>
 
             <div class="card">
@@ -251,8 +252,8 @@
                         </thead>
 
                         <tbody>
-                            <% area.schools.each do |school| %>
-                                <%= render partial: 'events/condensed_stats', collection: school.events.excluding(online_event), as: :event %>
+                            <% area.schools.real.each do |school| %>
+                                <%= render partial: 'events/condensed_stats', locals: { event: school.next_event} %>
                             <% end %>
                         </tbody>
                     </table>
@@ -269,7 +270,7 @@
             <% next_event = school.next_event %>
 
             <div class="card">
-                <%= render partial: 'events/event_stats', collection: school.events, as: :event %>
+                <%= render partial: 'events/event_stats', locals: { event: school.next_event } %>
             </div>
 
             <div class="card">
