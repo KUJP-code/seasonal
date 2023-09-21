@@ -1,19 +1,24 @@
 <main id="invoice_index" class="gap-5">
     <% if @user %>
-        <% event_cost = @user.invoices.reduce(0) { |sum, invoice| sum + invoice.total_cost } %>
+        <% child_events = @user.children.map(&:events).flatten.map(&:id) %>
 
-        <% @user.events.map(&:name).uniq.each do |name| %>
-            <div class="card bg-info">
-                <h2><%= t('.event_cost', cost: number_to_currency(event_cost, unit: '円', precision: 0, locale: :ja), event: name) %></h2>
-                <p>複数のお子様のお申し込みをされた場合、合算された金額となります。</p>
-            </div>
-        <% end %>
+        <div class="card bg-info">
+            <% event_cost = @user.invoices
+                            .where(event_id: child_events)
+                            .reduce(0) { |sum, i| sum + i.total_cost } %>
+            <h2>
+                <%= t('.event_cost', cost: number_to_currency(event_cost, unit: '円', precision: 0, locale: :ja), event: @user.children.first.school.next_event.name) %>
+            </h2>
+            <p>
+                複数のお子様のお申し込みをされた場合、合算された金額となります。
+            </p>
+        </div>
 
         <% @user.children.each do |child| %>
             <% next if child.events.empty? %>
 
             <h1><%= link_to child.name, child_path(child) %></h1>     
-            <% child.events.order(start_date: :asc).each do |event| %>
+            <% child.events.order(start_date: :desc).each do |event| %>
                 <% next unless @invoices.find { |i| i.event_id == event.id } %>
 
                 <%= render event, partial: 'events/event', child: nil %>
@@ -22,17 +27,23 @@
             <% end %>
         <% end %>
     <% else %>
-        <% event_cost = @child.parent.invoices.reduce(0) { |sum, invoice| sum + invoice.total_cost } %>
+        <% next_event = @child.school.next_event %>
+        <% event_cost = @child.invoices
+                        .select { |i| i.event_id == next_event.id }
+                        .reduce(0) { |sum, i| sum + i.total_cost } %>
 
-        <% @child.events.map(&:name).uniq.each do |name| %>
-            <div class="card bg-info">
-                <h2><%= t('.event_cost', cost: number_to_currency(event_cost, unit: '円', precision: 0, locale: :ja), event: name) %></h2>
-                <p>複数のお子様のお申し込みをされた場合、合算された金額となります。</p>
-            </div>
-        <% end %>
+
+        <div class="card bg-info">
+            <h2>
+                <%= t('.event_cost', cost: number_to_currency(event_cost, unit: '円', precision: 0, locale: :ja), event: next_event.name) %>
+            </h2>
+            <p>
+                複数のお子様のお申し込みをされた場合、合算された金額となります。
+            </p>
+        </div>
 
         <h1><%= link_to @child.name, child_path(@child) %></h1>     
-        <% @child.events.order(start_date: :asc).each do |event| %>
+        <% @child.events.order(start_date: :desc).each do |event| %>
             <% next unless @invoices.find { |i| i.event_id == event.id } %>
 
             <%= render event, partial: 'events/event', child: nil %>

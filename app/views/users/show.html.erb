@@ -39,16 +39,16 @@
 
     <% if @user.customer? && @user.children.size.positive? %>
         <div class="card">
-            <div class="mb-3">
+            <div>
                 <ul>
                     <% schools.each do |school| %>
-                        <li><%= t('.school_name', school: school) %></li>
+                        <li class="fw-bold"><%= t('.school_name', school: school) %></li>
                     <% end %>
                 </ul>
             </div>
 
-            <div>
-                <h4 class="fw-bold mb-3"><%= t(".children") %></h4>
+            <div class="d-flex flex-column gap-3">
+                <h4 class="fw-bold"><%= t(".children") %></h4>
 
                 <div class="d-flex flex-wrap justify-content-center gap-5">
                     <% @user.children.each do |child| %>
@@ -67,9 +67,17 @@
 
     <% if @user.customer? && @user.children.size.positive? %>
         <div class="card">
-            <%= link_to t('.user_bookings', user: @user.name), invoices_path(user: @user.id), class: 'btn btn-primary' unless @user.children.joins(:real_invoices).empty? %>
-            <%= link_to t('.email_prefs'), mailer_subscriptions_path, class: 'btn btn-primary' %>
-            <%= link_to t('.edit_info'), edit_user_path(@user), class: 'btn btn-primary' %>
+            <%= link_to t('.user_bookings', user: @user.name),
+                invoices_path(user: @user.id),
+                class: 'btn btn-primary' unless @user.children.joins(:real_invoices).empty? %>
+
+            <%= link_to t('.email_prefs'),
+                        mailer_subscriptions_path,
+                        class: 'btn btn-primary' %>
+
+            <%= link_to t('.edit_info'),
+                        edit_user_path(@user),
+                        class: 'btn btn-primary' %>
         </div>
     <% end %>
 

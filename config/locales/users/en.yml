@@ -39,6 +39,8 @@ en:
       delete: "Delete User"
       delete_confirm: "Are you sure you want to delete this user?"
       edit: "Edit User"
+      edit_info: "Edit Personal Information"
+      email_prefs: "Email Preferences"
       event: "Events"
       greet: "Hello、%{user}-さん!"
       remove_child: "Remove Child"
