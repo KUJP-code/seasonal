@@ -20,7 +20,6 @@
             <% if add_slot.special? ||
                   (add_slot.int_modifier != 0 && child.internal?) ||
                   (add_slot.ext_modifier != 0 && child.external?) %>
-                <p>スペシャルデー: ◯</p>
                 <% if add_slot.int_modifier != 0 && child.internal? %>
                     <p><%= t('.extra_charge', cost: number_to_currency(add_slot.int_modifier, unit: '円', precision: 0, locale: :ja))  %></p>
                 <% elsif add_slot.ext_modifier != 0 && child.external? %>
@@ -61,7 +60,6 @@
                     <% if add_slot.special? ||
                           (add_slot.int_modifier != 0 && child.internal?) ||
                           (add_slot.ext_modifier != 0 && child.external?) %>
-                        <p>スペシャルデー: ◯</p>
                         <% if add_slot.int_modifier != 0 && child.internal? %>
                           <p><%= t('.extra_charge', cost: number_to_currency(add_slot.int_modifier, unit: '円', precision: 0, locale: :ja))  %></p>
                         <% elsif add_slot.ext_modifier != 0 && child.external? %>
@@ -229,7 +227,6 @@
                     <% if afternoon_slot.special? ||
                             (afternoon_slot.int_modifier != 0 && child.internal?) ||
                             (afternoon_slot.ext_modifier != 0 && child.external?) %>
-                        <p>スペシャルデー: ◯</p>
                         <% if afternoon_slot.int_modifier != 0 && child.internal? %>
                             <p><%= t('.extra_charge', cost: number_to_currency(afternoon_slot.int_modifier, unit: '円', precision: 0, locale: :ja))  %></p>
                         <% elsif afternoon_slot.ext_modifier != 0 && child.external? %>
@@ -284,7 +281,6 @@
                             <% if afternoon_slot.special? ||
                                   (afternoon_slot.int_modifier != 0 && child.internal?) ||
                                   (afternoon_slot.ext_modifier != 0 && child.external?) %>
-                                <p>スペシャルデー: ◯</p>
                                 <% if afternoon_slot.int_modifier != 0 && child.internal? %>
                                     <p><%= t('.extra_charge', cost: number_to_currency(afternoon_slot.int_modifier, unit: '円', precision: 0, locale: :ja))  %></p>
                                 <% elsif afternoon_slot.ext_modifier != 0 && child.external? %>

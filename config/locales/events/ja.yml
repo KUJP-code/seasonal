@@ -39,7 +39,7 @@ ja:
       see_more: "詳細を見る"
       sibling_reg: "%{opt}は1家族につき1名様のお申込みでご利用可能です"
       snack_count: "午後コースおやつ代: %{count}つ"
-      special_count: "スペシャルデー: %{count}つ"
+      special_count: "追加料金: %{count}つ"
       total_cost: "合計（税込）"
       time_slot: "%{event}のタイムスロット"
       title: "%{name} @ %{school}"
