@@ -1,8 +1,9 @@
 en:
   events:
     event:
+      diff_school: "School to register at"
       diff_school_reg: "Register at a different school"
-      reg_at_selected: "Register at the school selected above"
+      reg_at_selected: "Register at the selected school"
       title: "%{name} at %{school}"
     show:
       all_slots: "See all time slots for %{event}"

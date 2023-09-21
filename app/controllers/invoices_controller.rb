@@ -3,17 +3,7 @@
 # Controls flow of information for Invoices
 class InvoicesController < ApplicationController
   def index
-    @invoices = if params[:event] && params[:user]
-                  User.find(params[:user]).invoices.where(event: Event.find(params[:event]))
-                elsif params[:user]
-                  User.find(params[:user]).invoices
-                elsif params[:child]
-                  Child.find(params[:child]).invoices
-                else
-                  current_user.invoices
-                end
-    @invoices.order(updated_at: :desc)
-    authorize(@invoices)
+    @invoices = authorize(parent_or_child_invoices)
     params[:user] ? @user = User.find(params[:user]) : @child = Child.find(params[:child])
   end
 
@@ -195,6 +185,16 @@ class InvoicesController < ApplicationController
       to.coupons << coupon
     end
     to.save
+  end
+
+  def parent_or_child_invoices
+    if params[:user]
+      User.find(params[:user]).real_invoices.distinct
+    elsif params[:child]
+      Child.find(params[:child]).real_invoices.distinct
+    else
+      current_user.real_invoices.distinct
+    end
   end
 
   def send_emails(invoice)

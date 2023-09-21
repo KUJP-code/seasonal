@@ -1,4 +1,4 @@
-<main id="invoice_index" class="gap-5">
+<main id="invoice_index" class="gap-5 py-5">
     <% if @user %>
         <% child_events = @user.children.map(&:events).flatten.map(&:id) %>
 
@@ -15,13 +15,13 @@
         </div>
 
         <% @user.children.each do |child| %>
-            <% next if child.events.empty? %>
+            <% next if child.real_invoices.empty? %>
 
             <h1><%= link_to child.name, child_path(child) %></h1>     
             <% child.events.order(start_date: :desc).each do |event| %>
                 <% next unless @invoices.find { |i| i.event_id == event.id } %>
 
-                <%= render event, partial: 'events/event', child: nil %>
+                <%= render event, partial: 'events/event', child: child %>
 
                 <%= render partial: 'invoices/invoice', collection: @invoices.select { |invoice| invoice.child_id == child.id && invoice.event_id == event.id }, locals: { index: true } %>
             <% end %>
@@ -46,7 +46,7 @@
         <% @child.events.order(start_date: :desc).each do |event| %>
             <% next unless @invoices.find { |i| i.event_id == event.id } %>
 
-            <%= render event, partial: 'events/event', child: nil %>
+            <%= render event, partial: 'events/event', child: @child %>
 
             <%= render partial: 'invoices/invoice', collection: @invoices.select { |invoice| invoice.child_id == @child.id && invoice.event_id == event.id }, locals: { index: true } %>
         <% end %>
