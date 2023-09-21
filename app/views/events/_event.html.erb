@@ -28,12 +28,20 @@
         </button>
 
         <div class="collapse" id="school_select">
-            <%= form_with method: :get, url: :diff_school_path, html: { class: 'd-grid gap-3' } do |f| %>
+            <%= form_with method: :get, 
+                          url: :diff_school_path,
+                          html: { class: 'd-grid gap-3' } do |f| %>
                 <%= f.hidden_field :child, value: child.id %>
 
+                <%# For all schools other than test and online, create an option with the text as the school name and the value as id of the next event at that school %>
                 <div>
                     <%= f.label :id, t('.diff_school') %>
-                    <%= f.collection_select :id, School.all.where.not(id: [1, 2]), :id, :name, {}, class: 'form-select' %>
+                    <%= f.collection_select :id,
+                                            School.all.where.not(id: [1, 2]),
+                                            proc { |s| s.next_event.id },
+                                            :name,
+                                            {},
+                                            class: 'form-select' %>
                 </div>
 
                 <%= f.submit t('.reg_at_selected'), class: 'btn btn-primary' %>

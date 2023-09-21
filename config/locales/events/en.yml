@@ -1,6 +1,7 @@
 en:
   events:
     event:
+      diff_school_reg: "Register at a different school"
       reg_at_selected: "Register at the school selected above"
       title: "%{name} at %{school}"
     show:
