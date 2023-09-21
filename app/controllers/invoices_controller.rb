@@ -20,7 +20,9 @@ class InvoicesController < ApplicationController
   def show
     @invoice = authorize(Invoice.find(params[:id]))
     @updated = true if params[:updated]
-    @previous_versions = @invoice.versions.where.not(object: nil).reorder(created_at: :desc).reject{ |v| v.reify.total_cost.zero? }
+    @previous_versions = @invoice.versions.where.not(object: nil)
+                                 .reorder(created_at: :desc)
+                                 .reject { |v| v.reify.total_cost.zero? }
   end
 
   def update
@@ -212,11 +214,14 @@ class InvoicesController < ApplicationController
     @child_invoices = @invoice.child.real_invoices.where(event_id: @invoice.event_id)
 
     if @invoice.update(invoice_params)
+      @invoice.reload
       respond_to do |format|
         format.turbo_stream
       end
     else
-      redirect_to invoice_path(@invoice), status: :unprocessable_entity, notice: t('failure', model: 'お申込', action: '更新')
+      redirect_to invoice_path(@invoice),
+                  status: :unprocessable_entity,
+                  notice: t('failure', model: 'お申込', action: '更新')
     end
   end
 

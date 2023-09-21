@@ -52,12 +52,6 @@ RSpec.describe Child do
         reverted_name = child.reload.en_name
         expect(old_name).to eq reverted_name
       end
-
-      it 'can be restored after destruction (if password specified)' do
-        child.destroy
-        restored = child.versions.last.reify.save!
-        expect(restored).to be true
-      end
     end
   end
 

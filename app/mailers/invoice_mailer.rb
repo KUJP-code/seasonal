@@ -9,10 +9,7 @@ class InvoiceMailer < ApplicationMailer
   end
 
   def updated_notif
-    @invoice = params[:invoice]
-    @updater = @invoice.versions.last.whodunnit ? User.find(@invoice.versions.last.whodunnit) : User.new(name: 'Admin')
-    @child = @invoice.child
-    @parent = @child.parent
+    set_shared_vars
     if @parent.id == @updater.id
       mail(to: @parent.email, subject: t('.booking_made'))
     else
@@ -21,11 +18,21 @@ class InvoiceMailer < ApplicationMailer
   end
 
   def sm_updated_notif
-    @invoice = params[:invoice]
-    @updater = @invoice.versions.last.whodunnit ? User.find(@invoice.versions.last.whodunnit) : User.new(name: 'Admin')
-    @child = @invoice.child
-    @parent = @child.parent
+    set_shared_vars
     @sm = @invoice.school.managers.first || User.new(name: 'Leroy', email: 'h-leroy@kids-up.jp')
     mail(to: @sm.email, subject: t('.invoice_updated'))
   end
+end
+
+private
+
+def set_shared_vars
+  @invoice = params[:invoice]
+  @child = @invoice.child
+  @updater = if !@invoice.versions.empty? && @invoice.versions.last.whodunnit
+               User.find(@invoice.versions.last.whodunnit)
+             else
+               User.new(name: 'Admin')
+             end
+  @parent = @child.parent
 end
