@@ -3,7 +3,7 @@
         <% @events.each do |event| %>
             <%= link_to time_slots_path(event: event.id) do %>
                 <div class="card<%= ' bg-primary text-white fw-semibold' if event.id == @event.id %>">
-                    <%= event.school.name %>
+                    <%= current_user.school_manager? ? event.name : event.school.name %>
                 </div>
             <% end %>
         <% end %>
@@ -16,6 +16,6 @@
     <% end %>
 
     <div class="row row-cols-5 justify-content-evenly gap-3">
-        <%= render partial: 'time_slots/time_slot', collection: @event.time_slots.morning.or(@event.time_slots.special).includes(:afternoon_slot).with_attached_image.order(:start_time) %>
+        <%= render partial: 'time_slots/time_slot', collection: @slots %>
     </div>
 </main>

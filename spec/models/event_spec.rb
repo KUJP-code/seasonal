@@ -12,19 +12,6 @@ RSpec.describe Event do
       valid = valid_event.save!
       expect(valid).to be true
     end
-
-    # Can't test past events cos of db constraints
-    it 'lists current events' do
-      current_event = create(:event, start_date: Time.zone.today, end_date: Time.zone.today)
-      current_events = described_class.all.current_events
-      expect(current_events).to match_array(current_event)
-    end
-
-    it 'lists future events' do
-      future_event = create(:event, start_date: 2.days.from_now)
-      future_events = described_class.all.future_events
-      expect(future_events).to match_array(future_event)
-    end
   end
 
   context 'when invalid' do

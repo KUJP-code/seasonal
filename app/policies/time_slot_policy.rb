@@ -2,10 +2,6 @@
 
 # Handles authorisation for TimeSlots
 class TimeSlotPolicy < ApplicationPolicy
-  def index?
-    user.staff?
-  end
-
   def show?
     user.admin?
   end
@@ -31,13 +27,13 @@ class TimeSlotPolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin'
-        Event.all.includes(:school)
+        Event.upcoming.real
       when 'area_manager'
-        user.area_events.includes(:school)
+        user.area_events.upcoming.real
       when 'school_manager'
-        user.school_events.includes(:school)
+        user.school_events
       else
-        user.children_events.includes(:school)
+        user.children_events.upcoming.real
       end
     end
   end

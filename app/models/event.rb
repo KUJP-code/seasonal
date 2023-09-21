@@ -33,10 +33,9 @@ class Event < ApplicationRecord
 
   validates_comparison_of :end_date, greater_than_or_equal_to: :start_date
 
-  # Scopes for event time
-  scope :past_events, -> { where('end_date < ?', Time.zone.today).order(start_date: :desc) }
-  scope :current_events, -> { where('start_date <= ? and end_date >= ?', Time.zone.today, Time.zone.today) }
-  scope :future_events, -> { where('start_date > ?', Time.zone.today).order(start_date: :asc) }
+  # Scopes
+  scope :real, -> { where.not(school_id: [1, 2]).includes(:school) }
+  scope :upcoming, -> { where('end_date > ?', Time.zone.now) }
 
   # Public Methods
   # List children attending from other schools

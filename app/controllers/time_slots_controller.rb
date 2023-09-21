@@ -3,9 +3,13 @@
 # Handles flow of information for Time Slots
 class TimeSlotsController < ApplicationController
   def index
-    authorize(TimeSlot)
-    @events = policy_scope(TimeSlot)
-    @event = @events.find { |e| e.id == params[:event].to_i } || @events.first
+    @events = policy_scope(TimeSlot).order(:school_id)
+    @event = @events.find { |e| e.id == params[:event].to_i } || @events.last
+    @slots = @event.time_slots.morning
+                   .or(@event.time_slots.special)
+                   .includes(:afternoon_slot)
+                   .with_attached_image
+                   .order(:start_time)
   end
 
   def show
