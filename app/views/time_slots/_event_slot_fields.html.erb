@@ -28,6 +28,18 @@
         <%= f.select :category, TimeSlot.categories.map { |k, _v| [k.capitalize, k] } , {}, {class: 'form-select'} %>
     </div>
 
+    <div class="form-floating input-group">
+        <%= f.number_field :int_modifier, class: 'form-control', placeholder: 0 %>
+        <%= f.label :int_modifier, 'Internal Extra Charge', class: 'form-label' %>
+        <span class="input-group-text">円</span>
+    </div>
+
+    <div class="form-floating input-group">
+        <%= f.number_field :ext_modifier, class: 'form-control', placeholder: 0 %>
+        <%= f.label :ext_modifier, 'External Extra Charge', class: 'form-label' %>
+        <span class="input-group-text">円</span>
+    </div>
+
     <% if f.object.new_record? %>
         <%= button_tag 'Remove Activity', data: { action: "fields#remove" }, class: 'btn btn-danger' %>
     <% else %>

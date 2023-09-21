@@ -32,6 +32,18 @@
         <%= f.select :category, TimeSlot.categories.map { |k, _v| [k.capitalize, k] } , {}, {class: 'form-select'} %>
     </div>
 
+    <div class="form-floating input-group">
+        <%= f.number_field :int_modifier, class: 'form-control', placeholder: 0 %>
+        <%= f.label :int_modifier, 'Internal Extra Charge', class: 'form-label' %>
+        <span class="input-group-text">円</span>
+    </div>
+
+    <div class="form-floating input-group">
+        <%= f.number_field :ext_modifier, class: 'form-control', placeholder: 0 %>
+        <%= f.label :ext_modifier, 'External Extra Charge', class: 'form-label' %>
+        <span class="input-group-text">円</span>
+    </div>
+
     <% if @slot.special? && @slot.morning %>
         <div class="form-check">
             <%= f.check_box :apply_all, class: 'form-check-input' %>
@@ -107,6 +119,18 @@
                     <div class="form-floating">
                         <%= aft_f.datetime_field :end_time, class: 'form-control', placeholder: 'End time' %>
                         <%= aft_f.label :end_time, 'End time', class: 'form-label' %>
+                    </div>
+
+                    <div class="form-floating input-group">
+                        <%= aft_f.number_field :int_modifier, class: 'form-control', placeholder: 0 %>
+                        <%= aft_f.label :int_modifier, 'Internal Extra Charge', class: 'form-label' %>
+                        <span class="input-group-text">円</span>
+                    </div>
+
+                    <div class="form-floating input-group">
+                        <%= aft_f.number_field :ext_modifier, class: 'form-control', placeholder: 0 %>
+                        <%= aft_f.label :ext_modifier, 'External Extra Charge', class: 'form-label' %>
+                        <span class="input-group-text">円</span>
                     </div>
                 </div>
             </div>
