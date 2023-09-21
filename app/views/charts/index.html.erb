@@ -3,6 +3,32 @@
     <% external_invoices = @invoices.reject { |i| i.child.member? }.map(&:id) %>
     <% new_slots = TimeSlot.where('created_at > ?', "1 July 2023") %>
 
+    <h1>Select school:</h1>
+
+    <% if current_user.admin? %>
+        <nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
+            <%= link_to "All Schools",
+                        charts_path,
+                        class: "card bg-primary text-white fw-semibold" %>
+            <% @school_hash.each do |school| %>
+                <%= link_to school[1], chart_path(school[0]), class: "card" %>
+            <% end %>
+        </nav>
+    <% end %>
+
+    <% if current_user.area_manager? %>
+        <nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
+            <%= link_to "Area Schools",
+                        charts_path,
+                        class: "card bg-primary text-white fw-semibold" %>
+            <% @school_hash.each do |school| %>
+                <%= link_to school[1], chart_path(school[0]), class: "card" %>
+            <% end %>
+        </nav>
+    <% end %>
+
+    <h1>Select stat type:</h1>
+
     <%# Bookings %>
 
     <%= line_chart @slot_registrations.group_by_day(:created_at).count, 

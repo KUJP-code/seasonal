@@ -3,11 +3,11 @@
 # Handles authorization for Adjustments
 class ChartPolicy < ApplicationPolicy
   def index?
-    user.admin?
+    user.admin? || user.area_manager?
   end
 
   def show?
-    user.admin?
+    user.staff?
   end
 
   class Scope < Scope
