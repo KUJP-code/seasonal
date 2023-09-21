@@ -2,6 +2,7 @@ $primary: #f48000;
 $secondary: #4e4a4a;
 $success: #198754;
 $danger: #dc3545;
+$warning: #ffc107;
 $info: #9cc1d8;
 
 :root {
@@ -155,12 +156,14 @@ input[type="text"]:disabled {
 
 .btn-success:hover,
 .btn-success:active {
-  background-color: $danger !important;
+  background-color: $warning !important;
+  color: #222222;
 }
 
-.btn-danger:hover,
-.btn-danger:active {
+.btn-warning:hover,
+.btn-warning:active {
   background-color: $success !important;
+  color: var(--near-white);
 }
 
 // Tables

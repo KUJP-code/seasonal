@@ -11,7 +11,7 @@
             <% if time_slot.closed? %>
                 <%= form_with model: time_slot, html_options: { class: 'w-100' } do |f| %>
                     <%= f.hidden_field :closed, value: 0 %>
-                    <%= f.submit t('.reopen'), class: 'btn btn-danger w-100' %>
+                    <%= f.submit t('.reopen'), class: 'btn btn-warning w-100' %>
                 <% end %>
             <% else %>
                 <%= form_with model: time_slot, html_options: { class: 'w-100' } do |f| %>
@@ -24,7 +24,7 @@
             <% if afternoon && afternoon.closed? %>
                 <%= form_with model: afternoon, html_options: { class: 'w-100' } do |f| %>
                     <%= f.hidden_field :closed, value: 0 %>
-                    <%= f.submit t('.aft_reopen'), class: 'btn btn-danger w-100' %>
+                    <%= f.submit t('.aft_reopen'), class: 'btn btn-warning w-100' %>
                 <% end %>
             <% elsif afternoon %>
                 <%= form_with model: afternoon, html_options: { class: 'w-100' } do |f| %>
