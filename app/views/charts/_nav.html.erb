@@ -1,0 +1,44 @@
+<% if current_user.admin? || current_user.area_manager? %>
+    <h1>Select school:</h1>
+
+    <nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
+        <%= link_to (current_user.admin? ? "All Schools" : "Area Schools"),
+        charts_path,
+        class: "card #{' bg-primary text-white fw-semibold' if @school.id == 0}" %>
+        <% @schools.each do |s| %>
+            <%= link_to s.name,
+                        chart_path(id: s.id, category: @category, event: @event),
+                        class: "card #{' bg-primary text-white fw-semibold' if @school.id == s.id}"  %>
+        <% end %>
+    </nav>
+<% end %>
+
+<h1>Select event:</h1>
+<nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
+    <% @events.each do |e| %>
+        <% if @school.id.zero? %>
+            <%= link_to e,
+                charts_path(category: @category, event: e),
+                class: "card #{' bg-primary text-white fw-semibold' if e == @event}" %>
+        <% else %>
+            <%= link_to e,
+                chart_path(id: @school.id, category: @category, event: e),
+                class: "card #{' bg-primary text-white fw-semibold' if e == @event}" %>
+        <% end %>
+    <% end %>
+</nav>
+
+<h1>Select category:</h1>
+<nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
+    <% @categories.each do |c| %>
+        <% if @school.id.zero? %>
+          <%= link_to c.capitalize,
+              charts_path(category: c, event: @event),
+              class: "card #{' bg-primary text-white fw-semibold' if c == @category}" %>
+        <% else %>
+          <%= link_to c.capitalize,
+              chart_path(id: @school.id, category: c, event: @event),
+              class: "card #{' bg-primary text-white fw-semibold' if c == @category}" %>
+        <% end %>
+    <% end %>
+</nav>
