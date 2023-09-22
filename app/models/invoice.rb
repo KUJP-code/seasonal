@@ -42,7 +42,7 @@ class Invoice < ApplicationRecord
 
   # Scopes
   # Only invoices with at least one time slot registered for (real)
-  scope :real, -> { where.associated(:time_slots) }
+  scope :real, -> { where.associated(:time_slots).distinct }
 
   # Validations
   validates :total_cost, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
