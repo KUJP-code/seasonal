@@ -118,10 +118,10 @@ class ChartsController < ApplicationController
 
       {
         customer_edits: PaperTrail::Version
-          .where(item_type: 'Invoice', whodunnit: parent_ids)
+          .where(item_type: 'Invoice', event: 'update', whodunnit: parent_ids)
           .group_by_day(:created_at).count,
         staff_edits: PaperTrail::Version
-          .where(item_type: 'Invoice', whodunnit: User.staff.ids)
+          .where(item_type: 'Invoice', event: 'update', whodunnit: User.staff.ids)
           .group_by_day(:created_at).count
       }
     end
@@ -147,6 +147,47 @@ class ChartsController < ApplicationController
   end
 
   def options_data
-    nil
+    school = @nav[:school]
+
+    if school.id.zero?
+      {}
+    else
+      event = school.events.find_by(name: @nav[:event])
+      slot_ids = event.time_slots.ids
+
+      {
+        all_opts: options_all(slot_ids.push(event.id)),
+        arrive_opts: options_arrive(slot_ids.push(event.id)),
+        depart_opts: options_depart(slot_ids.push(event.id))
+      }
+    end
+  end
+
+  def options_all(optionable_ids)
+    Option.where(optionable_id: optionable_ids)
+          .joins(:registrations)
+          .group('options.name')
+  end
+
+  def options_arrive(optionable_ids)
+    Option.where(
+      optionable_id: optionable_ids,
+      category: %i[arrival k_arrival]
+    )
+          .joins(:registrations)
+          .group('options.name')
+          .count('options.name')
+          .except('なし')
+  end
+
+  def options_depart(optionable_ids)
+    Option.where(
+      optionable_id: optionable_ids,
+      category: %i[departure k_departure]
+    )
+          .joins(:registrations)
+          .group('options.name')
+          .count('options.name')
+          .except('なし')
   end
 end

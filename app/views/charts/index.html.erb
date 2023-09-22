@@ -3,40 +3,12 @@
     <% external_invoices = @invoices.reject { |i| i.child.member? }.map(&:id) %>
     <% new_slots = TimeSlot.where('created_at > ?', "1 July 2023") %>
 
-    <h1>Select school:</h1>
-
-    <% if current_user.admin? %>
-        <nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
-            <%= link_to "All Schools",
-                        charts_path,
-                        class: "card bg-primary text-white fw-semibold" %>
-            <% @school_hash.each do |school| %>
-                <%= link_to school[1], chart_path(school[0]), class: "card" %>
-            <% end %>
-        </nav>
-    <% end %>
-
-    <% if current_user.area_manager? %>
-        <nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
-            <%= link_to "Area Schools",
-                        charts_path,
-                        class: "card bg-primary text-white fw-semibold" %>
-            <% @school_hash.each do |school| %>
-                <%= link_to school[1], chart_path(school[0]), class: "card" %>
-            <% end %>
-        </nav>
-    <% end %>
-
-    <h1>Select stat type:</h1>
+    <%= render 'charts/nav' %>
 
     <%# Bookings %>
 
     <%= line_chart @slot_registrations.group_by_day(:created_at).count, 
                    title: 'Daily Registrations',
-                   time_zone: false %>
-
-    <%= line_chart @invoices.group_by_day(:created_at).count,
-                   title: 'Daily Bookings',
                    time_zone: false %>
 
     <%= line_chart @invoices.group_by_day(:created_at).sum(:total_cost),
@@ -101,18 +73,13 @@
                                 title: 'New Activity Popularity',
                                 height: '85dvh' %>
 
+    <%# Children %>
+
     <%= pie_chart @children.group(:grade).count,
                   title: 'Attendees by Grade',
-                  donut: true,
                   height: '50dvh' %>
 
     <%# Coupons %>
-
-    <% coupon_revenue_data = 
-    School.where(id: [3, 9, 10, 11, 17, 20, 21, 25, 30, 34]).map do |school| 
-            [school.name, (school.coupons.where(code: 'Thank youクーポン', couponable_id: internal_invoices).count * 3_000) + 
-            (school.coupons.where(code: 'Thank youクーポン', couponable_id: external_invoices).count * 5_000)]
-            end.sort_by {|s| s[1]}.reverse %>
 
     <%= line_chart @coupons.where.not(code: "")
                            .group(:code)
@@ -120,22 +87,6 @@
                            title: "Daily Coupon Use",
                            time_zone: false %>
 
-    <div class="d-flex justify-content-center align-items-center gap-5 p-3 w-100 text-center">
-        <div class="d-flex flex-column">
-            <h2 class="fw-semibold text-primary">
-                <%= number_to_currency(coupon_revenue_data.reduce(0) { |sum, point| sum + point[1] }, unit: '円', precision: 0, locale: :ja) %>
-            </h2>
-            <p>Thank youクーポン Revenue</p>
-        </div>
-        <div class="d-flex flex-column">
-            <h2 class="fw-semibold text-primary">
-                <%= @coupons.select { |coupon| coupon.code ==  'Thank youクーポン' }.size %>
-            </h2>
-            <p>Thank youクーポン Count</p>
-        </div>
-    </div>
-
-    <%= bar_chart coupon_revenue_data, title: "Coupon Revenue by School", suffix: "円" %>
 
     <%# Options %>
 
