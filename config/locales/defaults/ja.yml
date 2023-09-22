@@ -136,7 +136,7 @@ ja:
     events: "イベント"
     logout: "サインアウト"
     time_slots: "開催日"
-  not_authorized: "この操作は出来ません。"
+  not_authorized: "そのURLへのアクセスは許可されていない。"
   number:
     currency:
       format:

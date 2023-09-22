@@ -6,10 +6,6 @@ class ChartPolicy < ApplicationPolicy
     user.admin? || user.area_manager?
   end
 
-  def show?
-    user.staff?
-  end
-
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
     # def resolve

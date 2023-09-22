@@ -12,6 +12,7 @@ en:
     schools: "Schools"
     time_slots: "Daily Activities"
     users: "Users"
+  not_authorized: "You don't have permission to access that. Contact Brett if you think you should."
   register: "Register"
   roles:
     admin: "admin"
