@@ -109,7 +109,22 @@ class ChartsController < ApplicationController
   end
 
   def edits_data
-    nil
+    school = @nav[:school]
+
+    if school.id.zero?
+      {}
+    else
+      parent_ids = school.parents.ids
+
+      {
+        customer_edits: PaperTrail::Version
+          .where(item_type: 'Invoice', whodunnit: parent_ids)
+          .group_by_day(:created_at).count,
+        staff_edits: PaperTrail::Version
+          .where(item_type: 'Invoice', whodunnit: User.staff.ids)
+          .group_by_day(:created_at).count
+      }
+    end
   end
 
   def nav_data(action)
