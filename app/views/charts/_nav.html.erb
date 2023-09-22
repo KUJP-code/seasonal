@@ -1,5 +1,5 @@
 <% if current_user.admin? || current_user.area_manager? %>
-    <h1>Select school:</h1>
+    <h1>School:</h1>
 
     <nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
         <%= link_to (current_user.admin? ? "All Schools" : "Area Schools"),
@@ -15,7 +15,7 @@
     </nav>
 <% end %>
 
-<h1>Select event:</h1>
+<h1>Event:</h1>
 <nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
     <% @nav[:events].each do |e| %>
         <% if @nav[:school].id.zero? %>
@@ -30,7 +30,7 @@
     <% end %>
 </nav>
 
-<h1>Select category:</h1>
+<h1>Category:</h1>
 <nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
     <% @nav[:categories].each do |c| %>
         <% if @nav[:school].id.zero? %>

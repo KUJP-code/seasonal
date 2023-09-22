@@ -15,6 +15,8 @@ class Event < ApplicationRecord
                                              reject_if: :all_blank
   has_many :options, as: :optionable,
                      dependent: :destroy
+  has_many :event_option_regs, through: :options,
+                               source: :registrations
   accepts_nested_attributes_for :options, allow_destroy: true,
                                           reject_if: :all_blank
   has_many :slot_options, through: :time_slots,

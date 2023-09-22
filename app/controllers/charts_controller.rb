@@ -35,8 +35,8 @@ class ChartsController < ApplicationController
     end
   end
 
-  def activties_all_data
-    event_ids = Event.upcoming.ids
+  def activities_all_data
+    event_ids = Event.where(name: @nav[:event]).ids
     school_ids = School.real.ids
     slots = TimeSlot.where(id: school_ids, event_id: event_ids)
 
@@ -58,7 +58,26 @@ class ChartsController < ApplicationController
   end
 
   def bookings_data
-    "worked"
+    school = @nav[:school]
+
+    if school.id.zero?
+      bookings_all_data
+    else
+      bookings_school_data(school)
+    end
+  end
+
+  def bookings_all_data
+    {}
+  end
+
+  def bookings_school_data(school)
+    event = school.events.find_by(name: @nav[:event])
+
+    {
+      invoices: event.invoices,
+      regs: event.registrations
+    }
   end
 
   def children_data
