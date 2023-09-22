@@ -17,3 +17,5 @@ AllCops:
 
 Metrics/ClassLength:
   Enabled: false
+Metrics/MethodLength:
+  Enabled: false
