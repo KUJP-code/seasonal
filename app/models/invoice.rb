@@ -41,8 +41,8 @@ class Invoice < ApplicationRecord
   acts_as_copy_target
 
   # Scopes
-  # Only invoices with at least one time slot registered for (real)
-  scope :real, -> { where.associated(:time_slots).distinct }
+  # Only invoices with at least one time slot registered
+  scope :real, -> { where('slot_regs_count > 0') }
 
   # Validations
   validates :total_cost, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
