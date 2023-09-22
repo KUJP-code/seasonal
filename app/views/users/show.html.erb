@@ -269,7 +269,6 @@
 
     <% if @user.school_manager? %>
         <% deleted_invoices = PaperTrail::Version.where(whodunnit: @user.id, event: 'destroy', item_type: 'Invoice').order(created_at: :desc).map(&:reify).compact.select { |i| i.total_cost.positive? } %>
-        <% hat_kids = @user.managed_schools.first.hat_kids %>
 
         <% @user.managed_schools.each do |school| %>
             <% next_event = school.next_event %>
@@ -290,9 +289,7 @@
             </div>
 
             <%= render partial: 'events/daily_attendance', locals: { event: school.next_event } %>
-
-            <%= render partial: 'children/hat_kids', locals: { children: hat_kids } if hat_kids.size.positive? %>
-
+            
             <% if deleted_invoices.size.positive? %>
               <%= render partial: 'invoices/deleted', locals: { deleted_invoices: deleted_invoices } %>
             <% end %>

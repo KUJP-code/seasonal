@@ -81,15 +81,26 @@ class ChartsController < ApplicationController
   end
 
   def children_data
-    "worked"
+    school = @nav[:school]
+
+    if school.id.zero?
+      {}
+    else
+      event = school.events.find_by(name: @nav[:event])
+
+      {
+        children: event.children.includes(:invoices),
+        hat_kids: school.hat_kids
+      }
+    end
   end
 
   def coupons_data
-    "worked"
+    nil
   end
 
   def edits_data
-    "worked"
+    nil
   end
 
   def nav_data(action)
@@ -112,6 +123,6 @@ class ChartsController < ApplicationController
   end
 
   def options_data
-    "worked"
+    nil
   end
 end

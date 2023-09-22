@@ -1,0 +1,75 @@
+<main id="charts_show_children">
+    <%= render 'charts/nav' %>
+
+    <h1>Child Stats</h1>
+
+    <div class="w-100 d-flex">
+        <%= pie_chart @data[:children].group(:grade).count,
+                      title: 'Attendees by Grade',
+                      height: '50dvh' %>
+        <%= pie_chart @data[:children].group(:category).count,
+                      title: 'Attendees by Category',
+                      height: '50dvh' %>
+    </div>
+
+    <h1>VIPs</h1>
+
+    <% big_spenders = @data[:children].reduce([]) do |arr, c|
+                        cost = c.invoices.reduce(0) { |s, i| s + i.total_cost }
+                        arr << [c, cost]
+                        arr
+                      end
+                      .sort_by! { |c| c[1] }
+                      .reverse
+                      .first(10)
+                      .to_h { |s| [s[0].name, { 
+                                    en_name: s[0].en_name,
+                                    registrations: s[0].invoices.reduce(0) { |sum, i| sum + i.slot_regs_count },
+                                    total_cost: s[1]
+                                    }] } %>
+    
+    <table class="table table-striped table-hover text-center">
+        <thead class="table-primary">
+            <tr>
+                <th>Name</th>
+                <th>En Name</th>
+                <th>Registrations</th>
+                <th>Total Spent</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <% big_spenders.each do |k, v| %>
+                <tr>
+                    <td><%= k %></td>
+                    <td><%= v[:en_name] %></td>
+                    <td><%= v[:registrations] %></td>
+                    <td><%= number_to_currency(v[:total_cost],
+                                               unit: '円',
+                                               precision: 0,
+                                               locale: :ja) %></td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+
+    <h1>Hat Kids</h1>
+
+    <table class="table table-striped table-hover text-center">
+        <thead class="table-primary">
+            <tr>
+                <th>Name</th>
+                <th>En Name</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% @data[:hat_kids].each do |k| %>
+                <tr>
+                    <td><%= k.name %></td>
+                    <td><%= k.en_name %></td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+</main>
