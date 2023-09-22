@@ -96,7 +96,16 @@ class ChartsController < ApplicationController
   end
 
   def coupons_data
-    nil
+    school = @nav[:school]
+
+    if school.id.zero?
+      {}
+    else
+      event = school.events.find_by(name: @nav[:event])
+      invoice_ids = Invoice.where(event_id: event.id).ids
+
+      Coupon.where(couponable_id: invoice_ids)
+    end
   end
 
   def edits_data
