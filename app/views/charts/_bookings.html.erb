@@ -39,3 +39,28 @@
                    suffix: "円",
                    height: "50vh" %>
 </div>
+
+<div class="w-100 d-flex">
+    <%= column_chart @data[:regs]
+                          .group_by_day_of_week(:created_at, format: '%A')
+                          .count,
+                     title: 'Registrations by Day of the Week',
+                     height: '50vh' %>
+
+    <%= column_chart @data[:regs].group_by_hour_of_day(:created_at).count,
+                     title: 'Registrations by Hour of Day',
+                     height: '50vh' %>
+</div>
+
+<% if @nav[:school].id.zero? %>
+    <%= column_chart @data[:invoices]
+                          .group(:event_id)
+                          .average(:total_cost)
+                          .to_h { |k, v| [@nav[:schools].find { |s| s.id == k }.name, v] }
+                          .sort_by { |_k, v| v}
+                          .reverse, 
+                     title: 'Average Booking Cost by School',
+                     round: 0,
+                     suffix: "円",
+                     height: '50vh' %>
+<% end %>

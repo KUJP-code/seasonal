@@ -29,7 +29,7 @@ class ChartsController < ApplicationController
   end
 
   def activities_all_data
-    event_ids = Event.where(name: @nav[:event]).ids
+    event_ids = Event.where(name: @nav[:event], school_id: School.real.ids).ids
     slots = TimeSlot.where(event_id: event_ids)
 
     {
@@ -64,7 +64,16 @@ class ChartsController < ApplicationController
   end
 
   def bookings_all_data
-    {}
+    event_ids = Event.where(name: @nav[:event], school_id: School.real.ids).ids
+    invoices = Invoice.where(event_id: event_ids)
+
+    {
+      invoices: invoices,
+      regs: Registration.where(
+        registerable_type: 'TimeSlot',
+        invoice_id: invoices.ids
+      )
+    }
   end
 
   def bookings_school_data(school)
