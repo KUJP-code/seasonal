@@ -7,15 +7,8 @@ class ChartsController < ApplicationController
 
   def index
     authorize(:chart)
-    # @nav = nav_data('index')
-    # @invoices = Invoice.where('total_cost > 3000').where.not(event_id: TEST_SCHOOLS).includes(:child)
-    # @coupons = Coupon.where(couponable_id: @invoices.ids)
-    # @children = Child.where.not(school_id: TEST_SCHOOLS).joins(:real_invoices).distinct
-    # @slot_registrations = Registration.all.where(registerable_type: 'TimeSlot', child_id: @children.ids)
-    # @school_hash = School.real.to_h { |school| [school.id, school.name] }
-    # @time_slots = TimeSlot.where(morning: true, category: %i[seasonal outdoor]).or(TimeSlot.where(category: :special))
-    # @versions = PaperTrail::Version.where(item_type: 'Invoice', event: 'update')
     @nav = nav_data('index')
+    @data = send("#{@nav[:category]}_data")
   end
 
   def show
@@ -37,23 +30,26 @@ class ChartsController < ApplicationController
 
   def activities_all_data
     event_ids = Event.where(name: @nav[:event]).ids
-    school_ids = School.real.ids
-    slots = TimeSlot.where(id: school_ids, event_id: event_ids)
+    slots = TimeSlot.where(event_id: event_ids)
 
     {
-      activities: slots.morning.or(slots.special),
-      afternoons: slots.afternoon.where.not(category: :special),
+      activities: slots.morning.or(slots.special)
+                       .group(:name).sum(:registrations_count),
+      afternoons: slots.afternoon.where.not(category: :special)
+                       .group(:name).sum(:registrations_count),
       slots: slots
     }
   end
 
   def activities_school_data(school)
-    event = school.events.find_by(name: @nav[:event])
+    slots = school.events.find_by(name: @nav[:event]).time_slots
 
     {
-      activities: event.time_slots.morning.or(event.time_slots.special),
-      afternoons: event.time_slots.afternoon.where.not(category: :special),
-      slots: event.time_slots
+      activities: slots.morning.or(slots.special)
+                       .group(:name).sum(:registrations_count),
+      afternoons: slots.afternoon.where.not(category: :special)
+                       .group(:name).sum(:registrations_count),
+      slots: slots
     }
   end
 

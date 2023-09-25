@@ -55,8 +55,8 @@ class TimeSlot < ApplicationRecord
   scope :future_slots, -> { where('start_time >= ?', Time.zone.now).order(start_time: :asc) }
 
   # For type of time slot
-  scope :morning, -> { where(morning: true).order(start_time: :asc) }
-  scope :afternoon, -> { where(morning: false).order(start_time: :asc) }
+  scope :morning, -> { where(morning: true) }
+  scope :afternoon, -> { where(morning: false) }
 
   # Public methods
   # Consolidates manual closing and automatic closing into one check

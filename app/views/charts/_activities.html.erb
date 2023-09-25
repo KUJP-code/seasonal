@@ -1,12 +1,10 @@
 <%= column_chart @data[:activities]
-                    .to_h { |a| [a.name, a.registrations_count]}
-                    .sort_by { |_k, v| v }.reverse,
+                      .sort_by { |_k, v| v }.reverse,
                  title: "Popularity",
                  height: "50vh" %>
 
 <%= column_chart @data[:afternoons]
-                .to_h { |a| [a.date, a.registrations_count]}
-                .sort_by { |_k, v| v }.reverse,
+                      .sort_by { |_k, v| v }.reverse,
                 title: "Afternoon Spot Use",
                 height: "50vh" %>
 
@@ -37,8 +35,8 @@
     </div>
 
     <% morn_aft = {
-        "Morning" => @data[:activities].reduce(0) { |sum, a| sum + a.registrations_count },
-        "Afternoon" => @data[:afternoons].reduce(0) { |sum, a| sum + a.registrations_count }
+        "Morning" => @data[:activities].reduce(0) { |sum, a| sum + a[1] },
+        "Afternoon" => @data[:afternoons].reduce(0) { |sum, a| sum + a[1] }
     } %>
     <%= pie_chart morn_aft, title: "Session Popularity", height: "50vh" %>
     
