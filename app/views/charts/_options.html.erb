@@ -1,0 +1,25 @@
+<%= column_chart @data[:all_opts]
+                       .count("options.name")
+                       .except("なし")
+                       .sort_by { |_k, v| v }.reverse,
+                 title: "Option Popularity",
+                 height: "50vh" %>
+
+<%= column_chart @data[:all_opts]
+                       .sum("options.cost")
+                       .except("なし")
+                       .sort_by { |_k, v| v }.reverse,
+                 title: "Option Revenue",
+                 suffix: "円",
+                 height: "50vh" %>
+
+<div class="w-100 d-flex">
+    <%= pie_chart @data[:arrive_opts],
+                  title: "Arrival Option Popularity",
+                  legend: "left",
+                  height: "50vh" %>
+    <%= pie_chart @data[:depart_opts],
+                  title: "Departure Option Popularity",
+                  legend: "left",
+                  height: "50vh" %>
+</div>

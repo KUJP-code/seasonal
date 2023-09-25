@@ -1,0 +1,7 @@
+<main id="charts_show">
+    <%= render 'charts/nav' %>
+
+    <h1><%= @nav[:category].singularize.capitalize %> Stats</h1>
+
+    <%= render "#{@nav[:category]}" %>
+</main>

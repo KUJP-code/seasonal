@@ -1,0 +1,56 @@
+<%= column_chart @data[:activities]
+                    .to_h { |a| [a.name, a.registrations_count]}
+                    .sort_by { |_k, v| v }.reverse,
+                 title: "Popularity",
+                 height: "50vh" %>
+
+<%= column_chart @data[:afternoons]
+                .to_h { |a| [a.date, a.registrations_count]}
+                .sort_by { |_k, v| v }.reverse,
+                title: "Afternoon Spot Use",
+                height: "50vh" %>
+
+<div class="w-100 d-flex justify-content-around">
+    <div class="d-flex flex-column justify-content-center align-items-center gap-5 p-3 w-100 text-center">
+        <div class="d-flex flex-column">
+            <h2 class="fw-semibold text-primary">
+                <%= number_to_currency(
+                    @data[:slots].count { |s| s.snack } * 165,
+                    unit: '円',
+                    precision: 0,
+                    locale: :ja
+                    ) %>
+            </h2>
+            <p>Snack Revenue</p>
+        </div>
+        <div class="d-flex flex-column">
+            <h2 class="fw-semibold text-primary">
+                <%= number_to_currency(
+                    @data[:slots].reduce(0) { |sum, s| sum + (s.int_modifier * s.registrations_count) },
+                    unit: '円',
+                    precision: 0,
+                    locale: :ja
+                    ) %>
+            </h2>
+            <p>Extra Cost Revenue</p>
+        </div>
+    </div>
+
+    <% morn_aft = {
+        "Morning" => @data[:activities].reduce(0) { |sum, a| sum + a.registrations_count },
+        "Afternoon" => @data[:afternoons].reduce(0) { |sum, a| sum + a.registrations_count }
+    } %>
+    <%= pie_chart morn_aft, title: "Session Popularity", height: "50vh" %>
+    
+    <% by_category = @data[:slots].reduce({}) do |hash, s|
+                        if hash.include?(s.category)
+                            hash[s.category] += s.registrations_count
+                            hash
+                        else
+                            hash[s.category] = s.registrations_count
+                            hash
+                        end
+                    end %>
+    <%= pie_chart by_category, title: "Category Popularity", height: "50vh" %>
+</div>
+
