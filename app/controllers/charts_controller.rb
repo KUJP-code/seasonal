@@ -143,7 +143,11 @@ class ChartsController < ApplicationController
   end
 
   def nav_school(action)
-    action == 'show' ? authorize(School.find(params[:id])) : School.new(id: 0)
+    if action == 'show'
+      authorize(School.find(params[:id]))
+    else
+      School.new(id: 0, name: 'All Schools')
+    end
   end
 
   def options_data
