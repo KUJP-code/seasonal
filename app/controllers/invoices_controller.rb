@@ -15,6 +15,18 @@ class InvoicesController < ApplicationController
                                  .reject { |v| v.reify.total_cost.zero? }
   end
 
+  def create
+    @invoice = Invoice.new(invoice_params)
+
+    if @invoice.save
+      redirect_to invoice_path(@invoice, updated: true),
+                  notice: t('success', model: 'お申込', action: '追加')
+    else
+      redirect_to event_path(@invoice.event_id),
+                  alert: t('failure', model: 'お申込', action: '追加')
+    end
+  end
+
   def update
     @invoice = authorize(Invoice.find(params[:id]))
     return redirect_to child_path(@invoice.child), alert: t('.no_parent') if @invoice.child.parent_id.nil?
@@ -57,7 +69,15 @@ class InvoicesController < ApplicationController
                     end.values
                   end
 
-    @invoice = authorize(Invoice.new(invoice_params))
+    @invoice = Invoice.new(invoice_params)
+    @new = params[:new] == 'true'
+
+    # This makes it work??????????
+    # I do not know why
+    # I likely never will
+    # Do not remove this line of code
+    @invoice.slot_regs.each
+
     @invoice.calc_cost(ignore_slots, ignore_opts)
     @ss_invoices = Invoice.where(event_id: @invoice.event_id, in_ss: true, child_id: @invoice.child_id)
   end

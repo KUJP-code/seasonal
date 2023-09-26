@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       resources :children
       resources :csvs, only: %i[index]
       resources :events, except: %i[destroy]
-      resources :invoices, except: %i[create edit new]
+      resources :invoices, except: %i[edit new]
       resources :options, only: %i[new]
       resources :price_lists, except: %i[show]
       resources :time_slots, except: %i[create]
@@ -36,6 +36,7 @@ Rails.application.routes.draw do
 
       # Non-REST routes for Invoices controller
       patch 'confirm_invoice', to: 'invoices#confirm', as: :confirm_invoice
+      post 'confirm_invoice', to: 'invoices#confirm', as: :confirm_new_invoice
       get 'confirm_invoice', to: 'invoices#confirmed', as: :confirmed_invoice
       put 'copy_invoice', to: 'invoices#copy', as: :copy_invoice
       post 'merge_invoices', to: 'invoices#merge', as: :merge_invoices

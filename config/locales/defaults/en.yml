@@ -3,6 +3,7 @@ en:
   delete: "Delete"
   ele_school: "Elementary School"
   enter_pin: "Enter PIN to reveal %{info}"
+  failure: "Time to call Brett("
   nav_bar:
     children: "Children"
     customers: "Customers"
@@ -14,6 +15,7 @@ en:
     users: "Users"
   not_authorized: "You don't have permission to access that. Contact Brett if you think you should."
   register: "Register"
+  success: "You did it!"
   roles:
     admin: "admin"
     area_manager: "area manager"

@@ -129,12 +129,14 @@ class EventsController < ApplicationController
     @member_prices = @event.member_prices
     @non_member_prices = @event.non_member_prices
     @children = @child.siblings.to_a.unshift(@child)
-    @all_invoices = @child.invoices.where(event: @event).includes(:registrations)
+    @all_invoices = @child.invoices
+                          .where(event: @event)
+                          .includes(:registrations)
+                          .to_a
 
     return unless @all_invoices.empty? || @all_invoices.all?(&:in_ss)
 
-    # I'm doing this in 2 lines because the view code wants an AR relation
-    Invoice.create(child: @child, event: @event, total_cost: 0)
-    @all_invoices = @child.invoices.where(event: @event).reload
+    temp_invoice = Invoice.new(child: @child, event: @event, total_cost: 0)
+    @all_invoices.push(temp_invoice)
   end
 end

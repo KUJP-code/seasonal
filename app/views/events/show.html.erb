@@ -282,7 +282,14 @@
             </div>
             <% @all_invoices.each do |invoice| %>
                 <turbo-frame class="<%= "d-none" if invoice.in_ss %>">
-                    <%= form_with model: invoice, url: confirm_invoice_path, data: { turbo: false, 'turbo-frame' => "child#{invoice.child_id}invoice#{invoice.id}" }, html: { class: 'align-self-center d-flex gap-3' } do |f| %>
+                    <%= form_with model: invoice,
+                                  url: (invoice.new_record? ? confirm_new_invoice_path(new: true) : confirm_invoice_path(new: false)),
+                                  data: { 
+                                    turbo: false, 'turbo-frame' => "child#{invoice.child_id}invoice#{invoice.id}" 
+                                  },
+                                  html: { 
+                                    class: 'align-self-center d-flex gap-3'
+                                  } do |f| %>
                         <%= f.hidden_field :id %>
                         <%= f.hidden_field :child_id %>
                         <%= f.hidden_field :event_id %>
