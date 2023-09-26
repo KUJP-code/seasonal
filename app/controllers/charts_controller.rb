@@ -89,15 +89,35 @@ class ChartsController < ApplicationController
     school = @nav[:school]
 
     if school.id.zero?
-      {}
+      {
+        children: children_all,
+        hat_kids: children_hat_all
+      }
     else
       event = school.events.find_by(name: @nav[:event])
 
       {
-        children: event.children.includes(:invoices),
+        children: event.children.includes(:real_invoices),
         hat_kids: school.hat_kids
       }
     end
+  end
+
+  def children_all
+    event_ids = Event.where(name: @nav[:event]).ids
+
+    Child.joins(:real_invoices)
+         .where(real_invoices: { event_id: event_ids })
+         .includes(:real_invoices)
+  end
+
+  def children_hat_all
+    Child.joins(:adjustments)
+         .where(
+           adjustments: {
+             reason: '帽子代(野外アクティビティに参加される方でKids UP帽子をお持ちでない方のみ)'
+           }
+         )
   end
 
   def coupons_data
