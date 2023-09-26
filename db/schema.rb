@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_22_080016) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_26_053332) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -116,7 +116,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_22_080016) do
     t.bigint "event_id", null: false
     t.boolean "entered", default: false
     t.boolean "email_sent", default: false
-    t.integer "slot_regs_count"
+    t.integer "slot_regs_count", default: 0
     t.index ["child_id"], name: "index_invoices_on_child_id"
     t.index ["event_id"], name: "index_invoices_on_event_id"
   end
@@ -150,7 +150,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_22_080016) do
     t.bigint "optionable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "registrations_count"
+    t.integer "registrations_count", default: 0
     t.index ["optionable_type", "optionable_id"], name: "index_options_on_optionable"
   end
 
@@ -210,7 +210,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_22_080016) do
     t.integer "int_modifier", default: 0
     t.integer "ext_modifier", default: 0
     t.boolean "snack"
-    t.integer "registrations_count"
+    t.integer "registrations_count", default: 0
     t.index ["event_id"], name: "index_time_slots_on_event_id"
     t.index ["morning"], name: "index_time_slots_on_morning"
     t.index ["morning_slot_id"], name: "index_time_slots_on_morning_slot_id"
