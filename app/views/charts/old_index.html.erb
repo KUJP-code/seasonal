@@ -31,16 +31,4 @@
                             legend: "left",
                             height: "30vw" %>
     </div>
-
-    <%# Edits %>
-
-    <% customers = User.customer.ids %>
-    <%= line_chart @versions.where(whodunnit: customers)
-                            .group_by_day(:created_at).count,
-                            title: "Customer Edits by Day" %>
-
-    <% staff = User.where(role: %i[area_manager school_manager admin]).ids %>
-    <%= line_chart @versions.where(whodunnit: staff)
-                            .group_by_day(:created_at).count,
-                            title: "Staff Edits by Day" %>
 </main>
