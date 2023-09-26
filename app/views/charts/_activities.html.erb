@@ -13,7 +13,8 @@
         <div class="d-flex flex-column">
             <h2 class="fw-semibold text-primary">
                 <%= number_to_currency(
-                    @data[:slots].count { |s| s.snack } * 165,
+                    @data[:slots].select { |s| s.snack }
+                    .reduce(0) { |sum, s| sum + s.registrations_count } * 165,
                     unit: '円',
                     precision: 0,
                     locale: :ja
