@@ -15,8 +15,16 @@ class CsvsController < ApplicationController
     path = "/tmp/#{model_name}#{Time.zone.now.strftime('%Y%m%d%H%M')}.csv"
 
     File.open(path, 'wb') do |f|
-      model.copy_to do |line|
-        f.write line
+      if params[:event]
+        event_ids = Event.where(name: params[:event]).ids
+
+        model.where(event_id: event_ids).copy_to do |line|
+          f.write line
+        end
+      else
+        model.copy_to do |line|
+          f.write line
+        end
       end
     end
 

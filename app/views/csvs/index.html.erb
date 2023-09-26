@@ -1,4 +1,4 @@
-<% models = [%w[Children Child], %w[Users User], %w[Bookings Invoice], %w[Regular\ Schedules RegularSchedule]] %>
+<% models = [%w[Children Child], %w[Users User], %w[Regular\ Schedules RegularSchedule], %w[Bookings Invoice]] %>
 
 <main id="csvs_index" class="w-100 d-grid">
     <div class="row gap-5">
@@ -38,7 +38,19 @@
         <div class="card d-grid gap-3 p-5 col">
             <h1><%= t('.export') %></h1>
             <% models.each do |model| %>
-                <%= link_to model[0], download_csv_path(model: model[1]), class: 'btn btn-primary', data: { turbolinks: false } %>
+                <% if model[0] === "Bookings" %>
+                    <% Event.all.pluck(:name).uniq.each do |e| %>
+                        <%= link_to "#{e} Bookings",
+                            download_csv_path(model: model[1], event: e),
+                            class: 'btn btn-primary',
+                            data: { turbolinks: false } %>
+                    <% end %>
+                <% else %>
+                    <%= link_to model[0],
+                        download_csv_path(model: model[1]),
+                        class: 'btn btn-primary',
+                        data: { turbolinks: false } %>
+                <% end %>
             <% end %>
         </div>
         <div class="card col justify-content-center align-items-center">
