@@ -1,4 +1,24 @@
 <%= column_chart @data[:all_opts]
+                       .group('options.category')
+                       .count("options.category")
+                       .except("なし")
+                       .to_h { |k, v| [k.capitalize, v] }
+                       .sort_by { |_k, v| v }.reverse,
+                 title: "Category Popularity",
+                 height: "50vh" %>
+
+<%= column_chart @data[:all_opts]
+                       .group('options.category')
+                       .sum("options.cost")
+                       .except("なし")
+                       .to_h { |k, v| [k.capitalize, v] }
+                       .sort_by { |_k, v| v }.reverse,
+                 title: "Category Revenue",
+                 suffix: "円",
+                 height: "50vh" %>
+
+<%= column_chart @data[:all_opts]
+                       .group('options.name')
                        .count("options.name")
                        .except("なし")
                        .sort_by { |_k, v| v }.reverse,
@@ -6,6 +26,7 @@
                  height: "50vh" %>
 
 <%= column_chart @data[:all_opts]
+                       .group('options.name')
                        .sum("options.cost")
                        .except("なし")
                        .sort_by { |_k, v| v }.reverse,

@@ -201,12 +201,12 @@ class ChartsController < ApplicationController
       {}
     else
       event = school.events.find_by(name: @nav[:event])
-      slot_ids = event.time_slots.ids
+      slot_ids = event.time_slots.ids.push(event.id)
 
       {
-        all_opts: options_all(slot_ids.push(event.id)),
-        arrive_opts: options_arrive(slot_ids.push(event.id)),
-        depart_opts: options_depart(slot_ids.push(event.id))
+        all_opts: options_all(slot_ids),
+        arrive_opts: options_arrive(slot_ids),
+        depart_opts: options_depart(slot_ids)
       }
     end
   end
@@ -214,7 +214,6 @@ class ChartsController < ApplicationController
   def options_all(optionable_ids)
     Option.where(optionable_id: optionable_ids)
           .joins(:registrations)
-          .group('options.name')
   end
 
   def options_arrive(optionable_ids)
