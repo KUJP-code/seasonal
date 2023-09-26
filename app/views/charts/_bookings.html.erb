@@ -29,7 +29,7 @@
 </div>
     
 <div class="w-100 d-flex">
-    <%= line_chart @data[:regs].group_by_day(:created_at).count,
+    <%= line_chart @data[:regs].group_by_week(:created_at).count,
                    title: "Weekly Registrations",
                    height: "50vh" %>
     <%= line_chart @data[:invoices]
