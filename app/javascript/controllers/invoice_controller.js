@@ -10,6 +10,8 @@ export default class extends Controller {
   ];
 
   add(child, cost, id, snack, type, modifier, name) {
+    console.log(name);
+
     const wrapper =
       type === "TimeSlot"
         ? document.getElementById(`slot${id}`.concat(`child${child}`))
@@ -46,7 +48,7 @@ export default class extends Controller {
       }
     }
 
-    if (name !== null) {
+    if (name) {
       // Add the name of the registration to the registration list
       const nameContainer = document.getElementById("reg_slots");
       const nameP = document.createElement("p");
@@ -81,16 +83,18 @@ export default class extends Controller {
     const snack = e.detail.snack;
     const type = e.detail.type;
 
+    console.log(name);
+
     if (checked && (type === "TimeSlot" || type === "Option")) {
       return this.add(child, cost, id, snack, type, modifier, name);
     } else if (checked && type === "Radio") {
-      return this.radio(child, cost, id, siblings, type, name);
+      return this.radio(child, cost, id, siblings, name);
     } else {
       return this.remove(child, id, snack, type, name);
     }
   }
 
-  radio(child, cost, id, siblings, type, name) {
+  radio(child, cost, id, siblings, name) {
     this.add(child, cost, id, "Option", name);
 
     siblings.forEach((sibling) => {
@@ -123,7 +127,7 @@ export default class extends Controller {
       }
     }
 
-    if (name !== null) {
+    if (name) {
       const nameContainer = document.getElementById("reg_slots");
       nameContainer.childNodes.forEach((node) => {
         if (node.innerText === name.replaceAll("_", " ")) {
