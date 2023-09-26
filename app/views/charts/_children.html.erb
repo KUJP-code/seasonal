@@ -48,22 +48,24 @@
     </tbody>
 </table>
 
-<h1>Hat Kids</h1>
+<% unless @nav[:school].id.zero? %>
+    <h1>Hat Kids</h1>
 
-<table class="table table-striped table-hover text-center">
-    <thead class="table-primary">
-        <tr>
-            <th>Name</th>
-            <th>En Name</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        <% @data[:hat_kids].each do |k| %>
+    <table class="table table-striped table-hover text-center">
+        <thead class="table-primary">
             <tr>
-                <td><%= k.name %></td>
-                <td><%= k.en_name %></td>
+                <th>Name</th>
+                <th>En Name</th>
             </tr>
-        <% end %>
-    </tbody>
-</table>
+        </thead>
+
+        <tbody>
+            <% @data[:hat_kids].each do |k| %>
+                <tr>
+                    <td><%= k.name %></td>
+                    <td><%= k.en_name %></td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+<% end %>
