@@ -1,13 +1,4 @@
 <main id="charts_index">
-    <%# Coupons %>
-
-    <%= line_chart @coupons.where.not(code: "")
-                           .group(:code)
-                           .group_by_day(:created_at).count,
-                           title: "Daily Coupon Use",
-                           time_zone: false %>
-
-
     <%# Options %>
 
     <%= column_chart Option.joins(:registrations)
