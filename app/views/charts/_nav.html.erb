@@ -7,7 +7,7 @@
             <div class="d-flex flex-wrap justify-content-between gap-2 my-2">
                 <%= link_to (current_user.admin? ? "All Schools" : "Area Schools"),
                 charts_path,
-                class: "card p-2 w-100 #{' bg-primary text-white fw-semibold' if @nav[:school].id == 0}" %>
+                class: "card p-2 #{' bg-primary text-white fw-semibold' if @nav[:school].id == 0}" %>
                 <% @nav[:schools].each do |s| %>
                     <%= link_to s.name,
                                 chart_path(id: s.id,

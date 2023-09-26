@@ -197,17 +197,22 @@ class ChartsController < ApplicationController
   def options_data
     school = @nav[:school]
 
+    optionable_ids = options_optionable_ids(school)
+
+    {
+      all_opts: options_all(optionable_ids),
+      arrive_opts: options_arrive(optionable_ids),
+      depart_opts: options_depart(optionable_ids)
+    }
+  end
+
+  def options_optionable_ids(school)
     if school.id.zero?
-      {}
+      event_ids = Event.where(name: @nav[:event]).ids
+      TimeSlot.where(event_id: event_ids).ids.push(event_ids)
     else
       event = school.events.find_by(name: @nav[:event])
-      slot_ids = event.time_slots.ids.push(event.id)
-
-      {
-        all_opts: options_all(slot_ids),
-        arrive_opts: options_arrive(slot_ids),
-        depart_opts: options_depart(slot_ids)
-      }
+      event.time_slots.ids.push(event.id)
     end
   end
 
