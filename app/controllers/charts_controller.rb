@@ -65,7 +65,7 @@ class ChartsController < ApplicationController
 
   def bookings_all_data
     event_ids = Event.where(name: @nav[:event], school_id: School.real.ids).ids
-    invoices = Invoice.where(event_id: event_ids)
+    invoices = Invoice.real.where(event_id: event_ids)
 
     {
       invoices: invoices,
@@ -113,13 +113,12 @@ class ChartsController < ApplicationController
   def coupons_data
     school = @nav[:school]
 
-    invoice_ids = if school.id.zero?
-                    event_ids = Event.where(name: @nav[:event]).ids
-                    Invoice.where(event_id: event_ids).ids
-                  else
-                    event = school.events.find_by(name: @nav[:event])
-                    Invoice.where(event_id: event.id).ids
-                  end
+    event_ids = if school.id.zero?
+                  Event.where(name: @nav[:event]).ids
+                else
+                  school.events.find_by(name: @nav[:event]).id
+                end
+    invoice_ids = Invoice.real.where(event_id: event_ids).ids
 
     Coupon.where(couponable_id: invoice_ids)
   end
