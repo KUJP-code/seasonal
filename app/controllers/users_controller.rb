@@ -89,6 +89,10 @@ class UsersController < ApplicationController
 
   private
 
+  def admin_data(user)
+    
+  end
+
   def already_registered?(t_regs, o_reg)
     t_regs.any? do |t_reg|
       t_reg.registerable_id == o_reg.registerable_id && t_reg.registerable_type == o_reg.registerable_type
@@ -96,10 +100,16 @@ class UsersController < ApplicationController
   end
 
   def area_manager_data(user)
-    @managed_areas = user.managed_areas.includes(
-      schools: %i[upcoming_events]
-    )
-    @upcoming_events = Event.upcoming.real
+    @managed_areas = user.managed_areas.includes(upcoming_events: %i[children])
+    school_ids = @managed_areas.reduce([]) { |arr, a| arr.push(a.schools.ids) }
+    @area_events = Event.upcoming.real
+                        .where(school_id: school_ids)
+                        .includes(
+                          :options,
+                          :school,
+                          :children
+                        )
+    @upcoming_events = Event.upcoming.real.includes(:children)
   end
 
   def copy_invoices(from, to)

@@ -12,7 +12,7 @@
         </div>
 
         <% @managed_areas.each do |area| %>
-            <% next if area.schools.size.zero? %>
+            <% next if area.upcoming_events.empty? %>
 
             <div class="card">
                 <h2 class="fw-semibold"><%= area.name %></h2>
@@ -20,35 +20,11 @@
                 <%= render partial: 'events/stats_summary',
                            locals: { events: area.upcoming_events } %>
             </div>
+        <% end %>
 
-            <div class="card">
-                <div class="table-responsive-lg">
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr class="table-primary">
-                                <th scope="col">School</th>
-                                <th scope="col"><%= t('.int_kids') %></th>
-                                <th scope="col"><%= t('.res_kids') %></th>
-                                <th scope="col"><%= t('.ext_kids') %></th>
-                                <th scope="col"><%= t('.total_kids') %></th>
-                                <th scope="col"><%= t('.photo_sales') %></th>
-                                <th scope="col"><%= t('.total_revenue') %></th>
-                                <th scope="col"><%= t('.goal_revenue') %></th>
-                                <th scope="col"><%= t('.goal_percent') %></th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <% area.schools.each do |school| %>
-                                <%= render partial: 'events/condensed_stats',
-                                           locals: { 
-                                            event: school.upcoming_events.first
-                                           } %>
-                            <% end %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <% unless @area_events.empty? %>
+            <%= render partial: 'events/condensed_stats',
+                       locals: { events: @area_events } %>
         <% end %>
     <% end %>
 </main>

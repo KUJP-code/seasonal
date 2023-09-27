@@ -2,8 +2,11 @@
     <div class="card text-center">
         <h1 class="fw-bold"><%= t('.greet', user: @user.name) %></h1>
     </div>
-    <%= render partial: 'invoices/recent_bookings',
-               locals: { bookings: @recent_bookings }  %>
+    
+    <% unless @recent_bookings.empty? %>
+        <%= render partial: 'invoices/recent_bookings',
+                locals: { bookings: @recent_bookings }  %>
+    <% end %>
 
     <% if @next_event[:event] %>
         <%= render partial: 'events/event_stats',

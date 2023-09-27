@@ -1,34 +1,59 @@
-<% children = event.children %>
+<div class="card">
+    <div class="table-responsive-lg">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr class="table-primary">
+                    <th scope="col">School</th>
+                    <th scope="col"><%= t('.int_kids') %></th>
+                    <th scope="col"><%= t('.res_kids') %></th>
+                    <th scope="col"><%= t('.ext_kids') %></th>
+                    <th scope="col"><%= t('.total_kids') %></th>
+                    <th scope="col"><%= t('.photo_sales') %></th>
+                    <th scope="col"><%= t('.total_revenue') %></th>
+                    <th scope="col"><%= t('.goal_revenue') %></th>
+                    <th scope="col"><%= t('.goal_percent') %></th>
+                </tr>
+            </thead>
 
-<% int_kids = children.select { |c| c.category == 'internal' }.size %>
-<% res_kids = children.select { |c| c.category == 'reservation' }.size %>
-<% ext_kids = children.select { |c| c.category == 'external' }.size %>
+            <tbody>
+                <% events.each do |event| %>
+                    <% children = event.children %>
 
-<% total_revenue = Invoice.real.where(child_id: children.ids, event_id: event.id).sum(&:total_cost) %>
-<% goal_percent = (total_revenue / event.goal.to_f * 100).truncate %>
+                    <% int_kids = children.select { |c| c.category == 'internal' }.size %>
+                    <% res_kids = children.select { |c| c.category == 'reservation' }.size %>
+                    <% ext_kids = children.select { |c| c.category == 'external' }.size %>
 
-<tr>
-    <td class="school"><%= link_to event.school.name, children_path(source: 'Event', id: event.id) %></td>
-    <td class="int_kids"><%= int_kids %></td>
-    <td class="res_kids"><%= res_kids %></td>
-    <td class="ext_kids"><%= ext_kids %></td>
-    <td class="total_kids"><%= children.size %></td>
-    <td class="photo_sales"><%= event.photo_regs %></td>
-    <td class="total_revenue"><%= number_to_currency(total_revenue, unit: '円', precision: 0, locale: :ja) %></td>
-    <td class="goal_revenue"><%= number_to_currency(event.goal, unit: '円', precision: 0, locale: :ja) %></td>
-    <td class="goal_percent<%=
-            case goal_percent
-            when (100..)
-                ' table-success'
-            when (50..99)
-                ' table-warning'
-            else
-                ' table-danger'
-            end
-        %>">
-            <%= "#{goal_percent}%" %>
-        </td>
-    </tr>
-</tr>
+                    <% total_revenue = event.invoices.sum(&:total_cost) %>
+                    <% goal_percent = (total_revenue / event.goal.to_f * 100).truncate %>
+
+                    <tr>
+                        <td class="school"><%= link_to event.school.name, children_path(source: 'Event', id: event.id) %></td>
+                        <td class="int_kids"><%= int_kids %></td>
+                        <td class="res_kids"><%= res_kids %></td>
+                        <td class="ext_kids"><%= ext_kids %></td>
+                        <td class="total_kids"><%= children.size %></td>
+                        <td class="photo_sales"><%= event.options.reduce(0) { |sum, o| sum + o.registrations_count } %></td>
+                        <td class="total_revenue"><%= number_to_currency(total_revenue, unit: '円', precision: 0, locale: :ja) %></td>
+                        <td class="goal_revenue"><%= number_to_currency(event.goal, unit: '円', precision: 0, locale: :ja) %></td>
+                        <td class="goal_percent<%=
+                                case goal_percent
+                                when (100..)
+                                    ' table-success'
+                                when (50..99)
+                                    ' table-warning'
+                                else
+                                    ' table-danger'
+                                end
+                            %>">
+                                <%= "#{goal_percent}%" %>
+                            </td>
+                        </tr>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
 
