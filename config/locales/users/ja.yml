@@ -23,6 +23,7 @@ ja:
       katakana: "名前(カタカナ)"
       name: "名前"
       ssid: "マイページID"
+      ssid_pattern: "10桁の数字"
     create:
       failure: "%{name}を作成できませんでした"
       success: "%{name}の作成に成功"

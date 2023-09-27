@@ -41,7 +41,6 @@
         <% end %>
 
     <% else %>
-        <%# Display helpful error if child not found %>
         <% if @failed %>
             <div class="bg-danger text-white fw-semibold rounded p-2">
                 <p>お子様の情報が見つかりません。</p>
@@ -60,6 +59,9 @@
                                     placeholder: t('.ssid'),
                                     required: true,
                                     data: { 'count-target' => 'input' },
+                                    pattern: '\d{10,10}',
+                                    title: t('.ssid_pattern'),
+                                    minlength: 10,
                                     maxlength: 10 %>
                 <%= f.label :ssid, t('.ssid'), class: 'form-label'  %>
                 <div id="confirm-length" class="form-text">
@@ -67,7 +69,10 @@
                 </div>
             </div>
             <div class="form-floating">
-                <%= f.date_field :bday, class: 'form-control', placeholder: t('.bday'), required: true %>
+                <%= f.date_field :bday,
+                                 class: 'form-control',
+                                 placeholder: t('.bday'),
+                                 required: true %>
                 <%= f.label :bday, t('.bday'), class: 'form-label'  %>
             </div>
             <%= f.submit t('.find_child'), class: 'btn btn-primary' %>
