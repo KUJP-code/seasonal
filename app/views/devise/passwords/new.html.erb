@@ -1,7 +1,17 @@
-<main id="password_new" class="justify-content-center">
-  <h2><%= t('.reset_password') %></h2>
-  
-  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'card d-flex flex-column justify-content-center gap-1 p-3 w-100 rounded' }) do |f| %>
+<main id="password_new" class="justify-content-center">  
+  <%= form_for(
+        resource,
+        as: resource_name,
+        url: password_path(resource_name),
+        html: { 
+          method: :post,
+          class: 'needs-validation card d-flex flex-column justify-content-center gap-3 p-3 w-100 rounded',
+          novalidate: true
+        }
+      ) do |f| %>
+
+    <h2 class="mb-3"><%= t('.reset_password') %></h2>
+
     <%= render "devise/shared/error_messages", resource: resource %>
   
     <div class="form-floating">
@@ -9,12 +19,20 @@
                         autofocus: true, autocomplete: "email",
                         placeholder: t('.email'),
                         required: true %>
+
       <%= f.label :email, t('.email'), class: 'form-label' %><br />
+
+      <div class="invalid-feedback">
+        <%= t('.enter_email') %>
+      </div>
     </div>
   
-    <%= f.submit t('.send_reset'), class: 'btn btn-primary text-wrap' %>
-
-    <%= link_to t('.login'), new_session_path(resource_name), class: 'btn btn-secondary' %>
-    <%= link_to t('.sign_up'), '/auth/sign_up', class: 'btn btn-secondary' %>
+    <div class="d-flex flex-column gap-1">
+      <%= f.submit t('.send_reset'), class: 'btn btn-primary text-wrap' %>
+      <%= link_to t('.login'),
+            new_session_path(resource_name),
+            class: 'btn btn-secondary' %>
+      <%= link_to t('.sign_up'), '/auth/sign_up', class: 'btn btn-secondary' %>
+    </div>
   <% end %>
 </main>

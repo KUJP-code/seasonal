@@ -20,9 +20,10 @@ ja:
         new_pass_confirm: "パスワードを確認する"
       new:
         email: "メールアドレス"
+        enter_email: "メールアドレスを入力してください"
         login: "ログイン"
         reset_password: "パスワードをリセットする"
-        send_reset: "メールを送信しパスワードをリセットする"
+        send_reset: "パスワード再設定メールの送信"
         sign_up: "新規登録"
     registrations:
       new:
