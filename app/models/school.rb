@@ -30,7 +30,8 @@ class School < ApplicationRecord
 
   # Instance methods
   def hat_kids
-    children.joins(:adjustments)
+    children.where(received_hat: false)
+            .joins(:adjustments)
             .where(
               adjustments: {
                 reason: '帽子代(野外アクティビティに参加される方でKids UP帽子をお持ちでない方のみ)'
