@@ -86,7 +86,7 @@ ja:
       ss_kid: "反映する生徒情報"
       to_ssid: "反映する生徒情報のSSID"
     school_manager:
-      greet: "Hello、%{user}さん!"
+      greet: "Hello、%{user} School Manager!"
     show:
       attendance: "アテンダンス"
       delete: "削除"

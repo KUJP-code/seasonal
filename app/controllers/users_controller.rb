@@ -104,9 +104,9 @@ class UsersController < ApplicationController
   end
 
   def customer_data(user)
-    @children = user.children
+    @children = user.children.includes(:school)
     @invoices = user.real_invoices
-    @schools = user.schools
+    @next_event = @children.first.school.upcoming_events.first
   end
 
   def delete_admin?
@@ -185,6 +185,37 @@ class UsersController < ApplicationController
              else
                authorize(User.where(id: params[:ids]))
              end
+  end
+
+  def school_manager_data(user)
+    @school = user.managed_schools.first
+    @next_event = sm_next_event_data(@school.upcoming_events.first)
+    @deleted_invoices = sm_deleted_invoices(user, @next_event[:event].id)
+    @recent_bookings = @next_event[:event].invoices
+                                          .order(created_at: :desc)
+                                          .limit(5)
+                                          .includes(:child)
+  end
+
+  def sm_deleted_invoices(user, event_id)
+    PaperTrail::Version.where(
+      whodunnit: user.id,
+      event: 'destroy',
+      item_type: 'Invoice'
+    )
+                       .order(created_at: :desc)
+                       .filter_map(&:reify)
+                       .reject { |i| i.total_cost.zero? }
+                       .select { |i| event_id == i.event_id }
+  end
+
+  def sm_next_event_data(event)
+    {
+      children: event.children,
+      event: event,
+      invoices: event.invoices,
+      slots: event.time_slots.morning.or(event.time_slots.special)
+    }
   end
 
   def user_params

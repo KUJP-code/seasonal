@@ -1,7 +1,12 @@
-<div class="daily-attendance card flex-column flex-lg-row flex-wrap justify-content-around gap-3" data-controller="print" data-print-target="print">
-    <h3 class="w-100"><%= link_to event.name, children_path(source: 'Event', id: event.id) %></h3>
+<% event = data[:event] %>
+<% slots = data[:slots] %>
 
-    <% event.time_slots.morning.or(event.time_slots.where(category: :special)).each do |slot| %>
+<div class="daily-attendance card flex-column flex-lg-row flex-wrap justify-content-around gap-3" data-controller="print" data-print-target="print">
+    <h3 class="w-100">
+        <%= link_to event.name, children_path(source: 'Event', id: event.id) %>
+    </h3>
+
+    <% slots.each do |slot| %>
         <% regs = slot.registrations.size %>
 
         <div class="card <%= case
@@ -25,5 +30,7 @@
         </div>
     <% end %>
 
-    <%= button_tag t('.print'), class: 'btn btn-primary w-100 print', data: { action: "click->print#print" } %>
+    <%= button_tag t('.print'),
+            class: 'btn btn-primary w-100 print',
+            data: { action: "click->print#print" } %>
 </div>

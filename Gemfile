@@ -106,6 +106,9 @@ group :development, :test do
   # DB cleaner for test data management
   gem 'database_cleaner'
 
+  # Check for N+1/unused eager loading
+  gem 'bullet'
+
   # Use Rubocop to check for dumb mistakes
   gem 'rubocop', '~> 1.40', require: false
   gem 'rubocop-performance', require: false

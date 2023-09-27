@@ -1,99 +1,145 @@
-<% children = event.children %>
+<% event = data[:event] %>
+<% children = data[:children] %>
+<% invoices = data[:invoices] %>
 
 <% int_kids = children.select { |c| c.category == 'internal' } %>
+<% int_ids = int_kids.map(&:id) %>
 <% first_int = int_kids.select { |k| k.first_seasonal && k.parent_id } %>
-<% int_revenue = Invoice.real.where(child_id: int_kids.map(&:id), event_id: event.id).sum(&:total_cost) %>
+<% int_revenue = invoices.select { |i| int_ids.include?(i.child_id) }
+                         .sum(&:total_cost) %>
 
 <% res_kids = children.select { |c| c.category == 'reservation' } %>
+<% res_ids = res_kids.map(&:id) %>
 <% first_res = res_kids.select { |k| k.first_seasonal && k.parent_id } %>
-<% res_revenue = Invoice.real.where(child_id: res_kids.map(&:id), event_id: event.id).sum(&:total_cost) %>
+<% res_revenue = invoices.select { |i| res_ids.include?(i.child_id) }
+                         .sum(&:total_cost) %>
 
 <% ext_kids = children.select { |c| c.category == 'external' } %>
+<% ext_ids = ext_kids.map(&:id) %>
 <% first_ext = ext_kids.select { |k| k.first_seasonal && k.parent_id } %>
-<% ext_revenue = Invoice.real.where(child_id: ext_kids.map(&:id), event_id: event.id).sum(&:total_cost) %>
+<% ext_revenue = invoices.select { |i| ext_ids.include?(i.child_id) }
+                         .sum(&:total_cost) %>
 
 <% total_revenue = int_revenue + res_revenue + ext_revenue %>
 <% goal_percent = (total_revenue / event.goal.to_f * 100).truncate %>
 
-<h3><%= link_to event.school.name, children_path(source: 'Event', id: event.id) %></h3>
-
-<div class="table-responsive-lg">
-    <table class="table">
-        <thead>
-            <tr class="table-primary">
-                <th colspan="4" scope="col"><%= t('.attendance') %></th>
-                <th colspan="4" scope="col"><%= t('.revenue') %></th>
-                <th colspan="2" scope="col"><%= t('.goal') %></th>
-            </tr>
-            <tr class="table-secondary">
-                <th scope="col"><%= t('.int_kids') %></th>
-                <th scope="col"><%= t('.res_kids') %></th>
-                <th scope="col"><%= t('.ext_kids') %></th>
-                <th scope="col"><%= t('.total_kids') %></th>
-                <th scope="col"><%= t('.int_res_revenue') %></th>
-                <th scope="col"><%= t('.external_revenue') %></th>
-                <th scope="col"><%= t('.total_revenue') %></th>
-                <th scope="col"><%= t('.goal_revenue') %></th>
-                <th scope="col"><%= t('.goal_percent') %></th>
-            </tr>
-        </thead>
+<div class="card">
+    <h3>
+        <%= link_to @school.name, children_path(source: 'Event', id: event.id) %>
+    </h3>
     
-        <tbody>
-            <tr>
-                <td><%= int_kids.size %></td>
-                <td><%= res_kids.size %></td>
-                <td><%= ext_kids.size %></td>
-                <td><%= children.count %></td>
-                <td><%= number_to_currency(int_revenue + res_revenue, unit: '円', precision: 0, locale: :ja) %></td>
-                <td><%= number_to_currency(ext_revenue, unit: '円', precision: 0, locale: :ja) %></td>
-                <td><%= number_to_currency(total_revenue, unit: '円', precision: 0, locale: :ja) %></td>
-                <td><%= number_to_currency(event.goal, unit: '円', precision: 0, locale: :ja) %></td>
-                <td class=<%=
-                    case goal_percent
-                    when (100..)
-                        'table-success'
-                    when (50..99)
-                        'table-warning'
-                    else
-                        'table-danger'
-                    end
-                %>>
-                    <%= "#{goal_percent}%" %>
-                </td>
-            </tr>
-            <tr>
-                <th>通学生(初めて)</th>
-                <th>予約生(初めて)</th>
-                <th>非会員(初めて)</th>
-            </tr>
-            <tr>
-                <td>
-                    <% if first_int.size.positive? %>
-                        <%= link_to first_int.size, users_path(ids: first_int.map(&:parent_id).uniq) %>
-                    <% else %>
-                        <%= first_int.size %>
-                    <% end %>
-                </td>
-                <td>
-                    <% if first_res.size.positive? %>
-                        <%= link_to first_res.size, users_path(ids: first_res.map(&:parent_id).uniq) %>
-                    <% else %>
-                        <%= first_res.size %>
-                    <% end %>
-                </td>
-                
-                <td>
-                    <% if first_ext.size.positive? %>
-                        <%= link_to first_ext.size, users_path(ids: first_ext.map(&:parent_id).uniq) %>
-                    <% else %>
-                        <%= first_ext.size %>
-                    <% end %>
-                </td>
-            </tr>
-            <tr>
-                <th colspan="3" scope="row"><%= t('.photo_sales') %></th>
-                <td><%= event.photo_regs %></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive-lg">
+        <table class="table">
+            <thead>
+                <tr class="table-primary">
+                    <th colspan="4" scope="col"><%= t('.attendance') %></th>
+                    <th colspan="4" scope="col"><%= t('.revenue') %></th>
+                    <th colspan="2" scope="col"><%= t('.goal') %></th>
+                </tr>
+                <tr class="table-secondary">
+                    <th scope="col"><%= t('.int_kids') %></th>
+                    <th scope="col"><%= t('.res_kids') %></th>
+                    <th scope="col"><%= t('.ext_kids') %></th>
+                    <th scope="col"><%= t('.total_kids') %></th>
+                    <th scope="col"><%= t('.int_res_revenue') %></th>
+                    <th scope="col"><%= t('.external_revenue') %></th>
+                    <th scope="col"><%= t('.total_revenue') %></th>
+                    <th scope="col"><%= t('.goal_revenue') %></th>
+                    <th scope="col"><%= t('.goal_percent') %></th>
+                </tr>
+            </thead>
+    
+            <tbody>
+                <tr>
+                    <td><%= int_kids.size %></td>
+                    <td><%= res_kids.size %></td>
+                    <td><%= ext_kids.size %></td>
+                    <td><%= children.count %></td>
+                    <td><%= number_to_currency(
+                                int_revenue + res_revenue,
+                                unit: '円',
+                                precision: 0,
+                                locale: :ja
+                            ) %></td>
+
+                    <td><%= number_to_currency(
+                                ext_revenue,
+                                unit: '円',
+                                precision: 0,
+                                locale: :ja
+                            ) %></td>
+
+                    <td><%= number_to_currency(
+                                total_revenue,
+                                unit: '円',
+                                precision: 0,
+                                locale: :ja
+                            ) %></td>
+
+                    <td><%= number_to_currency(
+                                event.goal,
+                                unit: '円',
+                                precision: 0,
+                                locale: :ja
+                            ) %></td>
+
+                    <td class=<%=
+                        case goal_percent
+                        when (100..)
+                            'table-success'
+                        when (50..99)
+                            'table-warning'
+                        else
+                            'table-danger'
+                        end
+                    %>>
+                        <%= "#{goal_percent}%" %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>通学生(初めて)</th>
+                    <th>予約生(初めて)</th>
+                    <th>非会員(初めて)</th>
+                </tr>
+                <tr>
+                    <td>
+                        <% if first_int.size.positive? %>
+                            <%= link_to first_int.size, 
+                                    users_path(
+                                        ids: first_int.map(&:parent_id).uniq
+                                    ) %>
+                        <% else %>
+                            <%= first_int.size %>
+                        <% end %>
+                    </td>
+
+                    <td>
+                        <% if first_res.size.positive? %>
+                            <%= link_to first_res.size,
+                                    users_path(
+                                        ids: first_res.map(&:parent_id).uniq
+                                    ) %>
+                        <% else %>
+                            <%= first_res.size %>
+                        <% end %>
+                    </td>
+    
+                    <td>
+                        <% if first_ext.size.positive? %>
+                            <%= link_to first_ext.size, 
+                                    users_path(
+                                        ids: first_ext.map(&:parent_id).uniq
+                                    ) %>
+                        <% else %>
+                            <%= first_ext.size %>
+                        <% end %>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="3" scope="row"><%= t('.photo_sales') %></th>
+                    <td><%= event.photo_regs %></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

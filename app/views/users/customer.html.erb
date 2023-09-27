@@ -11,35 +11,39 @@
     <div class="card text-center">
         <h1 class="fw-bold"><%= t('.greet', user: @user.name) %></h1>
 
-        <div data-controller="conditional"
-            data-conditional-pin-value=<%= current_user.pin %>>
-            <div class="d-none" data-conditional-target="target">
-                <p><%= "#{t('.phone')}: #{@user.phone}" %></p>
-                <p><%= "#{t('.email')}: #{@user.email}" %></p>
-            </div>
+        <% if current_user.staff? %>
+            <div data-controller="conditional"
+                data-conditional-pin-value=<%= current_user.pin %>>
+                <div class="d-none" data-conditional-target="target">
+                    <p><%= "#{t('.phone')}: #{@user.phone}" %></p>
+                    <p><%= "#{t('.email')}: #{@user.email}" %></p>
+                </div>
 
-            <div class="form-floating" data-conditional-target="target">
-                <%= text_field_tag t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"),
-                    '',
-                    class: 'form-control',
-                    placeholder: t('enter_pin',
-                    info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"),
-                    maxlength: 4,
-                    data: {
-                        'conditional-target': 'condition',
-                        action: 'conditional#pin'
-                        } %>
+                <div class="form-floating" data-conditional-target="target">
+                    <%= text_field_tag t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"),
+                        '',
+                        class: 'form-control',
+                        placeholder: t('enter_pin',
+                        info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"),
+                        maxlength: 4,
+                        data: {
+                            'conditional-target': 'condition',
+                            action: 'conditional#pin'
+                            } %>
 
-                <%= label_tag t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"), nil, class: 'form-label' %>
+                    <%= label_tag t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"),
+                            nil,
+                            class: 'form-label' %>
+                </div>
             </div>
-        </div>
+        <% end %>
     </div>
 
     <% unless @children.empty? %>
         <div class="card">
             <div>
                 <ul>
-                    <% @schools.each do |school| %>
+                    <% @children.map(&:school).uniq.each do |school| %>
                         <li class="fw-bold">
                             <%= t('.school_name', school: school.name) %>
                         </li>
@@ -58,8 +62,8 @@
             </div>
         </div>
 
-        <% unless @schools.first.next_event.nil? %>
-            <%= render @schools.first.next_event, child: @user.children.first %>
+        <% if @next_event %>
+            <%= render @next_event, child: @user.children.first %>
         <% end %>
 
         <div class="card">

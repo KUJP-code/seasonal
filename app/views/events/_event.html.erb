@@ -37,8 +37,8 @@
                     <div>
                         <%= f.label :id, t('.diff_school') %>
                         <%= f.collection_select :id,
-                                                School.real,
-                                                proc { |s| s.next_event.id },
+                                                School.real.includes(:upcoming_events),
+                                                proc { |s| s.upcoming_events.first.id },
                                                 :name,
                                                 {},
                                                 class: 'form-select' %>

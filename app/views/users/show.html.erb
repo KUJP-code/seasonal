@@ -3,83 +3,13 @@
 <% schools = @user.children.reject{ |c| c.school_id.nil? }.map(&:school).map(&:name).uniq if @user.customer? %>
 
 <main id="user_show" class="gap-3">
-    <% unless @user.confirmed? %>
-        <div class="card justify-content-center align-items-center bg-danger">
-            <h3><%= t('.please_confirm_email') %></h3>
-            <%= button_to t('.resend_confirm_email'), user_confirmation_path(user: { email: @user.email }), class: 'btn btn-primary' %>
-        </div>
-    <% end %>
-
-
     <div class="card text-center">
         <% if @user.admin? %>
           <h1 class="fw-bold"><%= "yo #{@user.name.split[0]}" %></h1>
         <% else %>
             <h1 class="fw-bold"><%= t('.greet', user: @user.name) %></h1>
         <% end %>
-
-        <% unless @user.customer? %>
-            <h4><%= t(".roles.#{@user.role}") %></h4>
-        <% end %>
-
-        <% if current_user.staff? && current_user.id != @user.id %>
-            <div data-controller="conditional"
-                data-conditional-pin-value=<%= current_user.pin %>>
-                <div class="d-none" data-conditional-target="target">
-                    <p><%= "#{t('.phone')}: #{@user.phone}" %></p>
-                    <p><%= "#{t('.email')}: #{@user.email}" %></p>
-                </div>
-                <div class="form-floating" data-conditional-target="target">
-                    <%= text_field_tag t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"), '', class: 'form-control', placeholder: t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"), maxlength: 4, data: { 'conditional-target': 'condition', action: 'conditional#pin' } %>
-                    <%= label_tag t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"), nil, class: 'form-label' %>
-                </div>
-            </div>
-        <% end %>
     </div>
-
-    <% if @user.customer? && @user.children.size.positive? %>
-        <div class="card">
-            <div>
-                <ul>
-                    <% schools.each do |school| %>
-                        <li class="fw-bold"><%= t('.school_name', school: school) %></li>
-                    <% end %>
-                </ul>
-            </div>
-
-            <div class="d-flex flex-column gap-3">
-                <h4 class="fw-bold"><%= t(".children") %></h4>
-
-                <div class="d-flex flex-wrap justify-content-center gap-5">
-                    <% @user.children.each do |child| %>
-                        <%= link_to child.name, child_path(child) %>
-                    <% end %>
-                </div>            
-            </div>
-        </div>
-    <% end %>
-
-    <% if @user.children? %>
-        <% unless next_event.nil? %>
-            <%= render next_event, child: @user.children.first %>
-        <% end %>
-    <% end %>
-
-    <% if @user.customer? && @user.children.size.positive? %>
-        <div class="card">
-            <%= link_to t('.user_bookings', user: @user.name),
-                invoices_path(user: @user.id),
-                class: 'btn btn-primary' unless @user.children.joins(:real_invoices).empty? %>
-
-            <%= link_to t('.email_prefs'),
-                        mailer_subscriptions_path,
-                        class: 'btn btn-primary' %>
-
-            <%= link_to t('.edit_info'),
-                        edit_user_path(@user),
-                        class: 'btn btn-primary' %>
-        </div>
-    <% end %>
 
     <% if @user.admin? && current_user.admin? %>
         <% unless upcoming_events.empty? %>
@@ -265,47 +195,5 @@
                 </div>
             </div>
         <% end %>
-    <% end %>
-
-    <% if @user.school_manager? %>
-        <% deleted_invoices = PaperTrail::Version.where(whodunnit: @user.id, event: 'destroy', item_type: 'Invoice').order(created_at: :desc).map(&:reify).compact.select { |i| i.total_cost.positive? } %>
-
-        <% @user.managed_schools.each do |school| %>
-            <% next_event = school.next_event %>
-            <% next if next_event.nil? %>
-
-            <div class="card">
-                <%= render partial: 'events/event_stats', locals: { event: school.next_event } %>
-            </div>
-
-            <div class="card">
-                <h2><%= t('.recent_bookings') %></h2>
-                <%= render partial: 'invoices/recent_invoices', locals: {
-                        recent_invoices: school.next_event
-                                                .invoices
-                                                .order(created_at: :desc)
-                                                .limit(5)
-                                                .includes(:child, :time_slots) } %>
-            </div>
-
-            <%= render partial: 'events/daily_attendance', locals: { event: school.next_event } %>
-            
-            <% if deleted_invoices.size.positive? %>
-              <%= render partial: 'invoices/deleted', locals: { deleted_invoices: deleted_invoices } %>
-            <% end %>
-        <% end %>
-    <% end %>
-
-    <% unless @user.staff? %>
-        <div id="add_child_container" class="card">
-            <%= render 'users/add_child', parent: @user %>
-        </div>
-    <% end %>
-
-    <% if @user.customer? && current_user.staff? && @user.children.any? { |c| c.ssid.nil? } %>
-        <h2 class="text-center w-75"><%= t('.merge_children') %></h2>
-        <div class="card" id="merge_children">
-            <%= render 'users/merge_children', parent: @user %>
-        </div>
     <% end %>
 </main>

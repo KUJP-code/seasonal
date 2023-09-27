@@ -2,7 +2,8 @@
     <% if @user %>
         <% child_events = @user.children
                                 .map(&:school)
-                                .map(&:next_event)
+                                .map(&:upcoming_events)
+                                .map(&:first)
                                 .uniq.compact %>
         
         <% unless child_events.empty? %>
@@ -32,7 +33,7 @@
             <% end %>
         <% end %>
     <% else %>
-        <% next_event = @child.school.next_event %>
+        <% next_event = @child.school.upcoming_events.first %>
 
         <% unless next_event.nil? %>
             <% event_cost = @child.invoices

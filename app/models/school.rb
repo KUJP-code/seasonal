@@ -16,6 +16,13 @@ class School < ApplicationRecord
                                       foreign_key: :parent_id
   has_many :events, -> { order(start_date: :asc) }, dependent: :destroy,
                                                     inverse_of: :school
+  has_many :upcoming_events, lambda {
+                               where('end_date > ?', Time.zone.now)
+                                 .order(start_date: :asc)
+                             },
+           class_name: 'Event',
+           dependent: nil,
+           inverse_of: :school
   has_many :time_slots, through: :events
   has_many :options, through: :time_slots
   has_many :option_registrations, through: :time_slots
@@ -39,9 +46,9 @@ class School < ApplicationRecord
             )
   end
 
-  def next_event
-    events.where('end_date > ?', Time.zone.now).limit(1).first || nil
-  end
+  # def next_event
+  #   events.find_by('end_date > ?', Time.zone.now)
+  # end
 
   private
 
