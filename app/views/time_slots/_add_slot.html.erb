@@ -81,9 +81,15 @@
                     <% end %>
 
                     <% arrival_options = if kindy
-                                            add_slot.options.select { |opt| opt.k_arrival? }
+                                            add_slot.options
+                                                    .select { |o| o.k_arrival? }
+                                                    .sort_by { |o| o.modifier }
+                                                    .reverse
                                         else
-                                            add_slot.options.select { |opt| opt.arrival? }
+                                            add_slot.options
+                                                    .select { |o| o.arrival? }
+                                                    .sort_by { |o| o.modifier }
+                                                    .reverse
                                         end %>
                     <% if arrival_options.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
                         <% registered_arrival = arrival_options.select { |opt| opts_in_ss.any? {  |reg| reg.registerable_id == opt.id} }.first %>
@@ -150,9 +156,13 @@
                     <% end %>
 
                     <% morn_depart_options = if kindy
-                                                add_slot.options.select { |opt| opt.k_departure? }
+                                                add_slot.options
+                                                .select { |o| o.k_departure? }
+                                                .sort_by { |o| o.modifier }
                                             else
-                                                add_slot.options.select { |opt| opt.departure? }
+                                                add_slot.options
+                                                .select { |o| o.departure? }
+                                                .sort_by { |o| o.modifier }
                                             end %>
 
                     <% if morn_depart_options.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
@@ -306,9 +316,15 @@
                             <% end %>
 
                             <% depart_options = if kindy
-                                                    afternoon_slot.options.select { |opt| opt.k_departure? }
+                                                    afternoon_slot
+                                                    .options
+                                                    .select { |o| o.k_departure? }
+                                                    .sort_by { |o| o.modifier }
                                                 else
-                                                    afternoon_slot.options.select { |opt| opt.departure? }
+                                                    afternoon_slot
+                                                    .options
+                                                    .select { |o| o.departure? }
+                                                    .sort_by { |o| o.modifier }
                                                 end %>
         
                             <% if depart_options.any? { |opt| opts_in_ss.any? { |reg| reg.registerable_id == opt.id } } %>
