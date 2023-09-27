@@ -3,7 +3,7 @@
 # Handles flow of information for events
 class EventsController < ApplicationController
   def index
-    @events = policy_scope(Event).order(start_date: :desc)
+    @events = policy_scope(Event)
   end
 
   def show

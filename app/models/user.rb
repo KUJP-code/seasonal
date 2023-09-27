@@ -22,7 +22,7 @@ class User < ApplicationRecord
                              source_type: 'School'
   has_many :school_children, through: :managed_schools,
                              source: :children
-  has_many :school_events, -> { order(start_date: :asc) },
+  has_many :school_events, -> { order(start_date: :desc) },
            through: :managed_schools,
            source: :events
   has_many :managed_areas, through: :managements,
@@ -30,7 +30,7 @@ class User < ApplicationRecord
                            source_type: 'Area'
   has_many :area_schools, through: :managed_areas,
                           source: :schools
-  has_many :area_events, -> { order(start_date: :asc) },
+  has_many :area_events, -> { order(start_date: :desc) },
            through: :area_schools,
            source: :events
   has_many :area_children, through: :area_schools,
@@ -49,7 +49,7 @@ class User < ApplicationRecord
   has_many :areas, -> { distinct }, through: :schools
   has_many :time_slots, through: :children
   has_many :options, through: :children
-  has_many :events, -> { order(start_date: :asc).distinct },
+  has_many :events, -> { order(start_date: :desc).distinct },
            through: :children
   has_many :mailer_subscriptions, dependent: :destroy
 
