@@ -25,9 +25,9 @@ class Child < ApplicationRecord
                      source_type: 'Option'
   has_many :invoices, dependent: :destroy
   has_many :real_invoices, -> { real },
-                           class_name: 'Invoice',
-                           dependent: nil,
-                           inverse_of: :child
+           class_name: 'Invoice',
+           dependent: nil,
+           inverse_of: :child
   has_many :events, -> { distinct }, through: :invoices
   has_many :adjustments, through: :invoices
 
@@ -112,18 +112,10 @@ class Child < ApplicationRecord
     true
   end
 
-  def opt_registrations
-    registrations.where(registerable_type: 'Option')
-  end
-
   def registered?(registerable)
     return true if registrations.find_by(registerable: registerable)
 
     false
-  end
-
-  def slot_registrations
-    registrations.where(registerable_type: 'TimeSlot')
   end
 
   def siblings
