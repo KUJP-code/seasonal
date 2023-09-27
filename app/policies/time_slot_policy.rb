@@ -33,7 +33,7 @@ class TimeSlotPolicy < ApplicationPolicy
       when 'school_manager'
         user.school_events
       else
-        user.children_events.upcoming.real
+        user.events.upcoming.real
       end
     end
   end

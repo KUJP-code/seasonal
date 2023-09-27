@@ -18,8 +18,9 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = authorize(User.user_show(params[:id]))
-    return redirect_to :no_permission if current_user.customer? && current_user != @user
+    @user = authorize(User.find(params[:id]))
+    send("#{@user.role}_data", @user)
+    render "users/#{@user.role}"
   end
 
   def new
@@ -100,6 +101,12 @@ class UsersController < ApplicationController
     else
       merge_invoices(from, to)
     end
+  end
+
+  def customer_data(user)
+    @children = user.children
+    @invoices = user.real_invoices
+    @schools = user.schools
   end
 
   def delete_admin?

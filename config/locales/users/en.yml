@@ -14,25 +14,7 @@ en:
     create:
       failure: "Couldn't create %{name}"
       success: "Successfully created %{name}"
-    destroy:
-      failure: "Couldn't delete user"
-      success: "Successfully deleted user"
-    edit:
-      update_all: "Update All"
-    form:
-      min_length: "Minimum Length: %{length}"
-      update_all: "Update All"
-    index:
-      edit_info: "Edit Info"
-      email: "Email"
-      filter: "Filter"
-      katakana: "Katakana Name"
-      name: "Name"
-      new_customer: "Create Customer Account"
-    merge_children:
-      find_child: "Find Child"
-      merge_children: "Merge Children"
-    show:
+    customer:
       all_registrations: "All registrations"
       children: "Children:"
       child: "Child:"
@@ -57,6 +39,24 @@ en:
       school_name: "Kids UP %{school}"
       schools: "Schools:"
       user_bookings: "%{user} Bookings"
+    destroy:
+      failure: "Couldn't delete user"
+      success: "Successfully deleted user"
+    edit:
+      update_all: "Update All"
+    form:
+      min_length: "Minimum Length: %{length}"
+      update_all: "Update All"
+    index:
+      edit_info: "Edit Info"
+      email: "Email"
+      filter: "Filter"
+      katakana: "Katakana Name"
+      name: "Name"
+      new_customer: "Create Customer Account"
+    merge_children:
+      find_child: "Find Child"
+      merge_children: "Merge Children"
     update:
       failure: "Couldn't update user"
       success: "Successfully updated user"
