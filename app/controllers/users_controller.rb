@@ -95,6 +95,13 @@ class UsersController < ApplicationController
     end
   end
 
+  def area_manager_data(user)
+    @managed_areas = user.managed_areas.includes(
+      schools: %i[upcoming_events]
+    )
+    @upcoming_events = Event.upcoming.real
+  end
+
   def copy_invoices(from, to)
     if to.invoices.empty?
       move_invoices(from, to)

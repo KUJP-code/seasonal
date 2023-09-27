@@ -24,8 +24,8 @@ class Event < ApplicationRecord
   has_many :option_registrations, through: :time_slots
   has_many :registrations, through: :time_slots
   has_many :invoices, -> { real },
-                      dependent: :destroy,
-                      inverse_of: :event
+           dependent: :destroy,
+           inverse_of: :event
   has_many :children, -> { distinct }, through: :invoices
 
   has_one_attached :image
@@ -36,7 +36,7 @@ class Event < ApplicationRecord
   validates_comparison_of :end_date, greater_than_or_equal_to: :start_date
 
   # Scopes
-  scope :real, -> { where.not(school_id: [1, 2]).includes(:school) }
+  scope :real, -> { where.not(school_id: [1, 2]) }
   scope :upcoming, -> { where('end_date > ?', Time.zone.now) }
 
   # Public Methods
@@ -64,10 +64,6 @@ class Event < ApplicationRecord
   # Returns num of registrations for the フォトサービス event option
   # free regs from siblings being registered not included
   def photo_regs
-    photo_opt = options.find_by(name: 'フォトサービス')
-    return 0 if photo_opt.nil?
-
-    photo_id = photo_opt.id
-    Registration.all.where(registerable_type: 'Option', registerable_id: photo_id).size
+    options.sum(:registrations_count)
   end
 end

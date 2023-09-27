@@ -1,0 +1,54 @@
+<main id="user_show" class="gap-3">
+    <div class="card text-center">
+        <h1 class="fw-bold"><%= t('.greet', user: @user.name) %></h1>
+        <h4>Area Manager</h4>
+    </div>
+
+    <% if (current_user.area_manager? || current_user.admin?) %>
+        <div class="card">
+            <h2>All Schools</h2>
+            <%= render partial: 'events/stats_summary',
+                       locals: { events: @upcoming_events } %>
+        </div>
+
+        <% @managed_areas.each do |area| %>
+            <% next if area.schools.size.zero? %>
+
+            <div class="card">
+                <h2 class="fw-semibold"><%= area.name %></h2>
+
+                <%= render partial: 'events/stats_summary',
+                           locals: { events: area.upcoming_events } %>
+            </div>
+
+            <div class="card">
+                <div class="table-responsive-lg">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr class="table-primary">
+                                <th scope="col">School</th>
+                                <th scope="col"><%= t('.int_kids') %></th>
+                                <th scope="col"><%= t('.res_kids') %></th>
+                                <th scope="col"><%= t('.ext_kids') %></th>
+                                <th scope="col"><%= t('.total_kids') %></th>
+                                <th scope="col"><%= t('.photo_sales') %></th>
+                                <th scope="col"><%= t('.total_revenue') %></th>
+                                <th scope="col"><%= t('.goal_revenue') %></th>
+                                <th scope="col"><%= t('.goal_percent') %></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <% area.schools.each do |school| %>
+                                <%= render partial: 'events/condensed_stats',
+                                           locals: { 
+                                            event: school.upcoming_events.first
+                                           } %>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <% end %>
+    <% end %>
+</main>

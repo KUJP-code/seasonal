@@ -3,11 +3,18 @@
 # Represents an area containing many schools
 # Must have an area manager
 class Area < ApplicationRecord
-  has_many :schools, dependent: nil
+  has_many :schools, -> { real }, inverse_of: :area, dependent: nil
   has_many :parents, -> { distinct }, through: :schools
   has_many :children, through: :schools
   has_many :invoices, through: :children
   has_many :events, -> { distinct }, through: :schools
+  has_many :upcoming_events, lambda {
+    where('end_date > ?', Time.zone.now)
+      .order(start_date: :asc)
+  },
+           through: :schools,
+           class_name: 'Event',
+           dependent: nil
   has_many :time_slots, through: :events
   has_many :options, through: :time_slots
   has_many :option_registrations, through: :time_slots
