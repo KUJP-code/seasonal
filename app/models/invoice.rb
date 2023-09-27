@@ -245,7 +245,7 @@ class Invoice < ApplicationRecord
 
     @breakdown << "<h4 class='fw-semibold text-start'>登録</h4>\n"
     @breakdown << '<div class="d-flex flex-column gap-3 p-3 justify-content-start flex-wrap">'
-    slot_regs.each do |slot_reg|
+    slot_regs.sort_by { |r| r.registerable.start_time }.each do |slot_reg|
       next if @ignore_slots.include?(slot_reg.id)
 
       slot = slot_reg.registerable
@@ -273,9 +273,14 @@ class Invoice < ApplicationRecord
   def hat_adjustment
     hat_cost = 1_100
     hat_reason = '帽子代(野外アクティビティに参加される方でKids UP帽子をお持ちでない方のみ)'
-    return if adjustments.any? { |adj| adj.change == hat_cost && adj.reason == hat_reason } || child.adjustments.any? { |adj| adj.change == hat_cost && adj.reason == hat_reason }
+    return if hat_adj_exists(hat_cost, hat_reason)
 
     adjustments.new(change: hat_cost, reason: hat_reason)
+  end
+
+  def hat_adj_exists(hat_cost, hat_reason)
+    adjustments.any? { |adj| adj.change == hat_cost && adj.reason == hat_reason } ||
+      child.adjustments.any? { |adj| adj.change == hat_cost && adj.reason == hat_reason }
   end
 
   def member_prices
