@@ -1,5 +1,7 @@
 ja:
   events:
+    daily_attendance:
+      print: "プリント"
     event:
       diff_school: "スクールを以下よりお選びください"
       diff_school_reg: "別のスクールにお申込みの方はこちら"

@@ -31,9 +31,10 @@ ja:
       unconfirm_booking: "お申込を未確定にする"
       view_history: "履歴を確認する"
       you_sure: "お申込内容を削除してよろしいですか？削除した後に復元させることは出来ません。"
-    recent_invoices:
+    recent_bookings:
       child_name: "生徒"
       num_slots: "お申込スポット数"
+      recent_bookings: "最新の新規お申込"
       total_cost: "合計金額"
     show:
       adjustments: "調整内容を追加する"

@@ -85,10 +85,10 @@
         <%= render 'users/add_child', parent: @user %>
     </div>
 
-    <% if @children.any? { |c| c.ssid.nil? } && current_user.staff? %>
-        <h2 class="text-center w-75"><%= t('.merge_children') %></h2>
-        
+    <% if @children.any? { |c| c.ssid.nil? } && current_user.staff? %>        
         <div class="card" id="merge_children">
+            <h2 class="text-center w-100"><%= t('.merge_children') %></h2>
+
             <%= render 'users/merge_children', parent: @user %>
         </div>
     <% end %>
