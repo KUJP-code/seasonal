@@ -15,6 +15,8 @@ en:
         view_policy: "View Privacy Policy"
     sessions:
       new:
+        enter_email: "Please enter your email"
+        enter_pwd: "Please enter your password"
         login: "Log In"
     shared:
       links:
