@@ -7,6 +7,9 @@ en:
       claim_child: "Claim Child"
       find_child: "Find Child"
       remove_child: "Remove Child"
+    area_manager:
+      greet: "Hello、%{user}さん!"
+      managed_areas: "Managed Areas"
     child_fields:
       external: "External"
       internal: "Internal"
@@ -26,14 +29,6 @@ en:
       email_prefs: "Email Preferences"
       event: "Events"
       greet: "Hello、%{user}-さん!"
-      remove_child: "Remove Child"
-      roles:
-        admin: "Admin"
-        area_manager: "Area Manager"
-        customer: "Customer"
-        school_manager: "School Manager"
-      managed_areas: "Managed Areas"
-      managed_schools: "Managed Schools"
       phone: "Phone"
       school: "School:"
       school_name: "Kids UP %{school}"
@@ -57,6 +52,9 @@ en:
     merge_children:
       find_child: "Find Child"
       merge_children: "Merge Children"
+    school_manager:
+      greet: "Hello、%{user}さん!"
+      managed_schools: "Managed Schools"
     update:
       failure: "Couldn't update user"
       success: "Successfully updated user"

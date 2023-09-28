@@ -1,5 +1,16 @@
 en:
   events:
+    condensed_stats:
+      ext_kids: "External Kids"
+      external_revenue: "External Revenue"
+      goal_percent: "Goal Percent"
+      goal_revenue: "Revenue Goal"
+      int_kids: "Internal Kids"
+      int_res_revenue: "Member Revenue"
+      photo_sales: "Photo Sales"
+      res_kids: "Reservation Kids"
+      total_kids: "Total Kids"
+      total_revenue: "Total Revenue"
     event:
       diff_school: "School to register at"
       diff_school_reg: "Register at a different school"
@@ -20,3 +31,17 @@ en:
       title: "%{name} at %{school}"
       total_cost: "Total Cost"
       upcoming_slots: "%{event} Upcoming Time Slots"
+    stats_summary:
+      attendance: "Attendance"
+      ext_kids: "External Kids"
+      external_revenue: "External Revenue"
+      goal: "Goal"
+      goal_percent: "Goal Percent"
+      goal_revenue: "Revenue Goal"
+      int_kids: "Internal Kids"
+      int_res_revenue: "Member Revenue"
+      photo_sales: "Photo Sales"
+      res_kids: "Reservation Kids"
+      revenue: "Revenue"
+      total_kids: "Total Kids"
+      total_revenue: "Total Revenue"

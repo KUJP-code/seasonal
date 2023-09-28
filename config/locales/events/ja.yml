@@ -2,6 +2,19 @@ ja:
   events:
     daily_attendance:
       print: "プリント"
+    condensed_stats:
+      ext_kids: "非会員生人数"
+      external_revenue: "非会員生売り上げ"
+      goal: "必達"
+      goal_percent: "達成率"
+      goal_revenue: "必達"
+      int_kids: "会員生人数"
+      int_res_revenue: "会員生生売り上げ"
+      photo_sales: "フォトサービス売り上げ"
+      res_kids: "予約生人数"
+      revenue: "売り上げ"
+      total_kids: "合計人数"
+      total_revenue: "合計売上"
     event:
       diff_school: "スクールを以下よりお選びください"
       diff_school_reg: "別のスクールにお申込みの方はこちら"

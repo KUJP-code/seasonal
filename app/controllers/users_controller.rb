@@ -89,8 +89,13 @@ class UsersController < ApplicationController
 
   private
 
-  def admin_data(user)
-    
+  def admin_data(_user)
+    @recent_bookings = Invoice.real
+                              .order(created_at: :desc)
+                              .limit(5).includes(:child)
+    @upcoming_events = Event.upcoming.real.includes(
+      :children, :options, :school
+    )
   end
 
   def already_registered?(t_regs, o_reg)
