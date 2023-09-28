@@ -3,19 +3,110 @@
         <table class="table table-striped table-hover">
             <thead>
                 <tr class="table-primary">
-                    <th scope="col">School</th>
-                    <th scope="col"><%= t('.int_kids') %></th>
-                    <th scope="col"><%= t('.res_kids') %></th>
-                    <th scope="col"><%= t('.ext_kids') %></th>
-                    <th scope="col"><%= t('.total_kids') %></th>
-                    <th scope="col"><%= t('.photo_sales') %></th>
-                    <th scope="col"><%= t('.total_revenue') %></th>
-                    <th scope="col"><%= t('.goal_revenue') %></th>
-                    <th scope="col"><%= t('.goal_percent') %></th>
+                    <th scope="col" 
+                        data-controller="sort"
+                        data-sort-col-value=".school">
+                        School
+                        <button
+                            class="btn-sort ascending"
+                            data-sort-target="toggle"
+                            data-action="click->sort#sort">
+                            &#9650;
+                        </button>
+                    </th>
+                    <th scope="col" 
+                        data-controller="sort"
+                        data-sort-col-value=".int_kids"
+                        >
+                        <%= t('.int_kids') %>
+                        <button
+                            class="btn-sort ascending"
+                            data-sort-target="toggle"
+                            data-action="click->sort#sort">
+                            &#9650;
+                        </button>
+                    </th>
+                    <th scope="col" 
+                        data-controller="sort"
+                        data-sort-col-value=".res_kids">
+                        <%= t('.res_kids') %>
+                        <button
+                            class="btn-sort ascending"
+                            data-sort-target="toggle"
+                            data-action="click->sort#sort">
+                            &#9650;
+                        </button>
+                    </th>
+                    <th scope="col" 
+                        data-controller="sort"
+                        data-sort-col-value=".ext_kids">
+                        <%= t('.ext_kids') %>
+                        <button
+                            class="btn-sort ascending"
+                            data-sort-target="toggle"
+                            data-action="click->sort#sort">
+                            &#9650;
+                        </button>
+                    </th>
+                    <th scope="col" 
+                        data-controller="sort"
+                        data-sort-col-value=".total_kids">
+                        <%= t('.total_kids') %>
+                        <button
+                            class="btn-sort ascending"
+                            data-sort-target="toggle"
+                            data-action="click->sort#sort">
+                            &#9650;
+                        </button>
+                    </th>
+                    <th scope="col" 
+                        data-controller="sort"
+                        data-sort-col-value=".photo_sales">
+                        <%= t('.photo_sales') %>
+                        <button
+                            class="btn-sort ascending"
+                            data-sort-target="toggle"
+                            data-action="click->sort#sort">
+                            &#9650;
+                        </button>
+                    </th>
+                    <th scope="col" 
+                        data-controller="sort"
+                        data-sort-col-value=".total_revenue">
+                        <%= t('.total_revenue') %>
+                        <button
+                            class="btn-sort ascending"
+                            data-sort-target="toggle"
+                            data-action="click->sort#sort">
+                            &#9650;
+                        </button>
+                    </th>
+                    <th scope="col" 
+                        data-controller="sort"
+                        data-sort-col-value=".goal_revenue">
+                        <%= t('.goal_revenue') %>
+                        <button
+                            class="btn-sort ascending"
+                            data-sort-target="toggle"
+                            data-action="click->sort#sort">
+                            &#9650;
+                        </button>
+                    </th>
+                    <th scope="col" 
+                        data-controller="sort"
+                        data-sort-col-value=".goal_percent">
+                        <%= t('.goal_percent') %>
+                        <button
+                            class="btn-sort ascending"
+                            data-sort-target="toggle"
+                            data-action="click->sort#sort">
+                            &#9650;
+                        </button>
+                    </th>
                 </tr>
             </thead>
 
-            <tbody>
+            <tbody id="condensed_stats">
                 <% events.each do |event| %>
                     <% children = event.children %>
 
