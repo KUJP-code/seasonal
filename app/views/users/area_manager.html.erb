@@ -5,11 +5,13 @@
     </div>
 
     <% if (current_user.area_manager? || current_user.admin?) %>
-        <div class="card">
-            <h2>All Schools</h2>
-            <%= render partial: 'events/stats_summary',
-                       locals: { events: @upcoming_events } %>
-        </div>
+        <% unless @upcoming_events.empty? %>
+            <div class="card">
+                <h2>All Schools</h2>
+                <%= render partial: 'events/stats_summary',
+                        locals: { events: @upcoming_events } %>
+            </div>
+        <% end %>
 
         <% @managed_areas.each do |area| %>
             <% next if area.upcoming_events.empty? %>
