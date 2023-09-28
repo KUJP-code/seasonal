@@ -360,6 +360,7 @@ class Invoice < ApplicationRecord
       pdf.pad(2.mm) { pdf.text('〇〇 〇〇様 御中', size: 20, color: '000000') }
     end
     pdf.grid([2, 0], [2, 9]).bounding_box do
+      pdf.stroke_bounds
       pdf.fill_rectangle(pdf.bounds.top_left, 95.mm, 13.mm)
       pdf.pad(3.mm) { pdf.text('金額（税込）', align: :center, color: 'ffffff', size: 20) }
     end
