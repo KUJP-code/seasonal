@@ -87,6 +87,9 @@ gem 'chartkick'
 # Allow easy grouping by time periods
 gem 'groupdate'
 
+# Use prawn for PDF invoices
+gem 'prawn'
+
 group :development, :test do
   # Capybara for system/feature testing
   gem 'capybara'
