@@ -211,12 +211,8 @@ class UsersController < ApplicationController
 
   def school_manager_data(user)
     @school = user.managed_schools.first
-    @next_event = sm_next_event_data(@school.upcoming_events.first)
-    @deleted_invoices = sm_deleted_invoices(user, @next_event[:event].id)
-    @recent_bookings = @next_event[:event].invoices
-                                          .order(created_at: :desc)
-                                          .limit(5)
-                                          .includes(:child)
+    next_event = @school.upcoming_events.first
+    sm_next_event_data(next_event, user) if next_event
   end
 
   def sm_deleted_invoices(user, event_id)
@@ -231,13 +227,18 @@ class UsersController < ApplicationController
                        .select { |i| event_id == i.event_id }
   end
 
-  def sm_next_event_data(event)
-    {
+  def sm_next_event_data(event, user)
+    @next_event = {
       children: event.children,
       event: event,
       invoices: event.invoices,
       slots: event.time_slots.morning.or(event.time_slots.special)
     }
+    @deleted_invoices = sm_deleted_invoices(user, @next_event[:event].id)
+    @recent_bookings = @next_event[:event].invoices
+                                          .order(created_at: :desc)
+                                          .limit(5)
+                                          .includes(:child)
   end
 
   def user_params
