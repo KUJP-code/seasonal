@@ -10,6 +10,10 @@ class InvoiceMailer < ApplicationMailer
 
   def updated_notif
     set_shared_vars
+    attachments['hello.pdf'] = {
+      mime_type: 'application/pdf',
+      content: @invoice.pdf
+    }
     if @parent.id == @updater.id
       mail(to: @parent.email, subject: t('.booking_made'))
     else

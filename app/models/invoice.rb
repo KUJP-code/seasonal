@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'prawn/measurement_extensions'
+
 # Handles data for customer Invoices
 class Invoice < ApplicationRecord
   before_save :update_regs_child, :calc_cost
@@ -59,6 +61,21 @@ class Invoice < ApplicationRecord
     calculated_cost = course_cost + adjustments + option_cost
     calculated_cost = 0 if calculated_cost.negative?
     update_cost(calculated_cost)
+  end
+
+  def pdf
+    pdf = Prawn::Document.new
+    pdf.font_families.update(
+      'NotoSans' => {
+        normal: Rails.root.join('app/assets/fonts/NotoSansJP-Medium.ttf')
+      }
+    )
+    pdf.font('NotoSans')
+    pdf.define_grid(columns: 20, rows: 20)
+    pdf_header(pdf)
+    pdf_summary(pdf)
+    pdf_footer(pdf)
+    pdf.render
   end
 
   def id_and_cost
@@ -322,6 +339,54 @@ class Invoice < ApplicationRecord
     return slot_regs.none? { |r| r.registerable.special? } if option.extension? || option.k_extension?
 
     slot_regs.none? { |s_reg| s_reg.registerable_id == option.optionable_id }
+  end
+
+  def pdf_footer(pdf)
+    pdf.grid([18, 0], [19, 19]).bounding_box do
+      pdf.text 'This will be the footer section soon!'
+    end
+  end
+
+  def pdf_header(pdf)
+    # Title
+    pdf.grid([0, 0], [1, 19]).bounding_box do
+      pdf.fill_color '2864f0'
+      pdf.fill_rectangle(pdf.bounds.top_left, 191.mm, 1.cm)
+      pdf.pad(1.mm) { pdf.text('領収書', align: :center, color: 'ffffff', size: 20) }
+    end
+
+    # Total Cost
+    pdf.grid([1, 0], [1, 9]).bounding_box do
+      pdf.pad(2.mm) { pdf.text('〇〇 〇〇様 御中', size: 20, color: '000000') }
+    end
+    pdf.grid([2, 0], [2, 9]).bounding_box do
+      pdf.fill_rectangle(pdf.bounds.top_left, 95.mm, 13.mm)
+      pdf.pad(3.mm) { pdf.text('金額（税込）', align: :center, color: 'ffffff', size: 20) }
+    end
+    pdf.grid([3, 0], [4, 9]).bounding_box do
+      pdf.stroke_bounds
+      pdf.pad(9.mm) { pdf.text('100000円', align: :right, color: '000000', size: 20) }
+    end
+
+    # Date & Registration number
+    pdf.grid([1, 11], [2, 19]).bounding_box do
+      pdf.text('Date', align: :right, color: '000000')
+      pdf.text('登録番号: T7-0118-0103-7173', align: :right, color: '000000')
+    end
+
+    # Company Info
+    pdf.grid([2, 11], [6, 19]).bounding_box do
+      pdf.text('株式会社Kids-UP', color: '000000', size: 14)
+      pdf.text('〒120-0034', color: '000000', size: 14)
+      pdf.text('住所：東京都足立区千住1-4-1東京芸術センター11階', color: '000000', size: 14)
+      pdf.text('電話：03-3870-0099', color: '000000', size: 14)
+    end
+  end
+
+  def pdf_summary(pdf)
+    pdf.grid([7, 0], [17, 19]).bounding_box do
+      pdf.text 'This will be the summary section soon!'
+    end
   end
 
   # Calculates how many times we need to apply the dumb 200円 increase
