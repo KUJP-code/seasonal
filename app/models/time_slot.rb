@@ -69,6 +69,18 @@ class TimeSlot < ApplicationRecord
     Time.zone.now > close_date
   end
 
+  def image_id
+    return nil if image.blob.nil?
+
+    image.blob.id
+  end
+
+  def image_id=(image_id)
+    return if image_id.nil?
+
+    self.image = ActiveStorage::Blob.find(image_id)
+  end
+
   # These convert the start/end datetimes into something more useful for display
   def date
     start_time.strftime('%m月%d日') + " #{ja_day}"
@@ -86,22 +98,18 @@ class TimeSlot < ApplicationRecord
     start_time.strftime('%I:%M%p')
   end
 
-  def image_id
-    return nil if image.blob.nil?
-
-    image.blob.id
-  end
-
-  def image_id=(image_id)
-    return if image_id.nil?
-
-    self.image = ActiveStorage::Blob.find(image_id)
-  end
-
   def ja_day
     en_day = start_time.strftime('%A')
 
     "(#{DAYS[en_day]})"
+  end
+
+  def name_date
+    if morning
+      "#{name} #{date}"
+    else
+      "#{name} #{date} (午後)"
+    end
   end
 
   def times
