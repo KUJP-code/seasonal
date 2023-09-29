@@ -79,7 +79,7 @@ class Invoice < ApplicationRecord
   end
 
   def id_and_cost
-    "##{id}, #{total_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円"
+    "##{id}, #{yenify(total_cost)}"
   end
 
   private
@@ -91,14 +91,14 @@ class Invoice < ApplicationRecord
     return 0 if num_regs.zero?
 
     if num_regs >= 55
-      @breakdown << "<p>- 50回コース: #{courses['50'].to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
+      @breakdown << "<p>- 50回コース: #{yenify(courses['50'])}</p>"
       return courses['50'] + best_price(num_regs - 50, courses)
     end
 
     course = nearest_five(num_regs)
     cost = courses[course.to_s]
 
-    @breakdown << "<p>- #{course}回コース: #{cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>" unless cost.nil?
+    @breakdown << "<p>- #{course}回コース: #{yenify(cost)}</p>" unless cost.nil?
     return cost + best_price(num_regs - course, courses) unless num_regs < 5
 
     return spot_use(num_regs, courses) unless child.member? && niche_case?
@@ -122,8 +122,7 @@ class Invoice < ApplicationRecord
     repeater_discount if repeater?
     generic_adj = adjustments.reduce(0) { |sum, adj| sum + adj.change }
     adjustments.each do |adj|
-      @breakdown << "<p>#{adj.reason}: #{adj.change.to_s.reverse.gsub(/(\d{3})(?=\d)/,
-                                                                     '\\1,').reverse}円 </p>"
+      @breakdown << "<p>#{adj.reason}: #{yenify(adj.change)}</p>"
     end
     @breakdown << '</div>'
 
@@ -164,9 +163,9 @@ class Invoice < ApplicationRecord
     @breakdown.prepend(
       "<h4 class='fw-semibold'>コース:</h4>
       <div class='d-flex flex-column align-items-start gap-1'>
-      <p>#{course_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円 (#{num_regs}回)</p>
-      <p>追加料金 x #{extra_cost_slots.size}: #{extra_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>
-      <p>午後コースおやつ代 x #{snack_count}: #{snack_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
+      <p>#{yenify(course_cost)} (#{num_regs}回)</p>
+      <p>追加料金 x #{extra_cost_slots.size}: #{yenify(extra_cost)}</p>
+      <p>午後コースおやつ代 x #{snack_count}: #{yenify(snack_cost)}</p>"
     )
     course_cost
   end
@@ -180,8 +179,7 @@ class Invoice < ApplicationRecord
                end.reduce(0) { |sum, reg| sum + reg.registerable.cost }
     @breakdown << "<h4 class='fw-semibold'>オプション:</h4>
                    <div class='d-flex flex-column align-items-start gap-1'>
-                   <p>#{opt_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
-                                                   '\\1,').reverse}円 (#{opt_regs.count { |r| r.registerable.name != 'なし' } - @ignore_opts.size}オプション)<p>"
+                   <p>#{yenify(opt_cost)} (#{opt_regs.count { |r| r.registerable.name != 'なし' } - @ignore_opts.size}オプション)<p>"
 
     # Find the options on this invoice, even if not saved
     temp_opts = {}
@@ -203,7 +201,7 @@ class Invoice < ApplicationRecord
     end
     # Display options with count and cost
     temp_opts.each do |name, _|
-      @breakdown << "<p>- #{name} x #{temp_opts[name][:count]}: #{temp_opts[name][:cost].to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>"
+      @breakdown << "<p>- #{name} x #{temp_opts[name][:count]}: #{yenify(temp_opts[name][:cost])}</p>"
     end
 
     @breakdown << '</div>'
@@ -255,7 +253,7 @@ class Invoice < ApplicationRecord
       @breakdown << "<h4 class='fw-semibold text-start'>イベントのオプション:</h4>\n"
       @breakdown << '<div class="d-flex gap-3 p-3 justify-content-start flex-wrap">'
       event.options.each do |opt|
-        @breakdown << "<p>- #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>\n"
+        @breakdown << "<p>- #{opt.name}: #{yenify(opt.cost)}</p>\n"
       end
       @breakdown << '</div>'
     end
@@ -280,7 +278,7 @@ class Invoice < ApplicationRecord
         opt = opt_reg.registerable
         next if opt.name == 'なし'
 
-        @breakdown << "<p> - #{opt.name}: #{opt.cost.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円</p>\n"
+        @breakdown << "<p> - #{opt.name}: #{yenify(opt.cost)}</p>\n"
       end
       @breakdown << '</div>'
     end
@@ -342,8 +340,75 @@ class Invoice < ApplicationRecord
   end
 
   def pdf_footer(pdf)
-    pdf.grid([18, 0], [19, 19]).bounding_box do
-      pdf.text 'This will be the footer section soon!'
+    tax = yenify(0.1 * total_cost)
+    without_tax = yenify(0.9 * total_cost)
+
+    # Tax box
+    pdf.grid([18, 0], [18, 2]).bounding_box do
+      pdf.stroke_bounds
+      pdf.fill_rectangle(pdf.bounds.top_left, 29.mm, 13.mm)
+      pdf.pad(4.mm) { pdf.text('税率区分', align: :center, color: 'ffffff') }
+    end
+
+    pdf.grid([18, 3], [18, 5]).bounding_box do
+      pdf.stroke_bounds
+      pdf.fill_rectangle(pdf.bounds.top_left, 29.mm, 13.mm)
+      pdf.pad(4.mm) { pdf.text('消費税', align: :center, color: 'ffffff') }
+    end
+
+    pdf.grid([18, 6], [18, 8]).bounding_box do
+      pdf.stroke_bounds
+      pdf.fill_rectangle(pdf.bounds.top_left, 29.mm, 13.mm)
+      pdf.pad(4.mm) { pdf.text('金額（税抜）', align: :center, color: 'ffffff') }
+    end
+
+    pdf.grid([19, 0], [19, 2]).bounding_box do
+      pdf.stroke_bounds
+      pdf.pad(4.mm) { pdf.text('10%対象', align: :center, color: '000000') }
+    end
+
+    pdf.grid([19, 3], [19, 5]).bounding_box do
+      pdf.stroke_bounds
+      pdf.pad(4.mm) { pdf.text(tax, align: :center, color: '000000') }
+    end
+
+    pdf.grid([19, 6], [19, 8]).bounding_box do
+      pdf.stroke_bounds
+      pdf.pad(4.mm) { pdf.text(without_tax, align: :center, color: '000000') }
+    end
+
+    # Summary box
+    pdf.grid([17, 12], [17, 15]).bounding_box do
+      pdf.stroke_bounds
+      pdf.fill_rectangle(pdf.bounds.top_left, 38.mm, 13.mm)
+      pdf.pad(4.mm) { pdf.text('小計', align: :center, color: 'ffffff') }
+    end
+
+    pdf.grid([18, 12], [18, 15]).bounding_box do
+      pdf.stroke_bounds
+      pdf.fill_rectangle(pdf.bounds.top_left, 38.mm, 13.mm)
+      pdf.pad(4.mm) { pdf.text('消費税', align: :center, color: 'ffffff') }
+    end
+
+    pdf.grid([19, 12], [19, 15]).bounding_box do
+      pdf.stroke_bounds
+      pdf.fill_rectangle(pdf.bounds.top_left, 38.mm, 13.mm)
+      pdf.pad(4.mm) { pdf.text('合計', align: :center, color: 'ffffff') }
+    end
+
+    pdf.grid([17, 16], [17, 19]).bounding_box do
+      pdf.stroke_bounds
+      pdf.pad(4.mm) { pdf.text(without_tax, align: :center, color: '000000') }
+    end
+
+    pdf.grid([18, 16], [18, 19]).bounding_box do
+      pdf.stroke_bounds
+      pdf.pad(4.mm) { pdf.text(tax, align: :center, color: '000000') }
+    end
+
+    pdf.grid([19, 16], [19, 19]).bounding_box do
+      pdf.stroke_bounds
+      pdf.pad(4.mm) { pdf.text(yenify(total_cost), align: :center, color: '000000') }
     end
   end
 
@@ -357,7 +422,7 @@ class Invoice < ApplicationRecord
 
     # Total Cost
     pdf.grid([1, 0], [1, 9]).bounding_box do
-      pdf.pad(2.mm) { pdf.text('〇〇 〇〇様 御中', size: 20, color: '000000') }
+      pdf.pad(2.mm) { pdf.text("#{child.parent.name}様 御中", size: 20, color: '000000') }
     end
     pdf.grid([2, 0], [2, 9]).bounding_box do
       pdf.stroke_bounds
@@ -366,26 +431,31 @@ class Invoice < ApplicationRecord
     end
     pdf.grid([3, 0], [4, 9]).bounding_box do
       pdf.stroke_bounds
-      pdf.pad(9.mm) { pdf.text('100000円', align: :right, color: '000000', size: 20) }
+      pdf.pad(9.mm) { pdf.text(yenify(total_cost), align: :right, color: '000000', size: 20) }
     end
 
     # Date & Registration number
     pdf.grid([1, 11], [2, 19]).bounding_box do
-      pdf.text('Date', align: :right, color: '000000')
+      pdf.text("発行日: #{Time.zone.now.strftime('%F')}", align: :right, color: '000000')
       pdf.text('登録番号: T7-0118-0103-7173', align: :right, color: '000000')
     end
 
     # Company Info
     pdf.grid([2, 11], [6, 19]).bounding_box do
-      pdf.text('株式会社Kids-UP', color: '000000', size: 14)
-      pdf.text('〒120-0034', color: '000000', size: 14)
-      pdf.text('住所：東京都足立区千住1-4-1東京芸術センター11階', color: '000000', size: 14)
-      pdf.text('電話：03-3870-0099', color: '000000', size: 14)
+      pdf.text("株式会社Kids-UP\n" \
+               "〒120-0034\n" \
+               "住所：東京都足立区千住\n" \
+               "1-4-1東京芸術センター11階\n" \
+               "電話：03-3870-0099\n",
+               color: '000000',
+               leading: 2.mm,
+               size: 14)
     end
   end
 
   def pdf_summary(pdf)
-    pdf.grid([7, 0], [17, 19]).bounding_box do
+    pdf.grid([6, 0], [16, 19]).bounding_box do
+      pdf.stroke_bounds
       pdf.text 'This will be the summary section soon!'
     end
   end
@@ -394,8 +464,7 @@ class Invoice < ApplicationRecord
   def pointless_price(num_regs, courses)
     days = full_days(slot_regs.map(&:registerable_id))
     extension_cost = days * (courses['1'] + 200)
-    @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{extension_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
-                                                                                             '\\1,').reverse}円</p>\n"
+    @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{yenify(extension_cost)}円</p>\n"
     spot_cost = spot_use(num_regs - days, courses)
     extension_cost + spot_cost
   end
@@ -416,17 +485,14 @@ class Invoice < ApplicationRecord
 
   def spot_use(num_regs, courses)
     spot_cost = num_regs * courses['1']
-    unless spot_cost.zero?
-      @breakdown << "<p>スポット1回(午前・15:00~18:30) x #{num_regs}: #{spot_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,
-                                                                                                    '\\1,').reverse}円</p>\n"
-    end
+    @breakdown << "<p>スポット1回(午前・15:00~18:30) x #{num_regs}: #{yenify(spot_cost)}</p>\n" unless spot_cost.zero?
     spot_cost
   end
 
   # Updates total cost and summary once calculated/generated
   def update_cost(new_cost)
     self.total_cost = new_cost
-    @breakdown << "<h2 id='final_cost' class='fw-semibold text-start'>合計（税込）: #{new_cost.to_s.reverse.gsub(/(\d{3})(?=\d)/,'\\1,').reverse}円</h2>\n
+    @breakdown << "<h2 id='final_cost' class='fw-semibold text-start'>合計（税込）: #{yenify(new_cost)}</h2>\n
     <p class='text-start'>登録番号: T7-0118-0103-7173</p>"
     self.summary = @breakdown
   end
@@ -437,5 +503,9 @@ class Invoice < ApplicationRecord
     registrations.each do |reg|
       reg.update!(child_id: child_id)
     end
+  end
+
+  def yenify(number)
+    "#{number.to_i.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円"
   end
 end
