@@ -16,7 +16,9 @@
     <h2 class=''><%= t('.welcome') %></h2>
     <p><%= t('.sign_up_msg') %></p>
 
-    <%= render "devise/shared/error_messages", resource: resource %>
+    <div class="card bg-danger text-white">
+      <%= render "devise/shared/error_messages", resource: resource %>
+    </div>
       
     <div class="form-floating confirmed">
       <%= f.email_field :email,
