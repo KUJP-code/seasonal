@@ -1,7 +1,9 @@
 <main id="price_list_edit">
-    <%= form_with model: @price_list, html: { class: 'card needs-validation', novalidate: true } do |f| %>
+    <%= form_with model: @price_list, html: { class: 'card' } do |f| %>
         <div class="form-floating">
-            <%= f.text_field :name, class: 'form-control', placeholder:  t('.name'), required: true %>
+            <%= f.text_field :name, class: 'form-control',
+                                    placeholder:  t('.name'),
+                                    required: true %>
             <%= f.label :name, t('.name'), class: 'form-label' %>
         </div>
 
@@ -11,18 +13,31 @@
 
             <% courses.each do |course| %>
                 <div class="form-floating input-group">
-                    <%= number_field_tag "price_list[course#{course}]", '', class: 'form-control', placeholder: "Course #{course}", required: true %>
+                    <%= number_field_tag "price_list[course#{course}]",
+                                         '',
+                                         class: 'form-control',
+                                         placeholder: "#{course} #{course > 1 ? 'Activities' : 'Activity'}" %>
 
-                    <%= label_tag "price_list[course#{course}]", "Course #{course}", class: 'form-label' %>
+                    <%= label_tag "price_list[course#{course}]",
+                                  "#{course} #{course > 1 ? 'Activities' : 'Activity'}",
+                                  class: 'form-label' %>
                     <span class="input-group-text">円</span>
                 </div>
             <% end %>
         <% else %>
-            <% @price_list.courses.each do |k, v| %>
-                    <div class="form-floating input-group">
-                        <%= number_field_tag k, v, class: 'form-control', placeholder: k, required: true %>
+            <% f.hidden_field :id %>
 
-                        <%= label_tag k, k, class: 'form-label' %>
+            <% @price_list.courses.each do |course, cost| %>
+                    <div class="form-floating input-group">
+                        <%= number_field_tag "price_list[course#{course}]",
+                                             cost,
+                                             class: 'form-control',
+                                             placeholder: course,
+                                             required: true %>
+
+                        <%= label_tag "price_list[course#{course}]",
+                                      course,
+                                      class: 'form-label' %>
                         <span class="input-group-text">円</span>
                     </div>
             <% end %>
