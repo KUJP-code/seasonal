@@ -25,21 +25,30 @@
 </div>
 
 <div class="w-100 d-flex">
-    <%= line_chart @data[:regs].group_by_day(:created_at).count,
-                   title: "Daily Registrations",
+    <%= line_chart @data[:invoices].group_by_day(:created_at).count,
+                   title: "Daily New Bookings",
                    height: "50vh" %>
-    <%= line_chart @data[:invoices]
-                        .group_by_day(:created_at)
-                        .sum(:total_cost),
-                   title: "Daily Revenue",
-                   suffix: "円",
+    <%= line_chart @data[:invoices].group_by_week(:created_at).count,
+                   title: "Weekly New Bookings",
+                   height: "50vh" %>
+</div>
+
+<div class="w-100 d-flex">
+    <%= line_chart @data[:regs].group_by_day(:created_at).count,
+                   title: "Daily Activity Registrations",
+                   height: "50vh" %>
+    <%= line_chart @data[:regs].group_by_week(:created_at).count,
+                   title: "Weekly Activity Registrations",
                    height: "50vh" %>
 </div>
     
 <div class="w-100 d-flex">
-    <%= line_chart @data[:regs].group_by_week(:created_at).count,
-                   title: "Weekly Registrations",
-                   height: "50vh" %>
+    <%= line_chart @data[:invoices]
+                        .group_by_day(:created_at)
+                        .sum(:total_cost),
+                title: "Daily Revenue",
+                suffix: "円",
+                height: "50vh" %>
     <%= line_chart @data[:invoices]
                         .group_by_week(:created_at)
                         .sum(:total_cost),
