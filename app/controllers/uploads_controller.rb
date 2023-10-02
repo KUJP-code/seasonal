@@ -3,31 +3,22 @@
 # Handles direct uploads to ActiveStorage
 class UploadsController < ApplicationController
   def new
-    @folders = [%w[Assets assets], ['Time Slots', 'time_slots'], %w[Events events]]
-    @events = [['Summer 2023', 'summer_2023'], ['Winter 2023', 'winter_2023']]
+    @folders = FOLDERS
   end
 
   def create
-    @uploads = params[:uploads]
-    @folder = params[:folder]
-    @event = params[:event]
-
-    @uploads.each do |file|
+    params[:uploads].each do |file|
       unless ALLOWED_FILETYPES.include?(file.content_type)
-        return redirect_to new_upload_path, alert: 'Disallowed File Type'
+        return redirect_to new_upload_path,
+                           alert: "#{file.content_type} can't be uploaded"
       end
 
-      key = "#{Rails.env}/#{@folder}/#{@event}/#{file.original_filename}"
-      next if ActiveStorage::Blob.create_and_upload!(
-        content_type: file.content_type,
-        filename: file.original_filename,
-        identify: false,
-        io: file,
-        key: key
-      )
+      next if upload_file(file, generate_key(file))
 
-      return redirect_to new_upload_path, alert: 'Upload Failed'
+      return redirect_to new_upload_path,
+                         alert: "Upload failed for #{file.original_filename}"
     end
+
     redirect_to new_upload_path, notice: 'Upload Successful'
   end
 
@@ -37,5 +28,21 @@ class UploadsController < ApplicationController
     params.permit(:event, :folder, :uploads)
   end
 
+  def generate_key(file)
+    event = params[:event].downcase.tr(' ', '_')
+    "#{Rails.env}/#{params[:folder]}/#{event}/#{file.original_filename}"
+  end
+
+  def upload_file(file, key)
+    ActiveStorage::Blob.create_and_upload!(
+      content_type: file.content_type,
+      filename: file.original_filename,
+      identify: false,
+      io: file,
+      key: key
+    )
+  end
+
   ALLOWED_FILETYPES = %w[image/avif image/jpeg image/png image/svg+xml image/webp].freeze
+  FOLDERS = [%w[Assets assets], ['Time Slots', 'time_slots'], %w[Events events]].freeze
 end

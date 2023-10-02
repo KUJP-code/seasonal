@@ -2,8 +2,11 @@
     <h2>Upload Assets</h2>
 
     <div>
-        <%= label_tag :uploads, t('.uploads'), class: 'form-label' %>
-        <%= f.file_field :uploads, class: 'form-control', multiple: true, include_hidden: false %>
+        <%= label_tag :uploads, 'Uploads', class: 'form-label' %>
+        <%= f.file_field :uploads,
+                         class: 'form-control',
+                         multiple: true,
+                         include_hidden: false %>
     </div>
 
     <div>
@@ -11,9 +14,11 @@
         <%= f.select :folder, @folders, {}, { class: 'form-select' } %>
     </div>
 
-    <div>
+    <div class="form-floating">
+        <%= f.text_field :event, class: 'form-control',
+                                 placeholder: 'Event Name',
+                                 required: true %>
         <%= label_tag :event, t('.event'), class: 'form-label' %>
-        <%= f.select :event, @events, {}, { class: 'form-select' } %>
     </div>
 
     <%= f.submit "Upload", class: "btn btn-primary" %>
