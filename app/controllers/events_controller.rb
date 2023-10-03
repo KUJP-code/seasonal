@@ -3,7 +3,7 @@
 # Handles flow of information for events
 class EventsController < ApplicationController
   def index
-    @events = policy_scope(Event)
+    @events = policy_scope(Event).page(params[:page])
   end
 
   def show
@@ -12,18 +12,21 @@ class EventsController < ApplicationController
     # Check the person accessing is staff or child's parent
     authorize(@child)
     user_specific_info
-    @event_slots = @event.time_slots.morning.with_attached_image.includes(afternoon_slot: :options).includes(:options)
+    @event_slots = @event.time_slots.morning
+                         .with_attached_image
+                         .includes(afternoon_slot: :options)
+                         .includes(:options)
     @options = @event.options + @event.slot_options
   end
 
   def new
     @event = authorize(Event.new)
-    new_edit_shared_info
+    form_info
   end
 
   def edit
     @event = authorize(Event.find(params[:id]))
-    new_edit_shared_info
+    form_info
   end
 
   def create
@@ -119,7 +122,7 @@ class EventsController < ApplicationController
     )
   end
 
-  def new_edit_shared_info
+  def form_info
     @images = ActiveStorage::Blob.where('key LIKE ?', '%events%').map { |blob| [blob.key, blob.id] }
     @prices = PriceList.order(:name)
     @schools = [%w[All all]] + School.order(:id).map { |school| [school.name, school.id] }

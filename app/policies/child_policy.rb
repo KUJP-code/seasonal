@@ -33,10 +33,15 @@ class ChildPolicy < ApplicationPolicy
       if user.admin?
         School.all.includes(children: %i[parent school]).order(:id)
       elsif user.area_manager?
-        area_schools = user.managed_areas.reduce([]) { |schools, area| schools + area.schools.ids }
-        scope.where(school_id: area_schools).order(:name).includes(:parent, :school)
+        area_schools = user.managed_areas
+                           .reduce([]) { |schools, area| schools + area.schools.ids }
+        scope.where(school_id: area_schools)
+             .order(:name)
+             .includes(:parent, :school)
       else
-        scope.where(school_id: user.managed_schools.ids).order(:name).includes(:parent, :school)
+        scope.where(school_id: user.managed_schools.ids)
+             .order(:name)
+             .includes(:parent, :school)
       end
     end
   end

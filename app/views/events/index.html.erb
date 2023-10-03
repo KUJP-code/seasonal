@@ -1,9 +1,13 @@
-<main id="event_index">
+<main id="event_index" class="d-flex flex-row flex-wrap justify-content-start align-items-start gap-3 p-3">
     <%= link_to t('.create_event'),
                 new_event_path,
-                class: 'btn btn-primary' if current_user.admin? %>
+                class: 'btn btn-primary w-100' if current_user.admin? %>
+
+    <%= paginate @events %>
 
     <%= render partial: 'events/event',
                collection: @events,
                locals: { child: nil } %>
+
+    <%= paginate @events %>
 </main>

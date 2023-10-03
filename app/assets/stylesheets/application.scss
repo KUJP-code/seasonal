@@ -399,7 +399,11 @@ main#child_show .card {
 // Event#index
 
 main#event_index .card {
-  width: 90%;
+  flex-basis: 23vw;
+}
+
+main#event_index nav {
+  width: 100vw;
 }
 
 // Event#show

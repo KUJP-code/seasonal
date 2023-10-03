@@ -31,6 +31,8 @@ class Event < ApplicationRecord
   has_one_attached :image
   has_one_attached :banner
 
+  paginates_per 40
+
   validates :name, :start_date, :end_date, presence: true
 
   validates_comparison_of :end_date, greater_than_or_equal_to: :start_date
