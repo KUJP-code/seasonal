@@ -3,7 +3,7 @@
 # Handles flow of information for Time Slots
 class TimeSlotsController < ApplicationController
   def index
-    @events = policy_scope(TimeSlot).order(:school_id)
+    @events = policy_scope(TimeSlot).includes(:school).order(:school_id)
     @event = @events.find { |e| e.id == params[:event].to_i } || @events.last
     @slots = if @event.nil?
                nil

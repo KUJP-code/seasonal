@@ -31,7 +31,7 @@ class ChildPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user.admin?
-        School.all.includes(children: %i[parent school]).order(:id)
+        School.all.includes(children: %i[parent]).order(:id)
       elsif user.area_manager?
         area_schools = user.managed_areas
                            .reduce([]) { |schools, area| schools + area.schools.ids }

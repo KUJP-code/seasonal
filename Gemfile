@@ -90,6 +90,15 @@ gem 'groupdate'
 # Use prawn for PDF invoices
 gem 'prawn'
 
+# Use rack-mini-profiler for performance monitoring
+gem 'rack-mini-profiler'
+
+# For memory profiling
+gem 'memory_profiler'
+
+# For call-stack profiling flamegraphs
+gem 'stackprof'
+
 group :development, :test do
   # Capybara for system/feature testing
   gem 'capybara'

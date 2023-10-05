@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   # Make sure we're in the right language and know who's making changes
-  before_action :switch_locale, :set_paper_trail_whodunnit
+  before_action :mini_profile, :switch_locale, :set_paper_trail_whodunnit
 
   private
 
@@ -18,6 +18,10 @@ class ApplicationController < ActionController::Base
 
   def default_url_options
     { locale: I18n.locale }
+  end
+
+  def mini_profile
+    Rack::MiniProfiler.authorize_request if current_user&.admin?
   end
 
   def switch_locale

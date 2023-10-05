@@ -14,8 +14,10 @@ class EventsController < ApplicationController
     user_specific_info
     @event_slots = @event.time_slots.morning
                          .with_attached_image
-                         .includes(afternoon_slot: :options)
-                         .includes(:options)
+                         .includes(
+                           :options,
+                           afternoon_slot: %i[options]
+                         )
     @options = @event.options + @event.slot_options
   end
 

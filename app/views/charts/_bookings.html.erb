@@ -73,7 +73,7 @@
     <%= column_chart @data[:invoices]
                           .group(:event_id)
                           .average(:total_cost)
-                          .to_h { |k, v| [@nav[:schools].find { |s| s.id == k }.name, v] }
+                          .to_h { |k, v| [@data[:school_hash][k], v] }
                           .sort_by { |_k, v| v}
                           .reverse, 
                      title: 'Average Booking Cost by School',

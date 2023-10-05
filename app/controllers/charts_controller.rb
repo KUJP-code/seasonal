@@ -64,15 +64,17 @@ class ChartsController < ApplicationController
   end
 
   def bookings_all_data
-    event_ids = Event.where(name: @nav[:event], school_id: School.real.ids).ids
-    invoices = Invoice.real.where(event_id: event_ids)
+    events = Event.where(name: @nav[:event], school_id: School.real.ids)
+                  .includes(:school)
+    invoices = Invoice.real.where(event_id: events.ids)
 
     {
       invoices: invoices,
       regs: Registration.where(
         registerable_type: 'TimeSlot',
         invoice_id: invoices.ids
-      )
+      ),
+      school_hash: events.to_h { |e| [e.id, e.school.name] }
     }
   end
 
