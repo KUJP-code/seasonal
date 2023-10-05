@@ -5,7 +5,7 @@
 <% registrations = @all_invoices.reduce([]) { |array, invoice| array + invoice.registrations } %>
 <% adjustments = @all_invoices.reduce([]) { |array, inv| array + inv.adjustments } %>
 <% slots_in_ss = @all_invoices.select { |invoice| invoice.in_ss }.reduce([]) { |array, invoice| array + invoice.slot_regs } %>
-<% opts_in_ss = @all_invoices.select { |invoice| invoice.in_ss }.reduce([]) { |array, invoice| array + invoice.opt_regs } %>
+<% opt_regs_in_ss = @all_invoices.select { |invoice| invoice.in_ss }.reduce([]) { |array, invoice| array + invoice.opt_regs } %>
 <% event_cost = @child.parent.invoices.where(event_id: @event.id).reduce(0) { |sum, invoice| sum + invoice.total_cost } unless @child.parent.nil? %>
 <% others_cost = @child.parent.invoices.where(event_id: @event.id).where.not(child_id: @child.id).reduce(0) { |sum, invoice| sum + invoice.total_cost } unless @child.parent.nil? %>
 
@@ -94,7 +94,7 @@
                 <div class="d-flex gap-2 align-items-center">
                     <h4><%= "#{opt.name}: #{t('.sibling_reg', opt: opt.name)}" %></h4>
                 </div>
-            <% elsif opts_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
+            <% elsif opt_regs_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
                 <div class="d-flex gap-2 align-items-center">
                     <h4><%= "#{opt.name} (#{number_to_currency(opt.cost, unit: '円', precision: 0, locale: :ja)}): ◯" %></h4>
                 </div>
@@ -220,9 +220,9 @@
                     <div class="d-flex flex-column flex-lg-row flex-lg-wrap justify-content-lg-around gap-3">
                         <%# Only internal kids can register for the family ice cream %>
                         <% if @event.id == 29 && !@child.internal? %>
-                            <%= render partial: 'time_slots/add_slot', collection: unregistered_slots.reject { |slot| slot.name == "親子参加型！サイエンスアイスクリームを作ろう♪" }, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, opts_in_ss: opts_in_ss } %>
+                            <%= render partial: 'time_slots/add_slot', collection: unregistered_slots.reject { |slot| slot.name == "親子参加型！サイエンスアイスクリームを作ろう♪" }, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, opt_regs_in_ss: opt_regs_in_ss } %>
                         <% else %>                        
-                            <%= render partial: 'time_slots/add_slot', collection: unregistered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, opts_in_ss: opts_in_ss } %>
+                            <%= render partial: 'time_slots/add_slot', collection: unregistered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, opt_regs_in_ss: opt_regs_in_ss } %>
                         <% end %>
                     </div>
                 </div>
@@ -238,7 +238,7 @@
             <div id="event-collapseThree" class="accordion-collapse collapse">
                 <div class="accordion-body">
                     <div class="d-flex flex-column flex-lg-row flex-lg-wrap justify-content-lg-around gap-3">
-                        <%= render partial: 'time_slots/add_slot', collection: registered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, opts_in_ss: opts_in_ss } %>
+                        <%= render partial: 'time_slots/add_slot', collection: registered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, opt_regs_in_ss: opt_regs_in_ss } %>
                     </div>
                 </div>
             </div>

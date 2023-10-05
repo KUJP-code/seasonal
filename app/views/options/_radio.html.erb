@@ -1,0 +1,48 @@
+<% if opt.name == 'なし' %>
+    <div class="add_reg w-100 form-check d-flex justify-content-center align-items-center"
+        data-controller="register"
+        data-register-id-value="0"
+        data-register-type-value="Radio"
+        data-register-child-value=<%= child_id %>
+        data-register-cost-value="0"
+        data-register-name-value=<%= opt.name %>>
+
+        <label for="<%= "arrival#{opt.optionable_id}opt0" %>"
+            data-register-target="name"
+            class="form-check-label me-2">
+            <%= opt.name %>
+        </label>
+
+        <input type="radio"
+            name=<%= "arrival#{opt.optionable_id}child#{child_id}" %>
+            id="<%= "arrival#{opt.optionable_id}opt0" %>"
+            <%= 'checked' if checked %>
+            data-register-target='button'
+            data-action="change->register#toggle"
+            class="form-check-input m-0">
+    </div>
+<% else %>
+    <div class="add_reg w-100 form-check d-flex justify-content-center align-items-center"
+        data-controller="register"
+        data-register-id-value=<%= opt.id %>
+        data-register-type-value="Radio"
+        data-register-child-value=<%= child_id %>
+        data-register-cost-value=<%= opt.cost %>
+        data-register-name-value=<%= opt.name %>>
+
+        <label for="<%= "arrival#{opt.optionable_id}opt#{opt.id}" %>"
+            data-register-target="name"
+            class="form-check-label">
+            <%= opt.name %>
+        </label>
+
+        <input type="radio"
+            name=<%= "arrival#{opt.optionable_id}child#{child_id}" %>
+            id="<%= "arrival#{opt.optionable_id}opt#{opt.id}" %>"
+            <%= 'checked' if checked %>
+            data-register-target='button'
+            data-action="change->register#toggle"
+            class="form-check-input m-0">
+    </div>
+<% end %>
+
