@@ -237,17 +237,17 @@
         <td colspan="3"></td>
     <% else %>
         <td colspan="3">
-            <%= link_to "#{event_special.first.name} (午前) / #{event_special.last.name} (午後)", children_path(id: event_special.first.id, source: 'TimeSlot') %>
+            <%= link_to "#{event_special.first.name} (午前) / #{event_special.last.name} (午後)", children_path(id: event_special.first.id, source: 'time_slot') %>
         </td>
     <% end %>
 
     <% reg_slots.each do |slot| %>
         <% if slot.morning %>
-            <td colspan="3"><%= link_to "#{slot.name} (#{slot.start_time.strftime('%m月%d日')})", children_path(id: slot.id, source: 'TimeSlot') %></td>
+            <td colspan="3"><%= link_to "#{slot.name} (#{slot.start_time.strftime('%m月%d日')})", children_path(id: slot.id, source: 'time_slot') %></td>
         <% elsif reg_slots.map(&:id).include?(slot.morning_slot_id) %>
             <% next %>
         <% else %>
-            <td colspan="3"><%= link_to "#{slot.name} (#{slot.start_time.strftime('%m月%d日')})", children_path(id: slot.id, source: 'TimeSlot') %></td>
+            <td colspan="3"><%= link_to "#{slot.name} (#{slot.start_time.strftime('%m月%d日')})", children_path(id: slot.id, source: 'time_slot') %></td>
         <% end %>
     <% end %>
 

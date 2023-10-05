@@ -33,6 +33,9 @@ class Option < ApplicationRecord
 
   # Scopes
   # For category of option
-  scope :time, -> { where(category: %i[arrival departure k_arrival k_departure]) }
   scope :extension, -> { where(category: %i[extension k_extension]) }
+  scope :not_time, -> { where.not(category: TIME_CATEGORIES) }
+  scope :time, -> { where(category: TIME_CATEGORIES) }
+
+  TIME_CATEGORIES = %i[arrival departure k_arrival k_departure].freeze
 end

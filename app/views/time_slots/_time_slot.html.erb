@@ -35,7 +35,7 @@
         <% end %>
 
         <% if current_user.staff? %>
-            <%= link_to t('.view_attendance'), children_path(source: 'TimeSlot', id: time_slot.id), class: 'btn btn-primary' %>
+            <%= link_to t('.view_attendance'), children_path(source: 'time_slot', id: time_slot.id), class: 'btn btn-primary' %>
         <% end %>
 
         <%# Allow admins to edit activity details %>

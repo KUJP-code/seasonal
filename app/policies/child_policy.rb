@@ -46,6 +46,8 @@ class ChildPolicy < ApplicationPolicy
     end
   end
 
+  private
+
   def staff_or_parent?(user, record)
     user.staff? || user.id == record.parent_id
   end

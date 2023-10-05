@@ -2,25 +2,14 @@
 
 # Control flow of data for Children
 class ChildrenController < ApplicationController
-  ALLOWED_SOURCES = %w[Event TimeSlot].freeze
+  ALLOWED_SOURCES = %w[event time_slot].freeze
 
   def index
-    authorize :child, :index?
-    # List children attending an event or time slot
-    if params[:all]
-      slot_attendance_index
-    elsif params[:source]
-      return unless ALLOWED_SOURCES.include? params[:source]
+    authorize(:child)
+    return send("#{params[:source]}_attendance") if attendance_request?
 
-      find_source
-    elsif current_user.admin?
-      # Admins need schools instead for pagination
-      @schools = policy_scope(Child).page(params[:page]).per(1_000)
-      @school = @schools.find { |s| s.id == params[:school].to_i } || @schools.first
-    else
-      # By default, see the list of children current user is responsible for
-      @children = policy_scope(Child).page(params[:page]).per(1_000)
-    end
+    admin_data if current_user.admin?
+    @children = policy_scope(Child).page(params[:page]).per(1_000)
   end
 
   def show
@@ -93,23 +82,34 @@ class ChildrenController < ApplicationController
                                   ])
   end
 
-  def event_variables
+  def admin_data
+    @schools = policy_scope(Child).page(params[:page]).per(1_000)
+    @school = @schools.find { |s| s.id == params[:school].to_i } ||
+              @schools.first
+  end
+
+  def afternoon_data
+    @afternoon_children = @afternoon.children.includes(
+      :options,
+      :parent,
+      :registrations,
+      :regular_schedule,
+      :time_slots
+    )
+    @afternoon_options = @afternoon.options.not_time.includes(:registrations)
+  end
+
+  def attendance_request?
+    params[:source] && ALLOWED_SOURCES.include?(params[:source])
+  end
+
+  def event_attendance
     @source = Event.find(params[:id])
     @slots = @source.time_slots.includes(:options)
     @children = @source.children.includes(
       :options, :invoices, :regular_schedule, time_slots: %i[options afternoon_slot], real_invoices: :coupons
     ).order(:name)
-  end
-
-  def find_source
-    case params[:source]
-    when 'Event'
-      event_variables
-      render 'children/events/event_sheet'
-    when 'TimeSlot'
-      slot_variables
-      render 'children/time_slots/slot_sheet'
-    end
+    render 'children/events/event_sheet'
   end
 
   def search_result
@@ -118,21 +118,20 @@ class ChildrenController < ApplicationController
     Child.find_by(ssid: params[:ssid])
   end
 
-  def slot_attendance_index
-    @source = Event.where(id: params[:id]).includes(options: :registrations)
-    @slots = @source.first.time_slots.morning.includes(
-      children: %i[adjustments registrations],
-      afternoon_slot: %i[options registrations children],
-      options: :registrations
+  def time_slot_attendance
+    @slot = TimeSlot.find(params[:id])
+    @options = @slot.options.includes(:registrations)
+    @event_options = @slot.event.options
+    @children = @slot.children.includes(
+      :options,
+      :parent,
+      :registrations,
+      :regular_schedule,
+      :time_slots
     )
-    render 'children/time_slots/slot_sheet_index'
-  end
+    @afternoon = @slot.afternoon_slot
+    afternoon_data if @afternoon
 
-  def slot_variables
-    @source = TimeSlot.where(id: params[:id]).includes(
-      children: %i[registrations regular_schedule], afternoon_slot: %i[options registrations],
-      options: :registrations
-    )
-    @event = Event.where(id: @source.first.event_id).includes(options: :registrations)
+    render 'children/time_slots/attendance'
   end
 end

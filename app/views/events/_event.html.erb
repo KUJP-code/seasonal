@@ -1,11 +1,11 @@
 <div class="card d-grid">
     <% if current_user.staff? && child.nil? %>
     
-        <%= (link_to image_tag(url_for(event.image), class: 'img-fluid img-thumbnail'), children_path(source: 'Event', id: event.id)) unless event.image.blank? %>
+        <%= (link_to image_tag(url_for(event.image), class: 'img-fluid img-thumbnail'), children_path(source: 'event', id: event.id)) unless event.image.blank? %>
     
         <div class="d-flex justify-content-center align-items-center flex-column flex-grow-1 gap-3">
             <h2 class="fw-bold">
-                <%= link_to t('.title', name: event.name, school: event.school.name), children_path(source: 'Event', id: event.id) %>
+                <%= link_to t('.title', name: event.name, school: event.school.name), children_path(source: 'event', id: event.id) %>
             </h2>
             <p><%= event.f_start_date %></p>
         </div>
