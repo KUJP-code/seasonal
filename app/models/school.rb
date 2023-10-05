@@ -35,7 +35,6 @@ class School < ApplicationRecord
   validates :name, presence: true
   validate :managers, :school_manager?
 
-  # Instance methods
   def hat_kids
     children.where(received_hat: false)
             .joins(:adjustments)
@@ -46,9 +45,9 @@ class School < ApplicationRecord
             )
   end
 
-  # def next_event
-  #   events.find_by('end_date > ?', Time.zone.now)
-  # end
+  def next_event
+    upcoming_events.first
+  end
 
   private
 

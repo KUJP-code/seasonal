@@ -128,7 +128,7 @@ class UsersController < ApplicationController
   def customer_data(user)
     @children = user.children.includes(:school)
     @invoices = user.real_invoices
-    @next_event = @children.first.school.upcoming_events.first unless @children.empty?
+    @next_event = @children.first.next_event unless @children.empty?
   end
 
   def delete_admin?
@@ -211,7 +211,7 @@ class UsersController < ApplicationController
 
   def school_manager_data(user)
     @school = user.managed_schools.first
-    next_event = @school.upcoming_events.first
+    next_event = @school.next_event
     sm_next_event_data(next_event, user) if next_event
   end
 

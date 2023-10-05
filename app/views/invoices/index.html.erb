@@ -33,7 +33,7 @@
             <% end %>
         <% end %>
     <% else %>
-        <% next_event = @child.school.upcoming_events.first %>
+        <% next_event = @child.next_event %>
 
         <% unless next_event.nil? %>
             <% event_cost = @child.invoices

@@ -12,6 +12,8 @@ class Child < ApplicationRecord
   # List associations to other models
   belongs_to :parent, class_name: 'User', optional: true
   belongs_to :school, optional: true
+  has_many :upcoming_events, through: :school,
+                             class_name: 'Event'
   has_one :regular_schedule, dependent: :destroy
   delegate :area, to: :school
 
@@ -97,12 +99,16 @@ class Child < ApplicationRecord
     (slot.end_time + dep_opt.modifier.minutes).strftime('%I:%M%p')
   end
 
+  def diff_school_events
+    events.where.not(school: school).distinct
+  end
+
   def names_string
     "#{name}, #{katakana_name}, #{en_name}"
   end
 
-  def diff_school_events
-    events.where.not(school: school).distinct
+  def next_event
+    upcoming_events.first
   end
 
   # Checks which price list the child uses
