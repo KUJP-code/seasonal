@@ -398,8 +398,10 @@ main#child_show .card {
 
 // Event#index
 
-main#event_index .card {
-  flex-basis: 23vw;
+@media (min-width: 992px) {
+  main#event_index .card {
+    flex-basis: 23vw;
+  }
 }
 
 main#event_index nav {
