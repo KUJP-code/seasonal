@@ -7,8 +7,6 @@ export default class extends Controller {
     // List all other attendance tables
     const sheets = document.querySelectorAll(".slot_attendance");
 
-    console.log(sheets);
-
     // Hide all other attendance tables
     for (let sheet of sheets) {
       sheet.classList.add("d-none");

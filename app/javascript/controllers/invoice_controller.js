@@ -10,8 +10,6 @@ export default class extends Controller {
   ];
 
   add(child, cost, id, snack, type, modifier, name) {
-    console.log(name);
-
     const wrapper =
       type === "TimeSlot"
         ? document.getElementById(`slot${id}`.concat(`child${child}`))
@@ -48,7 +46,7 @@ export default class extends Controller {
       }
     }
 
-    if (name) {
+    if (type === "TimeSlot") {
       // Add the name of the registration to the registration list
       const nameContainer = document.getElementById("reg_slots");
       const nameP = document.createElement("p");
@@ -83,8 +81,6 @@ export default class extends Controller {
     const snack = e.detail.snack;
     const type = e.detail.type;
 
-    console.log(name);
-
     if (checked && (type === "TimeSlot" || type === "Option")) {
       return this.add(child, cost, id, snack, type, modifier, name);
     } else if (checked && type === "Radio") {
@@ -95,21 +91,23 @@ export default class extends Controller {
   }
 
   radio(child, cost, id, siblings, name) {
-    this.add(child, cost, id, "Option", name);
+    if (name !== "なし") {
+      this.add(child, cost, id, false, "Option", 0, name);
+    }
 
     siblings.forEach((sibling) => {
       const child = sibling.dataset.registerChildValue;
       const id = sibling.dataset.registerIdValue;
 
-      this.remove(child, id, "Option", name);
+      this.remove(child, id, false, "Option", name);
     });
   }
 
   remove(child, id, snack, type, name) {
     const wrapper =
       type === "TimeSlot"
-        ? document.getElementById(`slot${id}`.concat(`child${child}`))
-        : document.getElementById(`opt${id}`.concat(`child${child}`));
+        ? document.getElementById(`slot${id}child${child}`)
+        : document.getElementById(`opt${id}child${child}`);
 
     if (wrapper) {
       if (wrapper.dataset.newRecord === "true") {
