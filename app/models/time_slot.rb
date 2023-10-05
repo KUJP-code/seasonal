@@ -106,9 +106,9 @@ class TimeSlot < ApplicationRecord
 
   def name_date
     if morning
-      "#{name} #{date}"
+      "#{name} (#{date})"
     else
-      "#{name} #{date} (午後)"
+      "#{name} (#{date}) (午後)"
     end
   end
 
@@ -194,12 +194,6 @@ class TimeSlot < ApplicationRecord
       cost: 660
     },
     {
-      name: 'なし',
-      category: :departure,
-      modifier: 0,
-      cost: 0
-    },
-    {
       name: '~19:00（1コマ）',
       category: :departure,
       modifier: 30,
@@ -222,12 +216,6 @@ class TimeSlot < ApplicationRecord
       category: :departure,
       modifier: 120,
       cost: 1_840
-    },
-    {
-      name: 'なし',
-      category: :k_departure,
-      modifier: 0,
-      cost: 0
     },
     {
       name: '~19:00（1コマ）',
@@ -275,12 +263,6 @@ class TimeSlot < ApplicationRecord
       cost: 660
     },
     {
-      name: 'なし',
-      category: :arrival,
-      modifier: 0,
-      cost: 0
-    },
-    {
       name: '9:30~（1コマ）',
       category: :arrival,
       modifier: -30,
@@ -297,12 +279,6 @@ class TimeSlot < ApplicationRecord
       category: :arrival,
       modifier: -90,
       cost: 1_380
-    },
-    {
-      name: 'なし',
-      category: :k_arrival,
-      modifier: 0,
-      cost: 0
     },
     {
       name: '9:30~（1コマ）',
