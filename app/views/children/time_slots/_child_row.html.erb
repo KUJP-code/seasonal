@@ -1,21 +1,19 @@
 <% arrive_categories = %w[arrival k_arrival] %>
 <% depart_categories = %w[departure k_departure] %>
 <% arrival_option = child.options.find { |opt| arrive_categories.include?(opt.category) && opt.optionable_id == slot.id } %>
-<% depart_option = child.options.find { |opt| depart_categories.include?(opt.category) && opt.optionable_id == slot.afternoon_slot.id } unless slot.afternoon_slot.nil? %>
+<% depart_option = child.options.find { |opt| depart_categories.include?(opt.category) && opt.optionable_id == afternoon.id } unless afternoon.nil? %>
 <% festival_depart_option = child.options.find { |opt| depart_categories.include?(opt.category) && opt.optionable_id == slot.id } if slot.name == "夏祭り" %>
 <% siblings = child.siblings.map(&:id) %>
 
 <tr>
-    <% if slot.name == "夏祭り" %>
-      <% if child.registrations.any? { |reg| extension_ids.include?(reg.registerable_id) && reg.registerable_type == 'Option' } %>
-        <td class="extend">中延長</td>
-      <% else %>
-        <td class="extend"></td>
-      <% end %>
-    <% else %>
-      <th scope="row" class="arrival"><%= (slot.start_time + arrival_option.modifier.minutes).strftime('%I:%M%p').concat('~') if arrival_option && arrival_option.modifier.negative? %></th>
-    <% end %>
-    <th scope="row" class="morning"><%= '◯' if child.time_slots.include?(slot) %></th>
+  <th scope="row" class="arrival">
+    <%= (slot.start_time + arrival_option.modifier.minutes).strftime('%I:%M%p').concat('~') if arrival_option %>
+   </th>
+
+    <th scope="row" class="morning">
+      <%= '◯' if child.time_slots.include?(slot) %>
+    </th>
+
     <th scope="row" class="name">
       <% if slot.outdoor? && child.adjustments.find_by(reason: '帽子代(野外アクティビティに参加される方でKids UP帽子をお持ちでない方のみ)', change: 1_100) %>
         <%= link_to "(H) #{child.katakana_name} (#{child.en_name})", child_path(child) %>
@@ -36,45 +34,30 @@
           <%= opt.name if child.registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type = 'Option' } || opt.registrations.any? { |reg| siblings.include?(reg.child_id) } %>
         </td>
     <% end %>
-    <% morn_options.each do |opt| %>
-        <td class=<%= opt.name %>><%= opt.name if child.registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type = 'Option' } %></td>
+    <% options.each do |o| %>
+        <td class=<%= o.name %>><%= o.name if child.registrations.any? { |reg| reg.registerable_id == o.id && reg.registerable_type = 'Option' } %></td>
     <% end %>
 
-    <% if slot.name == "親子参加型！サイエンスアイスクリームを作ろう♪" %>
-      <% morn_plusones = slot.options.select { |opt| opt.plusone? }.map(&:id) %>
-      <% registered_plusone = child.options.select { |opt| morn_plusones.include?(opt.id) }.first %>
-        <td class="家族の参加"><%= registered_plusone ? registered_plusone.name : "" %></td>
-    <% end %>
-
-    <% if slot.special? && extension_ids.size.positive? %>
-      <% if slot.name == "夏祭り" %>
-        <th scope="row" class="depart"><%= '~'.concat((slot.end_time + festival_depart_option.modifier.minutes).strftime('%I:%M%p')) if festival_depart_option && festival_depart_option.modifier.positive? %></th>
+    <% if slot.special? && ext_ids.size.positive? %>
+      <% if child.registrations.any? { |reg| ext_ids.include?(reg.registerable_id) && reg.registerable_type == 'Option' } %>
+        <td class="extend"><%= slot.options.extension.first.name %></td>
       <% else %>
-        <% if child.registrations.any? { |reg| extension_ids.include?(reg.registerable_id) && reg.registerable_type == 'Option' } %>
-          <td class="extend"><%= slot.options.extension.first.name %></td>
-        <% else %>
-          <td class="extend"></td>
-        <% end %>
+        <td class="extend"></td>
       <% end %>
     <% end %>
     
-    <% if slot.afternoon_slot %>
+    <% if afternoon %>
       <td class="afternoon">
-        <%= '◯' if child.registrations.find { |reg| reg.registerable_type == 'TimeSlot' && reg.registerable_id == slot.afternoon_slot.id } %>
+        <%= '◯' if child.registrations.find { |reg| reg.registerable_type == 'TimeSlot' && reg.registerable_id == afternoon.id } %>
         <%= 'ご通学日' if child.regular_schedule && child.regular_schedule[slot.day.downcase] %>
       </td>
+
       <% afternoon_options.each do |opt| %>
           <td class=<%= opt.name %>><%= opt.name if child.registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type = 'Option' } %></td>
       <% end %>
-
-      <% if slot.name == "親子参加型！サイエンスアイスクリームを作ろう♪" %>
-        <% aft_plusones = slot.afternoon_slot.options.select { |opt| opt.plusone? }.map(&:id) %>
-        <% aft_registered_plusone = child.options.select { |opt| aft_plusones.include?(opt.id) }.first %>
-          <td class="家族の参加_aft"><%= aft_registered_plusone ? aft_registered_plusone.name : "" %></td>
-      <% end %>
       
       <td class="depart">
-          <%= '~'.concat((slot.afternoon_slot.end_time + depart_option.modifier.minutes).strftime('%I:%M%p')) if depart_option && depart_option.modifier.positive? %>
+          <%= '~'.concat((afternoon.end_time + depart_option.modifier.minutes).strftime('%I:%M%p')) if depart_option && depart_option.modifier.positive? %>
       </td>
     <% end %>
 </tr>

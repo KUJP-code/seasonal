@@ -96,7 +96,7 @@ class ChildrenController < ApplicationController
       :regular_schedule,
       :time_slots
     )
-    @afternoon_options = @afternoon.options.not_time.includes(:registrations)
+    @afternoon_options = @afternoon.options.not_time
   end
 
   def attendance_request?
@@ -120,7 +120,7 @@ class ChildrenController < ApplicationController
 
   def time_slot_attendance
     @slot = TimeSlot.find(params[:id])
-    @options = @slot.options.includes(:registrations)
+    @options = @slot.options
     @event_options = @slot.event.options
     @children = @slot.children.includes(
       :options,

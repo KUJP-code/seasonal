@@ -116,8 +116,8 @@ ja:
       attendance:
         allergy: "アレルギー"
         arrival: "延長(前)"
+        attend: "出席"
         attend_afternoon: "PM"
-        attend_morning: "AM"
         back_to_event: "イベントに戻る"
         depart: "延長(後)"
         filter: "フィルター"

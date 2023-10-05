@@ -1,4 +1,4 @@
-<% morn_slots = @slots.select { |s| s.morning }.sort_by { |s| s.start_time } %>
+<% morn_slots = @slots.select { |s| s.morning || s.special? }.sort_by { |s| s.start_time } %>
 <% special = @slots.select { |slot| slot.special? } %>
 <%# Special day always has an afternoon slot so / 2 %>
 <% cols = morn_slots.size - special.size / 2 %>
@@ -15,7 +15,7 @@
             <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionAttendance">
                 <div class="slots p-3 d-flex flex-wrap gap-3 justify-content-start">
                     <% morn_slots.each do |slot| %>
-                        <%= link_to slot.name, 
+                        <%= link_to slot.name_date, 
                                     children_path(
                                         id: slot.id,
                                         source: 'time_slot'
