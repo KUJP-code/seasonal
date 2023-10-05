@@ -29,7 +29,7 @@ class School < ApplicationRecord
   has_many :registrations, through: :time_slots
 
   # Scopes
-  scope :real, -> { where.not(id: [1, 2]).order(:id) }
+  scope :real, -> { where.not(id: [1, 2]) }
 
   # Validations
   validates :name, presence: true
