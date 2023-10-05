@@ -107,12 +107,19 @@
         <%= link_to t('.child_bookings', child: @child.name), invoices_path(child: @child.id), class: 'btn btn-primary' unless @child.real_invoices.empty? %>
     </div>
 
-    <% unless @child.school.nil? %>
-        <% diff_school_event = @child.events.where.not(school_id: @child.school_id).order(start_date: :desc).first %>
-        <% if diff_school_event && @child.real_invoices.find_by(event_id: diff_school_event.id) %>
-            <%= render diff_school_event, partial: 'events/event', child: @child %>
+    <% if @child.school_id && @child.school.upcoming_events.size.positive? %>
+        <% diff_school_event = @child.events
+                                     .where('end_date > ?', Time.zone.now)
+                                     .where.not(school_id: @child.school_id)
+                                     .order(start_date: :desc)
+                                     .first %>
+
+        <% if diff_school_event %>
+            <%= render diff_school_event, partial: 'events/event',
+                                          child: @child %>
         <% else %>
-            <%= render @child.school.upcoming_events.first, partial: 'events/event', child: @child unless @child.school.upcoming_events.empty? %>
+            <%= render @child.next_event, partial: 'events/event',
+                                          child: @child %>
         <% end %>
     <% end %>
 </main>
