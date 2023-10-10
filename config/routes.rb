@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     # Require users to be signed in to view these resources
     authenticate :user do
       resources :adjustments, only: %i[edit]
+      resources :areas, except: %i[destroy]
       resources :charts, only: %i[show index]
       resources :children
       resources :csvs, only: %i[index]
@@ -16,6 +17,7 @@ Rails.application.routes.draw do
       resources :invoices, except: %i[edit new]
       resources :options, only: %i[new]
       resources :price_lists, except: %i[show]
+      resources :schools, except: %i[destroy index]
       resources :time_slots, except: %i[create]
       resources :uploads, only: %i[create new]
       resources :users

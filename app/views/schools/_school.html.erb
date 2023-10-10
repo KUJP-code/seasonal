@@ -1,0 +1,15 @@
+<div class="card">
+    <h3><%= school.name %></h3>
+    <p><%= "Address: #{school.address}" %></p>
+    <p><%= "Phone: #{school.phone}" %></p>
+    
+    <% if school.details %>
+        <% school.details.each do |k, v| %>
+            <p><%= "#{k}: #{v}" %></p>
+        <% end %>
+    <% end %>
+
+    <%= link_to 'Edit School',
+                edit_school_path(school),
+                class: 'btn btn-primary' %>
+</div>

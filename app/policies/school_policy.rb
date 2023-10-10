@@ -8,6 +8,10 @@ class SchoolPolicy < ApplicationPolicy
       (user.school_manager? && user.managed_schools.ids.include?(record.id))
   end
 
+  def edit
+    user.admin?
+  end
+
   # Decides which schools each role can see stats for
   class Scope < Scope
     def resolve
