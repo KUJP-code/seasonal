@@ -3,7 +3,7 @@
 # Handles data flow for Schools
 class AreasController < ApplicationController
   def index
-    @areas = policy_scope(Area).includes(:managers, :schools)
+    @areas = policy_scope(Area).includes(:managers, schools: :managers)
   end
 
   def show
@@ -12,10 +12,12 @@ class AreasController < ApplicationController
 
   def new
     @area = Area.new
+    @managers = User.area_managers
   end
 
   def edit
     @area = Area.find(params[:id])
+    @managers = User.area_managers
   end
 
   def create
@@ -43,6 +45,9 @@ class AreasController < ApplicationController
   private
 
   def area_params
-    params.require(:area).permit(:name)
+    params.require(:area).permit(
+      :name, managements_attributes:
+        %i[id manageable_id manageable_type manager_id _destroy]
+    )
   end
 end

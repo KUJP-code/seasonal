@@ -2,6 +2,8 @@
     <h3><%= school.name %></h3>
     <p><%= "Address: #{school.address}" %></p>
     <p><%= "Phone: #{school.phone}" %></p>
+
+    <p><%= "Managed by: #{school.managers.pluck(:name).join(", ")}" %></p>
     
     <% if school.details %>
         <% school.details.each do |k, v| %>

@@ -12,6 +12,7 @@ class School < ApplicationRecord
 
   has_many :managements, as: :manageable,
                          dependent: :destroy
+  accepts_nested_attributes_for :managements, allow_destroy: true
   has_many :managers, through: :managements
   has_many :children, dependent: nil
   has_many :invoices, through: :children
@@ -38,7 +39,6 @@ class School < ApplicationRecord
 
   # Validations
   validates :name, presence: true
-  validate :managers, :sm?
 
   def hat_kids
     children.where(received_hat: false)
@@ -55,12 +55,6 @@ class School < ApplicationRecord
   end
 
   private
-
-  def sm?
-    return false if managers.empty? || managers.none?(&:school_manager?)
-
-    true
-  end
 
   def set_details
     self.details = {

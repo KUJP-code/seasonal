@@ -21,16 +21,8 @@ class Area < ApplicationRecord
   has_many :registrations, through: :time_slots
   has_many :managements, as: :manageable,
                          dependent: :destroy
+  accepts_nested_attributes_for :managements, allow_destroy: true
   has_many :managers, through: :managements
 
   validates :name, presence: true
-  validate :managers, :area_manager?, unless: -> { managers.empty? }
-
-  private
-
-  def area_manager?
-    return false unless managers || managers.all(&:area_manager?)
-
-    true
-  end
 end

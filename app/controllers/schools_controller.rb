@@ -8,12 +8,12 @@ class SchoolsController < ApplicationController
 
   def new
     @school = School.new
-    @areas = Area.all
+    form_data
   end
 
   def edit
     @school = School.find(params[:id])
-    @areas = Area.all
+    form_data
   end
 
   def create
@@ -42,7 +42,14 @@ class SchoolsController < ApplicationController
 
   def school_params
     params.require(:school).permit(
-      :name, :address, :phone, :area_id, :nearby_stations, :bus_areas
+      :name, :address, :phone, :area_id, :nearby_stations, :bus_areas,
+      managements_attributes:
+        %i[id manageable_id manageable_type manager_id _destroy]
     )
+  end
+
+  def form_data
+    @managers = User.school_managers
+    @areas = Area.all
   end
 end

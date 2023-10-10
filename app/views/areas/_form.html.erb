@@ -1,4 +1,6 @@
-<%= form_with model: @area, html: { class: 'card' } do |f| %>
+<%= form_with model: @area,
+              html: { class: 'card' },
+              data: { controller: 'fields' } do |f| %>
     <div class="form-floating">
         <%= f.text_field :name, class: 'form-control',
                                 placeholder:  "Name",
@@ -6,5 +8,26 @@
         <%= f.label :name, "Name", class: 'form-label' %>
     </div>
 
-    <%= f.submit class: 'btn btn-primary' %>
+    <%= f.fields_for :managements, @area.managements do |m_f| %>
+        <% render 'managements/fields',
+                  f: m_f,
+                  id: @area.id,
+                  type: 'Area' %>
+    <% end %>
+
+    <template data-fields-target="template">
+        <%= f.fields_for :managements, Management.new, child_index: 'CHILD' do |m_f| %>
+            <% render 'managements/fields', f: m_f, id: @area.id, type: 'Area' %>
+        <% end %>
+    </template>
+
+    <div data-fields-target="target" class="d-none w-100"></div>
+
+    <div class="d-flex gap-3 align-items-center justify-content-around w-100">
+        <%= button_tag 'Add Manager',
+                        type: 'button',
+                        data: { action: "fields#add" },
+                        class: 'btn btn-info' %>
+        <%= f.submit class: 'btn btn-primary' %>
+    </div>
 <% end %>
