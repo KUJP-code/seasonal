@@ -54,21 +54,6 @@ RSpec.describe TimeSlot do
   end
 
   context 'with scopes' do
-    # Can't test past scope because of db validations
-    it "knows today's time slots" do
-      current_slot = create(:time_slot, start_time: 20.minutes.from_now,
-                                        end_time: 2.hours.from_now,
-                                        event: event)
-      todays_slots = event.time_slots.todays_slots
-      expect(todays_slots).to contain_exactly(current_slot)
-    end
-
-    it 'knows future time slots' do
-      future_slot = create(:time_slot, start_time: 1.day.from_now, end_time: 2.days.from_now, event: event)
-      future_slots = event.time_slots.future_slots
-      expect(future_slots).to contain_exactly(future_slot)
-    end
-
     it 'knows morning slots' do
       time_slot.update(morning: true)
       morning_slots = described_class.all.morning

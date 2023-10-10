@@ -33,33 +33,17 @@ class TimeSlot < ApplicationRecord
 
   has_one_attached :image
 
-  # Validations
   validates :name, :start_time, :end_time, presence: true
-
   validates_comparison_of :end_time, greater_than: :start_time
 
-  # Map category integer in db to a string
   enum :category, seasonal: 0,
                   special: 1,
                   party: 2,
                   outdoor: 3
 
-  # Scopes
-  # For time slot status
-  scope :past_slots, -> { where('end_time < ?', Time.zone.now).order(start_time: :desc) }
-  scope :todays_slots, lambda {
-    where('start_time > ? and end_time < ?',
-          Time.zone.today.midnight,
-          Time.zone.tomorrow.midnight).order(start_time: :asc)
-  }
-  scope :future_slots, -> { where('start_time >= ?', Time.zone.now).order(start_time: :asc) }
-
-  # For type of time slot
   scope :morning, -> { where(morning: true) }
   scope :afternoon, -> { where(morning: false) }
 
-  # Public methods
-  # Consolidates manual closing and automatic closing into one check
   def closed?
     return true if closed
 
@@ -119,7 +103,8 @@ class TimeSlot < ApplicationRecord
   private
 
   def create_aft_slot
-    return if !morning || special?
+    return unless morning
+    return if party? || special?
 
     create_afternoon_slot(
       name: name,
@@ -141,41 +126,7 @@ class TimeSlot < ApplicationRecord
     end
   end
 
-  CLOSE_DATES = {
-    'カラフルテープアート' => 'Wed, 19 Jul 2023 14:00 JST +9:00',
-    'ピクチャーキーホルダー' => 'Thu, 20 Jul 2023 14:00 JST +9:00',
-    '冒険者のクエスト！' => 'Fri, 21 Jul 2023 14:00 JST +9:00',
-    'ウォーターベースボール(7月25日)' => 'Mon, 24 Jul 2023 14:00 JST +9:00',
-    '忍者になろう！' => 'Tue, 25 Jul 2023 14:00 JST +9:00',
-    'フルーツスムージー★' => 'Wed, 26 Jul 2023 14:00 JST +9:00',
-    '世界のゲームを体験しよう' => 'Thu, 27 Jul 2023 14:00 JST +9:00',
-    '水鉄砲合＆スイカ割り！' => 'Fri, 28 Jul 2023 14:00 JST +9:00',
-    '巨大なお城のクラフト＆アイスクリーム屋さん' => 'Fri, 28 Jul 2023 14:00 JST +9:00',
-    'サボテンクラフト' => 'Fri, 28 Jul 2023 14:00 JST +9:00',
-    'ハワイアンかき氷' => 'Mon, 31 Jul 2023 14:00 JST +9:00',
-    '水鉄砲合戦!!(8月2日)' => 'Tue, 1 Aug 2023 14:00 JST +9:00',
-    'BBQ風焼きそば' => 'Wed, 2 Aug 2023 14:00 JST +9:00',
-    'ペーパーランタン' => 'Wed, 2 Aug 2023 14:00 JST +9:00',
-    '海のスライム' => 'Thu, 3 Aug 2023 14:00 JST +9:00',
-    'Kids Up★ゲームセンター' => 'Fri, 4 Aug 2023 14:00 JST +9:00',
-    '水鉄砲合戦!!(8月8日)' => 'Mon, 7 Aug 2023 14:00 JST +9:00',
-    'アメリカン★ホットドッグ' => 'Tue, 8 Aug 2023 14:00 JST +9:00',
-    'オレオシェイク' => 'Tue, 8 Aug 2023 14:00 JST +9:00',
-    'オリジナルバッグ作り' => 'Wed, 9 Aug 2023 14:00 JST +9:00',
-    'デザートスライム' => 'Wed, 16 Aug 2023 14:00 JST +9:00',
-    'ウォーターゲーム対決！' => 'Thu, 17 Aug 2023 14:00 JST +9:00',
-    '水鉄砲合戦!!(8月21日)' => 'Fri, 18 Aug 2023 14:00 JST +9:00',
-    '暗闇で光るスライム' => 'Tue, 22 Aug 2023 14:00 JST +9:00',
-    'DIY水族館' => 'Wed, 23 Aug 2023 14:00 JST +9:00',
-    '貝殻ペンダント' => 'Thu, 24 Aug 2023 14:00 JST +9:00',
-    'ウォーターベースボール(8月28日)' => 'Fri, 25 Aug 2023 14:00 JST +9:00',
-    'バンダナの絞り染め' => 'Fri, 25 Aug 2023 14:00 JST +9:00',
-    '夏祭り' => 'Fri, 25 Aug 2023 14:00 JST +9:00',
-    'レインボーキーホルダー' => 'Mon, 28 Aug 2023 14:00 JST +9:00',
-    'ビーチジオラマ' => 'Tue, 29 Aug 2023 14:00 JST +9:00',
-    'フレンチクレープ' => 'Wed, 30 Aug 2023 14:00 JST +9:00',
-    'アイスクリーム屋さん' => 'Wed, 30 Aug 2023 14:00 JST +9:00'
-  }.freeze
+  CLOSE_DATES = {}.freeze
 
   DAYS = {
     'Sunday' => '日',
