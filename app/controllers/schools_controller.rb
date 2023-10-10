@@ -7,12 +7,24 @@ class SchoolsController < ApplicationController
   end
 
   def new
+    @school = School.new
     @areas = Area.all
   end
 
   def edit
     @school = School.find(params[:id])
     @areas = Area.all
+  end
+
+  def create
+    @school = School.new(school_params)
+
+    if @school.save
+      redirect_to school_path(@school), notice: "Created #{@school.name}!"
+    else
+      render :new, status: unprocessable_entity,
+                   alert: "Couldn't create #{@school.name}"
+    end
   end
 
   def update

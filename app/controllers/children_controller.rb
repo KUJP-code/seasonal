@@ -32,9 +32,12 @@ class ChildrenController < ApplicationController
     @child = authorize(Child.new(child_params))
 
     if @child.save
-      redirect_to child_path(@child), notice: t('success', action: '追加', model: '生徒')
+      redirect_to child_path(@child),
+                  notice: t('success', action: '追加', model: '生徒')
     else
-      render :new, status: :unprocessable_entity, alert: t('failure', action: '追加', model: '生徒')
+      render :new,
+             status: :unprocessable_entity,
+             alert: t('failure', action: '追加', model: '生徒')
     end
   end
 
