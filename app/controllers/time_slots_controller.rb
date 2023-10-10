@@ -5,15 +5,7 @@ class TimeSlotsController < ApplicationController
   def index
     @events = policy_scope(TimeSlot).includes(:school).order(:school_id)
     @event = @events.find { |e| e.id == params[:event].to_i } || @events.last
-    @slots = if @event.nil?
-               nil
-             else
-               @event.time_slots.morning
-                     .or(@event.time_slots.special)
-                     .includes(:afternoon_slot)
-                     .with_attached_image
-                     .order(:start_time)
-             end
+    @slots = index_slots(@event)
   end
 
   def show
@@ -39,30 +31,14 @@ class TimeSlotsController < ApplicationController
 
   def update
     @slot = authorize(TimeSlot.find(params[:id]))
+    return bulk_create_aft_slots if params[:time_slot][:apply_all] == '1'
 
-    if params[:time_slot][:apply_all] == '1'
-      same_name_slots = TimeSlot.where(name: @slot.name,
-                                       morning: @slot.morning,
-                                       category: @slot.category)
-
-      results = same_name_slots.map do |s|
-        afternoon_attr = slot_params[:afternoon_slot_attributes]
-        afternoon_attr[:event_id] = s.event_id
-        { updated: s.create_afternoon_slot(afternoon_attr).persisted?, school: s.name }
-      end
-
-      if results.all? { |r| r[:updated] }
-        redirect_to time_slots_path, notice: "All #{@slot.name} activities updated"
-      else
-        failed_aft_slots = results.reject { |r| r[:created] }.pluck(:school)
-        render :edit,
-               status: :unprocessable_entity,
-               alert: "Afternoon activities for #{failed_aft_slots.join(', ')} could not be created"
-      end
-    elsif @slot.update(slot_params)
-      redirect_to time_slots_path(event: @slot.event_id), notice: "Updated #{@slot.name} at #{@slot.school.name}"
+    if @slot.update(slot_params)
+      redirect_to time_slots_path(event: @slot.event_id),
+                  notice: "Updated #{@slot.name} at #{@slot.school.name}"
     else
-      render :edit, status: :unprocessable_entity, alert: "#{@slot.name} at #{@slot.school.name} couldn't be updated"
+      render :edit, status: :unprocessable_entity,
+                    alert: "#{@slot.name} at #{@slot.school.name} couldn't be updated"
     end
   end
 
@@ -80,16 +56,53 @@ class TimeSlotsController < ApplicationController
     )
   end
 
-  def slot_blobs
-    blobs = ActiveStorage::Blob.where('key LIKE ?', '%slots%').map { |blob| [blob.key, blob.id] }
-    # Create hash of parent folders
-    path_hash = blobs.to_h { |b| [b.first.split('/')[0..-2].join('/'), []] }
-    # Send the blobs to their parent folder, with only the filename and id left
+  def blobs_by_folder(blobs)
+    paths = blobs.to_h { |b| [slice_path(b.first), []] }
+
     blobs.each do |b|
-      path_hash[b.first.split('/')[0..-2].join('/')]
-        .push([b.first.split('/').last, b.last])
+      paths[slice_path(b.first)]
+        .push([slice_filename(b.first), b.last])
     end
 
-    path_hash
+    paths
+  end
+
+  def bulk_create_aft_slots
+    same_name_slots = @slot.same_name_slots
+
+    same_name_slots.each do |s|
+      afternoon_attr = slot_params[:afternoon_slot_attributes]
+      afternoon_attr[:event_id] = s.event_id
+      s.create_afternoon_slot(afternoon_attr)
+    end
+
+    redirect_to time_slots_path,
+                notice: "All #{@slot.name} activities created"
+  end
+
+  def find_blobs
+    ActiveStorage::Blob.where('key LIKE ?', '%slots%')
+                       .map { |blob| [blob.key, blob.id] }
+  end
+
+  def index_slots(event)
+    event.time_slots.morning
+         .or(@event.time_slots.special)
+         .includes(:afternoon_slot)
+         .with_attached_image
+         .order(:start_time)
+  end
+
+  def slice_filename(key)
+    key.split('/').last
+  end
+
+  def slice_path(key)
+    key.split('/')[0..-2].join('/')
+  end
+
+  def slot_blobs
+    blobs = find_blobs
+    blobs_by_folder(blobs)
   end
 end

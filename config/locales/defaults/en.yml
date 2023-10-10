@@ -11,7 +11,7 @@ en:
     logout: "Sign Out"
     profile: "My Profile"
     schools: "Schools"
-    time_slots: "Daily Activities"
+    time_slots: "Activities"
     users: "Users"
   not_authorized: "You don't have permission to access that. Contact Brett if you think you should."
   register: "Register"

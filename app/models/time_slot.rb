@@ -65,6 +65,14 @@ class TimeSlot < ApplicationRecord
     self.image = ActiveStorage::Blob.find(image_id)
   end
 
+  def same_name_slots
+    event_ids = Event.where(name: event.name).ids
+    TimeSlot.where(name: name,
+                   morning: morning,
+                   category: category,
+                   event_id: event_ids)
+  end
+
   # These convert the start/end datetimes into something more useful for display
   def date
     start_time.strftime('%m月%d日') + " #{ja_day}"

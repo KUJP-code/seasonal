@@ -15,6 +15,8 @@ AllCops:
     - !ruby/regexp /old_and_unused\.rb$/
   NewCops: enable
 
+Metrics/AbcSize:
+  CountRepeatedAttributes: false
 Metrics/ClassLength:
   Enabled: false
 Metrics/MethodLength:
