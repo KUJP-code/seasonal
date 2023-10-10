@@ -1,7 +1,10 @@
-<main id="price_list_index" class="d-flex flex-column gap-3">
-    <div class="d-flex gap-3">
-        <%= link_to t('.create_price_list'), new_price_list_path, class: 'btn btn-primary' %>
-    </div>
+<main id="price_list_index" class="justify-content-start">
+    <%= link_to t('.create_price_list'),
+                new_price_list_path,
+                class: 'btn btn-primary' %>
 
-    <%= render partial: 'price_lists/price_list', collection: @price_lists %>
+    <div class="d-flex flex-row flex-wrap gap-3">
+        <%= render partial: 'price_lists/price_list',
+                   collection: @price_lists %>
+    </div>
 </main>
