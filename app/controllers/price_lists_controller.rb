@@ -49,9 +49,9 @@ class PriceListsController < ApplicationController
   private
 
   def price_list_params
-    params.require(:price_list).permit(:id, :name, :course1, :course5,
-                                       :course10, :course15, :course20,
-                                       :course25, :course30, :course35,
-                                       :course40, :course45, :course50)
+    params.require(:price_list).permit(
+      :id, :name, :course1, :course5, :course10, :course15, :course20,
+      :course25, :course30, :course35, :course40, :course45, :course50
+    )
   end
 end

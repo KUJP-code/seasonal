@@ -5,7 +5,7 @@
     
     <% if school.details %>
         <% school.details.each do |k, v| %>
-            <p><%= "#{k}: #{v}" %></p>
+            <p><%= "#{k.tr('_', ' ').humanize}: #{v.join(', ')}" %></p>
         <% end %>
     <% end %>
 

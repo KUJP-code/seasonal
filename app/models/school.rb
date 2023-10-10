@@ -3,6 +3,11 @@
 # Represents a single school
 # Must have a school manager
 class School < ApplicationRecord
+  # Allow API details to be set
+  attr_accessor :bus_areas, :nearby_stations
+
+  before_validation :set_details
+
   belongs_to :area
 
   has_many :managements, as: :manageable,
@@ -33,7 +38,7 @@ class School < ApplicationRecord
 
   # Validations
   validates :name, presence: true
-  validate :managers, :school_manager?
+  validate :managers, :sm?
 
   def hat_kids
     children.where(received_hat: false)
@@ -51,9 +56,16 @@ class School < ApplicationRecord
 
   private
 
-  def school_manager?
-    return false unless managers || managers.all(&:school_manager?)
+  def sm?
+    return false if managers.empty? || managers.none?(&:school_manager?)
 
     true
+  end
+
+  def set_details
+    self.details = {
+      bus_areas: bus_areas.split(/, |,/),
+      nearby_stations: nearby_stations.split(/, |,/)
+    }
   end
 end
