@@ -5,7 +5,8 @@ class TimeSlotsController < ApplicationController
   def index
     @events = policy_scope(TimeSlot).includes(:school).order(:school_id)
     @event = @events.find { |e| e.id == params[:event].to_i } || @events.last
-    @slots = index_slots(@event)
+    # TODO: ensure never nil by including past events instead
+    @slots = index_slots(@event) unless @event.nil?
   end
 
   def show
