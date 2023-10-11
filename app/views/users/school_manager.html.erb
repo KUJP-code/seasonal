@@ -2,22 +2,22 @@
     <div class="card text-center">
         <h1 class="fw-bold"><%= t('.greet', user: @user.name) %></h1>
     </div>
-    
-    <% if @next_event %>
-        <%= render partial: 'events/event_stats',
-                   locals: { data: @next_event } %>
 
-        <% unless @recent_bookings.empty? %>
-            <%= render partial: 'invoices/recent_bookings',
-                    locals: { bookings: @recent_bookings }  %>
-        <% end %>
+    <% unless @recent_bookings.empty? %>
+        <%= render partial: 'invoices/recent_bookings',
+                locals: { bookings: @recent_bookings }  %>
+    <% end %>
+    
+    <% @upcoming_events.each do |event| %>
+        <%= render partial: 'events/event_stats',
+                   locals: { event: event } %>
 
         <%= render partial: 'events/daily_attendance',
-                   locals: { data: @next_event } %>
-        
-        <% unless @deleted_invoices.empty? %>
-            <%= render partial: 'invoices/deleted',
-                        locals: { deleted_invoices: @deleted_invoices } %>
-        <% end %>
-    <% end %>       
+                   locals: { event: event } %>
+    <% end %>
+
+    <% unless @deleted_invoices.empty? %>
+        <%= render partial: 'invoices/deleted',
+                    locals: { deleted_invoices: @deleted_invoices } %>
+    <% end %>    
 </main>

@@ -6,15 +6,15 @@
     <%= render partial: 'invoices/recent_bookings',
                locals: { bookings: @recent_bookings }  %>
 
-    <% unless @upcoming_events.empty? %>
+    <% @upcoming_events.each do |name, events| %>
         <div class="card">
-            <h2>All Schools</h2>
+            <h2><%= "#{name} for All Schools" %></h2>
             <%= render partial: 'events/stats_summary',
-                       locals: { events: @upcoming_events } %>
+                        locals: { events: events } %>
         </div>
 
         <%= render partial: 'events/condensed_stats',
-                   locals: { events: @upcoming_events } %>
+                    locals: { events: events } %>
     <% end %>
 
     <div class="card flex-row flex-wrap justify-content-between gap-3">

@@ -4,29 +4,29 @@
         <h4>Area Manager</h4>
     </div>
 
-    <% if (current_user.area_manager? || current_user.admin?) %>
-        <% unless @upcoming_events.empty? %>
-            <div class="card">
-                <h2>All Schools</h2>
-                <%= render partial: 'events/stats_summary',
-                        locals: { events: @upcoming_events } %>
-            </div>
-        <% end %>
+    <% @managed_areas.each do |area| %>
+        <% next if area.upcoming_events.empty? %>
 
-        <% @managed_areas.each do |area| %>
-            <% next if area.upcoming_events.empty? %>
-
+        <% area.upcoming_events.group_by(&:name).each do |name, events| %>
             <div class="card">
-                <h2 class="fw-semibold"><%= area.name %></h2>
+                <h2 class="fw-semibold"><%= "#{name} for #{area.name}" %></h2>
 
                 <%= render partial: 'events/stats_summary',
-                           locals: { events: area.upcoming_events } %>
+                            locals: { events: events } %>
             </div>
         <% end %>
+    <% end %>
 
-        <% unless @area_events.empty? %>
-            <%= render partial: 'events/condensed_stats',
-                       locals: { events: @area_events } %>
-        <% end %>
+    <% @upcoming_events.each do |name, events| %>
+        <div class="card">
+            <h2><%= "#{name} for All Schools" %></h2>
+            <%= render partial: 'events/stats_summary',
+                       locals: { events: events } %>
+        </div>
+    <% end %>
+
+    <% @area_events.each do |name, events| %>
+        <%= render partial: 'events/condensed_stats',
+                    locals: { events: events } %>
     <% end %>
 </main>

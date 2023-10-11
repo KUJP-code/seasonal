@@ -1,6 +1,5 @@
-<% event = data[:event] %>
-<% children = data[:children] %>
-<% invoices = data[:invoices] %>
+<% children = event.children %>
+<% invoices = event.invoices %>
 
 <% int_kids = children.select { |c| c.category == 'internal' } %>
 <% int_ids = int_kids.map(&:id) %>
@@ -25,7 +24,7 @@
 
 <div class="card">
     <h3>
-        <%= link_to @school.name, children_path(source: 'event', id: event.id) %>
+        <%= link_to event.name, children_path(source: 'event', id: event.id) %>
     </h3>
     
     <div class="table-responsive-lg">

@@ -35,9 +35,12 @@ class UsersController < ApplicationController
     @user = authorize(User.new(user_params))
 
     if @user.save
-      redirect_to user_path(@user), notice: t('success', model: '保護者', action: '追加')
+      redirect_to user_path(@user),
+                  notice: t('success', model: '保護者', action: '追加')
     else
-      render :new, status: :unprocessable_entity, alert: t('failure', model: '保護者', action: '追加')
+      render :new,
+             status: :unprocessable_entity,
+             alert: t('failure', model: '保護者', action: '追加')
     end
   end
 
@@ -45,9 +48,12 @@ class UsersController < ApplicationController
     @user = authorize(User.find(params[:id]))
 
     if @user.update(user_params)
-      redirect_to user_path(@user), notice: t('success', model: '保護者', action: '更新')
+      redirect_to user_path(@user),
+                  notice: t('success', model: '保護者', action: '更新')
     else
-      render :edit, status: :unprocessable_entity, alert: t('failure', model: '保護者', action: '更新')
+      render :edit,
+             status: :unprocessable_entity,
+             alert: t('failure', model: '保護者', action: '更新')
     end
   end
 
@@ -57,9 +63,11 @@ class UsersController < ApplicationController
     return redirect_to :no_permission if current_user.customer?
 
     if @user.destroy
-      redirect_to users_path, notice: t('success', model: '保護者', action: '削除')
+      redirect_to users_path,
+                  notice: t('success', model: '保護者', action: '削除')
     else
-      redirect_to user_path(@user), alert: t('failure', model: '保護者', action: '削除')
+      redirect_to user_path(@user),
+                  alert: t('failure', model: '保護者', action: '削除')
     end
   end
 
@@ -70,9 +78,11 @@ class UsersController < ApplicationController
       parent_id: params[:parent_id],
       first_seasonal: params[:first_seasonal]
     )
-      redirect_to child_path(@child), notice: t('success', model: '生徒', action: '更新')
+      redirect_to child_path(@child),
+                  notice: t('success', model: '生徒', action: '更新')
     else
-      redirect_to user_path(current_user), alert: t('failure', model: '生徒', action: '更新')
+      redirect_to user_path(current_user),
+                  alert: t('failure', model: '生徒', action: '更新')
     end
   end
 
@@ -84,7 +94,8 @@ class UsersController < ApplicationController
     merge_info(non_ss_kid, ss_kid)
     non_ss_kid.reload.destroy
 
-    redirect_to child_path(ss_kid), notice: t('success', model: '生徒', action: '更新')
+    redirect_to child_path(ss_kid),
+                notice: t('success', model: '生徒', action: '更新')
   end
 
   private
@@ -95,7 +106,7 @@ class UsersController < ApplicationController
                               .limit(5).includes(:child)
     @upcoming_events = Event.upcoming.real.includes(
       :children, :options, :school
-    )
+    ).group_by(&:name)
   end
 
   def already_registered?(t_regs, o_reg)
@@ -107,14 +118,15 @@ class UsersController < ApplicationController
   def area_manager_data(user)
     @managed_areas = user.managed_areas.includes(upcoming_events: %i[children])
     school_ids = @managed_areas.reduce([]) { |arr, a| arr.push(a.schools.ids) }
+                               .flatten
     @area_events = Event.upcoming.real
                         .where(school_id: school_ids)
                         .includes(
                           :options,
                           :school,
                           :children
-                        )
-    @upcoming_events = Event.upcoming.real.includes(:children)
+                        ).group_by(&:name)
+    @upcoming_events = Event.upcoming.real.includes(:children).group_by(&:name)
   end
 
   def copy_invoices(from, to)
@@ -211,11 +223,13 @@ class UsersController < ApplicationController
 
   def school_manager_data(user)
     @school = user.managed_schools.first
-    next_event = @school.next_event if @school
-    sm_next_event_data(next_event, user) if next_event
+    @upcoming_events = @school.upcoming_events.includes(
+      :children, :invoices, :time_slots
+    )
+    sm_upcoming_events_data(@upcoming_events.ids, user)
   end
 
-  def sm_deleted_invoices(user, event_id)
+  def sm_deleted_invoices(user, event_ids)
     PaperTrail::Version.where(
       whodunnit: user.id,
       event: 'destroy',
@@ -224,21 +238,15 @@ class UsersController < ApplicationController
                        .order(created_at: :desc)
                        .filter_map(&:reify)
                        .reject { |i| i.total_cost.zero? }
-                       .select { |i| event_id == i.event_id }
+                       .select { |i| event_ids.include?(i.event_id) }
   end
 
-  def sm_next_event_data(event, user)
-    @next_event = {
-      children: event.children,
-      event: event,
-      invoices: event.invoices,
-      slots: event.time_slots.morning.or(event.time_slots.special)
-    }
-    @deleted_invoices = sm_deleted_invoices(user, @next_event[:event].id)
-    @recent_bookings = @next_event[:event].invoices
-                                          .order(created_at: :desc)
-                                          .limit(5)
-                                          .includes(:child)
+  def sm_upcoming_events_data(event_ids, user)
+    @deleted_invoices = sm_deleted_invoices(user, event_ids)
+    @recent_bookings = Invoice.where(event_id: event_ids)
+                              .order(created_at: :desc)
+                              .limit(5)
+                              .includes(:child)
   end
 
   def user_params

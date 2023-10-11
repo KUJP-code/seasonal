@@ -1,7 +1,8 @@
-<% event = data[:event] %>
-<% slots = data[:slots] %>
+<% slots = event.time_slots %>
 
-<div class="daily-attendance card flex-column flex-lg-row flex-wrap justify-content-around gap-3" data-controller="print" data-print-target="print">
+<div class="daily-attendance card flex-column flex-lg-row flex-wrap justify-content-around gap-3 mb-5"
+     data-controller="print"
+     data-print-target="print">
     <h3 class="w-100">
         <%= link_to event.name, children_path(source: 'event', id: event.id) %>
     </h3>

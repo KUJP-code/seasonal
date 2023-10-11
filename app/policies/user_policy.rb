@@ -61,6 +61,10 @@ class UserPolicy < ApplicationPolicy
   private
 
   def staff_or_user?(user, record)
-    user.staff? || user.id == record.id
+    if record.staff?
+      user.admin? || user.id == record.id
+    else
+      user.staff? || user.id == record.id
+    end
   end
 end
