@@ -19,7 +19,9 @@ class SchoolPolicy < ApplicationPolicy
       when 'admin'
         School.real.order(:id)
       when 'area_manager'
-        School.real.where(id: user.area_schools.ids).order(:id)
+        user.area_schools.order(:id)
+      when 'school_manager'
+        user.managed_schools.order(:id)
       end
     end
   end

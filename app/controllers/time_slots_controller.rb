@@ -86,7 +86,7 @@ class TimeSlotsController < ApplicationController
   end
 
   def index_schools
-    @schools = policy_scope(School) || current_user.managed_schools
+    @schools = policy_scope(School)
     @school = @schools.find { |s| s.id == params[:school].to_i } || @schools.last
   end
 

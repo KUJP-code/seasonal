@@ -38,7 +38,7 @@ class EventPolicy < ApplicationPolicy
       when 'school_manager'
         user.school_events.includes(:school).with_attached_image
       else
-        user.events.includes(:school).with_attached_image
+        user.schools.first.events.with_attached_image
       end
     end
   end

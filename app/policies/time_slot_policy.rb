@@ -28,13 +28,6 @@ class TimeSlotPolicy < ApplicationPolicy
 
   # Handles scopes for TimeSlot index
   class Scope < Scope
-    def resolve
-      case user.role
-      when :admin
-        School.all
-      when :area_manager
-        user.area_schools
-      end
-    end
+    def resolve; end
   end
 end
