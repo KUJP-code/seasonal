@@ -17,7 +17,7 @@ class SchoolPolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin'
-        School.real.order(:id)
+        School.all.order(:id)
       when 'area_manager'
         user.area_schools.order(:id)
       when 'school_manager'

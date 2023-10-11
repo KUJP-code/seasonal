@@ -11,25 +11,30 @@
         <h1><%= "イベント at #{@school.name}" %></h1>
     <% end %>
 
-    <nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
-        <% @events.each do |event| %>
-            <%= link_to event.name,
-                        time_slots_path(event: event.id, school: @school.id),
-                        class: "card #{' bg-primary text-white fw-semibold' if @event.id == event.id}" %>
+    <% unless @events.empty? %>
+        <nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
+            <% @events.each do |event| %>
+                <%= link_to event.name,
+                            time_slots_path(
+                                event: event.id, school: @school.id
+                            ),
+                            class: "card #{' bg-primary text-white fw-semibold' if @event.id == event.id}" %>
+            <% end %>
+        </nav>
+        
+        <h1>
+            <%= t('.slots_for', name: @event.name,
+                                school: @event.school.name) %>
+        </h1>
+
+        <% if current_user.admin? %>
+            <%= link_to 'Add an activity to this event',
+                        new_time_slot_path(event: @event.id),
+                        class: 'btn btn-primary' %>
         <% end %>
-    </nav>
-    
-    <h1>
-        <%= t('.slots_for', name: @event.name, school: @event.school.name) %>
-    </h1>
 
-    <% if current_user.admin? %>
-        <%= link_to 'Add an activity to this event',
-                    new_time_slot_path(event: @event.id),
-                    class: 'btn btn-primary' %>
-    <% end %>
-
-    <div class="row row-cols-sm-5 justify-content-evenly gap-3 p-3">
-        <%= render partial: 'time_slots/time_slot', collection: @slots %>
-    </div>
+        <div class="row row-cols-sm-5 justify-content-evenly gap-3 p-3">
+            <%= render partial: 'time_slots/time_slot', collection: @slots %>
+        </div>      
+    <% end %> 
 </main>
