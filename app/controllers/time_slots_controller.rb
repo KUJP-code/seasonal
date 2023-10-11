@@ -91,8 +91,8 @@ class TimeSlotsController < ApplicationController
   end
 
   def index_events
-    @events = @school.events
-    @event = @events.find { |e| e.id == params[:event].to_i } || @events.last
+    @events = @school.events.order(start_date: :asc)
+    @event = @events.find { |e| e.id == params[:event].to_i } || @school.next_event
   end
 
   def index_slots(event)

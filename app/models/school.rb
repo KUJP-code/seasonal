@@ -22,10 +22,11 @@ class School < ApplicationRecord
                                       foreign_key: :parent_id
   has_many :events, -> { order(start_date: :asc) }, dependent: :destroy,
                                                     inverse_of: :school
-  has_many :upcoming_events, lambda {
-                               where('end_date > ?', Time.zone.now)
-                                 .order(start_date: :asc)
-                             },
+  has_many :upcoming_events,
+           lambda {
+             where('end_date > ?', Time.zone.now)
+               .order(start_date: :asc)
+           },
            class_name: 'Event',
            dependent: nil,
            inverse_of: :school
