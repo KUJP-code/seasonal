@@ -211,7 +211,7 @@ class UsersController < ApplicationController
 
   def school_manager_data(user)
     @school = user.managed_schools.first
-    next_event = @school.next_event
+    next_event = @school.next_event if @school
     sm_next_event_data(next_event, user) if next_event
   end
 

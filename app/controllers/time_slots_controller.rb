@@ -3,9 +3,8 @@
 # Handles flow of information for Time Slots
 class TimeSlotsController < ApplicationController
   def index
-    @events = policy_scope(TimeSlot).includes(:school).order(:school_id)
-    @event = @events.find { |e| e.id == params[:event].to_i } || @events.last
-    # TODO: ensure never nil by including past events instead
+    index_schools
+    index_events
     @slots = index_slots(@event) unless @event.nil?
   end
 
@@ -84,6 +83,16 @@ class TimeSlotsController < ApplicationController
   def find_blobs
     ActiveStorage::Blob.where('key LIKE ?', '%slots%')
                        .map { |blob| [blob.key, blob.id] }
+  end
+
+  def index_schools
+    @schools = policy_scope(School) || current_user.managed_schools
+    @school = @schools.find { |s| s.id == params[:school].to_i } || @schools.last
+  end
+
+  def index_events
+    @events = @school.events
+    @event = @events.find { |e| e.id == params[:event].to_i } || @events.last
   end
 
   def index_slots(event)
