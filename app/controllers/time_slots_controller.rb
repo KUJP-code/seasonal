@@ -112,7 +112,7 @@ class TimeSlotsController < ApplicationController
          .includes(:afternoon_slot)
          .with_attached_image
          .with_attached_avif
-         .order(:start_time)
+         .order(start_time: :asc)
   end
 
   def slice_filename(key)

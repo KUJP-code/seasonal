@@ -1,5 +1,5 @@
-<% all_registered_slots = @child.time_slots.where(event_id: @event.id) %>
-<% registered_slots = @child.time_slots.morning.where(event_id: @event.id) %>
+<% all_registered_slots = @child.time_slots.where(event_id: @event.id).order(start_time: :asc) %>
+<% registered_slots = @child.time_slots.morning.where(event_id: @event.id).order(start_time: :asc) %>
 <% unregistered_slots = @event_slots.where.not(id: registered_slots.ids) %>
 <% active_invoice = @all_invoices.find { |i| i.in_ss == false } %>
 <% registrations = @all_invoices.reduce([]) { |array, invoice| array + invoice.registrations } %>
