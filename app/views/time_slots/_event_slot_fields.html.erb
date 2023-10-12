@@ -9,6 +9,11 @@
         <%= f.select :image_id, @images, {}, { class: 'form-select' } %>
     </div>
 
+    <div>
+        <%= f.label :avif_id,'Avif', class: 'form-label' %>
+        <%= f.select :avif_id, @images, {}, { class: 'form-select' } %>
+    </div>
+
     <div class="form-floating">
         <%= f.text_field :name, class: 'form-control', placeholder: 'Name', required: true  %>
         <%= f.label :name, 'Name', class: 'form-label' %>
