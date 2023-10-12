@@ -20,7 +20,7 @@ class EventsController < ApplicationController
                          .includes(
                            :options,
                            afternoon_slot: %i[options]
-                         )
+                         ).order(start_time: :asc)
     @options = @event.options + @event.slot_options
   end
 
