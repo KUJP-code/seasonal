@@ -1,4 +1,6 @@
-<% slots = event.time_slots.sort_by { |s| s.start_time } %>
+<% slots = event.time_slots
+                .select { |s| s.morning || s.special? }
+                .sort_by { |s| s.start_time } %>
 
 <div class="daily-attendance card flex-column flex-lg-row flex-wrap justify-content-around gap-3 mb-5"
      data-controller="print"
@@ -20,7 +22,12 @@
                             end %> justify-content-between text-white fw-semibold">
             <h6 class="bg-light rounded-3 p-2">
                 <% if slot.special? && slot.morning == false %>
-                    <%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'time_slot', id: slot.morning_slot_id), class: 'fw-semibold' %>
+                    <%= link_to "#{slot.name} (#{slot.date})",
+                                children_path(
+                                    source: 'time_slot',
+                                    id: slot.morning_slot_id
+                                ),
+                                class: 'fw-semibold' %>
                 <% else %>
                     <%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'time_slot', id: slot.id), class: 'fw-semibold' %>
                 <% end %>
