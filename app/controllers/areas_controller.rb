@@ -3,6 +3,7 @@
 # Handles data flow for Schools
 class AreasController < ApplicationController
   def index
+    authorize(:area)
     @areas = policy_scope(Area).includes(:managers, schools: :managers)
   end
 

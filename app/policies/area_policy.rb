@@ -2,6 +2,10 @@
 
 # Handles authorization for Areas
 class AreaPolicy < ApplicationPolicy
+  def index?
+    user.admin?
+  end
+
   # Decides which areas each role can see stats for
   class Scope < Scope
     def resolve

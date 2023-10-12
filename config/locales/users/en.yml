@@ -40,6 +40,10 @@ en:
     edit:
       update_all: "Update All"
     form:
+      family_name: "Family Name"
+      first_name: "First Name"
+      kana_family: "Katakana Family Name"
+      kana_first: "Katakana First Name"
       min_length: "Minimum Length: %{length}"
       update_all: "Update All"
     index:
