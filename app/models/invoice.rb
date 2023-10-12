@@ -89,7 +89,12 @@ class Invoice < ApplicationRecord
   # doesn't change
   def best_price(num_regs, courses)
     return 0 if num_regs.zero?
+    if num_regs == 3
+      return 11_900 if child.internal?
 
+      return 19_100
+    end
+    
     if num_regs >= 55
       @breakdown << "<p>- 50回コース: #{yenify(courses['50'])}</p>" unless @breakdown.nil?
       return courses['50'] + best_price(num_regs - 50, courses)
