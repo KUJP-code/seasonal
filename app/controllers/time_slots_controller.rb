@@ -49,7 +49,8 @@ class TimeSlotsController < ApplicationController
   def slot_params
     params.require(:time_slot).permit(
       :id, :name, :start_time, :end_time, :category, :apply_all, :ext_modifier,
-      :closed, :_destroy, :morning, :event_id, :image_id, :int_modifier, :snack,
+      :avif_id, :closed, :_destroy, :morning, :event_id, :image_id,
+      :int_modifier, :snack,
       afternoon_slot_attributes:
       %i[id name image_id start_time end_time category snack
          closed _destroy morning event_id ext_modifier int_modifier],

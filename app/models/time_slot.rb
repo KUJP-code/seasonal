@@ -32,6 +32,7 @@ class TimeSlot < ApplicationRecord
                                                  reject_if: :all_blank
 
   has_one_attached :image
+  has_one_attached :avif
 
   validates :name, :start_time, :end_time, presence: true
   validates_comparison_of :end_time, greater_than: :start_time
@@ -43,6 +44,18 @@ class TimeSlot < ApplicationRecord
 
   scope :morning, -> { where(morning: true) }
   scope :afternoon, -> { where(morning: false) }
+
+  def avif_id
+    return nil if avif.blob.nil?
+
+    avif.blob.id
+  end
+
+  def avif_id=(avif_id)
+    return if avif_id.nil?
+
+    self.avif = ActiveStorage::Blob.find(avif_id)
+  end
 
   def closed?
     return true if closed
