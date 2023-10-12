@@ -34,11 +34,13 @@ class TimeSlotsController < ApplicationController
     return bulk_create_aft_slots if params[:time_slot][:apply_all] == '1'
 
     if @slot.update(slot_params)
-      redirect_to time_slots_path(event: @slot.event_id),
-                  notice: "Updated #{@slot.name} at #{@slot.school.name}"
+      redirect_to time_slots_path(
+        event: @slot.event_id,
+        school: @slot.school.id
+      ), notice: "Updated #{@slot.name}"
     else
       render :edit, status: :unprocessable_entity,
-                    alert: "#{@slot.name} at #{@slot.school.name} couldn't be updated"
+                    alert: "#{@slot.name} couldn't be updated"
     end
   end
 

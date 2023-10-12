@@ -45,9 +45,9 @@ class EventsController < ApplicationController
       if results.all? { |r| r[:created] }
         if params[:commit] == 'Create Event'
           redirect_to new_time_slot_path(
-                        event: params[:event][:name], 
-                        all_schools: true
-                      ),
+            event: params[:event][:name],
+            all_schools: true
+          ),
                       notice: "#{params[:event][:name]} created for all schools"
         else
           redirect_to events_path, notice: "Created activities for #{params[:event][:name]} at all schools"
@@ -63,10 +63,10 @@ class EventsController < ApplicationController
 
       if @event.save
         if params[:commit] == 'Create Event'
-          redirect_to new_time_slot_path(event: @event.id), 
+          redirect_to new_time_slot_path(event: @event.id),
                       notice: "Created #{@event.name} at #{@event.school.name}"
         else
-          redirect_to time_slots_path(event: @event),
+          redirect_to time_slots_path(event: @event, school: @event.school_id),
                       notice: "Created activities for #{@event.name} at #{@event.school.name}"
         end
       else
@@ -100,7 +100,8 @@ class EventsController < ApplicationController
       @event = Event.find(params[:id])
 
       if @event.update(event_params)
-        redirect_to time_slots_path(event: @event.id), notice: "Updated #{@event.name} at #{@event.school.name}"
+        redirect_to time_slots_path(event: @event.id, school: @event.school_id),
+                    notice: "Updated #{@event.name} at #{@event.school.name}"
       else
         render :edit,
                status: :unprocessable_entity,
