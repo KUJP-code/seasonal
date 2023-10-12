@@ -1,8 +1,17 @@
 <div class="card d-grid">
     <% if current_user.staff? && child.nil? %>
-    
-        <%= (link_to image_tag(url_for(event.image), class: 'img-fluid img-thumbnail'), children_path(source: 'event', id: event.id)) unless event.image.blank? %>
-    
+        <% unless event.image.blank? || event.avif.blank? %>
+            <%= link_to children_path(source: 'event', id: event.id) do %>
+                <picture>
+                    <source srcset=<%= url_for(event.avif) %>
+                            type="image/avif" />
+                    <img src=<%= url_for(event.image) %>
+                         alt=<%= event.name.tr(' ', '_') %>
+                         class="img-fluid img-thumbnail">
+                </picture>
+            <% end %>
+        <% end %>
+        
         <div class="d-flex justify-content-center align-items-center flex-column flex-grow-1 gap-3">
             <h2 class="fw-bold">
                 <%= link_to t('.title', name: event.name, school: event.school.name), children_path(source: 'event', id: event.id) %>
@@ -14,7 +23,17 @@
 
     <% elsif child %>
     
-        <%= (link_to image_tag(url_for(event.image), class: 'img-fluid img-thumbnail'), event_path(id: event, child: child.id), class: 'w-100') unless event.image.blank? %>
+        <% unless event.image.blank? || event.avif.blank? %>
+            <%= link_to event_path(id: event, child: child.id) do %>
+                <picture>
+                    <source srcset=<%= url_for(event.avif) %>
+                            type="image/avif" />
+                    <img src=<%= url_for(event.image) %>
+                         alt=<%= event.name.tr(' ', '_') %>
+                         class="img-fluid img-thumbnail">
+                </picture>
+            <% end %>
+        <% end %>
 
         <div class="d-flex justify-content-center align-items-center flex-column flex-grow-1 gap-3">
             <h2 class="fw-bold">
@@ -51,7 +70,19 @@
 
     <% else %>
     
-        <%= (link_to image_tag(url_for(event.image), class: 'img-fluid img-thumbnail'), event_path(id: event, child: current_user.children.first.id)) unless event.image.blank? %>
+        <% unless event.image.blank? || event.avif.blank? %>
+            <%= link_to event_path(
+                            id: event, child: current_user.children.first.id
+                        ) do %>
+                <picture>
+                    <source srcset=<%= url_for(event.avif) %>
+                            type="image/avif" />
+                    <img src=<%= url_for(event.image) %>
+                         alt=<%= event.name.tr(' ', '_') %>
+                         class="img-fluid img-thumbnail">
+                </picture>
+            <% end %>
+        <% end %>
 
         <div class="d-flex justify-content-center align-items-center flex-column flex-grow-1 gap-3">
             <h2 class="fw-bold">

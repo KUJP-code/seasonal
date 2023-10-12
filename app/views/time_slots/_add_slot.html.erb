@@ -4,7 +4,16 @@
 <div class="card d-flex flex-row flex-nowrap bg-white">
     <div class="d-flex flex-column">
         <p class="text-black-50"><%= add_slot.date %></p>
-        <%= image_tag(url_for(add_slot.image), class: 'img-fluid img-thumbnail') unless add_slot.image.blank? %>
+
+        <% unless add_slot.image.blank? || add_slot.avif.blank? %>
+            <picture>
+                <source srcset=<%= url_for(add_slot.avif) %>
+                        type="image/avif" />
+                <img src=<%= url_for(add_slot.image) %>
+                    alt=<%= add_slot.name.tr(' ', '_') %>
+                    class="img-fluid img-thumbnail">
+            </picture>
+        <% end %>
     </div>
 
     <% in_ss = slots_in_ss.any? { |reg| reg.registerable_id == add_slot.id } %>

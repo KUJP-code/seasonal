@@ -32,13 +32,13 @@ class EventPolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin'
-        Event.all.order(start_date: :desc).includes(:school).with_attached_image
+        Event.all.order(start_date: :desc).includes(:school)
       when 'area_manager'
-        user.area_events.includes(:school).with_attached_image
+        user.area_events.includes(:school)
       when 'school_manager'
-        user.school_events.includes(:school).with_attached_image
+        user.school_events.includes(:school)
       else
-        user.schools.first.events.with_attached_image
+        user.schools.first.events
       end
     end
   end

@@ -3,7 +3,9 @@
 # Handles flow of information for events
 class EventsController < ApplicationController
   def index
-    @events = policy_scope(Event).page(params[:page])
+    @events = policy_scope(Event).with_attached_image
+                                 .with_attached_avif
+                                 .page(params[:page])
   end
 
   def show
@@ -14,6 +16,7 @@ class EventsController < ApplicationController
     user_specific_info
     @event_slots = @event.time_slots.morning
                          .with_attached_image
+                         .with_attached_avif
                          .includes(
                            :options,
                            afternoon_slot: %i[options]

@@ -18,6 +18,7 @@ class TimeSlotsController < ApplicationController
       @events = Event.where(name: params[:event])
                      .includes(:school)
                      .with_attached_image
+                     .with_attached_avif
     else
       @event = Event.find(params[:event])
     end
@@ -110,6 +111,7 @@ class TimeSlotsController < ApplicationController
          .or(@event.time_slots.special)
          .includes(:afternoon_slot)
          .with_attached_image
+         .with_attached_avif
          .order(:start_time)
   end
 
