@@ -29,7 +29,7 @@ class Event < ApplicationRecord
   has_many :children, -> { distinct }, through: :invoices
 
   has_one_attached :image
-  has_one_attached :banner
+  has_one_attached :avif
 
   paginates_per 40
 
@@ -42,6 +42,19 @@ class Event < ApplicationRecord
   scope :upcoming, -> { where('end_date > ?', Time.zone.now) }
 
   # Public Methods
+
+  def avif_id
+    return nil if avif.blob.nil?
+
+    avif.blob.id
+  end
+
+  def avif_id=(avif_id)
+    return if avif_id.nil?
+
+    self.avif = ActiveStorage::Blob.find(avif_id)
+  end
+
   # List children attending from other schools
   def diff_school_children
     children.where.not(school: school).distinct

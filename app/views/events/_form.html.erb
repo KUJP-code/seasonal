@@ -24,6 +24,11 @@
             <%= f.select :image_id, @images, {}, { class: 'form-select' } %>
         </div>
 
+        <div>
+            <%= label_tag :avif_id, 'Avif', class: 'form-label' %>
+            <%= f.select :avif_id, @images, {}, { class: 'form-select' } %>
+        </div>
+
         <div class="form-floating">
             <%= f.date_field :start_date, class: 'form-control', placeholder: 'Start date', required: true  %>
             <%= f.label :start_date, 'Start date', class: 'form-label' %>
