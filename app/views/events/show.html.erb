@@ -125,9 +125,14 @@
                 <div class="accordion-body">
                     <div class="d-flex w-100 justify-content-center align-items-center flex-shrink-1 gap-3">
                         <% if @child.member? && !@member_prices.nil? %>
+                            <%# FIXME: temp hack for winter school 3 course %>
+                            <% @member_prices.courses['3'] = 12_300 %>
+
                             <table class="table table-sm table-info table-striped table-hover text-center">
                                 <caption class="caption-top text-center">
-                                    <h3 class="text-start"><%= t('.member_prices') %></h3>
+                                    <h3 class="text-start">
+                                        <%= t('.member_prices') %>
+                                    </h3>
                                 </caption>
                                 <thead>
                                     <tr>
@@ -136,16 +141,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% @member_prices.courses.each do |course, price| %>
+                                    <% @member_prices.courses
+                                                     .sort_by { |k, _v| k.to_i }
+                                                     .each do |course, price| %>
                                         <tr>
                                             <td><%= course %></td>
-                                            <td><%= number_to_currency(price, unit: '円', precision: 0, locale: :ja)  %></td>
+                                            <td>
+                                                <%= number_to_currency(
+                                                    price,
+                                                    unit: '円',
+                                                    precision: 0,
+                                                    locale: :ja)  %>
+                                            </td>
                                         </tr>
                                     <% end %>
                                 </tbody>
                             </table>
                         <% end %>
                         <% unless @child.member? || @non_member_prices.nil? %>
+                            <%# FIXME: temp hack for winter school 3 course %>
+                            <% @non_member_prices.courses['3'] = 19_100 %>
+
                             <table class="table table-sm table-info table-striped table-hover text-center">
                                 <caption class="caption-top text-center">
                                     <h3 class="text-start"><%= t('.non_member_prices') %></h3>
@@ -157,10 +173,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% @non_member_prices.courses.each do |course, price| %>
+                                    <% @non_member_prices.courses
+                                                         .sort_by { |k, _v| k.to_i }
+                                                         .each do |course, price| %>
                                         <tr>
                                             <td><%= course %></td>
-                                            <td><%= price %></td>
+                                            <td>
+                                                <%= number_to_currency(
+                                                    price,
+                                                    unit: '円',
+                                                    precision: 0,
+                                                    locale: :ja)  %>
+                                            </td>
                                         </tr>
                                     <% end %>
                                 </tbody>
