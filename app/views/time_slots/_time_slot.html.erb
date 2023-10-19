@@ -18,9 +18,11 @@
         
             <%# Allow morning slots to be opened/closed %>
             <% if time_slot.closed? %>
-                <%= form_with model: time_slot, html_options: { class: 'w-100' } do |f| %>
+                <%= form_with model: time_slot,
+                              html_options: { class: 'w-100' } do |f| %>
                     <%= f.hidden_field :closed, value: 0 %>
-                    <%= f.submit t('.reopen'), class: 'btn btn-warning w-100' %>
+                    <%= f.submit (time_slot.morning ? t('.reopen') : t('.aft_reopen')),
+                                 class: 'btn btn-warning w-100' %>
                 <% end %>
             <% else %>
                 <%= form_with model: time_slot, html_options: { class: 'w-100' } do |f| %>
@@ -30,26 +32,32 @@
             <% end %>
 
             <%# Allow afternoon slots to be opened/closed %>
-            <% if afternoon && afternoon.closed? %>
+            <% if afternoon && afternoon.closed? && !time_slot.special? %>
                 <%= form_with model: afternoon, html_options: { class: 'w-100' } do |f| %>
                     <%= f.hidden_field :closed, value: 0 %>
-                    <%= f.submit t('.aft_reopen'), class: 'btn btn-warning w-100' %>
+                    <%= f.submit t('.aft_reopen'),
+                                 class: 'btn btn-warning w-100' %>
                 <% end %>
-            <% elsif afternoon %>
+            <% elsif afternoon && !time_slot.special? %>
                 <%= form_with model: afternoon, html_options: { class: 'w-100' } do |f| %>
                     <%= f.hidden_field :closed, value: 1 %>
-                    <%= f.submit t('.aft_close'), class: 'btn btn-success w-100' %>
+                    <%= f.submit t('.aft_close'),
+                                 class: 'btn btn-success w-100' %>
                 <% end %>
             <% end %>
         <% end %>
 
         <% if current_user.staff? %>
-            <%= link_to t('.view_attendance'), children_path(source: 'time_slot', id: time_slot.id), class: 'btn btn-primary' %>
+            <%= link_to t('.view_attendance'),
+                        children_path(source: 'time_slot', id: time_slot.id),
+                        class: 'btn btn-primary' %>
         <% end %>
 
         <%# Allow admins to edit activity details %>
         <% if current_user.admin? %>
-          <%= link_to "Edit Activity", edit_time_slot_path(time_slot), class: "btn btn-info" %>
+          <%= link_to "Edit Activity",
+                      edit_time_slot_path(time_slot),
+                      class: "btn btn-info" %>
         <% end %>
     </div>
 </div>
