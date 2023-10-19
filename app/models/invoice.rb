@@ -112,7 +112,7 @@ class Invoice < ApplicationRecord
   end
 
   def blank_or_dup(coupon)
-    return true if coupon['code'].nil? || coupons.map(&:code).include?(coupon['code'])
+    return true if coupon['code'].empty? || coupons.map(&:code).include?(coupon['code'])
 
     false
   end

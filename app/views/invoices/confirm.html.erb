@@ -41,18 +41,31 @@
                                     </div>
                                 <% end %>
                             </div>
-                            <button class="btn btn-info mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#coupons" aria-expanded="false" aria-controls="coupons">
+
+                            <button class="btn btn-info mb-3" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#coupons"
+                                    aria-expanded="false"
+                                    aria-controls="coupons">
                                 <%= t('.apply_coupon') %>
                             </button>
+
                             <div class="collapse mb-3" id="coupons">
                                 <%= f.fields_for :coupons, f.object.coupons.new do |coup_f| %>
                                     <div class="d-flex flex-column justify-content-around align-items-center gap-3">
-                                        <%= coup_f.label :code, t('.coupon'), class: 'form-label text-center' %>
-                                        <%= coup_f.select :code, [['', nil], %w[WELBOX WELBOX], %w[すくすくえいど すくすくえいど], ['Thank youクーポン', 'Thank youクーポン']], {}, class: 'form-select' %>
+                                        <%= coup_f.label :code,
+                                                         t('.coupon'),
+                                                         class: 'form-label text-center' %>
+                                        <%= coup_f.select :code,
+                                                          [[nil, nil], %w[WELBOX WELBOX], %w[すくすくえいど すくすくえいど], ['Thank youクーポン', 'Thank youクーポン']],
+                                                          {},
+                                                          class: 'form-select' %>
                                     </div>
                                 <% end %>
                             </div>
-                            <%= f.submit t('.confirm_changes'), class: 'btn btn-primary mb-5' %>
+
+                            <%= f.submit t('.confirm_changes'),
+                                         class: 'btn btn-primary mb-5' %>
                         <% end %>
                         <% unless @ss_invoices.empty? %>
                             <h1><%= t('.confirmed') %></h1>
