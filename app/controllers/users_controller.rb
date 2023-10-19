@@ -107,6 +107,7 @@ class UsersController < ApplicationController
     @upcoming_events = Event.upcoming.real.includes(
       :children, :options, :school
     ).group_by(&:name)
+    @managers = User.where(role: %i[school_manager area_manager]).order(:name)
   end
 
   def already_registered?(t_regs, o_reg)

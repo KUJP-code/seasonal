@@ -40,4 +40,14 @@
                     charts_path,
                     class: 'btn btn-primary flex-grow-1' %>
     </div>
+
+    <div class="card flex-row flex-wrap justify-content-center">
+        <h2 class="w-100">Managers</h2>
+
+        <% @managers.each do |m| %>
+            <%= link_to m.name,
+                        user_path(m),
+                        class: 'btn btn-primary' %>
+        <% end %>
+    </div>
 </main>
