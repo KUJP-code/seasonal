@@ -27,7 +27,8 @@
             <% else %>
                 <%= form_with model: time_slot, html_options: { class: 'w-100' } do |f| %>
                     <%= f.hidden_field :closed, value: 1 %>
-                    <%= f.submit t('.close'), class: 'btn btn-success w-100' %>
+                    <%= f.submit (time_slot.morning ? t('.reopen') : t('.aft_reopen')),
+                                 class: 'btn btn-success w-100' %>
                 <% end %>
             <% end %>
 
