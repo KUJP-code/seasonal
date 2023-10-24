@@ -58,9 +58,23 @@ class School < ApplicationRecord
   private
 
   def set_details
-    self.details = {
-      bus_areas: bus_areas.split(/, |,/),
-      nearby_stations: nearby_stations.split(/, |,/)
-    }
+    return if bus_areas.nil? && nearby_stations.nil?
+
+    self.details = if bus_areas && nearby_stations
+                     {
+                       bus_areas: bus_areas.split(/, |,/),
+                       nearby_stations: nearby_stations.split(/, |,/)
+                     }
+                   elsif bus_areas && nearby_stations.nil?
+                     {
+                       bus_areas: bus_areas.split(/, |,/),
+                       nearby_stations: details[:nearby_stations]
+                     }
+                   else
+                     {
+                       bus_areas: details[:bus_areas],
+                       nearby_stations: nearby_stations.split(/, |,/)
+                     }
+                   end
   end
 end

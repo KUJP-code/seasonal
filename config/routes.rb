@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       resources :invoices, except: %i[edit new]
       resources :options, only: %i[new]
       resources :price_lists, except: %i[show]
-      resources :schools, except: %i[destroy index]
+      resources :schools, except: %i[destroy]
       resources :time_slots, except: %i[create]
       resources :uploads, only: %i[create new]
       resources :users
