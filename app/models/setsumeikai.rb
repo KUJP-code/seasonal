@@ -13,6 +13,15 @@ class Setsumeikai < ApplicationRecord
   scope :upcoming, -> { where('start > ?', Time.zone.now) }
   scope :available, -> { where('attendance_limit > inquiries_count') }
 
+  def as_json(_options = {})
+    {
+      id: id,
+      start: start,
+      end: finish,
+      title: school.name
+    }
+  end
+
   def date
     start.strftime('%Y年%m月%d日') + " #{ja_day}"
   end

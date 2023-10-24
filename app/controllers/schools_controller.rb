@@ -3,7 +3,10 @@
 # Handles data flow for Schools
 class SchoolsController < ApplicationController
   def index
-    @schools = School.real
+    @schools = School.real.includes(:available_setsumeikais)
+    respond_to do |f|
+      f.json { render json: @schools }
+    end
   end
 
   def show

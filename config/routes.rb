@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       resources :invoices, except: %i[edit new]
       resources :options, only: %i[new]
       resources :price_lists, except: %i[show]
-      resources :schools, except: %i[destroy]
+      resources :schools, except: %i[destroy index]
       resources :setsumeikais, except: %i[destroy]
       resources :time_slots, except: %i[create]
       resources :uploads, only: %i[create new]
@@ -54,6 +54,8 @@ Rails.application.routes.draw do
       get '/:locale', to: 'users#profile'
     end
   end
+  # School API endpoint
+  resources :schools, only: %i[index]
 
   # Health check endpoint for EB load balancer
   get '/health_check', to: proc { [200, {}, ['success']] }

@@ -35,12 +35,28 @@ class School < ApplicationRecord
   has_many :option_registrations, through: :time_slots
   has_many :registrations, through: :time_slots
   has_many :setsumeikais, dependent: nil
+  has_many :available_setsumeikais, -> { upcoming.available },
+           class_name: 'Setsumeikai',
+           inverse_of: :school,
+           dependent: nil
 
   # Scopes
   scope :real, -> { where.not(id: [1, 2]) }
 
   # Validations
   validates :name, presence: true
+
+  def as_json(_options = {})
+    {
+      id: id.to_s,
+      name: name,
+      address: address,
+      phone: phone,
+      busAreas: details['bus_areas'],
+      nearbyStations: details['nearby_stations'],
+      setsumeikais: available_setsumeikais
+    }
+  end
 
   def hat_kids
     children.where(received_hat: false)
