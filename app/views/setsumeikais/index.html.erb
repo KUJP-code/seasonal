@@ -1,0 +1,7 @@
+<main id="setsumeikai_index" class="d-flex flex-row flex-wrap justify-content-evenly align-items-start gap-3 p3">
+    <%= link_to t('.new'),
+                new_setsumeikai_path,
+                class: 'btn btn-primary w-100' %>
+
+    <%= render @setsumeikais, partial: 'setsumeikais/setsumeikai' %>
+</main>

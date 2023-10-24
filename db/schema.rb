@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_10_082504) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_24_072118) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -197,6 +197,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_10_082504) do
     t.index ["area_id"], name: "index_schools_on_area_id"
   end
 
+  create_table "setsumeikais", force: :cascade do |t|
+    t.datetime "start"
+    t.datetime "finish"
+    t.integer "attendance_limit"
+    t.integer "inquiries_count", default: 0
+    t.bigint "school_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_setsumeikais_on_school_id"
+  end
+
   create_table "time_slots", force: :cascade do |t|
     t.string "name"
     t.datetime "start_time"
@@ -271,6 +282,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_10_082504) do
   add_foreign_key "registrations", "invoices"
   add_foreign_key "regular_schedules", "children"
   add_foreign_key "schools", "areas"
+  add_foreign_key "setsumeikais", "schools"
   add_foreign_key "time_slots", "events"
   add_foreign_key "time_slots", "time_slots", column: "morning_slot_id"
 end

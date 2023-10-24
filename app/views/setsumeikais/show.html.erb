@@ -1,0 +1,10 @@
+<main id="setsumeikai_show">
+    <%= link_to t('.index'),
+                setsumeikais_path,
+                class: 'btn btn-primary align-self-start' %>
+
+    <%= render @setsumeikai %>
+
+    <h3><%= t('.inquiries') %></h3>
+    <%# TODO: render the list of inquiries here %>
+</main>

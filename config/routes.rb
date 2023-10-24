@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       resources :options, only: %i[new]
       resources :price_lists, except: %i[show]
       resources :schools, except: %i[destroy]
+      resources :setsumeikais, except: %i[destroy]
       resources :time_slots, except: %i[create]
       resources :uploads, only: %i[create new]
       resources :users

@@ -1,0 +1,14 @@
+<div class="card">
+    <% if current_user.school_manager? %>
+        <h3><%= setsumeikai.date %></h3>
+    <% else %>
+        <h3><%= "#{setsumeikai.date} @ #{setsumeikai.school.name}" %></h3>
+    <% end %>
+    <h5>
+        <%= link_to "#{setsumeikai.inquiries_count}/#{setsumeikai.attendance_limit}",
+                    setsumeikai_path(setsumeikai) %>
+    </h5>
+    <%= link_to t('.edit'),
+                edit_setsumeikai_path(setsumeikai),
+                class: 'btn btn-primary' %>
+</div>

@@ -1,0 +1,52 @@
+<%= form_with model: @setsumeikai, class: 'card' do |f| %>
+    <% if @setsumeikai.errors.any? %>
+        <div class="errors bg-danger p-2 text-white fw-semibold rounded">
+            <h3><%= t('.unable_to_save', setsumeikai: @setsumeikai.date) %></h3>
+            <ul>
+                <% @setsumeikai.errors.full_messages.each do |error| %>
+                    <li><%= error %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+    <div class="form-floating">
+        <%= f.datetime_field :start, class: 'form-control',
+                             required: true %>
+        <%= f.label :start, "Start", class: 'form-label' %>
+    </div>
+
+    <div class="form-floating">
+        <%= f.datetime_field :finish, class: 'form-control',
+                             required: true %>
+        <%= f.label :finish, "End", class: 'form-label' %>
+    </div>
+
+    <div class="form-floating">
+        <%= f.number_field :attendance_limit,
+                           class: 'form-control',
+                           placeholder:  "Attendance limit",
+                           min: 1,
+                           required: true %>
+        <%= f.label :attendance_limit,
+                    "Attendance Limit",
+                    class: 'form-label' %>
+    </div>
+
+    <% if current_user.school_manager? %>
+        <%= f.hidden_field :school_id,
+                           value: current_user.managed_schools.first.id %>
+    <% else %>
+        <div>
+            <%= f.label :school_id, "School", class: 'form-label' %>
+            <%= f.collection_select :school_id,
+                                    @schools.real,
+                                    :id,
+                                    :name,
+                                    {},
+                                    { class: 'form-select' } %>
+        </div>
+    <% end %>
+
+    <%= f.submit class: 'btn btn-primary' %>
+<% end %>

@@ -34,6 +34,7 @@ class School < ApplicationRecord
   has_many :options, through: :time_slots
   has_many :option_registrations, through: :time_slots
   has_many :registrations, through: :time_slots
+  has_many :setsumeikais, dependent: nil
 
   # Scopes
   scope :real, -> { where.not(id: [1, 2]) }
