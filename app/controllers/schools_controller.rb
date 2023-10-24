@@ -3,7 +3,7 @@
 # Handles data flow for Schools
 class SchoolsController < ApplicationController
   def index
-    @schools = School.all
+    @schools = School.real
   end
 
   def show
