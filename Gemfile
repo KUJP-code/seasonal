@@ -99,6 +99,9 @@ gem 'memory_profiler'
 # For call-stack profiling flamegraphs
 gem 'stackprof'
 
+# And oj to serialize it quickly
+gem 'oj'
+
 group :development, :test do
   # Capybara for system/feature testing
   gem 'capybara'
