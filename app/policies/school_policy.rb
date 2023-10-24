@@ -3,12 +3,22 @@
 # Handles authorization for Schools
 class SchoolPolicy < ApplicationPolicy
   def show?
-    user.admin? ||
-      user.area_manager? ||
-      (user.school_manager? && user.managed_schools.ids.include?(record.id))
+    user.admin?
   end
 
-  def edit
+  def new?
+    user.admin?
+  end
+
+  def edit?
+    user.admin?
+  end
+
+  def create?
+    user.admin?
+  end
+
+  def update?
     user.admin?
   end
 
