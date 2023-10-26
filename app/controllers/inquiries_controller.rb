@@ -4,7 +4,7 @@ class InquiriesController < ApplicationController
   def index
     return admin_index if current_user.admin?
 
-    @inquiries = policy_scope(Inquiry)
+    @inquiries = policy_scope(Inquiry).includes(:setsumeikai)
   end
 
   def new
@@ -69,6 +69,6 @@ class InquiriesController < ApplicationController
   def admin_index
     @schools = policy_scope(School).order(:id)
     @school = params[:school] ? School.find(params[:school]) : @schools.first
-    @inquiries = @school.inquiries
+    @inquiries = @school.inquiries.includes(:setsumeikai)
   end
 end
