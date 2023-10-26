@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class InquiriesController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: :create
+
   def index
     return admin_index if current_user.admin?
 
@@ -62,7 +64,8 @@ class InquiriesController < ApplicationController
   def inquiry_params
     params.require(:inquiry).permit(
       :id, :setsumeikai_id, :parent_name, :phone, :email, :child_name,
-      :child_birthday, :kindy, :ele_school, :planned_school, :start_date
+      :referrer, :child_birthday, :kindy, :ele_school, :planned_school,
+      :start_date
     )
   end
 

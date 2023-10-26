@@ -30,6 +30,7 @@
                 <th scope="col"><%= t('.ele_school') %></th>
                 <th scope="col"><%= t('.planned_school') %></th>
                 <th scope="col"><%= t('.start_date') %></th>
+                <th scope="col"><%= t('.referrer') %></th>
                 <th scope="col"><%= t('.created_at') %></th>
                 <th scope="col"><%= t('.edit_info') %></th>
                 <th scope="col"><%= t('.delete') %></th>
@@ -121,6 +122,14 @@
                     <div class="form-floating">
                         <%= text_field_tag 'created_at_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
                         <%= label_tag 'created_at_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </th>
+                <th data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".referrer">
+                    <div class="form-floating">
+                        <%= text_field_tag 'referrer_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'referrer_filter', t('.filter'), class: 'form-label' %>
                     </div>
                 </th>
             </tr>

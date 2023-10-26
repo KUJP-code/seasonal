@@ -56,7 +56,10 @@ Rails.application.routes.draw do
     end
   end
   # School API endpoint
-  resources :schools, only: %i[index]
+  resources :schools, only: %i[index], defaults: { format: :json }
+
+  # Inquiry API endpoint
+  post 'create_inquiry', to: 'inquiries#create'
 
   # Health check endpoint for EB load balancer
   get '/health_check', to: proc { [200, {}, ['success']] }
