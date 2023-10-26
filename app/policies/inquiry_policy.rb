@@ -1,25 +1,29 @@
 # frozen_string_literal: true
 
 # Handles authorization for Schools
-class SchoolPolicy < ApplicationPolicy
-  def show?
-    user.admin?
+class InquiryPolicy < ApplicationPolicy
+  def index?
+    user.staff?
   end
 
   def new?
-    user.admin?
+    user.staff?
   end
 
   def edit?
-    user.admin?
+    user.staff?
   end
 
   def create?
-    user.admin?
+    user.staff?
   end
 
   def update?
-    user.admin?
+    user.staff?
+  end
+
+  def destroy?
+    user.staff?
   end
 
   # Decides which schools each role can see stats for
@@ -27,11 +31,11 @@ class SchoolPolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin'
-        School.real.order(:id)
+        Inquiry.all.order(:id)
       when 'area_manager'
-        user.area_schools.real.order(:id)
+        user.area_inquiries.order(:id)
       when 'school_manager'
-        user.managed_schools.real.order(:id)
+        user.managed_inquiries.order(:id)
       end
     end
   end

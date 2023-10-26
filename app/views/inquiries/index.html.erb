@@ -1,0 +1,136 @@
+<main id="inquiry_index">
+   <%= link_to t('.create_inquiry'),
+               new_inquiry_path,
+               class: 'btn btn-primary' %>
+
+    <%= paginate @inquiries, window: 20 unless current_user.admin? %>
+
+    <% if current_user.admin? %>
+        <nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
+            <% @schools.each do |school| %>
+                <%= link_to inquiries_path(school: school.id) do %>
+                    <div class="card<%= ' bg-primary text-white fw-semibold' if school.id == @school.id %>">
+                        <%= school.name %>
+                    </div>
+                <% end %>
+            <% end %>
+        </nav>
+    <% end %>
+
+    <table class="table table-hover table-striped text-center">
+        <thead>
+            <tr class="table-primary">
+                <th scope="col"><%= t('.setsumeikai_id') %></th>
+                <th scope="col"><%= t('.parent_name') %></th>
+                <th scope="col"><%=t('.phone') %></th>
+                <th scope="col"><%= t('.email') %></th>
+                <th scope="col"><%= t('.child_name') %></th>
+                <th scope="col"><%= t('.child_birthday') %></th>
+                <th scope="col"><%= t('.kindy') %></th>
+                <th scope="col"><%= t('.ele_school') %></th>
+                <th scope="col"><%= t('.planned_school') %></th>
+                <th scope="col"><%= t('.start_date') %></th>
+                <th scope="col"><%= t('.created_at') %></th>
+                <th scope="col"><%= t('.edit_info') %></th>
+                <th scope="col"><%= t('.delete') %></th>
+            </tr>
+            <tr>
+                <th data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".setsumeikai_id">
+                    <div class="form-floating">
+                        <%= text_field_tag 'setsumeikai_id_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'setsumeikai_id_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </th>
+                <th data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".parent_name">
+                    <div class="form-floating">
+                        <%= text_field_tag 'parent_name_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'parent_name_filter',t('.filter'), class: 'form-label' %>
+                    </div>
+                </th>
+                <th data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".phone">
+                    <div class="form-floating">
+                        <%= text_field_tag 'phone_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'phone_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </th>
+                <th data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".email">
+                    <div class="form-floating">
+                        <%= text_field_tag 'email_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'email_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </th>
+                <th data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".child_name">
+                    <div class="form-floating">
+                        <%= text_field_tag 'child_name_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'child_name_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </th>
+                <th data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".child_birthday">
+                    <div class="form-floating">
+                        <%= text_field_tag 'child_birthday_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'child_birthday_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </th>
+                <th data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".kindy">
+                    <div class="form-floating">
+                        <%= text_field_tag 'kindy_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'kindy_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </th>
+                <th data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".ele_school">
+                    <div class="form-floating">
+                        <%= text_field_tag 'ele_school_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'ele_school_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </th>
+                <th data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".planned_school">
+                    <div class="form-floating">
+                        <%= text_field_tag 'planned_school_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'planned_school_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </th>
+                <th data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".start_date">
+                    <div class="form-floating">
+                        <%= text_field_tag 'start_date_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'start_date_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </th>
+                <th data-controller="filter"
+                    data-filter-siblings-value="0"
+                    data-filter-col-value=".created_at">
+                    <div class="form-floating">
+                        <%= text_field_tag 'created_at_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
+                        <%= label_tag 'created_at_filter', t('.filter'), class: 'form-label' %>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <%= render partial: 'inquiries/inquiry', collection: @inquiries %>
+        </tbody>
+    </table>
+
+    <%= paginate @inquiries, window: 20 unless current_user.admin? %>
+
+</main>

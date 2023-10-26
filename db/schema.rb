@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_24_072118) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_26_051532) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -103,6 +103,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_24_072118) do
     t.index ["member_prices_id"], name: "index_events_on_member_prices_id"
     t.index ["non_member_prices_id"], name: "index_events_on_non_member_prices_id"
     t.index ["school_id"], name: "index_events_on_school_id"
+  end
+
+  create_table "inquiries", force: :cascade do |t|
+    t.bigint "setsumeikai_id", null: false
+    t.string "parent_name"
+    t.string "phone"
+    t.string "email"
+    t.string "child_name"
+    t.date "child_birthday"
+    t.string "kindy"
+    t.string "ele_school"
+    t.string "planned_school"
+    t.date "start_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["setsumeikai_id"], name: "index_inquiries_on_setsumeikai_id"
   end
 
   create_table "invoices", force: :cascade do |t|
@@ -274,6 +290,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_24_072118) do
   add_foreign_key "events", "price_lists", column: "member_prices_id"
   add_foreign_key "events", "price_lists", column: "non_member_prices_id"
   add_foreign_key "events", "schools"
+  add_foreign_key "inquiries", "setsumeikais"
   add_foreign_key "invoices", "children"
   add_foreign_key "invoices", "events"
   add_foreign_key "mailer_subscriptions", "users"

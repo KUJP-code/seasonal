@@ -1,7 +1,7 @@
 <main id="children_index">
     <%= link_to t('.create_child'), new_child_path, class: 'btn btn-primary' %>
 
-    <%= paginate @children, window: 20 unless current_user.admin? %>
+    <%= paginate @children, window: 40 %>
 
     <% if current_user.admin? %>
         <nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
@@ -114,14 +114,10 @@
         </thead>
 
         <tbody>
-            <% if current_user.admin? %>
-                <%= render partial: 'children/child', collection: @school.children %>
-            <% else %>
-                <%= render partial: 'children/child', collection: @children %>
-            <% end %>
+            <%= render partial: 'children/child', collection: @children %>
         </tbody>
     </table>
 
-    <%= paginate @children, window: 20 unless current_user.admin? %>
+    <%= paginate @children, window: 40 %>
 
 </main>

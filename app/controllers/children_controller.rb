@@ -8,7 +8,8 @@ class ChildrenController < ApplicationController
     authorize(:child)
     return send("#{params[:source]}_attendance") if attendance_request?
 
-    admin_data if current_user.admin?
+    return admin_index if current_user.admin?
+
     @children = policy_scope(Child).page(params[:page]).per(1_000)
   end
 
@@ -85,10 +86,12 @@ class ChildrenController < ApplicationController
                                   ])
   end
 
-  def admin_data
-    @schools = policy_scope(Child).page(params[:page]).per(1_000)
-    @school = @schools.find { |s| s.id == params[:school].to_i } ||
-              @schools.first
+  def admin_index
+    @schools = School.real.order(:id)
+    @school = params[:school] ? School.find(params[:school]) : @schools.first
+    @children = @school.children
+                       .includes(:parent)
+                       .page(params[:page]).per(1_000)
   end
 
   def afternoon_data

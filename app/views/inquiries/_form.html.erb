@@ -1,0 +1,95 @@
+<%= form_with model: @inquiry, class: 'card' do |f| %>
+    <% if @inquiry.errors.any? %>
+        <div class="errors bg-danger p-2 text-white fw-semibold rounded">
+            <h3><%= t('.unable_to_save', inquiry: @inquiry.parent_name) %></h3>
+            <ul>
+                <% @inquiry.errors.full_messages.each do |error| %>
+                    <li><%= error %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+    <div>
+        <%= f.label :setsumeikai_id, t('.setsumeikai'),
+                                     class: 'form-label' %>
+        <%= f.collection_select :setsumeikai_id,
+                                @setsumeikais,
+                                :id,
+                                :school_date_time,
+                                {},
+                                { class: 'form-select' } %>
+    </div>
+
+    <div class="form-floating">
+        <%= f.text_field :parent_name,
+                class: 'form-control',
+                placeholder: t('.parent_name'),
+                required: true %>
+        <%= f.label :parent_name, t('.parent_name'), class: 'form-label' %>
+    </div>
+
+    <div class="form-floating">
+        <%= f.telephone_field :phone,
+                class: 'form-control',
+                placeholder: t('.phone'),
+                required: true %>
+        <%= f.label :phone, t('.phone'), class: 'form-label' %>
+    </div>
+
+    <div class="form-floating">
+        <%= f.email_field :email,
+                class: 'form-control',
+                placeholder: t('.email'),
+                required: true %>
+        <%= f.label :email, t('.email'), class: 'form-label' %>
+    </div>
+
+    <div class="form-floating">
+        <%= f.text_field :child_name,
+                class: 'form-control',
+                placeholder: t('.child_name'),
+                required: true %>
+        <%= f.label :child_name, t('.child_name'), class: 'form-label' %>
+    </div>
+
+    <div class="form-floating">
+        <%= f.date_field :child_birthday, class: 'form-control',
+                             required: true %>
+        <%= f.label :child_birthday, t('.child_birthday'), class: 'form-label' %>
+    </div>
+
+    <div class="form-floating">
+        <%= f.text_field :kindy,
+                class: 'form-control',
+                placeholder: t('.kindy'),
+                required: true %>
+        <%= f.label :kindy, t('.kindy'), class: 'form-label' %>
+    </div>
+
+    <div class="form-floating">
+        <%= f.text_field :ele_school,
+                class: 'form-control',
+                placeholder: t('.ele_school'),
+                required: true %>
+        <%= f.label :ele_school, t('.ele_school'), class: 'form-label' %>
+    </div>
+
+    <div>
+        <%= f.label :planned_school, t('.planned_school'),
+                                     class: 'form-label' %>
+        <%= f.collection_select :planned_school,
+                                @schools,
+                                :name,
+                                :name,
+                                {},
+                                { class: 'form-select' } %>
+    </div>
+
+    <div class="form-floating">
+        <%= f.date_field :start_date, class: 'form-control' %>
+        <%= f.label :start_date, t('.start_date'), class: 'form-label' %>
+    </div>
+
+    <%= f.submit class: 'btn btn-primary' %>
+<% end %>

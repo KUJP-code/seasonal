@@ -3,6 +3,7 @@
 # Handles DB interactions for Setsumeikais
 class Setsumeikai < ApplicationRecord
   belongs_to :school
+  has_many :inquiries, dependent: nil
 
   validates :start, :finish, :attendance_limit, presence: true
   validates :attendance_limit, comparison: { greater_than: 0 }
@@ -26,10 +27,18 @@ class Setsumeikai < ApplicationRecord
     start.strftime('%Y年%m月%d日') + " #{ja_day}"
   end
 
+  def date_time
+    "#{date} #{start.strftime('%H:%M')}"
+  end
+
   def ja_day
     en_day = start.strftime('%A')
 
     "(#{DAYS[en_day]})"
+  end
+
+  def school_date_time
+    "#{school.name} #{date} #{start.strftime('%H:%M')}"
   end
 
   DAYS = {

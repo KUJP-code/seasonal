@@ -13,23 +13,23 @@
     <div class="form-floating">
         <%= f.datetime_field :start, class: 'form-control',
                              required: true %>
-        <%= f.label :start, "Start", class: 'form-label' %>
+        <%= f.label :start, t('.start'), class: 'form-label' %>
     </div>
 
     <div class="form-floating">
         <%= f.datetime_field :finish, class: 'form-control',
                              required: true %>
-        <%= f.label :finish, "End", class: 'form-label' %>
+        <%= f.label :finish, t('.end'), class: 'form-label' %>
     </div>
 
     <div class="form-floating">
         <%= f.number_field :attendance_limit,
                            class: 'form-control',
-                           placeholder:  "Attendance limit",
+                           placeholder:  t('.attendance_limit'),
                            min: 1,
                            required: true %>
         <%= f.label :attendance_limit,
-                    "Attendance Limit",
+                    t('.attendance_limit'),
                     class: 'form-label' %>
     </div>
 
@@ -38,9 +38,9 @@
                            value: current_user.managed_schools.first.id %>
     <% else %>
         <div>
-            <%= f.label :school_id, "School", class: 'form-label' %>
+            <%= f.label :school_id, t('.school'), class: 'form-label' %>
             <%= f.collection_select :school_id,
-                                    @schools.real,
+                                    @schools,
                                     :id,
                                     :name,
                                     {},

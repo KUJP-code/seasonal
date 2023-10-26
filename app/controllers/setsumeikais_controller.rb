@@ -9,7 +9,7 @@ class SetsumeikaisController < ApplicationController
 
   def show
     @setsumeikai = authorize(Setsumeikai.find(params[:id]))
-    # @inquiries = @setsumeikai.inquiries
+    @inquiries = @setsumeikai.inquiries
   end
 
   def new
@@ -29,7 +29,7 @@ class SetsumeikaisController < ApplicationController
       redirect_to setsumeikais_path,
                   notice: 'Created setsumeikai'
     else
-      @schools = School.real
+      @schools = policy_scope(School)
       render :new,
              status: :unprocessable_entity,
              alert: 'Failed to create setsumeikai'

@@ -1,0 +1,49 @@
+<tr>
+    <td class="setsumeikai_id">
+        <%= inquiry.setsumeikai.date_time %>
+    </td>
+    <td class="parent_name">
+        <%= inquiry.parent_name %>
+    </td>
+    <td class="phone">
+        <%= inquiry.phone %>
+    </td>
+    <td class="email">
+        <%= link_to inquiry.email, "mailto:#{inquiry.email}" %>
+    </td>
+    <td class="child_name">
+        <%= inquiry.child_name %>
+    </td>
+    <td class="child_birthday">
+        <%= inquiry.child_birthday %>
+    </td>
+    <td class="kindy">
+        <%= inquiry.kindy %>
+    </td>
+    <td class="ele_school">
+        <%= inquiry.ele_school %>
+    </td>
+    <td class="planned_school">
+        <%= inquiry.planned_school %>
+    </td>
+    <td class="start_date">
+        <%= inquiry.start_date %>
+    </td>
+    <td class="created_at">
+        <%= inquiry.created_at.strftime('%Y年%m月%d日') %>
+    </td>
+    <td>
+        <%= link_to t('.edit'), 
+                    edit_inquiry_path(inquiry),
+                    class: 'btn btn-primary' %>
+    </td>
+    <td>
+        <%= link_to t('.delete'), 
+                    inquiry_path(inquiry),
+                    data: { 
+                        turbo_method: :delete, 
+                        turbo_confirm: t('.are_u_sure') 
+                    },
+                    class: 'btn btn-danger' %>
+    </td>
+</tr>
