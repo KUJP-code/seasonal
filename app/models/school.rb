@@ -52,9 +52,9 @@ class School < ApplicationRecord
       name: name,
       address: address,
       phone: phone,
-      busAreas: details['bus_areas'],
+      busAreas: details['bus_areas'] || [''],
       hiragana: details['hiragana'] || [''],
-      nearbyStations: details['nearby_stations'],
+      nearbyStations: details['nearby_stations'] || [''],
       setsumeikais: available_setsumeikais
     }
   end

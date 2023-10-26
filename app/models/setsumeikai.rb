@@ -15,7 +15,7 @@ class Setsumeikai < ApplicationRecord
 
   def as_json(_options = {})
     {
-      id: id,
+      id: id.to_s,
       start: start,
       end: finish,
       title: school.name
