@@ -54,6 +54,13 @@
                     class: 'form-label' %>
     </div>
 
+    <div class="form-floating">
+        <%= f.text_field :hiragana, class: 'form-control',
+                                placeholder:  "Hiragana (comma separated)",
+                                required: true %>
+        <%= f.label :hiragana, "Hiragana", class: 'form-label' %>
+    </div>
+
     <%= f.fields_for :managements, @school.managements do |m_f| %>
         <% render 'managements/fields',
                 f: m_f,

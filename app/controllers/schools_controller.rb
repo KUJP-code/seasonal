@@ -49,8 +49,7 @@ class SchoolsController < ApplicationController
 
   def school_params
     params.require(:school).permit(
-      :name, :address, :phone, :area_id, :nearby_stations, :bus_areas,
-      managements_attributes:
+      :name, :address, :phone, :area_id, :nearby_stations, :bus_areas, :hiragana, managements_attributes:
         %i[id manageable_id manageable_type manager_id _destroy]
     )
   end

@@ -4,7 +4,7 @@
 # Must have a school manager
 class School < ApplicationRecord
   # Allow API details to be set
-  attr_accessor :bus_areas, :nearby_stations
+  attr_accessor :bus_areas, :hiragana, :nearby_stations
 
   before_validation :set_details
 
@@ -53,6 +53,7 @@ class School < ApplicationRecord
       address: address,
       phone: phone,
       busAreas: details['bus_areas'],
+      hiragana: details['hiragana'] || [''],
       nearbyStations: details['nearby_stations'],
       setsumeikais: available_setsumeikais
     }
@@ -77,21 +78,10 @@ class School < ApplicationRecord
   def set_details
     return if bus_areas.nil? && nearby_stations.nil?
 
-    self.details = if bus_areas && nearby_stations
-                     {
-                       bus_areas: bus_areas.split(/, |,/),
-                       nearby_stations: nearby_stations.split(/, |,/)
-                     }
-                   elsif bus_areas && nearby_stations.nil?
-                     {
-                       bus_areas: bus_areas.split(/, |,/),
-                       nearby_stations: details[:nearby_stations]
-                     }
-                   else
-                     {
-                       bus_areas: details[:bus_areas],
-                       nearby_stations: nearby_stations.split(/, |,/)
-                     }
-                   end
+    self.details = {
+      bus_areas: bus_areas.split(/, |,/),
+      hiragana: hiragana.split(/, |,/),
+      nearby_stations: nearby_stations.split(/, |,/)
+    }
   end
 end
