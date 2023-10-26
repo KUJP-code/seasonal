@@ -22,17 +22,11 @@ class InquiriesController < ApplicationController
   end
 
   def create
-    # TODO: add a response for the API endpoint
     @inquiry = Inquiry.new(inquiry_params)
 
-    if @inquiry.save
-      redirect_to inquiries_path,
-                  notice: 'Created inquiry'
-    else
-      @schools = policy_scope(School)
-      render :new,
-             status: :unprocessable_entity,
-             alert: 'Failed to create inquiry'
+    respond_to do |format|
+      format.json { create_json_response }
+      format.html { create_html_response }
     end
   end
 
@@ -73,5 +67,24 @@ class InquiriesController < ApplicationController
     @schools = policy_scope(School).order(:id)
     @school = params[:school] ? School.find(params[:school]) : @schools.first
     @inquiries = @school.inquiries.includes(:setsumeikai)
+  end
+
+  def create_html_response
+    if @inquiry.save
+      redirect_to inquiries_path, notice: 'Created inquiry'
+    else
+      @schools = policy_scope(School)
+      render :new,
+             status: :unprocessable_entity,
+             alert: 'Failed to create inquiry'
+    end
+  end
+
+  def create_json_response
+    if @inquiry.save
+      render json: { status: 200 }
+    else
+      render json: { status: 500 }
+    end
   end
 end
