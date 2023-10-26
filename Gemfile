@@ -99,6 +99,9 @@ gem 'stackprof'
 # And oj to serialize it quickly
 gem 'oj'
 
+# Use rack-cors to allow API requests
+gem 'rack-cors'
+
 group :development, :test do
   # Capybara for system/feature testing
   gem 'capybara'

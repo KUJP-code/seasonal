@@ -247,6 +247,8 @@ GEM
       activesupport (>= 3.0.0)
     racc (1.6.1)
     rack (2.2.4)
+    rack-cors (2.0.1)
+      rack (>= 2.0.0)
     rack-mini-profiler (3.1.1)
       rack (>= 1.2.0)
     rack-test (2.0.2)
@@ -411,6 +413,7 @@ DEPENDENCIES
   prawn
   puma (< 7)
   pundit (~> 2.3)
+  rack-cors
   rack-mini-profiler
   rails (~> 7.0.4)
   rspec-rails (~> 3.5)
