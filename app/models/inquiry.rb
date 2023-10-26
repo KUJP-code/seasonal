@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Inquiry < ApplicationRecord
-  belongs_to :setsumeikai
+  belongs_to :setsumeikai, counter_cache: true
 
   enum :referrer, 'チラシ' => 0,
                   '口コミ' => 1,

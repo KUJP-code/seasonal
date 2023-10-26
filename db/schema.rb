@@ -218,10 +218,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_26_085433) do
     t.datetime "start"
     t.datetime "finish"
     t.integer "attendance_limit"
-    t.integer "inquiries_count", default: 0
     t.bigint "school_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "inquiries_count"
     t.index ["school_id"], name: "index_setsumeikais_on_school_id"
   end
 
