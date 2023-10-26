@@ -6,5 +6,8 @@
     <%= render @setsumeikai %>
 
     <h3><%= t('.inquiries') %></h3>
-    <%# TODO: render the list of inquiries here %>
+    
+    <% unless @inquiries.empty? %>
+        <%= render 'inquiries/inquiry_table' %>
+    <% end %>
 </main>
