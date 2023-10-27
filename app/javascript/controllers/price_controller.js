@@ -66,10 +66,12 @@ export default class extends Controller {
   // Finds the cheapest price for the given number of regs
   bestCourses(numRegs, courses) {
     if (numRegs === 0) return 0;
-    if (numRegs === 3) {
-      if (this.isMember(this.childTarget)) return 11_900;
+    if (numRegs === 3 || numRegs === 4) {
+      if (this.isMember(this.childTarget)) {
+        return 11_900 + this.bestCourses(numRegs - 3, courses);
+      }
 
-      return 19_100;
+      return 19_100 + this.bestCourses(numRegs - 3, courses);
     }
 
     if (numRegs >= 35) {

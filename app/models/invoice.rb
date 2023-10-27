@@ -89,10 +89,10 @@ class Invoice < ApplicationRecord
   # doesn't change
   def best_price(num_regs, courses)
     return 0 if num_regs.zero?
-    if num_regs == 3
-      return 11_900 if child.internal?
+    if [3, 4].include?(num_regs)
+      return 11_900 + best_price(num_regs - 3, courses) if child.internal?
 
-      return 19_100
+      return 19_100 + best_price(num_regs - 3, courses)
     end
     
     if num_regs >= 55
