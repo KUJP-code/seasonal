@@ -1,3 +1,30 @@
+<div class="d-flex justify-content-center align-items-center gap-5 p-3 w-100 text-center">
+    <div class="d-flex flex-column">
+        <h2 class="fw-semibold text-primary">
+            <%= @data[:children].select { |c| c.category == 'internal' }.size %>
+        </h2>
+        <p>Internal Children</p>
+    </div>
+    <div class="d-flex flex-column">
+        <h2 class="fw-semibold text-primary">
+            <%= @data[:children].select { |c| c.category == 'reservation' }.size %>
+        </h2>
+        <p>Reservation Children</p>
+    </div>
+    <div class="d-flex flex-column">
+        <h2 class="fw-semibold text-primary">
+            <%= @data[:children].select { |c| c.category == 'external' }.size %>
+        </h2>
+        <p>External Children</p>
+    </div>
+    <div class="d-flex flex-column">
+        <h2 class="fw-semibold text-primary">
+            <%= @data[:children].size %>
+        </h2>
+        <p>Total Children</p>
+    </div>
+</div>
+
 <div class="w-100 d-flex">
     <%= pie_chart @data[:children].group(:grade).count,
                   title: 'Attendees by Grade',
