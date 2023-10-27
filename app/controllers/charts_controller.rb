@@ -200,10 +200,10 @@ class ChartsController < ApplicationController
   def options_optionable_ids(school)
     if school.id.zero?
       event_ids = Event.where(name: @nav[:event]).ids
-      TimeSlot.where(event_id: event_ids).ids.push(event_ids)
+      TimeSlot.where(event_id: event_ids).ids.concat(event_ids)
     else
       event = school.events.find_by(name: @nav[:event])
-      event.time_slots.ids.push(event.id)
+      event.time_slots.ids.concat(event.id)
     end
   end
 

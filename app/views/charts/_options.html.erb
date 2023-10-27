@@ -1,3 +1,22 @@
+<div class="d-flex justify-content-center align-items-center gap-5 p-3 w-100 text-center">
+    <% photo_regs = @data[:all_opts].select { |o| o.category == 'event' }.size %>
+    <div class="d-flex flex-column">
+        <h2 class="fw-semibold text-primary">
+            <%= photo_regs %>
+        </h2>
+        <p>Photo Service Registrations</p>
+    </div>
+      <div class="d-flex flex-column">
+        <h2 class="fw-semibold text-primary">
+            <%= number_to_currency(photo_regs * 1_100,
+                        unit: '円',
+                        precision: 0,
+                        locale: :ja) %>
+        </h2>
+        <p>Photo Service Revenue</p>
+    </div>
+</div>
+
 <%= column_chart @data[:all_opts]
                        .group('options.category')
                        .count("options.category")
