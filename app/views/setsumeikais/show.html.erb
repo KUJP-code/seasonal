@@ -3,11 +3,25 @@
                 setsumeikais_path,
                 class: 'btn btn-primary align-self-start' %>
 
-    <%= render @setsumeikai %>
+    <div class="card">
+        <h2><%= @setsumeikai.school_date_time %></h2>
+        <h3>
+            <%= "#{@setsumeikai.inquiries.size}/#{@setsumeikai.attendance_limit}" %>
+        </h3>
+        <div class="d-flex gap-3 justify-content-evenly">
+            <%= link_to t('.edit'),
+                        edit_setsumeikai_path(@setsumeikai),
+                        class: 'btn btn-primary' %>
 
-    <h3><%= t('.inquiries') %></h3>
+            <%= link_to t('.add_inquiry'),
+                        new_inquiry_path,
+                        class: 'btn btn-primary' %>
+        </div>
+    </div>
     
     <% unless @inquiries.empty? %>
+        <h3><%= t('.inquiries') %></h3>
+
         <%= render 'inquiries/inquiry_table' %>
     <% end %>
 </main>

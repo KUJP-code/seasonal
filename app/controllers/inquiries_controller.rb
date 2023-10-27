@@ -77,7 +77,8 @@ class InquiriesController < ApplicationController
 
   def create_html_response
     if @inquiry.save
-      redirect_to inquiries_path, notice: 'Created inquiry'
+      redirect_to setsumeikai_path(@inquiry.setsumeikai_id),
+                  notice: 'Created inquiry'
     else
       @schools = policy_scope(School)
       render :new,
