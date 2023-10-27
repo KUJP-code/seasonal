@@ -3,18 +3,18 @@
 # Handles information flow for Setsumeikais
 class SetsumeikaisController < ApplicationController
   def index
+    @schools = policy_scope(School).order(:id)
+    return admin_index if current_user.admin?
+
     @setsumeikais = policy_scope(Setsumeikai).upcoming
                                              .order(start: :desc)
+                                             .page(params[:page])
+                                             .includes(:school)
   end
 
   def show
     @setsumeikai = authorize(Setsumeikai.find(params[:id]))
     @inquiries = @setsumeikai.inquiries
-  end
-
-  def new
-    @setsumeikai = Setsumeikai.new
-    @schools = policy_scope(School)
   end
 
   def edit
@@ -26,13 +26,12 @@ class SetsumeikaisController < ApplicationController
     @setsumeikai = Setsumeikai.new(setsumeikai_params)
 
     if @setsumeikai.save
-      redirect_to setsumeikais_path,
+      redirect_to setsumeikais_path(school: @setsumeikai.school_id),
                   notice: 'Created setsumeikai'
     else
       @schools = policy_scope(School)
-      render :new,
-             status: :unprocessable_entity,
-             alert: 'Failed to create setsumeikai'
+      redirect_to setsumeikais_path(school: @setsumeikai.school_id),
+                  alert: @setsumeikai.errors.full_messages.join(', ')
     end
   end
 
@@ -55,5 +54,10 @@ class SetsumeikaisController < ApplicationController
     params.require(:setsumeikai).permit(
       :id, :finish, :start, :attendance_limit, :school_id
     )
+  end
+
+  def admin_index
+    @school = params[:school] ? School.find(params[:school]) : @schools.first
+    @setsumeikais = @school.setsumeikais.upcoming.includes(:school)
   end
 end

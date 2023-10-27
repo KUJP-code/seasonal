@@ -27,6 +27,8 @@ class User < ApplicationRecord
   has_many :school_events, -> { order(start_date: :desc) },
            through: :managed_schools,
            source: :events
+  has_many :school_inquiries, through: :managed_schools,
+                              source: :inquiries
   has_many :managed_areas, through: :managements,
                            source: :manageable,
                            source_type: 'Area'
@@ -34,6 +36,8 @@ class User < ApplicationRecord
                           source: :schools
   has_many :area_setsumeikais, through: :area_schools,
                                source: :setsumeikais
+  has_many :area_inquiries, through: :area_schools,
+                            source: :inquiries
   has_many :area_events, -> { order(start_date: :desc) },
            through: :area_schools,
            source: :events

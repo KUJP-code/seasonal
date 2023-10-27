@@ -35,7 +35,7 @@ class InquiryPolicy < ApplicationPolicy
       when 'area_manager'
         user.area_inquiries.order(:id)
       when 'school_manager'
-        user.managed_inquiries.order(:id)
+        user.school_inquiries.order(:id)
       end
     end
   end

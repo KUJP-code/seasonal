@@ -1,9 +1,15 @@
 <main id="inquiry_index">
-   <%= link_to t('.create_inquiry'),
-               new_inquiry_path,
-               class: 'btn btn-primary' %>
+   <div class="d-flex gap-3">
+       <%= link_to t('.create_inquiry'),
+                   new_inquiry_path,
+                   class: 'btn btn-primary' %>
+       
+        <%= link_to t('.setsumeikais'),
+                    setsumeikais_path,
+                    class: 'btn btn-primary' %>
+   </div>
 
-    <%= paginate @inquiries, window: 20 unless current_user.admin? %>
+    <%= paginate @inquiries, window: 40 unless current_user.admin? %>
 
     <% if current_user.admin? %>
         <nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
@@ -19,6 +25,6 @@
 
     <%= render 'inquiries/inquiry_table' %>
 
-    <%= paginate @inquiries, window: 20 unless current_user.admin? %>
+    <%= paginate @inquiries, window: 40 unless current_user.admin? %>
 
 </main>

@@ -6,19 +6,25 @@ class InquiriesController < ApplicationController
   def index
     return admin_index if current_user.admin?
 
-    @inquiries = policy_scope(Inquiry).includes(:setsumeikai)
+    @inquiries = policy_scope(Inquiry).order(created_at: :desc)
+                                      .includes(:setsumeikai)
+                                      .page(params[:page])
   end
 
   def new
     @inquiry = Inquiry.new
-    @setsumeikais = policy_scope(Setsumeikai).upcoming.order(start: :asc)
-    @schools = policy_scope(School)
+    @setsumeikais = policy_scope(Setsumeikai).upcoming
+                                             .order(start: :asc)
+                                             .includes(:school)
+    @schools = School.real.order(:id)
   end
 
   def edit
     @inquiry = authorize(Inquiry.find(params[:id]))
-    @setsumeikais = policy_scope(Setsumeikai).upcoming.order(start: :asc)
-    @schools = policy_scope(School)
+    @setsumeikais = policy_scope(Setsumeikai).upcoming
+                                             .order(start: :asc)
+                                             .includes(:school)
+    @schools = School.real.order(:id)
   end
 
   def create

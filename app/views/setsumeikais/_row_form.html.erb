@@ -1,0 +1,49 @@
+<%= form_with model: setsumeikai, class: 'card' do |f| %>
+    <tr>
+        <td>
+            <div class="form-floating">
+                <%= f.datetime_field :start, class: 'form-control',
+                                     required: true %>
+                <%= f.label :start, t('.start'), class: 'form-label' %>
+            </div>
+        </td>
+        <td>
+            <div class="form-floating">
+                <%= f.datetime_field :finish, class: 'form-control',
+                                     required: true %>
+                <%= f.label :finish, t('.end'), class: 'form-label' %>
+            </div>
+        </td>
+        <td>
+            <div class="form-floating">
+                <%= f.number_field :attendance_limit,
+                                   class: 'form-control',
+                                   placeholder:  t('.attendance_limit'),
+                                   min: 1,
+                                   required: true %>
+                <%= f.label :attendance_limit,
+                            t('.attendance_limit'),
+                            class: 'form-label' %>
+            </div>
+        </td>
+        <% if current_user.school_manager? %>
+            <td>
+                <%= current_user.managed_schools.first.name %>
+                <%= f.hidden_field :school_id,
+                                   value: current_user.managed_schools.first.id %>
+            </td>
+        <% else %>
+            <td>
+                <div>
+                    <%= f.collection_select :school_id,
+                                            @schools,
+                                            :id,
+                                            :name,
+                                            {},
+                                            { class: 'form-select' } %>
+                </div>
+            </td>
+        <% end %>
+        <td colspan="2"><%= f.submit class: 'btn btn-primary w-100' %></td>
+    </tr>
+<% end %>

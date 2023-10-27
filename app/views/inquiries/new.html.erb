@@ -1,3 +1,13 @@
-<main id="inquiry_new">
+<main id="inquiry_new" class="justify-content-start">
+    <div class="align-self-start d-flex gap-3">
+        <%= link_to t('.setsumeikais'),
+                setsumeikais_path,
+                class: 'btn btn-primary' %>
+        
+        <%= link_to t('.inquiries'),
+                inquiries_path,
+                class: 'btn btn-primary' %>
+    </div>
+
     <%= render 'inquiries/form' %>
 </main>

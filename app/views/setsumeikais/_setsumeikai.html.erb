@@ -1,20 +1,30 @@
-<div class="card">
-    <% if current_user.school_manager? %>
-        <h3><%= setsumeikai.date %></h3>
-    <% else %>
-        <h3><%= "#{setsumeikai.date} @ #{setsumeikai.school.name}" %></h3>
-    <% end %>
+<tr>
+    <td>
+        <%= setsumeikai.date_time %>
+    </td>
 
-    <h5>
-        <%= link_to "#{setsumeikai.inquiries_count}/#{setsumeikai.attendance_limit}",
+    <td>
+        <%= setsumeikai.finish.strftime('%H:%M') %>
+    </td>
+    
+    <td>
+        <%= link_to "#{setsumeikai.inquiries.size}/#{setsumeikai.attendance_limit}",
                     setsumeikai_path(setsumeikai) %>
-    </h5>
+    </td>
+    
+    <td>
+        <%= setsumeikai.school.name %>
+    </td>
 
-    <%= link_to t('.edit'),
-                edit_setsumeikai_path(setsumeikai),
-                class: 'btn btn-primary' %>
-
-    <%= link_to t('.add_inquiry'),
-                new_inquiry_path,
-                class: 'btn btn-primary' %>
-</div>
+    <td>
+        <%= link_to t('.edit'),
+                    edit_setsumeikai_path(setsumeikai),
+                    class: 'btn btn-primary' %>
+    </td>
+    
+    <td>
+        <%= link_to t('.add_inquiry'),
+                    new_inquiry_path,
+                    class: 'btn btn-primary' %>
+    </td>
+</tr>
