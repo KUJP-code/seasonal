@@ -44,5 +44,5 @@ class UploadsController < ApplicationController
   end
 
   ALLOWED_FILETYPES = %w[image/avif image/jpeg image/png image/svg+xml image/webp].freeze
-  FOLDERS = [%w[Assets assets], ['Time Slots', 'time_slots'], %w[Events events]].freeze
+  FOLDERS = [%w[Assets assets], %w[Events events], %w[Schools schools], ['Time Slots', 'time_slots']].freeze
 end

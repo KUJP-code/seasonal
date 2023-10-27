@@ -10,6 +10,8 @@ class School < ApplicationRecord
 
   belongs_to :area
 
+  has_one_attached :image
+
   has_many :managements, as: :manageable,
                          dependent: :destroy
   accepts_nested_attributes_for :managements, allow_destroy: true
@@ -53,6 +55,7 @@ class School < ApplicationRecord
       name: name,
       address: address,
       phone: phone,
+      image: Rails.env.production? ? image.url : '',
       busAreas: details['bus_areas'] || [''],
       hiragana: details['hiragana'] || [''],
       nearbyStations: details['nearby_stations'] || [''],
@@ -68,6 +71,18 @@ class School < ApplicationRecord
                 reason: '帽子代(野外アクティビティに参加される方でKids UP帽子をお持ちでない方のみ)'
               }
             )
+  end
+
+  def image_id
+    return nil if image.blob.nil?
+
+    image.blob.id
+  end
+
+  def image_id=(image_id)
+    return if image_id.nil?
+
+    self.image = ActiveStorage::Blob.find(image_id)
   end
 
   def next_event

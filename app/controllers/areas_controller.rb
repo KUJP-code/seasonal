@@ -4,7 +4,9 @@
 class AreasController < ApplicationController
   def index
     authorize(:area)
-    @areas = policy_scope(Area).includes(:managers, schools: :managers)
+    @areas = policy_scope(Area).includes(
+      :managers, schools: %i[image_attachment managers]
+    )
   end
 
   def show

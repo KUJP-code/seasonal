@@ -1,4 +1,7 @@
-<div class="card">
+<div class="card w-25">
+    <% unless school.image.blank? %>
+        <%= image_tag url_for(school.image), class: 'img-fluid img-thumbnail' %>
+    <% end %>
     <h3><%= school.name %></h3>
     <p><%= "Address: #{school.address}" %></p>
     <p><%= "Phone: #{school.phone}" %></p>

@@ -129,7 +129,8 @@ class EventsController < ApplicationController
   end
 
   def form_info
-    @images = ActiveStorage::Blob.where('key LIKE ?', '%events%').map { |blob| [blob.key, blob.id] }
+    @images = ActiveStorage::Blob.where('key LIKE ?', '%events%')
+                                 .map { |blob| [blob.key, blob.id] }
     @prices = PriceList.order(:name)
     @schools = [%w[All all]] + School.order(:id).map { |school| [school.name, school.id] }
   end

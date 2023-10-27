@@ -3,6 +3,12 @@
 <%= form_with model: @school,
               html: { class: 'card' },
               data: { controller: 'fields' } do |f| %>
+
+    <div>
+        <%= label_tag :image_id, 'Image', class: 'form-label' %>
+        <%= f.select :image_id, @images, {}, { class: 'form-select' } %>
+    </div>
+    
     <div class="form-floating">
         <%= f.text_field :name, class: 'form-control',
                                 placeholder:  "Name",
