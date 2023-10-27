@@ -5,11 +5,9 @@ class Setsumeikai < ApplicationRecord
   belongs_to :school
   has_many :inquiries, dependent: nil
 
-  validates :start, :finish, :attendance_limit, presence: true
+  validates :start, :attendance_limit, presence: true
   validates :attendance_limit, comparison: { greater_than: 0 }
-  validates :start, comparison: {
-    greater_than: Time.zone.now, less_than: :finish
-  }
+  validates :start, comparison: { greater_than: Time.zone.now }
 
   scope :upcoming, -> { where('start > ?', Time.zone.now) }
   scope :available, -> { where('attendance_limit > inquiries_count') }
@@ -18,7 +16,6 @@ class Setsumeikai < ApplicationRecord
     {
       id: id.to_s,
       start: start,
-      end: finish,
       title: school.name
     }
   end

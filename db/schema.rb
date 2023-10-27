@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_26_085433) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_27_050843) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -216,7 +216,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_26_085433) do
 
   create_table "setsumeikais", force: :cascade do |t|
     t.datetime "start"
-    t.datetime "finish"
     t.integer "attendance_limit"
     t.integer "inquiries_count", default: 0
     t.bigint "school_id", null: false

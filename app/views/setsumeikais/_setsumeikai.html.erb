@@ -2,14 +2,11 @@
     <td>
         <%= link_to setsumeikai.date_time, setsumeikai_path(setsumeikai) %>
     </td>
-
-    <td>
-        <%= setsumeikai.finish.strftime('%H:%M') %>
-    </td>
     
     <td>
         <%= link_to "#{setsumeikai.inquiries.size}/#{setsumeikai.attendance_limit}",
-                    setsumeikai_path(setsumeikai) %>
+                    setsumeikai_path(setsumeikai),
+                    class: 'fw-bold' %>
     </td>
     
     <td>
