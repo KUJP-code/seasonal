@@ -1,10 +1,8 @@
-<%= column_chart @data[:activities]
-                      .sort_by { |_k, v| v }.reverse,
+<%= column_chart @activities.sort_by { |_k, v| v }.reverse,
                  title: "Popularity",
                  height: "50vh" %>
 
-<%= column_chart @data[:afternoons]
-                      .sort_by { |_k, v| v }.reverse,
+<%= column_chart @afternoons.sort_by { |_k, v| v }.reverse,
                 title: "Afternoon Spot Use",
                 height: "50vh" %>
 
@@ -13,8 +11,8 @@
         <div class="d-flex flex-column">
             <h2 class="fw-semibold text-primary">
                 <%= number_to_currency(
-                    @data[:slots].select { |s| s.snack }
-                    .reduce(0) { |sum, s| sum + s.registrations_count } * 165,
+                    @slots.select { |s| s.snack }
+                          .reduce(0) { |sum, s| sum + s.registrations_count } * 165,
                     unit: '円',
                     precision: 0,
                     locale: :ja
@@ -25,7 +23,7 @@
         <div class="d-flex flex-column">
             <h2 class="fw-semibold text-primary">
                 <%= number_to_currency(
-                    @data[:slots].reduce(0) { |sum, s| sum + (s.int_modifier * s.registrations_count) },
+                    @slots.reduce(0) { |sum, s| sum + (s.int_modifier * s.registrations_count) },
                     unit: '円',
                     precision: 0,
                     locale: :ja
@@ -36,12 +34,12 @@
     </div>
 
     <% morn_aft = {
-        "Morning" => @data[:activities].reduce(0) { |sum, a| sum + a[1] },
-        "Afternoon" => @data[:afternoons].reduce(0) { |sum, a| sum + a[1] }
+        "Morning" => @activities.reduce(0) { |sum, a| sum + a[1] },
+        "Afternoon" => @afternoons.reduce(0) { |sum, a| sum + a[1] }
     } %>
     <%= pie_chart morn_aft, title: "Session Popularity", height: "50vh" %>
     
-    <% by_category = @data[:slots].reduce({}) do |hash, s|
+    <% by_category = @slots.reduce({}) do |hash, s|
                         if hash.include?(s.category)
                             hash[s.category] += s.registrations_count
                             hash

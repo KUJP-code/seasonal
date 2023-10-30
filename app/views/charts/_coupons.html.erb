@@ -1,8 +1,8 @@
-<%= line_chart @data.group_by_day(:created_at).count,
+<%= line_chart @coupons.group_by_day(:created_at).count,
                title: "Daily Coupon Use",
                height: "50vh" %>
 
-<%= pie_chart @data
+<%= pie_chart @coupons
               .where.not(code: "")
               .group(:code).count,
               title: "Coupon Popularity",

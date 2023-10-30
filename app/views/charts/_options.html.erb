@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center align-items-center gap-5 p-3 w-100 text-center">
-    <% photo_regs = @data[:all_opts].select { |o| o.category == 'event' }.size %>
+    <% photo_regs = @all_opts.select { |o| o.category == 'event' }.size %>
     <div class="d-flex flex-column">
         <h2 class="fw-semibold text-primary">
             <%= photo_regs %>
@@ -17,7 +17,7 @@
     </div>
 </div>
 
-<%= column_chart @data[:all_opts]
+<%= column_chart @all_opts
                        .group('options.category')
                        .count("options.category")
                        .except("なし")
@@ -26,7 +26,7 @@
                  title: "Category Popularity",
                  height: "50vh" %>
 
-<%= column_chart @data[:all_opts]
+<%= column_chart @all_opts
                        .group('options.category')
                        .sum("options.cost")
                        .except("なし")
@@ -36,7 +36,7 @@
                  suffix: "円",
                  height: "50vh" %>
 
-<%= column_chart @data[:all_opts]
+<%= column_chart @all_opts
                        .group('options.name')
                        .count("options.name")
                        .except("なし")
@@ -44,7 +44,7 @@
                  title: "Option Popularity",
                  height: "50vh" %>
 
-<%= column_chart @data[:all_opts]
+<%= column_chart @all_opts
                        .group('options.name')
                        .sum("options.cost")
                        .except("なし")
@@ -54,11 +54,11 @@
                  height: "50vh" %>
 
 <div class="w-100 d-flex">
-    <%= pie_chart @data[:arrive_opts],
+    <%= pie_chart @arrive_opts,
                   title: "Arrival Option Popularity",
                   legend: "left",
                   height: "50vh" %>
-    <%= pie_chart @data[:depart_opts],
+    <%= pie_chart @depart_opts,
                   title: "Departure Option Popularity",
                   legend: "left",
                   height: "50vh" %>

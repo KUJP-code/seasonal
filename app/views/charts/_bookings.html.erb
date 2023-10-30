@@ -1,10 +1,10 @@
 <div class="d-flex justify-content-center align-items-center gap-5 p-3 w-100 text-center">
     <div class="d-flex flex-column">
         <h2 class="fw-semibold text-primary">
-            <% if @data[:invoices].empty? %>
+            <% if @invoices.empty? %>
               0円
             <% else %>
-                <%= number_to_currency(@data[:invoices].average(:total_cost),
+                <%= number_to_currency(@invoices.average(:total_cost),
                         unit: '円',
                         precision: 0,
                         locale: :ja) %>
@@ -14,10 +14,10 @@
     </div>
     <div class="d-flex flex-column">
         <h2 class="fw-semibold text-primary">
-            <% if @data[:invoices].empty? || @data[:regs].empty? %>
+            <% if @invoices.empty? || @regs.empty? %>
                 0
             <% else %>
-                <%= (@data[:regs].size.to_f / @data[:invoices].size).round(2) %>
+                <%= (@regs.size.to_f / @invoices.size).round(2) %>
             <% end %>
         </h2>
         <p>Activities per Booking</p>
@@ -25,31 +25,31 @@
 </div>
 
 <div class="w-100 d-flex">
-    <%= line_chart @data[:invoices].group_by_day(:created_at).count,
+    <%= line_chart @invoices.group_by_day(:created_at).count,
                    title: "Daily New Bookings",
                    height: "50vh" %>
-    <%= line_chart @data[:invoices].group_by_week(:created_at).count,
+    <%= line_chart @invoices.group_by_week(:created_at).count,
                    title: "Weekly New Bookings",
                    height: "50vh" %>
 </div>
 
 <div class="w-100 d-flex">
-    <%= line_chart @data[:regs].group_by_day(:created_at).count,
+    <%= line_chart @regs.group_by_day(:created_at).count,
                    title: "Daily Activity Registrations",
                    height: "50vh" %>
-    <%= line_chart @data[:regs].group_by_week(:created_at).count,
+    <%= line_chart @regs.group_by_week(:created_at).count,
                    title: "Weekly Activity Registrations",
                    height: "50vh" %>
 </div>
     
 <div class="w-100 d-flex">
-    <%= line_chart @data[:invoices]
+    <%= line_chart @invoices
                         .group_by_day(:created_at)
                         .sum(:total_cost),
                 title: "Daily Revenue",
                 suffix: "円",
                 height: "50vh" %>
-    <%= line_chart @data[:invoices]
+    <%= line_chart @invoices
                         .group_by_week(:created_at)
                         .sum(:total_cost),
                    title: "Weekly Revenue",
@@ -58,22 +58,22 @@
 </div>
 
 <div class="w-100 d-flex">
-    <%= column_chart @data[:regs]
+    <%= column_chart @regs
                           .group_by_day_of_week(:created_at, format: '%A')
                           .count,
                      title: 'Registrations by Day of the Week',
                      height: '50vh' %>
 
-    <%= column_chart @data[:regs].group_by_hour_of_day(:created_at).count,
+    <%= column_chart @regs.group_by_hour_of_day(:created_at).count,
                      title: 'Registrations by Hour of Day',
                      height: '50vh' %>
 </div>
 
 <% if @nav[:school].id.zero? %>
-    <%= column_chart @data[:invoices]
+    <%= column_chart @invoices
                           .group(:event_id)
                           .average(:total_cost)
-                          .to_h { |k, v| [@data[:school_hash][k], v] }
+                          .to_h { |k, v| [@school_hash[k], v] }
                           .sort_by { |_k, v| v}
                           .reverse, 
                      title: 'Average Booking Cost by School',

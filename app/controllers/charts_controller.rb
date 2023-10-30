@@ -2,7 +2,6 @@
 
 # Provides data for the charts pages
 class ChartsController < ApplicationController
-  TEST_SCHOOLS = [1, 2].freeze
   CATEGORIES = %w[activities bookings children coupons edits options].freeze
 
   def index
@@ -30,27 +29,20 @@ class ChartsController < ApplicationController
 
   def activities_all_data
     event_ids = Event.where(name: @nav[:event], school_id: School.real.ids).ids
-    slots = TimeSlot.where(event_id: event_ids)
 
-    {
-      activities: slots.morning.or(slots.special)
-                       .group(:name).sum(:registrations_count),
-      afternoons: slots.afternoon.where.not(category: :special)
-                       .group(:name).sum(:registrations_count),
-      slots: slots
-    }
+    @slots = TimeSlot.where(event_id: event_ids)
+    @activities = @slots.morning.or(@slots.special)
+                        .group(:name).sum(:registrations_count)
+    @afternoons = @slots.afternoon.where.not(category: :special)
+                        .group(:name).sum(:registrations_count)
   end
 
   def activities_school_data(school)
-    slots = school.events.find_by(name: @nav[:event]).time_slots
-
-    {
-      activities: slots.morning.or(slots.special)
-                       .group(:name).sum(:registrations_count),
-      afternoons: slots.afternoon.where.not(category: :special)
-                       .group(:name).sum(:registrations_count),
-      slots: slots
-    }
+    @slots = school.events.find_by(name: @nav[:event]).time_slots
+    @activities = @slots.morning.or(@slots.special)
+                        .group(:name).sum(:registrations_count)
+    @afternoons = @slots.afternoon.where.not(category: :special)
+                        .group(:name).sum(:registrations_count)
   end
 
   def bookings_data
@@ -66,72 +58,69 @@ class ChartsController < ApplicationController
   def bookings_all_data
     events = Event.where(name: @nav[:event], school_id: School.real.ids)
                   .includes(:school)
-    invoices = Invoice.real.where(event_id: events.ids)
 
-    {
-      invoices: invoices,
-      regs: Registration.where(
-        registerable_type: 'TimeSlot',
-        invoice_id: invoices.ids
-      ),
-      school_hash: events.to_h { |e| [e.id, e.school.name] }
-    }
+    @invoices = Invoice.real.where(event_id: events.ids)
+    @regs = Registration.where(
+      registerable_type: 'TimeSlot',
+      invoice_id: @invoices.ids
+    )
+    @school_hash = events.to_h { |e| [e.id, e.school.name] }
   end
 
   def bookings_school_data(school)
     event = school.events.find_by(name: @nav[:event])
 
-    {
-      invoices: event.invoices,
-      regs: event.registrations
-    }
+    @invoices = event.invoices
+    @regs = event.registrations
   end
 
   def children_data
     school = @nav[:school]
 
     if school.id.zero?
-      {
-        children: children_all
-      }
+      children_all_data
     else
-      event = school.events.find_by(name: @nav[:event])
-
-      {
-        children: event.children.includes(:real_invoices),
-        hat_kids: school.hat_kids
-      }
+      children_school_data(school)
     end
   end
 
-  def children_all
-    event_ids = Event.where(name: @nav[:event]).ids
+  def children_all_data
+    @event_ids = Event.where(name: @nav[:event], school_id: School.real.ids).ids
+    @children = children_all(@event_ids)
+  end
 
+  def children_all(event_ids)
     Child.joins(:real_invoices)
          .where(real_invoices: { event_id: event_ids })
          .includes(:real_invoices)
+  end
+
+  def children_school_data(school)
+    event = school.events.find_by(name: @nav[:event])
+
+    @children = event.children.includes(:real_invoices)
+    @event_ids = [event.id]
+    @hat_kids = school.hat_kids
   end
 
   def coupons_data
     school = @nav[:school]
 
     event_ids = if school.id.zero?
-                  Event.where(name: @nav[:event]).ids
+                  Event.where(name: @nav[:event], school_id: School.real.ids).ids
                 else
                   school.events.find_by(name: @nav[:event]).id
                 end
     invoice_ids = Invoice.real.where(event_id: event_ids).ids
 
-    Coupon.where(couponable_id: invoice_ids)
+    @coupons = Coupon.where(couponable_id: invoice_ids)
   end
 
   def edits_data
     school = @nav[:school]
 
-    {
-      customer_edits: edits_customers(school),
-      staff_edits: edits_staff(school)
-    }
+    @customer_edits = edits_customers(school)
+    @staff_edits = edits_staff(school)
   end
 
   def edits_customers(school)
@@ -187,24 +176,24 @@ class ChartsController < ApplicationController
 
   def options_data
     school = @nav[:school]
+    optionable_ids = school.id.zero? ? optionable_ids_all : optionable_ids_school(school)
 
-    optionable_ids = options_optionable_ids(school)
-
-    {
-      all_opts: options_all(optionable_ids),
-      arrive_opts: options_arrive(optionable_ids),
-      depart_opts: options_depart(optionable_ids)
-    }
+    @all_opts = options_all(optionable_ids)
+    @arrive_opts = options_arrive(optionable_ids)
+    @depart_opts = options_depart(optionable_ids)
   end
 
-  def options_optionable_ids(school)
-    if school.id.zero?
-      event_ids = Event.where(name: @nav[:event]).ids
-      TimeSlot.where(event_id: event_ids).ids.concat(event_ids)
-    else
-      event = school.events.find_by(name: @nav[:event])
-      event.time_slots.ids.concat(event.id)
-    end
+  def optionable_ids_all
+    event_ids = Event.where(
+      name: @nav[:event],
+      school_id: School.real.ids
+    ).ids
+    TimeSlot.where(event_id: event_ids).ids.concat(event_ids)
+  end
+
+  def optionable_ids_school(school)
+    event = school.events.find_by(name: @nav[:event])
+    event.time_slots.ids.push(event.id)
   end
 
   def options_all(optionable_ids)

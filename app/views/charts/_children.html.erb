@@ -1,43 +1,45 @@
 <div class="d-flex justify-content-center align-items-center gap-5 p-3 w-100 text-center">
     <div class="d-flex flex-column">
         <h2 class="fw-semibold text-primary">
-            <%= @data[:children].select { |c| c.category == 'internal' }.size %>
+            <%= @children.select { |c| c.category == 'internal' }.size %>
         </h2>
         <p>Internal Children</p>
     </div>
     <div class="d-flex flex-column">
         <h2 class="fw-semibold text-primary">
-            <%= @data[:children].select { |c| c.category == 'reservation' }.size %>
+            <%= @children.select { |c| c.category == 'reservation' }.size %>
         </h2>
         <p>Reservation Children</p>
     </div>
     <div class="d-flex flex-column">
         <h2 class="fw-semibold text-primary">
-            <%= @data[:children].select { |c| c.category == 'external' }.size %>
+            <%= @children.select { |c| c.category == 'external' }.size %>
         </h2>
         <p>External Children</p>
     </div>
     <div class="d-flex flex-column">
         <h2 class="fw-semibold text-primary">
-            <%= @data[:children].size %>
+            <%= @children.size %>
         </h2>
         <p>Total Children</p>
     </div>
 </div>
 
 <div class="w-100 d-flex">
-    <%= pie_chart @data[:children].group(:grade).count,
+    <%= pie_chart @children.group(:grade).count,
                   title: 'Attendees by Grade',
                   height: '50dvh' %>
-    <%= pie_chart @data[:children].group(:category).count,
+    <%= pie_chart @children.group(:category).count,
                   title: 'Attendees by Category',
                   height: '50dvh' %>
 </div>
 
 <h1>VIPs</h1>
 
-<% vips = @data[:children].reduce([]) do |arr, c|
-                    cost = c.real_invoices.reduce(0) { |sum, i| sum + i.total_cost }
+<% vips = @children.reduce([]) do |arr, c|
+                    cost = c.real_invoices
+                            .select { |i| @event_ids.include?(i.event_id) }
+                            .reduce(0) { |sum, i| sum + i.total_cost }
                     arr << [c, cost]
                     arr
                 end
@@ -89,7 +91,7 @@
         </thead>
 
         <tbody>
-            <% @data[:hat_kids].each do |k| %>
+            <% @hat_kids.each do |k| %>
                 <tr>
                     <td><%= k.name %></td>
                     <td><%= k.en_name %></td>
