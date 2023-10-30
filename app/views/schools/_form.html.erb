@@ -1,4 +1,5 @@
-<% details_exist = @school && @school.details %>
+<% bus_areas_exist = @school.details && @school.details['bus_areas'] %>
+<% nearby_stations_exist = @school.details && @school.details['nearby_stations'] %>
 
 <%= form_with model: @school,
               html: { class: 'card' },
@@ -44,7 +45,7 @@
         <%= f.text_area :bus_areas, class: 'form-control',
                         placeholder: 'Pickup/Dropoff areas (comma separated)',
                         size: '50x30',
-                        value: (details_exist ? @school.details['bus_areas'].join(', ') : '') %>
+                        value: (bus_areas_exist ? @school.details['bus_areas'].join(', ') : '') %>
         <%= f.label :bus_areas, 
                     'Pickup/Dropoff areas (comma separated)',
                     class: 'form-label' %>
@@ -54,7 +55,7 @@
         <%= f.text_area :nearby_stations, class: 'form-control',
                         placeholder: 'Nearby stations (comma separated)',
                         size: '50x30',
-                        value: (details_exist ? @school.details['nearby_stations'].join(', ') : '') %>
+                        value: (nearby_stations_exist ? @school.details['nearby_stations'].join(', ') : '') %>
         <%= f.label :nearby_stations, 
                     'Nearby stations (comma separated)',
                     class: 'form-label' %>
