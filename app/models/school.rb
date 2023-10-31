@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# Represents a single school
-# Must have a school manager
 class School < ApplicationRecord
   # Allow API details to be set
   attr_accessor :bus_areas, :hiragana, :nearby_stations

@@ -1,5 +1,8 @@
-<% bus_areas_exist = @school.details && @school.details['bus_areas'] %>
-<% nearby_stations_exist = @school.details && @school.details['nearby_stations'] %>
+<% if @school.details %>
+    <% bus_areas = @school.details['bus_areas'] %>
+    <% nearby_stations = @school.details['nearby_stations'] %>
+    <% hiragana = @school.details['hiragana'] %>
+<% end %>
 
 <%= form_with model: @school,
               html: { class: 'card' },
@@ -15,6 +18,13 @@
                                 placeholder:  "Name",
                                 required: true %>
         <%= f.label :name, "Name", class: 'form-label' %>
+    </div>
+
+    <div class="form-floating">
+        <%= f.email_field :email, class: 'form-control',
+                                placeholder:  "Email",
+                                required: true %>
+        <%= f.label :email, "Email", class: 'form-label' %>
     </div>
 
     <div class="form-floating">
@@ -45,7 +55,7 @@
         <%= f.text_area :bus_areas, class: 'form-control',
                         placeholder: 'Pickup/Dropoff areas (comma separated)',
                         size: '50x30',
-                        value: (bus_areas_exist ? @school.details['bus_areas'].join(', ') : '') %>
+                        value: (bus_areas ? bus_areas.join(', ') : '') %>
         <%= f.label :bus_areas, 
                     'Pickup/Dropoff areas (comma separated)',
                     class: 'form-label' %>
@@ -55,7 +65,7 @@
         <%= f.text_area :nearby_stations, class: 'form-control',
                         placeholder: 'Nearby stations (comma separated)',
                         size: '50x30',
-                        value: (nearby_stations_exist ? @school.details['nearby_stations'].join(', ') : '') %>
+                        value: (nearby_stations ? nearby_stations.join(', ') : '') %>
         <%= f.label :nearby_stations, 
                     'Nearby stations (comma separated)',
                     class: 'form-label' %>
@@ -64,7 +74,8 @@
     <div class="form-floating">
         <%= f.text_field :hiragana, class: 'form-control',
                                 placeholder:  "Hiragana (comma separated)",
-                                required: true %>
+                                required: true,
+                                value: (hiragana ? hiragana.join(', ') : '') %>
         <%= f.label :hiragana, "Hiragana", class: 'form-label' %>
     </div>
 

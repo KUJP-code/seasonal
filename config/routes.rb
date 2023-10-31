@@ -58,6 +58,12 @@ Rails.application.routes.draw do
   # School API endpoint
   resources :schools, only: %i[index], defaults: { format: :json }
 
+  # Legacy API for GAS Sheets
+  get 'gas_schools', to: 'sheets_apis#schools'
+  # Don't blame me, the sheet makes a post request
+  post 'gas_inquiries', to: 'sheets_apis#inquiries'
+  post 'gas_update_sent', to: 'sheets_apis#update_sent'
+
   # Inquiry API endpoint
   post 'create_inquiry', to: 'inquiries#create'
 

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Handles information flow for Setsumeikais
 class SetsumeikaisController < ApplicationController
   def index
     @schools = policy_scope(School).order(:id)
