@@ -36,6 +36,12 @@
         <%= inquiry.created_at.strftime('%Y年%m月%d日') %>
     </td>
     <td>
+        <%= inquiry.requests %>
+    </td>
+    <td>
+        <%= inquiry.notes %>
+    </td>
+    <td>
         <%= link_to t('.edit'), 
                     edit_inquiry_path(inquiry),
                     class: 'btn btn-primary' %>

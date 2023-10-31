@@ -8,7 +8,6 @@ class SetsumeikaisController < ApplicationController
     @setsumeikais = policy_scope(Setsumeikai).upcoming
                                              .order(start: :desc)
                                              .page(params[:page])
-                                             .includes(:school)
   end
 
   def show
@@ -57,6 +56,6 @@ class SetsumeikaisController < ApplicationController
 
   def admin_index
     @school = params[:school] ? School.find(params[:school]) : @schools.first
-    @setsumeikais = @school.setsumeikais.upcoming.includes(:school)
+    @setsumeikais = @school.setsumeikais.upcoming
   end
 end
