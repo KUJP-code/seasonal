@@ -87,6 +87,10 @@ class School < ApplicationRecord
     upcoming_events.first
   end
 
+  def to_gas_api
+    { school_name: name, email: email || '' }
+  end
+
   private
 
   def set_details

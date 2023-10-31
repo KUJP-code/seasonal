@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_31_090854) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_31_102627) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -121,6 +121,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_31_090854) do
     t.integer "referrer"
     t.string "notes"
     t.string "requests"
+    t.boolean "send_flg", default: true
+    t.string "category", default: "R"
     t.index ["setsumeikai_id"], name: "index_inquiries_on_setsumeikai_id"
   end
 

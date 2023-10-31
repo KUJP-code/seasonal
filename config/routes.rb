@@ -60,6 +60,7 @@ Rails.application.routes.draw do
 
   # Legacy API for GAS Sheets
   get 'gas_schools', to: 'sheets_apis#schools'
+  get 'gas_inquiries', to: 'sheets_apis#inquiries'
   # Don't blame me, the sheet makes a post request
   post 'gas_inquiries', to: 'sheets_apis#inquiries'
   post 'gas_update_sent', to: 'sheets_apis#update_sent'
