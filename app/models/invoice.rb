@@ -90,8 +90,13 @@ class Invoice < ApplicationRecord
   def best_price(num_regs, courses)
     return 0 if num_regs.zero?
     if [3, 4].include?(num_regs)
-      return 11_900 + best_price(num_regs - 3, courses) if child.internal?
+      if child.internal?
+        @breakdown << "<p>- 3回コース: #{yenify(11_900)}</p>" unless @breakdown.nil?
+        
+        return 11_900 + best_price(num_regs - 3, courses)
+      end
 
+      @breakdown << "<p>- 3回コース: #{yenify(19_100)}</p>" unless @breakdown.nil?
       return 19_100 + best_price(num_regs - 3, courses)
     end
     
