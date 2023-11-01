@@ -35,7 +35,11 @@ class School < ApplicationRecord
   has_many :option_registrations, through: :time_slots
   has_many :registrations, through: :time_slots
   has_many :setsumeikais, dependent: nil
-  has_many :inquiries, through: :setsumeikais
+  has_many :setsumeikai_inquiries, through: :setsumeikais,
+                                   source: :inquiries,
+                                   class_name: 'Inquiry'
+  has_many :school_inquiries, class_name: 'Inquiry',
+                              dependent: nil
   has_many :available_setsumeikais, -> { upcoming.available },
            class_name: 'Setsumeikai',
            inverse_of: :school,

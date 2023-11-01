@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_31_102627) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_01_101822) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -123,6 +123,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_31_102627) do
     t.string "requests"
     t.boolean "send_flg", default: true
     t.string "category", default: "R"
+    t.bigint "school_id"
+    t.index ["school_id"], name: "index_inquiries_on_school_id"
     t.index ["setsumeikai_id"], name: "index_inquiries_on_setsumeikai_id"
   end
 
@@ -222,10 +224,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_31_102627) do
   create_table "setsumeikais", force: :cascade do |t|
     t.datetime "start"
     t.integer "attendance_limit"
-    t.integer "inquiries_count", default: 0
     t.bigint "school_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "inquiries_count"
     t.index ["school_id"], name: "index_setsumeikais_on_school_id"
   end
 
@@ -295,6 +297,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_31_102627) do
   add_foreign_key "events", "price_lists", column: "member_prices_id"
   add_foreign_key "events", "price_lists", column: "non_member_prices_id"
   add_foreign_key "events", "schools"
+  add_foreign_key "inquiries", "schools"
   add_foreign_key "inquiries", "setsumeikais"
   add_foreign_key "invoices", "children"
   add_foreign_key "invoices", "events"

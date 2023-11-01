@@ -72,7 +72,7 @@ class InquiriesController < ApplicationController
   def admin_index
     @schools = policy_scope(School).order(:id)
     @school = params[:school] ? School.find(params[:school]) : @schools.first
-    @inquiries = @school.inquiries.includes(:setsumeikai)
+    @inquiries = @school.setsumeikai_inquiries.includes(:setsumeikai)
   end
 
   def create_html_response
