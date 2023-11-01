@@ -10,27 +10,23 @@ class SheetsApisController < ApplicationController
       message: 'ok',
       results: schools.map(&:to_gas_api)
     }
-    respond_to do |f|
-      f.json { render json: response }
-    end
+    render json: response
   end
 
   def inquiries
-    school = School.find_by(name: params[:schoolName])
-
+    school = School.find_by(name: inquiries_params[:schoolName])
     inquiries = school.inquiries.where(send_flg: true).includes(:setsumeikai)
+
     response = {
       statusCode: 200,
       message: 'ok',
       results: inquiries.map(&:to_gas_api),
       counts: inquiries.size
     }
-    respond_to do |f|
-      f.json { render json: response }
-    end
+    render json: response
   end
 
-  def update_sent; end
+  def update; end
 
   private
 

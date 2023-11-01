@@ -63,7 +63,7 @@ Rails.application.routes.draw do
   get 'gas_inquiries', to: 'sheets_apis#inquiries'
   # Don't blame me, the sheet makes a post request
   post 'gas_inquiries', to: 'sheets_apis#inquiries'
-  post 'gas_update_sent', to: 'sheets_apis#update_sent'
+  post 'gas_update', to: 'sheets_apis#update'
 
   # Inquiry API endpoint
   post 'create_inquiry', to: 'inquiries#create'
