@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SheetsApisController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: :inquiries
+  skip_before_action :verify_authenticity_token, only: %i[inquiries update]
 
   def schools
     schools = School.real.select(:id, :name, :email).order(id: :desc)
@@ -26,11 +26,24 @@ class SheetsApisController < ApplicationController
     render json: response
   end
 
-  def update; end
+  def update
+    puts 'request'
+    p request
+    puts 'params'
+    p params
+    puts 'update_params'
+    p update_params
+    puts 'update'
+    p update_params[:update]
+  end
 
   private
 
   def inquiries_params
     params.permit(:schoolName)
+  end
+
+  def update_params
+    params.permit(:update)
   end
 end

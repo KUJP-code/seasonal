@@ -35,6 +35,14 @@ class Inquiry < ApplicationRecord
     }
   end
 
+  def to_gas_update
+    {
+      category: CATEGORY_MAP[category],
+      id: id.to_s,
+      target: child_name
+    }
+  end
+
   private
 
   def child_age
@@ -47,6 +55,12 @@ class Inquiry < ApplicationRecord
       time: setsumeikai.start.strftime('%H:%M')
     }
   end
+
+  CATEGORY_MAP = {
+    'C' => 'Call center',
+    'I' => '問合せ',
+    'R' => '説明会'
+  }.freeze
 
   YEAR_AGE_MAP = {
     1 => '満１歳',
