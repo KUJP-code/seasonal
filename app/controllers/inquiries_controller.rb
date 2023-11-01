@@ -65,7 +65,7 @@ class InquiriesController < ApplicationController
     params.require(:inquiry).permit(
       :id, :setsumeikai_id, :parent_name, :phone, :email, :child_name,
       :referrer, :child_birthday, :kindy, :ele_school, :planned_school,
-      :start_date, :notes, :requests, :category
+      :start_date, :notes, :requests, :category, :school_id
     )
   end
 

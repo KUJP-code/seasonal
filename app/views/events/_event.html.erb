@@ -57,7 +57,7 @@
                         <%= f.label :id, t('.diff_school') %>
                         <%= f.collection_select :id,
                                                 School.real.includes(:upcoming_events),
-                                                proc { |s| s.next_event.id },
+                                                proc { |s| s.next_event ? s.next_event.id : nil },
                                                 :name,
                                                 {},
                                                 class: 'form-select' %>
