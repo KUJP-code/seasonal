@@ -27,14 +27,20 @@ class SheetsApisController < ApplicationController
   end
 
   def update
-    puts 'request'
-    p request
-    puts 'params'
-    p params
-    puts 'update_params'
-    p update_params
-    puts 'update'
-    p update_params[:update]
+    @inquiries = inquiries_from_update_params
+    toggle_send_flags
+
+    response = {
+      statusCode: 200,
+      message: update_error? ? 'error' : 'ok',
+      results: update_error? ? 'error' : 'ok',
+      process: 'HPデータ連携',
+      total: @param_ids.size,
+      r_success: @r_success,
+      i_success: @i_success,
+      detail: @inquiries.map(&:to_gas_update)
+    }
+    render json: response
   end
 
   private
@@ -45,5 +51,28 @@ class SheetsApisController < ApplicationController
 
   def update_params
     params.permit(:update)
+  end
+
+  def inquiries_from_update_params
+    param_inquries = Oj.load(update_params[:update].tr('\\', ''))
+    @param_ids = param_inquries.pluck('id').map(&:to_i)
+    Inquiry.where(id: @param_ids).includes(:setsumeikai)
+  end
+
+  def toggle_send_flags
+    @r_success = 0
+    @i_success = 0
+    @inquiries.each do |i|
+      next @r_success += 1 if i.category == 'R' && i.update(send_flg: false)
+
+      @i_success += 1 if i.update(send_flg: false)
+    end
+  end
+
+  def update_error?
+    return true if @inquiries.size < @param_ids.size
+    return true unless @r_success + @i_success == @inquiries.size
+
+    false
   end
 end
