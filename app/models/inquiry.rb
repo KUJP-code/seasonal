@@ -24,7 +24,7 @@ class Inquiry < ApplicationRecord
       name: parent_name,
       tel: phone,
       email: email,
-      body: requests,
+      body: requests || '',
       kinder_attend: kindy,
       primary_attend: ele_school,
       start_season: start_date,
