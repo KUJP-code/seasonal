@@ -51,6 +51,10 @@ class School < ApplicationRecord
   # Validations
   validates :name, presence: true
 
+  def all_inquiries
+    school_inquiries.or(setsumeikai_inquiries)
+  end
+
   def as_json(_options = {})
     {
       id: id.to_s,

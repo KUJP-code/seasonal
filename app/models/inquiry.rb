@@ -3,7 +3,8 @@
 class Inquiry < ApplicationRecord
   VALID_CATEGORIES = %w[C I R].freeze
 
-  belongs_to :setsumeikai, counter_cache: true
+  belongs_to :setsumeikai, counter_cache: true, optional: true
+  belongs_to :school, optional: true
 
   validates :category, length: { is: 1 }
   validates :category, inclusion: { in: VALID_CATEGORIES }
