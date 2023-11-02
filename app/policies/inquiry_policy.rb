@@ -32,10 +32,8 @@ class InquiryPolicy < ApplicationPolicy
       case user.role
       when 'admin'
         Inquiry.all.order(:id)
-      when 'area_manager'
-        user.area_setsumeikai_inquiries.order(:id)
-      when 'school_manager'
-        user.school_setsumeikai_inquiries.order(:id)
+      when 'area_manager', 'school_manager'
+        user.all_inquiries.order(:id)
       end
     end
   end

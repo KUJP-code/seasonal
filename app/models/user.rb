@@ -101,6 +101,16 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :lockable, :confirmable
 
   # Public methods
+  def all_inquiries
+    managed_school_ids = area_manager? ? area_schools.ids : managed_schools.ids
+
+    Inquiry.where(
+      'inquiries.school_id IN (?) OR inquiries.setsumeikai_id IN (?)',
+      managed_school_ids,
+      Setsumeikai.where(school_id: managed_school_ids).ids
+    )
+  end
+
   # Checks if User has children
   def children?
     return false if children.empty?
