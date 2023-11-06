@@ -1,7 +1,13 @@
 <main id="setsumeikai_show">
-    <%= link_to t('.index'),
-                setsumeikais_path,
-                class: 'btn btn-primary align-self-start' %>
+    <div class="align-self-start d-flex gap-3">
+        <%= link_to t('.setsumeikai_list'),
+                    setsumeikais_path,
+                    class: 'btn btn-primary' %>
+        
+        <%= link_to t('.inquiry_list'),
+                inquiries_path,
+                class: 'btn btn-primary' %>
+    </div>
 
     <div class="card">
         <h2><%= @setsumeikai.school_date_time %></h2>

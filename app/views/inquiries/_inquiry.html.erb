@@ -1,6 +1,9 @@
+<% setsumeikai = inquiry.setsumeikai %>
+
 <tr>
     <td class="setsumeikai_id">
-        <%= inquiry.setsumeikai.date_time if inquiry.setsumeikai %>
+        <%= link_to setsumeikai.school_date_time,
+                    setsumeikai_path(setsumeikai) if setsumeikai %>
     </td>
     <td class="parent_name">
         <%= inquiry.parent_name %>
@@ -22,9 +25,6 @@
     </td>
     <td class="ele_school">
         <%= inquiry.ele_school %>
-    </td>
-    <td class="planned_school">
-        <%= inquiry.school.name if inquiry.school %>
     </td>
     <td class="start_date">
         <%= inquiry.start_date %>

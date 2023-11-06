@@ -1,4 +1,4 @@
-<table class="table table-hover table-striped text-center">
+<table class="table table-hover table-striped text-center align-self-start">
     <thead>
         <tr class="table-primary">
             <th scope="col"><%= t('.setsumeikai_id') %></th>
@@ -9,7 +9,6 @@
             <th scope="col"><%= t('.child_birthday') %></th>
             <th scope="col"><%= t('.kindy') %></th>
             <th scope="col"><%= t('.ele_school') %></th>
-            <th scope="col"><%= t('.planned_school') %></th>
             <th scope="col"><%= t('.start_date') %></th>
             <th scope="col"><%= t('.referrer') %></th>
             <th scope="col"><%= t('.created_at') %></th>
@@ -81,14 +80,6 @@
                 <div class="form-floating">
                     <%= text_field_tag 'ele_school_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
                     <%= label_tag 'ele_school_filter', t('.filter'), class: 'form-label' %>
-                </div>
-            </th>
-            <th data-controller="filter"
-                data-filter-siblings-value="0"
-                data-filter-col-value=".planned_school">
-                <div class="form-floating">
-                    <%= text_field_tag 'planned_school_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
-                    <%= label_tag 'planned_school_filter', t('.filter'), class: 'form-label' %>
                 </div>
             </th>
             <th data-controller="filter"
