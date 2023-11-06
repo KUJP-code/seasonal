@@ -5,7 +5,7 @@ class Setsumeikai < ApplicationRecord
   belongs_to :school
   has_many :inquiries, dependent: nil
   has_many :setsumeikai_involvements, dependent: :destroy
-  accepts_nested_attributes_for :setsumeikai_involvements
+  accepts_nested_attributes_for :setsumeikai_involvements, allow_destroy: true
   has_many :involved_schools, through: :setsumeikai_involvements
 
   validates :start, :attendance_limit, presence: true

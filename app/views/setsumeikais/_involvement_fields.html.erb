@@ -1,8 +1,21 @@
-<div>
+<div class="fields_wrapper d-flex flex-column gap-1"
+     data-new-record="<%= f.object.new_record? %>">
     <%= f.collection_select :school_id,
                             @schools,
                             :id,
                             :name,
                             {},
                             { class: 'form-select' } %>
+    <% if f.object.new_record? %>
+        <%= button_tag t('.remove_school'),
+                       data: { action: "fields#remove" },
+                       class: 'btn btn-danger' %>
+    <% else %>
+        <div class="form-check">
+            <%= f.check_box :_destroy, class: 'form-check-input' %>
+            <%= f.label :_destroy,
+                        t('.remove_school'),
+                        class: 'form-check-label' %>
+        </div>
+    <% end %>
 </div>
