@@ -29,7 +29,7 @@ class SetsumeikaisController < ApplicationController
 
     if @setsumeikai.save
       redirect_to setsumeikais_path(school: @setsumeikai.school_id),
-                  notice: 'Created setsumeikai'
+                  notice: "Created #{@setsumeikai.start} setsumeikai"
     else
       @schools = policy_scope(School)
       redirect_to setsumeikais_path(school: @setsumeikai.school_id),
@@ -54,7 +54,7 @@ class SetsumeikaisController < ApplicationController
 
   def setsumeikai_params
     params.require(:setsumeikai).permit(
-      :id, :start, :attendance_limit, :school_id, setsumeikai_involvements_attributes: %i[
+      :id, :start, :attendance_limit, :school_id, :release_date, setsumeikai_involvements_attributes: %i[
         id setsumeikai_id school_id _destroy
       ]
     )

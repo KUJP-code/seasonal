@@ -69,5 +69,11 @@
                        class: 'btn btn-info' %>
     </div>
 
+    <div class="form-floating">
+        <%= f.date_field :release_date, class: 'form-control',
+                         required: true %>
+        <%= f.label :release_date, t('.release_date'), class: 'form-label' %>
+    </div>
+
     <%= f.submit class: 'btn btn-primary' %>
 <% end %>

@@ -11,12 +11,13 @@ class Setsumeikai < ApplicationRecord
   has_many :involved_schools, through: :setsumeikai_involvements,
                               source: :school
 
-  validates :start, :attendance_limit, presence: true
+  validates :start, :attendance_limit, :release_date, presence: true
   validates :attendance_limit, comparison: { greater_than: 0 }
   validates :start, comparison: { greater_than: Time.zone.now }
+  validates :release_date, comparison: { less_than: :start }
 
   scope :upcoming, -> { where('start > ?', Time.zone.now) }
-  scope :available, -> { where('attendance_limit > inquiries_count') }
+  scope :available, -> { where('attendance_limit > inquiries_count AND release_date < ?', Time.zone.now) }
 
   def as_json(_options = {})
     {
