@@ -44,6 +44,8 @@ class School < ApplicationRecord
            class_name: 'Setsumeikai',
            inverse_of: :school,
            dependent: nil
+  has_many :setsumeikai_involvements, dependent: :destroy
+  has_many :involved_setsumeikais, through: :setsumeikai_involvements
 
   # Scopes
   scope :real, -> { where.not(id: [1, 2]) }

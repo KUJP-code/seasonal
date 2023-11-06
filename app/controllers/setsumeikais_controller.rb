@@ -50,7 +50,7 @@ class SetsumeikaisController < ApplicationController
 
   def setsumeikai_params
     params.require(:setsumeikai).permit(
-      :id, :start, :attendance_limit, :school_id
+      :id, :start, :attendance_limit, :school_id, setsumeikai_involvements_attributes: %i[id setsumeikai_id school_id]
     )
   end
 

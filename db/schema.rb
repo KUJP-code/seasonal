@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_06_045752) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_06_053918) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -220,6 +220,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_06_045752) do
     t.index ["area_id"], name: "index_schools_on_area_id"
   end
 
+  create_table "setsumeikai_involvements", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.bigint "setsumeikai_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_setsumeikai_involvements_on_school_id"
+    t.index ["setsumeikai_id"], name: "index_setsumeikai_involvements_on_setsumeikai_id"
+  end
+
   create_table "setsumeikais", force: :cascade do |t|
     t.datetime "start"
     t.integer "attendance_limit"
@@ -306,6 +315,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_06_045752) do
   add_foreign_key "registrations", "invoices"
   add_foreign_key "regular_schedules", "children"
   add_foreign_key "schools", "areas"
+  add_foreign_key "setsumeikai_involvements", "schools"
+  add_foreign_key "setsumeikai_involvements", "setsumeikais"
   add_foreign_key "setsumeikais", "schools"
   add_foreign_key "time_slots", "events"
   add_foreign_key "time_slots", "time_slots", column: "morning_slot_id"
