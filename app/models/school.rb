@@ -47,7 +47,8 @@ class School < ApplicationRecord
            dependent: nil
   has_many :setsumeikai_involvements, dependent: :destroy
   has_many :involved_setsumeikais, through: :setsumeikai_involvements,
-                                   source: :setsumeikai
+                                   source: :setsumeikai,
+                                   class_name: 'Setsumeikai'
 
   # Scopes
   scope :real, -> { where.not(id: [1, 2]) }
@@ -55,8 +56,12 @@ class School < ApplicationRecord
   # Validations
   validates :name, presence: true
 
-  def all_inquiries
-    inquiries.or(setsumeikai_inquiries)
+  def all_setsumeikais
+    Setsumeikai.where(
+      'setsumeikais.id IN (?) OR setsumeikais.id IN (?)',
+      setsumeikais.ids,
+      involved_setsumeikais.ids
+    )
   end
 
   def as_json(_options = {})

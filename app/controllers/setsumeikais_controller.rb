@@ -7,7 +7,10 @@ class SetsumeikaisController < ApplicationController
                       admin_index
                     else
                       policy_scope(Setsumeikai).upcoming
-                                               .includes(:involved_schools)
+                                               .includes(
+                                                 :school,
+                                                 :involved_schools
+                                               )
                                                .order(start: :desc)
                                                .page(params[:page])
                     end
@@ -62,6 +65,6 @@ class SetsumeikaisController < ApplicationController
 
   def admin_index
     @school = params[:school] ? School.find(params[:school]) : @schools.first
-    @school.setsumeikais.upcoming.includes(:involved_schools)
+    @school.all_setsumeikais.includes(:school, :involved_schools)
   end
 end

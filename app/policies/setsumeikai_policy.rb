@@ -29,7 +29,7 @@ class SetsumeikaiPolicy < ApplicationPolicy
       when 'admin'
         Setsumeikai.all.includes(:school)
       when 'area_manager'
-        user.area_setsumeikais.includes(:school)
+        user.all_setsumeikais
       when 'school_manager'
         user.school_setsumeikais
       end

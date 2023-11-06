@@ -113,6 +113,22 @@ class User < ApplicationRecord
     )
   end
 
+  def all_setsumeikais
+    managed_school_ids = area_manager? ? area_schools.ids : managed_schools.ids
+    involved_setsumeikai_ids =
+      if area_manager?
+        area_schools.reduce([]) { |arr, s| arr.concat(s.involved_setsumeikais.ids) }
+      else
+        managed_schools.reduce([]) { |arr, s| arr.concat(s.involved_setsumeikais.ids) }
+      end
+
+    Setsumeikai.where(
+      'setsumeikais.school_id IN (?) OR setsumeikais.id IN (?)',
+      managed_school_ids,
+      involved_setsumeikai_ids
+    )
+  end
+
   # Checks if User has children
   def children?
     return false if children.empty?
