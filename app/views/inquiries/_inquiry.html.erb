@@ -24,7 +24,7 @@
         <%= inquiry.ele_school %>
     </td>
     <td class="planned_school">
-        <%= inquiry.planned_school %>
+        <%= inquiry.school.name if inquiry.school %>
     </td>
     <td class="start_date">
         <%= inquiry.start_date %>

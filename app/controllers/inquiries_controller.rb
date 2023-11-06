@@ -7,7 +7,7 @@ class InquiriesController < ApplicationController
     return admin_index if current_user.admin?
 
     @inquiries = policy_scope(Inquiry).order(created_at: :desc)
-                                      .includes(:setsumeikai)
+                                      .includes(:setsumeikai, :school)
                                       .page(params[:page])
   end
 
@@ -64,8 +64,8 @@ class InquiriesController < ApplicationController
   def inquiry_params
     params.require(:inquiry).permit(
       :id, :setsumeikai_id, :parent_name, :phone, :email, :child_name,
-      :referrer, :child_birthday, :kindy, :ele_school, :planned_school,
-      :start_date, :notes, :requests, :category, :school_id
+      :referrer, :child_birthday, :kindy, :ele_school, :start_date, :notes,
+      :requests, :category, :school_id
     )
   end
 
@@ -76,7 +76,7 @@ class InquiriesController < ApplicationController
       'inquiries.school_id = ? OR inquiries.setsumeikai_id IN (?)',
       @school.id,
       @school.setsumeikais.ids
-    )
+    ).includes(:setsumeikai, :school)
   end
 
   def create_html_response

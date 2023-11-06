@@ -38,8 +38,8 @@ class School < ApplicationRecord
   has_many :setsumeikai_inquiries, through: :setsumeikais,
                                    source: :inquiries,
                                    class_name: 'Inquiry'
-  has_many :school_inquiries, class_name: 'Inquiry',
-                              dependent: nil
+  has_many :inquiries, class_name: 'Inquiry',
+                       dependent: nil
   has_many :available_setsumeikais, -> { upcoming.available },
            class_name: 'Setsumeikai',
            inverse_of: :school,
@@ -52,7 +52,7 @@ class School < ApplicationRecord
   validates :name, presence: true
 
   def all_inquiries
-    school_inquiries.or(setsumeikai_inquiries)
+    inquiries.or(setsumeikai_inquiries)
   end
 
   def as_json(_options = {})

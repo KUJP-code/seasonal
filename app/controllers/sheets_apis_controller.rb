@@ -15,7 +15,7 @@ class SheetsApisController < ApplicationController
 
   def inquiries
     school = School.find_by(name: inquiries_params[:schoolName])
-    inquiries = school.setsumeikai_inquiries.where(send_flg: true).includes(:setsumeikai)
+    inquiries = school.inquiries.where(send_flg: true).includes(:setsumeikai)
 
     response = {
       statusCode: 200,

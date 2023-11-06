@@ -16,6 +16,10 @@ class Inquiry < ApplicationRecord
                   '資料' => 4,
                   'その他' => 5
 
+  def setsumeikai_school
+    setsumeikai.school.name
+  end
+
   def to_gas_api
     {
       id: id,
@@ -29,7 +33,7 @@ class Inquiry < ApplicationRecord
       kinder_attend: kindy,
       primary_attend: ele_school,
       start_season: start_date,
-      school_name: planned_school,
+      school_name: setsumeikai_school,
       trigger: referrer,
       age: child_age,
       event_schedule: event_schedule
