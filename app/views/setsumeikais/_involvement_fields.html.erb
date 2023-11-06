@@ -1,0 +1,8 @@
+<div>
+    <%= f.collection_select :school_id,
+                            @schools,
+                            :id,
+                            :name,
+                            {},
+                            { class: 'form-select' } %>
+</div>

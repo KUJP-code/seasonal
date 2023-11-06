@@ -68,15 +68,23 @@
         <% end %>
 
         <template data-fields-target="template">
-            <%= f.fields_for :options, Option.new(optionable_id: @event.id, optionable_type: 'Event', category: :event), child_index: 'CHILD' do |opt_f| %>
+            <%= f.fields_for :options,
+                             Option.new(
+                                optionable_id: @event.id,
+                                optionable_type: 'Event',
+                                category: :event
+                             ),
+                             child_index: 'CHILD' do |opt_f| %>
                 <%= render 'options/opt_fields', f: opt_f %>
             <% end %>
         </template>
 
         <div data-fields-target="target" class="d-none w-100"></div>
-
     </div>
 
-    <%= button_tag 'Add Event Option', type: 'button', data: { action: "fields#add" }, class: 'btn btn-info' %>
+    <%= button_tag 'Add Event Option',
+                    type: 'button',
+                    data: { action: "fields#add" },
+                    class: 'btn btn-info' %>
     <%= f.submit class: 'btn btn-primary' %>
 <% end %>

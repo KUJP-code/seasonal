@@ -1,4 +1,6 @@
-<%= form_with model: @setsumeikai, class: 'card' do |f| %>
+<%= form_with model: @setsumeikai,
+              data: { controller: :fields },
+              html: { class: 'card' } do |f| %>
     <% if @setsumeikai.errors.any? %>
         <div class="errors bg-danger p-2 text-white fw-semibold rounded">
             <h3><%= t('.unable_to_save', setsumeikai: @setsumeikai.date) %></h3>
@@ -41,6 +43,31 @@
                                     { class: 'form-select' } %>
         </div>
     <% end %>
+
+    <div class="d-grid gap-3">
+        <h3><%= t('.involved_schools') %></h3>
+
+        <%= f.fields_for :setsumeikai_involvements do |involvement_f| %>
+            <%= render 'setsumeikais/involvement_fields',
+                       f: involvement_f %>
+        <% end %>
+
+        <template data-fields-target="template">
+            <%= f.fields_for :setsumeikai_involvements,
+                             SetsumeikaiInvolvement.new,
+                             child_index: 'CHILD' do |involvement_f| %>
+                <%= render 'setsumeikais/involvement_fields',
+                           f: involvement_f %>
+            <% end %>
+        </template>
+
+        <div data-fields-target="target" class="d-none w-100"></div>
+
+        <%= button_tag t('.add_school'),
+                type: 'button',
+                data: { action: "fields#add" },
+                class: 'btn btn-info' %>
+    </div>
 
     <%= f.submit class: 'btn btn-primary' %>
 <% end %>
