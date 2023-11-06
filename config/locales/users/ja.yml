@@ -41,6 +41,7 @@ ja:
       failure: "%{name}を作成できませんでした"
       success: "%{name}の作成に成功"
     customer:
+      address: "ご住所"
       children: "生徒"
       edit_info: "登録情報の変更"
       email: "メールアドレス"
