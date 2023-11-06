@@ -3,11 +3,15 @@
 class SetsumeikaisController < ApplicationController
   def index
     @schools = policy_scope(School).order(:id)
-    return admin_index if current_user.admin?
-
-    @setsumeikais = policy_scope(Setsumeikai).upcoming
-                                             .order(start: :desc)
-                                             .page(params[:page])
+    @setsumeikais = if current_user.admin?
+                      admin_index
+                    else
+                      policy_scope(Setsumeikai).upcoming
+                                               .includes(:involved_schools)
+                                               .order(start: :desc)
+                                               .page(params[:page])
+                    end
+    @setsumeikai = Setsumeikai.new
   end
 
   def show
@@ -58,6 +62,6 @@ class SetsumeikaisController < ApplicationController
 
   def admin_index
     @school = params[:school] ? School.find(params[:school]) : @schools.first
-    @setsumeikais = @school.setsumeikais.upcoming
+    @school.setsumeikais.upcoming.includes(:involved_schools)
   end
 end

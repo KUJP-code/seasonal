@@ -12,7 +12,9 @@ class School < ApplicationRecord
 
   has_many :managements, as: :manageable,
                          dependent: :destroy
-  accepts_nested_attributes_for :managements, allow_destroy: true
+  accepts_nested_attributes_for :managements,
+                                allow_destroy: true,
+                                reject_if: :all_blank
   has_many :managers, through: :managements
   has_many :children, dependent: nil
   has_many :invoices, through: :children
@@ -45,7 +47,8 @@ class School < ApplicationRecord
            inverse_of: :school,
            dependent: nil
   has_many :setsumeikai_involvements, dependent: :destroy
-  has_many :involved_setsumeikais, through: :setsumeikai_involvements
+  has_many :involved_setsumeikais, through: :setsumeikai_involvements,
+                                   source: :setsumeikai
 
   # Scopes
   scope :real, -> { where.not(id: [1, 2]) }

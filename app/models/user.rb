@@ -52,7 +52,9 @@ class User < ApplicationRecord
   has_many :children, dependent: nil,
                       foreign_key: :parent_id,
                       inverse_of: :parent
-  accepts_nested_attributes_for :children, allow_destroy: true
+  accepts_nested_attributes_for :children,
+                                allow_destroy: true,
+                                reject_if: :all_blank
   validates_associated :children
   has_many :invoices, through: :children
   has_many :real_invoices, through: :children

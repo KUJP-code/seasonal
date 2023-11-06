@@ -17,6 +17,8 @@
         </nav>
     <% end %>
 
+    <%= render 'setsumeikais/form', setsumeikai: Setsumeikai.new %>
+
     <%= render 'setsumeikais/setsumeikai_table' %>
 
     <%= paginate @setsumeikais, window: 20 unless current_user.admin? %>
