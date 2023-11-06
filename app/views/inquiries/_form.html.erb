@@ -69,11 +69,11 @@
             <%= f.label :ele_school, t('.ele_school'), class: 'form-label' %>
         </div>
         <div class=" w-25">
-            <%= f.label :planned_school, t('.planned_school'),
+            <%= f.label :school_id, t('.planned_school'),
                                          class: 'form-label' %>
-            <%= f.collection_select :planned_school,
+            <%= f.collection_select :school_id,
                                     @schools,
-                                    :name,
+                                    :id,
                                     :name,
                                     {},
                                     { class: 'form-select' } %>
@@ -82,21 +82,28 @@
             <%= f.date_field :start_date, class: 'form-control' %>
             <%= f.label :start_date, t('.start_date'), class: 'form-label' %>
         </div>
+        <div class="d-flex flex-wrap justify-content-evenly gap-3">
+            <%= f.label :referrer,
+                        t('.referrer'),
+                        class: "w-100 fs-6 fw-semibold" %>
+            <%= f.collection_radio_buttons :referrer,
+                                           Inquiry.referrers,
+                                           :first,
+                                           :first %>
+        </div>
     </div>
 
     <div class="form-floating">
         <%= f.text_area :requests,
                 class: 'form-control',
-                placeholder: t('.requests'),
-                required: true %>
+                placeholder: t('.requests') %>
         <%= f.label :requests, t('.requests'), class: 'form-label' %>
     </div>
 
     <div class="form-floating">
         <%= f.text_area :notes,
                 class: 'form-control',
-                placeholder: t('.notes'),
-                required: true %>
+                placeholder: t('.notes') %>
         <%= f.label :notes, t('.notes'), class: 'form-label' %>
     </div>
 
