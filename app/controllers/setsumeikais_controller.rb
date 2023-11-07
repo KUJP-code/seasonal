@@ -2,7 +2,7 @@
 
 class SetsumeikaisController < ApplicationController
   def index
-    @schools = policy_scope(School).order(:id)
+    @schools = School.real.order(:id)
     @setsumeikais = if current_user.admin?
                       admin_index
                     else
@@ -32,7 +32,7 @@ class SetsumeikaisController < ApplicationController
 
     if @setsumeikai.save
       redirect_to setsumeikais_path(school: @setsumeikai.school_id),
-                  notice: "Created #{@setsumeikai.start} setsumeikai"
+                  notice: "Created #{@setsumeikai.school.name} setsumeikai"
     else
       @schools = policy_scope(School)
       redirect_to setsumeikais_path(school: @setsumeikai.school_id),
@@ -49,7 +49,7 @@ class SetsumeikaisController < ApplicationController
     else
       render :edit,
              status: :unprocessable_entity,
-             alert: "Failed to update #{@setsumeikai.school.name} setsumeikai"
+             alert: @setsumeikai.errors.full_messages.join(', ')
     end
   end
 
