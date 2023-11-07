@@ -2,12 +2,15 @@
     <% if current_user.admin? || current_user.area_manager? %>
         <details class="flex-grow-1">
             <summary class="card p-2 bg-primary text-white fw-semibold">
-                <h2>School: <%= @nav[:school].name %></h2>
+                <h2>スクール: <%= @nav[:school].name %></h2>
             </summary>
             <div class="d-flex flex-wrap justify-content-between gap-2 my-2">
                 <%= link_to (current_user.admin? ? "All Schools" : "Area Schools"),
-                charts_path(category: @nav[:category], event: @nav[:event]),
-                class: "card p-2 #{' bg-primary text-white fw-semibold' if @nav[:school].id == 0}" %>
+                            charts_path(
+                                category: @nav[:category],
+                                event: @nav[:event]
+                            ),
+                            class: "card p-2 #{' bg-primary text-white fw-semibold' if @nav[:school].id == 0}" %>
                 <% @nav[:schools].each do |s| %>
                     <%= link_to s.name,
                                 chart_path(id: s.id,
@@ -21,18 +24,18 @@
     
     <details>
         <summary class="card p-2 bg-primary text-white fw-semibold">
-            <h2>Event: <%= @nav[:event] %></h2>
+            <h2>イベント: <%= @nav[:event] %></h2>
         </summary>
         <div class="d-flex flex-column gap-1 my-1">
             <% @nav[:events].each do |e| %>
                 <% if @nav[:school].id.zero? %>
                     <%= link_to e,
-                        charts_path(category: @nav[:category], event: e),
-                        class: "card p-1 #{' bg-primary text-white fw-semibold' if e == @nav[:event]}" %>
+                                charts_path(category: @nav[:category], event: e),
+                                class: "card p-1 #{' bg-primary text-white fw-semibold' if e == @nav[:event]}" %>
                 <% else %>
                     <%= link_to e,
-                        chart_path(id: @nav[:school].id, category: @nav[:category], event: e),
-                        class: "card p-1 #{' bg-primary text-white fw-semibold' if e == @nav[:event]}" %>
+                                chart_path(id: @nav[:school].id, category: @nav[:category], event: e),
+                                class: "card p-1 #{' bg-primary text-white fw-semibold' if e == @nav[:event]}" %>
                 <% end %>
             <% end %>
         </div>
@@ -40,18 +43,18 @@
     
     <details>
         <summary class="card p-2 bg-primary text-white fw-semibold">
-            <h2>Category: <%= @nav[:category].capitalize %></h2>
+            <h2>Category: <%= t(".#{@nav[:category]}") %></h2>
         </summary>
         <div class="d-flex flex-column gap-1 my-1">
             <% @nav[:categories].each do |c| %>
                 <% if @nav[:school].id.zero? %>
-                  <%= link_to c.capitalize,
-                      charts_path(category: c, event: @nav[:event]),
-                      class: "card p-1 #{' bg-primary text-white fw-semibold' if c == @nav[:category]}" %>
+                  <%= link_to t(".#{c}"),
+                              charts_path(category: c, event: @nav[:event]),
+                              class: "card p-1 #{' bg-primary text-white fw-semibold' if c == @nav[:category]}" %>
                 <% else %>
-                  <%= link_to c.capitalize,
-                      chart_path(id: @nav[:school].id, category: c, event: @nav[:event]),
-                      class: "card p-1 #{' bg-primary text-white fw-semibold' if c == @nav[:category]}" %>
+                  <%= link_to t(".#{c}"),
+                              chart_path(id: @nav[:school].id, category: c, event: @nav[:event]),
+                              class: "card p-1 #{' bg-primary text-white fw-semibold' if c == @nav[:category]}" %>
                 <% end %>
             <% end %>
         </div>

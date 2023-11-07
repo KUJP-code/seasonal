@@ -3,25 +3,25 @@
         <h2 class="fw-semibold text-primary">
             <%= @children.select { |c| c.category == 'internal' }.size %>
         </h2>
-        <p>Internal Children</p>
+        <p class="fs-5">通学生人数</p>
     </div>
     <div class="d-flex flex-column">
         <h2 class="fw-semibold text-primary">
             <%= @children.select { |c| c.category == 'reservation' }.size %>
         </h2>
-        <p>Reservation Children</p>
+        <p class="fs-5">予約生人数</p>
     </div>
     <div class="d-flex flex-column">
         <h2 class="fw-semibold text-primary">
             <%= @children.select { |c| c.category == 'external' }.size %>
         </h2>
-        <p>External Children</p>
+        <p class="fs-5">非会員人数</p>
     </div>
     <div class="d-flex flex-column">
         <h2 class="fw-semibold text-primary">
             <%= @children.size %>
         </h2>
-        <p>Total Children</p>
+        <p class="fs-5">合計人数</p>
     </div>
 </div>
 
@@ -56,10 +56,10 @@
 <table class="table table-striped table-hover text-center">
     <thead class="table-primary">
         <tr>
-            <th>Name</th>
-            <th>En Name</th>
+            <th>名前</th>
+            <th>名前(ローマ字)</th>
             <th>Registrations</th>
-            <th>Total Spent</th>
+            <th>合計</th>
         </tr>
     </thead>
         

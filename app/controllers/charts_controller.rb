@@ -170,7 +170,7 @@ class ChartsController < ApplicationController
     if action == 'show'
       authorize(School.find(params[:id]))
     else
-      School.new(id: 0, name: 'All Schools')
+      current_user.admin? ? School.new(id: 0, name: 'All Schools') : School.new(id: 0, name: 'Area Schools')
     end
   end
 
