@@ -12,13 +12,21 @@
 
     <div class="d-flex flex-wrap justify-content-evenly align-items-center gap-5">
         <div class=" w-25">
+            <%= f.label :category, t('.category'),
+                                   class: 'form-label' %>
+            <%= f.select :category,
+                         [%w[Setsumeikai R], %w[General I], %w[Call C]],
+                         {},
+                         { class: 'form-select' } %>
+        </div>
+        <div class="w-25">
             <%= f.label :setsumeikai_id, t('.setsumeikai'),
                                          class: 'form-label' %>
             <%= f.collection_select :setsumeikai_id,
                                     @setsumeikais,
                                     :id,
                                     :school_date_time,
-                                    {},
+                                    { prompt: 'Select a setsumeikai if applicable' },
                                     { class: 'form-select' } %>
         </div>
         <div class="form-floating w-25">
@@ -69,14 +77,14 @@
             <%= f.label :ele_school, t('.ele_school'), class: 'form-label' %>
         </div>
         <div class=" w-25">
-            <%= f.label :school_id, t('.planned_school'),
+            <%= f.label :school_id, t('.school'),
                                          class: 'form-label' %>
             <%= f.collection_select :school_id,
                                     @schools,
                                     :id,
                                     :name,
                                     {},
-                                    { class: 'form-select' } %>
+                                    { class: 'form-select', required: true } %>
         </div>
         <div class="form-floating w-25">
             <%= f.date_field :start_date, class: 'form-control' %>
