@@ -9,7 +9,7 @@ class ApplicationMailer < ActionMailer::Base
   after_action :prevent_delivery_if_recipient_opted_out, if: :should_unsubscribe?
 
   default from: 'bookings@kids-up.app'
-  layout 'mailer'
+  layout 'mailer', except: %i[inquiry setsu_inquiry]
 
   private
 

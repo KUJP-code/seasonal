@@ -132,7 +132,7 @@ RSpec.describe School do
     end
 
     it 'old manager knows its been removed as manager' do
-      old_sm = managed_school.managers.first
+      old_sm = managed_school.manager
       managed_school.managers = [new_sm]
       old_sm_areas = old_sm.managed_schools
       expect(old_sm_areas).not_to include(managed_school)

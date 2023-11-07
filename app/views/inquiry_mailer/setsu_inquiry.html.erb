@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+    <html lang="ja">
+    <head>
+        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    </head>
+    <body>
+        <h3>ホームページに説明会の予約が入りました。</h3>
+
+        ------------------------------
+        <h4>お客様情報</h4>
+        ------------------------------
+        <p>お問い合わせ日時: <%= @inquiry.created_at.strftime('%Y年%m月%d日 %H:%M') %></p>
+        <p>保育園 幼稚園名と在園状況 : <%= @inquiry.kindy %></p>
+        <p>小学校名と在学状況 : <%= @inquiry.ele_school %></p>
+        ------------------------------
+        <h4>申込内容</h4>
+        ------------------------------
+        <p>通学をご検討中のスクール: KidsUP<%= @school.name %>校</p>
+        <p>説明会場 : KidsUP<%= @venue.name %>校</p>
+        <p>参加日時: <%= @setsumeikai.start.strftime('%Y年%m月%d日 %H:%M') %></p>
+
+        ------------------------------
+        <h4>お問い合わせ内容</h4>
+        ------------------------------
+        <p>【説明会へのご参加】</p>
+        <p><%= @inquiry.requests %></p>
+        <br>
+        <br>
+        <br>
+        ------------------------------
+        <p>KidsUP(キッズアップ) お客様サポート</p>
+        <p>(TEL) 0120-378-056</p>
+        <p>メールアドレス: hq@kids-up.jp</p>
+        <p>ホームページ: <%= link_to "https://kids-up.jp", "https://kids-up.jp" %></p>
+        <p>住所: 〒120-0034</p>
+        <p>東京都足立区千住1丁目4番1号 東京芸術センター11F</p>
+        <p>営業時間: 10時00分~20時00分</p>
+    </body>
+</html>

@@ -15,7 +15,7 @@
     <p>このメールは自動配信の為、返信することはできません。</p>
     <p>ご不明な点がございましたら、下記のスクールまでお問い合わせください。</p>
     <p><%= @parent.children.first.school.name %></p>
-    <p><%= "Email: #{@parent.children.first.school.managers.first.email}" %></p>
+    <p><%= "Email: #{@parent.children.first.school.manager.email}" %></p>
     <p><%= "Tel: #{@parent.children.first.school.phone}" %></p>
     <%= image_tag "https://kids-up.app/images/logo_gif.gif" %>
     <p>株式会社Kids-UP</p>

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Sends an invoice update notification to the parent and SM
 class InvoiceMailer < ApplicationMailer
   def confirmation_notif
     @invoice = params[:invoice]
@@ -20,7 +19,7 @@ class InvoiceMailer < ApplicationMailer
 
   def sm_updated_notif
     set_shared_vars
-    @sm = @invoice.school.managers.first || User.new(name: 'Leroy', email: 'h-leroy@kids-up.jp')
+    @sm = @invoice.school.manager || User.new(name: 'Leroy', email: 'h-leroy@kids-up.jp')
     mail(to: @sm.email, subject: t('.invoice_updated'))
   end
 end

@@ -16,6 +16,9 @@ class Inquiry < ApplicationRecord
                   '資料' => 4,
                   'その他' => 5
 
+  scope :setsumeikai, -> { where(category: 'R') }
+  scope :general, -> { where(category: 'I') }
+
   def setsumeikai_school
     setsumeikai.school.name
   end
@@ -40,6 +43,10 @@ class Inquiry < ApplicationRecord
     }
   end
 
+  def child_age
+    YEAR_AGE_MAP[Time.zone.now.year - child_birthday.year] || ''
+  end
+
   def to_gas_update
     {
       category: CATEGORY_MAP[category],
@@ -49,10 +56,6 @@ class Inquiry < ApplicationRecord
   end
 
   private
-
-  def child_age
-    YEAR_AGE_MAP[Time.zone.now.year - child_birthday.year] || ''
-  end
 
   def event_schedule
     {

@@ -100,6 +100,12 @@ class School < ApplicationRecord
     self.image = ActiveStorage::Blob.find(image_id)
   end
 
+  # I want to keep the possibility of multiple managers per school open,
+  # since mine has 2. But school.managers.first is annoying/ugly
+  def manager
+    managers.first
+  end
+
   def next_event
     upcoming_events.first
   end

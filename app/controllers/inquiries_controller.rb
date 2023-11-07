@@ -89,9 +89,18 @@ class InquiriesController < ApplicationController
 
   def create_json_response
     if @inquiry.save
+      send_mail(@inquiry)
       render json: { status: 200 }
     else
       render json: { status: 500 }
+    end
+  end
+
+  def send_mail(inquiry)
+    if inquiry.category == 'R'
+      InquiryMailer.with(inquiry: @inquiry).setsu_inquiry.deliver_now
+    else
+      InquiryMailer.with(inquiry: @inquiry).inquiry.deliver_now
     end
   end
 end
