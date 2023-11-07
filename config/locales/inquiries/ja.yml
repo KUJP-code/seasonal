@@ -1,0 +1,15 @@
+ja:
+  inquiries:
+    inquiry:
+      delete: "消去"
+      edit: "編集"
+    inquiry_table:
+      child_birthday: "生年月日"
+      child_name: "生徒"
+      delete: "消去"
+      edit: "編集"
+      ele_school: "小学校名"
+      email: "メールアドレス"
+      kindy: "幼稚園名"
+      parent_name: "保護者名"
+      phone: "携帯電話番号"

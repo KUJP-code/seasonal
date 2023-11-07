@@ -20,7 +20,7 @@
                         class: 'btn btn-primary' %>
 
             <%= link_to t('.add_inquiry'),
-                        new_inquiry_path,
+                        new_inquiry_path(setsu_id: @setsumeikai.id),
                         class: 'btn btn-primary' %>
         </div>
     </div>

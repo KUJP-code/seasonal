@@ -1,7 +1,9 @@
 <main id="setsumeikai_index" class="d-flex flex-col justify-content-start align-items-center gap-5">
-    <%= link_to t('.inquiries'),
+    <%= link_to t('.view_inquiries'),
                 inquiries_path,
-                class: 'btn btn-primary' %>
+                class: 'btn btn-primary align-self-start' %>
+    
+    <h1><%= t('.setsumeikais') %></h1>
 
     <%= paginate @setsumeikais, window: 20 unless current_user.admin? %>
 

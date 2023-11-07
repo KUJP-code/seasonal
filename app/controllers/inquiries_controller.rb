@@ -12,7 +12,7 @@ class InquiriesController < ApplicationController
   end
 
   def new
-    @inquiry = Inquiry.new
+    @inquiry = Inquiry.new(setsumeikai_id: params[:setsu_id])
     @setsumeikais = policy_scope(Setsumeikai).upcoming
                                              .order(start: :asc)
                                              .includes(:school)
