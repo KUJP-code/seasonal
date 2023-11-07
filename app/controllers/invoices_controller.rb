@@ -19,6 +19,7 @@ class InvoicesController < ApplicationController
     @invoice = Invoice.new(invoice_params)
 
     if @invoice.save
+      send_emails(@invoice) unless current_user.admin?
       redirect_to invoice_path(@invoice, updated: true),
                   notice: t('success', model: 'お申込', action: '追加')
     else
@@ -175,8 +176,12 @@ class InvoicesController < ApplicationController
       # FIXME: bandaid to cover for the fact that some callbacks don't
       # update the summary (adjustments, option registrations)
       @invoice.reload.calc_cost && @invoice.save
+      # Only send emails on customer updates or staff confirmations
       send_emails(@invoice) if current_user.customer? || @invoice.email_sent
-      redirect_to invoice_path(id: @invoice.id, updated: true), notice: t('success', model: 'お申込', action: '更新')
+      redirect_to invoice_path(
+        id: @invoice.id,
+        updated: true
+      ), notice: t('success', model: 'お申込', action: '更新')
     else
       redirect_to event_path(id: @invoice.event_id, child: @invoice.child_id),
                   status: :unprocessable_entity,
@@ -217,16 +222,28 @@ class InvoicesController < ApplicationController
   end
 
   def send_emails(invoice)
-    # Send the confirmation email when in_ss is set to true
-    # otherwise notify user and SM the booking has been modified
     if invoice_params['in_ss'] == 'true'
-      InvoiceMailer.with(invoice: invoice, user: invoice.child.parent).confirmation_notif.deliver_now
-    else
-      unless current_user.admin?
-        InvoiceMailer.with(invoice: invoice, user: invoice.child.parent).updated_notif.deliver_now
-        InvoiceMailer.with(invoice: invoice, user: invoice.school.managers.first).sm_updated_notif.deliver_now
-      end
+      InvoiceMailer.with(
+        invoice: invoice,
+        user: invoice.child.parent
+      ).confirmation_notif.deliver_now
     end
+
+    return if current_user.admin?
+
+    send_update_emails(invoice)
+  end
+
+  def send_update_emails(invoice)
+    InvoiceMailer.with(
+      invoice: invoice,
+      user: invoice.child.parent
+    ).updated_notif.deliver_now
+
+    InvoiceMailer.with(
+      invoice: invoice,
+      user: invoice.school.manager
+    ).sm_updated_notif.deliver_now
   end
 
   def status_update
