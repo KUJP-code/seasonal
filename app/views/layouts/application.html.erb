@@ -43,11 +43,7 @@
 
               <%= link_to 'Stats',
                           charts_path,
-                          class: 'nav-link' if current_user.admin? || current_user.area_manager? %>
-
-              <%= link_to 'Stats', 
-                          chart_path(current_user.managed_schools.first.id),
-                          class: 'nav-link' if current_user.school_manager? %>
+                          class: 'nav-link' if current_user.admin? %>
 
               <%= link_to 'お申込内容',
                           invoices_path(user: current_user.id),

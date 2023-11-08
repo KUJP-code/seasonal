@@ -4,6 +4,20 @@
         <h4>Area Manager</h4>
     </div>
 
+    <div class="card flex-row flex-wrap justify-content-between gap-3">
+        <%= link_to t('.stats'), 
+                    charts_path,
+                    class: 'btn btn-primary flex-grow-1' %>
+        
+        <%= link_to t('.manage_setsumeikais'),
+                    setsumeikais_path,
+                    class: 'btn btn-primary flex-grow-1' %>
+
+        <%= link_to t('.manage_inquiries'),
+                    inquiries_path,
+                    class: 'btn btn-primary flex-grow-1' %>
+    </div>
+
     <% @managed_areas.each do |area| %>
         <% next if area.upcoming_events.empty? %>
 
