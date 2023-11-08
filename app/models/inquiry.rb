@@ -19,10 +19,6 @@ class Inquiry < ApplicationRecord
   scope :setsumeikai, -> { where(category: 'R') }
   scope :general, -> { where(category: 'I') }
 
-  def setsumeikai_school
-    setsumeikai.school.name
-  end
-
   def to_gas_api
     {
       id: id,
@@ -43,6 +39,12 @@ class Inquiry < ApplicationRecord
     }
   end
 
+  def setsumeikai_school
+    return '' unless setsumeikai
+
+    setsumeikai.school.name
+  end
+
   def child_age
     YEAR_AGE_MAP[Time.zone.now.year - child_birthday.year] || ''
   end
@@ -58,6 +60,8 @@ class Inquiry < ApplicationRecord
   private
 
   def event_schedule
+    return { date: '', time: '' } unless setsumeikai
+
     {
       date: setsumeikai.start.strftime('%Y-%m-%d'),
       time: setsumeikai.start.strftime('%H:%M')
