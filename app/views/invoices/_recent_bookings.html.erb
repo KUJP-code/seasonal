@@ -17,7 +17,7 @@
                         <td>
                             <%= link_to i.child.name, child_path(i.child_id) %>
                         </td>
-                        <td><%= i.slot_regs.size %></td>
+                        <td><%= i.registrations.size %></td>
                         <td>
                             <%= link_to number_to_currency(
                                     i.total_cost,
