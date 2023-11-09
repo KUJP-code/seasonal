@@ -31,7 +31,7 @@
 
     <% if current_user.school_manager? %>
         <%= f.hidden_field :school_id,
-                           value: current_user.managed_schools.first.id %>
+                           value: current_user.managed_school.id %>
     <% else %>
         <div class="d-flex align-items-center gap-3">
             <%= f.label :school_id, t('.school'), class: 'form-label' %>

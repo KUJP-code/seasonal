@@ -136,6 +136,10 @@ class User < ApplicationRecord
     true
   end
 
+  def managed_school
+    managed_schools.first
+  end
+
   # Checks if User is a member of staff
   def staff?
     admin? || area_manager? || school_manager?

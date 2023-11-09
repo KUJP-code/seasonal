@@ -5,7 +5,7 @@
     
     <div class="card flex-row flex-wrap justify-content-between gap-3">
         <%= link_to t('.stats'), 
-                    chart_path(current_user.managed_schools.first.id),
+                    chart_path(@user.managed_school.id),
                     class: 'btn btn-primary flex-grow-1' %>
         
         <%# <%= link_to t('.manage_setsumeikais'),

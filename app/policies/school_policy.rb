@@ -4,7 +4,7 @@
 class SchoolPolicy < ApplicationPolicy
   def show?
     user.admin? ||
-      (user.school_manager? && user.managed_schools.ids.include?(record.id))
+      (user.school_manager? && user.managed_school.id == record.id)
   end
 
   def new?

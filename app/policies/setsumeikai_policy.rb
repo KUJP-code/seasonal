@@ -39,6 +39,6 @@ class SetsumeikaiPolicy < ApplicationPolicy
   def admin_am_or_managed_school?
     user.admin? ||
       user.area_manager? ||
-      (user.school_manager? && user.managed_schools.ids.include?(record.school_id))
+      (user.school_manager? && user.managed_school.id == record.school_id)
   end
 end

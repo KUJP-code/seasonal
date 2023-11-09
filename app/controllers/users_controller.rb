@@ -223,7 +223,7 @@ class UsersController < ApplicationController
   end
 
   def school_manager_data(user)
-    @school = user.managed_schools.first
+    @school = user.managed_school
     @upcoming_events = @school.upcoming_events.includes(
       :children, :invoices, :time_slots
     )
