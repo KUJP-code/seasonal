@@ -15,7 +15,11 @@
             <%= f.label :category, t('.category'),
                                    class: 'form-label' %>
             <%= f.select :category,
-                         [%w[Setsumeikai R], %w[General I], %w[Call C]],
+                         [
+                            %w[説明会のお問い合わせ R],
+                            %w[全般お問い合わせ I],
+                            %w[コールセンターへのお問合せ C]
+                         ],
                          {},
                          { class: 'form-select' } %>
         </div>
@@ -26,7 +30,7 @@
                                     @setsumeikais,
                                     :id,
                                     :school_date_time,
-                                    { prompt: 'Select a setsumeikai if applicable' },
+                                    { prompt: '説明会について' },
                                     { class: 'form-select' } %>
         </div>
         <div class="form-floating w-25">

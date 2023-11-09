@@ -1,5 +1,23 @@
 ja:
   inquiries:
+    form:
+      child_birthday: "生年月日"
+      category: "カテゴリー"
+      child_name: "子供"
+      ele_school: "小学校名と在学状況"
+      email: "メールアドレス"
+      kindy: "保育園・幼稚園名と在園状況"
+      notes: "メモ"
+      parent_name: "保護者名"
+      phone: "携帯電話番号"
+      referrer: "きっかけ"
+      requests: "リクエスト"
+      school: "スクール"
+      setsumeikai: "説明会"
+      start_date: "入会"
+    index:
+      create_inquiry: "お問い合わせ"
+      setsumeikai_list: "説明会リスト"
     inquiry:
       delete: "消去"
       edit: "編集"
@@ -11,6 +29,15 @@ ja:
       ele_school: "小学校名"
       email: "メールアドレス"
       filter: "フィルター"
+      created_at: "問い合わせ日"
       kindy: "幼稚園名"
+      notes: "メモ"
       parent_name: "保護者名"
       phone: "携帯電話番号"
+      referrer: "きっかけ"
+      requests: "リクエスト"
+      setsumeikai_id: "説明会"
+      start_date: "入会"
+    new:
+      inquiries: "問い合わせリスト"
+      setsumeikais: "説明会リスト"
