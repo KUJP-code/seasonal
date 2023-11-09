@@ -27,10 +27,10 @@
 
 <div class="w-100 d-flex">
     <%= pie_chart @children.group(:grade).count,
-                  title: 'Attendees by Grade',
+                  title: t('.attendees_by_grade'),
                   height: '50dvh' %>
     <%= pie_chart @children.group(:category).count,
-                  title: 'Attendees by Category',
+                  title: t('.attendees_by_category'),
                   height: '50dvh' %>
 </div>
 
@@ -58,7 +58,7 @@
         <tr>
             <th>名前</th>
             <th>名前(ローマ字)</th>
-            <th>Registrations</th>
+            <th><%= t(".registrations") %></th>
             <th>合計</th>
         </tr>
     </thead>
@@ -80,13 +80,13 @@
 </table>
 
 <% unless @nav[:school].id.zero? %>
-    <h1>Hat Kids</h1>
+    <h1><%= t(".hat_kids") %></h1>
 
     <table class="table table-striped table-hover text-center">
         <thead class="table-primary">
             <tr>
-                <th>Name</th>
-                <th>En Name</th>
+                <th><%= t('.name') %></th>
+                <th><%= t('.en_name') %></th>
             </tr>
         </thead>
 

@@ -4,7 +4,7 @@
         <h2 class="fw-semibold text-primary">
             <%= photo_regs %>
         </h2>
-        <p>Photo Service Registrations</p>
+        <p><%= t(".photo_regs") %></p>
     </div>
     <div class="d-flex flex-column">
         <h2 class="fw-semibold text-primary">
@@ -13,7 +13,7 @@
                         precision: 0,
                         locale: :ja) %>
         </h2>
-        <p>Photo Service Revenue</p>
+        <p><%= t(".photo_revenue") %></p>
     </div>
 </div>
 
@@ -23,7 +23,7 @@
                        .except("なし")
                        .to_h { |k, v| [k.capitalize, v] }
                        .sort_by { |_k, v| v }.reverse,
-                 title: "Category Popularity",
+                 title: t(".category_popularity"),
                  height: "50vh" %>
 
 <%= column_chart @all_opts
@@ -32,7 +32,7 @@
                        .except("なし")
                        .to_h { |k, v| [k.capitalize, v] }
                        .sort_by { |_k, v| v }.reverse,
-                 title: "Category Revenue",
+                 title: t(".category_revenue"),
                  suffix: "円",
                  height: "50vh" %>
 
@@ -41,7 +41,7 @@
                        .count("options.name")
                        .except("なし")
                        .sort_by { |_k, v| v }.reverse,
-                 title: "Option Popularity",
+                 title: t(".option_popularity"),
                  height: "50vh" %>
 
 <%= column_chart @all_opts
@@ -49,17 +49,17 @@
                        .sum("options.cost")
                        .except("なし")
                        .sort_by { |_k, v| v }.reverse,
-                 title: "Option Revenue",
+                 title: t(".option_revenue"),
                  suffix: "円",
                  height: "50vh" %>
 
 <div class="w-100 d-flex">
     <%= pie_chart @arrive_opts,
-                  title: "Arrival Option Popularity",
+                  title: t(".arrival_option_popularity"),
                   legend: "left",
                   height: "50vh" %>
     <%= pie_chart @depart_opts,
-                  title: "Departure Option Popularity",
+                  title: t(".departure_option_popularity"),
                   legend: "left",
                   height: "50vh" %>
 </div>

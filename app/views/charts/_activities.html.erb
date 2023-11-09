@@ -1,9 +1,9 @@
 <%= column_chart @activities.sort_by { |_k, v| v }.reverse,
-                 title: "Popularity",
+                 title: t('.popularity'),
                  height: "50vh" %>
 
 <%= column_chart @afternoons.sort_by { |_k, v| v }.reverse,
-                title: "Afternoon Spot Use",
+                title: t('.afternoon_popularity'),
                 height: "50vh" %>
 
 <div class="w-100 d-flex justify-content-around gap-5">
@@ -18,7 +18,7 @@
                     locale: :ja
                     ) %>
             </h2>
-            <p>Snack Revenue</p>
+            <p><%= t('.snack_revenue') %></p>
         </div>
         <div class="d-flex flex-column">
             <h2 class="fw-semibold text-primary">
@@ -29,7 +29,7 @@
                     locale: :ja
                     ) %>
             </h2>
-            <p>Extra Cost Revenue</p>
+            <p><%= t('.extra_cost_revenue') %></p>
         </div>
     </div>
 
@@ -37,7 +37,7 @@
         "Morning" => @activities.reduce(0) { |sum, a| sum + a[1] },
         "Afternoon" => @afternoons.reduce(0) { |sum, a| sum + a[1] }
     } %>
-    <%= pie_chart morn_aft, title: "Session Popularity", height: "50vh" %>
+    <%= pie_chart morn_aft, title: t(".session_popularity"), height: "50vh" %>
     
     <% by_category = @slots.reduce({}) do |hash, s|
                         if hash.include?(s.category)
@@ -48,6 +48,7 @@
                             hash
                         end
                     end %>
-    <%= pie_chart by_category, title: "Category Popularity", height: "50vh" %>
+    <%= pie_chart by_category, title: t(".category_popularity"),
+                               height: "50vh" %>
 </div>
 

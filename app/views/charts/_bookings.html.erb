@@ -10,7 +10,7 @@
                         locale: :ja) %>
             <% end %>
         </h2>
-        <p>Average Booking Cost</p>
+        <p><%= t(".avg_booking_cost") %></p>
     </div>
     <div class="d-flex flex-column">
         <h2 class="fw-semibold text-primary">
@@ -20,25 +20,25 @@
                 <%= (@regs.size.to_f / @invoices.size).round(2) %>
             <% end %>
         </h2>
-        <p>Activities per Booking</p>
+        <p><%= t(".activities_per_booking") %></p>
     </div>
 </div>
 
 <div class="w-100 d-flex">
     <%= line_chart @invoices.group_by_day(:created_at).count,
-                   title: "Daily New Bookings",
+                   title: t(".daily_new_bookings"),
                    height: "50vh" %>
     <%= line_chart @invoices.group_by_week(:created_at).count,
-                   title: "Weekly New Bookings",
+                   title: t(".weekly_new_bookings"),
                    height: "50vh" %>
 </div>
 
 <div class="w-100 d-flex">
     <%= line_chart @regs.group_by_day(:created_at).count,
-                   title: "Daily Activity Registrations",
+                   title: t(".daily_activity_registrations"),
                    height: "50vh" %>
     <%= line_chart @regs.group_by_week(:created_at).count,
-                   title: "Weekly Activity Registrations",
+                   title: t(".weekly_activity_registrations"),
                    height: "50vh" %>
 </div>
     
@@ -46,13 +46,13 @@
     <%= line_chart @invoices
                         .group_by_day(:created_at)
                         .sum(:total_cost),
-                title: "Daily Revenue",
-                suffix: "円",
-                height: "50vh" %>
+                   title: t(".daily_revenue"),
+                   suffix: "円",
+                   height: "50vh" %>
     <%= line_chart @invoices
                         .group_by_week(:created_at)
                         .sum(:total_cost),
-                   title: "Weekly Revenue",
+                   title: t(".weekly_revenue"),
                    suffix: "円",
                    height: "50vh" %>
 </div>
@@ -61,11 +61,11 @@
     <%= column_chart @regs
                           .group_by_day_of_week(:created_at, format: '%A')
                           .count,
-                     title: 'Registrations by Day of the Week',
+                     title: t(".day_of_week_regs"),
                      height: '50vh' %>
 
     <%= column_chart @regs.group_by_hour_of_day(:created_at).count,
-                     title: 'Registrations by Hour of Day',
+                     title: t(".hour_of_day_regs"),
                      height: '50vh' %>
 </div>
 
@@ -76,7 +76,7 @@
                           .to_h { |k, v| [@school_hash[k], v] }
                           .sort_by { |_k, v| v}
                           .reverse, 
-                     title: 'Average Booking Cost by School',
+                     title: t(".avg_booking_per_school"),
                      round: 0,
                      suffix: "円",
                      height: '50vh' %>

@@ -1,4 +1,51 @@
 ja:
   charts:
+    activities:
+      afternoon_popularity: "午後のアテンダンス（各アクティビティ）"
+      category_popularity: "カテゴリー別人気度"
+      extra_cost_revenue: "追加収益（スペシャルデイからの追加分）"
+      popularity: "人気度（アクティビティ）"
+      session_popularity: "セッション人気度"
+      snack_revenue: "スナック収益"
+    bookings:
+      activities_per_booking: "予約に対するアクティビティ数"
+      avg_booking_cost: "平均予約コスト"
+      avg_booking_per_school: "スクール別予約金額平均"
+      daily_activity_registrations: "アクティビティ予約数（デイリー）"
+      daily_new_bookings: "新しい予約数（デイリー）"
+      daily_revenue: "日別収益"
+      day_of_week_regs: "曜日別予約数"
+      hour_of_day_regs: "時間別予約数"
+      weekly_activity_registrations: "アクティビティ予約数（ウィークリー）"
+      weekly_new_bookings: "新しい予約数（ウィークリー）"
+      weekly_revenue: "週別収益"
+    children:
+      attendees_by_category: "カテゴリー別参加率"
+      attendees_by_grade: "学年別参加率"
+      en_name: "お子様の名前（英語）"
+      hat_kids: "帽子を必要とする子供たち"
+      name: "お子様の氏名（漢字）"
+      registrations: "予約数（アクティビティ数/追加オプション）"
+    coupons:
+      coupon_popularity: "クーポン種類"
+      daily_coupon_use: "クーポン使用数（デイリー）"
+    edits:
+      customer_edits_by_day: "日々の予約変更"
+      staff_edits_by_day: "日々の予約編集"
+    options:
+      arrival_option_popularity: "入室時間別"
+      category_popularity: "カテゴリー別予約数"
+      category_revenue: "カテゴリー別収益"
+      departure_option_popularity: "退室時間別"
+      option_popularity: "オプション別予約数"
+      option_revenue: "オプション別収益"
+      photo_regs: "フォトサービス予約数"
+      photo_revenue: "フォトサービス収益"
     nav:
+      activities: "開催日"
+      bookings: "お申込内容"
+      category: "カテゴリー"
+      children: "生徒"
       coupons: "クーポン"
+      edits: "変更"
+      options: "オプション"

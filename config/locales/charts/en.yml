@@ -1,0 +1,37 @@
+en:
+  charts:
+    activities:
+      afternoon_popularity: "Afternoon Popularity"
+      category_popularity: "Category Popularity"
+      popularity: "Activity Popularity"
+      session_popularity: "Session Popularity"
+    bookings:
+      activities_per_booking: "Avg Activities per Booking"
+      avg_booking_cost: "Avg Booking Cost"
+      avg_booking_per_school: "Average Booking Cost per School"
+      daily_activity_registrations: "Daily Activity Registrations"
+      daily_new_bookings: "Daily Bookings"
+      daily_revenue: "Daily Revenue"
+      day_of_week_regs: "Registrations by Day of Week"
+      hour_of_day_regs: "Registrations by Hour of Day"
+      weekly_activity_registrations: "Weekly Activity Registrations"
+      weekly_new_bookings: "Weekly New Bookings"
+      weekly_revenue: "Weekly Revenue"
+    children:
+      attendees_by_category: "Attendees by Category"
+      attendees_by_grade: "Attendees by Grade"
+    coupons:
+      coupon_popularity: "Coupon Popularity"
+      daily_coupon_use: "Daily Coupon Use"
+    edits:
+      customer_edits_by_day: "Customer Edits by Day"
+      staff_edits_by_day: "Staff Edits by Day"
+    options:
+      arrival_option_popularity: "Arrival Option Popularity"
+      category_popularity: "Category Popularity"
+      category_revenue: "Category Revenue"
+      departure_option_popularity: "Departure Option Popularity"
+      option_popularity: "Option Popularity"
+      option_revenue: "Option Revenue"
+      photo_regs: "Photo Registrations"
+      photo_revenue: "Photo Revenue"

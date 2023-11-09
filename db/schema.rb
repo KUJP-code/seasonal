@@ -232,10 +232,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_08_062411) do
   create_table "setsumeikais", force: :cascade do |t|
     t.datetime "start"
     t.integer "attendance_limit"
+    t.integer "inquiries_count", default: 0
     t.bigint "school_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "inquiries_count"
     t.date "release_date"
     t.index ["school_id"], name: "index_setsumeikais_on_school_id"
   end

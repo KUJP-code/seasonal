@@ -15,7 +15,7 @@ ja:
     add_child:
       add_new_child: "新しいお子様の情報を追加する"
       back: "戻る"
-      bday: 誕生日
+      bday: "誕生日"
       claim_child: "追加する"
       en_name: "名前(ローマ字)"
       first_seasonal: "初めてのご参加ですか？"
@@ -33,8 +33,11 @@ ja:
       goal_revenue: "必達"
       int_kids: "会員生人数"
       int_res_revenue: "会員生生売り上げ"
+      manage_inquiries: "問い合わせフォーム確認・編集"
+      manage_setsumeikais: "説明会追加・編集"
       res_kids: "予約生人数"
       photo_sales: "フォトサービス売り上げ"
+      stats: "統計"
       total_kids: "合計人数"
       total_revenue: "合計売上"
     create:
@@ -100,6 +103,9 @@ ja:
       to_ssid: "反映する生徒情報のSSID"
     school_manager:
       greet: "Hello、%{user} School Manager!"
+      manage_inquiries: "問い合わせフォーム確認・編集"
+      manage_setsumeikais: "説明会追加・編集"
+      stats: "統計"
     show:
       attendance: "アテンダンス"
       delete: "削除"
