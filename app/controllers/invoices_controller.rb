@@ -9,7 +9,7 @@ class InvoicesController < ApplicationController
 
   def show
     @invoice = authorize(Invoice.find(params[:id]))
-    @updated = true if params[:updated]
+    show_banner_and_survey if params[:updated]
     @previous_versions = @invoice.versions.where.not(object: nil)
                                  .reorder(created_at: :desc)
                                  .reject { |v| v.reify.total_cost.zero? }
@@ -244,6 +244,12 @@ class InvoicesController < ApplicationController
       invoice: invoice,
       user: invoice.school.manager
     ).sm_updated_notif.deliver_now
+  end
+
+  def show_banner_and_survey
+    @updated = true
+    @surveys = Survey.where(active: true)
+                     .select { |s| s.criteria_match?(@invoice.child) }
   end
 
   def status_update

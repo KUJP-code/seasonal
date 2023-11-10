@@ -16,6 +16,12 @@
       </div>
     <% end %>
 
+    <% if @surveys %>
+        <% @surveys.each do |s| %>
+            <%= render s %>
+        <% end %>
+    <% end %>
+
     <h1><%= link_to @invoice.child.name, child_path(@invoice.child_id) %></h1>
 
     <% unless @previous_versions.empty? %>
