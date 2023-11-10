@@ -1,0 +1,9 @@
+<div class="form-check d-flex justify-content-center align-items-center gap-2">
+    <input type="checkbox"
+            id="survey_response_<%= q['text'] %>"
+            name="survey_response[[answers][<%= q['text'] %>]]"
+            class="form-check-input"
+            placeholder=<%= q[['text']] %> />
+    <%= f.label q['text'],
+                class: 'form-check-label' %>
+</div>
