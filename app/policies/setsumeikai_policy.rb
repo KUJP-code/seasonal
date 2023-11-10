@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Handles authorization for Setsumeikais
 class SetsumeikaiPolicy < ApplicationPolicy
   def index?
     user.staff?
@@ -22,7 +21,6 @@ class SetsumeikaiPolicy < ApplicationPolicy
     admin_am_or_managed_school?
   end
 
-  # Decides which schools each role can see stats for
   class Scope < Scope
     def resolve
       case user.role

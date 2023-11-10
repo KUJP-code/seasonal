@@ -1,0 +1,9 @@
+<main id="survey_index" class="justify-content-start">
+    <%= link_to 'Create Survey',
+                new_survey_path,
+                class: 'btn btn-primary' if current_user.admin? %>
+
+    <div class="w-100 d-flex flex-wrap justify-content-evenly gap-3">
+        <%= render collection: @surveys, partial: 'surveys/survey' %>
+    </div>
+</main>

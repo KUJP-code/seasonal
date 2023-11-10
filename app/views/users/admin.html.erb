@@ -20,7 +20,7 @@
     <div class="card flex-row flex-wrap justify-content-between gap-3">
         <h2 class="w-100">Admin Tasks</h2>
 
-        <%= link_to 'Create New Event',
+        <%= link_to 'New Event',
                     new_event_path,
                     class: 'btn btn-primary flex-grow-1' %>
 
@@ -28,20 +28,24 @@
                     csvs_path,
                     class: 'btn btn-primary flex-grow-1' %>
 
-        <%= link_to 'Manage Price Lists',
+        <%= link_to 'Price Lists',
                     price_lists_path,
                     class: 'btn btn-primary flex-grow-1' %>
 
-        <%= link_to 'Manage Schools/Areas',
+        <%= link_to 'Schools/Areas',
                     areas_path,
                     class: 'btn btn-primary flex-grow-1' %>
         
-        <%= link_to 'Manage Setsumeikais',
+        <%= link_to 'Setsumeikais',
                     setsumeikais_path,
                     class: 'btn btn-primary flex-grow-1' %>
 
-        <%= link_to 'Manage Inquiries',
+        <%= link_to 'Inquiries',
                     inquiries_path,
+                    class: 'btn btn-primary flex-grow-1' %>
+        
+        <%= link_to 'Surveys',
+                    surveys_path,
                     class: 'btn btn-primary flex-grow-1' %>
     </div>
 

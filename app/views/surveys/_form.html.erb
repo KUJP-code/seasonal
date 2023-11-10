@@ -1,0 +1,73 @@
+<%= form_with model: @survey,
+              data: { controller: :fields },
+              html: { class: 'card w-100' } do |f| %>
+    <%= link_to 'Back to Survey Index',
+                surveys_path,
+                class: 'btn btn-primary align-self-start' %>
+
+    <% if @survey.errors.any? %>
+        <div class="errors bg-danger p-2 text-white fw-semibold rounded">
+            <h3>Couldn't save the survey</h3>
+            <ul>
+                <% @survey.errors.full_messages.each do |error| %>
+                    <li><%= error %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+    <div class="form-floating">
+        <%= f.text_field :name,
+                class: 'form-control',
+                placeholder: t('.name'),
+                required: true %>
+        <%= f.label :name, t('.name'), class: 'form-label' %>
+    </div>
+
+    <div>
+        <%= f.check_box :active, 
+                        { class: 'form-check-input' } %>
+        <%= f.label :active,
+                    t('.active'),
+                    class: 'form-check-label' %>
+    </div>
+
+    <h3>Questions</h3>
+
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        <% if @survey.questions %>
+            <% @survey.questions.each do |q| %>
+                <%= render 'surveys/question_fields', q: q, f: f %>
+            <% end %>
+        <% end %>
+        <template data-fields-target="template">
+            <%= render 'surveys/question_fields', q: {}, f: f %>
+        </template>
+        <div data-fields-target="target" class="d-none w-100"></div>
+    </div>
+
+    <%= button_tag t('.add_question'),
+                    type: 'button',
+                    data: { action: "fields#add" },
+                    class: 'btn btn-info' %>
+    
+    <h3>Child Criteria</h3>
+    <h5>
+        Only children for whom these criteria are true are shown the survey
+    </h5>
+
+    <div class="d-flex flex-wrap justify-content-between gap-3">
+        <% Child.column_names.each do |n| %>
+            <div class="form-floating">
+                <%= f.text_field "[criteria][#{n}]",
+                        class: 'form-control',
+                        placeholder: n.humanize %>
+                <%= f.label "[criteria][#{n}]",
+                            n.humanize,
+                            class: 'form-label' %>
+            </div>
+        <% end %>
+    </div>
+
+    <%= f.submit class: 'btn btn-primary' %>
+<% end %>
