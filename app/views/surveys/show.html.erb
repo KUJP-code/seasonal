@@ -1,4 +1,8 @@
 <main id="survey_show">
+    <%= link_to t('.survey_list'),
+                surveys_path,
+                class: 'btn btn-primary align-self-start' %>
+
     <%= render @survey %>
 
     <h3>Responses</h3>

@@ -6,7 +6,7 @@
 
             <% if @child.errors.any? %>
                 <div class="errors card bg-danger text-white">
-                    <h3><%= t('.unable_to_save') %></h3>
+                    <h3><%= t('unable_to_save') %></h3>
                     <ul>
                         <% @child.errors.full_messages.each do |error| %>
                             <li><%= error %></li>

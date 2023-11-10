@@ -1,5 +1,5 @@
-<table class="table table-primary table-striped table-hover">
-    <thead>
+<table class="table table-striped table-hover">
+    <thead class="table-primary">
         <th><%= t('.child_name') %></th>
         <% survey.questions.each do |q| %>
             <th><%= q['text'] %></th>
@@ -7,12 +7,7 @@
     </thead>
     <tbody>
         <% responses.each do |r| %>
-            <tr>
-                <td><%= r.child.name %></td>
-                <% r.answers.each do |_k, v| %>
-                    <%= v %>
-                <% end %>
-            </tr>
+            <%= render 'survey_responses/survey_response', survey_response: r %>
         <% end %>
     </tbody>
 </table>

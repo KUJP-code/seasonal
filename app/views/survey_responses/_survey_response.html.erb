@@ -1,17 +1,9 @@
-<div id="<%= dom_id survey_response %>">
-  <p>
-    <strong>Answers:</strong>
-    <%= survey_response.answers %>
-  </p>
-
-  <p>
-    <strong>Child:</strong>
-    <%= survey_response.child_id %>
-  </p>
-
-  <p>
-    <strong>Survey:</strong>
-    <%= survey_response.survey_id %>
-  </p>
-
-</div>
+<tr>
+  <td>
+    <%= survey_response.child.name %>
+  </td>
+  
+    <% survey_response.answers.each do |_k, v| %>
+      <td><%= v %></td>
+    <% end %>
+</tr>

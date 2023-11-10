@@ -1,0 +1,9 @@
+<div class="form-floating w-25">
+    <input type="<%= q['input_type'] %>"
+            id="<%= q['text'] %>"
+            name="survey_response[[answers][<%= q['text'] %>]]"
+            class="form-control"
+            placeholder=<%= q[['text']] %> />
+    <%= f.label q['text'],
+                class: 'form-label' %>
+</div>

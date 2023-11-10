@@ -1,32 +1,20 @@
-<%= form_with(model: survey_response) do |form| %>
-  <% if survey_response.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(survey_response.errors.count, "error") %> prohibited this survey_response from being saved:</h2>
+<%= form_with model: survey_response,
+              html: { class: 'card flex-row flex-wrap justify-content-evenly' } do |f| %>
+  <%= f.hidden_field :child_id %>
+  <%= f.hidden_field :survey_id %>
 
-      <ul>
-        <% survey_response.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
+  <% survey.questions.each do |q| %>
+    <%= case q['input_type']
+        when 'checkbox'
+         render 'survey_responses/check_field', f: f, q: q
+        when 'select'
+         render 'survey_responses/select_field', f: f, q: q
+        when 'radio'
+         render 'survey_responses/radio_field', f: f, q: q
+        else
+         render 'survey_responses/generic_field', f: f, q: q
+        end %>
   <% end %>
 
-  <div>
-    <%= form.label :answers, style: "display: block" %>
-    <%= form.text_field :answers %>
-  </div>
-
-  <div>
-    <%= form.label :child_id, style: "display: block" %>
-    <%= form.text_field :child_id %>
-  </div>
-
-  <div>
-    <%= form.label :survey_id, style: "display: block" %>
-    <%= form.text_field :survey_id %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
+  <%= f.submit class: 'btn btn-primary w-100' %>
 <% end %>

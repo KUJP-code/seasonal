@@ -18,7 +18,12 @@
 
     <% if @surveys %>
         <% @surveys.each do |s| %>
-            <%= render s %>
+            <%= render 'survey_responses/form',
+                        survey_response: SurveyResponse.new(
+                            child_id: @invoice.child_id,
+                            survey_id: s.id
+                        ),
+                        survey: s %>
         <% end %>
     <% end %>
 
