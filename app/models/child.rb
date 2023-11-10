@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# Represents a child, or student, enrolled at a school and/or attending an event
-# Must have a parent, and a school
 class Child < ApplicationRecord
   # Set names, kindy from meta-fields
   before_validation :set_name, :set_kana, :set_kindy
@@ -32,6 +30,7 @@ class Child < ApplicationRecord
            inverse_of: :child
   has_many :events, -> { distinct }, through: :invoices
   has_many :adjustments, through: :invoices
+  has_many :survey_responses, dependent: nil
 
   # Track changes with PaperTrail
   has_paper_trail

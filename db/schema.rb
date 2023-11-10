@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_10_023547) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_10_083226) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -240,6 +240,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_10_023547) do
     t.index ["school_id"], name: "index_setsumeikais_on_school_id"
   end
 
+  create_table "survey_responses", force: :cascade do |t|
+    t.jsonb "answers"
+    t.bigint "child_id", null: false
+    t.bigint "survey_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["child_id"], name: "index_survey_responses_on_child_id"
+    t.index ["survey_id"], name: "index_survey_responses_on_survey_id"
+  end
+
   create_table "surveys", force: :cascade do |t|
     t.string "name"
     t.boolean "active"
@@ -328,6 +338,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_10_023547) do
   add_foreign_key "setsumeikai_involvements", "schools"
   add_foreign_key "setsumeikai_involvements", "setsumeikais"
   add_foreign_key "setsumeikais", "schools"
+  add_foreign_key "survey_responses", "children"
+  add_foreign_key "survey_responses", "surveys"
   add_foreign_key "time_slots", "events"
   add_foreign_key "time_slots", "time_slots", column: "morning_slot_id"
 end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Survey < ApplicationRecord
+  has_many :survey_responses, dependent: :destroy
+
   validates :name, :questions, presence: true
 
   def criteria_match?(child)
