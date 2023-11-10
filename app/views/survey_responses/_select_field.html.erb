@@ -1,0 +1,7 @@
+<div>
+    <%= f.label q['text'], class: 'form-label' %>
+    <%= f.select q['text'],
+                 q['options'].split(",").map(&:strip),
+                 {},
+                 { class: 'form-select' } %>
+</div>
