@@ -3,7 +3,7 @@
     <%= survey_response.child.name %>
   </td>
   
-    <% survey_response.answers.each do |_k, v| %>
+    <% survey_response.answers.sort_by { |k, _v| k }.each do |_k, v| %>
       <td><%= v %></td>
     <% end %>
 </tr>
