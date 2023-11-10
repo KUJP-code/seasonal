@@ -22,6 +22,7 @@ class School < ApplicationRecord
   has_many :parents, -> { distinct }, through: :children,
                                       class_name: 'User',
                                       foreign_key: :parent_id
+  has_many :survey_responses, through: :children
   has_many :events, -> { order(start_date: :asc) }, dependent: :destroy,
                                                     inverse_of: :school
   has_many :upcoming_events,

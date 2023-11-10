@@ -3,5 +3,7 @@
 
     <h3>Responses</h3>
 
-    <%# TODO: response table here %>
+    <%= render 'survey_responses/survey_response_table',
+                survey: @survey,
+                responses: @responses %>
 </main>

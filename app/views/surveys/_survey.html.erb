@@ -1,6 +1,8 @@
 <div class="card w-100 align-items-center">
-    <h2><%= survey.name %></h2>
-    <h5><%= "Active: #{survey.active ? '◯' : '🗙'}" %></h5>
+    <div class="card text-white <%= survey.active ? 'bg-success' : 'bg-danger' %>">
+        <h2><%= survey.name %></h2>
+        <h5><%= "Active: #{survey.active ? '◯' : '🗙'}" %></h5>
+    </div>
     <h3>Questions:</h3>
     <div class="d-flex flex-wrap gap-5 justify-content-center">
         <% survey.questions.each do |q| %>
@@ -26,10 +28,6 @@
 
         <%= link_to 'View Responses',
                     survey_path(survey),
-                    class: 'btn btn-primary' %>
-
-        <%= link_to 'Create Response (inactive)',
-                    '',
                     class: 'btn btn-primary' %>
     </div>
 </div>

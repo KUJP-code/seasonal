@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
 class SurveyResponsesController < ApplicationController
-  def index
-    @survey_responses = policy_scope(SurveyResponse)
-  end
-
   def create
-    @survey_response = SurveyResponse.new(survey_response_params)
+    @response = authorize(SurveyResponse.new(survey_response_params))
 
-    if @survey_response.save
-      redirect_to @survey_response,
+    if @response.save
+      redirect_to '/',
                   notice: t('.response_appreciated')
     else
       redirect_to '/', alert: t('.unable_to_process')

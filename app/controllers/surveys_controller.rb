@@ -7,16 +7,18 @@ class SurveysController < ApplicationController
     @surveys = policy_scope(Survey)
   end
 
-  def show; end
+  def show
+    @responses = policy_scope(@survey.survey_responses)
+  end
 
   def new
-    @survey = Survey.new
+    @survey = authorize(Survey.new)
   end
 
   def edit; end
 
   def create
-    @survey = Survey.new(survey_params)
+    @survey = authorize(Survey.new(survey_params))
 
     if @survey.save
       redirect_to surveys_path,
@@ -40,7 +42,7 @@ class SurveysController < ApplicationController
   private
 
   def set_survey
-    @survey = Survey.find(params[:id])
+    @survey = authorize(Survey.find(params[:id]))
   end
 
   def survey_params

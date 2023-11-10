@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-class SurveyPolicy < ApplicationPolicy
-  def index?
-    user.staff?
-  end
-
+class SurveyResponsePolicy < ApplicationPolicy
   def create?
     user.customer?
   end

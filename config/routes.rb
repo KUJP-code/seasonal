@@ -21,7 +21,7 @@ Rails.application.routes.draw do
       resources :schools, except: %i[destroy index]
       resources :setsumeikais, except: %i[destroy]
       resources :surveys, except: %i[destroy]
-      resources :survey_responses, only: %i[index create]
+      resources :survey_responses, only: %i[create]
       resources :time_slots, except: %i[create]
       resources :uploads, only: %i[create new]
       resources :users
