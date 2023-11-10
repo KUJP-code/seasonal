@@ -1,0 +1,15 @@
+<fieldset class="d-flex flex-wrap justify-content-center align-items-center gap-2">
+    <legend class="w-100"><%= q['text'] %></legend>
+
+    <% q['options'].split(",").map(&:strip).each do |opt|  %>
+        <div class="form-check">
+            <input type="radio"
+                   id="<%= opt %>"
+                   name="survey_response[[answers][<%= q['text'] %>]]"
+                   class="form-check-input"
+                   value=<%= opt %> />
+            <%= f.label opt,
+                        class: 'form-check-label' %>
+        </div>
+    <% end %>
+</fieldset>
