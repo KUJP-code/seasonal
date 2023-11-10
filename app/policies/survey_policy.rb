@@ -27,7 +27,7 @@ class SurveyPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      Survey.all
+      user.staff? ? Survey.all : []
     end
   end
 end
