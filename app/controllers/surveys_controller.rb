@@ -52,7 +52,7 @@ class SurveysController < ApplicationController
                              id name katakana_name en_name category
                              grade birthday kindy allergies ssid ele_school_name
                              photos received_hat created_at updated_at parent
-                             school first_seasonal
+                             school_id first_seasonal
                            ]
     )
   end
