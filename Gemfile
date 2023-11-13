@@ -113,10 +113,10 @@ group :development, :test do
   gem 'byebug', platform: :mri
 
   # RSpec to write test suites
-  gem 'rspec-rails', '~> 3.5'
+  gem 'rspec-rails', '6.0'
 
   # Factory bot for test data creation
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '6.2.0'
 
   # DB cleaner for test data management
   gem 'database_cleaner'
@@ -125,10 +125,10 @@ group :development, :test do
   gem 'bullet'
 
   # Use Rubocop to check for dumb mistakes
-  gem 'rubocop', '~> 1.40', require: false
-  gem 'rubocop-performance', require: false
-  gem 'rubocop-rails', require: false
-  gem 'rubocop-rspec', require: false
+  gem 'rubocop', '1.57', require: false
+  gem 'rubocop-performance', '1.19', require: false
+  gem 'rubocop-rails', '2.22', require: false
+  gem 'rubocop-rspec', '2.25', require: false
 end
 
 group :development do
@@ -136,10 +136,7 @@ group :development do
   gem 'web-console'
 
   # Use brakeman for static analysis
-  gem 'brakeman'
-
-  # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
-  # gem "rack-mini-profiler"
+  gem 'brakeman', '6.0.1'
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
