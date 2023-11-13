@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :school do
-    area
+  factory :area do
     name { Faker::Address.city }
   end
 end
