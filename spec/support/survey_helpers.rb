@@ -2,7 +2,7 @@
 
 module SurveyHelpers
   def set_random_boolean_criteria
-    col = %w[first_seasonal kindy received_hat].sample
+    col = %w[first_seasonal received_hat].sample
     value = [true, false].sample
     { col => value }
   end

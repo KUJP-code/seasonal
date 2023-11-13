@@ -16,6 +16,14 @@ RSpec.describe Survey do
       expect(criterialess_survey.criteria_match?(create(:child))).to be false
     end
 
+    it 'returns false if child has responded to the survey' do
+      child = create(:child, category: :external)
+      answered_survey = create(:survey, criteria: { 'category' => 'external' })
+      create(:survey_response, survey: answered_survey, child: child)
+
+      expect(answered_survey.criteria_match?(child)).to be false
+    end
+
     it 'returns false if sibling has responded to the survey' do
       parent = create(:user)
       children = create_list(:child, 2, parent: parent, category: :external)

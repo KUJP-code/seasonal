@@ -7,14 +7,24 @@ class Survey < ApplicationRecord
 
   def criteria_match?(child)
     valid_criteria = criteria.reject { |_k, v| v.to_s.empty? }
-    return false if valid_criteria.empty? || siblings_answered?(child)
+    return false if valid_criteria.empty? || answered?(child)
 
     valid_criteria.all? { |k, v| v.to_s == child[k].to_s }
   end
 
   private
 
-  def siblings_answered?(child)
-    child.siblings.any? { |s| s.survey_responses.ids.include?(id) }
+  def answered?(child)
+    child_answered?(child) || sibling_answered?(child)
+  end
+
+  def child_answered?(child)
+    child.survey_responses.pluck(:survey_id).include?(id)
+  end
+
+  def sibling_answered?(child)
+    child.siblings.any? do |s|
+      s.survey_responses.pluck(:survey_id).include?(id)
+    end
   end
 end
