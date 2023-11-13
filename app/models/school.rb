@@ -7,9 +7,7 @@ class School < ApplicationRecord
   before_validation :set_details
 
   belongs_to :area
-
   has_one_attached :image
-
   has_many :managements, as: :manageable,
                          dependent: :destroy
   accepts_nested_attributes_for :managements,
