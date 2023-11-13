@@ -2,7 +2,7 @@
 
 class SurveyResponsePolicy < ApplicationPolicy
   def create?
-    user.customer?
+    user.customer? || user.admin?
   end
 
   class Scope < Scope
