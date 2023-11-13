@@ -4,17 +4,23 @@
   <%= f.hidden_field :survey_id %>
 
   <% survey.questions.each do |q| %>
-    <%= case q['input_type']
-        when 'checkbox'
-         render 'survey_responses/check_field', f: f, q: q
-        when 'select'
-         render 'survey_responses/select_field', f: f, q: q
-        when 'radio'
-         render 'survey_responses/radio_field', f: f, q: q
-        else
-         render 'survey_responses/generic_field', f: f, q: q
-        end %>
+    <% if q['input_type'] == 'checkbox' %>
+      <h4 class="w-100"><%= q['text'] %></h4>
+      <% q['options'].split(",").map(&:strip).each do |opt| %>
+       <%= render 'survey_responses/check_field', f: f, opt: opt %>
+      <% end %>
+    <% else %>
+      <%= case q['input_type']
+          when 'select'
+          render 'survey_responses/select_field', f: f, q: q
+          when 'radio'
+          render 'survey_responses/radio_field', f: f, q: q
+          else
+          break if q['input_type'] == 'checkbox'
+          render 'survey_responses/generic_field', f: f, q: q
+          end %>
+      <% end %>
   <% end %>
 
-  <%= f.submit class: 'btn btn-primary w-100' %>
+  <%= f.submit 'アンケートに答える', class: 'btn btn-primary w-100' %>
 <% end %>
