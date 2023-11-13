@@ -89,17 +89,18 @@ class Invoice < ApplicationRecord
   # doesn't change
   def best_price(num_regs, courses)
     return 0 if num_regs.zero?
+
     if [3, 4].include?(num_regs)
-      if child.internal?
+      if child.member?
         @breakdown << "<p>- 3回コース: #{yenify(11_900)}</p>" unless @breakdown.nil?
-        
+
         return 11_900 + best_price(num_regs - 3, courses)
       end
 
       @breakdown << "<p>- 3回コース: #{yenify(19_100)}</p>" unless @breakdown.nil?
       return 19_100 + best_price(num_regs - 3, courses)
     end
-    
+
     if num_regs >= 55
       @breakdown << "<p>- 50回コース: #{yenify(courses['50'])}</p>" unless @breakdown.nil?
       return courses['50'] + best_price(num_regs - 50, courses)
@@ -197,7 +198,9 @@ class Invoice < ApplicationRecord
                end.reduce(0) { |sum, reg| sum + reg.registerable.cost }
     @breakdown << "<h4 class='fw-semibold'>オプション:</h4>
                    <div class='d-flex flex-column align-items-start gap-1'>
-                   <p>#{yenify(opt_cost)} (#{opt_regs.count { |r| r.registerable.name != 'なし' } - @ignore_opts.size}オプション)<p>"
+                   <p>#{yenify(opt_cost)} (#{opt_regs.count do |r|
+                                               r.registerable.name != 'なし'
+                                             end - @ignore_opts.size}オプション)<p>"
 
     # Find the options on this invoice, even if not saved
     temp_opts = {}
@@ -239,7 +242,7 @@ class Invoice < ApplicationRecord
   def first_time_adjustment
     registration_cost = 1_100
     reason = '初回登録料(初めてシーズナルスクールに参加する非会員の方)'
-    return if adjustments.any? { |adj| adj.change == registration_cost && adj.  reason == reason } ||
+    return if adjustments.any? { |adj| adj.change == registration_cost && adj.reason == reason } ||
               child.adjustments.any? { |adj| adj.change == registration_cost && adj.reason == reason }
 
     adjustments.new(change: registration_cost, reason: reason)
@@ -256,11 +259,11 @@ class Invoice < ApplicationRecord
       <h4 class-'fw-semibold'>#{child.kindy ? '幼児' : '小学生'}</h4>\n
       <h4 class-'fw-semibold'>#{case child.category
                                 when 'internal'
-                                    '通学生'
+                                  '通学生'
                                 when 'reservation'
-                                    '予約生'
+                                  '予約生'
                                 else
-                                    '非会員'
+                                  '非会員'
                                 end}</h4>\n
       <h3 class='fw-semibold'>#{event.name} @ #{event.school.name}</h3>\n"
     )
@@ -646,7 +649,9 @@ class Invoice < ApplicationRecord
 
   def spot_use(num_regs, courses)
     spot_cost = num_regs * courses['1']
-    @breakdown << "<p>スポット1回(午前・15:00~18:30) x #{num_regs}: #{yenify(spot_cost)}</p>\n" unless spot_cost.zero? || @breakdown.nil?
+    unless spot_cost.zero? || @breakdown.nil?
+      @breakdown << "<p>スポット1回(午前・15:00~18:30) x #{num_regs}: #{yenify(spot_cost)}</p>\n"
+    end
     spot_cost
   end
 
