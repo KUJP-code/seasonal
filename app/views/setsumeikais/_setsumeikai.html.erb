@@ -24,6 +24,20 @@
     </td>
 
     <td>
+        <%= link_to "コピー",
+                    setsumeikais_path(
+                        setsumeikai: {
+                            start: setsumeikai.start,
+                            attendance_limit: setsumeikai.attendance_limit,
+                            school_id: setsumeikai.school_id,
+                            release_date: setsumeikai.release_date,
+                            setsumeikai_involvements_attributes: setsumeikai.setsumeikai_involvements.map { |i| {school_id: i.school_id} }
+                        }
+                    ),
+                    class: 'btn btn-primary' %>
+    </td>
+
+    <td>
         <%= link_to t('.edit'),
                     edit_setsumeikai_path(setsumeikai),
                     class: 'btn btn-primary' %>
