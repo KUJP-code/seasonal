@@ -26,6 +26,7 @@
     <td>
         <%= link_to "コピー",
                     setsumeikais_path(
+                        school: setsumeikai.school_id,
                         setsumeikai: {
                             start: setsumeikai.start,
                             attendance_limit: setsumeikai.attendance_limit,
