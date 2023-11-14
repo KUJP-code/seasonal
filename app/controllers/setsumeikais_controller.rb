@@ -47,6 +47,7 @@ class SetsumeikaisController < ApplicationController
       redirect_to setsumeikai_path(@setsumeikai),
                   notice: "Updated #{@setsumeikai.school.name} setsumeikai"
     else
+      @schools = policy_scope(School)
       render :edit,
              status: :unprocessable_entity,
              alert: @setsumeikai.errors.full_messages.join(', ')

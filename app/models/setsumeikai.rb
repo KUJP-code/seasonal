@@ -17,7 +17,8 @@ class Setsumeikai < ApplicationRecord
   validates :release_date, comparison: { less_than: :start }
 
   scope :upcoming, -> { where('start > ?', Time.zone.now) }
-  scope :available, -> { where('attendance_limit > inquiries_count AND release_date < ?', Time.zone.now) }
+  scope :visible, -> { where('release_date < ?', Time.zone.now) }
+  scope :calendar, -> { upcoming.visible }
 
   def as_json(_options = {})
     {

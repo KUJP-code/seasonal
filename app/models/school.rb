@@ -40,10 +40,6 @@ class School < ApplicationRecord
                                    source: :inquiries,
                                    class_name: 'Inquiry'
   has_many :inquiries, dependent: nil
-  has_many :available_setsumeikais, -> { upcoming.available },
-           class_name: 'Setsumeikai',
-           inverse_of: :school,
-           dependent: nil
   has_many :setsumeikai_involvements, dependent: :destroy
   has_many :involved_setsumeikais, through: :setsumeikai_involvements,
                                    source: :setsumeikai,
@@ -73,7 +69,7 @@ class School < ApplicationRecord
       busAreas: details['bus_areas'] || [''],
       hiragana: details['hiragana'] || [''],
       nearbyStations: details['nearby_stations'] || [''],
-      setsumeikais: available_setsumeikais
+      setsumeikais: involved_setsumeikais.calendar.includes(:school)
     }
   end
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SurveysController < ApplicationController
-  before_action :set_survey, only: %i[show edit update]
+  before_action :set_survey, only: %i[edit show update]
 
   def index
     @surveys = policy_scope(Survey)
@@ -41,10 +41,6 @@ class SurveysController < ApplicationController
 
   private
 
-  def set_survey
-    @survey = authorize(Survey.find(params[:id]))
-  end
-
   def survey_params
     params.require(:survey).permit(
       :id, :name, :active, questions: %i[text input_type options],
@@ -55,5 +51,9 @@ class SurveysController < ApplicationController
                              school_id first_seasonal
                            ]
     )
+  end
+
+  def set_survey
+    @survey = authorize(Survey.find(params[:id]))
   end
 end

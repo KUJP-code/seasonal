@@ -2,16 +2,16 @@
 
 # Handles data flow for Schools
 class SchoolsController < ApplicationController
+  before_action :set_school, only: %i[edit show update]
+
   def index
-    @schools = School.real.includes(:available_setsumeikais).order(id: :desc)
+    @schools = School.real.order(id: :desc)
     respond_to do |f|
       f.json { render json: @schools }
     end
   end
 
-  def show
-    @school = School.find(params[:id])
-  end
+  def show; end
 
   def new
     @school = School.new
@@ -19,7 +19,6 @@ class SchoolsController < ApplicationController
   end
 
   def edit
-    @school = School.find(params[:id])
     form_data
   end
 
@@ -35,8 +34,6 @@ class SchoolsController < ApplicationController
   end
 
   def update
-    @school = School.find(params[:id])
-
     if @school.update(school_params)
       redirect_to school_path(@school), notice: "Updated #{@school.name}!"
     else
@@ -60,5 +57,9 @@ class SchoolsController < ApplicationController
     @areas = Area.all
     @images = ActiveStorage::Blob.where('key LIKE ?', '%schools%')
                                  .map { |blob| [blob.key, blob.id] }
+  end
+
+  def set_school
+    @school = School.find(params[:id])
   end
 end
