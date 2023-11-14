@@ -2,7 +2,7 @@
 
 class Setsumeikai < ApplicationRecord
   belongs_to :school
-  has_many :inquiries, dependent: nil
+  has_many :inquiries, dependent: :restrict_with_error
   has_many :setsumeikai_involvements, dependent: :destroy
   accepts_nested_attributes_for :setsumeikai_involvements,
                                 allow_destroy: true,

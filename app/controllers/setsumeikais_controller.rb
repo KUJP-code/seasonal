@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SetsumeikaisController < ApplicationController
+  before_action :set_setsumeikai, only: %i[destroy edit show update]
+
   def index
     @schools = policy_scope(School).order(:id)
     @school = params[:school] ? School.find(params[:school]) : @schools.first
@@ -12,12 +14,10 @@ class SetsumeikaisController < ApplicationController
   end
 
   def show
-    @setsumeikai = authorize(Setsumeikai.find(params[:id]))
     @inquiries = @setsumeikai.inquiries
   end
 
   def edit
-    @setsumeikai = authorize(Setsumeikai.find(params[:id]))
     @schools = policy_scope(School)
   end
 
@@ -35,8 +35,6 @@ class SetsumeikaisController < ApplicationController
   end
 
   def update
-    @setsumeikai = authorize(Setsumeikai.find(params[:id]))
-
     if @setsumeikai.update(setsumeikai_params)
       redirect_to setsumeikai_path(@setsumeikai),
                   notice: "Updated #{@setsumeikai.school.name} setsumeikai"
@@ -45,6 +43,16 @@ class SetsumeikaisController < ApplicationController
       render :edit,
              status: :unprocessable_entity,
              alert: @setsumeikai.errors.full_messages.join(', ')
+    end
+  end
+
+  def destroy
+    if @setsumeikai.destroy
+      redirect_to setsumeikais_path,
+                  notice: t('success', model: '説明会', action: '消去')
+    else
+      redirect_to setsumeikais_path,
+                  alert: t('failure',  model: '説明会', action: '消去')
     end
   end
 
@@ -61,6 +69,10 @@ class SetsumeikaisController < ApplicationController
   def default_setsu
     Setsumeikai.new(school_id: @school.id,
                     setsumeikai_involvements_attributes: [{ school_id: @school.id }])
+  end
+
+  def set_setsumeikai
+    @setsumeikai = authorize(Setsumeikai.find(params[:id]))
   end
 
   def setsu_from_params

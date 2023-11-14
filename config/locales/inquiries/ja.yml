@@ -19,6 +19,7 @@ ja:
       create_inquiry: "お問い合わせ"
       setsumeikai_list: "説明会リスト"
     inquiry:
+      are_u_sure: "本当に削除しますか？"
       delete: "消去"
       edit: "編集"
     inquiry_table:

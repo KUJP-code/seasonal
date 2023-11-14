@@ -14,12 +14,15 @@ ja:
       remove_school: "消去"
     setsumeikai:
       add_inquiry: "説明会詳細追加"
+      are_u_sure: "本当に削除しますか？"
+      delete: "消去"
       edit: "編集"
       school: "説明会会場"
     setsumeikai_table:
       add_inquiry: "説明会詳細追加"
       attendance: "出席"
       date: "日付"
+      delete: "消去"
       edit: "編集"
       involved_schools: "通学検討スクール"
       release_date: "説明会リリース日"

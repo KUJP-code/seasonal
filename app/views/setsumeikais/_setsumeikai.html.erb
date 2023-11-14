@@ -48,4 +48,14 @@
                     new_inquiry_path(setsu_id: setsumeikai.id),
                     class: 'btn btn-primary' %>
     </td>
+
+    <td>
+        <%= link_to t('.delete'), 
+                    setsumeikai_path(setsumeikai),
+                    data: { 
+                        turbo_method: :delete, 
+                        turbo_confirm: t('.are_u_sure') 
+                    },
+                    class: 'btn btn-danger' %>
+    </td>
 </tr>

@@ -21,6 +21,10 @@ class SetsumeikaiPolicy < ApplicationPolicy
     admin_am_or_managed_school?
   end
 
+  def destroy?
+    admin_am_or_managed_school?
+  end
+
   class Scope < Scope
     def resolve
       case user.role
