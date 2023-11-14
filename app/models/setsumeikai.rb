@@ -49,7 +49,7 @@ class Setsumeikai < ApplicationRecord
   private
 
   def host_school_involved
-    return if involved_schools.ids.include?(school_id)
+    return if setsumeikai_involvements.map(&:school_id).include?(school_id)
 
     errors.add(:setsumeikai_involvements, '説明会会場を含まなければならない。')
   end
