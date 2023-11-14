@@ -12,7 +12,7 @@ class Setsumeikai < ApplicationRecord
                               source: :school
 
   validates :start, :attendance_limit, :release_date, presence: true
-  validates :attendance_limit, comparison: { greater_than: 0 }
+  validates :attendance_limit, comparison: { greater_than_or_equal_to: 0 }
   validates :start, comparison: { greater_than: Time.zone.now }
   validates :release_date, comparison: { less_than: :start }
 
