@@ -1,10 +1,11 @@
 ja:
   setsumeikais:
     form:
-      add_involved_school: "実施スクール追加"
+      add_involved_school: "通学検討スクール追加"
       attendance_limit: "出席可能枠"
-      involved_schools: "実施スクール"
+      involved_schools: "通学検討スクール"
       release_date: "説明会リリース日"
+      school: "説明会会場"
       start: "説明会開始日/時間"
     index:
       inquiry_list: "問い合わ確認"
@@ -14,15 +15,15 @@ ja:
     setsumeikai:
       add_inquiry: "説明会詳細追加"
       edit: "編集"
-      school: "スクール"
+      school: "説明会会場"
     setsumeikai_table:
       add_inquiry: "説明会詳細追加"
       attendance: "出席"
       date: "日付"
       edit: "編集"
-      involved_schools: "実施スクール"
+      involved_schools: "通学検討スクール"
       release_date: "説明会リリース日"
-      school: "スクール"
+      school: "説明会会場"
     show:
       add_inquiry: "説明会詳細追加"
       edit: "編集"

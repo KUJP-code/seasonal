@@ -33,7 +33,7 @@
         <%= f.hidden_field :school_id,
                            value: current_user.managed_school.id %>
     <% else %>
-        <div class="d-flex align-items-center gap-3">
+        <div class="d-flex flex-column justify-content-center align-items-center gap-1">
             <%= f.label :school_id, t('.school'), class: 'form-label' %>
             <%= f.collection_select :school_id,
                                     @schools,

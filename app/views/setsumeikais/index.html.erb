@@ -5,9 +5,9 @@
     
     <h1><%= t('.setsumeikais') %></h1>
 
-    <%= paginate @setsumeikais, window: 20 unless current_user.admin? %>
+    <%= paginate @setsumeikais, window: 20 %>
 
-    <% if current_user.admin? %>
+    <% if current_user.admin? || current_user.area_manager? %>
         <nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
             <% @schools.each do |school| %>
                 <%= link_to setsumeikais_path(school: school.id) do %>
@@ -23,5 +23,5 @@
 
     <%= render 'setsumeikais/setsumeikai_table' %>
 
-    <%= paginate @setsumeikais, window: 20 unless current_user.admin? %>
+    <%= paginate @setsumeikais, window: 20 %>
 </main>

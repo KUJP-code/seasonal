@@ -2,8 +2,8 @@
 
 class SetsumeikaisController < ApplicationController
   def index
-    @schools = School.real.order(:id)
-    @setsumeikais = if current_user.admin?
+    @schools = policy_scope(School)
+    @setsumeikais = if current_user.admin? || current_user.area_manager?
                       admin_index
                     else
                       policy_scope(Setsumeikai).upcoming
@@ -65,6 +65,8 @@ class SetsumeikaisController < ApplicationController
 
   def admin_index
     @school = params[:school] ? School.find(params[:school]) : @schools.first
-    @school.all_setsumeikais.includes(:school, :involved_schools)
+    @school.all_setsumeikais
+           .includes(:school, :involved_schools)
+           .page(params[:page])
   end
 end
