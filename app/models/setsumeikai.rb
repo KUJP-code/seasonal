@@ -24,7 +24,8 @@ class Setsumeikai < ApplicationRecord
     {
       id: id.to_s,
       start: start,
-      title: school.name
+      title: school.name,
+      full: inquiries_count >= attendance_limit
     }
   end
 
