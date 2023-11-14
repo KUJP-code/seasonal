@@ -4,11 +4,9 @@ class InquiriesController < ApplicationController
   skip_before_action :verify_authenticity_token, only: :create
 
   def index
-    return admin_index if current_user.admin?
-
-    @inquiries = policy_scope(Inquiry).order(created_at: :desc)
-                                      .includes(:setsumeikai, :school)
-                                      .page(params[:page])
+    @schools = policy_scope(School).order(:id)
+    @school = params[:school] ? School.find(params[:school]) : @schools.first
+    @inquiries = @school.inquiries.includes(:setsumeikai).page(params[:page])
   end
 
   def new
@@ -67,12 +65,6 @@ class InquiriesController < ApplicationController
       :referrer, :child_birthday, :kindy, :ele_school, :start_date, :notes,
       :requests, :category, :school_id
     )
-  end
-
-  def admin_index
-    @schools = policy_scope(School).order(:id)
-    @school = params[:school] ? School.find(params[:school]) : @schools.first
-    @inquiries = @school.inquiries.includes(setsumeikai: %i[school])
   end
 
   def create_html_response

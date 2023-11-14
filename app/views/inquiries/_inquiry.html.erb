@@ -1,9 +1,14 @@
 <% setsumeikai = inquiry.setsumeikai %>
 
 <tr>
-    <td class="setsumeikai_id">
-        <%= link_to setsumeikai.school_date_time,
-                    setsumeikai_path(setsumeikai) if setsumeikai %>
+    <td class="number">
+        <%= "#{inquiry.category}#{inquiry.id}" %>
+    </td>
+    <td class="created_at">
+        <%= inquiry.created_at.strftime('%Y年%m月%d日') %>
+    </td>
+    <td class="child_name">
+        <%= inquiry.child_name %>
     </td>
     <td class="parent_name">
         <%= inquiry.parent_name %>
@@ -14,8 +19,18 @@
     <td class="email">
         <%= link_to inquiry.email, "mailto:#{inquiry.email}" %>
     </td>
-    <td class="child_name">
-        <%= inquiry.child_name %>
+    <td>
+        <%= inquiry.requests %>
+    </td>
+    <td>
+        <%= inquiry.notes %>
+    </td>
+    <td>
+        <%= inquiry.child_grade %>
+    </td>
+    <td class="setsumeikai">
+        <%= link_to setsumeikai.school_date_time,
+                    setsumeikai_path(setsumeikai) if setsumeikai %>
     </td>
     <td class="child_birthday">
         <%= inquiry.child_birthday %>
@@ -32,16 +47,7 @@
     <td class="start_date">
         <%= inquiry.referrer %>
     </td>
-    <td class="created_at">
-        <%= inquiry.created_at.strftime('%Y年%m月%d日') %>
-    </td>
-    <td>
-        <%= inquiry.requests %>
-    </td>
-    <td>
-        <%= inquiry.notes %>
-    </td>
-    <td>
+   <td>
         <%= link_to t('.edit'), 
                     edit_inquiry_path(inquiry),
                     class: 'btn btn-primary' %>

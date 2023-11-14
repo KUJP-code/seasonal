@@ -34,7 +34,7 @@ class Inquiry < ApplicationRecord
       start_season: start_date,
       school_name: setsumeikai_school,
       trigger: referrer,
-      age: child_age,
+      age: child_grade,
       event_schedule: event_schedule
     }
   end
@@ -45,7 +45,7 @@ class Inquiry < ApplicationRecord
     setsumeikai.school.name
   end
 
-  def child_age
+  def child_grade
     YEAR_AGE_MAP[Time.zone.now.year - child_birthday.year] || ''
   end
 
