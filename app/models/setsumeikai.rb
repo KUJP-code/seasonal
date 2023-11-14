@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Handles DB interactions for Setsumeikais
 class Setsumeikai < ApplicationRecord
   belongs_to :school
   has_many :inquiries, dependent: nil
@@ -15,6 +14,7 @@ class Setsumeikai < ApplicationRecord
   validates :attendance_limit, comparison: { greater_than_or_equal_to: 0 }
   validates :start, comparison: { greater_than: Time.zone.now }
   validates :release_date, comparison: { less_than: :start }
+  validate :host_school_involved
 
   scope :upcoming, -> { where('start > ?', Time.zone.now) }
   scope :visible, -> { where('release_date < ?', Time.zone.now) }
@@ -44,6 +44,14 @@ class Setsumeikai < ApplicationRecord
 
   def school_date_time
     "#{school.name} #{date} #{start.strftime('%H:%M')}"
+  end
+
+  private
+
+  def host_school_involved
+    return if involved_schools.ids.include?(school_id)
+
+    errors.add(:setsumeikai_involvements, '説明会会場を含まなければならない。')
   end
 
   DAYS = {
