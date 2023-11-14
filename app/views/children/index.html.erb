@@ -1,3 +1,5 @@
+<% columns = %w[ssid name katakana en category allergies hat parent school edit_info] %>
+
 <main id="children_index">
     <%= link_to t('.create_child'), new_child_path, class: 'btn btn-primary' %>
 
@@ -18,98 +20,15 @@
     <table class="table table-hover table-striped text-center">
         <thead>
             <tr class="table-primary">
-                <th scope="col"><%= t('.ssid') %></th>
-                <th scope="col"><%= t('.name') %></th>
-                <th scope="col"><%=t('.katakana') %></th>
-                <th scope="col"><%= t('.en') %></th>
-                <th scope="col"><%= t('.category') %></th>
-                <th scope="col"><%= t('.allergies') %></th>
-                <th scope="col"><%= t('.hat') %></th>
-                <th scope="col"><%= t('.parent') %></th>
-                <th scope="col"><%= t('.school') %></th>
-                <th scope="col"><%= t('.edit_info') %></th>
+                <% columns.each do |col| %>
+                    <th scope="col"><%= t(".#{col}") %></th>
+                <% end %>
             </tr>
             <tr>
-                <th data-controller="filter"
-                    data-filter-siblings-value="0"
-                    data-filter-col-value=".ssid">
-                    <div class="form-floating">
-                        <%= text_field_tag 'ssid_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
-                        <%= label_tag 'ssid_filter', t('.filter'), class: 'form-label' %>
-                    </div>
-                </th>
-                <th data-controller="filter"
-                    data-filter-siblings-value="0"
-                    data-filter-col-value=".name">
-                    <div class="form-floating">
-                        <%= text_field_tag 'name_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
-                        <%= label_tag 'name_filter',t('.filter'), class: 'form-label' %>
-                    </div>
-                </th>
-                <th data-controller="filter"
-                    data-filter-siblings-value="0"
-                    data-filter-col-value=".kana">
-                    <div class="form-floating">
-                        <%= text_field_tag 'kana_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
-                        <%= label_tag 'kana_filter', t('.filter'), class: 'form-label' %>
-                    </div>
-                </th>
-                <th data-controller="filter"
-                    data-filter-siblings-value="0"
-                    data-filter-col-value=".en">
-                    <div class="form-floating">
-                        <%= text_field_tag 'en_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
-                        <%= label_tag 'en_filter', t('.filter'), class: 'form-label' %>
-                    </div>
-                </th>
-                <th data-controller="filter"
-                    data-filter-siblings-value="0"
-                    data-filter-col-value=".category">
-                    <div class="form-floating">
-                        <%= text_field_tag 'category_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
-                        <%= label_tag 'category_filter', t('.filter'), class: 'form-label' %>
-                    </div>
-                </th>
-                <th data-controller="filter"
-                    data-filter-siblings-value="0"
-                    data-filter-col-value=".allergies">
-                    <div class="form-floating">
-                        <%= text_field_tag 'allergies_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
-                        <%= label_tag 'allergies_filter', t('.filter'), class: 'form-label' %>
-                    </div>
-                </th>
-                <th data-controller="filter"
-                    data-filter-siblings-value="0"
-                    data-filter-col-value=".hat">
-                    <div class="form-floating">
-                        <%= text_field_tag 'hat_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
-                        <%= label_tag 'hat_filter', t('.filter'), class: 'form-label' %>
-                    </div>
-                </th>
-                <th data-controller="filter"
-                    data-filter-siblings-value="0"
-                    data-filter-col-value=".parent">
-                    <div class="form-floating">
-                        <%= text_field_tag 'parent_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
-                        <%= label_tag 'parent_filter', t('.filter'), class: 'form-label' %>
-                    </div>
-                </th>
-                <th data-controller="filter"
-                    data-filter-siblings-value="0"
-                    data-filter-col-value=".school">
-                    <div class="form-floating">
-                        <%= text_field_tag 'school_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
-                        <%= label_tag 'school_filter', t('.filter'), class: 'form-label' %>
-                    </div>
-                </th>
-                <th data-controller="filter"
-                    data-filter-siblings-value="0"
-                    data-filter-col-value=".edit">
-                    <div class="form-floating">
-                        <%= text_field_tag 'edit_filter', nil, { placeholder: t('.filter'), class: 'form-control', data: { action: 'keydown.enter->filter#change', 'filter-target' => 'input' } }%>
-                        <%= label_tag 'edit_filter', t('.filter'), class: 'form-label' %>
-                    </div>
-                </th>
+                <% columns.each do |col| %>
+                    <%= render partial: 'shared/filter_header',
+                               locals: { column: col, siblings: '0' } %>
+                <% end %>
             </tr>
         </thead>
 

@@ -1,6 +1,6 @@
 <tr class="<%= "user#{user.id}" %> table-secondary">
     <td class="name"><%= link_to user.name, user_path(user) %></td>
-    <td class="kana"><%= link_to user.katakana_name, user_path(user) %></td>
+    <td class="katakana"><%= link_to user.katakana_name, user_path(user) %></td>
     <td class="email"><%= user.email %></td>
     <td class="edit"><%= link_to t('.edit_user'), edit_user_path(user), class: 'btn btn-primary' if current_user.staff? %></td>
 </tr>
