@@ -1,0 +1,19 @@
+<main id="error_500">
+    <div class="card w-50 p-5">
+        <h1 class="bg-danger text-white rounded p-3">
+            500: 内部サーバーエラー
+        </h1>
+        <h3>
+            リクエストを完了できませんでした。
+        </h3>
+        <% if current_user.customer? %>
+            <p>
+                しばらく待ってからもう一度お試しください。それでもうまくいかない場合は、学校にお問い合わせください。
+            </p>
+        <% else %>
+            <p>
+                しばらく待ってからもう一度お試しください。それでもうまくいかない場合は、BrettまたはLeroyまでお問い合わせください。
+            </p>
+        <% end %>
+    </div>
+</main>
