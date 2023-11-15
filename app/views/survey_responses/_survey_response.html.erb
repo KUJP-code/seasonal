@@ -1,20 +1,40 @@
 <% check_responses = survey_response.answers.select { |_k, v| v == 'on' } %>
 <% general_responses = survey_response.answers.reject { |_k, v| v == 'on' } %>
 
-<tr>
-  <td>
-    <%= survey_response.child.name %>
-  </td>
-
-  <% unless check_responses.empty? %>  
+  <tr>
     <td>
-      <% check_responses.map do |k, _v|  %>
-        <p><%= k %></p>
-      <% end %>
+      <%= survey_response.child.name %>
     </td>
-  <% end %>
-  
-  <% general_responses.sort_by { |k, _v| k }.each do |_k, v| %>
-    <td><%= v %></td>
-  <% end %>
-</tr>
+
+    <td>
+      <%= survey_response.child.en_name %>
+    </td>
+
+    <td>
+      <%= survey_response.child.parent.email %>
+    </td>
+
+    <td>
+      <%= survey_response.child.parent.phone %>
+    </td>
+
+    <% unless check_responses.empty? %>  
+      <td>
+        <% check_responses.map do |k, _v|  %>
+          <p><%= k %></p>
+        <% end %>
+      </td>
+    <% end %>
+    
+    <% general_responses.sort_by { |k, _v| k }.each do |_k, v| %>
+      <td><%= v %></td>
+    <% end %>
+
+    <th>
+      <%= form_with model: survey_response,
+                    class: 'd-flex flex-column gap-2' do |f| %>
+        <%= f.text_area :comment %>
+        <%= f.submit t('.add_comment'), class: 'btn btn-primary' %>
+      <% end %>
+    </th> 
+  </tr>

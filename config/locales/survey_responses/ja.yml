@@ -1,3 +1,5 @@
 ja:
   survey_responses:
+    survey_response:
+      add_comment: "コメントを追加"
     response_appreciated: "ご回答ありがとうございました。"

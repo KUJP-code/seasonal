@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_15_095245) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_15_113309) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -246,6 +246,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_15_095245) do
     t.bigint "survey_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "comment"
     t.index ["child_id"], name: "index_survey_responses_on_child_id"
     t.index ["survey_id"], name: "index_survey_responses_on_survey_id"
   end

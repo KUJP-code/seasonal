@@ -12,12 +12,23 @@ class SurveyResponsesController < ApplicationController
     end
   end
 
+  def update
+    @response = SurveyResponse.find(params[:id])
+
+    if @response.update(survey_response_params)
+      redirect_to survey_path(@response.survey),
+                  notice: 'Comment added'
+    else
+      redirect_back alert: 'Failed to add comment'
+    end
+  end
+
   private
 
   def survey_response_params
     params
     params.require(:survey_response).permit(
-      :id, :child_id, :survey_id, answers: {}
+      :id, :child_id, :comment, :survey_id, answers: {}
     )
   end
 end
