@@ -29,9 +29,9 @@ class SetsumeikaiPolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin'
-        Setsumeikai.all.includes(:school)
+        Setsumeikai.includes(:school)
       when 'area_manager'
-        user.all_setsumeikais
+        user.area_setsumeikais
       when 'school_manager'
         user.school_setsumeikais
       end

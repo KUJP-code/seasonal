@@ -6,10 +6,7 @@ class SetsumeikaisController < ApplicationController
   def index
     @schools = policy_scope(School).order(:id)
     @school = params[:school] ? School.find(params[:school]) : @schools.first
-    @setsumeikais = @school.setsumeikais
-                           .includes(:involved_schools)
-                           .order(start: :desc)
-                           .page(params[:page])
+    @setsumeikais = index_setsumeikais
     @setsumeikai = params[:setsumeikai] ? setsu_from_params : default_setsu
   end
 
@@ -69,6 +66,16 @@ class SetsumeikaisController < ApplicationController
   def default_setsu
     Setsumeikai.new(school_id: @school.id,
                     setsumeikai_involvements_attributes: [{ school_id: @school.id }])
+  end
+
+  def index_setsumeikais
+    policy_scope(Setsumeikai)
+      .joins(:setsumeikai_involvements)
+      .where(setsumeikai_involvements: { school_id: @school.id })
+      .distinct
+      .includes(:involved_schools, :school)
+      .order(start: :desc)
+      .page(params[:page])
   end
 
   def set_setsumeikai

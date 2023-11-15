@@ -51,14 +51,6 @@ class School < ApplicationRecord
   # Validations
   validates :name, presence: true
 
-  def all_setsumeikais
-    Setsumeikai.where(
-      'setsumeikais.id IN (?) OR setsumeikais.id IN (?)',
-      setsumeikais.ids,
-      involved_setsumeikais.ids
-    )
-  end
-
   def as_json(_options = {})
     {
       id: id.to_s,

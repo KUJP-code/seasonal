@@ -21,7 +21,7 @@ class User < ApplicationRecord
                              source: :manageable,
                              source_type: 'School'
   has_many :school_setsumeikais, through: :managed_schools,
-                                 source: :setsumeikais
+                                 source: :involved_setsumeikais
   has_many :school_children, through: :managed_schools,
                              source: :children
   has_many :school_events, -> { order(start_date: :desc) },
@@ -37,7 +37,7 @@ class User < ApplicationRecord
   has_many :area_schools, through: :managed_areas,
                           source: :schools
   has_many :area_setsumeikais, through: :area_schools,
-                               source: :setsumeikais
+                               source: :involved_setsumeikais
   has_many :area_inquiries, through: :area_schools,
                             source: :school_inquiries
   has_many :area_setsumeikai_inquiries, through: :area_schools,
@@ -110,22 +110,6 @@ class User < ApplicationRecord
       'inquiries.school_id IN (?) OR inquiries.setsumeikai_id IN (?)',
       managed_school_ids,
       Setsumeikai.where(school_id: managed_school_ids).ids
-    )
-  end
-
-  def all_setsumeikais
-    managed_school_ids = area_manager? ? area_schools.ids : managed_schools.ids
-    involved_setsumeikai_ids =
-      if area_manager?
-        area_schools.reduce([]) { |arr, s| arr.concat(s.involved_setsumeikais.ids) }
-      else
-        managed_schools.reduce([]) { |arr, s| arr.concat(s.involved_setsumeikais.ids) }
-      end
-
-    Setsumeikai.where(
-      'setsumeikais.school_id IN (?) OR setsumeikais.id IN (?)',
-      managed_school_ids,
-      involved_setsumeikai_ids
     )
   end
 
