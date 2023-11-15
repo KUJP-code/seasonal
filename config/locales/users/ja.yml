@@ -38,6 +38,7 @@ ja:
       res_kids: "予約生人数"
       photo_sales: "フォトサービス売り上げ"
       stats: "統計"
+      surveys: "顧客調査"
       total_kids: "合計人数"
       total_revenue: "合計売上"
     create:
@@ -106,6 +107,7 @@ ja:
       manage_inquiries: "問い合わせフォーム確認・編集"
       manage_setsumeikais: "説明会追加・編集"
       stats: "統計"
+      surveys: "顧客調査"
     show:
       attendance: "アテンダンス"
       delete: "削除"

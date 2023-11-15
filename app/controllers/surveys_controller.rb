@@ -8,7 +8,9 @@ class SurveysController < ApplicationController
   end
 
   def show
-    @responses = @survey.survey_responses.includes(child: %i[parent])
+    @responses = policy_scope(SurveyResponse)
+                 .where(survey_id: @survey.id)
+                 .includes(child: %i[parent])
   end
 
   def new

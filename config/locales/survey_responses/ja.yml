@@ -1,5 +1,11 @@
 ja:
   survey_responses:
+    response_appreciated: "ご回答ありがとうございました。"
     survey_response:
       add_comment: "コメントを追加"
-    response_appreciated: "ご回答ありがとうございました。"
+    survey_response_table:
+      comment: "コメント"
+      email: "メールアドレス"
+      en_name: "名前(ローマ字)"
+      name: "名前"
+      phone: "携帯電話番号"

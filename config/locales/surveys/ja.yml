@@ -1,0 +1,10 @@
+ja:
+  surveys:
+    show:
+      responses: "アンケート回答"
+
+    survey:
+      criteria: "調査基準"
+      questions: "アンケートの質問"
+      responses: "アンケート回答"
+      view_responses: "回答を見る"
