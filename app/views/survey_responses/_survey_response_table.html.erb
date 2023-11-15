@@ -1,7 +1,13 @@
+<% check_qs = survey.questions.select { |q| q['input_type'] == 'checkbox' } %>
+<% regular_qs = survey.questions.reject { |q| q['input_type'] == 'checkbox' } %>
+
 <table class="table table-striped table-hover">
     <thead class="table-primary">
         <th><%= t('.child_name') %></th>
-        <% survey.questions.sort_by { |q| q['text'] }.each do |q| %>
+        <% unless check_qs.empty? %>
+            <th><%= check_qs.map { |q| q['text'] }.join(", ") %></th>
+        <% end %>
+        <% regular_qs.sort_by { |q| q['text'] }.each do |q| %>
             <th><%= q['text'] %></th>
         <% end %>
     </thead>

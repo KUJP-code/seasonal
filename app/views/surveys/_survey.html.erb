@@ -1,36 +1,46 @@
 <% response_count = survey.survey_responses.size %>
 
-<div class="card w-100 align-items-center">
-    <div class="card text-white <%= survey.active ? 'bg-success' : 'bg-danger' %>">
+<div class="card w-100 align-items-between">
+    <div class="w-100 card align-items-center text-white <%= survey.active ? 'bg-success' : 'bg-danger' %>">
         <h2><%= survey.name %></h2>
-        <h5><%= "Active: #{survey.active ? '◯' : '🗙'}" %></h5>
-        <h5>
-            <%= "#{response_count} #{response_count == 1 ? "response" : "responses"}" %>
-        </h5>
+        <div class="d-flex flex-row gap-3">
+            <h5><%= "Active: #{survey.active ? '◯' : '🗙'}" %></h5>
+            <h5>
+                <%= "#{response_count} #{response_count == 1 ? "response" : "responses"}" %>
+            </h5>
+        </div>
     </div>
-    <h3>Questions:</h3>
-    <div class="d-flex flex-wrap gap-5 justify-content-center">
-        <% survey.questions.each do |q| %>
-            <div class="d-flex flex-column">
-                <h4><%= q['text'] %></h4>
-                <p><%= q['input_type'].humanize %></p>
-                <p><%= q['options'] if q['options'] %></p>
+    <div class="d-flex flex-row">
+        <div class="d-flex flex-column gap-3 w-75">
+            <h3>Questions:</h3>
+            <div class="d-flex flex-wrap gap-5 justify-content-center">
+                <% survey.questions.each do |q| %>
+                    <div class="d-flex flex-column gap-2">
+                        <div class="card bg-info">
+                            <h4><%= q['text'] %></h4>
+                            <p><%= q['input_type'].humanize %></p>
+                        </div>
+                        <% if q['options'] %>
+                            <% q['options'].split(',').each do |o| %>
+                                <p><%= o %></p>
+                            <% end %>
+                        <% end %>
+                    </div>
+                <% end %>
             </div>
-        <% end %>
+        </div>
+        <div class="d-flex flex-column gap-3 w-25">
+            <h3>Criteria:</h3>
+            <% survey.criteria.each do |k, v| %>
+                <% next if v.empty? %>
+                <p><%= "#{k.humanize}: #{v}" %></p>
+            <% end %>
+        </div>
     </div>
-    <h3>Criteria</h3>
-    <div class="d-flex flex-wrap gap-5 justify-content-center">
-        <% survey.criteria.each do |k, v| %>
-            <% next if v.empty? %>
-
-            <p><%= "#{k.humanize}: #{v}" %></p>
-        <% end %>
-    </div>
-    <div class="d-flex gap-3">
+    <div class="align-self-center d-flex gap-3">
         <%= link_to 'Edit',
                     edit_survey_path(survey),
                     class: 'btn btn-primary' %>
-
         <%= link_to 'View Responses',
                     survey_path(survey),
                     class: 'btn btn-primary' %>

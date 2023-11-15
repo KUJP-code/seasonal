@@ -1,9 +1,18 @@
+<% check_responses = survey_response.answers.select { |_k, v| v == 'on' } %>
+<% general_responses = survey_response.answers.reject { |_k, v| v == 'on' } %>
+
 <tr>
   <td>
     <%= survey_response.child.name %>
   </td>
   
-    <% survey_response.answers.sort_by { |k, _v| k }.each do |_k, v| %>
-      <td><%= v %></td>
+  <td>
+    <% check_responses.map do |k, _v|  %>
+      <p><%= k %></p>
     <% end %>
+  </td>
+
+  <% general_responses.sort_by { |k, _v| k }.each do |_k, v| %>
+    <td><%= v %></td>
+  <% end %>
 </tr>
