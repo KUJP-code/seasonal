@@ -244,7 +244,8 @@ class UsersController < ApplicationController
 
   def sm_upcoming_events_data(event_ids, user)
     @deleted_invoices = sm_deleted_invoices(user, event_ids)
-    @recent_bookings = Invoice.where(event_id: event_ids)
+    @recent_bookings = Invoice.real
+                              .where(event_id: event_ids)
                               .order(created_at: :desc)
                               .limit(5)
                               .includes(:child)
