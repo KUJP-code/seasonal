@@ -8,7 +8,7 @@ class SurveysController < ApplicationController
   end
 
   def show
-    @responses = @survey.survey_responses
+    @responses = @survey.survey_responses.includes(:child)
   end
 
   def new

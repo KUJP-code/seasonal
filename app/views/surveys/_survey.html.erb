@@ -18,7 +18,7 @@
                     <div class="d-flex flex-column gap-2">
                         <div class="card bg-info">
                             <h4><%= q['text'] %></h4>
-                            <p><%= q['input_type'].humanize %></p>
+                            <p>Input Type: <%= q['input_type'].humanize %></p>
                         </div>
                         <% if q['options'] %>
                             <% q['options'].split(',').each do |o| %>
@@ -30,11 +30,13 @@
             </div>
         </div>
         <div class="d-flex flex-column gap-3 w-25">
-            <h3>Criteria:</h3>
-            <% survey.criteria.each do |k, v| %>
-                <% next if v.empty? %>
-                <p><%= "#{k.humanize}: #{v}" %></p>
-            <% end %>
+            <div class="card m-3 bg-info">
+                <h3>Criteria:</h3>
+                <% survey.criteria.each do |k, v| %>
+                    <% next if v.empty? %>
+                    <p><%= "#{k.humanize}: #{v}" %></p>
+                <% end %>
+            </div>
         </div>
     </div>
     <div class="align-self-center d-flex gap-3">

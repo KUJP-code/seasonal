@@ -2,5 +2,5 @@
 
 class SurveyResponse < ApplicationRecord
   belongs_to :child
-  belongs_to :survey
+  belongs_to :survey, counter_cache: true
 end
