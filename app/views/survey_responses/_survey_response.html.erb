@@ -5,13 +5,15 @@
   <td>
     <%= survey_response.child.name %>
   </td>
-  
-  <td>
-    <% check_responses.map do |k, _v|  %>
-      <p><%= k %></p>
-    <% end %>
-  </td>
 
+  <% unless check_responses.empty? %>  
+    <td>
+      <% check_responses.map do |k, _v|  %>
+        <p><%= k %></p>
+      <% end %>
+    </td>
+  <% end %>
+  
   <% general_responses.sort_by { |k, _v| k }.each do |_k, v| %>
     <td><%= v %></td>
   <% end %>

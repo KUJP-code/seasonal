@@ -7,7 +7,9 @@
 
     <h3>Responses</h3>
 
-    <%= render 'survey_responses/survey_response_table',
-                survey: @survey,
-                responses: @responses %>
+    <div class="card">
+        <%= render 'survey_responses/survey_response_table',
+                    survey: @survey,
+                    responses: @responses %>
+    </div>
 </main>

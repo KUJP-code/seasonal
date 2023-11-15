@@ -8,7 +8,7 @@ class SurveysController < ApplicationController
   end
 
   def show
-    @responses = policy_scope(@survey.survey_responses)
+    @responses = @survey.survey_responses
   end
 
   def new
