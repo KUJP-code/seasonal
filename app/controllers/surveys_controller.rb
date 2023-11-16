@@ -8,8 +8,10 @@ class SurveysController < ApplicationController
   end
 
   def show
+    @schools = policy_scope(School).includes(:survey_responses)
+    @school = params[:school] ? School.find(params[:school]) : @schools.first
     @responses = policy_scope(SurveyResponse)
-                 .where(survey_id: @survey.id)
+                 .where(survey_id: @survey.id, child_id: @school.children.ids)
                  .includes(child: %i[parent])
   end
 

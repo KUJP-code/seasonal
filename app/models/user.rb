@@ -36,6 +36,8 @@ class User < ApplicationRecord
                            source_type: 'Area'
   has_many :area_schools, through: :managed_areas,
                           source: :schools
+  has_many :area_survey_responses, through: :area_schools,
+                                   source: :survey_responses
   has_many :area_setsumeikais, through: :area_schools,
                                source: :involved_setsumeikais
   has_many :area_inquiries, through: :area_schools,
