@@ -14,7 +14,7 @@
     </div>
     <div class="d-flex flex-row">
         <div class="d-flex flex-column gap-3 w-75">
-            <h3 class='card bg-info'><%= t('.questions') %>:</h3>
+            <h3 class='card bg-info'><%= t('.questions') %></h3>
             <div class="d-flex flex-row flex-wrap">
                 <% survey.questions.each do |q| %>
                     <div class="d-flex gap-2 w-50 p-1 flex-column">
@@ -37,7 +37,7 @@
         </div>
         <div class="d-flex flex-column gap-3 w-25">
             <div class="card m-3 bg-info">
-                <h3><%= t('.criteria') %>:</h3>
+                <h3><%= t('.criteria') %></h3>
                 <% survey.criteria.each do |k, v| %>
                     <% next if v.empty? %>
                     <p><%= "#{k.humanize}: #{v}" %></p>

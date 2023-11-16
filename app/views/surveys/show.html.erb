@@ -8,7 +8,7 @@
             <% @schools.each do |school| %>
                 <%= link_to survey_path(id: @survey.id, school: school.id) do %>
                     <div class="card<%= ' bg-primary text-white fw-semibold' if school.id == @school.id %>">
-                        <%= "#{school.name}: #{school.survey_responses.count}" %>
+                        <%= "#{school.name}: #{school.survey_responses.select { |sr| sr.survey_id == @survey.id }.size }" %>
                     </div>
                 <% end %>
             <% end %>
