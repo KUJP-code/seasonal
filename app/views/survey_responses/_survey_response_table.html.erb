@@ -16,7 +16,9 @@
         <% regular_qs.sort_by { |q| q['text'] }.each do |q| %>
             <th><%= q['text'] %></th>
         <% end %>
-        <th><%= t('.comment') %></th> 
+        <% unless current_user.statistician? %>
+            <th><%= t('.comment') %></th> 
+        <% end %>
     </thead>
     <tbody>
         <% responses.each do |r| %>

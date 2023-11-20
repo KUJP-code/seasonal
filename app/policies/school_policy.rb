@@ -3,7 +3,7 @@
 # Handles authorization for Schools
 class SchoolPolicy < ApplicationPolicy
   def show?
-    user.admin? ||
+    user.admin? || user.statistician? ||
       (user.school_manager? && user.managed_school.id == record.id)
   end
 
@@ -27,7 +27,7 @@ class SchoolPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       case user.role
-      when 'admin'
+      when 'admin', 'statistician'
         School.real.order(:id)
       when 'area_manager'
         user.area_schools.real.order(:id)

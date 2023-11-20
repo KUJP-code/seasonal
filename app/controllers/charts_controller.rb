@@ -7,12 +7,12 @@ class ChartsController < ApplicationController
   def index
     authorize(:chart)
     @nav = nav_data('index')
-    @data = send("#{@nav[:category]}_data")
+    send("#{@nav[:category]}_data")
   end
 
   def show
     @nav = nav_data('show')
-    @data = send("#{@nav[:category]}_data")
+    send("#{@nav[:category]}_data")
   end
 
   private
@@ -156,7 +156,7 @@ class ChartsController < ApplicationController
       category: nav_category,
       categories: CATEGORIES,
       event: params[:event] || Event.last.name,
-      events: Event.all.pluck(:name).uniq,
+      events: Event.distinct.pluck(:name),
       schools: policy_scope(School),
       school: nav_school(action)
     }
@@ -169,8 +169,10 @@ class ChartsController < ApplicationController
   def nav_school(action)
     if action == 'show'
       authorize(School.find(params[:id]))
+    elsif current_user.admin? || current_user.statistician?
+      School.new(id: 0, name: 'All Schools')
     else
-      current_user.admin? ? School.new(id: 0, name: 'All Schools') : School.new(id: 0, name: 'Area Schools')
+      School.new(id: 0, name: 'Area Schools')
     end
   end
 

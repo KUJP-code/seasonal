@@ -251,6 +251,10 @@ class UsersController < ApplicationController
                               .includes(:child)
   end
 
+  def statistician_data(user)
+    admin_data(user)
+  end
+
   def user_params
     params.require(:user).permit(
       :id, :email, :kana_first, :prefecture, :address, :postcode, :phone,

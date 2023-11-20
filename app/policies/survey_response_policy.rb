@@ -8,7 +8,7 @@ class SurveyResponsePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       case user.role
-      when 'admin'
+      when 'admin', 'statistician'
         SurveyResponse.all
       when 'area_manager'
         user.area_survey_responses

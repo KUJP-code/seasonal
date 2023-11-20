@@ -27,6 +27,6 @@ class PriceListPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.staff?
+    user.admin?
   end
 end

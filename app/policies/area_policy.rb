@@ -11,7 +11,7 @@ class AreaPolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin'
-        Area.all.order(:id)
+        Area.order(:id)
       when 'area_manager'
         user.managed_areas
       end

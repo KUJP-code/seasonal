@@ -1,11 +1,13 @@
+<% all_schools = current_user.admin? || current_user.statistician? %>
+
 <nav class="w-100 d-flex gap-5 p-3 justify-content-center align-items-center">
-    <% if current_user.admin? || current_user.area_manager? %>
+    <% if all_schools || current_user.area_manager? %>
         <details class="flex-grow-1">
             <summary class="card p-2 bg-primary text-white fw-semibold">
                 <h2>スクール: <%= @nav[:school].name %></h2>
             </summary>
             <div class="d-flex flex-wrap justify-content-between gap-2 my-2">
-                <%= link_to (current_user.admin? ? "All Schools" : "Area Schools"),
+                <%= link_to (all_schools ? "All Schools" : "Area Schools"),
                             charts_path(
                                 category: @nav[:category],
                                 event: @nav[:event]

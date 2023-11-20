@@ -5,7 +5,7 @@
         <h2><%= survey.name %></h2>
             <div class="d-flex flex-row gap-3">
         <h5><%= "Active: #{survey.active ? '◯' : '🗙'}" %></h5>
-            <% if current_user.admin? %>
+            <% if current_user.admin? || current_user.statistician? %>
                 <h5>
                     <%= "#{response_count} #{t('.responses')}" %>
                 </h5>

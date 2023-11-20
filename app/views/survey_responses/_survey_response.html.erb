@@ -30,11 +30,13 @@
       <td><%= v %></td>
     <% end %>
 
-    <th>
-      <%= form_with model: survey_response,
-                    class: 'd-flex flex-column gap-2' do |f| %>
-        <%= f.text_area :comment %>
-        <%= f.submit t('.add_comment'), class: 'btn btn-primary' %>
-      <% end %>
-    </th> 
+    <% unless current_user.statistician? %>
+      <th>
+        <%= form_with model: survey_response,
+                      class: 'd-flex flex-column gap-2' do |f| %>
+          <%= f.text_area :comment %>
+          <%= f.submit t('.add_comment'), class: 'btn btn-primary' %>
+        <% end %>
+      </th>
+    <% end %>
   </tr>

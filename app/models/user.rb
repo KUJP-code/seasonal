@@ -90,6 +90,7 @@ class User < ApplicationRecord
               school_manager: 1,
               area_manager: 2,
               admin: 3,
+              statistician: 4,
               default: :customer
 
   # Scopes for each role

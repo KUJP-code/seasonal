@@ -2,11 +2,11 @@
 
 class SurveyPolicy < ApplicationPolicy
   def index?
-    user.staff?
+    user.staff? || user.statistician?
   end
 
   def show?
-    user.staff?
+    user.staff? || user.statistician?
   end
 
   def new?
@@ -27,7 +27,7 @@ class SurveyPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      user.staff? ? Survey.all : []
+      user.staff? || user.statistician? ? Survey.all : []
     end
   end
 end
