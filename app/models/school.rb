@@ -44,6 +44,11 @@ class School < ApplicationRecord
   has_many :involved_setsumeikais, through: :setsumeikai_involvements,
                                    source: :setsumeikai,
                                    class_name: 'Setsumeikai'
+  has_many :calendar_setsumeikais,
+           -> { where('start > ? AND release_date < ?', Time.zone.now, Time.zone.now) },
+           through: :setsumeikai_involvements,
+           source: :setsumeikai,
+           class_name: 'Setsumeikai'
 
   # Scopes
   scope :real, -> { where.not(id: [1, 2]) }
@@ -61,7 +66,7 @@ class School < ApplicationRecord
       busAreas: details['bus_areas'] || [''],
       hiragana: details['hiragana'] || [''],
       nearbyStations: details['nearby_stations'] || [''],
-      setsumeikais: involved_setsumeikais.calendar.includes(:school)
+      setsumeikais: calendar_setsumeikais
     }
   end
 

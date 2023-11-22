@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-# Handles data flow for Schools
 class SchoolsController < ApplicationController
   before_action :set_school, only: %i[edit show update]
 
   def index
-    @schools = School.real.order(id: :desc)
+    @schools = School.real.order(id: :desc).includes(calendar_setsumeikais: %i[school])
     respond_to do |f|
       f.json { render json: @schools }
     end
