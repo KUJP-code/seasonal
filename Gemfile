@@ -103,6 +103,9 @@ gem 'oj'
 gem 'rack-cors'
 
 group :development, :test do
+  # Ruby LSP from shopify for autocomlete
+  gem 'ruby-lsp', require: false
+
   # Capybara for system/feature testing
   gem 'capybara'
 

@@ -147,7 +147,7 @@
                 </tr>
     
                 <%= render partial: 'children/time_slots/child_row',
-                           collection: (@children + (@afternoon_children || [])),
+                           collection: (@children + (@afternoon_children - @children || [])),
                            as: :child,
                            locals: {
                                 afternoon: @afternoon,
