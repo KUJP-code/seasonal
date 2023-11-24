@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-# Represents an option
-# Time slots have many options, which can be re-used for other time slots
-# and registered for by children
 class Option < ApplicationRecord
+  attr_readonly :optionable_id, :optionable_type
+
   belongs_to :optionable, polymorphic: true
   delegate :event, to: :optionable
   delegate :school, to: :event
@@ -29,7 +28,11 @@ class Option < ApplicationRecord
                   default: :regular
 
   validates :name, :cost, presence: true
-  validates :cost, numericality: { greater_than_or_equal_to: 0, less_than: 50_000, only_integer: true }
+  validates :cost, numericality: {
+    greater_than_or_equal_to: 0,
+    less_than: 50_000,
+    only_integer: true
+  }
 
   # Scopes
   # For category of option
