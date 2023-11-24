@@ -50,7 +50,7 @@ gem 'bootstrap', '~> 5.2.2'
 gem 'image_processing', '~> 1.2'
 
 # Use Devise for authentication
-gem 'devise'
+gem 'devise', '4.9.3'
 
 # Use Pundit for authorisation
 gem 'pundit', '~> 2.3'
