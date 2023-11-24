@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 ruby '3.0.6'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '~> 7.0.4'
+gem 'rails', '7.1.2'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
@@ -56,7 +56,7 @@ gem 'devise'
 gem 'pundit', '~> 2.3'
 
 # Use PaperTrail for backup/reversion of certain models
-gem 'paper_trail'
+gem 'paper_trail', '15.1.0'
 
 # Localize Devise views so I can read my own app
 gem 'devise-i18n'
@@ -116,16 +116,16 @@ group :development, :test do
   gem 'byebug', platform: :mri
 
   # RSpec to write test suites
-  gem 'rspec-rails', '6.0'
+  gem 'rspec-rails', '6.1'
 
   # Factory bot for test data creation
   gem 'factory_bot_rails', '6.2.0'
 
   # DB cleaner for test data management
-  gem 'database_cleaner'
+  gem 'database_cleaner-active_record', '2.1.0'
 
   # Check for N+1/unused eager loading
-  gem 'bullet'
+  gem 'bullet', '7.1.4'
 
   # Use Rubocop to check for dumb mistakes
   gem 'rubocop', '1.57', require: false
