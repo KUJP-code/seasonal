@@ -63,7 +63,7 @@
                     <th><%= t('.allergy') %></th>
                     <th><%= t('.photo') %></th>
 
-                    <% @event_options.concat(options).each do |o| %>
+                    <% @event_options + options.each do |o| %>
                         <th scope="col"><%= o.name %></th>
                     <% end %>
 

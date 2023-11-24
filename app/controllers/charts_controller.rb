@@ -190,7 +190,7 @@ class ChartsController < ApplicationController
       name: @nav[:event],
       school_id: School.real.ids
     ).ids
-    TimeSlot.where(event_id: event_ids).ids.concat(event_ids)
+    TimeSlot.where(event_id: event_ids).ids + event_ids
   end
 
   def optionable_ids_school(school)
