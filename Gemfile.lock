@@ -245,7 +245,7 @@ GEM
       ttfunk (~> 1.7)
     prism (0.17.1)
     public_suffix (5.0.1)
-    puma (6.1.1)
+    puma (6.4.0)
       nio4r (~> 2.0)
     pundit (2.3.0)
       activesupport (>= 3.0.0)
@@ -430,7 +430,7 @@ DEPENDENCIES
   pg (~> 1.1)
   postgres-copy
   prawn
-  puma (< 7)
+  puma (~> 6.4)
   pundit (~> 2.3)
   rack-cors
   rack-mini-profiler
