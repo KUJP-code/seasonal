@@ -55,7 +55,7 @@ class Invoice < ApplicationRecord
     @breakdown = +''
     course_cost = calc_course_cost
     option_cost = calc_option_cost
-    adjustments = calc_adjustments
+    adjustments = calc_adjustments(slot_regs.size - @ignore_slots.size)
     generate_details
 
     calculated_cost = course_cost + adjustments + option_cost
@@ -84,9 +84,6 @@ class Invoice < ApplicationRecord
 
   private
 
-  # Recursively finds the next largest course for given number of registrations
-  # The 30 and 35 can be hardcoded since I'm told the number of courses
-  # doesn't change
   def best_price(num_regs, courses)
     return 0 if num_regs.zero?
 
@@ -123,13 +120,13 @@ class Invoice < ApplicationRecord
     false
   end
 
-  def calc_adjustments
-    return 0 unless adjustments.size.positive? || needs_hat? || first_time? || repeater?
+  def calc_adjustments(num_regs)
+    return 0 unless adjustments.size.positive? || needs_hat? || first_time?(num_regs) || repeater?
 
     @breakdown << '<h4 class="fw-semibold">調整:</h4>'
     @breakdown << '<div class="d-flex flex-column align-items-start gap-1">'
     hat_adjustment if needs_hat?
-    first_time_adjustment if first_time?
+    first_time_adjustment if first_time?(num_regs)
     repeater_discount if repeater?
     generic_adj = adjustments.reduce(0) { |sum, adj| sum + adj.change }
     adjustments.each do |adj|
@@ -235,8 +232,8 @@ class Invoice < ApplicationRecord
     end
   end
 
-  def first_time?
-    child.external? && child.first_seasonal
+  def first_time?(num_regs)
+    child.external? && child.first_seasonal && num_regs.positive?
   end
 
   def first_time_adjustment
@@ -248,8 +245,10 @@ class Invoice < ApplicationRecord
     adjustments.new(change: registration_cost, reason: reason)
   end
 
-  def full_days(slot_ids)
-    TimeSlot.all.where(event_id: event_id, id: slot_ids, morning_slot_id: slot_ids).where.not(category: :special).size
+  def full_days
+    # Can't use a DB query because TimeSlots aren't associated on newly built regs
+    slots = slot_regs.map(&:registerable)
+    slots.count { |slot| slots.include?(slot.morning_slot) }
   end
 
   def generate_details
@@ -338,7 +337,8 @@ class Invoice < ApplicationRecord
             else
               slot_regs.size
             end
-    slots < 5 && child.kindy && full_days(slot_regs.map(&:registerable_id)).positive?
+    p slots < 5, child.kindy, full_days.positive?
+    slots < 5 && child.kindy && full_days.positive?
   end
 
   def non_member_prices
@@ -625,7 +625,7 @@ class Invoice < ApplicationRecord
 
   # Calculates how many times we need to apply the dumb 200円 increase
   def pointless_price(num_regs, courses)
-    days = full_days(slot_regs.map(&:registerable_id))
+    days = full_days
     extension_cost = days * (courses['1'] + 200)
     @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{yenify(extension_cost)}円</p>\n"
     spot_cost = spot_use(num_regs - days, courses)
