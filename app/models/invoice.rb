@@ -337,7 +337,6 @@ class Invoice < ApplicationRecord
             else
               slot_regs.size
             end
-    p slots < 5, child.kindy, full_days.positive?
     slots < 5 && child.kindy && full_days.positive?
   end
 
