@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Option < ApplicationRecord
-  attr_readonly :optionable_id, :optionable_type
-
   belongs_to :optionable, polymorphic: true
   delegate :event, to: :optionable
   delegate :school, to: :event
