@@ -95,14 +95,19 @@ class ChildrenController < ApplicationController
   end
 
   def afternoon_data
-    @afternoon_children = @afternoon.children.includes(
-      :options,
-      :parent,
-      :registrations,
-      :regular_schedule,
-      :time_slots
-    )
-    @afternoon_options = @afternoon.options.not_time
+    if @afternoon
+      @afternoon_children = @afternoon.children.includes(
+        :options,
+        :parent,
+        :registrations,
+        :regular_schedule,
+        :time_slots
+      )
+      @afternoon_options = @afternoon.options.not_time
+    else
+      @afternoon_children = []
+      @afternoon_options = []
+    end
   end
 
   def attendance_request?
@@ -136,7 +141,7 @@ class ChildrenController < ApplicationController
       :time_slots
     )
     @afternoon = @slot.afternoon_slot
-    afternoon_data if @afternoon
+    afternoon_data
 
     render 'children/time_slots/attendance'
   end
