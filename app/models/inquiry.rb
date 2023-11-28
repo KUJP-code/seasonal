@@ -46,6 +46,8 @@ class Inquiry < ApplicationRecord
   end
 
   def child_grade
+    return '' unless child_birthday
+
     YEAR_AGE_MAP[Time.zone.now.year - child_birthday.year] || ''
   end
 
@@ -53,7 +55,7 @@ class Inquiry < ApplicationRecord
     {
       category: CATEGORY_MAP[category],
       id: id.to_s,
-      target: child_name
+      target: child_name || ''
     }
   end
 
