@@ -63,16 +63,12 @@
                     <th><%= t('.allergy') %></th>
                     <th><%= t('.photo') %></th>
 
-                    <% @event_options + options.each do |o| %>
-                        <th scope="col"><%= o.name %></th>
-                    <% end %>
-
-                    <% options.each do |o| %>
+                    <% (@event_options + options).each do |o| %>
                         <th scope="col">
                             <%= "#{o.name}: #{o.registrations.size}" %>
                         </th>
                     <% end %>
-    
+
                     <% if @slot.special? && extensions.size.positive? %>
                         <th>
                             中延長: 
