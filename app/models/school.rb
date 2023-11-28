@@ -2,7 +2,7 @@
 
 class School < ApplicationRecord
   # Allow API details to be set
-  attr_accessor :bus_areas, :hiragana, :nearby_stations
+  attr_accessor :bus_areas, :hiragana, :nearby_schools, :nearby_stations
 
   before_validation :set_details
 
@@ -65,6 +65,7 @@ class School < ApplicationRecord
       image: Rails.env.production? ? image.url : '',
       busAreas: details['bus_areas'] || [''],
       hiragana: details['hiragana'] || [''],
+      nearbySchools: details['nearby_schools'] || [''],
       nearbyStations: details['nearby_stations'] || [''],
       setsumeikais: calendar_setsumeikais
     }
@@ -114,6 +115,7 @@ class School < ApplicationRecord
     self.details = {
       bus_areas: bus_areas.split(/, |,/),
       hiragana: hiragana.split(/, |,/),
+      nearby_schools: nearby_schools.split(/, |,/),
       nearby_stations: nearby_stations.split(/, |,/)
     }
   end

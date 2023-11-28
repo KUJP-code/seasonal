@@ -46,7 +46,7 @@ class SchoolsController < ApplicationController
   def school_params
     params.require(:school).permit(
       :name, :address, :phone, :area_id, :nearby_stations, :bus_areas,
-      :hiragana, :image_id, :email, managements_attributes:
+      :hiragana, :image_id, :email, :nearby_schools, managements_attributes:
         %i[id manageable_id manageable_type manager_id _destroy]
     )
   end

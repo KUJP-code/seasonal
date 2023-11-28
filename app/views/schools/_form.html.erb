@@ -1,4 +1,5 @@
 <% if @school.details %>
+    <% nearby_schools = @school.details['nearby_schools'] %>
     <% bus_areas = @school.details['bus_areas'] %>
     <% nearby_stations = @school.details['nearby_stations'] %>
     <% hiragana = @school.details['hiragana'] %>
@@ -51,6 +52,16 @@
                                 { class: 'form-select' } %>
     </div>
 
+    <div class="form-floating">
+        <%= f.text_area :nearby_schools, class: 'form-control',
+                        placeholder: 'Nearby Schools areas (comma separated)',
+                        size: '50x30',
+                        value: (nearby_schools ? nearby_schools.join(', ') : '') %>
+        <%= f.label :nearby_schools,
+                    'Nearby Schools (comma separated)',
+                    class: 'form-label' %>
+    </div>
+    
     <div class="form-floating">
         <%= f.text_area :bus_areas, class: 'form-control',
                         placeholder: 'Pickup/Dropoff areas (comma separated)',
