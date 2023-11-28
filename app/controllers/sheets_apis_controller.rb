@@ -54,7 +54,7 @@ class SheetsApisController < ApplicationController
   end
 
   def inquiries_from_update_params
-    param_inquries = Oj.load(update_params[:update].tr('\\', ''))
+    param_inquries = Oj.safe_load(update_params[:update].tr('\\', ''))
     @param_ids = param_inquries.pluck('id').map(&:to_i)
     Inquiry.where(id: @param_ids).includes(:setsumeikai)
   end
