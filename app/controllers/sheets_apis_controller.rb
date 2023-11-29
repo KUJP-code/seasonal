@@ -2,6 +2,7 @@
 
 class SheetsApisController < ApplicationController
   skip_before_action :verify_authenticity_token, only: %i[inquiries update]
+  before_action :verify_access_key, only: %i[inquiries update]
 
   def schools
     schools = School.real.select(:id, :name, :email).order(id: :desc)
@@ -74,5 +75,12 @@ class SheetsApisController < ApplicationController
     return true unless @r_success + @i_success == @inquiries.size
 
     false
+  end
+
+  def verify_access_key
+    return if Rails.env.local?
+    return if params[:accessKey] == ENV['SHEETS_API_ACCESS_KEY']
+
+    render json: { statusCode: 401, message: 'Unauthorized, check your accessKey' }, status: :unauthorized
   end
 end
