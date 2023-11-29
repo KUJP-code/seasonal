@@ -31,9 +31,9 @@ class InquiryPolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin'
-        Inquiry.order(:id)
+        Inquiry.all
       when 'area_manager', 'school_manager'
-        user.all_inquiries.order(:id)
+        user.all_inquiries
       end
     end
   end

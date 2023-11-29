@@ -2,7 +2,7 @@
 
 # Provides data for the charts pages
 class ChartsController < ApplicationController
-  CATEGORIES = %w[activities bookings children coupons edits options].freeze
+  CATEGORIES = %w[activities bookings children coupons edits options setsumeikais].freeze
 
   def index
     authorize(:chart)
@@ -223,5 +223,10 @@ class ChartsController < ApplicationController
           .group('options.name')
           .count('options.name')
           .except('なし')
+  end
+
+  def setsumeikais_data
+    @setsumeikais = policy_scope(Setsumeikai)
+    @inquiries = policy_scope(Inquiry)
   end
 end
