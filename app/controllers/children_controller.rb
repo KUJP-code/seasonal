@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-# Control flow of data for Children
 class ChildrenController < ApplicationController
   ALLOWED_SOURCES = %w[event time_slot].freeze
 
   def index
-    authorize(:child)
-    return send("#{params[:source]}_attendance") if attendance_request?
+    return show_attendance_sheet if attendance_request?
 
     return admin_index if current_user.admin?
 
@@ -108,6 +106,10 @@ class ChildrenController < ApplicationController
       @afternoon_children = []
       @afternoon_options = []
     end
+  end
+
+  def show_attendance_sheet
+    params[:source] == 'event' ? event_attendance : time_slot_attendance
   end
 
   def attendance_request?
