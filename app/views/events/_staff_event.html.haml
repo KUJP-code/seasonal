@@ -1,0 +1,18 @@
+-# locals: (event:)
+
+.card.d-grid
+  = link_to children_path(id: event.id, source: 'event') do
+    = picture_tag((event.avif.blank? ? '' : url_for(event.avif)),
+                  (event.image.blank? ? '' : url_for(event.image)),
+                  image: { class: 'img-fluid img-thumbnail', alt: event.name })
+
+  .d-flex.flex-column.flex-grow-1.gap-3
+    %h2.fw-bold
+      = link_to t('.title', name: event.name, school: event.school.name),
+                children_path(id: event.id, source: 'event')
+    %p= date_yy_mm_dd(event.start_date)
+
+  - if current_user.admin?
+    = link_to 'Edit Event',
+              edit_event_path(event),
+              class: 'btn btn-primary'

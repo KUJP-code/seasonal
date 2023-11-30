@@ -1,62 +1,39 @@
 <main id="invoice_index" class="gap-5 py-5">
     <% if @user %>
-        <% child_events = @user.children
-                                .map(&:school)
-                                .map(&:upcoming_events)
-                                .map(&:first)
-                                .uniq.compact %>
-        
-        <% unless child_events.empty? %>
-            <div class="card bg-info">
-                <% event_cost = @user.invoices
-                                .where(event_id: child_events)
-                                .reduce(0) { |sum, i| sum + i.total_cost } %>
-                <h2>
-                    <%= t('.event_cost', cost: number_to_currency(event_cost, unit: '円', precision: 0, locale: :ja), event: child_events.first.name) %>
-                </h2>
-                <p>
-                    複数のお子様のお申し込みをされた場合、合算された金額となります。
-                </p>
-            </div>
-        <% end %>
+        <% @children.each do |c| %>
+            <% next if c.real_invoices.size.zero? %>
 
-        <% @user.children.each do |child| %>
-            <% next if child.real_invoices.empty? %>
+            <h1><%= link_to c.name, child_path(c) %></h1>
+            <% c.events.order(start_date: :desc).each do |e| %>
+                <% next unless c.real_invoices.find { |i| i.event_id == e.id } %>
 
-            <h1><%= link_to child.name, child_path(child) %></h1>     
-            <% child.events.order(start_date: :desc).each do |event| %>
-                <% next unless @invoices.find { |i| i.event_id == event.id } %>
+                <% event_cost = c.real_invoices.select { |i| i.event_id == e.id }
+                                               .reduce(0) { |sum, i| sum + i.total_cost } %>
 
-                <%= render event, partial: 'events/event', child: child %>
+                <%= render partial: 'invoices/event_cost', locals: { cost: event_cost, event: e.name } %>
 
-                <%= render partial: 'invoices/invoice', collection: @invoices.select { |invoice| invoice.child_id == child.id && invoice.event_id == event.id }, locals: { index: true } %>
+                <%= render partial: 'events/child_event', locals: { event: e, child: c } %>
+
+                <%= render partial: 'invoices/invoice',
+                           collection: c.real_invoices.select { |i| i.event_id == e.id },
+                           locals: { index: true } %>
             <% end %>
         <% end %>
     <% else %>
-        <% next_event = @child.next_event %>
+        <% next_event = @events.first %>
 
         <% unless next_event.nil? %>
-            <% event_cost = @child.invoices
+            <% event_cost = @invoices
                     .select { |i| i.event_id == next_event.id }
                     .reduce(0) { |sum, i| sum + i.total_cost } %>
-
-            <div class="card bg-info">
-                <h2>
-                    <%= t('.event_cost', cost: number_to_currency(event_cost, unit: '円', precision: 0, locale: :ja), event: next_event.name) %>
-                </h2>
-                <p>
-                    複数のお子様のお申し込みをされた場合、合算された金額となります。
-                </p>
-            </div>
+            <%= render partial: 'invoices/event_cost', locals: { cost: event_cost, event: next_event.name } %>
         <% end %>
 
-        <h1><%= link_to @child.name, child_path(@child) %></h1>     
-        <% @child.events.order(start_date: :desc).each do |event| %>
-            <% next unless @invoices.find { |i| i.event_id == event.id } %>
+        <h1><%= link_to @child.name, child_path(@child) %></h1>
+        <% @events.each do |e| %>
+            <%= render partial: 'events/staff_event', locals: { event: e } %>
 
-            <%= render event, partial: 'events/event', child: @child %>
-
-            <%= render partial: 'invoices/invoice', collection: @invoices.select { |invoice| invoice.child_id == @child.id && invoice.event_id == event.id }, locals: { index: true } %>
+            <%= render partial: 'invoices/invoice', collection: @invoices.select { |i| i.event_id == e.id }, locals: { index: true } %>
         <% end %>
     <% end %>
 </main>

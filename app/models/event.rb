@@ -60,10 +60,6 @@ class Event < ApplicationRecord
     children.where.not(school: school).distinct
   end
 
-  def f_start_date
-    start_date.strftime('%Y年%m月%d日')
-  end
-
   def image_id
     return nil if image.blob.nil?
 

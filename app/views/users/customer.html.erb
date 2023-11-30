@@ -59,12 +59,12 @@
                     <% @user.children.each do |child| %>
                         <%= link_to child.name, child_path(child) %>
                     <% end %>
-                </div>            
+                </div>
             </div>
         </div>
 
         <% if @next_event %>
-            <%= render @next_event, child: @user.children.first %>
+          <%= render partial: 'events/child_event', locals: { event: @next_event, child: @user.children.first } %>
         <% end %>
 
         <div class="card">
@@ -86,7 +86,7 @@
         <%= render 'users/add_child', parent: @user %>
     </div>
 
-    <% if @children.any? { |c| c.ssid.nil? } && current_user.staff? %>        
+    <% if @children.any? { |c| c.ssid.nil? } && current_user.staff? %>
         <div class="card" id="merge_children">
             <h2 class="text-center w-100"><%= t('.merge_children') %></h2>
 

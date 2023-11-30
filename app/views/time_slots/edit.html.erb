@@ -1,9 +1,9 @@
 <main id="time_slot_edit" class="flex-row justify-content-around align-items-start gap-3">
-    <%= render partial: 'events/event', collection: @events, locals: { child: nil } %>
-    
+    <%= render partial: 'events/staff_event', collection: @events, locals: { child: nil }, as: :event %>
+
     <% if @events || @event %>
         <%= render 'time_slots/event_form' %>
     <% else %>
-        <%= render 'time_slots/form' %>    
+        <%= render 'time_slots/form' %>
     <% end %>
 </main>

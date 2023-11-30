@@ -183,13 +183,7 @@ input[type="text"]:disabled {
 
 // Child
 
-// Child#show
-
-main#child_show .card {
-  width: 90%;
-}
-
-// Child#event_index
+// Child#event_attendance
 
 #event_children_index {
   justify-content: flex-start;
@@ -415,19 +409,21 @@ main#child_show .card {
 // Event#index
 
 @media (min-width: 992px) {
-  main#event_index .card {
+  main#event-index .card {
     flex-basis: 23vw;
   }
 }
 
-main#event_index nav {
+main#event-index nav {
   width: 100vw;
 }
 
 // Event#show
 
 #event_show .child.active {
-  box-shadow: 0 0 10px var(--ku-orange), 0 0 10px var(--ku-orange);
+  box-shadow:
+    0 0 10px var(--ku-orange),
+    0 0 10px var(--ku-orange);
 }
 
 #event_show .copy:after {

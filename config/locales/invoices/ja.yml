@@ -16,7 +16,7 @@ ja:
       name: "お子様の氏名（漢字）"
       summary: "詳細"
       view_summary: "詳細を見る"
-    index:
+    event_cost:
       event_cost: "%{event}の合計: %{cost}"
     invoice:
       adjustments: "調整内容を追加する"

@@ -1,0 +1,13 @@
+%main.d-flex.flex-row.flex-wrap.justify-content-evenly.gap-3.p-3#event-index
+  - if current_user.admin?
+    = link_to t('.create_event'),
+              new_event_path,
+              class: 'btn btn-primary w-100'
+
+  = paginate @events
+
+  = render partial: 'events/staff_event',
+           collection: @events,
+           as: :event
+
+  = paginate @events

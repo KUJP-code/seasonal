@@ -1,0 +1,35 @@
+-# locals: (event:, child: current_user.child, sibling_events: nil)
+
+.card.d-grid
+  = link_to event_path(id: event, child: child.id) do
+    = picture_tag((event.avif.blank? ? '' : url_for(event.avif)),
+                  (event.image.blank? ? '' : url_for(event.image)),
+                  image: { class: 'img-fluid img-thumbnail', alt: event.name })
+
+  .d-flex.flex-column.flex-grow-1.gap-3
+    %h2.fw-bold
+      = link_to t('.title', name: event.name, school: event.school.name),
+                event_path(id: event, child: child.id)
+    %p= date_yy_mm_dd(event.start_date)
+
+    - if sibling_events
+      %button.btn.btn-info{ data: { 'bs-toggle' => 'collapse',
+                                    'bs-target' => '#school-select' },
+                            aria: { expanded: 'false',
+                                    controls: 'school-select' },
+                            type: 'button' }
+        = t('.diff_school_reg')
+
+      .collapse#school-select
+        = form_with method: :get,
+                    url: :diff_school_path,
+                    html: { class: 'd-grid gap-3' } do |f|
+          = f.hidden_field :child, value: child.id
+          %div
+            = f.label :id, t('.diff_school')
+            = f.collection_select :id,
+                                  sibling_events,
+                                  :id,
+                                  proc { |e| e.school.name },
+                                  {}, class: 'form-select'
+          = f.submit t('.reg_at_selected'), class: 'btn btn-primary'

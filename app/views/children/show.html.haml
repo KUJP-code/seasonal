@@ -37,7 +37,10 @@
       = link_to t('.child_bookings', child: @child.name),
                 invoices_path(child: @child.id),
                 class: 'btn btn-primary'
-  - if @events
-    = render collection: @events,
-             partial: 'events/event',
-             locals: { child: @child }
+
+  - if @child.school_id
+    - @events.each do |e|
+      = render 'events/child_event',
+               child: @child,
+               event: e[:event],
+               sibling_events: e[:siblings]

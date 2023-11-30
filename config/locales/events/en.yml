@@ -1,5 +1,10 @@
 en:
   events:
+    child_event:
+      diff_school: "School to register at"
+      diff_school_reg: "Register at a different school"
+      reg_at_selected: "Register at the selected school"
+      title: "%{name} at %{school}"
     condensed_stats:
       ext_kids: "External Kids"
       external_revenue: "External Revenue"
@@ -11,11 +16,6 @@ en:
       res_kids: "Reservation Kids"
       total_kids: "Total Kids"
       total_revenue: "Total Revenue"
-    event:
-      diff_school: "School to register at"
-      diff_school_reg: "Register at a different school"
-      reg_at_selected: "Register at the selected school"
-      title: "%{name} at %{school}"
     show:
       all_slots: "See all time slots for %{event}"
       confirm_invoice: "Confirm Booking"
@@ -31,6 +31,11 @@ en:
       title: "%{name} at %{school}"
       total_cost: "Total Cost"
       upcoming_slots: "%{event} Upcoming Time Slots"
+    staff_event:
+      diff_school: "School to register at"
+      diff_school_reg: "Register at a different school"
+      reg_at_selected: "Register at the selected school"
+      title: "%{name} at %{school}"
     stats_summary:
       attendance: "Attendance"
       ext_kids: "External Kids"

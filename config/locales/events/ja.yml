@@ -2,6 +2,11 @@ ja:
   events:
     daily_attendance:
       print: "プリント"
+    child_event:
+      diff_school: "スクールを以下よりお選びください"
+      diff_school_reg: "別のスクールにお申込みの方はこちら"
+      reg_at_selected: "お申込はこちら"
+      title: "%{name}@%{school}"
     condensed_stats:
       ext_kids: "非会員生人数"
       external_revenue: "非会員生売り上げ"
@@ -15,11 +20,6 @@ ja:
       revenue: "売り上げ"
       total_kids: "合計人数"
       total_revenue: "合計売上"
-    event:
-      diff_school: "スクールを以下よりお選びください"
-      diff_school_reg: "別のスクールにお申込みの方はこちら"
-      reg_at_selected: "お申込はこちら"
-      title: "%{name}@%{school}"
     event_stats:
       attendance: "アテンダンス"
       ext_kids: "非会員生人数"
@@ -59,6 +59,11 @@ ja:
       time_slot: "%{event}のタイムスロット"
       title: "%{name} @ %{school}"
       unregistered_slots: "お申込可能な日程・アクティビティ"
+    staff_event:
+      diff_school: "スクールを以下よりお選びください"
+      diff_school_reg: "別のスクールにお申込みの方はこちら"
+      reg_at_selected: "お申込はこちら"
+      title: "%{name}@%{school}"
     stats_summary:
       attendance: "アテンダンス"
       ext_kids: "非会員生人数"

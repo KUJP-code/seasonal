@@ -14,7 +14,7 @@ class ChildrenController < ApplicationController
   def show
     @child = authorize(Child.find(params[:id]))
     @parent = @child.parent
-    @events = @child.school.events.upcoming
+    @events = child_show_events
   end
 
   def new
@@ -107,6 +107,21 @@ class ChildrenController < ApplicationController
     else
       @afternoon_children = []
       @afternoon_options = []
+    end
+  end
+
+  def child_show_events
+    school_events = @child.school
+                          .events.real.upcoming
+                          .includes(:avif_attachment, :image_attachment)
+    school_events.map do |e|
+      {
+        event: e,
+        siblings: Event.real.where(name: e.name)
+                       .excluding(e)
+                       .order(:id)
+                       .includes(:school)
+      }
     end
   end
 

@@ -1,0 +1,5 @@
+-# locals: (cost:, event:)
+
+.card.bg-info
+  %h2= t('.event_cost', cost: number_to_currency(cost, unit: '円', precision: 0, locale: :ja), event: event)
+  %p 複数のお子様のお申し込みをされた場合、合算された金額となります。

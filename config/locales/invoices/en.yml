@@ -2,7 +2,7 @@ en:
   invoices:
     confirm:
       confirm_changes: "Confirm Changes"
-    index:
+    event_cost:
       event_cost: "Total cost for %{event}: %{cost}"
     invoice:
       confirm_no_email: "Confirm (No email)"

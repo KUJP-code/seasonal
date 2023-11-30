@@ -3,8 +3,7 @@
 # Controls flow of information for Invoices
 class InvoicesController < ApplicationController
   def index
-    @invoices = authorize(parent_or_child_invoices)
-    params[:user] ? @user = User.find(params[:user]) : @child = Child.find(params[:child])
+    params[:user] ? user_index_data : child_index_data
   end
 
   def show
@@ -124,6 +123,16 @@ class InvoicesController < ApplicationController
     t_regs.any? do |t_reg|
       t_reg.registerable_id == o_reg.registerable_id && t_reg.registerable_type == o_reg.registerable_type
     end
+  end
+
+  def child_index_data
+    @child = Child.find(params[:child])
+    @invoices = @child.real_invoices.distinct.order(updated_at: :desc)
+    @events = @child.events.includes(
+      :school,
+      image_attachment: %i[blob],
+      avif_attachment: %i[blob]
+    ).order(start_date: :desc)
   end
 
   def copy_invoice(target, event, origin)
@@ -285,6 +294,14 @@ class InvoicesController < ApplicationController
                               registerable_type],
       coupons_attributes: [:code],
       adjustments_attributes: %i[id reason change invoice_id _destroy]
+    )
+  end
+
+  def user_index_data
+    @user = User.find(params[:user])
+    @children = @user.children.includes(
+      :real_invoices,
+      events: %i[avif_attachment image_attachment school]
     )
   end
 end

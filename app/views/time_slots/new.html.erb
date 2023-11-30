@@ -6,7 +6,7 @@
                 Autofilled values like the current image will be lost and a bunch of stuff will break.<br>
                 Instead go back, then click the edit button again.<br>
             </p>
-            <%= render partial: 'events/event', collection: @events, locals: { child: nil } %>
+            <%= render partial: 'events/staff_event', collection: @events, as: :event %>
         </div>
     <% elsif @event %>
         <div class="event-sidebar d-flex flex-column gap-3 sticky-top">
@@ -15,7 +15,7 @@
                 Autofilled values like the current image will be lost and a bunch of stuff will break.<br>
                 Instead go back, then click the edit button again.<br>
             </p>
-            <%= render @event, child: nil %>
+            <%= render partial: 'events/staff_event', locals: { event: @event } %>
         </div>
     <% end %>
 

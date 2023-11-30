@@ -4,7 +4,7 @@
         Autofilled values like the current image will be lost and a bunch of stuff will break.<br>
         Instead go back, then click the edit button again.<br>
     </p>
-    <%= render partial: 'events/event', locals: { child: nil, event: @slot.event } %>
+    <%= render partial: 'events/staff_event', locals: { event: @slot.event } %>
 </div>
 
 
@@ -71,11 +71,11 @@
 
     <hr class="text-primary opacity-75">
 
-    <button type="button" 
-      class="btn btn-info" 
-      data-bs-toggle="collapse" 
-      data-bs-target="#options<%= f.object.id %>" 
-      aria-expanded="false" 
+    <button type="button"
+      class="btn btn-info"
+      data-bs-toggle="collapse"
+      data-bs-target="#options<%= f.object.id %>"
+      aria-expanded="false"
       aria-controls="options<%= f.object.id %>">
       Customise Options
     </button>
@@ -101,11 +101,11 @@
     <% if @slot.special? && @slot.morning && @slot.afternoon_slot.nil? %>
       <%= f.fields_for :afternoon_slot, TimeSlot.new do |aft_f| %>
 
-        <button type="button" 
-          class="btn btn-info" 
-          data-bs-toggle="collapse" 
-          data-bs-target="#afternoon<%= aft_f.object.id %>" 
-          aria-expanded="false" 
+        <button type="button"
+          class="btn btn-info"
+          data-bs-toggle="collapse"
+          data-bs-target="#afternoon<%= aft_f.object.id %>"
+          aria-expanded="false"
           aria-controls="afternoon<%= aft_f.object.id %>">
           Create Afternoon Slot
         </button>
@@ -164,7 +164,7 @@
 
   <% if @slot.afternoon_slot %>
     <%= form_with model: @slot.afternoon_slot do |aft_f| %>
-      <% if @slot.afternoon_slot.special? %> 
+      <% if @slot.afternoon_slot.special? %>
         <%= aft_f.hidden_field :category, value: "seasonal" %>
         <%= aft_f.submit 'Mark afternoon seasonal', class: "btn btn-primary w-100" %>
       <% else %>

@@ -3,9 +3,10 @@
 # Handles flow of information for events
 class EventsController < ApplicationController
   def index
-    @events = policy_scope(Event).with_attached_image
-                                 .with_attached_avif
-                                 .page(params[:page])
+    @events = policy_scope(Event).includes(
+      image_attachment: %i[blob],
+      avif_attachment: %i[blob]
+    ).page(params[:page])
   end
 
   def show

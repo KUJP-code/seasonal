@@ -1,6 +1,6 @@
 -# locals: (child:)
 
-.card.d-flex.flex-lg-row.justify-content-center.gap-3.p-2.w-100
+.card.d-flex.flex-row.justify-content-center.gap-3.p-2.w-100
   - unless @child.received_hat
     = form_with model: @child do |f|
       = f.hidden_field :received_hat, value: 1
