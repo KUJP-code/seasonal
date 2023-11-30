@@ -32,8 +32,8 @@
 
   = render 'children/staff_actions', child: @child if current_user.staff?
 
-  .card.p-2.w-100
-    - unless @child.real_invoices.empty?
+  - unless @child.real_invoices.empty?
+    .card.p-2.w-100
       = link_to t('.child_bookings', child: @child.name),
                 invoices_path(child: @child.id),
                 class: 'btn btn-primary'

@@ -39,7 +39,6 @@ en:
       ele_school: "Elementary School:"
       email: "Email"
       en: "English Name:"
-      has_hat: "Has Hat:"
       level: "Level:"
       kana: "Katakana Name:"
       no_photos: "Photos"
@@ -50,6 +49,7 @@ en:
       photos: "Photos OK:"
       school: "Kids Up %{school}"
     staff_actions:
+      has_hat: "Has Hat:"
       photos: "Photos: "
     timeslot_index:
       level_count: "Elementary: %{ele}, Kindy: %{kindy}"
