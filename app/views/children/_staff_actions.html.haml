@@ -1,0 +1,19 @@
+-# locals: (child:)
+
+.card.d-flex.flex-lg-row.justify-content-center.gap-3.p-2.w-100
+  - unless @child.received_hat
+    = form_with model: @child do |f|
+      = f.hidden_field :received_hat, value: 1
+      = f.submit "#{t('.has_hat')} あり", class: 'btn btn-primary'
+
+  = form_with model: @child do |f|
+    = f.hidden_field :first_seasonal,
+                     value: (@child.first_seasonal ? 0 : 1)
+    = f.submit "初めてのご参加: #{@child.first_seasonal ? '𐌢' : '〇'}",
+               class: 'btn btn-primary'
+
+  = form_with model: @child do |f|
+    = f.hidden_field :photos,
+                     value: (@child.photos == 'OK' ? 'NG' : 'OK')
+    = f.submit "#{t('.photos')} #{@child.photos == 'OK' ? 'NG' : 'OK'}",
+               class: 'btn btn-primary'

@@ -13,6 +13,8 @@ class ChildrenController < ApplicationController
 
   def show
     @child = authorize(Child.find(params[:id]))
+    @parent = @child.parent
+    @events = @child.school.events.upcoming
   end
 
   def new

@@ -42,6 +42,9 @@ module DbPrototypeV2
     # Don't generate system test files.
     config.generators.system_tests = nil
 
+    # Scope helpers to their controller
+    config.action_controller.include_all_helpers = false
+
     # Search sub folders in locales for translations
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
   end

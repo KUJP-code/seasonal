@@ -69,6 +69,8 @@ ja:
       kana_name: "名前(カタカナ)"
       name: "名前"
       parent: "保護者名"
+    hidden_details:
+      address: "住所"
     index:
       allergies: "アレルギー"
       category: "カテゴリー"
@@ -98,7 +100,6 @@ ja:
       school: "スクール"
       ss_kid: "SSIDからの検索結果"
     show:
-      address: "ご住所"
       allergies: "アレルギーや健康上の注意等: "
       bday: "生年月日: "
       child_bookings: "%{child}お申込内容"
@@ -112,6 +113,8 @@ ja:
       photos: "写真掲載: "
       school: "Kids UP %{school}"
       ssid: "マイページID: "
+    staff_actions:
+      photos: "写真掲載: "
     time_slots:
       attendance:
         allergy: "アレルギー"

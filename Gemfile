@@ -102,6 +102,9 @@ gem 'oj'
 # Use rack-cors to allow API requests
 gem 'rack-cors'
 
+# Use haml-rails for templating
+gem 'haml-rails'
+
 group :development, :test do
   # Ruby LSP from shopify for autocomlete
   gem 'ruby-lsp', require: false

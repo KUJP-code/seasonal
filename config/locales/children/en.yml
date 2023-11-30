@@ -13,6 +13,8 @@ en:
       reservation: "Reservation"
       school_info: "School Information"
       unable_to_save: "Couldn't save %{child} due to the following errors:"
+    hidden_details:
+      address: "Address"
     index:
       allergies: "Allergies"
       category: "Category"
@@ -47,5 +49,7 @@ en:
       phone: "Phone"
       photos: "Photos OK:"
       school: "Kids Up %{school}"
+    staff_actions:
+      photos: "Photos: "
     timeslot_index:
       level_count: "Elementary: %{ele}, Kindy: %{kindy}"

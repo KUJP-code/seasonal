@@ -1,0 +1,21 @@
+-# locals: (child:)
+
+.w-100{ data: { 'conditional-pin-value' => current_user.pin,
+                'controller' => 'conditional' } }
+  .d-none{ 'data-conditional-target' => 'target' }
+    %p #{t('ele_school')} : #{child.ele_school_name}
+    - unless child.parent.nil?
+      %p #{t('.phone')} : #{child.parent.phone}
+      %p #{t('.email')} : #{child.parent.email}
+      %p= full_address(child.parent)
+
+  .form-floating{ 'data-conditional-target' => 'target' }
+    - pin_placeholder = '隠された詳細を表示するにはピンを入力してください'
+    = text_field_tag pin_placeholder,
+                     '',
+                     class: 'form-control',
+                     placeholder: pin_placeholder,
+                     maxlength: 4,
+                     data: { 'conditional-target': 'condition',
+                             action: 'conditional#pin' }
+    = label_tag pin_placeholder, nil, class: 'form-label'

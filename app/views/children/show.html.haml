@@ -1,0 +1,43 @@
+%main#child-show
+  .card.w-100
+    %h1.fw-bold= @child.name
+    %h5
+      %span.fw-bold= t('.ssid')
+      = @child.ssid || '---'
+    %h5
+      %span.fw-bold= t('.parent')
+      = parent_link(@parent)
+
+    .d-flex.flex-column.flex-lg-row.flex-lg-wrap.gap-3.justify-content-evenly
+      .d-flex.flex-column.gap-1
+        %p= @child.katakana_name
+        %p= @child.en_name
+        %p #{t('.bday')} #{@child.birthday.to_s}
+        %p #{t('.allergies')} #{@child.allergies}
+
+      .d-flex.flex-column.gap-1
+        %p= t('.school', school: (@child.school&.name || '---'))
+        %p= kanji_category(@child.category)
+        %p= @child.kindy ? '幼稚園児' : '小学生'
+        %p #{t('.photos')} #{@child.photos}
+        %p #{t('.has_hat')} #{@child.received_hat ? 'あり' : 'なし'}
+
+      = render 'children/hidden_details', child: @child if current_user.staff?
+
+      - if @child.ssid.nil?
+        .d-flex.justify-content-center.align-items-center.gap-3.w-100
+          = link_to t('.edit_child'),
+                    edit_child_path(@child),
+                    class: 'btn btn-primary'
+
+  = render 'children/staff_actions', child: @child if current_user.staff?
+
+  .card.p-2.w-100
+    - unless @child.real_invoices.empty?
+      = link_to t('.child_bookings', child: @child.name),
+                invoices_path(child: @child.id),
+                class: 'btn btn-primary'
+  - if @events
+    = render collection: @events,
+             partial: 'events/event',
+             locals: { child: @child }
