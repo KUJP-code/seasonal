@@ -23,7 +23,7 @@ class Invoice < ApplicationRecord
            dependent: :destroy,
            inverse_of: :invoice
   accepts_nested_attributes_for :opt_regs, allow_destroy: true,
-                                           reject_if: :orphan_option
+                                           reject_if: :orphan_option?
   has_many :time_slots, through: :slot_regs,
                         source: :registerable,
                         source_type: 'TimeSlot'
@@ -191,7 +191,7 @@ class Invoice < ApplicationRecord
     check_event_opts
     # Ignore options to be deleted on confirmation screen
     opt_cost = opt_regs.reject do |reg|
-                 @ignore_opts.include?(reg.id)
+                 @ignore_opts.include?(reg.id) || orphan_option?(reg)
                end.reduce(0) { |sum, reg| sum + reg.registerable.cost }
     @breakdown << "<h4 class='fw-semibold'>オプション:</h4>
                    <div class='d-flex flex-column align-items-start gap-1'>
@@ -202,7 +202,7 @@ class Invoice < ApplicationRecord
     # Find the options on this invoice, even if not saved
     temp_opts = {}
     opt_regs.each do |reg|
-      next if @ignore_opts.include?(reg.id)
+      next if @ignore_opts.include?(reg.id) || orphan_option?(reg)
 
       opt = reg.registerable
       next if opt.name == 'なし'
@@ -351,13 +351,12 @@ class Invoice < ApplicationRecord
   end
 
   # Remove options where the slot is no longer registered for
-  def orphan_option(opt_reg)
+  def orphan_option?(opt_reg)
+    return true if slot_regs.empty?
     # Exclude event options from the check
     return false if event.options.ids.include?(opt_reg['registerable_id'].to_i)
 
     option = Option.find(opt_reg['registerable_id'])
-    # Allow the pizza party 'option' to be chosen without a corresponding activity
-    return false if option.name == 'ティーチャーみずきとのピザパーティ'
     # If for special day extension, only delete if neither registered
     return slot_regs.none? { |r| r.registerable.special? } if option.extension? || option.k_extension?
 
@@ -663,7 +662,7 @@ class Invoice < ApplicationRecord
   end
 
   def update_regs_child
-    return if registrations.empty? || registrations.first.child_id == child_id
+    return if slot_regs.empty? || slot_regs.first.child_id == child_id
 
     registrations.each do |reg|
       reg.update!(child_id: child_id)

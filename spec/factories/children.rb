@@ -13,5 +13,13 @@ FactoryBot.define do
     katakana_name { Faker::Name.name.kana }
     name { Faker::Name.name }
     photos { Child.photos.keys.sample }
+
+    factory :internal_child do
+      category { 'internal' }
+    end
+
+    factory :external_child do
+      category { 'external' }
+    end
   end
 end

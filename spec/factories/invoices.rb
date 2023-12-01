@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :invoice do
-    child
+    child factory: :internal_child
     event
   end
 end

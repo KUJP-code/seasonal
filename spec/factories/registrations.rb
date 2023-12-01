@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :registration, class: 'Registration' do
-    child
+    child factory: :internal_child
     invoice
 
     factory :slot_reg do
