@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :invoice do
+    child
     event
   end
 end
