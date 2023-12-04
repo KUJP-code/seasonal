@@ -356,7 +356,7 @@ class Invoice < ApplicationRecord
     # Exclude event options from the check
     return false if event.options.ids.include?(opt_reg['registerable_id'].to_i)
 
-    option = Option.find(opt_reg['registerable_id'])
+    option = opt_reg.registerable
     # If for special day extension, only delete if neither registered
     return slot_regs.none? { |r| r.registerable.special? } if option.extension? || option.k_extension?
 
@@ -659,6 +659,7 @@ class Invoice < ApplicationRecord
     @breakdown << "<h2 id='final_cost' class='fw-semibold text-start'>合計（税込）: #{yenify(new_cost)}</h2>\n
     <p class='text-start'>登録番号: T7-0118-0103-7173</p>"
     self.summary = @breakdown
+    new_cost
   end
 
   def update_regs_child

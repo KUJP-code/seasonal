@@ -46,6 +46,9 @@ RSpec.configure do |config|
   # User Devise helper methods in testing
   config.include Devise::Test::ControllerHelpers, type: :controller
 
+  # Print full details by default
+  config.formatter = 'd'
+
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.

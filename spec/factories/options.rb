@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :option, class: 'Option' do
     name { 'Option' }
-    cost { 1 }
+    cost { 10 }
     factory :slot_option do
       optionable factory: :time_slot
     end

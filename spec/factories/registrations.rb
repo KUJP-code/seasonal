@@ -9,8 +9,12 @@ FactoryBot.define do
       registerable factory: :time_slot
     end
 
-    factory :opt_reg do
-      registerable factory: :option
+    factory :slot_opt_reg do
+      registerable factory: :slot_option
+    end
+
+    factory :event_opt_reg do
+      registerable factory: :event_option
     end
   end
 end

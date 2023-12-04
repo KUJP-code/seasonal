@@ -7,8 +7,12 @@ RSpec.describe Registration do
     expect(build(:slot_reg)).to be_valid
   end
 
-  it 'has a valid factory for option regs' do
-    expect(build(:opt_reg)).to be_valid
+  it 'has a valid factory for slot option regs' do
+    expect(build(:slot_opt_reg)).to be_valid
+  end
+
+  it 'has a valid factory for event option regs' do
+    expect(build(:event_opt_reg)).to be_valid
   end
 
   it 'is invalid without a child' do
@@ -29,7 +33,7 @@ RSpec.describe Registration do
   it 'is invalid when child already registered for that option' do
     option = create(:slot_option)
     child = create(:child)
-    create(:opt_reg, child: child, registerable: option)
-    expect(build(:opt_reg, child: child, registerable: option)).not_to be_valid
+    create(:slot_opt_reg, child: child, registerable: option)
+    expect(build(:slot_opt_reg, child: child, registerable: option)).not_to be_valid
   end
 end
