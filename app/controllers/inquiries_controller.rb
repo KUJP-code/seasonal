@@ -4,7 +4,7 @@ class InquiriesController < ApplicationController
   skip_before_action :verify_authenticity_token, only: :create
 
   def index
-    @schools = policy_scope(School).order(:id)
+    @schools = policy_scope(School).real.order(:id)
     @school = params[:school] ? School.find(params[:school]) : @schools.first
     @inquiries = @school.inquiries.includes(:setsumeikai).page(params[:page])
   end

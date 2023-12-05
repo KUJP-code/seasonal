@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Handles authorization for Schools
 class SchoolPolicy < ApplicationPolicy
   def show?
     user.admin? || user.statistician? ||
@@ -28,11 +27,11 @@ class SchoolPolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin', 'statistician'
-        School.real.order(:id)
+        School
       when 'area_manager'
-        user.area_schools.real.order(:id)
+        user.area_schools
       when 'school_manager'
-        user.managed_schools.real.order(:id)
+        user.managed_schools
       end
     end
   end
