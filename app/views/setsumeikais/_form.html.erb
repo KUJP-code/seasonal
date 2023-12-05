@@ -1,16 +1,8 @@
 <%= form_with model: @setsumeikai,
               data: { controller: :fields },
               html: { class: 'card w-100 flex-row flex-wrap justify-content-evenly align-items-center' } do |f| %>
-    <% if @setsumeikai.errors.any? %>
-        <div class="errors bg-danger p-2 text-white fw-semibold rounded">
-            <h3><%= t('.unable_to_save', setsumeikai: @setsumeikai.date) %></h3>
-            <ul>
-                <% @setsumeikai.errors.full_messages.each do |error| %>
-                    <li><%= error %></li>
-                <% end %>
-            </ul>
-        </div>
-    <% end %>
+
+    <%= render partial: 'shared/form_errors', locals: { resource: @setsumeikai } %>
 
     <div class="form-floating">
         <%= f.datetime_field :start, class: 'form-control',

@@ -10,8 +10,8 @@
 
 <div class="d-flex flex-column align-items-stretch gap-3">
   <%= form_with model: @slot, html: {class: "card", data: { controller: "fields" } } do |f| %>
-    <%= f.hidden_field :id  %>
-    <%= f.hidden_field :event_id %>
+
+    <%= render partial: 'shared/form_errors', locals: { resource: @slot } %>
 
     <div class="form-floating">
       <%= f.text_field :name, class: 'form-control', placeholder: 'Name', required: true %>

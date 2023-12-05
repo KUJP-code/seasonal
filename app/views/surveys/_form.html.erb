@@ -5,16 +5,7 @@
                 surveys_path,
                 class: 'btn btn-primary align-self-start' %>
 
-    <% if @survey.errors.any? %>
-        <div class="errors bg-danger p-2 text-white fw-semibold rounded">
-            <h3>Couldn't save the survey</h3>
-            <ul>
-                <% @survey.errors.full_messages.each do |error| %>
-                    <li><%= error %></li>
-                <% end %>
-            </ul>
-        </div>
-    <% end %>
+    <%= render partial: 'shared/form_errors', locals: { resource: @survey } %>
 
     <div class="form-floating">
         <%= f.text_field :name,
@@ -25,7 +16,7 @@
     </div>
 
     <div>
-        <%= f.check_box :active, 
+        <%= f.check_box :active,
                         { class: 'form-check-input' } %>
         <%= f.label :active,
                     t('.active'),
@@ -50,7 +41,7 @@
                     type: 'button',
                     data: { action: "fields#add" },
                     class: 'btn btn-info' %>
-    
+
     <h3>Child Criteria</h3>
     <h5>
         Only children for whom these criteria are true are shown the survey

@@ -1,20 +1,11 @@
 <div class="card">
     <%= turbo_frame_tag "add_child" do %>
         <%= form_with model: @child,
-                      class: 'child_form', 
+                      class: 'child_form',
                       html: { class: 'd-grid gap-3 ' } do |f| %>
 
-            <% if @child.errors.any? %>
-                <div class="errors card bg-danger text-white">
-                    <h3><%= t('unable_to_save') %></h3>
-                    <ul>
-                        <% @child.errors.full_messages.each do |error| %>
-                            <li><%= error %></li>
-                        <% end %>
-                    </ul>
-                </div>
-            <% end %>
-    
+            <%= render partial: 'shared/form_errors', locals: { resource: @child } %>
+
             <div class="personal_info d-grid gap-3">
                 <h3><%= t('.personal_info') %></h3>
 
@@ -31,7 +22,7 @@
                                 class: 'form-select' %>
                     </div>
                 <% end %>
-    
+
                 <div>
                     <%= f.label :first_name, t('.name'), class: 'form-label' %>
                     <div class="input-group">
@@ -48,10 +39,10 @@
                                 (@child.name.strip.split[1] unless @child.name.nil?),
                                 class: 'form-control',
                                 required: true,
-                                placeholder: t('.first_name')%>                        
+                                placeholder: t('.first_name')%>
                     </div>
                 </div>
-    
+
                 <div>
                     <%= f.label :kana_first, t('.kana'), class: 'form-label' %>
                     <div class="input-group">
@@ -70,7 +61,7 @@
                                 placeholder: t('.kana_first') %>
                     </div>
                 </div>
-    
+
                 <div class="form-floating">
                     <%= f.text_field :en_name,
                             class: 'form-control',
@@ -78,7 +69,7 @@
                             required: true %>
                     <%= f.label :en_name, t('.en_name'), class: 'form-label' %>
                 </div>
-    
+
                 <div class="form-floating">
                     <%= f.date_field :birthday,
                                      class: 'form-control',
@@ -86,7 +77,7 @@
                                      required: true %>
                     <%= f.label :birthday, t('.birthday'), class: 'form-label' %>
                 </div>
-    
+
                 <div data-controller="conditional">
                     <%= f.label :allergies,
                                 t('.allergies'),
@@ -96,7 +87,7 @@
                     data-conditional-target="condition"
                     class="form-select">
                         <option value="">-</option>
-                        <option value="なし" 
+                        <option value="なし"
                             <%= "selected='selected'" if @child.allergies == 'なし' %>>
                                 なし
                             </option>
@@ -107,7 +98,7 @@
                                      readonly: true,
                                      required: true %>
                 </div>
-    
+
                 <div>
                     <%= f.label :grade, t('.grade'), class: 'form-label' %>
                     <%= f.select :grade,
@@ -119,7 +110,7 @@
                                                 required: true
                                              } %>
                 </div>
-    
+
                 <% if @child.new_record? %>
                     <div class="form-floating">
                         <%= f.text_field :ele_school_name,
@@ -152,7 +143,7 @@
                                                     maxlength: 4,
                                                     data: {
                                                         'conditional-target': 'condition',
-                                                        action: 'conditional#pin' 
+                                                        action: 'conditional#pin'
                                                         } %>
                             <%= label_tag t('enter_pin', info: t('ele_school')),
                                             nil,
@@ -161,10 +152,10 @@
                     </div>
                 <% end %>
             </div>
-    
+
             <div class="school_info d-grid gap-3 pt-0">
                 <h3><%= t('.school_info') %></h3>
-    
+
                 <div>
                     <% if current_user.school_manager? %>
                         <%= f.label :school_id,
@@ -188,7 +179,7 @@
                                                 { class: 'form-select' } %>
                     <% end %>
                 </div>
-    
+
                 <div>
                     <%= f.label :category, t('.category'),
                                            class: 'form-label' %>
@@ -198,19 +189,19 @@
                                  {},
                                  { class: 'form-select', required: true } %>
                 </div>
-    
+
                 <div>
                     <%= f.label :photos, t('.photos'), class: 'form-label' %>
                     <%= f.select :photos,
                                  Child.photos.keys.reject { |k| ['マイページOK', 'Unknown'].include?(k) },
                                  {},
-                                 { 
+                                 {
                                     class: 'form-select',
                                     required: true,
-                                    selected: nil 
+                                    selected: nil
                                  } %>
                 </div>
-    
+
                 <% if current_user.customer? && @child.new_record? %>
                     <div>
                         <%= f.check_box :first_seasonal,
@@ -220,10 +211,10 @@
                                     class: 'form-check-label' %>
                     </div>
                 <% end %>
-    
+
                 <% if current_user.staff? %>
                     <div>
-                        <%= f.check_box :first_seasonal, 
+                        <%= f.check_box :first_seasonal,
                                         { class: 'form-check-input' } %>
                         <%= f.label :first_seasonal,
                                     t('.first_seasonal'),
@@ -231,7 +222,7 @@
                     </div>
                 <% end %>
             </div>
-    
+
             <%= f.submit t('.reg_child'),
                          class: 'btn btn-primary',
                          data: { turbo_frame: '_top' } %>
