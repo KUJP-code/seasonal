@@ -123,11 +123,6 @@
               <%= aft_f.label :name, 'Name', class: 'form-label' %>
             </div>
 
-            <div>
-              <%= aft_f.label :image_id,'Image', class: 'form-label' %>
-              <%= aft_f.select :image_id, @images, {}, { class: 'form-select' } %>
-            </div>
-
             <div class="form-floating">
               <%= aft_f.datetime_field :start_time, class: 'form-control', placeholder: 'Start time' %>
               <%= aft_f.label :start_time, 'Start time', class: 'form-label' %>

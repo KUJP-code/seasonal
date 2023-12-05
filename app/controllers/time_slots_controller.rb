@@ -40,8 +40,8 @@ class TimeSlotsController < ApplicationController
         school: @slot.school.id
       ), notice: "Updated #{@slot.name}"
     else
-      render :edit, status: :unprocessable_entity,
-                    alert: "#{@slot.name} couldn't be updated"
+      @images = slot_blobs
+      render :edit, status: :unprocessable_entity, alert: "#{@slot.name} couldn't be updated"
     end
   end
 

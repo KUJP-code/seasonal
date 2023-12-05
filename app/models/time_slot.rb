@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# Represents an event time slot
-# Must have an event
 class TimeSlot < ApplicationRecord
   after_create :create_default_opts, :create_aft_slot
 
@@ -29,7 +27,7 @@ class TimeSlot < ApplicationRecord
                            dependent: :destroy,
                            inverse_of: :morning_slot
   accepts_nested_attributes_for :afternoon_slot, allow_destroy: true,
-                                                 reject_if: :all_blank
+                                                 reject_if: :name_blank?
 
   has_one_attached :image
   has_one_attached :avif
@@ -145,6 +143,10 @@ class TimeSlot < ApplicationRecord
     else
       options.create(DEFAULT_AFT_OPTS)
     end
+  end
+
+  def name_blank?(afternoon_slot)
+    afternoon_slot[:name].blank?
   end
 
   CLOSE_DATES = {}.freeze
