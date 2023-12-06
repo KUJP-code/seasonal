@@ -51,7 +51,7 @@ class School < ApplicationRecord
            class_name: 'Setsumeikai'
 
   # Scopes
-  scope :real, -> { where.not(id: [1, 2]) }
+  scope :real, -> { where.not(name: %w[オンラインコース Test]) }
 
   # Validations
   validates :name, presence: true

@@ -8,7 +8,7 @@ RSpec.configure do |c|
   c.include SurveyHelpers
 end
 
-RSpec.describe Survey do
+describe Survey do
   context 'with #criteria_match' do
     it 'returns false if all criteria blank' do
       criterialess_survey = create(:criterialess_survey)

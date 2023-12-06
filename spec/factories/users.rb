@@ -13,5 +13,25 @@ FactoryBot.define do
     phone { Faker::PhoneNumber.phone_number }
     postcode { Faker::Address.postcode }
     prefecture { Faker::Address.state }
+
+    factory :admin do
+      role { 'admin' }
+    end
+
+    factory :statistician do
+      role { 'statistician' }
+    end
+
+    factory :area_manager do
+      role { 'area_manager' }
+    end
+
+    factory :school_manager do
+      role { 'school_manager' }
+    end
+
+    factory :customer do
+      role { 'customer' }
+    end
   end
 end

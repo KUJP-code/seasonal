@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# Represents an area containing many schools
-# Must have an area manager
 class Area < ApplicationRecord
   has_many :schools, -> { real }, inverse_of: :area, dependent: nil
   has_many :parents, -> { distinct }, through: :schools

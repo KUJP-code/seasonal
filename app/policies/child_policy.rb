@@ -6,19 +6,25 @@ class ChildPolicy < ApplicationPolicy
   end
 
   def show?
-    staff_or_parent?(user, record)
+    staff_or_parent?
+  end
+
+  def new?
+    return false if user.statistician?
+
+    user.present?
   end
 
   def edit?
-    staff_or_parent?(user, record)
+    staff_or_parent?
   end
 
   def create?
-    staff_or_parent?(user, record)
+    staff_or_parent?
   end
 
   def update?
-    staff_or_parent?(user, record)
+    staff_or_parent?
   end
 
   def destroy?
@@ -42,7 +48,9 @@ class ChildPolicy < ApplicationPolicy
 
   private
 
-  def staff_or_parent?(user, record)
+  def staff_or_parent?
+    return false if user.statistician?
+
     user.staff? || user.id == record.parent_id
   end
 end

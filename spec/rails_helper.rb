@@ -14,6 +14,7 @@ require 'capybara/rails'
 require 'capybara/rspec'
 require 'database_cleaner-active_record'
 require 'paper_trail/frameworks/rspec'
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -42,9 +43,6 @@ end
 RSpec.configure do |config|
   # Lets you use create(), build() etc. from Factory Bot
   config.include FactoryBot::Syntax::Methods
-
-  # User Devise helper methods in testing
-  config.include Devise::Test::ControllerHelpers, type: :controller
 
   # Print full details by default
   config.formatter = 'd'
