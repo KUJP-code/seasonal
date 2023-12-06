@@ -1,0 +1,17 @@
+-# locals: (child:, events:, invoices:)
+- next_event = @events.first
+- unless next_event.nil?
+  :ruby
+    event_cost = @invoices.select { |i| i.event_id == next_event.id }
+                          .reduce(0) { |sum, i| sum + i.total_cost }
+  = render partial: 'invoices/event_cost',
+           locals: { cost: event_cost, event: next_event.name }
+
+%h1= link_to @child.name, child_path(@child)
+- @events.each do |e|
+  = render partial: 'events/child_event',
+           locals: { event: e, child: @child }
+
+  = render partial: 'invoices/invoice',
+           collection: @invoices.select { |i| i.event_id == e.id },
+           locals: { index: true }

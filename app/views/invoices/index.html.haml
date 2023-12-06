@@ -1,0 +1,6 @@
+%main.gap-5.py-5#invoice-index
+  - if @user
+    = render partial: 'invoices/parent_index', locals: { children: @children }
+  - else
+    = render partial: 'invoices/child_index',
+             locals: { child: @child, events: @events, invoices: @invoices }

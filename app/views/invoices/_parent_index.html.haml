@@ -1,0 +1,23 @@
+-# locals: (children:)
+
+- children.each do |c|
+  - next if c.real_invoices.empty?
+
+  %h1= link_to c.name, child_path(c)
+  - c.events.order(start_date: :desc).each do |e|
+    - next unless c.real_invoices.find { |i| i.event_id == e.id }
+
+    :ruby
+      event_cost = c.real_invoices
+                    .select { |i| i.event_id == e.id }
+                    .reduce(0) { |sum, i| sum + i.total_cost }
+
+    = render partial: 'invoices/event_cost',
+             locals: { cost: event_cost, event: e.name }
+
+    = render partial: 'events/child_event',
+             locals: { event: e, child: c }
+
+    = render partial: 'invoices/invoice',
+             collection: c.real_invoices.select { |i| i.event_id == e.id },
+             locals: { index: true }

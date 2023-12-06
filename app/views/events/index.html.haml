@@ -6,7 +6,7 @@
 
   = paginate @events
 
-  = render partial: 'events/staff_event',
+  = render partial: "events/#{current_user.staff? ? 'staff' : 'child'}_event",
            collection: @events,
            as: :event
 

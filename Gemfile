@@ -53,7 +53,7 @@ gem 'image_processing', '~> 1.2'
 gem 'devise', '4.9.3'
 
 # Use Pundit for authorisation
-gem 'pundit', '~> 2.3'
+gem 'pundit', '2.3.1'
 
 # Use PaperTrail for backup/reversion of certain models
 gem 'paper_trail', '15.1.0'
