@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Handles authorisation for Children
 class ChildPolicy < ApplicationPolicy
   def index?
     user.staff?
@@ -26,22 +25,17 @@ class ChildPolicy < ApplicationPolicy
     user.staff?
   end
 
-  # Handles authorisation for children index scopes
-  # attendance sheets handled by the controller
   class Scope < Scope
     def resolve
-      if user.admin?
-        School.all.includes(children: %i[parent]).order(:id)
-      elsif user.area_manager?
-        area_schools = user.managed_areas
-                           .reduce([]) { |schools, area| schools + area.schools.ids }
-        scope.where(school_id: area_schools)
-             .order(:name)
-             .includes(:parent, :school)
+      case user.role
+      when 'admin'
+        scope
+      when 'area_manager'
+        scope.where(id: user.area_children.ids)
+      when 'school_manager'
+        scope.where(id: user.school_children.ids)
       else
-        scope.where(school_id: user.managed_schools.ids)
-             .order(:name)
-             .includes(:parent, :school)
+        scope.none
       end
     end
   end

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Handles authorisation for TimeSlots
 class TimeSlotPolicy < ApplicationPolicy
   def index?
     user.staff?
@@ -22,12 +21,25 @@ class TimeSlotPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def attendance?
+    user.admin? || area_slot? || school_slot?
+  end
+
   def update?
     user.admin? || user.area_manager?
   end
 
-  # Handles scopes for TimeSlot index
   class Scope < Scope
     def resolve; end
+  end
+
+  private
+
+  def area_slot?
+    user.area_manager? && user.area_slots.ids.include?(record.id)
+  end
+
+  def school_slot?
+    user.school_manager? && user.school_slots.ids.include?(record.id)
   end
 end

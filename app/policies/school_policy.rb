@@ -22,12 +22,11 @@ class SchoolPolicy < ApplicationPolicy
     user.admin?
   end
 
-  # Decides which schools each role can see stats for
   class Scope < Scope
     def resolve
       case user.role
       when 'admin', 'statistician'
-        School
+        School.real
       when 'area_manager'
         user.area_schools
       when 'school_manager'

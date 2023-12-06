@@ -2,7 +2,6 @@
 
 # Everything here applies to and is accessible from the whole app
 class ApplicationController < ActionController::Base
-  # Enable Pundit on all controllers
   include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 

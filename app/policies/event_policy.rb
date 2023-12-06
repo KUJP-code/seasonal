@@ -26,13 +26,15 @@ class EventPolicy < ApplicationPolicy
     user.admin?
   end
 
-  # Handles authorisation for event index scopes
-  # attendance sheets handled by the controller
+  def attendance?
+    user.admin? || area_event? || school_event?
+  end
+
   class Scope < Scope
     def resolve
       case user.role
       when 'admin'
-        Event.all.order(start_date: :desc).includes(:school)
+        Event.order(start_date: :desc).includes(:school)
       when 'area_manager'
         user.area_events.includes(:school)
       when 'school_manager'
@@ -44,6 +46,14 @@ class EventPolicy < ApplicationPolicy
   end
 
   private
+
+  def area_event?
+    user.area_manager? && user.area_events.ids.include?(record.id)
+  end
+
+  def school_event?
+    user.school_manager? && user.school_events.ids.include?(record.id)
+  end
 
   def staff_or_parent?(user, record)
     user.staff? || user.id == record.parent_id

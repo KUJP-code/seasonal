@@ -27,6 +27,9 @@ class User < ApplicationRecord
   has_many :school_events, -> { order(start_date: :desc) },
            through: :managed_schools,
            source: :events
+  has_many :school_slots, -> { order(start_date: :desc) },
+           through: :managed_schools,
+           source: :time_slots
   has_many :school_inquiries, through: :managed_schools,
                               source: :school_inquiries
   has_many :school_setsumeikai_inquiries, through: :managed_schools,
@@ -36,6 +39,14 @@ class User < ApplicationRecord
                            source_type: 'Area'
   has_many :area_schools, through: :managed_areas,
                           source: :schools
+  has_many :area_children, through: :area_schools,
+                           source: :children
+  has_many :area_events, -> { order(start_date: :desc) },
+           through: :area_schools,
+           source: :events
+  has_many :area_slots, -> { order(start_date: :desc) },
+           through: :area_schools,
+           source: :time_slots
   has_many :area_survey_responses, through: :area_schools,
                                    source: :survey_responses
   has_many :area_setsumeikais, through: :area_schools,
@@ -44,11 +55,6 @@ class User < ApplicationRecord
                             source: :school_inquiries
   has_many :area_setsumeikai_inquiries, through: :area_schools,
                                         source: :setsumeikai_inquiries
-  has_many :area_events, -> { order(start_date: :desc) },
-           through: :area_schools,
-           source: :events
-  has_many :area_children, through: :area_schools,
-                           source: :children
 
   # Customer associations
   has_many :children, dependent: nil,

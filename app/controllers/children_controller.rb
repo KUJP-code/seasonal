@@ -1,14 +1,21 @@
 # frozen_string_literal: true
 
 class ChildrenController < ApplicationController
+  # No policy_scope verification as too complex with children attending
+  # from different schools. Index action is authorized instead
+  after_action :verify_authorized
+
   ALLOWED_SOURCES = %w[event time_slot].freeze
 
   def index
     return show_attendance_sheet if attendance_request?
 
-    return admin_index if current_user.admin?
+    authorize(Child)
+    return index_by_school if current_user.admin? || current_user.area_manager?
 
-    @children = policy_scope(Child).page(params[:page]).per(1_000)
+    @children = policy_scope(Child)
+                .includes(:parent, :school)
+                .page(params[:page]).per(1_000)
   end
 
   def show
@@ -86,12 +93,13 @@ class ChildrenController < ApplicationController
                                   ])
   end
 
-  def admin_index
-    @schools = School.real.order(:id)
+  def index_by_school
+    @schools = policy_scope(School).order(:id)
     @school = params[:school] ? School.find(params[:school]) : @schools.first
-    @children = @school.children
-                       .includes(:parent)
-                       .page(params[:page]).per(1_000)
+    @children = policy_scope(Child)
+                .where(school_id: @school.id)
+                .includes(:parent, :school)
+                .page(params[:page]).per(1_000)
   end
 
   def afternoon_data
@@ -134,11 +142,14 @@ class ChildrenController < ApplicationController
   end
 
   def event_attendance
-    @source = Event.find(params[:id])
+    @source = authorize(Event.find(params[:id]), :attendance?)
     @slots = @source.time_slots.includes(:options)
-    @children = @source.children.includes(
-      :options, :invoices, :regular_schedule, time_slots: %i[options afternoon_slot], real_invoices: :coupons
-    ).order(:name)
+    @children = @source.children
+                       .includes(
+                         :options, :invoices, :regular_schedule,
+                         time_slots: %i[options afternoon_slot],
+                         real_invoices: :coupons
+                       ).order(:name)
     render 'children/events/event_sheet'
   end
 
@@ -149,16 +160,17 @@ class ChildrenController < ApplicationController
   end
 
   def time_slot_attendance
-    @slot = TimeSlot.find(params[:id])
+    @slot = authorize(TimeSlot.find(params[:id]), :attendance?)
     @options = @slot.options
     @event_options = @slot.event.options
-    @children = @slot.children.includes(
-      :options,
-      :parent,
-      :registrations,
-      :regular_schedule,
-      :time_slots
-    )
+    @children = @slot.children
+                     .includes(
+                       :options,
+                       :parent,
+                       :registrations,
+                       :regular_schedule,
+                       :time_slots
+                     )
     @afternoon = @slot.afternoon_slot
     afternoon_data
 
