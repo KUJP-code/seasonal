@@ -10,7 +10,7 @@ class ChildrenController < ApplicationController
   def index
     return show_attendance_sheet if attendance_request?
 
-    authorize(Child)
+    authorize Child
     return index_by_school if current_user.admin? || current_user.area_manager?
 
     @children = policy_scope(Child)
@@ -19,25 +19,25 @@ class ChildrenController < ApplicationController
   end
 
   def show
-    @child = authorize(Child.find(params[:id]))
+    @child = authorize Child.find(params[:id])
     @parent = @child.parent
     @events = child_show_events
   end
 
   def new
     @child = if params[:parent]
-               authorize(Child.new(parent_id: params[:parent], photos: nil, first_seasonal: true))
+               authorize Child.new(parent_id: params[:parent], photos: nil, first_seasonal: true)
              else
-               authorize(Child.new(photos: nil, first_seasonal: true))
+               authorize Child.new(photos: nil, first_seasonal: true)
              end
   end
 
   def edit
-    @child = authorize(Child.find(params[:id]))
+    @child = authorize Child.find(params[:id])
   end
 
   def create
-    @child = authorize(Child.new(child_params))
+    @child = authorize Child.new(child_params)
 
     if @child.save
       redirect_to child_path(@child),
@@ -50,7 +50,7 @@ class ChildrenController < ApplicationController
   end
 
   def update
-    @child = authorize(Child.find(params[:id]))
+    @child = authorize Child.find(params[:id])
 
     if @child.update(child_params)
       redirect_to child_path(@child), notice: t('success', action: '更新', model: '生徒')
@@ -60,7 +60,7 @@ class ChildrenController < ApplicationController
   end
 
   def destroy
-    @child = authorize(Child.find(params[:id]))
+    @child = authorize Child.find(params[:id])
     @parent = @child.parent
 
     if @child.destroy

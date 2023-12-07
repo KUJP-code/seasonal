@@ -1,30 +1,32 @@
 # frozen_string_literal: true
 
-# Handles data flow for Schools
 class AreasController < ApplicationController
+  after_action :verify_authorized
+  after_action :verify_policy_scoped, only: :index
+
   def index
-    authorize(:area)
+    authorize Area
     @areas = policy_scope(Area).includes(
       :managers, schools: %i[image_attachment managers]
     )
   end
 
   def show
-    @area = Area.find(params[:id])
+    @area = authorize Area.find(params[:id])
   end
 
   def new
-    @area = Area.new
+    @area = authorize Area.new
     @managers = User.area_managers
   end
 
   def edit
-    @area = Area.find(params[:id])
+    @area = authorize Area.find(params[:id])
     @managers = User.area_managers
   end
 
   def create
-    @area = Area.new(area_params)
+    @area = authorize Area.new(area_params)
 
     if @area.save
       redirect_to area_path(@area), notice: "Created #{@area.name}!"
@@ -35,7 +37,7 @@ class AreasController < ApplicationController
   end
 
   def update
-    @area = Area.find(params[:id])
+    @area = authorize Area.find(params[:id])
 
     if @area.update(area_params)
       redirect_to area_path(@area), notice: "Updated #{@area.name}!"

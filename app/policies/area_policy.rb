@@ -1,19 +1,39 @@
 # frozen_string_literal: true
 
-# Handles authorization for Areas
 class AreaPolicy < ApplicationPolicy
   def index?
+    user.admin? || user.area_manager?
+  end
+
+  def show?
+    user.admin? || (user.area_manager? && user.managed_areas.include?(record))
+  end
+
+  def new?
     user.admin?
   end
 
-  # Decides which areas each role can see stats for
+  def edit?
+    user.admin?
+  end
+
+  def create?
+    user.admin?
+  end
+
+  def update?
+    user.admin?
+  end
+
   class Scope < Scope
     def resolve
       case user.role
       when 'admin'
-        Area.order(:id)
+        scope
       when 'area_manager'
-        user.managed_areas
+        scope.where(id: user.managed_areas.ids)
+      else
+        scope.none
       end
     end
   end
