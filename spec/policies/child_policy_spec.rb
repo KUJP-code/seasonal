@@ -2,6 +2,15 @@
 
 require 'rails_helper'
 
+RSpec.shared_examples 'staff for ChildPolicy' do
+  it { is_expected.to authorize_action(:show) }
+  it { is_expected.to authorize_action(:new) }
+  it { is_expected.to authorize_action(:edit) }
+  it { is_expected.to authorize_action(:create) }
+  it { is_expected.to authorize_action(:update) }
+  it { is_expected.to authorize_action(:destroy) }
+end
+
 describe ChildPolicy do
   subject(:policy) { described_class.new(user, child) }
 
@@ -10,34 +19,19 @@ describe ChildPolicy do
   context 'when admin' do
     let(:user) { build(:admin) }
 
-    it { is_expected.to authorize_action(:show) }
-    it { is_expected.to authorize_action(:new) }
-    it { is_expected.to authorize_action(:edit) }
-    it { is_expected.to authorize_action(:create) }
-    it { is_expected.to authorize_action(:update) }
-    it { is_expected.to authorize_action(:destroy) }
+    it_behaves_like 'staff for ChildPolicy'
   end
 
   context 'when area_manager' do
     let(:user) { build(:area_manager) }
 
-    it { is_expected.to authorize_action(:show) }
-    it { is_expected.to authorize_action(:new) }
-    it { is_expected.to authorize_action(:edit) }
-    it { is_expected.to authorize_action(:create) }
-    it { is_expected.to authorize_action(:update) }
-    it { is_expected.to authorize_action(:destroy) }
+    it_behaves_like 'staff for ChildPolicy'
   end
 
   context 'when school_manager' do
     let(:user) { build(:school_manager) }
 
-    it { is_expected.to authorize_action(:show) }
-    it { is_expected.to authorize_action(:new) }
-    it { is_expected.to authorize_action(:edit) }
-    it { is_expected.to authorize_action(:create) }
-    it { is_expected.to authorize_action(:update) }
-    it { is_expected.to authorize_action(:destroy) }
+    it_behaves_like 'staff for ChildPolicy'
   end
 
   context 'when parent of child' do

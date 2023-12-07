@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-# Controller for Adjustments
 class AdjustmentsController < ApplicationController
+  after_action :verify_authorized
+
   def edit
     authorize :adjustment, :edit?
     @invoice = Invoice.find(params[:id])

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.shared_examples 'a staff member' do
+RSpec.shared_examples 'staff for requests to ChildrenController' do
   it 'shows child profile' do
     get "/children/#{child.id}"
     expect(response).to have_http_status(:ok)
@@ -50,29 +50,29 @@ describe Child do
   context 'when admin' do
     let(:user) { create(:admin) }
 
-    it_behaves_like 'a staff member'
+    it_behaves_like 'staff for requests to ChildrenController'
   end
 
   context 'when area manager' do
     let(:user) { create(:area_manager) }
 
-    it_behaves_like 'a staff member'
+    it_behaves_like 'staff for requests to ChildrenController'
   end
 
   context 'when school manager' do
     let(:user) { create(:school_manager) }
 
-    it_behaves_like 'a staff member'
+    it_behaves_like 'staff for requests to ChildrenController'
   end
 
   context 'when parent of child' do
+    # FIXME: those requiring a parent occasionally fail with a 302
     let(:user) { create(:customer) }
 
     before do
       user.children << child
     end
 
-    # FIXME: this one fails maybe 10% of the time with a 302????
     it 'shows child profile' do
       get "/children/#{child.id}"
       expect(response).to have_http_status(:ok)
@@ -88,7 +88,6 @@ describe Child do
       expect { post '/children', params: { child: attributes } }.to change(described_class, :count).by(1)
     end
 
-    # FIXME: this one fails maybe 10% of the time with a 302????
     it 'allows editing child' do
       get "/children/#{child.id}/edit"
       expect(response).to have_http_status(:ok)
