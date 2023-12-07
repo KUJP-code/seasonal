@@ -2,10 +2,14 @@
 
 class EventPolicy < ApplicationPolicy
   def index?
+    return false if user.statistician?
+
     true
   end
 
   def show?
+    return false if user.statistician?
+
     staff_or_parent?(user, record)
   end
 
@@ -59,6 +63,6 @@ class EventPolicy < ApplicationPolicy
   end
 
   def staff_or_parent?(user, record)
-    user.staff? || user.statistician? || user.events.ids.include?(record.id)
+    user.staff? || user.events.ids.include?(record.id)
   end
 end

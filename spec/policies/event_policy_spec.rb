@@ -74,7 +74,9 @@ describe EventPolicy do
   context 'when statistician' do
     let(:user) { build(:statistician) }
 
-    it_behaves_like 'viewer for EventPolicy'
+    it { is_expected.not_to authorize_action(:index) }
+    it { is_expected.not_to authorize_action(:show) }
+
     it_behaves_like 'user unauthorized to change Events'
     it_behaves_like 'user unauthorized to view attendance'
   end

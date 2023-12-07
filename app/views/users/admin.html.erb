@@ -10,11 +10,11 @@
         <div class="card">
             <h2><%= "#{name} for All Schools" %></h2>
             <%= render partial: 'events/stats_summary',
-                        locals: { events: events } %>
+                       locals: { events: events } %>
         </div>
 
         <%= render partial: 'events/condensed_stats',
-                    locals: { events: events } %>
+                   locals: { events: events } %>
     <% end %>
 
     <div class="card flex-row flex-wrap justify-content-between gap-3">
@@ -35,7 +35,7 @@
         <%= link_to 'Schools/Areas',
                     areas_path,
                     class: 'btn btn-primary flex-grow-1' %>
-        
+
         <%= link_to 'Setsumeikais',
                     setsumeikais_path,
                     class: 'btn btn-primary flex-grow-1' %>
@@ -43,7 +43,7 @@
         <%= link_to 'Inquiries',
                     inquiries_path,
                     class: 'btn btn-primary flex-grow-1' %>
-        
+
         <%= link_to 'Surveys',
                     surveys_path,
                     class: 'btn btn-primary flex-grow-1' %>

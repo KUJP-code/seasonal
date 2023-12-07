@@ -5,10 +5,12 @@ class EventsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
+    authorize(Event)
     @events = policy_scope(Event).includes(
+      :school,
       image_attachment: %i[blob],
       avif_attachment: %i[blob]
-    ).page(params[:page])
+    ).order(start_date: :desc).page(params[:page])
   end
 
   def show
