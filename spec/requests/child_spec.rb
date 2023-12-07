@@ -2,7 +2,23 @@
 
 require 'rails_helper'
 
+def create_schools(user)
+  school = create(:school)
+  if user.school_manager?
+    school.managers << user
+  elsif user.area_manager?
+    user.managed_areas << create(:area)
+    user.managed_areas.first.schools << school
+  end
+end
+
 RSpec.shared_examples 'staff for requests to ChildrenController' do
+  it 'shows child index' do
+    create_schools(user)
+    get '/children'
+    expect(response).to have_http_status(:ok)
+  end
+
   it 'shows child profile' do
     get "/children/#{child.id}"
     expect(response).to have_http_status(:ok)
@@ -73,6 +89,11 @@ describe Child do
       user.children << child
     end
 
+    it 'redirects home when child index requested' do
+      get '/children'
+      expect(response).to have_http_status(:redirect)
+    end
+
     it 'shows child profile' do
       get "/children/#{child.id}"
       expect(response).to have_http_status(:ok)
@@ -100,7 +121,7 @@ describe Child do
         .to('Name New')
     end
 
-    it 'does not allow deleting child' do
+    it 'redirects home when child deletion attempted' do
       delete "/children/#{child.id}"
       expect(flash[:alert]).to eq(I18n.t('not_authorized'))
     end
@@ -109,9 +130,14 @@ describe Child do
   context 'when parent of different child' do
     let(:user) { create(:customer) }
 
-    it 'redirects home when asked for child profile' do
-      get "/children/#{child.id}"
+    it 'redirects home when child index requested' do
+      get '/children'
       expect(response).to have_http_status(:redirect)
+    end
+
+    it 'redirects home when child profile requested' do
+      get "/children/#{child.id}"
+      expect(flash[:alert]).to eq(I18n.t('not_authorized'))
     end
 
     it 'shows form for new child' do
@@ -119,7 +145,7 @@ describe Child do
       expect(response).to have_http_status(:ok)
     end
 
-    it 'does not allow new child to be created' do
+    it 'redirects home when child creation attempted' do
       attributes = attributes_for(:form_child)
       post '/children', params: { child: attributes }
       expect(flash[:alert]).to eq(I18n.t('not_authorized'))
@@ -127,16 +153,16 @@ describe Child do
 
     it 'redirects home when asked to edit child' do
       get "/children/#{child.id}/edit"
-      expect(response).to have_http_status(:redirect)
+      expect(flash[:alert]).to eq(I18n.t('not_authorized'))
     end
 
-    it 'does not allow child to be updated' do
+    it 'redirects home when child update attempted' do
       attributes = attributes_for(:form_child, first_name: 'New', family_name: 'Name')
       patch "/children/#{child.id}", params: { child: attributes }
       expect(flash[:alert]).to eq(I18n.t('not_authorized'))
     end
 
-    it 'does not allow deleting child' do
+    it 'redirects home when child deletion attempted' do
       delete "/children/#{child.id}"
       expect(flash[:alert]).to eq(I18n.t('not_authorized'))
     end
