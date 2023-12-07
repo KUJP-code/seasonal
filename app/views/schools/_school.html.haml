@@ -7,8 +7,8 @@
                 alt: school.name
 
   %h3= school.name
-  %p= school.address
-  %p= school.phone
+  %p Address: #{school.address}
+  %p Phone: #{school.phone}
   %p Managed by #{school.managers.map(&:name).to_sentence}
 
   - if school.details.present?

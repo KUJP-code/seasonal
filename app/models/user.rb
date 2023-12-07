@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# Represents a user
-# Access changes based on role
-# Can be customer, school manager, area manager or admin
 class User < ApplicationRecord
   # Set full name from submitted first and last names
   before_validation :set_name, :set_kana
@@ -71,7 +68,7 @@ class User < ApplicationRecord
   has_many :areas, -> { distinct }, through: :schools
   has_many :time_slots, through: :children
   has_many :options, through: :children
-  has_many :events, -> { order(start_date: :desc).distinct },
+  has_many :events, -> { distinct },
            through: :children
   has_many :mailer_subscriptions, dependent: :destroy
 

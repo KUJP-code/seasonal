@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-# Handles flow of information for events
 class EventsController < ApplicationController
+  after_action :verify_authorized
+  after_action :verify_policy_scoped, only: :index
+
   def index
     @events = policy_scope(Event).includes(
       image_attachment: %i[blob],

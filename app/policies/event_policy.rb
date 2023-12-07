@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
-# Handles authorisation for events
 class EventPolicy < ApplicationPolicy
+  def index?
+    true
+  end
+
   def show?
     staff_or_parent?(user, record)
   end
@@ -33,14 +36,14 @@ class EventPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       case user.role
-      when 'admin'
-        Event.order(start_date: :desc).includes(:school)
+      when 'admin', 'statistician'
+        scope
       when 'area_manager'
-        user.area_events.includes(:school)
+        scope.where(id: user.area_events.ids)
       when 'school_manager'
-        user.school_events.includes(:school)
-      else
-        user.schools.first.events
+        scope.where(id: user.school_events.ids)
+      when 'customer'
+        scope.where(id: user.events.ids)
       end
     end
   end
@@ -56,6 +59,6 @@ class EventPolicy < ApplicationPolicy
   end
 
   def staff_or_parent?(user, record)
-    user.staff? || user.id == record.parent_id
+    user.staff? || user.statistician? || user.events.ids.include?(record.id)
   end
 end
