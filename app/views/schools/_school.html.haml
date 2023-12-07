@@ -1,0 +1,21 @@
+-# locals(school:)
+
+.card.w-25
+  - if school.image.present?
+    = image_tag school.image,
+                class: 'img-fluid img-thumbnail',
+                alt: school.name
+
+  %h3= school.name
+  %p= school.address
+  %p= school.phone
+  %p Managed by #{school.managers.map(&:name).to_sentence}
+
+  - if school.details.present?
+    - school.details.each do |k, v|
+      %p #{k.humanize}: #{v.to_sentence}
+
+  - if current_user.admin?
+    = link_to 'Edit School',
+              edit_school_path(school),
+              class: 'btn btn-primary'

@@ -1,0 +1,13 @@
+%main.flex-row.flex-wrap.justify-content-evenly.gap-3.p-3
+  .d-flex.flex-wrap.gap-3
+    - if current_user.admin?
+      = link_to 'Create Area',
+                new_area_path,
+                class: 'btn btn-primary'
+      = link_to 'Create School',
+                new_school_path,
+                class: 'btn btn-primary'
+
+  - @areas.each do |area|
+    = render partial: 'areas/area', locals: { area: area }
+    = render partial: 'schools/school', collection: area.schools

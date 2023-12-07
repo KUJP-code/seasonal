@@ -1,0 +1,8 @@
+-# locals(area:)
+
+%h1.w-100.text-center= area.name
+%h2.w-100.text-center Managed by #{area.managers.map(&:name).to_sentence}
+- if current_user.admin?
+  = link_to 'Edit Area',
+            edit_area_path(area),
+            class: 'btn btn-primary w-100'
