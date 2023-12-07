@@ -26,9 +26,9 @@ class ChildrenController < ApplicationController
 
   def new
     @child = if params[:parent]
-               Child.new(parent_id: params[:parent], photos: nil, first_seasonal: true)
+               authorize(Child.new(parent_id: params[:parent], photos: nil, first_seasonal: true))
              else
-               Child.new(photos: nil, first_seasonal: true)
+               authorize(Child.new(photos: nil, first_seasonal: true))
              end
   end
 
