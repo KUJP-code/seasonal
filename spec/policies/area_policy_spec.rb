@@ -72,4 +72,34 @@ describe AreaPolicy do
 
     it_behaves_like 'unauthorized user for AreaPolicy'
   end
+
+  context 'when resolving scopes' do
+    let(:areas) { create_list(:area, 3) }
+
+    it 'resolves admin to all areas' do
+      user = build(:admin)
+      expect(Pundit.policy_scope!(user, Area.all)).to eq(Area.all)
+    end
+
+    it 'resolves area_manager to areas of manager' do
+      user = create(:area_manager)
+      user.managed_areas << create(:area)
+      expect(Pundit.policy_scope!(user, Area.all)).to eq(user.managed_areas)
+    end
+
+    it 'resolves school_manager to nothing' do
+      user = create(:school_manager)
+      expect(Pundit.policy_scope!(user, Area.all)).to eq(Area.none)
+    end
+
+    it 'resolves statistician to nothing' do
+      user = create(:statistician)
+      expect(Pundit.policy_scope!(user, Area.all)).to eq(Area.none)
+    end
+
+    it 'resolves customer to nothing' do
+      user = create(:customer)
+      expect(Pundit.policy_scope!(user, Area.all)).to eq(Area.none)
+    end
+  end
 end
