@@ -81,6 +81,45 @@ describe InvoicePolicy do
   end
 
   context 'when resolving scopes' do
+    let(:invoices) { create_list(:invoice, 3) }
 
+    it 'resolves admin to all invoices' do
+      user = build(:admin)
+      expect(Pundit.policy_scope!(user, Invoice.all)).to eq(invoices)
+    end
+
+    it 'resolves area_manager to area invoices' do
+      user = create(:area_manager)
+      user.managed_areas << create(:area)
+      school = create(:school, area: user.managed_areas.first)
+      event = create(:event, school: school)
+      area_invoices = create_list(:invoice, 2, event: event)
+      expect(Pundit.policy_scope!(user, Invoice.all)).to eq(area_invoices)
+    end
+
+    it 'resolves school_manager to school invoices' do
+      user = create(:school_manager)
+      user.managed_schools << create(:school)
+      event = create(:event, school: user.managed_schools.first)
+      school_invoices = create_list(:invoice, 2, event: event)
+      expect(Pundit.policy_scope!(user, Invoice.all)).to eq(school_invoices)
+    end
+
+    it 'resolves statistician to nothing' do
+      user = create(:statistician)
+      expect(Pundit.policy_scope!(user, Invoice.all)).to eq(Invoice.none)
+    end
+
+    it 'resolves parent of children to child invoices' do
+      user = create(:customer)
+      user.children << create_list(:child, 2, invoices: [create(:invoice)])
+      user.save
+      expect(Pundit.policy_scope!(user, Invoice.all)).to eq(user.invoices)
+    end
+
+    it 'resolves parent with no children to empty relation' do
+      user = create(:customer)
+      expect(Pundit.policy_scope!(user, Invoice.all)).to eq([])
+    end
   end
 end
