@@ -2,15 +2,14 @@
 
 class InvoiceMailer < ApplicationMailer
   def confirmation_notif
-    @invoice = params[:invoice]
+    set_shared_vars
     attachments['invoice.pdf'] = @invoice.pdf
-    @parent = @invoice.child.parent
     mail(to: @parent.email, subject: t('.invoice_confirm'))
   end
 
   def updated_notif
     set_shared_vars
-    if @parent.id == @updater.id
+    if @updater && @parent.id == @updater.id
       mail(to: @parent.email, subject: t('.booking_made'))
     else
       mail(to: @parent.email, subject: t('.invoice_updated'))
@@ -29,10 +28,6 @@ private
 def set_shared_vars
   @invoice = params[:invoice]
   @child = @invoice.child
-  @updater = if !@invoice.versions.empty? && @invoice.versions.last.whodunnit
-               User.find(@invoice.versions.last.whodunnit)
-             else
-               User.new(name: 'Admin')
-             end
+  @updater = User.find(@invoice.versions.last.whodunnit) unless @invoice.versions.empty?
   @parent = @child.parent
 end

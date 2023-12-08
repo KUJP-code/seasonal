@@ -2,7 +2,6 @@
 
 class InvoicesController < ApplicationController
   after_action :verify_authorized
-  after_action :verify_policy_scoped, only: :index
 
   def index
     authorize Invoice
@@ -17,8 +16,15 @@ class InvoicesController < ApplicationController
                                  .reject { |v| v.reify.total_cost.zero? }
   end
 
+  def new
+    @invoice = authorize Invoice.new
+  end
+
   def create
+    p invoice_params
+
     @invoice = authorize Invoice.new(invoice_params)
+
 
     if @invoice.save
       send_emails(@invoice) unless current_user.admin?
@@ -49,9 +55,11 @@ class InvoicesController < ApplicationController
     child = @invoice.child
 
     if @invoice.destroy
-      redirect_to invoices_path(child: child.id), notice: t('success', model: 'お申込', action: '削除')
+      redirect_to invoices_path(child: child.id),
+                  notice: t('success', model: 'お申込', action: '削除')
     else
-      redirect_to invoice_path(@invoice), notice: t('failure', model: 'お申込', action: '削除')
+      redirect_to invoice_path(@invoice),
+                  notice: t('failure', model: 'お申込', action: '削除')
     end
   end
 
@@ -96,11 +104,11 @@ class InvoicesController < ApplicationController
   end
 
   def copy
-    target = Child.find(params[:target])
-    event = Event.find(params[:event])
-    origin = Child.find(params[:origin])
+    target = authorize(Child.find(params[:target]), :show?)
+    event = authorize(Event.find(params[:event]), :show?)
+    origin = authorize(Child.find(params[:origin]), :show?)
 
-    @target_invoice = authorize copy_invoice(target, event, origin)
+    @target_invoice = copy_invoice(target, event, origin)
 
     redirect_to invoice_path(@target_invoice),
                 notice: t('success', model: 'お申込', action: '更新')
@@ -134,7 +142,7 @@ class InvoicesController < ApplicationController
   end
 
   def child_index_data
-    @child = Child.find(params[:child])
+    @child = authorize Child.find(params[:child]), :show?
     @invoices = @child.real_invoices.distinct.order(updated_at: :desc)
     @events = @child.events.includes(
       :school,
@@ -306,7 +314,7 @@ class InvoicesController < ApplicationController
   end
 
   def user_index_data
-    @user = User.find(params[:user])
+    @user = authorize User.find(params[:user]), :show?
     @children = @user.children.includes(
       :real_invoices,
       events: %i[avif_attachment image_attachment school]

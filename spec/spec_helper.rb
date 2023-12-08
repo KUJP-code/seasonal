@@ -95,4 +95,11 @@ RSpec.configure do |config|
   #   # test failures related to randomization by passing the same `--seed` value
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
+  config.before(:suite) do
+    Bullet.enable = false
+  end
+
+  config.after(:suite) do
+    Bullet.enable = true
+  end
 end

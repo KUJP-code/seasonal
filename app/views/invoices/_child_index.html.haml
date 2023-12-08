@@ -9,6 +9,8 @@
 
 %h1= link_to @child.name, child_path(@child)
 - @events.each do |e|
+  - next unless @child.real_invoices.find { |i| i.event_id == e.id }
+
   = render partial: 'events/child_event',
            locals: { event: e, child: @child }
 

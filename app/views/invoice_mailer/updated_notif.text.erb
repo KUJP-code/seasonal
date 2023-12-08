@@ -1,9 +1,9 @@
 <%= "#{@parent.name}様" %>
-<% if @updater.name == @parent.name %>
+<% if @updater && @updater.name == @parent.name %>
     Kids UPスクールにより、お客様のお申込内容が変更されました。
     下記、新しいお申込内容をご確認ください。
 <% else %>
-    <%= @updater.name %>により、お客様のお申込内容が変更されました。
+    <%= @updater ? @updater.name : '' %>により、お客様のお申込内容が変更されました。
     下記、新しいお申込内容をご確認ください。
 <% end %>
 
