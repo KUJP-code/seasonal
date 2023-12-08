@@ -48,17 +48,8 @@
         <%= inquiry.referrer %>
     </td>
    <td>
-        <%= link_to t('.edit'), 
+        <%= link_to t('.edit'),
                     edit_inquiry_path(inquiry),
                     class: 'btn btn-primary' %>
-    </td>
-    <td>
-        <%= link_to t('.delete'), 
-                    inquiry_path(inquiry),
-                    data: { 
-                        turbo_method: :delete, 
-                        turbo_confirm: t('.are_u_sure') 
-                    },
-                    class: 'btn btn-danger' %>
     </td>
 </tr>

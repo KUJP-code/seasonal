@@ -2,6 +2,8 @@
 
 class InquiriesController < ApplicationController
   skip_before_action :verify_authenticity_token, only: :create
+  after_action :verify_authorized, except: :create
+  after_action :verify_policy_scoped, only: :index
 
   def index
     @schools = policy_scope(School).real.order(:id)
@@ -44,16 +46,6 @@ class InquiriesController < ApplicationController
       render :edit,
              status: :unprocessable_entity,
              alert: 'Failed to update inquiry'
-    end
-  end
-
-  def destroy
-    @inquiry = authorize(Inquiry.find(params[:id]))
-
-    if @inquiry.destroy
-      redirect_to inquiries_path, notice: 'Deleted Inquiry'
-    else
-      redirect_to inquiries_path, alert: 'Failed to delete Inquiry'
     end
   end
 

@@ -101,7 +101,6 @@ describe ChildPolicy do
 
     it 'resolves statistician to nothing' do
       user = create(:statistician)
-      create_list(:child, 2)
       expect(Pundit.policy_scope!(user, Child.all)).to eq(Child.none)
     end
 

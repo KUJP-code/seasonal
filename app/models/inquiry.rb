@@ -4,10 +4,14 @@ class Inquiry < ApplicationRecord
   VALID_CATEGORIES = %w[C I R].freeze
 
   belongs_to :setsumeikai, counter_cache: true, optional: true
-  belongs_to :school, optional: true
+  belongs_to :school
+  delegate :area, to: :school
 
-  validates :category, length: { is: 1 }
-  validates :category, inclusion: { in: VALID_CATEGORIES }
+  validates :parent_name, :phone, :email, presence: true
+  validates :category,
+            presence: true,
+            length: { is: 1 },
+            inclusion: { in: VALID_CATEGORIES }
 
   enum :referrer, 'チラシ' => 0,
                   '口コミ' => 1,
