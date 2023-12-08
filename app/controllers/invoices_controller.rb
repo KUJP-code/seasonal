@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
-# Controls flow of information for Invoices
 class InvoicesController < ApplicationController
+  after_action :verify_authorized
+  after_action :verify_policy_scoped, only: :index
+
   def index
+    authorize Invoice
     params[:user] ? user_index_data : child_index_data
   end
 
   def show
-    @invoice = authorize(Invoice.find(params[:id]))
+    @invoice = authorize Invoice.find(params[:id])
     show_banner_and_survey if params[:updated]
     @previous_versions = @invoice.versions.where.not(object: nil)
                                  .reorder(created_at: :desc)
@@ -15,7 +18,7 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    @invoice = Invoice.new(invoice_params)
+    @invoice = authorize Invoice.new(invoice_params)
 
     if @invoice.save
       send_emails(@invoice) unless current_user.admin?
@@ -28,8 +31,11 @@ class InvoicesController < ApplicationController
   end
 
   def update
-    @invoice = authorize(Invoice.find(params[:id]))
-    return redirect_to child_path(@invoice.child), alert: t('.no_parent') if @invoice.child.parent_id.nil?
+    @invoice = authorize Invoice.find(params[:id])
+    if @invoice.child.parent_id.nil?
+      return redirect_to child_path(@invoice.child),
+                         alert: t('.no_parent')
+    end
 
     if params[:commit] == '' || params[:commit] == '✔'
       status_update
@@ -39,7 +45,7 @@ class InvoicesController < ApplicationController
   end
 
   def destroy
-    @invoice = Invoice.find(params[:id])
+    @invoice = authorize Invoice.find(params[:id])
     child = @invoice.child
 
     if @invoice.destroy
@@ -69,7 +75,7 @@ class InvoicesController < ApplicationController
                     end.values
                   end
 
-    @invoice = Invoice.new(invoice_params)
+    @invoice = authorize Invoice.new(invoice_params)
     @new = params[:new] == 'true'
 
     # This makes it work??????????
@@ -83,6 +89,7 @@ class InvoicesController < ApplicationController
   end
 
   def confirmed
+    authorize Invoice
     @invoice = nil
 
     render 'invoices/confirm'
@@ -93,13 +100,14 @@ class InvoicesController < ApplicationController
     event = Event.find(params[:event])
     origin = Child.find(params[:origin])
 
-    @target_invoice = authorize(copy_invoice(target, event, origin))
+    @target_invoice = authorize copy_invoice(target, event, origin)
 
-    redirect_to invoice_path(@target_invoice), notice: t('success', model: 'お申込', action: '更新')
+    redirect_to invoice_path(@target_invoice),
+                notice: t('success', model: 'お申込', action: '更新')
   end
 
   def merge
-    merge_from = Invoice.find(params[:merge_from])
+    merge_from = authorize Invoice.find(params[:merge_from])
     merge_to = Invoice.find(params[:merge_to])
 
     merge_invoices(merge_from, merge_to)
@@ -109,7 +117,7 @@ class InvoicesController < ApplicationController
   end
 
   def seen
-    @invoice = Invoice.find(params[:id])
+    @invoice = authorize Invoice.find(params[:id])
     @invoice.update(seen_at: Time.current)
 
     respond_to do |format|

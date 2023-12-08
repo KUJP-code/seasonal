@@ -1,12 +1,19 @@
 # frozen_string_literal: true
 
-# Handles authorisation for Invoices
 class InvoicePolicy < ApplicationPolicy
   def index?
-    user.staff? || record.all? { |invoice| user.children.ids.include?(invoice.child_id) }
+    user.present?
   end
 
   def show?
+    staff_or_parent?(user, record)
+  end
+
+  def new?
+    user.present?
+  end
+
+  def create?
     staff_or_parent?(user, record)
   end
 
@@ -20,6 +27,10 @@ class InvoicePolicy < ApplicationPolicy
 
   def confirm?
     staff_or_parent?(user, record)
+  end
+
+  def confirmed?
+    true
   end
 
   def copy?
