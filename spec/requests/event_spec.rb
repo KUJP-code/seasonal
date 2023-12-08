@@ -148,6 +148,12 @@ describe Event do
       user.children.reload
     end
 
+    it 'cannot acess Event#show for other children' do
+      user.children.destroy_all
+      get "/events/#{event.id}?child=#{child.id}"
+      expect(flash[:alert]).to eq(I18n.t('not_authorized'))
+    end
+
     it_behaves_like 'viewer for Event request'
     it_behaves_like 'user unauthorized to request Event changes'
     it_behaves_like 'user unauthorized to request Event attendance'

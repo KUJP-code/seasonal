@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    authorize(Event)
+    authorize Event
     @events = policy_scope(Event).includes(
       :school,
       image_attachment: %i[blob],
@@ -14,10 +14,8 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event = Event.find(params[:id])
-    @child = params[:child] ? Child.find(params[:child]) : current_user.children.first
-    # Check the person accessing is staff or child's parent
-    authorize(@child)
+    @event = authorize Event.find(params[:id])
+    @child = authorize params[:child] ? Child.find(params[:child]) : current_user.children.first
     user_specific_info
     @event_slots = @event.time_slots.morning
                          .with_attached_image
@@ -30,17 +28,17 @@ class EventsController < ApplicationController
   end
 
   def new
-    @event = authorize(Event.new)
+    @event = authorize Event.new
     form_info
   end
 
   def edit
-    @event = authorize(Event.find(params[:id]))
+    @event = authorize Event.find(params[:id])
     form_info
   end
 
   def create
-    authorize(:event)
+    authorize Event
 
     if params[:event][:school_id] == 'all'
       results = School.all.map do |school|
@@ -86,7 +84,7 @@ class EventsController < ApplicationController
   end
 
   def update
-    authorize(:event)
+    authorize Event
 
     if params[:event][:school_id] == 'all' || params[:event][:school_id].nil?
       results = School.all.map do |school|
