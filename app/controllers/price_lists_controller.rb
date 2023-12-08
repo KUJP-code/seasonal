@@ -1,21 +1,23 @@
 # frozen_string_literal: true
 
-# Handles flow of information for price lists
 class PriceListsController < ApplicationController
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
+
   def index
-    @price_lists = authorize(PriceList.all)
+    @price_lists = policy_scope PriceList
   end
 
   def new
-    @price_list = authorize(PriceList.new)
+    @price_list = authorize PriceList.new
   end
 
   def edit
-    @price_list = authorize(PriceList.find(params[:id]))
+    @price_list = authorize PriceList.find(params[:id])
   end
 
   def create
-    @price_list = authorize(PriceList.new(price_list_params))
+    @price_list = authorize PriceList.new(price_list_params)
 
     if @price_list.save
       redirect_to price_lists_path,
@@ -26,23 +28,13 @@ class PriceListsController < ApplicationController
   end
 
   def update
-    @price_list = authorize(PriceList.find(params[:id]))
+    @price_list = authorize PriceList.find(params[:id])
 
     if @price_list.update(price_list_params)
       redirect_to price_lists_path,
                   notice: t('success', model: 'Price List ', action: 'update')
     else
       render :edit, status: :unprocessable_entity, alert: t('.failure')
-    end
-  end
-
-  def destroy
-    @price_list = authorize(PriceList.find(params[:id]))
-
-    if @price_list.destroy
-      redirect_to price_lists_path, notice: t('success', model: 'Price List ', action: 'destroyed')
-    else
-      redirect_to price_lists_path, alert: t('.failure')
     end
   end
 

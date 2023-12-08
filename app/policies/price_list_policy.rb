@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Handles authorization for price lists
 class PriceListPolicy < ApplicationPolicy
   def index?
     user.admin?
@@ -28,5 +27,11 @@ class PriceListPolicy < ApplicationPolicy
 
   def destroy?
     user.admin?
+  end
+
+  class Scope < Scope
+    def resolve
+      user.admin? ? scope : scope.none
+    end
   end
 end
