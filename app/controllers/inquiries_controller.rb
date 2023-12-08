@@ -6,17 +6,20 @@ class InquiriesController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
+    authorize Inquiry
     @schools = policy_scope(School).real.order(:id)
-    @school = params[:school] ? School.find(params[:school]) : @schools.first
-    @inquiries = @school.inquiries.includes(:setsumeikai).page(params[:page])
+    @school = authorize params[:school] ? School.find(params[:school]) : @schools.first
+    @inquiries = policy_scope(@school.inquiries)
+                 .includes(:setsumeikai)
+                 .page(params[:page])
   end
 
   def new
-    @inquiry = Inquiry.new(setsumeikai_id: params[:setsu_id])
+    @inquiry = authorize Inquiry.new(setsumeikai_id: params[:setsu_id])
     @setsumeikais = policy_scope(Setsumeikai).upcoming
                                              .order(start: :asc)
                                              .includes(:school)
-    @schools = School.real.order(:id)
+    @schools = policy_scope(School).order(:id)
   end
 
   def edit
@@ -24,7 +27,7 @@ class InquiriesController < ApplicationController
     @setsumeikais = policy_scope(Setsumeikai).upcoming
                                              .order(start: :asc)
                                              .includes(:school)
-    @schools = School.real.order(:id)
+    @schools = policy_scope(School).order(:id)
   end
 
   def create
@@ -37,15 +40,15 @@ class InquiriesController < ApplicationController
   end
 
   def update
-    @inquiry = authorize(Inquiry.find(params[:id]))
+    @inquiry = authorize Inquiry.find(params[:id])
 
     if @inquiry.update(inquiry_params)
       redirect_to inquiries_path,
-                  notice: 'Updated inquiry'
+                  notice: t('success', model: '問い合わせ', action: '更新')
     else
       render :edit,
              status: :unprocessable_entity,
-             alert: 'Failed to update inquiry'
+             alert: t('failure', model: '問い合わせ', action: '更新')
     end
   end
 
@@ -63,10 +66,10 @@ class InquiriesController < ApplicationController
     if @inquiry.save
       if @inquiry.category == 'R'
         redirect_to setsumeikai_path(@inquiry.setsumeikai_id),
-                    notice: 'Created inquiry'
+                    notice: t('success', model: '問い合わせ', action: '作成')
       else
         redirect_to inquiries_path(school: @inquiry.school_id),
-                    notice: 'Created inquiry'
+                    alert: t('success', model: '問い合わせ', action: '作成')
       end
     else
       @schools = policy_scope(School)

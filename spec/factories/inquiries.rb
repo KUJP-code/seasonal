@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :inquiry do
     school
+    category { 'I' }
     parent_name { Faker::Name.name }
     email { Faker::Internet.email }
     phone { Faker::PhoneNumber.phone_number }

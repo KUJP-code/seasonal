@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class SchoolPolicy < ApplicationPolicy
+  def index?
+    user.staff?
+  end
+
   def show?
     user.admin? || user.statistician? ||
       (user.school_manager? && user.managed_school.id == record.id)
