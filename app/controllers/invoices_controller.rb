@@ -21,10 +21,7 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    p invoice_params
-
     @invoice = authorize Invoice.new(invoice_params)
-
 
     if @invoice.save
       send_emails(@invoice) unless current_user.admin?
