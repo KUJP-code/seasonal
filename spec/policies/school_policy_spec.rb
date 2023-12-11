@@ -74,4 +74,36 @@ RSpec.describe SchoolPolicy do
 
     it_behaves_like 'unauthorized user for SchoolPolicy'
   end
+
+  context 'when resolving scope' do
+    let(:schools) { create_list(:school, 3) }
+
+    it 'resolves admin to all non-test schools' do
+      user = create(:admin)
+      expect(Pundit.policy_scope!(user, School)).to eq(schools)
+    end
+
+    it 'resolves area_manager to area schools' do
+      user = create(:area_manager)
+      user.managed_areas << create(:area)
+      area_schools = create_list(:school, 2, area: user.managed_areas.first)
+      expect(Pundit.policy_scope!(user, School)).to eq(area_schools)
+    end
+
+    it 'resolves school_manager to school' do
+      user = create(:school_manager)
+      user.managed_schools << create(:school)
+      expect(Pundit.policy_scope!(user, School)).to eq(user.managed_schools)
+    end
+
+    it 'resolves statistician to all schools' do
+      user = create(:statistician)
+      expect(Pundit.policy_scope!(user, School)).to eq(schools)
+    end
+
+    it 'resolves customer to nothing' do
+      user = create(:customer)
+      expect(Pundit.policy_scope!(user, School)).to be_empty
+    end
+  end
 end
