@@ -14,7 +14,7 @@ class SchoolPolicy < ApplicationPolicy
   end
 
   def create?
-    user.admin? || area_school? || sm_managed_school?
+    user.admin?
   end
 
   def update?

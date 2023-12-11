@@ -14,7 +14,7 @@ class SchoolsController < ApplicationController
   def show; end
 
   def new
-    @school = School.new
+    @school = authorize School.new
     form_data
   end
 
@@ -23,13 +23,13 @@ class SchoolsController < ApplicationController
   end
 
   def create
-    @school = School.new(school_params)
+    @school = authorize School.new(school_params)
 
     if @school.save
       redirect_to school_path(@school), notice: "Created #{@school.name}!"
     else
       form_data
-      render :new, status: unprocessable_entity,
+      render :new, status: :unprocessable_entity,
                    alert: "Couldn't create #{@school.name}"
     end
   end
@@ -39,7 +39,7 @@ class SchoolsController < ApplicationController
       redirect_to school_path(@school), notice: "Updated #{@school.name}!"
     else
       form_data
-      render :edit, status: unprocessable_entity,
+      render :edit, status: :unprocessable_entity,
                     alert: "Couldn't update #{@school.name}"
     end
   end
