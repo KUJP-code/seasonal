@@ -2,12 +2,14 @@
 
 class SetsumeikaisController < ApplicationController
   before_action :set_setsumeikai, only: %i[destroy edit show update]
+  after_action :verify_authorized
+  after_action :verify_policy_scoped, only: %i[index]
 
   def index
     @schools = policy_scope(School).order(:id)
-    @school = params[:school] ? School.find(params[:school]) : @schools.first
-    @setsumeikais = index_setsumeikais
-    @setsumeikai = params[:setsumeikai] ? setsu_from_params : default_setsu
+    @school = authorize(params[:school] ? School.find(params[:school]) : @schools.first, :show?)
+    @setsumeikais = policy_scope(index_setsumeikais)
+    @setsumeikai = authorize(params[:setsumeikai] ? setsu_from_params : default_setsu, :show?)
   end
 
   def show
@@ -19,7 +21,7 @@ class SetsumeikaisController < ApplicationController
   end
 
   def create
-    @setsumeikai = Setsumeikai.new(setsumeikai_params)
+    @setsumeikai = authorize Setsumeikai.new(setsumeikai_params)
 
     if @setsumeikai.save
       redirect_to setsumeikais_path(school: @setsumeikai.school_id),
@@ -79,7 +81,7 @@ class SetsumeikaisController < ApplicationController
   end
 
   def set_setsumeikai
-    @setsumeikai = authorize(Setsumeikai.find(params[:id]))
+    @setsumeikai = authorize Setsumeikai.find(params[:id])
   end
 
   def setsu_from_params
