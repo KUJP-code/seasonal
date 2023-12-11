@@ -87,6 +87,8 @@ describe Child do
 
     before do
       user.children << child
+      user.save
+      user.children.reload
     end
 
     it 'redirects home when child index requested' do

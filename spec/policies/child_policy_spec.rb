@@ -36,7 +36,7 @@ describe ChildPolicy do
 
   context 'when parent of child' do
     let(:user) { create(:customer) }
-    let(:child) { build(:child, parent: user) }
+    let(:child) { create(:child, parent: user) }
 
     it { is_expected.to authorize_action(:show) }
     it { is_expected.to authorize_action(:new) }

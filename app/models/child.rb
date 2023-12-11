@@ -8,7 +8,7 @@ class Child < ApplicationRecord
   attr_accessor :first_name, :family_name, :kana_first, :kana_family
 
   # List associations to other models
-  belongs_to :parent, class_name: 'User', optional: true
+  belongs_to :parent, class_name: 'User', optional: true, inverse_of: :children
   belongs_to :school, optional: true
   has_many :upcoming_events, through: :school,
                              class_name: 'Event'

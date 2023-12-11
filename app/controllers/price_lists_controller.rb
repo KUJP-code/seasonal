@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class PriceListsController < ApplicationController
-  after_action :verify_authorized, except: :index
+  after_action :verify_authorized
   after_action :verify_policy_scoped, only: :index
 
   def index
+    authorize PriceList
     @price_lists = policy_scope PriceList
   end
 

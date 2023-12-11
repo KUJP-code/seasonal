@@ -82,7 +82,7 @@ describe EventPolicy do
   end
 
   context 'when customer' do
-    let(:user) { build(:customer) }
+    let(:user) { create(:customer) }
     let(:child) do
       create(
         :child,
