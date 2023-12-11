@@ -88,6 +88,7 @@ class Invoice < ApplicationRecord
     return 0 if num_regs.zero?
 
     if [3, 4].include?(num_regs)
+
       if child.member?
         @breakdown << "<p>- 3回コース: #{yenify(11_900)}</p>" unless @breakdown.nil?
 
@@ -356,7 +357,7 @@ class Invoice < ApplicationRecord
     # Exclude event options from the check
     return false if event.options.ids.include?(opt_reg['registerable_id'].to_i)
 
-    option = opt_reg.registerable
+    option = Option.find(opt_reg['registerable_id'])
     # If for special day extension, only delete if neither registered
     return slot_regs.none? { |r| r.registerable.special? } if option.extension? || option.k_extension?
 

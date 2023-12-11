@@ -2,14 +2,15 @@
 
 class SetsumeikaisController < ApplicationController
   before_action :set_setsumeikai, only: %i[destroy edit show update]
-  after_action :verify_authorized
+  after_action :verify_authorized, except: %i[index]
   after_action :verify_policy_scoped, only: %i[index]
 
   def index
+    authorize Setsumeikai
     @schools = policy_scope(School).order(:id)
-    @school = authorize(params[:school] ? School.find(params[:school]) : @schools.first, :show?)
+    @school = params[:school] ? School.find(params[:school]) : @schools.first
     @setsumeikais = policy_scope(index_setsumeikais)
-    @setsumeikai = authorize(params[:setsumeikai] ? setsu_from_params : default_setsu, :show?)
+    @setsumeikai = params[:setsumeikai] ? setsu_from_params : default_setsu
   end
 
   def show

@@ -25,8 +25,18 @@ RSpec.describe Invoice do
     let(:invoice) { build(:invoice, event: event) }
 
     it 'returns total_cost as an integer' do
-      invoice.slot_regs << build(:slot_reg)
-      invoice.opt_regs << build(:event_opt_reg)
+      time_slot = create(:time_slot, event: event)
+      invoice.slot_regs << build(
+        :slot_reg,
+        registerable_id: time_slot.id,
+        registerable_type: 'TimeSlot'
+      )
+      option = create(:event_option, cost: 10, optionable: event)
+      invoice.opt_regs << build(
+        :event_opt_reg,
+        registerable_id: option.id,
+        registerable_type: 'Option'
+      )
       expect(invoice.calc_cost).to eq(11)
     end
 

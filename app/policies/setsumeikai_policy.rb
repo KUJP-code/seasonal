@@ -10,19 +10,19 @@ class SetsumeikaiPolicy < ApplicationPolicy
   end
 
   def create?
-    user.admin? || area_setsumeikai? || school_setsumeikai?
+    user.admin? || managing_area_setsumeikai? || managing_school_setsumeikai?
   end
 
   def edit?
-    user.admin? || area_setsumeikai? || school_setsumeikai?
+    user.admin? || managing_area_setsumeikai? || managing_school_setsumeikai?
   end
 
   def update?
-    user.admin? || area_setsumeikai? || school_setsumeikai?
+    user.admin? || managing_area_setsumeikai? || managing_school_setsumeikai?
   end
 
   def destroy?
-    user.admin? || area_setsumeikai? || school_setsumeikai?
+    user.admin? || managing_area_setsumeikai? || managing_school_setsumeikai?
   end
 
   class Scope < Scope
@@ -46,7 +46,20 @@ class SetsumeikaiPolicy < ApplicationPolicy
     return false unless user.area_manager?
 
     area_school_ids = user.area_schools.ids
+
     record.involved_schools.ids.any? { |id| area_school_ids.include?(id) }
+  end
+
+  def managing_area_setsumeikai?
+    return false unless user.area_manager?
+
+    user.area_schools.ids.include?(record.school_id)
+  end
+
+  def managing_school_setsumeikai?
+    return false unless user.school_manager?
+
+    user.managed_schools.ids.include?(record.school_id)
   end
 
   def school_setsumeikai?

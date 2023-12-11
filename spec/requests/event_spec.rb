@@ -149,7 +149,8 @@ describe Event do
     end
 
     it 'cannot acess Event#show for other children' do
-      user.children.destroy_all
+      child.update(parent_id: nil)
+      user.save
       get "/events/#{event.id}?child=#{child.id}"
       expect(flash[:alert]).to eq(I18n.t('not_authorized'))
     end

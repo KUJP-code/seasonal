@@ -10,7 +10,7 @@ class EventPolicy < ApplicationPolicy
   def show?
     return false if user.statistician?
 
-    staff_or_parent?(user, record)
+    true
   end
 
   def new?
@@ -60,9 +60,5 @@ class EventPolicy < ApplicationPolicy
 
   def school_event?
     user.school_manager? && user.school_events.ids.include?(record.id)
-  end
-
-  def staff_or_parent?(user, record)
-    user.staff? || user.events.ids.include?(record.id)
   end
 end
