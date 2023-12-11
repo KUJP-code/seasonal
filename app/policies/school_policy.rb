@@ -1,13 +1,8 @@
 # frozen_string_literal: true
 
 class SchoolPolicy < ApplicationPolicy
-  def index?
-    user.staff?
-  end
-
   def show?
-    user.admin? || user.statistician? ||
-      (user.school_manager? && user.managed_school.id == record.id)
+    user.admin? || area_school? || sm_managed_school?
   end
 
   def new?
@@ -15,15 +10,15 @@ class SchoolPolicy < ApplicationPolicy
   end
 
   def edit?
-    user.admin?
+    user.admin? || area_school? || sm_managed_school?
   end
 
   def create?
-    user.admin?
+    user.admin? || area_school? || sm_managed_school?
   end
 
   def update?
-    user.admin?
+    user.admin? || area_school? || sm_managed_school?
   end
 
   class Scope < Scope
@@ -37,5 +32,15 @@ class SchoolPolicy < ApplicationPolicy
         user.managed_schools
       end
     end
+  end
+
+  private
+
+  def area_school?
+    user.area_manager? && user.managed_areas.ids.include?(record.area_id)
+  end
+
+  def sm_managed_school?
+    user.school_manager? && user.managed_schools.ids.include?(record.id)
   end
 end

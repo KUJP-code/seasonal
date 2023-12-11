@@ -8,7 +8,7 @@ class InquiriesController < ApplicationController
   def index
     authorize Inquiry
     @schools = policy_scope(School).real.order(:id)
-    @school = authorize params[:school] ? School.find(params[:school]) : @schools.first
+    @school = authorize(params[:school] ? School.find(params[:school]) : @schools.first, :show?)
     @inquiries = policy_scope(@school.inquiries)
                  .includes(:setsumeikai)
                  .page(params[:page])
@@ -23,7 +23,7 @@ class InquiriesController < ApplicationController
   end
 
   def edit
-    @inquiry = authorize(Inquiry.find(params[:id]))
+    @inquiry = authorize Inquiry.find(params[:id])
     @setsumeikais = policy_scope(Setsumeikai).upcoming
                                              .order(start: :asc)
                                              .includes(:school)

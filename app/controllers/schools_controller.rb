@@ -2,6 +2,7 @@
 
 class SchoolsController < ApplicationController
   before_action :set_school, only: %i[edit show update]
+  after_action :verify_authorized, except: %i[index]
 
   def index
     @schools = School.real.order(id: :desc).includes(calendar_setsumeikais: %i[school])
@@ -27,6 +28,7 @@ class SchoolsController < ApplicationController
     if @school.save
       redirect_to school_path(@school), notice: "Created #{@school.name}!"
     else
+      form_data
       render :new, status: unprocessable_entity,
                    alert: "Couldn't create #{@school.name}"
     end
@@ -36,6 +38,7 @@ class SchoolsController < ApplicationController
     if @school.update(school_params)
       redirect_to school_path(@school), notice: "Updated #{@school.name}!"
     else
+      form_data
       render :edit, status: unprocessable_entity,
                     alert: "Couldn't update #{@school.name}"
     end
@@ -59,6 +62,6 @@ class SchoolsController < ApplicationController
   end
 
   def set_school
-    @school = School.find(params[:id])
+    @school = authorize School.find(params[:id])
   end
 end
