@@ -85,4 +85,38 @@ RSpec.describe SetsumeikaiPolicy do
 
     it_behaves_like 'unauthorized user for SetsumeikaiPolicy'
   end
+
+  context 'when resolving scope' do
+    let(:setsumeikais) { create_list(:setsumeikai, 3) }
+
+    it 'resolves admin to all setsumeikais' do
+      user = create(:admin)
+      expect(Pundit.policy_scope!(user, Setsumeikai)).to eq(setsumeikais)
+    end
+
+    it 'resolves area_manager to area setsumeikais' do
+      user = create(:area_manager)
+      user.managed_areas << create(:area)
+      school = create(:school, area: user.managed_areas.first)
+      area_setsumeikais = create_list(:setsumeikai, 2, school: school)
+      expect(Pundit.policy_scope!(user, Setsumeikai)).to eq(area_setsumeikais)
+    end
+
+    it 'resolves school_manager to school setsumeikais' do
+      user = create(:school_manager)
+      user.managed_schools << create(:school)
+      school_setsumeikais = create_list(:setsumeikai, 2, school: user.managed_schools.first)
+      expect(Pundit.policy_scope!(user, Setsumeikai)).to eq(school_setsumeikais)
+    end
+
+    it 'resolves statistician to nothing' do
+      user = create(:statistician)
+      expect(Pundit.policy_scope!(user, Setsumeikai)).to eq(Setsumeikai.none)
+    end
+
+    it 'resolves customer to nothing' do
+      user = create(:customer)
+      expect(Pundit.policy_scope!(user, Setsumeikai)).to eq(Setsumeikai.none)
+    end
+  end
 end

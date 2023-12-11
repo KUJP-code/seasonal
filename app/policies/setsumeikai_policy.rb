@@ -29,11 +29,13 @@ class SetsumeikaiPolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin'
-        Setsumeikai.includes(:school)
+        scope.all
       when 'area_manager'
-        user.area_setsumeikais
+        scope.where(id: user.area_setsumeikais.ids)
       when 'school_manager'
-        user.school_setsumeikais
+        scope.where(id: user.school_setsumeikais.ids)
+      else
+        scope.none
       end
     end
   end
