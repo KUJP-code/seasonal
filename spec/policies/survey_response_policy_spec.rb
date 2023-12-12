@@ -92,5 +92,43 @@ RSpec.describe SurveyResponsePolicy do
     it_behaves_like 'unauthorized user for SurveyResponsePolicy'
   end
 
-  context 'when resolving scopes'
+  context 'when resolving scopes' do
+    let(:survey_responses) { create_list(:survey_response, 3) }
+
+    it 'resolves admin to all survey responses' do
+      user = build(:admin)
+      expect(Pundit.policy_scope!(user, SurveyResponse)).to eq(survey_responses)
+    end
+
+    it 'resolves area_manager to area survey responses' do
+      user = create(:area_manager)
+      user.managed_areas << create(:area)
+      school = create(:school, area: user.managed_areas.first)
+      area_responses = create_list(
+        :survey_response, 2,
+        child: create(:child, school: school)
+      )
+      expect(Pundit.policy_scope!(user, SurveyResponse)).to eq(area_responses)
+    end
+
+    it 'resolves school_manager to school survey responses' do
+      user = create(:school_manager)
+      user.managed_schools << create(:school)
+      school_responses = create_list(
+        :survey_response, 2,
+        child: create(:child, school: user.managed_schools.first)
+      )
+      expect(Pundit.policy_scope!(user, SurveyResponse)).to eq(school_responses)
+    end
+
+    it 'resolves statistician to all survey responses' do
+      user = create(:statistician)
+      expect(Pundit.policy_scope!(user, SurveyResponse)).to eq(SurveyResponse.all)
+    end
+
+    it 'resolves customer to nothing' do
+      user = create(:customer)
+      expect(Pundit.policy_scope!(user, SurveyResponse)).to eq(SurveyResponse.none)
+    end
+  end
 end

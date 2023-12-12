@@ -15,7 +15,7 @@ class SurveyResponsePolicy < ApplicationPolicy
       when 'admin', 'statistician'
         scope.all
       when 'area_manager'
-        scope.where(id: area_survey_responses.ids)
+        scope.where(id: user.area_survey_responses.ids)
       when 'school_manager'
         scope.where(id: user.managed_school.survey_responses.ids)
       else
@@ -31,6 +31,7 @@ class SurveyResponsePolicy < ApplicationPolicy
   end
 
   def school_child?
-    user.school_manager? && user.managed_school.children.ids.include?(record.child_id)
+    user.school_manager? &&
+      user.managed_school.children.ids.include?(record.child_id)
   end
 end
