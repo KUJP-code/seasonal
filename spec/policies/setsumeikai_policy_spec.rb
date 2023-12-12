@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.shared_examples 'authorized user for SetsumeikaiPolicy' do
+RSpec.shared_examples 'manager of setsumeikai school for SetsumeikaiPolicy' do
   it { is_expected.to authorize_action(:index) }
   it { is_expected.to authorize_action(:show) }
   it { is_expected.to authorize_action(:new) }
@@ -10,6 +10,16 @@ RSpec.shared_examples 'authorized user for SetsumeikaiPolicy' do
   it { is_expected.to authorize_action(:edit) }
   it { is_expected.to authorize_action(:update) }
   it { is_expected.to authorize_action(:destroy) }
+end
+
+RSpec.shared_examples 'manager of involved school' do
+  it { is_expected.to authorize_action(:index) }
+  it { is_expected.to authorize_action(:show) }
+  it { is_expected.not_to authorize_action(:new) }
+  it { is_expected.not_to authorize_action(:create) }
+  it { is_expected.not_to authorize_action(:edit) }
+  it { is_expected.not_to authorize_action(:update) }
+  it { is_expected.not_to authorize_action(:destroy) }
 end
 
 RSpec.shared_examples 'unauthorized user for SetsumeikaiPolicy' do
@@ -29,7 +39,7 @@ RSpec.describe SetsumeikaiPolicy do
   context 'when admin' do
     let(:user) { build(:admin) }
 
-    it_behaves_like 'authorized user for SetsumeikaiPolicy'
+    it_behaves_like 'manager of setsumeikai school for SetsumeikaiPolicy'
   end
 
   context 'when manager of setsumeikai area' do
@@ -40,10 +50,22 @@ RSpec.describe SetsumeikaiPolicy do
       user.save
     end
 
-    it_behaves_like 'authorized user for SetsumeikaiPolicy'
+    it_behaves_like 'manager of setsumeikai school for SetsumeikaiPolicy'
   end
 
-  context 'when manager of different area' do
+  context 'when area manager of involved school' do
+    let(:user) { create(:area_manager) }
+
+    before do
+      user.managed_areas << create(:area)
+      school = create(:school, area: user.managed_areas.first)
+      create(:setsumeikai_involvement, school: school, setsumeikai: setsumeikai)
+    end
+
+    it_behaves_like 'manager of involved school'
+  end
+
+  context 'when area manager of uninvolved school' do
     let(:user) { create(:area_manager) }
 
     it { is_expected.to authorize_action(:index) }
@@ -59,10 +81,21 @@ RSpec.describe SetsumeikaiPolicy do
       user.save
     end
 
-    it_behaves_like 'authorized user for SetsumeikaiPolicy'
+    it_behaves_like 'manager of setsumeikai school for SetsumeikaiPolicy'
   end
 
-  context 'when manager of different school' do
+  context 'when manager of involved school' do
+    let(:user) { create(:school_manager) }
+
+    before do
+      user.managed_schools << create(:school)
+      create(:setsumeikai_involvement, school: user.managed_schools.first, setsumeikai: setsumeikai)
+    end
+
+    it_behaves_like 'manager of involved school'
+  end
+
+  context 'when manager of uninvolved school' do
     let(:user) { create(:school_manager) }
 
     it { is_expected.to authorize_action(:index) }
