@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 class SurveyResponsesController < ApplicationController
+  after_action :verify_authorized
+
   def create
-    @response = authorize(SurveyResponse.new(survey_response_params))
+    @response = authorize SurveyResponse.new(survey_response_params)
 
     if @response.save
       redirect_to '/',
@@ -13,7 +15,7 @@ class SurveyResponsesController < ApplicationController
   end
 
   def update
-    @response = SurveyResponse.find(params[:id])
+    @response = authorize SurveyResponse.find(params[:id])
 
     if @response.update(survey_response_params)
       redirect_to survey_path(@response.survey),
