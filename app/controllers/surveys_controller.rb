@@ -2,27 +2,30 @@
 
 class SurveysController < ApplicationController
   before_action :set_survey, only: %i[edit show update]
+  after_action :verify_authorized
+  after_action :verify_policy_scoped, only: %i[index]
 
   def index
+    authorize Survey
     @surveys = policy_scope(Survey)
   end
 
   def show
     @schools = policy_scope(School).includes(:survey_responses)
-    @school = params[:school] ? School.find(params[:school]) : @schools.first
+    @school = authorize(params[:school] ? School.find(params[:school]) : @schools.first)
     @responses = policy_scope(SurveyResponse)
                  .where(survey_id: @survey.id, child_id: @school.children.ids)
                  .includes(child: %i[parent])
   end
 
   def new
-    @survey = authorize(Survey.new)
+    @survey = authorize Survey.new
   end
 
   def edit; end
 
   def create
-    @survey = authorize(Survey.new(survey_params))
+    @survey = authorize Survey.new(survey_params)
 
     if @survey.save
       redirect_to surveys_path,
@@ -58,6 +61,6 @@ class SurveysController < ApplicationController
   end
 
   def set_survey
-    @survey = authorize(Survey.find(params[:id]))
+    @survey = authorize Survey.find(params[:id])
   end
 end
