@@ -59,4 +59,28 @@ RSpec.describe SurveyPolicy do
 
     it_behaves_like 'unauthorized user for SurveyPolicy'
   end
+
+  context 'when resolving scopes' do
+    let(:surveys) { create_list(:survey, 3) }
+
+    it 'resolves admin to all surveys' do
+      user = build(:admin)
+      expect(Pundit.policy_scope!(user, Survey)).to eq(surveys)
+    end
+
+    it 'resolves area_manager to all surveys' do
+      user = build(:area_manager)
+      expect(Pundit.policy_scope!(user, Survey)).to eq(surveys)
+    end
+
+    it 'resolves school_manager to all surveys' do
+      user = build(:school_manager)
+      expect(Pundit.policy_scope!(user, Survey)).to eq(surveys)
+    end
+
+    it 'resolves statistician to all surveys' do
+      user = build(:statistician)
+      expect(Pundit.policy_scope!(user, Survey)).to eq(surveys)
+    end
+  end
 end

@@ -27,7 +27,7 @@ class SurveyPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      user.staff? || user.statistician? ? Survey.all : []
+      user.staff? || user.statistician? ? scope.all : scope.none
     end
   end
 end
