@@ -105,4 +105,7 @@ RSpec.configure do |config|
   config.include Devise::Test::IntegrationHelpers, type: :feature
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include Devise::Test::IntegrationHelpers, type: :view
+
+  # Use route helpers
+  config.include Rails.application.routes.url_helpers
 end
