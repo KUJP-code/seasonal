@@ -21,6 +21,8 @@ class User < ApplicationRecord
                                  source: :involved_setsumeikais
   has_many :school_children, through: :managed_schools,
                              source: :children
+  has_many :school_parents, through: :school_children,
+                            source: :parent
   has_many :school_events, -> { order(start_date: :desc) },
            through: :managed_schools,
            source: :events
@@ -38,6 +40,8 @@ class User < ApplicationRecord
                           source: :schools
   has_many :area_children, through: :area_schools,
                            source: :children
+  has_many :area_parents, through: :area_children,
+                          source: :parent
   has_many :area_events, -> { order(start_date: :desc) },
            through: :area_schools,
            source: :events

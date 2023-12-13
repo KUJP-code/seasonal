@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-# Controls flow of info for Users resource
 class UsersController < ApplicationController
+  after_action :verify_authorized
+  after_action :verify_policy_scoped, only: :index
+
   def index
-    authorize(User)
+    authorize User
     return new_users if params[:ids]
 
     @users = if current_user.admin?
@@ -18,21 +20,21 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = authorize(User.find(params[:id]))
+    @user = authorize User.find(params[:id])
     send("#{@user.role}_data", @user)
     render "users/#{@user.role}"
   end
 
   def new
-    @user = authorize(User.new)
+    @user = authorize User.new
   end
 
   def edit
-    @user = authorize(User.find(params[:id]))
+    @user = authorize User.find(params[:id])
   end
 
   def create
-    @user = authorize(User.new(user_params))
+    @user = authorize User.new(user_params)
 
     if @user.save
       redirect_to user_path(@user),
@@ -45,7 +47,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = authorize(User.find(params[:id]))
+    @user = authorize User.find(params[:id])
 
     if @user.update(user_params)
       redirect_to user_path(@user),
@@ -54,20 +56,6 @@ class UsersController < ApplicationController
       render :edit,
              status: :unprocessable_entity,
              alert: t('failure', model: '保護者', action: '更新')
-    end
-  end
-
-  def destroy
-    @user = authorize(User.find(params[:id]))
-    return redirect_to :required_user if delete_admin?
-    return redirect_to :no_permission if current_user.customer?
-
-    if @user.destroy
-      redirect_to users_path,
-                  notice: t('success', model: '保護者', action: '削除')
-    else
-      redirect_to user_path(@user),
-                  alert: t('failure', model: '保護者', action: '削除')
     end
   end
 
@@ -87,7 +75,7 @@ class UsersController < ApplicationController
   end
 
   def merge_children
-    authorize(User)
+    authorize User
     ss_kid = Child.find(params[:ss_kid])
     non_ss_kid = Child.find(params[:non_ss_kid])
 
