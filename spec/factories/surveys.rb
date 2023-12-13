@@ -15,6 +15,7 @@ FactoryBot.define do
        { 'text' => 'textarea', 'options' => '', 'input_type' => 'textarea' },
        { 'text' => 'time', 'options' => '', 'input_type' => 'time' }]
     end
+    criteria { {} }
 
     factory :active_survey do
       active { true }
