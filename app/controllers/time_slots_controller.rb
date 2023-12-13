@@ -1,19 +1,18 @@
 # frozen_string_literal: true
 
-# Handles flow of information for Time Slots
 class TimeSlotsController < ApplicationController
+  after_action :verify_authorized
+  after_action :verify_policy_scoped, only: :index
+
   def index
+    authorize TimeSlot
     index_schools
     index_events
     @slots = index_slots(@event) unless @event.nil?
   end
 
-  def show
-    @slot = authorize(TimeSlot.find(params[:id]))
-  end
-
   def new
-    authorize(:time_slot)
+    authorize TimeSlot
     if params[:all_schools]
       @events = Event.where(name: params[:event])
                      .includes(:school)
@@ -26,12 +25,12 @@ class TimeSlotsController < ApplicationController
   end
 
   def edit
-    @slot = authorize(TimeSlot.find(params[:id]))
+    @slot = authorize TimeSlot.find(params[:id])
     @images = slot_blobs
   end
 
   def update
-    @slot = authorize(TimeSlot.find(params[:id]))
+    @slot = authorize TimeSlot.find(params[:id])
     return bulk_create_aft_slots if params[:time_slot][:apply_all] == '1'
 
     if @slot.update(slot_params)

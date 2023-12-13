@@ -21,7 +21,7 @@ Rails.application.routes.draw do
       resources :setsumeikais
       resources :surveys, except: %i[destroy]
       resources :survey_responses, only: %i[create update]
-      resources :time_slots, except: %i[create]
+      resources :time_slots, except: %i[create destroy new]
       resources :uploads, only: %i[create new]
       resources :users
 

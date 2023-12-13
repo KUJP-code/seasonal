@@ -5,10 +5,6 @@ class TimeSlotPolicy < ApplicationPolicy
     user.staff?
   end
 
-  def show?
-    user.admin?
-  end
-
   def new?
     user.admin?
   end
@@ -17,20 +13,27 @@ class TimeSlotPolicy < ApplicationPolicy
     user.admin?
   end
 
-  def create?
-    user.admin?
+  def update?
+    user.admin? || area_slot?
   end
 
   def attendance?
     user.admin? || area_slot? || school_slot?
   end
 
-  def update?
-    user.admin? || user.area_manager?
-  end
-
   class Scope < Scope
-    def resolve; end
+    def resolve
+      case user.role
+      when 'admin'
+        scope.all
+      when 'area_manager'
+        scope.where(id: user.area_slots.ids)
+      when 'school_manager'
+        scope.where(id: user.school_slots.ids)
+      else
+        scope.none
+      end
+    end
   end
 
   private
