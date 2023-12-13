@@ -28,7 +28,6 @@ class SurveyResponsesController < ApplicationController
   private
 
   def survey_response_params
-    params
     params.require(:survey_response).permit(
       :id, :child_id, :comment, :survey_id, answers: {}
     )
