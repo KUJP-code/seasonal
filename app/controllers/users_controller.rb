@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  after_action :verify_authorized
+  after_action :verify_authorized, except: :profile
   after_action :verify_policy_scoped, only: :index
 
   def index
@@ -75,9 +75,8 @@ class UsersController < ApplicationController
   end
 
   def merge_children
-    authorize User
-    ss_kid = Child.find(params[:ss_kid])
-    non_ss_kid = Child.find(params[:non_ss_kid])
+    ss_kid = authorize(Child.find(params[:ss_kid]), :show?)
+    non_ss_kid = authorize(Child.find(params[:non_ss_kid]), :show?)
 
     merge_info(non_ss_kid, ss_kid)
     non_ss_kid.reload.destroy
