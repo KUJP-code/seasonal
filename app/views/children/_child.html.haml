@@ -1,0 +1,17 @@
+-# locals: (child:)
+
+%tr
+  %td.ssid= link_to (child.ssid || 'なし'), child_path(child)
+  %td.name= link_to (child.name || 'なし'), child_path(child)
+  %td.kana= link_to (child.katakana_name || 'なし'), child_path(child)
+  %td.en= link_to (child.en_name || 'なし'), child_path(child)
+  %td.category= t(".#{child.category}")
+  %td.allergies= child.allergies
+  %td.hat= child.received_hat ? '◯' : '✖'
+  %td.parent= link_to child.parent.name, user_path(child.parent) if child.parent
+  - if child.ssid
+    %td.edit
+  - else
+    %td.edit= link_to t('.edit'),
+                      edit_child_path(child),
+                      class: 'btn btn-primary'

@@ -14,8 +14,8 @@ class ChildrenController < ApplicationController
     return index_by_school if current_user.admin? || current_user.area_manager?
 
     @children = policy_scope(Child)
-                .includes(:parent, :school)
-                .page(params[:page]).per(1_000)
+                .includes(:parent)
+                .page(params[:page]).per(100)
   end
 
   def show
@@ -98,8 +98,8 @@ class ChildrenController < ApplicationController
     @school = params[:school] ? School.find(params[:school]) : @schools.first
     @children = policy_scope(Child)
                 .where(school_id: @school.id)
-                .includes(:parent, :school)
-                .page(params[:page]).per(1_000)
+                .includes(:parent)
+                .page(params[:page]).per(100)
   end
 
   def afternoon_data
