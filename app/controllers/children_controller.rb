@@ -3,7 +3,7 @@
 class ChildrenController < ApplicationController
   # No policy_scope verification as too complex with children attending
   # from different schools. Index action is authorized instead
-  after_action :verify_authorized
+  after_action :verify_authorized, except: :find_child
 
   ALLOWED_SOURCES = %w[event time_slot].freeze
 
@@ -71,7 +71,7 @@ class ChildrenController < ApplicationController
   end
 
   def find_child
-    @child = authorize(search_result, :show?)
+    @child = search_result
     @failed = @child ? false : true
     return render 'users/_add_child', locals: { parent: User.find(params[:parent_id]) } if params[:bday]
 
