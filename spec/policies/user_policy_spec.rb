@@ -23,19 +23,38 @@ RSpec.shared_examples 'customer for UserPolicy' do
 end
 
 RSpec.shared_examples 'non-admin staff for UserPolicy' do
-  it 'cannot view admin profiles' do
-    record = create(:admin)
-    expect(policy).not_to authorize_action(:show)
+  context 'when viewing admin profile' do
+    let(:record) { create(:admin) }
+
+    it 'cannot view admin profiles' do
+      expect(policy).not_to authorize_action(:show)
+    end
   end
 
-  it 'cannot view area manager profiles' do
-    record = create(:area_manager)
-    expect(policy).not_to authorize_action(:show)
+  context 'when viewing area manager profile' do
+    let(:record) { create(:area_manager) }
+
+    it 'cannot view area manager profiles' do
+      expect(policy).not_to authorize_action(:show)
+    end
   end
 
-  it 'cannot view school manager profiles' do
-    record = create(:school_manager)
-    expect(policy).not_to authorize_action(:show)
+  context 'when viewing school manager profile' do
+    let(:record) { create(:school_manager) }
+
+    it 'cannot view school manager profiles' do
+      expect(policy).not_to authorize_action(:show)
+    end
+  end
+end
+
+RSpec.shared_examples 'Nacrissus' do
+  context 'when viewing own profile' do
+    let(:record) { user }
+
+    it 'can view their own profile' do
+      expect(policy).to authorize_action(:show)
+    end
   end
 end
 
@@ -47,22 +66,32 @@ RSpec.describe UserPolicy do
   context 'when admin' do
     let(:user) { create(:admin) }
 
-    it 'can view admin profiles' do
-      record = create(:admin)
-      expect(policy).to authorize_action(:show)
+    context 'when viewing other admin profile' do
+      let(:record) { create(:admin) }
+
+      it 'can view admin profiles' do
+        expect(policy).to authorize_action(:show)
+      end
     end
 
-    it 'can view area manager profiles' do
-      record = create(:area_manager)
-      expect(policy).to authorize_action(:show)
+    context 'when viewing area manager profile' do
+      let(:record) { create(:area_manager) }
+
+      it 'can view area manager profiles' do
+        expect(policy).to authorize_action(:show)
+      end
     end
 
-    it 'cannot view school manager profiles' do
-      record = create(:school_manager)
-      expect(policy).to authorize_action(:show)
+    context 'when viewing school manager profile' do
+      let(:record) { create(:school_manager) }
+
+      it 'cannot view school manager profiles' do
+        expect(policy).to authorize_action(:show)
+      end
     end
 
     it_behaves_like 'staff for UserPolicy'
+    it_behaves_like 'Nacrissus'
   end
 
   context 'when area manager' do
@@ -70,6 +99,7 @@ RSpec.describe UserPolicy do
 
     it_behaves_like 'staff for UserPolicy'
     it_behaves_like 'non-admin staff for UserPolicy'
+    it_behaves_like 'Nacrissus'
   end
 
   context 'when school manager' do
@@ -77,34 +107,21 @@ RSpec.describe UserPolicy do
 
     it_behaves_like 'staff for UserPolicy'
     it_behaves_like 'non-admin staff for UserPolicy'
+    it_behaves_like 'Nacrissus'
   end
 
   context 'when statistician' do
     let(:user) { create(:statistician) }
 
-    context 'when viewing own profile' do
-      let(:record) { user }
-
-      it 'can view their own profile' do
-        expect(policy).to authorize_action(:show)
-      end
-    end
-
     it_behaves_like 'customer for UserPolicy'
+    it_behaves_like 'Nacrissus'
   end
 
   context 'when customer' do
     let(:user) { create(:customer) }
 
-    context 'when viewing own profile' do
-      let(:record) { user }
-
-      it 'can view their own profile' do
-        expect(policy).to authorize_action(:show)
-      end
-    end
-
     it_behaves_like 'customer for UserPolicy'
+    it_behaves_like 'Nacrissus'
   end
 
   context 'when resolving scopes' do
@@ -115,25 +132,22 @@ RSpec.describe UserPolicy do
       expect(Pundit.policy_scope!(user, User.all)).to eq(users)
     end
 
-    it 'resolves area_manager to area users' do
+    it 'resolves area_manager to area parents' do
       user = create(:area_manager)
       user.managed_areas << create(:area)
       school = create(:school, area: user.managed_areas.first)
-      area_users = create_list(
-        :customer, 2,
-        children: [create(:internal_child, school: school)]
-      )
-      expect(Pundit.policy_scope!(user, User.all)).to eq(area_users)
+      area_parent = create(:customer, children: [create(:internal_child, school: school)])
+      expect(Pundit.policy_scope!(user, User.all)).to contain_exactly(area_parent)
     end
 
-    it 'resolves school_manager to school users' do
+    it 'resolves school_manager to school parents' do
       user = create(:school_manager)
       user.managed_schools << create(:school)
-      school_users = create_list(
-        :customer, 2,
+      school_parent = create(
+        :customer,
         children: [create(:internal_child, school: user.managed_school)]
       )
-      expect(Pundit.policy_scope!(user, User.all)).to eq(school_users)
+      expect(Pundit.policy_scope!(user, User.all)).to contain_exactly(school_parent)
     end
 
     it 'resolves statistician to nothing' do

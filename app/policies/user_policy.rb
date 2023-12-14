@@ -6,7 +6,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
-    staff_or_user?(user, record)
+    staff_or_user?
   end
 
   def new?
@@ -18,11 +18,11 @@ class UserPolicy < ApplicationPolicy
   end
 
   def edit?
-    staff_or_user?(user, record)
+    staff_or_user?
   end
 
   def update?
-    staff_or_user?(user, record)
+    staff_or_user?
   end
 
   def merge_children?
@@ -46,7 +46,7 @@ class UserPolicy < ApplicationPolicy
 
   private
 
-  def staff_or_user?(user, record)
+  def staff_or_user?
     if record.staff?
       user.admin? || user.id == record.id
     else
