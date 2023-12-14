@@ -203,9 +203,9 @@ class UsersController < ApplicationController
 
   def new_users
     @users = if current_user.admin?
-               authorize(User.where(id: params[:ids])).page(params[:page]).per(500)
+               policy_scope(User.where(id: params[:ids])).page(params[:page]).per(500)
              else
-               authorize(User.where(id: params[:ids]))
+               policy_scope(User.where(id: params[:ids]))
              end
   end
 
