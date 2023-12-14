@@ -1,0 +1,25 @@
+- columns = %w[name katakana email edit_info]
+
+%main#user-index
+  - if current_user.staff?
+    = link_to t('.new_customer'),
+              new_user_path,
+              class: 'btn btn-primary'
+
+  = paginate @users
+
+  %table.table.table-hover.text-center
+    %thead
+      %tr.table-primary
+        - columns.each do |col|
+          %th{ scope: col }= t(".#{col}")
+
+      %tr
+        - columns.reject { |col| col == 'edit_info' }.each do |col|
+          = render partial: 'shared/filter_header',
+                   locals: { column: col, siblings: '1' }
+
+    %tbody
+      = render @users
+
+  = paginate @users

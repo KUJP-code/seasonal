@@ -1,0 +1,20 @@
+-# locals (user:)
+
+%tr{ class: "user#{user.id} table-secondary" }
+  %td.name
+    = link_to user.name, user_path(user)
+  %td.katakana
+    = link_to user.katakana_name, user_path(user)
+  %td.email
+    = mail_to user.email, user.email
+  %td.edit
+    = link_to 'edit', edit_user_path(user), class: 'btn btn-primary'
+
+%tr{ class: "user#{user.id} table-secondary details" }
+  %td.text-center{ colspan: 4 }
+    %p 生徒
+
+%tr{ class: "user#{user.id} table-light details" }
+  %td.text-center{ colspan: 4 }
+    - user.children.each do |child|
+      = link_to child.name, child_path(child)

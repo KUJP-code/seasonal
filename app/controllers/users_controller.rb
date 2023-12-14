@@ -9,9 +9,9 @@ class UsersController < ApplicationController
     return new_users if params[:ids]
 
     @users = if current_user.admin?
-               policy_scope(User).page(params[:page]).per(500)
+               policy_scope(User).page(params[:page]).per(100)
              else
-               policy_scope(User)
+               policy_scope(User).page(params[:page]).per(50)
              end
   end
 
