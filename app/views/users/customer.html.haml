@@ -1,0 +1,62 @@
+%main.gap-3#user_show
+  - unless @user.confirmed?
+    .card.justify-content-center.align-items-center.bg-danger
+      %h3= t('.please_confirm_email')
+      = button_to t('.resend_confirm_email'),
+                  user_confirmation_path(user: { email: @user.email }),
+                  class: 'btn btn-primary'
+
+  .card.text-center
+    %h1.fw-bold= t('.greet', user: @user.name)
+
+    - unless @children.empty?
+      %ul
+        - @children.map(&:school).uniq.each do |school|
+          %li.fw-bold= t('.school_name', school: school.name)
+      .d-flex.justify-content-center.gap-3
+        - @children.each do |child|
+          %p= link_to child.name, child_path(child)
+
+    - if current_user.staff?
+      %div{
+        data: {
+          controller: 'conditional',
+          'conditional-pin-value': current_user.pin
+        }
+      }
+        .d-none{ data: { 'conditional-target': 'target' } }
+          %p #{t('.phone')}: #{@user.phone}
+          %p #{t('.email')}: #{@user.email}
+          %p #{t('.address')}: #{full_address(@user)}
+
+        .form-floating{ data: { 'conditional-target': 'target' } }
+          = text_field_tag t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"), '', class: 'form-control', placeholder: t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"), maxlength: 4, data: { 'conditional-target': 'condition', action: 'conditional#pin' }
+          = label_tag t('enter_pin', info: "#{t('ele_school')}, #{t('.phone')}, #{t('.email')}"),
+                      nil,
+                      class: 'form-label'
+
+  - if @next_event
+    = render partial: 'events/child_event',
+             locals: { event: @next_event, child: @user.children.first }
+
+  .card
+    - unless @invoices.empty?
+      = link_to t('.user_bookings', user: @user.name),
+                invoices_path(user: @user.id),
+                class: 'btn btn-primary'
+
+      = link_to t('.email_prefs'),
+                mailer_subscriptions_path,
+                class: 'btn btn-primary'
+
+      = link_to t('.edit_info'),
+                edit_user_path(@user),
+                class: 'btn btn-primary'
+
+  .card#add_child_container
+    = render 'users/add_child', parent: @user
+
+  - if @children.any? { |c| c.ssid.nil? } && current_user.staff?
+    .card#merge_children
+      %h2.text-center.w-100= t('.merge_children')
+      = render 'users/merge_children', parent: @user

@@ -1,4 +1,11 @@
 %main#child-show
+  - if @child.school_id && current_user.customer?
+    - @events.each do |e|
+      = render 'events/child_event',
+               child: @child,
+               event: e[:event],
+               sibling_events: e[:siblings]
+
   .card.w-100
     %h1.fw-bold= @child.name
     %h5
@@ -16,7 +23,7 @@
         %p #{t('.allergies')} #{@child.allergies}
 
       .d-flex.flex-column.gap-1
-        %p= t('.school', school: (@child.school&.name || '---'))
+        %p= t('.school', school: @child.school&.name || '---')
         %p= kanji_category(@child.category)
         %p= @child.kindy ? '幼稚園児' : '小学生'
         %p #{t('.photos')} #{@child.photos}
@@ -38,7 +45,7 @@
                 invoices_path(child: @child.id),
                 class: 'btn btn-primary'
 
-  - if @child.school_id
+  - if @child.school_id && current_user.staff?
     - @events.each do |e|
       = render 'events/child_event',
                child: @child,
