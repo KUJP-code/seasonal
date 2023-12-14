@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  # My DB analytics dashboard
+  authenticate :user, ->(user) { user.id == 1 } do
+    mount PgHero::Engine, at: 'pghero'
+  end
+
   scope '(/:locale)', locale: /ja|en/ do
     devise_for :users, path: 'auth', controllers: {
       registrations: 'users/registrations'

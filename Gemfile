@@ -105,6 +105,9 @@ gem 'rack-cors'
 # Use haml-rails for templating
 gem 'haml-rails'
 
+# Use pghero for DB analysis
+gem 'pghero'
+
 group :development, :test do
   # Ruby LSP from shopify for autocomlete
   gem 'ruby-lsp', require: false

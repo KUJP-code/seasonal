@@ -260,6 +260,8 @@ GEM
       racc
     pdf-core (0.9.0)
     pg (1.4.5)
+    pghero (3.4.0)
+      activerecord (>= 6)
     popper_js (2.11.6)
     postgres-copy (1.7.1)
       activerecord (>= 5.1)
@@ -469,6 +471,7 @@ DEPENDENCIES
   oj
   paper_trail (= 15.1.0)
   pg (~> 1.1)
+  pghero
   postgres-copy
   prawn
   puma (~> 6.4)
