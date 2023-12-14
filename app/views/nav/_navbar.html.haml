@@ -1,0 +1,31 @@
+%nav.navbar.navbar-expand-lg.bg-secondary.sticky-top
+  .container-fluid
+    = link_to image_tag('white_logo.svg', alt: 'KidsUp Logo', height: '50'),
+              user_path(current_user),
+              class: 'navbar-brand'
+    %button.navbar-toggler{
+      type: 'button',
+      data: {
+        aria: {
+          controls: 'navContent',
+          expanded: 'false',
+          label: 'Toggle navigation'
+        },
+        bs: {
+          toggle: 'collapse',
+          target: '#navContent'
+        }
+      }
+    }
+      %span.navbar-toggler-icon
+
+    .collapse.navbar-collapse{ id: 'navContent' }
+      .navbar-nav.flex-grow-1.justify-content-evenly.gap-3
+        = render 'nav/staff_nav' if current_user.staff?
+        = render 'nav/admin_nav' if current_user.admin?
+        = render 'nav/customer_nav' if current_user.customer?
+        = render 'nav/statistician_nav' if current_user.statistician?
+        = link_to t('nav_bar.logout'),
+                  destroy_user_session_path,
+                  data: { turbo_method: :delete },
+                  class: 'nav-link'

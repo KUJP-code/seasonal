@@ -1,0 +1,9 @@
+= link_to 'Stats',
+          charts_path,
+          class: 'nav-link'
+
+- if current_user.id == 1
+  = link_to 'DB',
+            pg_hero_path,
+            class: 'nav-link'
+
