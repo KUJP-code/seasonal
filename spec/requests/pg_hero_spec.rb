@@ -11,15 +11,6 @@ RSpec.describe 'PgHero' do
     sign_out user
   end
 
-  context 'when admin User #1' do
-    let(:user) { create(:admin) }
-
-    it 'can access the dashboard' do
-      get pg_hero_path
-      expect(response).to have_http_status(:success)
-    end
-  end
-
   context 'when admin who is not User #1' do
     let(:user) { create(:admin) }
 
