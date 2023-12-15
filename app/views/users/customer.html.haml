@@ -12,7 +12,7 @@
     - unless @children.empty?
       %ul
         - @children.map(&:school).uniq.each do |school|
-          %li.fw-bold= t('.school_name', school: school.name)
+          %li.fw-bold= t('.school_name', school: t("schools.#{school.name}"))
       .d-flex.justify-content-center.gap-3
         - @children.each do |child|
           %p= link_to child.name, child_path(child)

@@ -20,7 +20,7 @@
     </td>
     <td class="school">
         <% if child.school %>
-            <%= child.school.name %>
+            <%= t("schools.#{child.school.name}") %>
         <% else %>
             なし
         <% end %>
@@ -85,7 +85,7 @@
                                         </td>
                                         <td class="school">
                                             <% if ss_child.school %>
-                                                <%= ss_child.school.name %>
+                                                <%= t("schools.#{ss_child.school.name}") %>
                                             <% else %>
                                                 なし
                                             <% end %>
@@ -113,7 +113,7 @@
                                         </td>
                                         <td class="school">
                                             <% if child.school %>
-                                                <%= child.school.name %>
+                                                <%= t("schools.#{child.school.name}") %>
                                             <% else %>
                                                 なし
                                             <% end %>

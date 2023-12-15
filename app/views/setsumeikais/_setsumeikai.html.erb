@@ -10,12 +10,13 @@
     </td>
     
     <td>
-        <%= setsumeikai.school.name %>
+        <%= t("schools.#{setsumeikai.school.name}") %>
     </td>
 
     <td>
         <%= setsumeikai.involved_schools
                        .pluck(:name)
+                       .map { |name| t("schools.#{name}") }
                        .join(", ") unless setsumeikai.involved_schools.empty? %>
     </td>
 

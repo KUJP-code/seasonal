@@ -30,7 +30,7 @@
 
     <td rowspan="2" class="diff-school<%= ' table-danger' unless event_child.school_id == event.school_id %>">
         <% unless event_child.school_id == event.school_id %>
-            <button type="button" class="btn btn-danger" data-bs-toggle="popover" data-bs-title="担当校舎" data-bs-content=<%= event_child.school.name %>>担当校舎</button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="popover" data-bs-title="担当校舎" data-bs-content=<%= t("schools.#{event_child.school.name}") %>>担当校舎</button>
         <% end %>
     </td>
 

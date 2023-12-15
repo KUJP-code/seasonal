@@ -10,9 +10,9 @@
       - @schools.each do |school|
         = link_to children_path(school: school.id) do
           - if school == @school
-            .card.bg-primary.text-white.fw-semibold= school.name
+            .card.bg-primary.text-white.fw-semibold= t("schools.#{school.name}")
           - else
-            .card= school.name
+            .card= t("schools.#{school.name}")
 
   %table.table.table-hover.table-striped.text-center
     %thead

@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <h1><%= "#{@source.name} at #{@source.school.name}" %></h1>
+    <h1><%= "#{@source.name} at #{t("schools.#{@source.school.name}")}" %></h1>
     <h2 class="counter"><span data-refresh-target="counter">10:00</span>後にページが更新される。</h2>
     
     <table class="table table-sm table-light table-striped table-hover table-bordered text-center text-nowrap align-middle">        

@@ -16,7 +16,7 @@
             <% @schools.each do |school| %>
                 <%= link_to inquiries_path(school: school.id) do %>
                     <div class="card<%= ' bg-primary text-white fw-semibold' if school.id == @school.id %>">
-                        <%= school.name %>
+                        <%= t("schools.#{school.name}") %>
                     </div>
                 <% end %>
             <% end %>

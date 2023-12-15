@@ -4,9 +4,9 @@
   - if school.image.present?
     = image_tag school.image,
                 class: 'img-fluid img-thumbnail',
-                alt: school.name
+                alt: t("schools.#{school.name}")
 
-  %h3= school.name
+  %h3= t("schools.#{school.name}")
   %p Address: #{school.address}
   %p Phone: #{school.phone}
   %p Managed by #{school.managers.map(&:name).to_sentence}

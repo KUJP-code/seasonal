@@ -2,13 +2,13 @@
     <% unless current_user.school_manager? %>
         <nav class="d-flex flex-row flex-wrap justify-content-center gap-3">
             <% @schools.each do |school| %>
-                <%= link_to school.name,
+                <%= link_to t("schools.#{school.name}"),
                             time_slots_path(school: school.id),
                             class: "card #{' bg-primary text-white fw-semibold' if @school.id == school.id}" %>
             <% end %>
         </nav>
 
-        <h1><%= "イベント at #{@school.name}" %></h1>
+        <h1><%= "イベント at #{t("schools.#{@school.name}")}" %></h1>
     <% end %>
 
     <% unless @events.empty? %>
@@ -24,7 +24,7 @@
         
         <h1>
             <%= t('.slots_for', name: @event.name,
-                                school: @event.school.name) %>
+                                school: t("schools.#{@event.school.name}")) %>
         </h1>
 
         <% if current_user.admin? %>

@@ -64,7 +64,7 @@ class ChartsController < ApplicationController
       registerable_type: 'TimeSlot',
       invoice_id: @invoices.ids
     )
-    @school_hash = events.to_h { |e| [e.id, e.school.name] }
+    @school_hash = events.to_h { |e| [e.id, t("schools.#{e.school.name}")] }
   end
 
   def bookings_school_data(school)

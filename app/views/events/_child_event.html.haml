@@ -8,7 +8,7 @@
 
   .d-flex.flex-column.flex-grow-1.gap-3
     %h2.fw-bold
-      = link_to t('.title', name: event.name, school: event.school.name),
+      = link_to t('.title', name: event.name, school: t("schools.#{event.school.name}")),
                 event_path(id: event, child: child.id)
     %p= date_yy_mm_dd(event.start_date)
 
@@ -30,6 +30,6 @@
             = f.collection_select :id,
                                   sibling_events,
                                   :id,
-                                  proc { |e| e.school.name },
+                                  proc { |e| t("schools.#{e.school.name}") },
                                   {}, class: 'form-select'
           = f.submit t('.reg_at_selected'), class: 'btn btn-primary'

@@ -8,7 +8,7 @@
 
   .d-flex.flex-column.flex-grow-1.gap-3
     %h2.fw-bold
-      = link_to t('.title', name: event.name, school: event.school.name),
+      = link_to t('.title', name: event.name, school: t("schools.#{event.school.name}")),
                 children_path(id: event.id, source: 'event')
     %p= date_yy_mm_dd(event.start_date)
 
