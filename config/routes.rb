@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   # My DB analytics dashboard
-  authenticate :user, ->(user) { user.id == 1 } do
+  authenticate :user, ->(user) { user.admin? && user.id == 1 } do
     mount PgHero::Engine, at: 'pghero'
   end
 
