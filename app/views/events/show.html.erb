@@ -10,7 +10,7 @@
 <% others_cost = @child.parent.invoices.where(event_id: @event.id).where.not(child_id: @child.id).reduce(0) { |sum, invoice| sum + invoice.total_cost } unless @child.parent.nil? %>
 
 
-<main id="event_show" 
+<main id="event_show"
       data-controller="invoice price"
       data-action="register:toggle->invoice#change invoice:add@window->price#calculate invoice:remove@window->price#calculate"
       data-price-member-price-value=<%= @member_prices.courses.to_json unless @member_prices.nil? %>
@@ -52,14 +52,15 @@
             <% @children.reject { |c| c.id == @child.id }.each do |child| %>
                 <tr>
                     <td>
-                        <%=
-                        link_to t('.copy_regs', from: @child.name, to: child.name),
-                        copy_invoice_path(origin: @child.id, target: child.id, event: @event.id), class: 'copy text-black-50',
-                        data: {
-                            turbo_method: :put,
-                            turbo_confirm: "#{@child.name}から#{child.name}にお申込内容をコピーしてよろしいですか？「OK」を押すと#{child.name}のお申込内容がスクールに送信されます。"
-                            } unless child.id == @child.id
-                        %>
+                      <% if @event.end_date > Time.zone.now %>
+                          <%= link_to t('.copy_regs', from: @child.name, to: child.name),
+                                copy_invoice_path(origin: @child.id, target: child.id, event: @event.id), class: 'copy text-black-50',
+                                  data: {
+                                    turbo_method: :put,
+                                    turbo_confirm: "#{@child.name}から#{child.name}にお申込内容をコピーしてよろしいですか？「OK」を押すと#{child.name}のお申込内容がスクールに送信されます。"
+                                  } unless child.id == @child.id
+                          %>
+                      <% end %>
                     </td>
                     <td>
                         <%= link_to event_path(id: @event.id, child: child.id) do %>
@@ -231,7 +232,7 @@
                 </div>
             </div>
         </div>
-        
+
 
         <div class="accordion-item">
             <h2 class="accordion-header">
@@ -271,7 +272,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <div id="price_bar" class="w-100 d-flex justify-content-evenly align-items-center flex-wrap gap-2 bg-info p-2 rounded sticky-bottom">
         <h3 id="total_cost" class="text-white fw-bold" data-price-target="finalCost"><%="#{t('.total_cost')}: #{@all_invoices.reduce(0) {|sum, i| sum + i.total_cost}}円"%></h3>
@@ -311,10 +312,10 @@
                 <turbo-frame class="<%= "d-none" if invoice.in_ss %>">
                     <%= form_with model: invoice,
                                   url: (invoice.new_record? ? confirm_new_invoice_path(new: true) : confirm_invoice_path(new: false)),
-                                  data: { 
-                                    turbo: false, 'turbo-frame' => "child#{invoice.child_id}invoice#{invoice.id}" 
+                                  data: {
+                                    turbo: false, 'turbo-frame' => "child#{invoice.child_id}invoice#{invoice.id}"
                                   },
-                                  html: { 
+                                  html: {
                                     class: 'align-self-center d-flex gap-3'
                                   } do |f| %>
                         <%= f.hidden_field :id %>
@@ -375,8 +376,8 @@
         </div>
     </div>
 
-    
-    <turbo-frame 
+
+    <turbo-frame
         id=<%= "child#{active_invoice.child_id}invoice#{active_invoice.id}" %>
         class="modal fade"
         tabindex="-1">
