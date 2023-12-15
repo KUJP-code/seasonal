@@ -70,6 +70,7 @@
 
                         <%= form_with model: @invoice do |f| %>
                             <%= f.hidden_field :in_ss, value: true %>
+                            <%= f.hidden_field :email_sent, value: false %>
 
                             <%= f.submit t('.confirm_no_email'), class: 'btn btn-primary' %>
                         <% end %>
