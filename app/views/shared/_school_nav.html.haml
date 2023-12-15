@@ -1,0 +1,9 @@
+-# locals: (schools:, school:, indexed_resource:)
+
+%nav.d-flex.flex-row.flex-wrap.justify-content-center.gap-3
+  - schools.each do |s|
+    - selected = s.id == school.id
+
+    = link_to t("schools.#{s.name}"),
+              send("#{indexed_resource}_path", school: s.id),
+              class: "card #{'bg-primary text-white fw-semibold' if selected}"

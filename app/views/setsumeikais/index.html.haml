@@ -1,0 +1,18 @@
+%main.d-flex.flex-col.justify-content-start.align-items-center.gap-4
+  = link_to t('.inquiry_list'),
+            inquiries_path,
+            class: 'btn btn-primary align-self-start'
+
+  = paginate @setsumeikais, window: 40
+
+  - if current_user.admin? || current_user.area_manager?
+    = render 'shared/school_nav',
+             schools: @schools,
+             school: @school,
+             indexed_resource: 'setsumeikais'
+
+  = render 'setsumeikais/form'
+
+  = render 'setsumeikais/setsumeikai_table'
+
+  = paginate @setsumeikais, window: 40
