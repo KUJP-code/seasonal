@@ -626,7 +626,7 @@ class Invoice < ApplicationRecord
   def pointless_price(num_regs, courses)
     days = full_days
     extension_cost = days * (courses['1'] + 200)
-    @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{yenify(extension_cost)}円</p>\n"
+    @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{yenify(extension_cost)}</p>\n"
     spot_cost = spot_use(num_regs - days, courses)
     extension_cost + spot_cost
   end
