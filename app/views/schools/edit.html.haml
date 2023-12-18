@@ -1,0 +1,8 @@
+.d-flex.flex-column.gap-3.p-3.justify-content-start#schools-edit
+  - if current_user.admin? || current_user.area_manager?
+    = link_to t('.school_list'),
+              areas_path,
+              class: 'btn btn-secondary align-self-start'
+
+  = render partial: 'schools/form',
+           locals: { areas: @areas, images: @images, school: @school }

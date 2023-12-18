@@ -1,0 +1,100 @@
+-# locals: (areas:, images:, school:)
+
+:ruby
+  if school.details
+    nearby_schools = school.details['nearby_schools'] || []
+    bus_areas = school.details['bus_areas'] || []
+    nearby_stations = school.details['nearby_stations'] || []
+    hiragana = school.details['hiragana'] || []
+  end
+
+= form_with model: school,
+            html: { class: 'card' },
+            data: { controller: 'fields' } do |f|
+  %div
+    = label_tag :image_id, t('.image'), class: 'form-label'
+    = f.select :image_id, images, {}, { class: 'form-select' }
+
+  .form-floating
+    = f.text_field :name,
+                   class: 'form-control',
+                   placeholder: t('.name'),
+                   required: true
+    = f.label :name, t('.name'), class: 'form-label'
+
+  .form-floating
+    = f.email_field :email,
+                    class: 'form-control',
+                    placeholder: t('.email'),
+                    required: true
+    = f.label :email, t('.email'), class: 'form-label'
+
+  .form-floating
+    = f.text_field :address,
+                   class: 'form-control',
+                   placeholder: t('.address'),
+                   required: true
+    = f.label :address, t('.address'), class: 'form-label'
+
+  .form-floating
+    = f.telephone_field :phone,
+                        class: 'form-control',
+                        placeholder: t('.phone'),
+                        required: true
+    = f.label :phone, t('.phone'), class: 'form-label'
+
+  .form-floating
+    = f.text_area :nearby_schools,
+                  class: 'form-control',
+                  placeholder: t('.nearby_schools'),
+                  value: nearby_schools.join(', '),
+                  required: true
+    = f.label :nearby_schools, t('.nearby_schools'), class: 'form-label'
+
+  .form-floating
+    = f.text_area :bus_areas,
+                  class: 'form-control',
+                  placeholder: t('.bus_areas'),
+                  value: bus_areas.join(', '),
+                  required: true
+    = f.label :bus_areas, t('.bus_areas'), class: 'form-label'
+
+  .form-floating
+    = f.text_area :nearby_stations,
+                  class: 'form-control',
+                  placeholder: t('.nearby_stations'),
+                  value: nearby_stations.join(', '),
+                  required: true
+    = f.label :nearby_stations, t('.nearby_stations'), class: 'form-label'
+
+  .form-floating
+    = f.text_area :hiragana,
+                  class: 'form-control',
+                  placeholder: t('.hiragana'),
+                  value: hiragana.join(', '),
+                  required: true
+    = f.label :hiragana, t('.hiragana'), class: 'form-label'
+
+  - if current_user.admin?
+    %div
+      = f.label :area_id, t('.area'), class: 'form-label'
+      = f.select :area_id, areas, {}, { class: 'form-select' }
+
+    = f.fields_for :managements, school.managements do |mf|
+      = render 'managements/fields', f: mf, id: @school.id, type: 'School'
+
+    %template{ data: { 'fields-target': 'template' } }
+      = f.fields_for :managements,
+                     Management.new,
+                     child_index: 'CHILD' do |mf|
+        = render 'managements/fields', f: mf, id: @school.id, type: 'School'
+
+    .d-none.w-100{ data: { 'fields-target': 'target' } }
+
+  .d-flex.gap-3.justify-content-around.align-items-center.w-100
+    - if current_user.admin?
+      = button_tag 'Add Manager',
+                   type: 'button',
+                   data: { action: 'fields#add' },
+                   class: 'btn btn-info'
+    = f.submit class: 'btn btn-primary'

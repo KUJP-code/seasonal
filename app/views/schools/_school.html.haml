@@ -15,7 +15,7 @@
     - school.details.each do |k, v|
       %p #{k.humanize}: #{v.to_sentence}
 
-  - if current_user.admin?
+  - if current_user.staff?
     = link_to 'Edit School',
               edit_school_path(school),
               class: 'btn btn-primary'
