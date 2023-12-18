@@ -1,0 +1,37 @@
+%main.gap-3#user-show
+  .card.text-center
+    %h1.fw-bold= t('.greet', user: @user.name)
+    %h4 Area Manager
+
+  .card.flex-row.flex-wrap.justify-content-between.gap-3
+    = link_to t('.area_schools'),
+              areas_path,
+              class: 'btn btn-primary flex-grow-1'
+    = link_to t('.stats'),
+              charts_path,
+              class: 'btn btn-primary flex-grow-1'
+    = link_to t('.surveys'),
+              surveys_path,
+              class: 'btn btn-primary flex-grow-1'
+    = link_to t('.manage_setsumeikais'),
+              setsumeikais_path,
+              class: 'btn btn-primary flex-grow-1'
+    = link_to t('.manage_inquiries'),
+              inquiries_path,
+              class: 'btn btn-primary flex-grow-1'
+
+  - @managed_areas.each do |area|
+    - next if area.upcoming_events.empty?
+
+    - area.upcoming_events.group_by(&:name).each do |name, events|
+      .card
+        %h2.fw-semibold #{name} for #{area.name}
+        = render 'events/stats_summary', events: events
+
+  - @upcoming_events.each do |name, events|
+    .card
+      %h2 #{name} for All area_schools
+      = render 'events/stats_summary', events: events
+
+  - @area_events.each do |_name, events|
+    = render 'events/condensed_stats', events: events

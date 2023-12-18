@@ -486,11 +486,11 @@ form .input-group-text {
 // Print
 
 @media print {
-  #user_show .card.daily-attendance {
+  #user-show .card.daily-attendance {
     width: 100%;
   }
 
-  #user_show #hat_kids {
+  #user-show #hat_kids {
     width: 100%;
   }
 
@@ -541,11 +541,11 @@ form .input-group-text {
 
 // User#show
 
-#user_show .card {
+#user-show .card {
   width: 90vw;
 }
 
-#user_show .user_options {
+#user-show .user_options {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
@@ -553,7 +553,7 @@ form .input-group-text {
   gap: 0.5vw;
 }
 
-#user_show .daily-attendance > .card {
+#user-show .daily-attendance > .card {
   width: 100%;
   @media (min-width: 992px) {
     width: 20%;

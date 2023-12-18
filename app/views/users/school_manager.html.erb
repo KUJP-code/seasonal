@@ -1,17 +1,17 @@
-<main id="user_show" class="gap-3">
+<main id="user-show" class="gap-3">
     <div class="card text-center">
         <h1 class="fw-bold"><%= t('.greet', user: @user.name) %></h1>
     </div>
-    
+
     <div class="card flex-row flex-wrap justify-content-between gap-3">
-        <%= link_to t('.stats'), 
+        <%= link_to t('.stats'),
                     chart_path(@user.managed_school.id),
                     class: 'btn btn-primary flex-grow-1' %>
 
         <%= link_to t('.surveys'),
                     surveys_path,
                     class: 'btn btn-primary flex-grow-1' %>
-        
+
         <%# <%= link_to t('.manage_setsumeikais'),
                     setsumeikais_path,
                     class: 'btn btn-primary flex-grow-1' %>
@@ -25,7 +25,7 @@
         <%= render partial: 'invoices/recent_bookings',
                 locals: { bookings: @recent_bookings }  %>
     <% end %>
-    
+
     <% @upcoming_events.each do |event| %>
         <%= render partial: 'events/event_stats',
                    locals: { event: event } %>
@@ -37,5 +37,5 @@
     <% unless @deleted_invoices.empty? %>
         <%= render partial: 'invoices/deleted',
                     locals: { deleted_invoices: @deleted_invoices } %>
-    <% end %>    
+    <% end %>
 </main>
