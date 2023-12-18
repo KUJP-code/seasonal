@@ -6,13 +6,10 @@
   = paginate @children, window: 40
 
   - if current_user.admin? || current_user.area_manager?
-    %nav.d-flex.flex-row.flex-wrap.justify-content-center.gap-3
-      - @schools.each do |school|
-        = link_to children_path(school: school.id) do
-          - if school == @school
-            .card.bg-primary.text-white.fw-semibold= t("schools.#{school.name}")
-          - else
-            .card= t("schools.#{school.name}")
+    = render 'shared/school_nav',
+             schools: @schools,
+             school: @school,
+             indexed_resource: 'children'
 
   %table.table.table-hover.table-striped.text-center
     %thead
