@@ -9,6 +9,7 @@ ja:
       regular_day: "ご通学日"
       snack: "午後コースおやつ代"
     index:
+      events_for: "イベント @ %{school}"
       slots_for: "%{name} @ %{school}"
     time_slot:
       aft_close: "PMの申込受付を停止する"

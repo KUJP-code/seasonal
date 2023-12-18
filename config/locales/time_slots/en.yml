@@ -7,6 +7,7 @@ en:
       extra_charge: "Extra Charge: %{cost}"
       snack: "Snack"
     index:
+      events_for: "Events for %{school}"
       slots_for: "Activities for %{name} at %{school}"
     time_slot:
       aft_close: "Close Afternoon"

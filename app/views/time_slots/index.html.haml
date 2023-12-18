@@ -1,0 +1,25 @@
+%main.justify-content-start#time_slot_index
+  - if current_user.admin? || current_user.area_manager?
+    = render 'shared/school_nav',
+             schools: @schools,
+             school: @school,
+             indexed_resource: 'time_slots'
+
+  %h1= t('.events_for', school: t("schools.#{@school.name}"))
+
+  - unless @events.empty?
+    %nav.d-flex.flex-wrap.justify-content-center.gap-3
+      - @events.each do |event|
+        = link_to event.name,
+                  time_slots_path(event: event.id, school: @school.id),
+                  class: "card #{' bg-primary text-white fw-semibold' if @event.id == event.id}"
+
+    %h2= t('.slots_for', name: @event.name, school: t("schools.#{@school.name}"))
+
+    - if current_user.admin?
+      = link_to 'Add activities to this event',
+                new_time_slot_path(event: @event.id),
+                class: 'btn btn-primary'
+
+    .row.row-cols-sm-5.justify-content-evenly.gap-3.p-3
+      = render partial: 'time_slots/time_slot', collection: @slots
