@@ -1,0 +1,18 @@
+%main#survey-show
+  = link_to t('.survey_list'),
+            surveys_path,
+            class: 'btn btn-primary align-self-start'
+
+  - if %w[admin area_manager statistician].include?(current_user.role)
+    = render 'shared/school_nav',
+             schools: @schools,
+             school: @school,
+             indexed_resource: 'survey'
+
+  = render @survey
+
+  %h3= t('.responses')
+
+  = render 'survey_responses/table',
+           survey: @survey,
+           responses: @responses
