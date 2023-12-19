@@ -55,7 +55,7 @@
         <% @managers.group_by(&:role).each do |r| %>
             <h3 class='w-100'><%= r.first.humanize %></h3>
             <% r.last.each do |m| %>
-                <%= link_to m.name,
+              <%= link_to t("schools.#{m.name}", default: m.name),
                             user_path(m),
                             class: 'btn btn-primary' %>
             <% end %>
