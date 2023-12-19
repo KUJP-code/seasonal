@@ -120,7 +120,7 @@ class ChildrenController < ApplicationController
 
   def child_show_events
     school_events = @child.school
-                          .events.real.upcoming
+                          .events.upcoming
                           .includes(:avif_attachment, :image_attachment)
     school_events.map do |e|
       {
