@@ -1,0 +1,7 @@
+%main.d-flex.justify-content-start
+  - if current_user.admin? || current_user.area_manager?
+    = link_to 'School List',
+              areas_path,
+              class: 'btn btn-secondary align-self-start'
+
+  = render @school
