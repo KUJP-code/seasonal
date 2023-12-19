@@ -2,7 +2,10 @@
 
 class School < ApplicationRecord
   # Allow API details to be set
-  attr_accessor :bus_areas, :hiragana, :nearby_schools, :nearby_stations
+  store_accessor :details, :bus_areas
+  store_accessor :details, :hiragana
+  store_accessor :details, :nearby_schools
+  store_accessor :details, :nearby_stations
 
   before_validation :set_details
 
@@ -110,7 +113,8 @@ class School < ApplicationRecord
   private
 
   def set_details
-    return if bus_areas.nil? && nearby_stations.nil?
+    # This saves us creating a bunch of stuff for testing
+    return if details.nil?
 
     self.details = {
       bus_areas: bus_areas.split(/, |,/),
