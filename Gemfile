@@ -138,6 +138,9 @@ group :development, :test do
   gem 'rubocop-performance', '1.19', require: false
   gem 'rubocop-rails', '2.22', require: false
   gem 'rubocop-rspec', '2.25', require: false
+
+  # Get some custom Pundit matchers for clearer testing
+  gem 'pundit-matchers', '~> 3.1'
 end
 
 group :development do

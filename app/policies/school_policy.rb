@@ -21,6 +21,21 @@ class SchoolPolicy < ApplicationPolicy
     user.admin? || area_school? || sm_managed_school?
   end
 
+  def permitted_attributes
+    always_permit = %i[
+      name address phone nearby_stations bus_areas hiragana image_id email
+      nearby_schools
+    ]
+    return always_permit if user.school_manager? || user.area_manager?
+    return nil unless user.admin?
+
+    always_permit + [
+      :area_id,
+      { managements_attributes:
+       %i[id manageable_id manageable_type manager_id _destroy] }
+    ]
+  end
+
   class Scope < Scope
     def resolve
       case user.role

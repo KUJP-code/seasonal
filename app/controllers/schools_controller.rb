@@ -23,7 +23,7 @@ class SchoolsController < ApplicationController
   end
 
   def create
-    @school = authorize School.new(school_params)
+    @school = authorize School.new(permitted_attributes(@school))
 
     if @school.save
       redirect_to school_path(@school), notice: "Created #{@school.name}!"
@@ -35,7 +35,7 @@ class SchoolsController < ApplicationController
   end
 
   def update
-    if @school.update(school_params)
+    if @school.update(permitted_attributes(@school))
       redirect_to school_path(@school), notice: "Updated #{@school.name}!"
     else
       form_data
@@ -45,14 +45,6 @@ class SchoolsController < ApplicationController
   end
 
   private
-
-  def school_params
-    params.require(:school).permit(
-      :name, :address, :phone, :area_id, :nearby_stations, :bus_areas,
-      :hiragana, :image_id, :email, :nearby_schools, managements_attributes:
-        %i[id manageable_id manageable_type manager_id _destroy]
-    )
-  end
 
   def form_data
     @managers = User.school_managers

@@ -76,7 +76,9 @@
   - if current_user.admin?
     %div
       = f.label :area_id, t('.area'), class: 'form-label'
-      = f.select :area_id, areas, {}, { class: 'form-select' }
+      = f.collection_select :area_id,
+                            areas,
+                            :id, :name, {}, { class: 'form-select' }
 
     = f.fields_for :managements, school.managements do |mf|
       = render 'managements/fields', f: mf, id: @school.id, type: 'School'

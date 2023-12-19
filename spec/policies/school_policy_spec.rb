@@ -1,6 +1,36 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'pundit/matchers'
+
+RSpec.shared_examples 'admin for editing schools' do
+  it { is_expected.to authorize_action(:new) }
+  it { is_expected.to authorize_action(:create) }
+
+  it 'permits all attributes' do
+    expect(subject).to permit_attributes(
+      [:name, :address, :phone, :nearby_stations, :bus_areas, :image_id, :email,
+       :nearby_schools, :area_id,
+       { managements_attributes:
+          %i[id manageable_id manageable_type manager_id _destroy] }]
+    )
+  end
+end
+
+RSpec.shared_examples 'manager for editing schools' do
+  it { is_expected.not_to authorize_action(:new) }
+  it { is_expected.not_to authorize_action(:create) }
+
+  it 'permits basic attributes' do
+    expect(subject).to permit_attributes(
+      %i[name address phone nearby_stations bus_areas image_id email nearby_schools]
+    )
+  end
+
+  it 'does not permit management/area attributes' do
+    expect(subject).to forbid_attributes(%i[area_id managements_attributes])
+  end
+end
 
 RSpec.shared_examples 'manager of school for SchoolPolicy' do
   it { is_expected.to authorize_action(:show) }
@@ -23,9 +53,7 @@ RSpec.describe SchoolPolicy do
   context 'when admin' do
     let(:user) { build(:admin) }
 
-    it { is_expected.to authorize_action(:new) }
-    it { is_expected.to authorize_action(:create) }
-
+    it_behaves_like 'admin for editing schools'
     it_behaves_like 'manager of school for SchoolPolicy'
   end
 
@@ -38,12 +66,14 @@ RSpec.describe SchoolPolicy do
     end
 
     it_behaves_like 'manager of school for SchoolPolicy'
+    it_behaves_like 'manager for editing schools'
   end
 
   context 'when manager of different area' do
     let(:user) { create(:area_manager) }
 
     it_behaves_like 'unauthorized user for SchoolPolicy'
+    it_behaves_like 'manager for editing schools'
   end
 
   context 'when school manager of school' do
@@ -55,12 +85,14 @@ RSpec.describe SchoolPolicy do
     end
 
     it_behaves_like 'manager of school for SchoolPolicy'
+    it_behaves_like 'manager for editing schools'
   end
 
-  context 'when school unauthorized user' do
+  context 'when manager of different school' do
     let(:user) { create(:school_manager) }
 
     it_behaves_like 'unauthorized user for SchoolPolicy'
+    it_behaves_like 'manager for editing schools'
   end
 
   context 'when statistician' do
