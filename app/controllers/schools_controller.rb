@@ -23,7 +23,7 @@ class SchoolsController < ApplicationController
   end
 
   def create
-    @school = authorize School.new(permitted_attributes(@school))
+    @school = authorize School.new(permitted_attributes(School))
 
     if @school.save
       redirect_to school_path(@school), notice: "Created #{@school.name}!"
