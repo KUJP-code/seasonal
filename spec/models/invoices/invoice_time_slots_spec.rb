@@ -119,8 +119,9 @@ RSpec.describe Invoice do
 
   context 'when dealing with the (200yen) pointless price for full days' do
     let(:morning_slot) do
-      slot = build(:time_slot, start_time: 1.day.from_now, morning: true)
-      slot.build_afternoon_slot(start_time: 1.day.from_now)
+      slot = create(:time_slot, morning: true)
+      aft_attributes = attributes_for(:time_slot)
+      slot.create_afternoon_slot(aft_attributes)
       slot
     end
     let(:morning_reg) { build(:slot_reg, registerable: morning_slot) }
@@ -142,6 +143,41 @@ RSpec.describe Invoice do
 
       it 'does not apply if just internal and not kindy' do
         child = build(:child, category: :internal)
+        invoice = build(
+          :invoice,
+          event: event,
+          child: child,
+          slot_regs: [morning_reg, afternoon_reg]
+        )
+        invoice.calc_cost
+        expect(invoice.total_cost).to eq(2)
+      end
+
+      it 'does not apply if registrations are on separate days' do
+        child = build(:child, category: :internal, kindy: true)
+        afternoon_reg = build(
+          :slot_reg,
+          registerable: build(:time_slot, start_time: 1.day.from_now, morning: false)
+        )
+        invoice = build(
+          :invoice,
+          event: event,
+          child: child,
+          slot_regs: [morning_reg, afternoon_reg]
+        )
+        invoice.calc_cost
+        expect(invoice.total_cost).to eq(2)
+      end
+
+      it 'does not apply if there is an extension option on a registered special day' do
+        child = build(:child, category: :internal, kindy: true)
+        extension_option = create(
+          :option,
+          category: 'extension',
+          optionable: morning_slot
+        )
+        morning_slot.options << extension_option
+        morning_slot.update(category: :special)
         invoice = build(
           :invoice,
           event: event,

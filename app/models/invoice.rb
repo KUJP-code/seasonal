@@ -246,12 +246,6 @@ class Invoice < ApplicationRecord
     adjustments.new(change: registration_cost, reason: reason)
   end
 
-  def full_days
-    # Can't use a DB query because TimeSlots aren't associated on newly built regs
-    slots = slot_regs.map(&:registerable)
-    slots.count { |slot| slots.include?(slot.morning_slot) }
-  end
-
   def generate_details
     @breakdown.prepend(
       "<div class='d-flex gap-3 flex-column align-items-start'>\n
@@ -631,6 +625,31 @@ class Invoice < ApplicationRecord
     extension_cost + spot_cost
   end
 
+  def full_days
+    # Can't use a DB query because TimeSlots aren't associated on newly built regs
+    slots = slot_regs.map(&:registerable)
+    slot_ids = slot_regs.map(&:registerable_id)
+    full_day_count = slots.count { |slot| registered_for_morning?(slot, slot_ids) }
+    extend_opt_count = slots.count { |slot| middle_extension?(slot) }
+    full_day_count - extend_opt_count
+  end
+
+  def registered_for_morning?(slot, slot_ids)
+    slot.morning_slot_id.present? && slot_ids.include?(slot.morning_slot_id)
+  end
+
+  def middle_extension?(slot)
+    slot.special? && slot.morning && slot.options.pluck(:category).include?('extension')
+  end
+
+  def spot_use(num_regs, courses)
+    spot_cost = num_regs * courses['1']
+    unless spot_cost.zero? || @breakdown.nil?
+      @breakdown << "<p>スポット1回(午前・15:00~18:30) x #{num_regs}: #{yenify(spot_cost)}</p>\n"
+    end
+    spot_cost
+  end
+
   def repeater?
     child.external? && child.first_seasonal == false && slot_regs.size - @ignore_slots.size > 9
   end
@@ -644,14 +663,6 @@ class Invoice < ApplicationRecord
     end
 
     adjustments.new(change: discount, reason: reason)
-  end
-
-  def spot_use(num_regs, courses)
-    spot_cost = num_regs * courses['1']
-    unless spot_cost.zero? || @breakdown.nil?
-      @breakdown << "<p>スポット1回(午前・15:00~18:30) x #{num_regs}: #{yenify(spot_cost)}</p>\n"
-    end
-    spot_cost
   end
 
   # Updates total cost and summary once calculated/generated
