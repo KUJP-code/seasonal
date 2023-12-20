@@ -21,7 +21,7 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    @invoice = authorize Invoice.new(invoice_params)
+    @invoice = authorize Invoice.new(permitted_attributes(Invoice))
 
     if @invoice.save
       send_emails(@invoice) unless current_user.admin?
@@ -61,26 +61,26 @@ class InvoicesController < ApplicationController
   end
 
   def confirm
-    ignore_slots = if invoice_params['slot_regs_attributes'].nil?
+    ignore_slots = if permitted_attributes(Invoice)['slot_regs_attributes'].nil?
                      []
                    else
-                     invoice_params['slot_regs_attributes'].keep_if do |_, v|
+                     permitted_attributes(Invoice)['slot_regs_attributes'].keep_if do |_, v|
                        v['_destroy'] == '1'
                      end.to_h.transform_values do |v|
                        v['id'].to_i
                      end.values
                    end
-    ignore_opts = if invoice_params['opt_regs_attributes'].nil?
+    ignore_opts = if permitted_attributes(Invoice)['opt_regs_attributes'].nil?
                     []
                   else
-                    invoice_params['opt_regs_attributes'].keep_if do |_, v|
+                    permitted_attributes(Invoice)['opt_regs_attributes'].keep_if do |_, v|
                       v['_destroy'] == '1'
                     end.to_h.transform_values do |v|
                       v['id'].to_i
                     end.values
                   end
 
-    @invoice = authorize Invoice.new(invoice_params)
+    @invoice = authorize Invoice.new(permitted_attributes(Invoice))
     @new = params[:new] == 'true'
 
     # This makes it work??????????
@@ -194,7 +194,7 @@ class InvoicesController < ApplicationController
   end
 
   def full_update
-    if @invoice.update(invoice_params)
+    if @invoice.update(permitted_attributes(@invoice))
       # FIXME: bandaid to cover for the fact that some callbacks don't
       # update the summary (adjustments, option registrations)
       @invoice.reload.calc_cost && @invoice.save
@@ -244,7 +244,7 @@ class InvoicesController < ApplicationController
   end
 
   def send_emails(invoice)
-    if invoice_params['in_ss'] == 'true'
+    if permitted_attributes(@invoice)['in_ss'] == 'true'
       InvoiceMailer.with(
         invoice: invoice,
         user: invoice.child.parent
@@ -277,7 +277,7 @@ class InvoicesController < ApplicationController
   def status_update
     @child_invoices = @invoice.child.real_invoices.where(event_id: @invoice.event_id)
 
-    if @invoice.update(invoice_params)
+    if @invoice.update(permitted_attributes(@invoice))
       @invoice.reload
       respond_to do |format|
         format.turbo_stream
@@ -296,18 +296,6 @@ class InvoicesController < ApplicationController
     return false if already_registered?(t_regs, o_reg)
 
     true
-  end
-
-  def invoice_params
-    params.require(:invoice).permit(
-      :id, :child_id, :event_id, :in_ss, :entered, :email_sent,
-      slot_regs_attributes: %i[id child_id _destroy invoice_id registerable_id
-                               registerable_type],
-      opt_regs_attributes: %i[id child_id _destroy invoice_id registerable_id
-                              registerable_type],
-      coupons_attributes: [:code],
-      adjustments_attributes: %i[id reason change invoice_id _destroy]
-    )
   end
 
   def user_index_data

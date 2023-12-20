@@ -14,7 +14,7 @@
                             ),
                             class: "card p-2 #{' bg-primary text-white fw-semibold' if @nav[:school].id == 0}" %>
                 <% @nav[:schools].each do |s| %>
-                    <%= link_to s.name,
+                  <%= link_to t("schools.#{s.name}"),
                                 chart_path(id: s.id,
                                            category: @nav[:category],
                                            event: @nav[:event]),
@@ -23,7 +23,7 @@
             </div>
         </details>
     <% end %>
-    
+
     <details>
         <summary class="card p-2 bg-primary text-white fw-semibold">
             <h2>イベント: <%= @nav[:event] %></h2>
@@ -42,7 +42,7 @@
             <% end %>
         </div>
     </details>
-    
+
     <details>
         <summary class="card p-2 bg-primary text-white fw-semibold">
             <h2>カテゴリー: <%= t(".#{@nav[:category]}") %></h2>

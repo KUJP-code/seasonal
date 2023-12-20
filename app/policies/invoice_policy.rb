@@ -45,6 +45,26 @@ class InvoicePolicy < ApplicationPolicy
     user.staff?
   end
 
+  def permitted_attributes
+    always_permit = [
+      :id, :child_id, :event_id,
+      {
+        slot_regs_attributes: %i[id child_id _destroy invoice_id
+                                 registerable_id registerable_type],
+        opt_regs_attributes: %i[id child_id _destroy invoice_id
+                                registerable_id registerable_type],
+        coupons_attributes: [:code]
+      }
+    ]
+    return always_permit if user.customer?
+    return nil unless user.staff?
+
+    always_permit + [
+      :in_ss, :entered, :email_sent,
+      { adjustments_attributes: %i[id reason change invoice_id _destroy] }
+    ]
+  end
+
   class Scope < Scope
     def resolve
       case user.role

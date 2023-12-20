@@ -8,6 +8,18 @@ RSpec.shared_examples 'staff for InvoicePolicy' do
   it { is_expected.to authorize_action(:copy) }
   it { is_expected.to authorize_action(:merge) }
   it { is_expected.to authorize_action(:seen) }
+
+  it 'permits all attributes' do
+    expect(subject).to permit_attributes(
+      [:id, :child_id, :event_id, :in_ss, :entered, :email_sent,
+       { slot_regs_attributes:
+           %i[id child_id _destroy invoice_id registerable_id registerable_type],
+         opt_regs_attributes:
+           %i[id child_id _destroy invoice_id registerable_id registerable_type],
+         coupons_attributes: [:code],
+         adjustments_attributes: %i[id reason change invoice_id _destroy] }]
+    )
+  end
 end
 
 RSpec.shared_examples 'an authorized user for InvoicePolicy' do
@@ -43,18 +55,21 @@ describe InvoicePolicy do
     let(:user) { build(:admin) }
 
     it_behaves_like 'an authorized user for InvoicePolicy'
+    it_behaves_like 'staff for InvoicePolicy'
   end
 
   context 'when area manager' do
     let(:user) { build(:area_manager) }
 
     it_behaves_like 'an authorized user for InvoicePolicy'
+    it_behaves_like 'staff for InvoicePolicy'
   end
 
   context 'when school manager' do
     let(:user) { build(:school_manager) }
 
     it_behaves_like 'an authorized user for InvoicePolicy'
+    it_behaves_like 'staff for InvoicePolicy'
   end
 
   context 'when statistician' do
@@ -72,12 +87,26 @@ describe InvoicePolicy do
     end
 
     it_behaves_like 'an authorized user for InvoicePolicy'
+
+    it 'does not allow staff attributes' do
+      expect(policy).to forbid_attributes(
+        [:in_ss, :entered, :email_sent,
+         { adjustments_attributes: %i[id reason change invoice_id _destroy] }]
+      )
+    end
   end
 
   context 'when parent of different child' do
     let(:user) { create(:customer) }
 
     it_behaves_like 'an unauthorized user for InvoicePolicy'
+
+    it 'does not allow staff attributes' do
+      expect(policy).to forbid_attributes(
+        [:in_ss, :entered, :email_sent,
+         { adjustments_attributes: %i[id reason change invoice_id _destroy] }]
+      )
+    end
   end
 
   context 'when resolving scopes' do
