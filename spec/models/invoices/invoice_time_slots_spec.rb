@@ -119,7 +119,7 @@ RSpec.describe Invoice do
 
   context 'when dealing with the (200yen) pointless price for full days' do
     let(:morning_slot) do
-      slot = create(:time_slot, morning: true)
+      slot = build_stubbed(:time_slot, morning: true)
       aft_attributes = attributes_for(:time_slot)
       slot.create_afternoon_slot(aft_attributes)
       slot
@@ -129,8 +129,8 @@ RSpec.describe Invoice do
 
     context 'when pointless prices does not apply' do
       it 'does not apply to external kindy' do
-        child = build(:child, category: :external, kindy: true)
-        invoice = build(
+        child = build_stubbed(:child, category: :external, kindy: true)
+        invoice = build_stubbed(
           :invoice,
           event: event,
           child: child,
@@ -142,8 +142,8 @@ RSpec.describe Invoice do
       end
 
       it 'does not apply if just internal and not kindy' do
-        child = build(:child, category: :internal)
-        invoice = build(
+        child = build_stubbed(:child, category: :internal)
+        invoice = build_stubbed(
           :invoice,
           event: event,
           child: child,
@@ -154,12 +154,12 @@ RSpec.describe Invoice do
       end
 
       it 'does not apply if registrations are on separate days' do
-        child = build(:child, category: :internal, kindy: true)
-        afternoon_reg = build(
+        child = build_stubbed(:child, category: :internal, kindy: true)
+        afternoon_reg = build_stubbed(
           :slot_reg,
           registerable: build(:time_slot, start_time: 1.day.from_now, morning: false)
         )
-        invoice = build(
+        invoice = build_stubbed(
           :invoice,
           event: event,
           child: child,
@@ -170,15 +170,15 @@ RSpec.describe Invoice do
       end
 
       it 'does not apply if there is an extension option on a registered special day' do
-        child = build(:child, category: :internal, kindy: true)
+        child = build_stubbed(:child, category: :internal, kindy: true)
         extension_option = create(
           :option,
           category: 'extension',
           optionable: morning_slot
         )
         morning_slot.options << extension_option
-        morning_slot.update(category: :special)
-        invoice = build(
+        morning_slot.category = :special
+        invoice = build_stubbed(
           :invoice,
           event: event,
           child: child,
@@ -191,8 +191,8 @@ RSpec.describe Invoice do
 
     context 'when pointless price applies' do
       it 'applies the pointless price when internal kindy child with 2 regs on 1 day' do
-        child = build(:child, category: :internal, kindy: true)
-        invoice = build(
+        child = build_stubbed(:child, category: :internal, kindy: true)
+        invoice = build_stubbed(
           :invoice,
           event: event,
           child: child,
@@ -202,6 +202,78 @@ RSpec.describe Invoice do
         invoice.calc_cost
         expect(invoice.total_cost).to eq(202)
       end
+    end
+  end
+
+  context 'when calculating snack cost' do
+    it 'applies 165yen snack cost for each slot where snack boolean is true' do
+      snack_slot = build(:time_slot, snack: true)
+      no_snack_slot = build(:time_slot, snack: false)
+      invoice = build(
+        :invoice,
+        event: event,
+        slot_regs: [build(:slot_reg, registerable: snack_slot),
+                    build(:slot_reg, registerable: no_snack_slot)]
+      )
+      invoice.calc_cost
+      expect(invoice.total_cost).to eq(2 + 165)
+    end
+  end
+
+  context 'when calculating int/ext kindy/ele modifiers' do
+    it 'applies internal modifier if kid is internal' do
+      child = build(:child, category: :internal)
+      slot = build(:time_slot, int_modifier: 10)
+      invoice = build(
+        :invoice,
+        event: event,
+        child: child,
+        slot_regs: [build(:slot_reg, registerable: slot)]
+      )
+      invoice.calc_cost
+      expect(invoice.total_cost).to eq(11)
+    end
+
+    it 'applies external modifier if kid is external' do
+      child = build(:child, category: :external)
+      slot = build(:time_slot, ext_modifier: 10)
+      invoice = build(
+        :invoice,
+        event: event,
+        child: child,
+        slot_regs: [build(:slot_reg, registerable: slot)]
+      )
+      invoice.calc_cost
+      # plus 1100 because 1st time external
+      expect(invoice.total_cost).to eq(1112)
+    end
+
+    it 'applies kindy modifier if kid is kindy',
+       skip: 'kindy modifier not yet implemented' do
+      child = build(:child, kindy: true)
+      slot = build(:time_slot, kindy_modifier: 10)
+      invoice = build(
+        :invoice,
+        event: event,
+        child: child,
+        slot_regs: [build(:slot_reg, registerable: slot)]
+      )
+      invoice.calc_cost
+      expect(invoice.total_cost).to eq(11)
+    end
+
+    it 'applies ele modifier if kid is elementary',
+       skip: 'ele modifier not yet implemented' do
+      child = build(:child, kindy: false)
+      slot = build(:time_slot, ele_modifier: 10)
+      invoice = build(
+        :invoice,
+        event: event,
+        child: child,
+        slot_regs: [build(:slot_reg, registerable: slot)]
+      )
+      invoice.calc_cost
+      expect(invoice.total_cost).to eq(11)
     end
   end
 end
