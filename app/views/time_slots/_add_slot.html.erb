@@ -21,7 +21,7 @@
 
     <div class="d-grid gap-3 w-50">
         <% if add_slot.closed? && current_user.customer? %>
-            <h3 class="fw-bold"><%= t('am_closed') %></h3>
+            <p class="d-flex align-items-center justify-content-center text-bg-warning p-1 rounded"><%= t('am_closed') %></p>
         <% elsif in_ss %>
             <p class="fw-bold fs-5">
                 <%= "#{add_slot.name}: ◯" %>
@@ -60,7 +60,7 @@
                         <%= add_slot.name %>
                     </label>
                     <% if add_slot.closed? %>
-                        <p class="bg-danger text-white rounded p-1"><%= t('am_closed')  %></p>
+                        <p class="d-flex align-items-center justify-content-center text-bg-warning p-1 rounded"><%= t('am_closed')  %></p>
                     <% end %>
                     <%= check_box_tag "m_slot#{add_slot.id}", '', (true if registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
                 </div>
@@ -107,7 +107,7 @@
 
                     <% if registered_arrival %>
                         <p><%= "#{registered_arrival.name}: ◯" %></p>
-                    <% else %>                          
+                    <% else %>
                         <% unless arrival_options.size.zero? %>
                             <fieldset class="mt-2">
                                 <legend class="fs-6 fw-bold">
@@ -124,10 +124,10 @@
 
                                 <% arrival_options.each do |o| %>
                                     <% checked = registrations.any? do |r|
-                                                    r.registerable_id == o.id && 
+                                                    r.registerable_id == o.id &&
                                                         r.registerable_type == 'Option'
                                     end %>
-                                    
+
                                     <%= render 'options/radio',
                                                 opt: o,
                                                 child_id: child.id,
@@ -146,7 +146,7 @@
                                                 .select { |o| o.departure? }
                                                 .sort_by { |o| o.modifier }
                                             end %>
-                    
+
                     <% reg_morn_depart = morn_depart_options.find do |opt|
                         opt_regs_in_ss.any? { |reg| reg.registerable_id == opt.id }
                     end %>
@@ -167,10 +167,10 @@
                                                 opt: deregister,
                                                 child_id: child.id,
                                                 checked: none_selected %>
-                                
+
                                 <% morn_depart_options.each do |opt| %>
                                     <% checked = registrations.any? do |r|
-                                                    r.registerable_id == o.id && 
+                                                    r.registerable_id == o.id &&
                                                         r.registerable_type == 'Option'
                                     end %>
 
@@ -192,10 +192,10 @@
                             else
                             add_slot.options.extension.find_by(category: 'extension')
                             end %>
-            
+
             <% if ext_opt  %>
               <% ext_opt_registered = registrations.any? { |reg| reg.registerable_id == ext_opt.id && reg.registerable_type == 'Option' } %>
-                
+
                 <div class="add_reg form-check form-switch p-0 d-flex flex-column justify-content-center align-items-center gap-2 p-2 w-100 border border"
                     data-controller="register"
                     data-controller="register"
@@ -206,13 +206,13 @@
                     <label for=<%= "opt#{ext_opt.id}" %> class="form-check-label" data-register-target="name"><%= ext_opt.name %></label>
                     <%= check_box_tag "opt#{ext_opt.id}", '', (true if ext_opt_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
                 </div>
-            <% end %> 
+            <% end %>
         <% end %>
 
         <% afternoon_slot = add_slot.afternoon_slot %>
         <% unless afternoon_slot.nil? %>
             <% if afternoon_slot.closed? && current_user.customer? %>
-                <h3 class="fw-bold"><%= t('pm_closed') %></h3>
+              <p class="d-flex align-items-center justify-content-center text-bg-warning p-1 rounded"><%= t('pm_closed') %></p>
             <% else %>
                 <% in_ss = slots_in_ss.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
                 <% aft_registered = registrations.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
@@ -252,7 +252,7 @@
                             data-register-name-value=<%= afternoon_slot.name.concat(' (午後)').gsub(' ', '_') %>
                             data-register-child-value=<%= child.id %>
                             data-register-snack-value=<%= afternoon_slot.snack %>>
-                            <label for=<%= "a_slot#{afternoon_slot.id}" %> 
+                            <label for=<%= "a_slot#{afternoon_slot.id}" %>
                                 data-register-target="name"
                                 class="fw-bold fs-5 form-check-label">
                                 <%= afternoon_slot.special? ? afternoon_slot.name : t('.afternoon') %>
@@ -264,7 +264,7 @@
                                     <p class="bg-danger text-white rounded p-1"><%= t('.regular_day') %></p>
                                 <% end %>
                                 <% if afternoon_slot.closed? %>
-                                    <p class="bg-danger text-white rounded p-1"><%= t('pm_closed')  %></p>
+                                    <p class="d-flex align-items-center justify-content-center text-bg-warning p-1 rounded"><%= t('pm_closed')  %></p>
                                 <% end %>
                                 <%= check_box_tag "a_slot#{afternoon_slot.id}", '', (true if aft_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
                             <% end %>
@@ -313,7 +313,7 @@
                                                     .select { |o| o.departure? }
                                                     .sort_by { |o| o.modifier }
                                                 end %>
-        
+
                             <% registered_depart = depart_options.find do |o|
                                 opt_regs_in_ss.any? { |r| r.registerable_id == o.id }
                             end %>
@@ -337,10 +337,10 @@
 
                                         <% depart_options.each do |o| %>
                                             <% checked = registrations.any? do |r|
-                                                r.registerable_id == o.id && 
+                                                r.registerable_id == o.id &&
                                                     r.registerable_type == 'Option'
                                             end %>
-                                    
+
                                             <%= render 'options/radio',
                                                         opt: o,
                                                         child_id: child.id,
