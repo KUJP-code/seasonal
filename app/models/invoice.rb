@@ -173,15 +173,15 @@ class Invoice < ApplicationRecord
 
     course_cost += extra_cost + snack_cost
 
-    unless @breakdown.nil?
-      @breakdown << '</div>'
+    unless @breakdown.nil? || num_regs.zero?
       @breakdown.prepend(
         "<h4 class='fw-semibold'>コース:</h4>
         <div class='d-flex flex-column align-items-start gap-1'>
-        <p>#{yenify(course_cost)} (#{num_regs}回)</p>
-        <p>追加料金 x #{extra_cost_slots.size}: #{yenify(extra_cost)}</p>
-        <p>午後コースおやつ代 x #{snack_count}: #{yenify(snack_cost)}</p>"
+        <p>#{yenify(course_cost)} (#{num_regs}回)</p>"
       )
+      @breakdown << "<p>追加料金 x #{extra_cost_slots.size}: #{yenify(extra_cost)}</p>" if extra_cost_slots.size.positive?
+      @breakdown << "<p>午後コースおやつ代 x #{snack_count}: #{yenify(snack_cost)}</p>" if snack_count.positive?
+      @breakdown << '</div>'
     end
 
     course_cost
@@ -191,14 +191,15 @@ class Invoice < ApplicationRecord
     # Prevent multiple siblings registering for same event option
     check_event_opts
     # Ignore options to be deleted on confirmation screen
-    opt_cost = opt_regs.reject do |reg|
-                 @ignore_opts.include?(reg.id) || orphan_option?(reg)
-               end.reduce(0) { |sum, reg| sum + reg.registerable.cost }
-    @breakdown << "<h4 class='fw-semibold'>オプション:</h4>
-                   <div class='d-flex flex-column align-items-start gap-1'>
-                   <p>#{yenify(opt_cost)} (#{opt_regs.count do |r|
-                                               r.registerable.name != 'なし'
-                                             end - @ignore_opts.size}オプション)<p>"
+    valid_opt_regs = opt_regs.reject do |reg|
+      @ignore_opts.include?(reg.id) || orphan_option?(reg)
+    end
+    opt_cost = valid_opt_regs.reduce(0) { |sum, reg| sum + reg.registerable.cost }
+    if opt_regs.size.positive?
+      @breakdown << "<h4 class='fw-semibold'>オプション:</h4>
+                     <div class='d-flex flex-column align-items-start gap-1'>
+                     <p>#{yenify(opt_cost)} (#{valid_opt_regs.size}オプション)<p>"
+    end
 
     # Find the options on this invoice, even if not saved
     temp_opts = {}
