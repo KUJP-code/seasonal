@@ -51,10 +51,8 @@ RSpec.describe Invoice do
       expect(invoice.summary).to include_all ['Slot', '- Slot Option: 10円']
     end
 
-    it 'gives total cost & the official number' do
-      expect(invoice.summary).to include_all [
-        '合計（税込）: 46円', '登録番号: T7-0118-0103-7173'
-      ]
+    it 'gives total cost' do
+      expect(invoice.summary).to include('合計（税込）: 46円')
     end
   end
 

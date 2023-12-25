@@ -467,7 +467,6 @@ class Invoice < ApplicationRecord
     # Date & Registration number
     pdf.grid([1, 11], [2, 19]).bounding_box do
       pdf.text("発行日: #{Time.zone.now.strftime('%F')}", align: :right, color: '000000')
-      pdf.text('登録番号: T7-0118-0103-7173', align: :right, color: '000000')
     end
 
     # Company Info
@@ -669,8 +668,7 @@ class Invoice < ApplicationRecord
   # Updates total cost and summary once calculated/generated
   def update_cost(new_cost)
     self.total_cost = new_cost
-    @breakdown << "<h2 id='final_cost' class='fw-semibold text-start'>合計（税込）: #{yenify(new_cost)}</h2>\n
-    <p class='text-start'>登録番号: T7-0118-0103-7173</p>"
+    @breakdown << "<h2 id='final_cost' class='fw-semibold text-start'>合計（税込）: #{yenify(new_cost)}</h2>\n"
     self.summary = @breakdown
     new_cost
   end
