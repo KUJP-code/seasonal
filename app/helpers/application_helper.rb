@@ -5,7 +5,7 @@ module ApplicationHelper
     date.strftime('%Y年%m月%d日')
   end
 
-  # Needed in both User and Child controllers:w
+  # Needed in both User and Child controllers
   def full_address(user)
     "#{t('.address')}: #{user.prefecture}, #{user.address}, #{user.postcode}"
   end
