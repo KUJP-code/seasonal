@@ -11,7 +11,9 @@
              school: @school,
              indexed_resource: 'setsumeikais'
 
-  = render 'setsumeikais/form'
+  = render 'setsumeikais/form',
+           schools: @schools,
+           setsumeikai: @setsumeikai
 
   = render 'setsumeikais/setsumeikai_table'
 

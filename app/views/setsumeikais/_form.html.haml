@@ -1,0 +1,60 @@
+-# locals (setsumeikai:, schools:)
+
+= form_with model: setsumeikai,
+            data: { controller: :fields },
+            html: { class: 'card w-100 flex-row flex-wrap justify-content-evenly align-items-center' } do |f|
+  = render 'shared/form_errors', resource: setsumeikai
+
+  .form-floating
+    = f.datetime_field :start, class: 'form-control', required: true
+    = f.label :start, t('.start'), class: 'form-label'
+
+  .form-floating
+    = f.number_field :attendance_limit,
+                     class: 'form-control',
+                     placeholder: t('.attendance_limit'),
+                     min: 0,
+                     required: true
+    = f.label :attendance_limit,
+              t('.attendance_limit'),
+              class: 'form-label'
+
+  - if current_user.school_manager?
+    = f.hidden_field :school_id, value: current_user.managed_school.id
+  - else
+    .d-flex.flex-column.justify-content-center.align-items-center
+      = f.label :school_id, t('.school'), class: 'form-label'
+      = f.collection_select :school_id,
+                            schools,
+                            :id,
+                            :name,
+                            {},
+                            { class: 'form-select' }
+  .form-floating
+    = f.date_field :release_date, class: 'form-control', required: true
+    = f.label :release_date, t('.release_date'), class: 'form-label'
+
+  .form-floating
+    = f.date_field :close_date, class: 'form-control', required: true
+    = f.label :close_date, t('.close_date'), class: 'form-label'
+
+  .d-flex.flex-wrap.justify-content-center.align-items-center.gap-3.w-100
+    %h3.w-100= t('.involved_schools')
+
+    = f.fields_for :setsumeikai_involvements do |involvement_f|
+      = render 'setsumeikais/involvement_fields', f: involvement_f
+
+    %template{ data: { fields_target: 'template' } }
+      = f.fields_for :setsumeikai_involvements,
+                     SetsumeikaiInvolvement.new,
+                     child_index: 'CHILD' do |involvement_f|
+        = render 'setsumeikais/involvement_fields', f: involvement_f
+
+    .d-none.w-100{ data: { fields_target: 'target' } }
+
+    = button_tag t('.add_involved_school'),
+                 type: 'button',
+                 data: { action: 'fields#add' },
+                 class: 'btn btn-info'
+
+  = f.submit class: 'btn btn-primary w-100'
