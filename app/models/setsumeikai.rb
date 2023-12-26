@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Setsumeikai < ApplicationRecord
+  before_validation :set_close_at
+
   belongs_to :school
   delegate :area, to: :school
   has_many :inquiries, dependent: :restrict_with_error
@@ -11,10 +13,11 @@ class Setsumeikai < ApplicationRecord
   has_many :involved_schools, through: :setsumeikai_involvements,
                               source: :school
 
-  validates :start, :attendance_limit, :release_date, presence: true
+  validates :start, :attendance_limit, :release_date, :close_at, presence: true
   validates :attendance_limit, comparison: { greater_than_or_equal_to: 0 }
   validates :start, comparison: { greater_than: Time.zone.now }
   validates :release_date, comparison: { less_than: :start }
+  validates :close_at, comparison: { less_than: :start, greater_than: :release_date }
   validate :host_school_involved
 
   scope :upcoming, -> { where('start > ?', Time.zone.now) }
@@ -26,7 +29,7 @@ class Setsumeikai < ApplicationRecord
       id: id.to_s,
       start: start,
       title: school.name,
-      full: inquiries_count >= attendance_limit
+      full: full?
     }
   end
 
@@ -38,10 +41,20 @@ class Setsumeikai < ApplicationRecord
     "#{date} #{start.strftime('%H:%M')}"
   end
 
+  def full?
+    inquiries_count >= attendance_limit || Time.zone.now > close_at
+  end
+
   def ja_day
     en_day = start.strftime('%A')
 
     "(#{DAYS[en_day]})"
+  end
+
+  def set_close_at
+    self.close_at = Time.zone.local(
+      close_at.year, close_at.month, close_at.day, 18
+    )
   end
 
   def school_date_time
