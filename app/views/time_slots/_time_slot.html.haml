@@ -1,42 +1,12 @@
 -# locals (time_slot:)
 
-- afternoon = time_slot.afternoon_slot
-
 .card.justify-content-between
   %h3= time_slot.name
 
-  %picture
-    - if time_slot.avif.attached?
-      %source{ srcset: url_for(time_slot.avif),
-               alt: time_slot.name.tr(' ', '_'),
-               type: 'image/avif' }
-
-    %img{ src: url_for(time_slot.image),
-          alt: time_slot.name.tr(' ', '_'),
-          class: 'img-fluid img-thumbnail' }
+  = render 'shared/picture_for', resource: time_slot
 
   .d-grid.gap-2.w-100
-    - if current_user.admin? || current_user.area_manager?
-      - if time_slot.closed?
-        = form_with model: time_slot, class: 'w-100' do |f|
-          = f.hidden_field :closed, value: 0
-          = f.submit time_slot.morning? ? t('.reopen') : t('.aft_reopen'),
-                     class: 'btn btn-warning w-100'
-      - else
-        = form_with model: time_slot, class: 'w-100' do |f|
-          = f.hidden_field :closed, value: 1
-          = f.submit time_slot.morning? ? t('.close') : t('.aft_close'),
-                     class: 'btn btn-success w-100'
-
-      - if afternoon && !time_slot.special?
-        - if afternoon.closed?
-          = form_with model: afternoon, class: 'w-100' do |f|
-            = f.hidden_field :closed, value: 0
-            = f.submit t('.aft_reopen'), class: 'btn btn-warning w-100'
-        - else
-          = form_with model: afternoon, class: 'w-100' do |f|
-            = f.hidden_field :closed, value: 1
-            = f.submit t('.aft_close'), class: 'btn btn-success w-100'
+    = render 'time_slots/close_buttons', time_slot: time_slot
 
     = link_to t('.view_attendance'),
               children_path(source: 'time_slot', id: time_slot.id),

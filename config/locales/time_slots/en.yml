@@ -6,16 +6,17 @@ en:
       depart_options: "Depart Options"
       extra_charge: "Extra Charge: %{cost}"
       snack: "Snack"
+    close_buttons:
+      aft_close: "Close Afternoon"
+      aft_reopen: "Reopen Afternoon"
+      close: "Close"
+      reopen: "Reopen"
     index:
       events_for: "Events for %{school}"
       slots_for: "Activities for %{name} at %{school}"
     time_slot:
-      aft_close: "Close Afternoon"
-      aft_reopen: "Reopen Afternoon"
       am_reg: "AM Registrations"
       date: "Date: %{date}"
-      close: "Close"
       pm_reg: "PM Registrations"
-      reopen: "Reopen"
       times: "Time: %{time}"
       title: "%{name} at %{school}"

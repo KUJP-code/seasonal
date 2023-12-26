@@ -1,0 +1,37 @@
+-# locals: (time_slot:)
+:ruby
+  afternoon = time_slot.afternoon_slot
+  open_classes = 'rounded p-2 text-bg-success'
+  closed_classes = 'rounded p-2 text-bg-warning'
+
+- if current_user.school_manager?
+  %div{ class: time_slot.closed? ? closed_classes : open_classes }
+    - if time_slot.morning
+      = time_slot.closed? ? t('.closed') : t('.open')
+    - else
+      = time_slot.closed? ? t('.aft_closed') : t('.aft_open')
+  - if afternoon && !time_slot.special?
+    %div{ class: afternoon.closed? ? closed_classes : open_classes }
+      = afternoon.closed? ? t('.aft_closed') : t('.aft_open')
+
+- else
+  - if time_slot.closed?
+    = form_with model: time_slot, class: 'w-100' do |f|
+      = f.hidden_field :closed, value: 0
+      = f.submit time_slot.morning? ? t('.reopen') : t('.aft_reopen'),
+                 class: 'btn btn-warning w-100'
+  - else
+    = form_with model: time_slot, class: 'w-100' do |f|
+      = f.hidden_field :closed, value: 1
+      = f.submit time_slot.morning? ? t('.close') : t('.aft_close'),
+                 class: 'btn btn-success w-100'
+
+  - if afternoon && !time_slot.special?
+    - if afternoon.closed?
+      = form_with model: afternoon, class: 'w-100' do |f|
+        = f.hidden_field :closed, value: 0
+        = f.submit t('.aft_reopen'), class: 'btn btn-warning w-100'
+    - else
+      = form_with model: afternoon, class: 'w-100' do |f|
+        = f.hidden_field :closed, value: 1
+        = f.submit t('.aft_close'), class: 'btn btn-success w-100'

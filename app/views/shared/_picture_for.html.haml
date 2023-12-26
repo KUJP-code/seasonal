@@ -1,0 +1,25 @@
+-# locals: (resource:)
+:ruby
+  avif = resource.avif.presence
+  image = resource.image.presence
+  return if image.nil? && avif.nil?
+
+%picture
+  - if avif && image
+    %source{ srcset: url_for(avif),
+             alt: resource.name.tr(' ', '_'),
+             type: 'image/avif' }
+    %img{ loading: 'lazy',
+          src: url_for(image),
+          alt: resource.name.tr(' ', '_'),
+          class: 'img-fluid img-thumbnail' }
+  - elsif avif
+    %img{ loading: 'lazy',
+          src: url_for(avif),
+          alt: resource.name.tr(' ', '_'),
+          class: 'img-fluid img-thumbnail' }
+  - else
+    %img{ loading: 'lazy',
+          src: url_for(image),
+          alt: resource.name.tr(' ', '_'),
+          class: 'img-fluid img-thumbnail' }
