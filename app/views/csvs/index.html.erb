@@ -23,7 +23,12 @@
             <%= form_with url: update_csv_path, html: { class: 'd-grid gap-3 p-5' } do |f| %>
                 <div class="fields">
                     <%= f.label :model, class: 'form-label' %>
-                    <%= f.select :model, [%w[Children Child], %w[Regular\ Schedules RegularSchedule]], {}, class: 'form-select' %>
+                    <%= f.select :model,
+                                 [%w[Children Child],
+                                  %w[Regular\ Schedules RegularSchedule],
+                                  %w[Setsumeikais Setsumeikai]],
+                                 {},
+                                 class: 'form-select' %>
                 </div>
                 <div class="field">
                     <%= f.label :csv, class: 'form-label' %>

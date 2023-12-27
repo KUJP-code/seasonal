@@ -2,13 +2,13 @@
     <td>
         <%= link_to setsumeikai.date_time, setsumeikai_path(setsumeikai) %>
     </td>
-    
+
     <td>
         <%= link_to "#{setsumeikai.inquiries.size}/#{setsumeikai.attendance_limit}",
                     setsumeikai_path(setsumeikai),
                     class: 'fw-bold' %>
     </td>
-    
+
     <td>
         <%= t("schools.#{setsumeikai.school.name}") %>
     </td>
@@ -21,7 +21,11 @@
     </td>
 
     <td>
-        <%= setsumeikai.release_date %>
+        <%= date_yy_mm_dd(setsumeikai.release_date) %>
+    </td>
+
+    <td>
+        <%= date_yy_mm_dd(setsumeikai.close_at) %>
     </td>
 
     <td>
@@ -44,7 +48,7 @@
                     edit_setsumeikai_path(setsumeikai),
                     class: 'btn btn-primary' %>
     </td>
-    
+
     <td>
         <%= link_to t('.add_inquiry'),
                     new_inquiry_path(setsu_id: setsumeikai.id),
@@ -52,11 +56,11 @@
     </td>
 
     <td>
-        <%= link_to t('.delete'), 
+        <%= link_to t('.delete'),
                     setsumeikai_path(setsumeikai),
-                    data: { 
-                        turbo_method: :delete, 
-                        turbo_confirm: t('.are_u_sure') 
+                    data: {
+                        turbo_method: :delete,
+                        turbo_confirm: t('.are_u_sure')
                     },
                     class: 'btn btn-danger' %>
     </td>

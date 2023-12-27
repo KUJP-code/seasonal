@@ -2,7 +2,7 @@
 
 # Facilitates import/export of records for certain models
 class CsvsController < ApplicationController
-  ALLOWED_MODELS = %w[Child RegularSchedule User Invoice].freeze
+  ALLOWED_MODELS = %w[Child Invoice RegularSchedule Setsumeikai User].freeze
 
   def index
     authorize(:csv)
@@ -37,6 +37,8 @@ class CsvsController < ApplicationController
 
     if params[:model] == 'Child'
       update_child(csv)
+    elsif params[:model] == 'Setsumeikai'
+      update_setsumeikai(csv)
     else
       update_schedule(csv)
     end
@@ -100,6 +102,18 @@ class CsvsController < ApplicationController
       else
         Child.create!(row.to_hash)
       end
+    end
+  end
+
+  def update_setsumeikai(csv)
+    CSV.foreach(csv.tempfile.path, headers: true) do |row|
+      hash = row.to_h
+
+      Setsumeikai.create!(
+        hash.merge(
+          setsumeikai_involvements_attributes: [{ school_id: hash['school_id'] }]
+        )
+      )
     end
   end
 
