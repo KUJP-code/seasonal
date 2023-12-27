@@ -9,7 +9,7 @@ class SetsumeikaisController < ApplicationController
     authorize Setsumeikai
     @schools = policy_scope(School).order(:id)
     @school = params[:school] ? School.find(params[:school]) : @schools.first
-    @setsumeikais = policy_scope(index_setsumeikais)
+    @setsumeikais = index_setsumeikais
     @setsumeikai = params[:setsumeikai] ? setsu_from_params : default_setsu
   end
 
