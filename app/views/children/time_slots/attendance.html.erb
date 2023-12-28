@@ -11,7 +11,7 @@
 <% columns = %w[arrival attend name 幼児/小学生 allergy photo] %>
 
 <main id="slot_attendance">
-    <div class="slot_attendance mb-5" 
+    <div class="slot_attendance mb-5"
          data-controller="refresh print"
          data-print-target="print">
 
@@ -45,7 +45,7 @@
             <span data-refresh-target="counter">10:00</span>
             後にページが更新される。
         </h2>
-    
+
         <table class="table table-sm table-light table-striped table-hover table-bordered text-center text-nowrap align-middle">
             <thead class="sticky-top">
                 <tr class="table-primary">
@@ -65,17 +65,17 @@
 
                     <% (@event_options + options).each do |o| %>
                         <th scope="col">
-                            <%= "#{o.name}: #{o.registrations.size}" %>
+                          <%= "#{o.name == '昼食' ? 'Lunch' : o.name}: #{o.registrations.size}" %>
                         </th>
                     <% end %>
 
                     <% if @slot.special? && extensions.size.positive? %>
                         <th>
-                            中延長: 
+                            中延長:
                             <%= "#{extensions.reduce(0) { |sum, o| sum + o.registrations.size }}" %>
                         </th>
                     <% end %>
-    
+
                     <% if @afternoon %>
                         <th scope="col" id="afternoon_header">
                             <p><%= t('.attend_afternoon') %></p>
@@ -83,11 +83,11 @@
                                 <%= "K: #{@afternoon_children.count(&:kindy)}, E: #{@afternoon_children.reject(&:kindy).size}" %>
                             </p>
                         </th>
-    
+
                         <% @afternoon_options.each do |opt| %>
                             <th scope="col"><%= "#{opt.name}: #{opt.registrations.size}" %></th>
                         <% end %>
-      
+
                         <th scope="col" id="depart_header">
                             <%= t('.depart') %>
                         </th>
@@ -110,7 +110,7 @@
                         <%= render partial: 'shared/filter_header',
                                     locals: { column: o.name, siblings: '0' } %>
                     <% end %>
-    
+
                     <% if @slot.special? && extensions.size.positive? %>
                         <%= render partial: 'shared/filter_header',
                                    locals: {
@@ -118,7 +118,7 @@
                                        siblings: '0'
                                    } %>
                     <% end %>
-    
+
                     <% if @afternoon %>
                         <%= render partial: 'shared/filter_header',
                                    locals: {
@@ -133,7 +133,7 @@
                                            siblings: '0'
                                        } %>
                         <% end %>
-    
+
                         <%= render partial: 'shared/filter_header',
                                    locals: {
                                        column: 'depart',
@@ -141,7 +141,7 @@
                                    } %>
                     <% end %>
                 </tr>
-    
+
                 <%= render partial: 'children/time_slots/child_row',
                            collection: (@children + (@afternoon_children - @children || [])),
                            as: :child,

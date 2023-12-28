@@ -24,21 +24,21 @@
   <th scope="row" class="category">
       <%= child.kindy ? '幼児' : '小学生' %>
   </th>
-  
+
   <td class="allergy"><%= child.allergies %></td>
 
   <td class="photo"><%= child.photos unless child.photos == 'OK' %></td>
 
-  <% event_options.each do |opt| %>
+  <% event_options.each do |o| %>
     <%# Show as registered for photo service if sibling is %>
-    <td class=<%= opt.name %>>
-      <%= opt.name if child.registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type = 'Option' } || opt.registrations.any? { |reg| siblings.include?(reg.child_id) } %>
+    <td class=<%= o.name %>>
+      <%= o.name if child.registrations.any? { |reg| reg.registerable_id == o.id && reg.registerable_type = 'Option' } || o.registrations.any? { |reg| siblings.include?(reg.child_id) } %>
     </td>
   <% end %>
 
   <% options.each do |o| %>
     <td class=<%= o.name %>>
-      <%= o.name if child.registrations.any? { |reg| reg.registerable_id == o.id && reg.registerable_type = 'Option' } %>
+      <%= (o.name == '昼食' ? 'Lunch' : o.name) if child.registrations.any? { |reg| reg.registerable_id == o.id && reg.registerable_type = 'Option' } %>
     </td>
   <% end %>
 
