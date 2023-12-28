@@ -29,7 +29,7 @@ class InquiryPolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin'
-        scope
+        scope.all
       when 'area_manager', 'school_manager'
         scope.where(id: user.all_inquiries.ids)
       else

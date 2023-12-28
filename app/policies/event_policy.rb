@@ -41,7 +41,7 @@ class EventPolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin', 'statistician'
-        scope
+        scope.all
       when 'area_manager'
         scope.where(id: user.area_events.ids)
       when 'school_manager'

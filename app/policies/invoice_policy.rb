@@ -69,7 +69,7 @@ class InvoicePolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin'
-        scope
+        scope.all
       when 'area_manager'
         scope.where(event_id: user.area_events.ids)
       when 'school_manager'

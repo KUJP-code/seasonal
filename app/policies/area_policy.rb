@@ -29,7 +29,7 @@ class AreaPolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin'
-        scope
+        scope.all
       when 'area_manager'
         scope.where(id: user.managed_areas.ids)
       else
