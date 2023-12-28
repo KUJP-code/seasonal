@@ -107,8 +107,12 @@
                     data-register-type-value="Option"
                     data-register-child-value=<%= @child.id %>
                     data-register-cost-value=<%= opt.cost %>>
-                    <h4 data-register-target="name"><%= "#{opt.name} (#{number_to_currency(opt.cost, unit: '円', precision: 0, locale: :ja)})" %></h4>
-                    <%= check_box_tag '', '', (true if opt_registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
+                    <h4>
+                      <label for=<%="eopt#{opt.id}"%> data-register-target="name">
+                        <%= "#{opt.name} (#{number_to_currency(opt.cost, unit: '円', precision: 0, locale: :ja)})" %>
+                      </label>
+                    </h4>
+                    <%= check_box_tag "eopt#{opt.id}", "eopt#{opt.id}", (true if opt_registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
                 </div>
             <% end %>
         <% end %>
