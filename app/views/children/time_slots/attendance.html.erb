@@ -1,3 +1,5 @@
+<% child_ids = @children.map(&:id) %>
+
 <% ext_cats = %w[extension k_extension].freeze %>
 <% extensions = @options.select { |o| ext_cats.include?(o.category) } %>
 <% ext_ids = extensions.map(&:id) %>
@@ -63,7 +65,13 @@
                     <th><%= t('.allergy') %></th>
                     <th><%= t('.photo') %></th>
 
-                    <% (@event_options + options).each do |o| %>
+                    <% @event_options.each do |o| %>
+                        <th scope="col">
+                          <%= "#{o.name}: #{o.registrations.count { |reg| child_ids.include?(reg.child_id) }}" %>
+                        </th>
+                    <% end %>
+
+                    <% options.each do |o| %>
                         <th scope="col">
                           <%= "#{o.name == '昼食' ? 'Lunch' : o.name}: #{o.registrations.size}" %>
                         </th>

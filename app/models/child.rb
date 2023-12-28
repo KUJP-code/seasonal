@@ -126,7 +126,7 @@ class Child < ApplicationRecord
   def siblings
     return [] if parent.nil?
 
-    parent.children.where.not(id: id)
+    parent.children.excluding(self)
   end
 
   private
