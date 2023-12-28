@@ -21,7 +21,7 @@ class Setsumeikai < ApplicationRecord
   validate :host_school_involved
 
   scope :upcoming, -> { where('start > ?', Time.zone.now) }
-  scope :visible, -> { where('release_date < ?', Time.zone.now) }
+  scope :visible, -> { where('release_date < ?', Time.zone.today + 1.day) }
   scope :calendar, -> { upcoming.visible }
 
   def as_json(_options = {})
