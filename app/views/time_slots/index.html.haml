@@ -3,6 +3,7 @@
     = render 'shared/school_nav',
              schools: @schools,
              school: @school,
+             include_all: false,
              indexed_resource: 'time_slots'
 
   %h1= t('.events_for', school: t("schools.#{@school.name}"))

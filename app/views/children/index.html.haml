@@ -3,13 +3,13 @@
 %main#children-index
   = link_to t('.create_child'), new_child_path, class: 'btn btn-primary'
 
-  = paginate @children, window: 40
-
   - if current_user.admin? || current_user.area_manager?
     = render 'shared/school_nav',
              schools: @schools,
              school: @school,
              indexed_resource: 'children'
+
+  = paginate @children, window: 40
 
   %table.table.table-hover.table-striped.text-center
     %thead

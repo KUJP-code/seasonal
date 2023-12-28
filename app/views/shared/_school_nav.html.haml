@@ -1,9 +1,15 @@
--# locals: (schools:, school:, indexed_resource:)
+-# locals: (schools:, school:, include_all: true, indexed_resource:)
+- selected_classes = 'bg-primary text-white fw-semibold'
 
 %nav.d-flex.flex-row.flex-wrap.justify-content-center.gap-3
+  - if include_all
+    = link_to current_user.admin? ? 'All Schools' : 'Area Schools',
+              send("#{indexed_resource}_path", school: 0),
+              class: "card #{selected_classes if school.id.zero?}"
+
   - schools.each do |s|
     - selected = s.id == school.id
 
     = link_to t("schools.#{s.name}"),
               send("#{indexed_resource}_path", school: s.id),
-              class: "card #{'bg-primary text-white fw-semibold' if selected}"
+              class: "card #{selected_classes if selected}"

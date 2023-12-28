@@ -12,10 +12,11 @@ class SurveysController < ApplicationController
 
   def show
     @schools = policy_scope(School).includes(:survey_responses)
-    @school = params[:school] ? School.find(params[:school]) : @schools.first
-    @responses = policy_scope(SurveyResponse)
-                 .where(survey_id: @survey.id, child_id: @school.children.ids)
-                 .includes(child: %i[parent])
+    @school = select_school
+    scoped_responses = policy_scope(SurveyResponse)
+                       .where(survey_id: @survey.id)
+                       .includes(child: %i[parent])
+    @responses = @school.id.zero? ? scoped_responses : scoped_responses.where(child_id: @school.children.ids)
   end
 
   def new
@@ -58,6 +59,12 @@ class SurveysController < ApplicationController
                              school_id first_seasonal
                            ]
     )
+  end
+
+  def select_school
+    school_given = params[:school] && params[:school] != '0'
+    default_school = current_user.school_manager? ? @schools.first : School.new(id: 0)
+    school_given ? School.find(params[:school]) : default_school
   end
 
   def set_survey

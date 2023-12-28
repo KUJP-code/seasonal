@@ -21,6 +21,7 @@ en:
     customer: "customer"
     school_manager: "school manager"
   schools:
+    "All": "All Schools"
     "南行徳": "Minami Gyotoku"
     "池袋": "Ikebukero"
     "川口": "Kawaguchi"

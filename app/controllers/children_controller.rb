@@ -95,11 +95,20 @@ class ChildrenController < ApplicationController
 
   def index_by_school
     @schools = policy_scope(School).order(:id)
-    @school = params[:school] ? School.find(params[:school]) : @schools.first
-    @children = policy_scope(Child)
-                .where(school_id: @school.id)
-                .includes(:parent)
-                .page(params[:page]).per(100)
+    school_given = params[:school] && params[:school] != '0'
+    @school = school_given ? School.find(params[:school]) : default_school
+    scoped_children = policy_scope(Child)
+                      .includes(:parent)
+                      .page(params[:page]).per(100)
+    @children = school_given ? scoped_children.where(school_id: @school.id) : scoped_children
+  end
+
+  def default_school
+    if current_user.school_manager?
+      @schools.first
+    else
+      School.new(id: 0)
+    end
   end
 
   def afternoon_data

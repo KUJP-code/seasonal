@@ -2,16 +2,15 @@
 
 class InquiriesController < ApplicationController
   skip_before_action :verify_authenticity_token, only: :create
-  after_action :verify_authorized, except: :create
+  after_action :verify_authorized, except: %i[index create]
   after_action :verify_policy_scoped, only: :index
 
   def index
     authorize Inquiry
     @schools = policy_scope(School).real.order(:id)
-    @school = authorize(params[:school] ? School.find(params[:school]) : @schools.first, :show?)
-    @inquiries = policy_scope(@school.inquiries)
-                 .includes(:setsumeikai)
-                 .page(params[:page])
+    school_given = params[:school] && params[:school] != '0'
+    @school = school_given ? School.find(params[:school]) : default_school
+    @inquiries = index_inquries
   end
 
   def new
@@ -86,6 +85,20 @@ class InquiriesController < ApplicationController
     else
       render json: { status: 500 }
     end
+  end
+
+  def default_school
+    if current_user.school_manager?
+      @schools.first
+    else
+      School.new(id: 0)
+    end
+  end
+
+  def index_inquries
+    policy_scope(@school.id.zero? ? Inquiry : @school.inquiries)
+      .includes(:setsumeikai)
+      .page(params[:page])
   end
 
   def send_mail(inquiry)
