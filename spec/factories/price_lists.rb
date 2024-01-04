@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :member_prices, class: 'PriceList' do
     name { 'Member Prices' }
     course1 { 1 }
+    course3 { 3 }
     course5 { 5 }
     course10 { 10 }
     course15 { 15 }
@@ -19,6 +20,7 @@ FactoryBot.define do
   factory :non_member_prices, class: 'PriceList' do
     name { 'Non-Member Prices' }
     course1 { 2 }
+    course3 { 6 }
     course5 { 10 }
     course10 { 20 }
     course15 { 30 }
