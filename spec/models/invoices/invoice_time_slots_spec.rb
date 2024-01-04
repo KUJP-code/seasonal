@@ -92,7 +92,7 @@ RSpec.describe Invoice do
       expect(invoice.total_cost).to eq(rand_num_regs)
     end
 
-    it 'calculates cost with special 3 course over a course' do
+    it 'calculates internal cost with special 3 course over a course' do
       rand_num_regs = [8, 53].sample
       invoice = build(
         :invoice,
@@ -101,10 +101,10 @@ RSpec.describe Invoice do
         child: child
       )
       invoice.calc_cost
-      expect(invoice.total_cost).to eq(11_900 + rand_num_regs - 3)
+      expect(invoice.total_cost).to eq(rand_num_regs)
     end
 
-    it 'calculates cost with 4 spot uses over a course (affected by 3 course)' do
+    it 'calculates internal cost with 4 spot uses over a course (affected by 3 course)' do
       rand_num_regs = [9, 54].sample
       invoice = build(
         :invoice,
@@ -113,7 +113,33 @@ RSpec.describe Invoice do
         child: child
       )
       invoice.calc_cost
-      expect(invoice.total_cost).to eq(11_900 + rand_num_regs - 3)
+      expect(invoice.total_cost).to eq(rand_num_regs)
+    end
+
+    it 'calculates external cost with special 3 course over a course' do
+      child.update(category: :external)
+      rand_num_regs = [8, 53].sample
+      invoice = build(
+        :invoice,
+        event: event,
+        slot_regs: build_list(:slot_reg, rand_num_regs, child: child),
+        child: child
+      )
+      invoice.calc_cost
+      expect(invoice.total_cost).to eq(1_100 + (rand_num_regs * 2))
+    end
+
+    it 'calculates external cost with 4 spot uses over a course (affected by 3 course)' do
+      child.update(category: :external)
+      rand_num_regs = [9, 54].sample
+      invoice = build(
+        :invoice,
+        event: event,
+        slot_regs: build_list(:slot_reg, rand_num_regs, child: child),
+        child: child
+      )
+      invoice.calc_cost
+      expect(invoice.total_cost).to eq(1_100 + (rand_num_regs * 2))
     end
   end
 
