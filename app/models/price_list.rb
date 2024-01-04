@@ -34,6 +34,6 @@ class PriceList < ApplicationRecord
       '40' => course40, '45' => course45, '50' => course50
     }
 
-    self.courses = hash
+    self.courses = hash.transform_values(&:to_i)
   end
 end
