@@ -23,8 +23,7 @@ RSpec.describe PriceList do
     end
   end
 
-  it 'sets course costs from form fields on save',
-     skip: 'leave for JJ people to do; different way of setting is fine' do
+  it 'sets course costs from form fields on save' do
     random_key = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50].sample
     price_list = create(
       :non_member_prices,
@@ -43,7 +42,7 @@ RSpec.describe PriceList do
     expect(price_list.courses[random_key.to_s]).to eq(random_key)
   end
 
-  it 'converts string course cost input to integer', skip: 'leave for JJ people to do' do
+  it 'converts string course cost input to integer' do
     price_list = create(:member_prices, course1: '1')
     expect(price_list.courses['1']).to eq(1)
   end

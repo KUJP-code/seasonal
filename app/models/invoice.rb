@@ -88,15 +88,10 @@ class Invoice < ApplicationRecord
     return 0 if num_regs.zero?
 
     if [3, 4].include?(num_regs)
+      cost = courses['3']
 
-      if child.member?
-        @breakdown << "<p>- 3回コース: #{yenify(11_900)}</p>" unless @breakdown.nil?
-
-        return 11_900 + best_price(num_regs - 3, courses)
-      end
-
-      @breakdown << "<p>- 3回コース: #{yenify(19_100)}</p>" unless @breakdown.nil?
-      return 19_100 + best_price(num_regs - 3, courses)
+      @breakdown << "<p>- 3回コース: #{yenify(cost)}</p>" unless @breakdown.nil?
+      return cost + best_price(num_regs - 3, courses)
     end
 
     if num_regs >= 55

@@ -74,11 +74,10 @@ RSpec.describe PriceList do
       expect(response).to have_http_status(:ok)
     end
 
-    # FIXME: should be a number, not a string
     it 'allows access to update' do
       patch "/price_lists/#{price_list.id}",
             params: { price_list: attributes_for(:member_prices, course1: 96) }
-      expect(price_list.reload['courses']['1']).to eq('96')
+      expect(price_list.reload['courses']['1']).to eq(96)
     end
   end
 
