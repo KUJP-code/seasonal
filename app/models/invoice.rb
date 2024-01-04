@@ -447,7 +447,7 @@ class Invoice < ApplicationRecord
     pdf.grid([0, 0], [1, 19]).bounding_box do
       pdf.fill_color '2864f0'
       pdf.fill_rectangle(pdf.bounds.top_left, 191.mm, 1.cm)
-      pdf.pad(1.mm) { pdf.text('領収書', align: :center, color: 'ffffff', size: 20) }
+      pdf.pad(1.mm) { pdf.text('請求書', align: :center, color: 'ffffff', size: 20) }
     end
 
     # Total Cost
