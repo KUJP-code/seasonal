@@ -143,24 +143,20 @@ class Invoice < ApplicationRecord
                     best_price(num_regs, non_member_prices)
                   end
 
+    slots = slot_regs.map(&:registerable)
+
     snack_count = slot_regs.count do |reg|
-      !reg._destroy && reg.registerable.snack
+      !reg._destroy && slots.find { |slot| slot.id == reg.registerable_id }.snack
     end
+
     snack_cost = snack_count * 165
 
-    # Needs to be filter_map because next in #map returns nil
-    extra_cost_slots = slot_regs.filter_map do |reg|
-      slot = reg.registerable
-
-      next if reg._destroy
-      next if child.external? && slot.ext_modifier.zero?
-      next if child.internal? && slot.int_modifier.zero?
-
-      slot
-    end
-
-    extra_cost = extra_cost_slots.reduce(0) do |sum, slot|
-      child.external? ? sum + slot.ext_modifier : sum + slot.int_modifier
+    extra_cost_count = 0
+    extra_cost = slots.reduce(0) do |sum, slot|
+      category_cost = child.external? ? sum + slot.ext_modifier : sum + slot.int_modifier
+      grade_cost = child.kindy ? sum + slot.kindy_modifier : sum + slot.ele_modifier
+      extra_cost_count += 1 if category_cost.positive? || grade_cost.positive?
+      category_cost + grade_cost
     end
 
     course_cost += extra_cost + snack_cost
@@ -171,7 +167,7 @@ class Invoice < ApplicationRecord
         <div class='d-flex flex-column align-items-start gap-1'>
         <p>#{yenify(course_cost)} (#{num_regs}回)</p>"
       )
-      @breakdown << "<p>追加料金 x #{extra_cost_slots.size}: #{yenify(extra_cost)}</p>" if extra_cost_slots.size.positive?
+      @breakdown << "<p>追加料金 x #{extra_cost_count}: #{yenify(extra_cost)}</p>" if extra_cost_count.positive?
       @breakdown << "<p>午後コースおやつ代 x #{snack_count}: #{yenify(snack_cost)}</p>" if snack_count.positive?
       @breakdown << '</div>'
     end

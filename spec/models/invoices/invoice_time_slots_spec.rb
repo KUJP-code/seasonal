@@ -145,8 +145,8 @@ RSpec.describe Invoice do
 
   context 'when calculating snack cost' do
     it 'applies 165yen snack cost for each slot where snack boolean is true' do
-      snack_slot = build(:time_slot, snack: true)
-      no_snack_slot = build(:time_slot, snack: false)
+      snack_slot = create(:time_slot, snack: true)
+      no_snack_slot = create(:time_slot, snack: false)
       invoice = build(
         :invoice,
         event: event,
@@ -161,7 +161,7 @@ RSpec.describe Invoice do
   context 'when calculating int/ext kindy/ele modifiers' do
     it 'applies internal modifier if kid is internal' do
       child = build(:child, category: :internal)
-      slot = build(:time_slot, int_modifier: 10)
+      slot = create(:time_slot, int_modifier: 10)
       invoice = build(
         :invoice,
         event: event,
@@ -174,7 +174,7 @@ RSpec.describe Invoice do
 
     it 'applies external modifier if kid is external' do
       child = build(:child, category: :external)
-      slot = build(:time_slot, ext_modifier: 10)
+      slot = create(:time_slot, ext_modifier: 10)
       invoice = build(
         :invoice,
         event: event,
@@ -186,10 +186,9 @@ RSpec.describe Invoice do
       expect(invoice.total_cost).to eq(1112)
     end
 
-    it 'applies kindy modifier if kid is kindy',
-       skip: 'kindy modifier not yet implemented' do
-      child = build(:child, kindy: true)
-      slot = build(:time_slot, kindy_modifier: 10)
+    it 'applies kindy modifier if kid is kindy' do
+      child = build(:child, kindy: true, category: :internal)
+      slot = create(:time_slot, kindy_modifier: 10)
       invoice = build(
         :invoice,
         event: event,
@@ -200,10 +199,9 @@ RSpec.describe Invoice do
       expect(invoice.total_cost).to eq(11)
     end
 
-    it 'applies ele modifier if kid is elementary',
-       skip: 'ele modifier not yet implemented' do
-      child = build(:child, kindy: false)
-      slot = build(:time_slot, ele_modifier: 10)
+    it 'applies ele modifier if kid is elementary' do
+      child = build(:child, kindy: false, category: :internal)
+      slot = create(:time_slot, ele_modifier: 10)
       invoice = build(
         :invoice,
         event: event,
@@ -212,6 +210,20 @@ RSpec.describe Invoice do
       )
       invoice.calc_cost
       expect(invoice.total_cost).to eq(11)
+    end
+
+    it 'applies both kindy/ele and int/ext modifiers if both apply' do
+      child = build(:child, kindy: true, category: :external)
+      slot = create(:time_slot, kindy_modifier: 10, ext_modifier: 10)
+      invoice = build(
+        :invoice,
+        event: event,
+        child: child,
+        slot_regs: [build(:slot_reg, registerable: slot)]
+      )
+      invoice.calc_cost
+      # plus 1100 because 1st time external, and 2 cos external PL
+      expect(invoice.total_cost).to eq(1122)
     end
   end
 end

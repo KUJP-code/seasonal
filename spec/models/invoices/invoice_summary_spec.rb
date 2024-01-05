@@ -100,5 +100,18 @@ RSpec.describe Invoice do
       invoice.calc_cost
       expect(invoice.summary).to include('追加料金 x 1: 100円')
     end
+
+    it 'displays kindy/ele modifiers' do
+      ele_modifier_slot = create(:time_slot, ele_modifier: 100)
+      child.grade = '小１'
+      invoice = build_stubbed(
+        :invoice,
+        event: event,
+        child: child,
+        slot_regs: [build(:slot_reg, registerable: ele_modifier_slot)]
+      )
+      invoice.calc_cost
+      expect(invoice.summary).to include('小学生: 100円')
+    end
   end
 end
