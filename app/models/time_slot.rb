@@ -200,7 +200,7 @@ class TimeSlot < ApplicationRecord
     {
       name: '夕食',
       category: :meal,
-      cost: 660
+      cost: 770
     },
     {
       name: '~19:00（1コマ）',
@@ -269,7 +269,7 @@ class TimeSlot < ApplicationRecord
     {
       name: '昼食',
       category: :meal,
-      cost: 660
+      cost: 770
     },
     {
       name: '9:30~（1コマ）',

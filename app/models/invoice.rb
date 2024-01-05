@@ -646,7 +646,7 @@ class Invoice < ApplicationRecord
   end
 
   def repeater?
-    child.external? && child.first_seasonal == false && slot_regs.size - @ignore_slots.size > 9
+    child.external? && child.first_seasonal == false && slot_regs.size - @ignore_slots.size > 4
   end
 
   def repeater_discount
