@@ -141,12 +141,12 @@ RSpec.describe Invoice do
         :invoice,
         event: event,
         child: child,
-        slot_regs: build_list(:slot_reg, 10, child: child)
+        slot_regs: build_list(:slot_reg, 5, child: child)
       )
       invoice
     end
 
-    it 'applies if external kid not attending first seasonal and >= 10 activity regs' do
+    it 'applies if external kid not attending first seasonal and >= 5 activity regs' do
       valid_repeater_invoice.calc_cost
       repeater_adj = find_repeater_discount(valid_repeater_invoice)
       expect(repeater_adj).to be_present
@@ -166,8 +166,8 @@ RSpec.describe Invoice do
       expect(repeater_adj).to be_nil
     end
 
-    it 'does not apply if < 10 activity regs' do
-      valid_repeater_invoice.slot_regs = build_list(:slot_reg, 9, child: valid_repeater_invoice.child)
+    it 'does not apply if < 5 activity regs' do
+      valid_repeater_invoice.slot_regs = build_list(:slot_reg, 4, child: valid_repeater_invoice.child)
       valid_repeater_invoice.calc_cost
       repeater_adj = find_repeater_discount(valid_repeater_invoice)
       expect(repeater_adj).to be_nil

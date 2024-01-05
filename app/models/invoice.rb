@@ -2,7 +2,6 @@
 
 require 'prawn/measurement_extensions'
 
-# Handles data for customer Invoices
 class Invoice < ApplicationRecord
   before_save :update_regs_child, :calc_cost
 
@@ -105,9 +104,7 @@ class Invoice < ApplicationRecord
     @breakdown << "<p>- #{course}回コース: #{yenify(cost)}</p>" unless cost.nil? || @breakdown.nil?
     return cost + best_price(num_regs - course, courses) unless num_regs < 5
 
-    return spot_use(num_regs, courses) unless child.member? && niche_case?
-
-    pointless_price(num_regs, courses)
+    spot_use(num_regs, courses)
   end
 
   def blank_or_dup(coupon)
@@ -319,16 +316,6 @@ class Invoice < ApplicationRecord
 
     # They only need one if registered for an outdoor activity now
     slot_regs.any? { |reg| reg.registerable.category == 'outdoor' }
-  end
-
-  # Decides if we need to apply the dumb 200 円 increase
-  def niche_case?
-    slots = if @ignore_slots
-              slot_regs.size - @ignore_slots.size
-            else
-              slot_regs.size
-            end
-    slots < 5 && child.kindy && full_days.positive?
   end
 
   def non_member_prices
@@ -609,32 +596,6 @@ class Invoice < ApplicationRecord
         end
       end
     end
-  end
-
-  # Calculates how many times we need to apply the dumb 200円 increase
-  def pointless_price(num_regs, courses)
-    days = full_days
-    extension_cost = days * (courses['1'] + 200)
-    @breakdown << "<p>スポット1回(13:30~18:30) x #{days}: #{yenify(extension_cost)}</p>\n"
-    spot_cost = spot_use(num_regs - days, courses)
-    extension_cost + spot_cost
-  end
-
-  def full_days
-    # Can't use a DB query because TimeSlots aren't associated on newly built regs
-    slots = slot_regs.map(&:registerable)
-    slot_ids = slot_regs.map(&:registerable_id)
-    full_day_count = slots.count { |slot| registered_for_morning?(slot, slot_ids) }
-    extend_opt_count = slots.count { |slot| middle_extension?(slot) }
-    full_day_count - extend_opt_count
-  end
-
-  def registered_for_morning?(slot, slot_ids)
-    slot.morning_slot_id.present? && slot_ids.include?(slot.morning_slot_id)
-  end
-
-  def middle_extension?(slot)
-    slot.special? && slot.morning && slot.options.pluck(:category).include?('extension')
   end
 
   def spot_use(num_regs, courses)

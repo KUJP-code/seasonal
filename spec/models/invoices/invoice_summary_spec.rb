@@ -89,20 +89,6 @@ RSpec.describe Invoice do
   end
 
   context 'when niche cases apply' do
-    it 'does displays pointless price' do
-      morning_slot = create(:time_slot, morning: true)
-      afternoon_slot = create(:time_slot, morning: false, morning_slot_id: morning_slot.id)
-      invoice = build_stubbed(
-        :invoice,
-        event: event,
-        child: child,
-        slot_regs: [build(:slot_reg, registerable: morning_slot),
-                    build(:slot_reg, registerable: afternoon_slot)]
-      )
-      invoice.calc_cost
-      expect(invoice.summary).to include('スポット1回(13:30~18:30) x 1: 201円')
-    end
-
     it 'displays extra costs' do
       extra_cost_slot = create(:time_slot, int_modifier: 100)
       invoice = build_stubbed(
