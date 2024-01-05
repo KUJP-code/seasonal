@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_26_062143) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_05_065205) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -232,10 +233,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_26_062143) do
   create_table "setsumeikais", force: :cascade do |t|
     t.datetime "start"
     t.integer "attendance_limit"
-    t.integer "inquiries_count", default: 0
     t.bigint "school_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "inquiries_count", default: 0
     t.date "release_date"
     t.datetime "close_at"
     t.index ["school_id"], name: "index_setsumeikais_on_school_id"
@@ -277,6 +278,9 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_26_062143) do
     t.integer "ext_modifier", default: 0
     t.boolean "snack"
     t.integer "registrations_count", default: 0
+    t.datetime "close_at", default: "2024-01-05 06:54:41"
+    t.integer "ele_modifier", default: 0
+    t.integer "kindy_modifier", default: 0
     t.index ["event_id"], name: "index_time_slots_on_event_id"
     t.index ["morning"], name: "index_time_slots_on_morning"
     t.index ["morning_slot_id"], name: "index_time_slots_on_morning_slot_id"
