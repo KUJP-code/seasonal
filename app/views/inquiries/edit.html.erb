@@ -3,11 +3,22 @@
         <%= link_to t('.setsumeikais'),
                 setsumeikais_path,
                 class: 'btn btn-primary' %>
-        
+
         <%= link_to t('.inquiries'),
                 inquiries_path,
                 class: 'btn btn-primary' %>
     </div>
 
     <%= render 'inquiries/form' %>
+
+    <div class="card w-100">
+      <%= link_to t('.delete'),
+                  inquiry_path(@inquiry),
+                  data: {
+                    turbo_method: :delete,
+                    turbo_confirm: t('.delete_confirm')
+                  },
+                  class: 'btn btn-danger' %>
+
+    </div>
 </main>

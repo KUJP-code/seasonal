@@ -1,5 +1,10 @@
 ja:
   inquiries:
+    edit:
+      delete: "問い合を削除"
+      delete_confirm: "問い合を削除してもよろしいですか?"
+      inquiries: "問い合わせリスト"
+      setsumeikais: "説明会リスト"
     form:
       child_birthday: "生年月日"
       category: "カテゴリー"

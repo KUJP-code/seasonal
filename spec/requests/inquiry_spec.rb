@@ -34,6 +34,12 @@ RSpec.shared_examples 'staff for Inquiry request' do
         params: { inquiry: attributes_for(:inquiry, parent_name: 'updated') }
     expect(inquiry.reload.parent_name).to eq('updated')
   end
+
+  it 'allows access to destroy inquiry' do
+    inquiry
+    expect { delete "/inquiries/#{inquiry.id}" }
+      .to change(described_class, :count).by(-1)
+  end
 end
 
 RSpec.shared_examples 'unauthorized user for Inquiry request' do
@@ -62,6 +68,12 @@ RSpec.shared_examples 'unauthorized user for Inquiry request' do
   it 'does not allow inquiry updates' do
     put "/inquiries/#{inquiry.id}", params: { inquiry: attributes_for(:inquiry, parent_name: 'updated') }
     expect(inquiry.reload.parent_name).not_to eq('updated')
+  end
+
+  it 'is redirected from destroy because not authorized' do
+    inquiry
+    expect { delete "/inquiries/#{inquiry.id}" }
+      .not_to change(described_class, :count)
   end
 end
 

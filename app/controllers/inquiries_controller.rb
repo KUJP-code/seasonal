@@ -51,6 +51,13 @@ class InquiriesController < ApplicationController
     end
   end
 
+  def destroy
+    @inquiry = authorize Inquiry.find(params[:id])
+    @inquiry.destroy
+    redirect_to inquiries_path,
+                notice: t('success', model: '問い合わせ', action: '削除')
+  end
+
   private
 
   def inquiry_params

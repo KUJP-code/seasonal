@@ -20,7 +20,7 @@ Rails.application.routes.draw do
       resources :csvs, only: %i[index]
       resources :events, except: %i[destroy]
       resources :invoices, except: %i[edit]
-      resources :inquiries, except: %i[destroy show]
+      resources :inquiries, except: %i[show]
       resources :price_lists, except: %i[destroy show]
       resources :schools, except: %i[destroy index]
       resources :setsumeikais
