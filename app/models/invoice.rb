@@ -153,10 +153,10 @@ class Invoice < ApplicationRecord
 
     extra_cost_count = 0
     extra_cost = slots.reduce(0) do |sum, slot|
-      category_cost = child.external? ? sum + slot.ext_modifier : sum + slot.int_modifier
-      grade_cost = child.kindy ? sum + slot.kindy_modifier : sum + slot.ele_modifier
+      category_cost = child.external? ? slot.ext_modifier : slot.int_modifier
+      grade_cost = child.kindy ? slot.kindy_modifier : slot.ele_modifier
       extra_cost_count += 1 if category_cost.positive? || grade_cost.positive?
-      category_cost + grade_cost
+      sum + category_cost + grade_cost
     end
 
     course_cost += extra_cost + snack_cost

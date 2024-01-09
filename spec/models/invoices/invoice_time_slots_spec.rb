@@ -225,5 +225,21 @@ RSpec.describe Invoice do
       # plus 1100 because 1st time external, and 2 cos external PL
       expect(invoice.total_cost).to eq(1122)
     end
+
+    it 'does not apply modifiers multiple times if modified and non-modified slots mixed' do
+      child = build(:child, kindy: true, category: :external)
+      modifier_slot = create(:time_slot, kindy_modifier: 10)
+      non_modifier_slot = create(:time_slot)
+      invoice = build(
+        :invoice,
+        event: event,
+        child: child,
+        slot_regs: [build(:slot_reg, registerable: modifier_slot),
+                    build(:slot_reg, registerable: non_modifier_slot)]
+      )
+      invoice.calc_cost
+      # plus 1100 because 1st time external
+      expect(invoice.total_cost).to eq(1114)
+    end
   end
 end
