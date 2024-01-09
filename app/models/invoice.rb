@@ -603,7 +603,12 @@ class Invoice < ApplicationRecord
   end
 
   def repeater?
-    child.external? && child.first_seasonal == false && slot_regs.size - @ignore_slots.size > 4
+    # FIXME: Temp exception for 2023 repeater discount till all confirmed
+    if event.name == 'Kids UP ウインタースクール 2023'
+      child.external? && child.first_seasonal == false && slot_regs.size - @ignore_slots.size > 9
+    else
+      child.external? && child.first_seasonal == false && slot_regs.size - @ignore_slots.size > 4
+    end
   end
 
   def repeater_discount
