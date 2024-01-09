@@ -2,7 +2,7 @@
     <%= render partial: 'events/staff_event', collection: @events, locals: { child: nil }, as: :event %>
 
     <% if @events || @event %>
-        <%= render 'time_slots/event_form' %>
+      <%= render 'time_slots/event_form', event: @event, events: @events %>
     <% else %>
         <%= render 'time_slots/form' %>
     <% end %>

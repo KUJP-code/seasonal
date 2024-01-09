@@ -1,0 +1,36 @@
+-# locals: (event: nil, events: nil)
+
+- form_event = @event || @events.first
+
+= form_with model: form_event,
+            class: 'flex-row flex-wrap card justify-content-around gap-3',
+            data: { controller: 'fields' } do |f|
+  - if @events
+    = f.hidden_field :name, value: form_event.name
+  - else
+    = f.hidden_field :school_id
+
+  = f.fields_for :time_slots, form_event.time_slots.morning do |slot_f|
+    = render 'time_slots/event_slot_fields', f: slot_f
+
+  %template{ data: { 'fields-target' => 'template' } }
+    - if @events
+      = f.fields_for :time_slots, TimeSlot.new, child_index: 'CHILD' do |slot_f|
+        = render 'time_slots/event_slot_fields', f: slot_f
+    - else
+      = f.fields_for :time_slots,
+                     TimeSlot.new(event_id: form_event.id),
+                     child_index: 'CHILD' do |slot_f|
+        = render 'time_slots/event_slot_fields', f: slot_f
+
+  .d-none.w-100{ data: { 'fields-target' => 'target' } }
+
+  .d-flex.gap-3.align-items-center.justify-content-around.w-100
+    = button_tag 'Add Activity',
+                 type: 'button',
+                 data: { action: 'fields#add' },
+                 class: 'btn btn-info'
+    - if @events
+      = f.submit 'Create Activities for All Events', class: 'btn btn-primary'
+    - else
+      = f.submit 'Update Activities', class: 'btn btn-primary'
