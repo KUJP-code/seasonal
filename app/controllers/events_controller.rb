@@ -123,8 +123,8 @@ class EventsController < ApplicationController
       :name, :start_date, :image_id, :end_date, :school_id,
       :member_prices_id, :goal, :non_member_prices_id, :avif_id,
       time_slots_attributes:
-        %i[id name start_time end_time category event_id morning snack avif_id
-           morning_slot_id image_id int_modifier ext_modifier _destroy],
+        %i[id name start_time end_time category event_id morning snack avif_id close_at
+           morning_slot_id image_id int_modifier ext_modifier kindy_modifier ele_modifier _destroy],
       options_attributes:
         %i[id name cost category modifier optionable_type optionable_id
            _destroy]

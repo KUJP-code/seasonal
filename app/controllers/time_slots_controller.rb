@@ -50,7 +50,7 @@ class TimeSlotsController < ApplicationController
     params.require(:time_slot).permit(
       :id, :name, :start_time, :end_time, :category, :apply_all, :ext_modifier,
       :avif_id, :closed, :_destroy, :morning, :event_id, :image_id,
-      :int_modifier, :snack,
+      :int_modifier, :snack, :close_at, :ele_modifier, :kindy_modifier,
       afternoon_slot_attributes:
       %i[id name image_id start_time end_time category snack
          closed _destroy morning event_id ext_modifier int_modifier],

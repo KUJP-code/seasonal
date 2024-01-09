@@ -38,6 +38,11 @@
       <%= f.label :end_time, 'End time', class: 'form-label' %>
     </div>
 
+    <div class="form-floating">
+      <%= f.datetime_field :close_at, class: 'form-control', placeholder: 'Close At', required: true %>
+      <%= f.label :close_at, 'Close At', class: 'form-label' %>
+    </div>
+
     <div>
       <%= f.label :category, 'Category', class: 'form-label' %>
       <%= f.select :category, TimeSlot.categories.map { |k, _v| [k.capitalize, k] } , {}, {class: 'form-select'} %>
@@ -52,6 +57,18 @@
     <div class="form-floating input-group">
       <%= f.number_field :ext_modifier, class: 'form-control', placeholder: 0 %>
       <%= f.label :ext_modifier, 'External Extra Charge', class: 'form-label' %>
+      <span class="input-group-text">円</span>
+    </div>
+
+    <div class="form-floating input-group">
+      <%= f.number_field :kindy_modifier, class: 'form-control', placeholder: 0 %>
+      <%= f.label :kindy_modifier, 'Kindy Extra Charge', class: 'form-label' %>
+      <span class="input-group-text">円</span>
+    </div>
+
+    <div class="form-floating input-group">
+      <%= f.number_field :ele_modifier, class: 'form-control', placeholder: 0 %>
+      <%= f.label :ele_modifier, 'Elementary Extra Charge', class: 'form-label' %>
       <span class="input-group-text">円</span>
     </div>
 

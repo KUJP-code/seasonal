@@ -1,0 +1,80 @@
+-# locals: (f:)
+
+.fields_wrapper.d-grid.gap-3{ data: { 'new-record' => f.object.new_record?.to_s } }
+  = f.hidden_field :id
+  = f.hidden_field :event_id
+  = f.hidden_field :morning, value: true
+
+  %div
+    = f.label :image_id, 'Image', class: 'form-label'
+    = f.select :image_id, @images, {}, { class: 'form-select' }
+
+  %div
+    = f.label :avif_id, 'Avif', class: 'form-label'
+    = f.select :avif_id, @images, {}, { class: 'form-select' }
+
+  .form-floating
+    = f.text_field :name,
+                   class: 'form-control',
+                   placeholder: 'Name',
+                   required: true
+    = f.label :name, 'Name', class: 'form-label'
+
+  .form-floating
+    = f.datetime_field :start_time,
+                       class: 'form-control',
+                       placeholder: 'Start Time',
+                       required: true
+    = f.label :start_time, 'Start Time', class: 'form-label'
+
+  .form-floating
+    = f.datetime_field :end_time,
+                       class: 'form-control',
+                       placeholder: 'End Time',
+                       required: true
+    = f.label :end_time, 'End Time', class: 'form-label'
+
+  .form-floating
+    = f.datetime_field :close_at,
+                       class: 'form-control',
+                       placeholder: 'Close At',
+                       required: true
+    = f.label :close_at, 'Close At', class: 'form-label'
+
+  %div
+    = f.label :category, 'Category', class: 'form-label'
+    = f.select :category,
+               TimeSlot.categories.map { |k, _v| [k.capitalize, k] },
+               {},
+               { class: 'form-select' }
+
+  .form-floating.input-group
+    = f.number_field :int_modifier, class: 'form-control', placeholder: 0
+    = f.label :int_modifier, 'Internal Extra Charge', class: 'form-label'
+    %span.input-group-text= '円'
+
+  .form-floating.input-group
+    = f.number_field :ext_modifier, class: 'form-control', placeholder: 0
+    = f.label :ext_modifier, 'External Extra Charge', class: 'form-label'
+    %span.input-group-text= '円'
+
+  .form-floating.input-group
+    = f.number_field :kindy_modifier, class: 'form-control', placeholder: 0
+    = f.label :kindy_modifier, 'Kindy Extra Charge', class: 'form-label'
+    %span.input-group-text= '円'
+
+  .form-floating.input-group
+    = f.number_field :ele_modifier, class: 'form-control', placeholder: 0
+    = f.label :ele_modifier, 'Elementary Extra Charge', class: 'form-label'
+    %span.input-group-text= '円'
+
+  - if f.object.new_record?
+    = button_tag 'Remove Activity',
+                 data: { action: 'fields#remove' },
+                 class: 'btn btn-danger'
+  - else
+    .form-check
+      = f.check_box :_destroy, class: 'form-check-input'
+      = f.label :_destroy, 'Remove Activity', class: 'form-check-label'
+
+  %hr.text-primary.opacity-75
