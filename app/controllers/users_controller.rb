@@ -153,6 +153,7 @@ class UsersController < ApplicationController
   def merge_info(from, to)
     to.update(parent_id: from.parent_id, first_seasonal: from.first_seasonal)
     to.update(school_id: from.school_id) if to.school_id.nil?
+    to.survey_responses << from.survey_responses
     copy_invoices(from, to)
     from.update(parent_id: nil)
   end
