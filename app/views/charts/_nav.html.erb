@@ -24,24 +24,26 @@
         </details>
     <% end %>
 
-    <details>
-        <summary class="card p-2 bg-primary text-white fw-semibold">
-            <h2>イベント: <%= @nav[:event] %></h2>
-        </summary>
-        <div class="d-flex flex-column gap-1 my-1">
-            <% @nav[:events].each do |e| %>
-                <% if @nav[:school].id.zero? %>
-                    <%= link_to e,
-                                charts_path(category: @nav[:category], event: e),
-                                class: "card p-1 #{' bg-primary text-white fw-semibold' if e == @nav[:event]}" %>
-                <% else %>
-                    <%= link_to e,
-                                chart_path(id: @nav[:school].id, category: @nav[:category], event: e),
-                                class: "card p-1 #{' bg-primary text-white fw-semibold' if e == @nav[:event]}" %>
-                <% end %>
-            <% end %>
-        </div>
-    </details>
+    <% unless @nav[:category] == 'setsumeikais' %>
+      <details>
+          <summary class="card p-2 bg-primary text-white fw-semibold">
+              <h2>イベント: <%= @nav[:event] %></h2>
+          </summary>
+          <div class="d-flex flex-column gap-1 my-1">
+              <% @nav[:events].each do |e| %>
+                  <% if @nav[:school].id.zero? %>
+                      <%= link_to e,
+                                  charts_path(category: @nav[:category], event: e),
+                                  class: "card p-1 #{' bg-primary text-white fw-semibold' if e == @nav[:event]}" %>
+                  <% else %>
+                      <%= link_to e,
+                                  chart_path(id: @nav[:school].id, category: @nav[:category], event: e),
+                                  class: "card p-1 #{' bg-primary text-white fw-semibold' if e == @nav[:event]}" %>
+                  <% end %>
+              <% end %>
+          </div>
+      </details>
+    <% end %>
 
     <details>
         <summary class="card p-2 bg-primary text-white fw-semibold">

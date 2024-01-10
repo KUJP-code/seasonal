@@ -26,6 +26,14 @@ en:
     edits:
       customer_edits_by_day: "Customer Edits by Day"
       staff_edits_by_day: "Staff Edits by Day"
+    nav:
+      activities: "Activities"
+      bookings: "Bookings"
+      children: "Children"
+      coupons: "Coupons"
+      edits: "Edits"
+      options: "Options"
+      setsumeikais: "Setsumeikais"
     options:
       arrival_option_popularity: "Arrival Option Popularity"
       category_popularity: "Category Popularity"
