@@ -228,7 +228,12 @@ class ChartsController < ApplicationController
   end
 
   def setsumeikais_data
-    @setsumeikais = policy_scope(Setsumeikai)
-    @inquiries = policy_scope(Inquiry)
+    if @nav[:school].id.zero?
+      @setsumeikais = policy_scope(Setsumeikai)
+      @inquiries = policy_scope(Inquiry)
+    else
+      @setsumeikais = policy_scope(Setsumeikai).where(school_id: @nav[:school].id)
+      @inquiries = policy_scope(Inquiry).where(school_id: @nav[:school].id)
+    end
   end
 end

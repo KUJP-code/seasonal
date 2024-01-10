@@ -46,7 +46,7 @@
                title: t('.monthly_inquiries'),
                height: '30vh' %>
 
-<% if current_user.admin? || current_user.statistician? || current_user.area_manager? %>
+<% if @nav[:school].id.zero? && !current_user.school_manager? %>
   <%= column_chart @setsumeikais.group(:school_id).count
                     .to_h { |k, v| [@nav[:schools].find{ |s| s.id == k }.name, v] },
                    title: t('.setsumeikais_by_school'),
