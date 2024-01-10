@@ -1,0 +1,7 @@
+-# locals: (price_list:)
+
+- if price_list.events.any?
+  %h4 Used by:
+  %p= price_list.events.pluck(:name).uniq.to_sentence
+- else
+  %p.text-bg-warning.p-1.rounded Unused

@@ -1,0 +1,18 @@
+-# locals: (price_list:)
+
+.card
+  %h2= link_to price_list.name, price_list_path(price_list)
+
+  %table.table
+    %thead
+      %tr.table-primary
+        %th Course
+        %th Price
+    - price_list.courses.each do |k, v|
+      %tr
+        %td= k
+        %td= number_to_currency(v, unit: '円', precision: 0, locale: :ja)
+
+  = link_to 'Edit', edit_price_list_path(price_list), class: 'btn btn-primary'
+
+  = render 'price_lists/used_by', price_list: price_list

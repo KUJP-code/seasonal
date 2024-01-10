@@ -6,7 +6,7 @@ class PriceListsController < ApplicationController
 
   def index
     authorize PriceList
-    @price_lists = policy_scope PriceList
+    @price_lists = policy_scope(PriceList).order(updated_at: :desc)
   end
 
   def new
