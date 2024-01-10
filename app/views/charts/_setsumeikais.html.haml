@@ -1,6 +1,7 @@
 :ruby
   total_setsu = @setsumeikais.size
   total_inquiries = @inquiries.size
+  setsu_inq_count = @setsumeikais.sum(:inquiries_count)
   setsu_created_per_month = @setsumeikais.group_by_month(:created_at).count
   months_with_created_setsu = setsu_created_per_month.keys.size.to_f
   setsu_held_per_month = @setsumeikais.group_by_month(:start).count
@@ -17,14 +18,14 @@
            data: (total_setsu / months_with_setsu).round(2),
            text: t('.avg_monthly_setsumeikais_held')
   = render 'charts/highlight_box',
+           data: (setsu_inq_count / total_setsu.to_f).round(2),
+           text: t('.inquiries_per_setsumeikai')
+  = render 'charts/highlight_box',
            data: total_inquiries,
            text: t('.total_inquiries')
   = render 'charts/highlight_box',
            data: (total_inquiries / months_with_setsu).round(2),
            text: t('.avg_monthly_inquiries')
-  = render 'charts/highlight_box',
-           data: (total_inquiries / total_setsu.to_f).round(2),
-           text: t('.inquiries_per_setsumeikai')
 
 = line_chart setsu_created_per_month,
              title: t('.monthly_created_setsumeikais'),
@@ -37,68 +38,7 @@
              height: '45vh'
 
 - if @nav[:school].id.zero? && !current_user.school_manager?
-  :ruby
-    schools = @nav[:schools]
-    setsu_by_school = @setsumeikais
-                      .group(:school_id).count
-                      .transform_keys { |k| school_name(schools, k) }
-    setsu_inquiries_by_school = @setsumeikais
-                                .where('inquiries_count > 0')
-                                .group(:school_id).sum(:inquiries_count)
-                                .transform_keys { |k| school_name(schools, k) }
-    gen_inquiries_by_school = @inquiries
-                              .where(category: 'I')
-                              .group(:school_id).count
-                              .transform_keys { |k| school_name(schools, k) }
-    monthly_created_by_school = @setsumeikais
-                                .group(:school_id)
-                                .group_by_month(:created_at).count
-                                .transform_keys do |k|
-                                  [school_name(schools, k.first), k.last]
-                                end
-    mnthly_held_by_school = @setsumeikais
-                            .group(:school_id)
-                            .group_by_month(:start).count
-                            .transform_keys do |k|
-                              [school_name(schools, k.first), k.last]
-                            end
-    monthly_setsu_inquiries_school = @setsumeikais
-                                     .where('inquiries_count > 0')
-                                     .group(:school_id)
-                                     .group_by_month(:created_at)
-                                     .sum(:inquiries_count)
-                                     .transform_keys do |k|
-                                       [school_name(schools, k.first), k.last]
-                                     end
-    monthly_inquiries_by_school = @inquiries
-                                  .where(category: 'I')
-                                  .group(:school_id)
-                                  .group_by_month(:created_at).count
-                                  .transform_keys do |k|
-                                    [school_name(schools, k.first), k.last]
-                                  end
-
-  = column_chart setsu_by_school,
-                 title: t('.setsumeikais_by_school'),
-                 height: '45vh'
-  = column_chart setsu_inquiries_by_school,
-                 title: t('.setsu_inquiries_by_school'),
-                 height: '45vh'
-  = column_chart gen_inquiries_by_school,
-                 title: t('.gen_inquiries_by_school'),
-                 height: '45vh'
-  = line_chart monthly_created_by_school,
-               title: t('.monthly_created_setsumeikais_by_school'),
-               height: '45vh'
-  = line_chart mnthly_held_by_school,
-               title: t('.monthly_held_setsumeikais_by_school'),
-               height: '45vh'
-  = line_chart monthly_setsu_inquiries_school,
-               title: t('.monthly_setsu_inquiries_by_school'),
-               height: '45vh'
-  = line_chart monthly_inquiries_by_school,
-               title: t('.monthly_gen_inquiries_by_school'),
-               height: '45vh'
+  = render 'charts/setsu_all_schools'
 
 .d-flex.w-100
   = pie_chart @inquiries.group(:referrer).count.except(nil),
