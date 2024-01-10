@@ -3,6 +3,7 @@
 # Provides data for the charts pages
 class ChartsController < ApplicationController
   CATEGORIES = %w[activities bookings children coupons edits options setsumeikais].freeze
+  after_action :verify_authorized
 
   def index
     authorize(:chart)
@@ -11,6 +12,7 @@ class ChartsController < ApplicationController
   end
 
   def show
+    authorize(:chart)
     @nav = nav_data('show')
     send("#{@nav[:category]}_data")
   end
