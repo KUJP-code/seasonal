@@ -28,7 +28,7 @@ class InquiryPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       case user.role
-      when 'admin'
+      when 'admin', 'statistician'
         scope.all
       when 'area_manager', 'school_manager'
         scope.where(id: user.all_inquiries.ids)

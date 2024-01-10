@@ -109,7 +109,27 @@ RSpec.describe School do
   context 'when statistician' do
     let(:user) { create(:statistician) }
 
-    it_behaves_like 'unauthorized user for School request'
+    it 'allows access to the show view' do
+      get "/schools/#{school.id}"
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'does not allow access to the edit view' do
+      get "/schools/#{school.id}/edit"
+      expect(flash[:alert]).to eq(I18n.t('not_authorized'))
+    end
+
+    it 'does not allow access to update the school' do
+      school_params = attributes_for(:school, name: 'New Name')
+      expect { patch "/schools/#{school.id}", params: { school: school_params } }
+        .not_to change(school, :name)
+    end
+
+    it 'does not allow access to create a school' do
+      school_params = attributes_for(:school)
+      expect { post '/schools', params: { school: school_params } }
+        .not_to change(described_class, :count)
+    end
   end
 
   context 'when customer' do

@@ -98,7 +98,10 @@ RSpec.describe SchoolPolicy do
   context 'when statistician' do
     let(:user) { create(:statistician) }
 
-    it_behaves_like 'unauthorized user for SchoolPolicy'
+    it { is_expected.to authorize_action(:show) }
+    it { is_expected.not_to authorize_action(:create) }
+    it { is_expected.not_to authorize_action(:edit) }
+    it { is_expected.not_to authorize_action(:update) }
   end
 
   context 'when customer' do

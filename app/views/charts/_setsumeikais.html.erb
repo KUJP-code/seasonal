@@ -33,20 +33,20 @@
 </div>
 
 <div class="w-100 d-flex">
-  <%= line_chart @setsumeikais.group_by_month(:created_at).count, 
+  <%= line_chart @setsumeikais.group_by_month(:created_at).count,
     title: t('.monthly_setsumeikais'),
     height: '30vh' %>
 
-  <%= line_chart @setsumeikais.group_by_month(:created_at).sum(:inquiries_count), 
+  <%= line_chart @setsumeikais.group_by_month(:created_at).sum(:inquiries_count),
     title: t('.monthly_setsu_inquiries'),
     height: '30vh' %>
 </div>
 
-<%= line_chart @inquiries.group_by_month(:created_at).count, 
+<%= line_chart @inquiries.group_by_month(:created_at).count,
                title: t('.monthly_inquiries'),
                height: '30vh' %>
 
-<% if current_user.admin? %>
+<% if current_user.admin? || current_user.statistician? || current_user.area_manager? %>
   <%= column_chart @setsumeikais.group(:school_id).count
                     .to_h { |k, v| [@nav[:schools].find{ |s| s.id == k }.name, v] },
                    title: t('.setsumeikais_by_school'),
@@ -63,12 +63,12 @@
                      title: t('.gen_inquiries_by_school'),
                      height: '30vh' %>
   </div>
-  
+
   <%= line_chart @setsumeikais.group(:school_id).group_by_month(:created_at).sum(:inquiries_count)
                    .to_h { |k, v| [[@nav[:schools].find{ |s| s.id == k.first }.name, k.last], v] },
                  title: t('.monthly_setsumeikais_by_school'),
                  height: '30vh' %>
-               
+
   <div class='w-100 d-flex'>
     <%= line_chart @setsumeikais.group(:school_id).group_by_month(:created_at).count(:inquiries_count)
                    .to_h { |k, v| [[@nav[:schools].find{ |s| s.id == k.first }.name, k.last], v] },
@@ -82,6 +82,6 @@
   </div>
 <% end %>
 
-<%= pie_chart @inquiries.group(:referrer).count, 
+<%= pie_chart @inquiries.group(:referrer).count,
                title: t('.referrer'),
                height: '30vh' %>

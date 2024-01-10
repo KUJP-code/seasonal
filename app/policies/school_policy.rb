@@ -2,7 +2,7 @@
 
 class SchoolPolicy < ApplicationPolicy
   def show?
-    user.admin? || area_school? || sm_managed_school?
+    user.admin? || user.statistician? || area_school? || sm_managed_school?
   end
 
   def new?

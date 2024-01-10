@@ -142,9 +142,9 @@ RSpec.describe SetsumeikaiPolicy do
       expect(Pundit.policy_scope!(user, Setsumeikai)).to eq(school_setsumeikais)
     end
 
-    it 'resolves statistician to nothing' do
+    it 'resolves statistician to all setsumeikais' do
       user = create(:statistician)
-      expect(Pundit.policy_scope!(user, Setsumeikai)).to eq(Setsumeikai.none)
+      expect(Pundit.policy_scope!(user, Setsumeikai)).to eq(Setsumeikai.all)
     end
 
     it 'resolves customer to nothing' do

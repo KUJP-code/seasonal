@@ -28,7 +28,7 @@ class SetsumeikaiPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       case user.role
-      when 'admin'
+      when 'admin', 'statistician'
         scope.all
       when 'area_manager'
         scope.where(id: user.area_setsumeikais.ids)

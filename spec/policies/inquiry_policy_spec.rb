@@ -109,9 +109,9 @@ describe InquiryPolicy do
       expect(Pundit.policy_scope!(user, Inquiry.all)).to eq(school_inquiries)
     end
 
-    it 'resolves statistician to nothing' do
+    it 'resolves statistician to all inquiries' do
       user = create(:statistician)
-      expect(Pundit.policy_scope!(user, Inquiry.all)).to eq(Inquiry.none)
+      expect(Pundit.policy_scope!(user, Inquiry)).to eq(Inquiry.all)
     end
 
     it 'resolves customer to nothing' do
