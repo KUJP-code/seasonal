@@ -10,7 +10,7 @@ class InquiriesController < ApplicationController
     @schools = policy_scope(School).real.order(:id)
     school_given = params[:school] && params[:school] != '0'
     @school = school_given ? School.find(params[:school]) : default_school
-    @inquiries = index_inquries
+    @inquiries = index_inquiries
   end
 
   def new
@@ -75,7 +75,7 @@ class InquiriesController < ApplicationController
                     notice: t('success', model: '問い合わせ', action: '作成')
       else
         redirect_to inquiries_path(school: @inquiry.school_id),
-                    alert: t('success', model: '問い合わせ', action: '作成')
+                    notice: t('success', model: '問い合わせ', action: '作成')
       end
     else
       @schools = policy_scope(School)
@@ -102,9 +102,10 @@ class InquiriesController < ApplicationController
     end
   end
 
-  def index_inquries
+  def index_inquiries
     policy_scope(@school.id.zero? ? Inquiry : @school.inquiries)
       .includes(:setsumeikai)
+      .order(created_at: :desc)
       .page(params[:page])
   end
 

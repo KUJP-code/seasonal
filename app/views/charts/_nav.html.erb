@@ -4,7 +4,7 @@
     <% if all_schools || current_user.area_manager? %>
         <details class="flex-grow-1">
             <summary class="card p-2 bg-primary text-white fw-semibold">
-                <h2>スクール: <%= @nav[:school].name %></h2>
+              <h2>スクール: <%= t("schools.#{@nav[:school].name}") %></h2>
             </summary>
             <div class="d-flex flex-wrap justify-content-between gap-2 my-2">
                 <%= link_to (all_schools ? "All Schools" : "Area Schools"),
