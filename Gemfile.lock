@@ -273,7 +273,7 @@ GEM
     psych (5.1.1.1)
       stringio
     public_suffix (5.0.1)
-    puma (6.4.0)
+    puma (6.4.2)
       nio4r (~> 2.0)
     pundit (2.3.1)
       activesupport (>= 3.0.0)
@@ -479,7 +479,7 @@ DEPENDENCIES
   pghero
   postgres-copy
   prawn
-  puma (~> 6.4)
+  puma (~> 6.4.2)
   pundit (= 2.3.1)
   pundit-matchers (~> 3.1)
   rack-cors
