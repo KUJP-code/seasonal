@@ -96,7 +96,7 @@ class InquiriesController < ApplicationController
 
   def default_school
     if current_user.school_manager?
-      @schools.first
+      current_user.managed_school
     else
       School.new(id: 0)
     end
