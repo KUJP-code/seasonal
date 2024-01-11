@@ -33,6 +33,7 @@ class Inquiry < ApplicationRecord
       tel: phone,
       email: email,
       body: requests || '',
+      birth: gas_birth,
       kinder_attend: kindy,
       primary_attend: ele_school,
       start_season: start_date,
@@ -50,9 +51,15 @@ class Inquiry < ApplicationRecord
   end
 
   def child_grade
-    return '' unless child_birthday
+    return '' if child_birthday.nil?
 
     YEAR_AGE_MAP[Time.zone.now.year - child_birthday.year] || ''
+  end
+
+  def gas_birth
+    return '' if child_birthday.nil?
+
+    child_birthday.strftime('%Y-%m-%d')
   end
 
   def to_gas_update
