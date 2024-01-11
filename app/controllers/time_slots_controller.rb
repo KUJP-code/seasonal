@@ -52,8 +52,8 @@ class TimeSlotsController < ApplicationController
       :avif_id, :closed, :_destroy, :morning, :event_id, :image_id,
       :int_modifier, :snack, :close_at, :ele_modifier, :kindy_modifier,
       afternoon_slot_attributes:
-      %i[id name image_id start_time end_time category snack
-         closed _destroy morning event_id ext_modifier int_modifier],
+      %i[id name image_id start_time end_time category snack ele_modifier close_at
+         closed _destroy morning event_id ext_modifier int_modifier kindy_modifier],
       options_attributes:
       %i[id _destroy name cost category modifier optionable_type optionable_id]
     )
