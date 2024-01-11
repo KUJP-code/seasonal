@@ -47,9 +47,9 @@
                       nil,
                       class: 'form-label'
 
-  - if @next_event
+  - @events&.each do |e|
     = render partial: 'events/child_event',
-             locals: { event: @next_event, child: @user.children.first }
+             locals: { event: e, child: @user.children.first }
 
   .card
     - unless @invoices.empty?

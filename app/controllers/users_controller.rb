@@ -128,7 +128,11 @@ class UsersController < ApplicationController
   def customer_data(user)
     @children = user.children.includes(:school)
     @invoices = user.real_invoices
-    @next_event = @children.first.next_event unless @children.empty?
+    return if @children.empty?
+
+    @events = @children.first
+                       .school.events
+                       .upcoming.reorder(start_date: :desc)
   end
 
   def delete_admin?

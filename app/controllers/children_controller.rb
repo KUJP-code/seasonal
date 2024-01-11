@@ -131,6 +131,7 @@ class ChildrenController < ApplicationController
     school_events = @child.school
                           .events.upcoming
                           .includes(:avif_attachment, :image_attachment)
+                          .reorder(start_date: :desc)
     school_events.map do |e|
       {
         event: e,
