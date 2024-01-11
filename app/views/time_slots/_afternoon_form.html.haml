@@ -1,0 +1,73 @@
+-# locals: (f:, slot: @slot)
+
+= f.fields_for :afternoon_slot, TimeSlot.new do |aft_f|
+  %button.btn.btn-info{ type: 'button',
+                        aria: { controls: 'arvo',
+                                expanded: 'false' },
+                        data: { bs: { target: '#arvo',
+                                      toggle: 'collapse' } } }
+    Create Afternoon Slot
+
+  .collapse#arvo
+    .d-grid.gap-3
+      = aft_f.hidden_field :event_id, value: slot.event_id
+      = aft_f.hidden_field :id
+      = aft_f.hidden_field :category, value: 'special'
+
+      %h3 Afternoon Slot
+
+      .form-floating
+        = aft_f.text_field :name,
+                           class: 'form-control',
+                           placeholder: 'Name'
+        = aft_f.label :name, 'Name', class: 'form-label'
+      .form-floating
+        = aft_f.datetime_field :start_time,
+                               class: 'form-control',
+                               required: true
+        = aft_f.label :start_time, 'Start Time', class: 'form-label'
+      .form-floating
+        = aft_f.datetime_field :end_time,
+                               class: 'form-control',
+                               required: true
+        = aft_f.label :end_time, 'End Time', class: 'form-label'
+      .form-floating
+        = aft_f.datetime_field :close_at,
+                               class: 'form-control',
+                               required: true
+        = aft_f.label :close_at, 'Close At', class: 'form-label'
+      .form-floating.input-group
+        = aft_f.number_field :int_modifier,
+                             class: 'form-control',
+                             placeholder: 0
+        = aft_f.label :int_modifier,
+                      'Internal Extra Charge',
+                      class: 'form-label'
+        %span.input-group-text 円
+      .form-floating.input-group
+        = aft_f.number_field :ext_modifier,
+                             class: 'form-control',
+                             placeholder: 0
+        = aft_f.label :ext_modifier,
+                      'External Extra Charge',
+                      class: 'form-label'
+        %span.input-group-text 円
+      .form-floating.input-group
+        = aft_f.number_field :kindy_modifier,
+                             class: 'form-control',
+                             placeholder: 0
+        = aft_f.label :kindy_modifier,
+                      'Kindy Extra Charge',
+                      class: 'form-label'
+        %span.input-group-text 円
+      .form-floating.input-group
+        = aft_f.number_field :ele_modifier,
+                             class: 'form-control',
+                             placeholder: 0
+        = aft_f.label :ele_modifier,
+                      'Elementary Extra Charge',
+                      class: 'form-label'
+        %span.input-group-text 円
+      .form-check
+        = aft_f.check_box :snack, class: 'form-check-input'
+        = aft_f.label :snack, 'Snack?', class: 'form-check-label'

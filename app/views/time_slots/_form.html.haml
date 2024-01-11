@@ -2,18 +2,10 @@
 
 - special_no_arvo = slot.special? && slot.morning && slot.afternoon_slot.nil?
 
-.event-sidebar.d-flex.flex-column.w-50.gap-3
-  %p.bg-warning.rounded.p-3.fw-semibold.text-center
-    Do not refresh this page!
-    Autofilled values will be lost.
-    Instead go back, then click the edit button again.
-
-  = render 'events/staff_event', event: @slot.event
-
 .d-flex.flex-column.align-items-stretch.gap-3
   = form_with model: slot,
               html: { class: 'card', data: { controller: 'fields' } } do |f|
-    = render 'shared/form_errors', resource: @slot
+    = render 'shared/form_errors', resource: slot
     .form-floating
       = f.text_field :name,
                      class: 'form-control',
@@ -22,10 +14,10 @@
       = f.label :name, t('.name'), class: 'form-label'
     %div
       = f.label :image_id, 'Image', class: 'form-label'
-      = f.select :image_id, @images, {}, { class: 'form-select' }
+      = f.select :image_id, images, {}, { class: 'form-select' }
     %div
       = f.label :avif_id, 'Avif', class: 'form-label'
-      = f.select :avif_id, @images, {}, { class: 'form-select' }
+      = f.select :avif_id, images, {}, { class: 'form-select' }
     .form-floating
       = f.datetime_field :start_time,
                          class: 'form-control',
@@ -80,105 +72,10 @@
 
     %hr.text-primary.opacity-75
 
-    %button.btn.btn-info{ type: 'button',
-                          aria: { controls: 'opts', expanded: 'false' },
-                          data: { bs: { target: '#opts',
-                                        toggle: 'collapse' } } }
-      Customise Options
-
-    .collapse#opts
-      %h3 Options
-
-      = f.fields_for :options, f.object.options do |opt_f|
-        = render 'options/opt_fields', f: opt_f
-
-      %template.d-none.w-100{ data: { 'fields-target' => 'template' } }
-        = f.fields_for :options,
-                       Option.new(optionable_id: slot.id),
-                       child_index: 'CHILD' do |opt_f|
-          = render 'options/opt_fields', f: opt_f
-
-      .d-none.w-100{ data: { 'fields-target' => 'target' } }
-
-      = button_tag 'Add Option',
-                   type: 'button',
-                   class: 'btn btn-info w-100',
-                   data: { action: 'fields#add' }
-
-    - if special_no_arvo
-      = f.fields_for :afternoon_slot, TimeSlot.new do |aft_f|
-        %button.btn.btn-info{ type: 'button',
-                              aria: { controls: 'arvo',
-                                      expanded: 'false' },
-                              data: { bs: { target: '#arvo',
-                                            toggle: 'collapse' } } }
-          Create Afternoon Slot
-
-        .collapse#arvo
-          .d-grid.gap-3
-            = aft_f.hidden_field :event_id, value: slot.event_id
-            = aft_f.hidden_field :id
-            = aft_f.hidden_field :category, value: 'special'
-
-            %h3 Afternoon Slot
-
-            .form-floating
-              = aft_f.text_field :name,
-                                 class: 'form-control',
-                                 placeholder: 'Name'
-              = aft_f.label :name, 'Name', class: 'form-label'
-            .form-floating
-              = aft_f.datetime_field :start_time,
-                                     class: 'form-control',
-                                     required: true
-              = aft_f.label :start_time, 'Start Time', class: 'form-label'
-            .form-floating
-              = aft_f.datetime_field :end_time,
-                                     class: 'form-control',
-                                     required: true
-              = aft_f.label :end_time, 'End Time', class: 'form-label'
-            .form-floating
-              = aft_f.datetime_field :close_at,
-                                     class: 'form-control',
-                                     required: true
-              = aft_f.label :close_at, 'Close At', class: 'form-label'
-            .form-floating.input-group
-              = aft_f.number_field :int_modifier,
-                                   class: 'form-control',
-                                   placeholder: 0
-              = aft_f.label :int_modifier,
-                            'Internal Extra Charge',
-                            class: 'form-label'
-              %span.input-group-text 円
-            .form-floating.input-group
-              = aft_f.number_field :ext_modifier,
-                                   class: 'form-control',
-                                   placeholder: 0
-              = aft_f.label :ext_modifier,
-                            'External Extra Charge',
-                            class: 'form-label'
-              %span.input-group-text 円
-            .form-floating.input-group
-              = aft_f.number_field :kindy_modifier,
-                                   class: 'form-control',
-                                   placeholder: 0
-              = aft_f.label :kindy_modifier,
-                            'Kindy Extra Charge',
-                            class: 'form-label'
-              %span.input-group-text 円
-            .form-floating.input-group
-              = aft_f.number_field :ele_modifier,
-                                   class: 'form-control',
-                                   placeholder: 0
-              = aft_f.label :ele_modifier,
-                            'Elementary Extra Charge',
-                            class: 'form-label'
-              %span.input-group-text 円
-            .form-check
-              = aft_f.check_box :snack, class: 'form-check-input'
-              = aft_f.label :snack, 'Snack?', class: 'form-check-label'
-
-    = f.submit class: 'btn btn-primary'
+    = render 'time_slots/opt_fields',
+             f: f,
+             slot: slot,
+             special_no_arvo: special_no_arvo
 
   - if slot.afternoon_slot
     .card

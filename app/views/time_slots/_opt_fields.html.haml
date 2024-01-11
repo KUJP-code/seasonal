@@ -1,0 +1,31 @@
+-# locals: (f:, slot:, special_no_arvo:)
+
+%button.btn.btn-info{ type: 'button',
+                      aria: { controls: 'opts', expanded: 'false' },
+                      data: { bs: { target: '#opts',
+                                    toggle: 'collapse' } } }
+  Customise Options
+
+.collapse#opts
+  %h3 Options
+
+  = f.fields_for :options, f.object.options do |opt_f|
+    = render 'options/opt_fields', f: opt_f
+
+  %template.d-none.w-100{ data: { 'fields-target' => 'template' } }
+    = f.fields_for :options,
+                   Option.new(optionable_id: slot.id),
+                   child_index: 'CHILD' do |opt_f|
+      = render 'options/opt_fields', f: opt_f
+
+  .d-none.w-100{ data: { 'fields-target' => 'target' } }
+
+  = button_tag 'Add Option',
+               type: 'button',
+               class: 'btn btn-info w-100',
+               data: { action: 'fields#add' }
+
+- if special_no_arvo
+  = render 'time_slots/afternoon_form',
+           f: f, slot: slot
+= f.submit class: 'btn btn-primary'

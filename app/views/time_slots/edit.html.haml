@@ -1,0 +1,17 @@
+%main.flex-row.justify-content-around.align-items-start.gap-3
+  - if @events || @event
+    = render partial: 'events/staff_event',
+             collection: @events,
+             locals: { child: nil },
+             as: :event
+    = render 'time_slots/event_form', event: @event, events: @events
+  - else
+    .event-sidebar.d-flex.flex-column.w-50.gap-3
+      %p.bg-warning.rounded.p-3.fw-semibold.text-center
+        Do not refresh this page!
+        Autofilled values will be lost.
+        Instead go back, then click the edit button again.
+
+      = render 'events/staff_event', event: @slot.event
+
+    = render 'time_slots/form'
