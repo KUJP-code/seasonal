@@ -4,6 +4,7 @@ require:
   - rubocop-rspec
 
 AllCops:
+  TargetRubyVersion: "3.0.6"
   Exclude:
     - "db/**/*"
     - "config/**/*"

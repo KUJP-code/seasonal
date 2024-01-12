@@ -53,7 +53,10 @@ class Inquiry < ApplicationRecord
   def child_grade
     return '' if child_birthday.nil?
 
-    YEAR_AGE_MAP[Time.zone.now.year - child_birthday.year] || ''
+    age = Time.zone.now.year - child_birthday.year
+    age -= 1 if child_birthday.month > 3
+
+    YEAR_AGE_MAP[age] || ''
   end
 
   def gas_birth
@@ -93,14 +96,15 @@ class Inquiry < ApplicationRecord
     3 => '年少',
     4 => '年中',
     5 => '年長',
-    6 => '小１',
-    7 => '小２',
-    8 => '小３',
-    9 => '小４',
-    10 => '小５',
-    11 => '小６',
-    12 => '中学１年',
-    13 => '中学２年',
-    14 => '高校生以上'
+    6 => '小学１年生',
+    7 => '小学２年生',
+    8 => '小学３年生',
+    9 => '小学４年生',
+    10 => '小学５年生',
+    11 => '小学６年生',
+    12 => '中学１年生',
+    13 => '中学２年生',
+    14 => '中学３年生',
+    15 => '高校生以上'
   }.freeze
 end
