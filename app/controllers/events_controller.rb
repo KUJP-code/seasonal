@@ -10,7 +10,7 @@ class EventsController < ApplicationController
       :school,
       image_attachment: %i[blob],
       avif_attachment: %i[blob]
-    ).order(start_date: :desc).page(params[:page])
+    ).order(start_date: :desc, school_id: :desc).page(params[:page])
   end
 
   def show
