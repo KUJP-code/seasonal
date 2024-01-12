@@ -54,9 +54,18 @@ class Inquiry < ApplicationRecord
     return '' if child_birthday.nil?
 
     age = Time.zone.now.year - child_birthday.year
-    age -= 1 if child_birthday.month > 3
+    age -= 1 if born_after_school_start?
+    age -= 1 if before_new_school_year?
 
     YEAR_AGE_MAP[age] || ''
+  end
+
+  def born_after_school_start?
+    child_birthday.month > 3 && child_birthday.day > 1
+  end
+
+  def before_new_school_year?
+    Time.zone.today.month < 4 || (Time.zone.today.month == 4 && Time.zone.today.day < 1)
   end
 
   def gas_birth
