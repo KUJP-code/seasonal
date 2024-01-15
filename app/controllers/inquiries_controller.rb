@@ -103,10 +103,13 @@ class InquiriesController < ApplicationController
   end
 
   def index_inquiries
-    policy_scope(@school.id.zero? ? Inquiry : @school.inquiries)
-      .includes(:setsumeikai)
-      .order(created_at: :desc)
-      .page(params[:page])
+    scoped_inquiries = policy_scope(@school.id.zero? ? Inquiry : @school.inquiries)
+                       .includes(:setsumeikai)
+                       .order(created_at: :desc)
+                       .page(params[:page])
+    return scoped_inquiries unless params[:category]
+
+    params[:category] == 'R' ? scoped_inquiries.setsumeikai : scoped_inquiries.general
   end
 
   def send_mail(inquiry)

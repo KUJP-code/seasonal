@@ -1,10 +1,20 @@
 %main.justify-content-start#inquiry-index
-  .d-flex.gap-3.align-self-start
+  .d-flex.gap-3.w-100
     = link_to t('.create_inquiry'),
               new_inquiry_path,
               class: 'btn btn-primary'
     = link_to t('.setsumeikai_list'),
               setsumeikais_path,
+              class: 'btn btn-primary'
+    .flex-grow-1
+    = link_to t('.all_inquiries'),
+              inquiries_path(school: @school.id),
+              class: 'btn btn-primary'
+    = link_to t('.general_inquiries'),
+              inquiries_path(school: @school.id, category: 'I'),
+              class: 'btn btn-primary'
+    = link_to t('.setsumeikai_inquiries'),
+              inquiries_path(school: @school.id, category: 'R'),
               class: 'btn btn-primary'
 
   = paginate @inquiries, window: 40

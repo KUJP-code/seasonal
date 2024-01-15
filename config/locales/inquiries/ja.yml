@@ -21,7 +21,10 @@ ja:
       setsumeikai: "説明会"
       start_date: "入会"
     index:
+      all_inquiries: "すべてのお問い合わせ"
       create_inquiry: "お問い合わせ"
+      general_inquiries: "'I'問い合わせ"
+      setsumeikai_inquiries: "'R'問い合わせ"
       setsumeikai_list: "説明会リスト"
     inquiry:
       are_u_sure: "本当に削除しますか？"
