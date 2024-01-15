@@ -1,6 +1,5 @@
-# app/controllers/mailer_subscription_unsubcribes_controller.rb
+# frozen_string_literal: true
 
-# Allows for automatic unsubscription from emails
 class MailerSubscriptionUnsubcribesController < ApplicationController
   before_action :set_user, only: %i[show update]
   before_action :set_mailer_subscription, only: %i[show update]

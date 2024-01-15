@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Allows users to manage their email preferences
 class MailerSubscriptionsController < ApplicationController
   before_action :set_mailer_subscription, only: :update
   before_action :handle_unauthorized, only: :update
@@ -31,6 +30,12 @@ class MailerSubscriptionsController < ApplicationController
       redirect_to mailer_subscriptions_path,
                   alter: @mailer_subscription.errors.full_messages.to_sentence.to_s
     end
+  end
+
+  def unsubscribe
+    @user = User.find(params[:id])
+    @mailer_subscriptions = @user.mailer_subscriptions
+    @mailer_subscriptions.update_all(subscribed: false)
   end
 
   private
