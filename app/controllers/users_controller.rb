@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  after_action :verify_authorized, except: :profile
+  after_action :verify_authorized, except: %i[add_child profile]
   after_action :verify_policy_scoped, only: :index
 
   def index
