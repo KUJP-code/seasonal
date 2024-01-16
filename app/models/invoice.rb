@@ -615,11 +615,19 @@ class Invoice < ApplicationRecord
     discount = -10_000
     reason = '非会員リピーター割引(以前シーズナルスクールに参加された非会員の方)'
     if adjustments.any? { |adj| adj.change == discount && adj.reason == reason } ||
-       child.adjustments.find_by(change: discount, reason: reason)
+       repeater_applied_this_event?(discount, reason)
       return
     end
 
     adjustments.new(change: discount, reason: reason)
+  end
+
+  def repeater_applied_this_event?(discount, reason)
+    adjustments = child.invoices
+                       .where(event_id: event_id)
+                       .where.not(id: id)
+                       .map(&:adjustments).flatten
+    adjustments.find { |a| a.change == discount && a.reason == reason }
   end
 
   # Updates total cost and summary once calculated/generated

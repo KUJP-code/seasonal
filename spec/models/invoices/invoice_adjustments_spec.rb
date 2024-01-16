@@ -182,5 +182,27 @@ RSpec.describe Invoice do
       end
       expect(repeater_adjs.size).to eq(1)
     end
+
+    it 'does not apply if applied to other invoice for same event' do
+      create(
+        :invoice,
+        child: valid_repeater_invoice.child,
+        event: event,
+        adjustments: [create(:adjustment, change: -10_000, reason: '非会員リピーター割引(以前シーズナルスクールに参加された非会員の方)')]
+      )
+      valid_repeater_invoice.calc_cost
+      expect(find_repeater_discount(valid_repeater_invoice)).to be_nil
+    end
+
+    it 'applies if applied to invoice for other event' do
+      create(
+        :invoice,
+        child: valid_repeater_invoice.child,
+        event: create(:event),
+        adjustments: [create(:adjustment, change: -10_000, reason: '非会員リピーター割引(以前シーズナルスクールに参加された非会員の方)')]
+      )
+      valid_repeater_invoice.calc_cost
+      expect(find_repeater_discount(valid_repeater_invoice)).to be_present
+    end
   end
 end
