@@ -24,6 +24,8 @@
     </div>
 </div>
 
+<%= render 'events/event_stats', event: @event if @event %>
+
 <div class="w-100 d-flex">
     <%= line_chart @invoices.group_by_day(:created_at).count,
                    title: t(".daily_new_bookings"),
@@ -41,7 +43,7 @@
                    title: t(".weekly_activity_registrations"),
                    height: "50vh" %>
 </div>
-    
+
 <div class="w-100 d-flex">
     <%= line_chart @invoices
                         .group_by_day(:created_at)
@@ -75,7 +77,7 @@
                           .average(:total_cost)
                           .to_h { |k, v| [@school_hash[k], v] }
                           .sort_by { |_k, v| v}
-                          .reverse, 
+                          .reverse,
                      title: t(".avg_booking_per_school"),
                      round: 0,
                      suffix: "円",

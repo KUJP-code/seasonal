@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Provides data for the charts pages
 class ChartsController < ApplicationController
   CATEGORIES = %w[activities bookings children coupons edits options setsumeikais].freeze
   after_action :verify_authorized
@@ -54,6 +53,7 @@ class ChartsController < ApplicationController
       bookings_all_data
     else
       bookings_school_data(school)
+      @event = Event.find_by(name: @nav[:event], school_id: school.id)
     end
   end
 
