@@ -33,7 +33,7 @@ RSpec.describe Invoice do
 
     it 'includes course heading, count, snack info, course number and spot use' do
       expect(invoice.summary).to include_all [
-        'コース:', '6円 (6回)', '5回コース: 5円', 'スポット1回(午前・15:00~18:30) x 1: 1円'
+        'コース:', '6円 (6回)', '5回コース: 5円', '1回コース x 1: 1円'
       ]
     end
 
@@ -61,7 +61,7 @@ RSpec.describe Invoice do
       invoice.slot_regs = []
       invoice.calc_cost
       expect(invoice.summary).not_to include_all [
-        'コース:', '6円 (6回)', '5回コース: 5円', 'スポット1回(午前・15:00~18:30) x 1: 1円'
+        'コース:', '6円 (6回)', '5回コース: 5円', '1回コース x 1: 1円'
       ]
     end
 
