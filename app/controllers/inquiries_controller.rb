@@ -64,7 +64,7 @@ class InquiriesController < ApplicationController
     params.require(:inquiry).permit(
       :id, :setsumeikai_id, :parent_name, :phone, :email, :child_name,
       :referrer, :child_birthday, :kindy, :ele_school, :start_date, :notes,
-      :requests, :category, :school_id
+      :requests, :category, :school_id, :privacy_policy
     )
   end
 
@@ -90,7 +90,7 @@ class InquiriesController < ApplicationController
       send_mail(@inquiry)
       render json: { status: 200 }
     else
-      render json: { status: 500 }
+      render json: { status: 500, errors: @inquiry.errors.full_messages }
     end
   end
 

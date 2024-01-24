@@ -8,6 +8,7 @@ class Inquiry < ApplicationRecord
   delegate :area, to: :school
 
   validates :parent_name, :phone, :email, presence: true
+  validates :privacy_policy, acceptance: { accept: 'on' }
   validates :category,
             presence: true,
             length: { is: 1 },
