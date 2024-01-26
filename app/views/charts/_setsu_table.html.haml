@@ -1,0 +1,52 @@
+-# locals: (monthly_setsu:, schools:)
+
+- if params[:id]
+  .d-flex.gap-3
+    = link_to t('.prev_month'),
+              chart_path(id: params[:id],
+                         category: @nav[:category],
+                         event: @nav[:event],
+                         month: @month - 1.month),
+              class: 'btn btn-primary'
+    = link_to t('.current_month'),
+              chart_path(id: params[:id],
+                         category: @nav[:category],
+                         event: @nav[:event],
+                         month: Time.zone.now.at_beginning_of_month),
+              class: 'btn btn-primary'
+    = link_to t('.next_month'),
+              chart_path(id: params[:id],
+                         category: @nav[:category],
+                         event: @nav[:event],
+                         month: @month + 1.month),
+              class: 'btn btn-primary'
+- else
+  .d-flex.gap-3
+    = link_to t('.prev_month'),
+              charts_path(category: @nav[:category],
+                          event: @nav[:event],
+                          month: @month - 1.month),
+              class: 'btn btn-primary'
+    = link_to t('.current_month'),
+              charts_path(category: @nav[:category],
+                          event: @nav[:event],
+                          month: Time.zone.now.at_beginning_of_month),
+              class: 'btn btn-primary'
+    = link_to t('.next_month'),
+              charts_path(category: @nav[:category],
+                          event: @nav[:event],
+                          month: @month + 1.month),
+              class: 'btn btn-primary'
+
+%h2= t('.monthly_stats', month: @month.strftime('%B'))
+
+%table.table.table-striped.table-hover.text-center
+  %thead.table-primary
+    %th= t('.school')
+    %th= t('.setsu_count')
+    %th= t('.monthly_spaces')
+  - monthly_setsu.each do |k, v|
+    %tr
+      %td= t("schools.#{schools.find { |s| s.id == k }.name}")
+      %td= v[:count]
+      %td= v[:attendance_limit]

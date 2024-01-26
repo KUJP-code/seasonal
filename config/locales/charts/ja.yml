@@ -59,6 +59,14 @@ ja:
       monthly_setsumeikais_by_school: "月別スクール別説明会数"
       setsumeikais_by_school: "スクール別説明会数"
       setsu_inquiries_by_school: "学校ごとの説明会問い合わせ"
+    setsu_table:
+      current_month: "今月"
+      monthly_spaces: "出席可能"
+      monthly_stats: "%{month}の統計"
+      next_month: "来月"
+      prev_month: "先月"
+      school: "スクール"
+      setsu_count: "説明会数"
     setsumeikais:
       avg_monthly_inquiries: "月別平均問い合わせ数"
       avg_monthly_setsumeikais_created: "月別平均説明会数"

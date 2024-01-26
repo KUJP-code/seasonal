@@ -27,6 +27,10 @@
            data: (total_inquiries / months_with_setsu).round(2),
            text: t('.avg_monthly_inquiries')
 
+= render 'charts/setsu_table',
+         monthly_setsu: @monthly_setsu,
+         schools: @nav[:schools]
+
 = line_chart setsu_created_per_month,
              title: t('.monthly_created_setsumeikais'),
              height: '45vh'
