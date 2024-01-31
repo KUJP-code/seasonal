@@ -61,6 +61,7 @@ ja:
       setsu_inquiries_by_school: "学校ごとの説明会問い合わせ"
     setsu_table:
       current_month: "今月"
+      monthly_attendance: "月間総入場者数"
       monthly_spaces: "出席可能"
       monthly_stats: "%{month}の統計"
       next_month: "来月"

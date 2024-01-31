@@ -230,23 +230,39 @@ class ChartsController < ApplicationController
   def setsumeikais_data
     if @nav[:school].id.zero?
       @setsumeikais = policy_scope(Setsumeikai)
-      set_monthly_setsu
       @inquiries = policy_scope(Inquiry)
     else
       @setsumeikais = policy_scope(Setsumeikai).where(school_id: @nav[:school].id)
-      set_monthly_setsu
       @inquiries = policy_scope(Inquiry).where(school_id: @nav[:school].id)
     end
+
+    set_month
+    set_monthly_setsu
+  end
+
+  def set_month
+    @month = if params[:month]
+               Date.parse(params[:month])
+             else
+               Time.zone.now.at_beginning_of_month
+             end
   end
 
   def set_monthly_setsu
-    @month = params[:month] ? Date.parse(params[:month]) : Time.zone.now.at_beginning_of_month
     setsu = @setsumeikais
             .where('start > ? AND start < ?', @month, @month.end_of_month)
             .group(:school_id)
             .order(school_id: :asc)
     setsu_count = setsu.count
-    setsu_attendance = setsu.sum(:attendance_limit)
-    @monthly_setsu = setsu_count.merge(setsu_attendance) { |_k, v1, v2| { count: v1, attendance_limit: v2 } }
+    setsu_slots = setsu.sum(:attendance_limit)
+    setsu_attendance = setsu.sum(:inquiries_count)
+
+    @monthly_setsu = setsu.pluck(:school_id).index_with do |school|
+      {
+        count: setsu_count[school],
+        slots: setsu_slots[school],
+        attendance: setsu_attendance[school]
+      }
+    end
   end
 end

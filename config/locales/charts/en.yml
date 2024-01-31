@@ -54,6 +54,7 @@ en:
       setsu_inquiries_by_school: "Setsumeikai Inquiries by School"
     setsu_table:
       current_month: "Current Month"
+      monthly_attendance: "Monthly Attendance"
       monthly_spaces: "Total Spaces Made Available"
       monthly_stats: "Stats for %{month}"
       next_month: "Next Month"

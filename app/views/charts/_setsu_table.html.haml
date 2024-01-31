@@ -45,8 +45,10 @@
     %th= t('.school')
     %th= t('.setsu_count')
     %th= t('.monthly_spaces')
+    %th= t('.monthly_attendance')
   - monthly_setsu.each do |k, v|
     %tr
       %td= t("schools.#{schools.find { |s| s.id == k }.name}")
       %td= v[:count]
-      %td= v[:attendance_limit]
+      %td= v[:slots]
+      %td= v[:attendance]
