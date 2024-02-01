@@ -48,7 +48,9 @@
     %th= t('.monthly_attendance')
   - monthly_setsu.each do |k, v|
     %tr
-      %td= t("schools.#{schools.find { |s| s.id == k }.name}")
+      %td
+        = link_to t("schools.#{schools.find { |s| s.id == k }.name}"),
+                  setsumeikais_path(school: k)
       %td= v[:count]
       %td= v[:slots]
       %td= v[:attendance]
