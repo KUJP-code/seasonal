@@ -58,6 +58,7 @@ en:
       monthly_spaces: "Total Spaces Made Available"
       monthly_stats: "Stats for %{month}"
       next_month: "Next Month"
+      percent_spaces_used: "Percent of Spaces Used"
       prev_month: "Previous Month"
       school: "School"
       setsu_count: "Total Setsumeikais Held"

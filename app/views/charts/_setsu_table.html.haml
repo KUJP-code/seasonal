@@ -1,5 +1,10 @@
 -# locals: (monthly_setsu:, schools:)
 
+:ruby
+  total_attendance = monthly_setsu.values.sum { |v| v[:attendance] }
+  total_held = monthly_setsu.values.sum { |v| v[:count] }
+  total_slots = monthly_setsu.values.sum { |v| v[:slots] }
+
 - if params[:id]
   .d-flex.gap-3
     = link_to t('.prev_month'),
@@ -45,13 +50,19 @@
     %th= t('.school')
     %th= t('.setsu_count')
     %th= t('.monthly_spaces')
-    %th= t('.monthly_attendance')
+    %th= t('.inquiries')
+    %th= t('.inquiries_per_setsu')
+    %th= t('.percent_spaces_used')
   %tbody
-    %tr.table-primary
+    %tr.table-primary.fw-semibold
       %td= t('.total')
-      %td= monthly_setsu.values.sum { |v| v[:count] }
-      %td= monthly_setsu.values.sum { |v| v[:slots] }
-      %td= monthly_setsu.values.sum { |v| v[:attendance] }
+      %td= total_held
+      %td= total_slots
+      %td= total_attendance
+      %td= (total_attendance / total_held.to_f).round(2)
+      %td= number_to_percentage(total_attendance / total_slots.to_f * 100,
+                                precision: 0)
+
     - monthly_setsu.each do |k, v|
       %tr
         %td
@@ -60,3 +71,6 @@
         %td= v[:count]
         %td= v[:slots]
         %td= v[:attendance]
+        %td= (v[:attendance] / v[:count].to_f).round(2)
+        %td= number_to_percentage(v[:attendance] / v[:slots].to_f * 100,
+                                  precision: 0)

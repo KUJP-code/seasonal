@@ -3,7 +3,6 @@
   total_inquiries = @inquiries.size
   setsu_inq_count = @setsumeikais.sum(:inquiries_count)
   setsu_created_per_month = @setsumeikais.group_by_month(:created_at).count
-  months_with_created_setsu = setsu_created_per_month.keys.size.to_f
   setsu_held_per_month = @setsumeikais.group_by_month(:start).count
   months_with_setsu = setsu_held_per_month.keys.size.to_f
 
@@ -12,17 +11,14 @@
            data: total_setsu,
            text: t('.total_setsumeikais')
   = render 'charts/highlight_box',
-           data: (total_setsu / months_with_created_setsu).round(2),
-           text: t('.avg_monthly_setsumeikais_created')
-  = render 'charts/highlight_box',
-           data: (total_setsu / months_with_setsu).round(2),
-           text: t('.avg_monthly_setsumeikais_held')
+           data: total_inquiries,
+           text: t('.total_inquiries')
   = render 'charts/highlight_box',
            data: (setsu_inq_count / total_setsu.to_f).round(2),
            text: t('.inquiries_per_setsumeikai')
   = render 'charts/highlight_box',
-           data: total_inquiries,
-           text: t('.total_inquiries')
+           data: (total_setsu / months_with_setsu).round(2),
+           text: t('.avg_monthly_setsumeikais_held')
   = render 'charts/highlight_box',
            data: (total_inquiries / months_with_setsu).round(2),
            text: t('.avg_monthly_inquiries')
@@ -41,8 +37,7 @@
              title: t('.monthly_inquiries'),
              height: '45vh'
 
-- if @nav[:school].id.zero? && !current_user.school_manager?
-  = render 'charts/setsu_all_schools'
+= render 'charts/setsu_all_schools' if @nav[:school].id.zero?
 
 .d-flex.w-100
   = pie_chart @inquiries.group(:referrer).count.except(nil),
