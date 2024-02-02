@@ -54,6 +54,8 @@ en:
       setsu_inquiries_by_school: "Setsumeikai Inquiries by School"
     setsu_table:
       current_month: "Current Month"
+      inquiries: "Inquiries"
+      inquiries_per_setsu: "Inquiries Per Setsumeikai"
       monthly_attendance: "Monthly Attendance"
       monthly_spaces: "Total Spaces Made Available"
       monthly_stats: "Stats for %{month}"
@@ -62,6 +64,7 @@ en:
       prev_month: "Previous Month"
       school: "School"
       setsu_count: "Total Setsumeikais Held"
+      total: "Total"
     setsumeikais:
       avg_monthly_inquiries: "Avg Monthly Inquiries"
       avg_monthly_setsumeikais_created: "Avg Setsumeikais Created Monthly"
