@@ -46,11 +46,17 @@
     %th= t('.setsu_count')
     %th= t('.monthly_spaces')
     %th= t('.monthly_attendance')
-  - monthly_setsu.each do |k, v|
-    %tr
-      %td
-        = link_to t("schools.#{schools.find { |s| s.id == k }.name}"),
-                  setsumeikais_path(school: k)
-      %td= v[:count]
-      %td= v[:slots]
-      %td= v[:attendance]
+  %tbody
+    %tr.table-primary
+      %td= t('.total')
+      %td= monthly_setsu.values.sum { |v| v[:count] }
+      %td= monthly_setsu.values.sum { |v| v[:slots] }
+      %td= monthly_setsu.values.sum { |v| v[:attendance] }
+    - monthly_setsu.each do |k, v|
+      %tr
+        %td
+          = link_to t("schools.#{schools.find { |s| s.id == k }.name}"),
+                    setsumeikais_path(school: k)
+        %td= v[:count]
+        %td= v[:slots]
+        %td= v[:attendance]
