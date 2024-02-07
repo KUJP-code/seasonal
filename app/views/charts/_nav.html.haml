@@ -1,0 +1,79 @@
+:ruby
+  all_schools = current_user.admin? || current_user.statistician?
+  inactive_styles = 'card p-2'
+  active_styles = "#{inactive_styles} bg-primary text-white fw-semibold"
+
+%nav.w-100.d-flex.gap-5.p-3.justify-content-center.align-items-center
+  - if all_schools && @nav[:category] == 'setsumeikais'
+    %details.flex-grow-1
+      %summary.card.p-2.bg-primary.text-white.fw-semibold
+        %h2 Area: #{@nav[:area].name}
+      .d-flex.flex-wrap.justify-content-between.gap-2.my-2
+        = link_to 'All Areas',
+                  charts_path(category: @nav[:category],
+                              event: @nav[:event]),
+                  class: @nav[:area].id.zero? ? active_styles : inactive_styles
+
+        - @nav[:areas].each do |a|
+          - active = @nav[:area].id == a.id
+          = link_to a.name,
+                    charts_path(area_id: a.id,
+                                category: @nav[:category],
+                                event: @nav[:event]),
+                    class: active ? active_styles : inactive_styles
+
+  - if all_schools || current_user.area_manager?
+    %details.flex-grow-1
+      %summary.card.p-2.bg-primary.text-white.fw-semibold
+        - school_name = t("schools.#{@nav[:school].name}")
+        %h2= "スクール: #{school_name}"
+      .d-flex.flex-wrap.justify-content-between.gap-2.my-2
+        = link_to (all_schools ? "All Schools" : "Area Schools"),
+                  charts_path(category: @nav[:category],
+                              event: @nav[:event]),
+                  class: @nav[:school].id.zero? ? active_styles : inactive_styles
+        - @nav[:schools].each do |s|
+          - active = @nav[:school].id == s.id
+          = link_to t("schools.#{s.name}"),
+                    chart_path(id: s.id,
+                               category: @nav[:category],
+                               event: @nav[:event]),
+                    class: active ? active_styles : inactive_styles
+
+  - unless @nav[:category] == 'setsumeikais'
+    %details
+      %summary.card.p-2.bg-primary.text-white.fw-semibold
+        %h2 イベント: #{@nav[:event]}
+      .d-flex.flex-column.gap-1.my-1
+        - @nav[:events].each do |e|
+          - active = @nav[:event] == e
+          - if @nav[:school].id.zero?
+            = link_to e,
+                      charts_path(category: @nav[:category],
+                                  event: e),
+                      class: active ? active_styles : inactive_styles
+          - else
+            = link_to e,
+                      chart_path(id: @nav[:school].id,
+                                 category: @nav[:category],
+                                 event: e),
+                      class: active ? active_styles : inactive_styles
+
+  %details
+    %summary.card.p-2.bg-primary.text-white.fw-semibold
+      - category_name = t(".#{@nav[:category]}")
+      %h2= "カテゴリー #{category_name}"
+    .d-flex.flex-column.gap-1.my-1
+      - @nav[:categories].each do |c|
+        - active = c == @nav[:category]
+        - if @nav[:school].id.zero?
+          = link_to t(".#{c}"),
+                    charts_path(category: c,
+                                event: @nav[:event]),
+                    class: active ? active_styles : inactive_styles
+        - else
+          = link_to t(".#{c}"),
+                    chart_path(id: @nav[:school].id,
+                               category: c,
+                               event: @nav[:event]),
+                    class: active ? active_styles : inactive_styles
