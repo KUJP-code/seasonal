@@ -155,13 +155,23 @@ class ChartsController < ApplicationController
 
   def nav_data(action)
     {
+      area: nav_area(action),
+      areas: policy_scope(Area),
       category: nav_category,
       categories: CATEGORIES,
       event: params[:event] || Event.last.name,
       events: Event.distinct.pluck(:name),
-      schools: policy_scope(School),
+      schools: nav_schools,
       school: nav_school(action)
     }
+  end
+
+  def nav_area(action)
+    if action == 'index'
+      params[:area_id].to_i.zero? ? Area.new(id: 0, name: 'All Areas') : authorize(Area.find(params[:area_id]))
+    else
+      Area.new(id: 0, name: 'All Areas')
+    end
   end
 
   def nav_category
@@ -176,6 +186,13 @@ class ChartsController < ApplicationController
     else
       School.new(id: 0, name: 'Area Schools')
     end
+  end
+
+  def nav_schools
+    scoped_schools = policy_scope(School)
+    return scoped_schools if params[:area_id].nil? || params[:area_id].to_i.zero?
+
+    scoped_schools.where(area_id: params[:area_id])
   end
 
   def options_data
@@ -229,15 +246,30 @@ class ChartsController < ApplicationController
 
   def setsumeikais_data
     if @nav[:school].id.zero?
-      @setsumeikais = policy_scope(Setsumeikai)
-      @inquiries = policy_scope(Inquiry)
+      area_scoped_setsu
     else
-      @setsumeikais = policy_scope(Setsumeikai).where(school_id: @nav[:school].id)
-      @inquiries = policy_scope(Inquiry).where(school_id: @nav[:school].id)
+      school_scoped_setsu
     end
 
     set_month
     set_monthly_setsu
+  end
+
+  def area_scoped_setsu
+    ids = area_school_ids
+    @setsumeikais = policy_scope(Setsumeikai).where(school_id: ids)
+    @inquiries = policy_scope(Inquiry).where(school_id: ids)
+  end
+
+  def area_school_ids
+    return policy_scope(School).ids if @nav[:area].id.zero?
+
+    policy_scope(School).where(area_id: @nav[:area].id).ids
+  end
+
+  def school_scoped_setsu
+    @setsumeikais = policy_scope(Setsumeikai).where(school_id: @nav[:school].id)
+    @inquiries = policy_scope(Inquiry).where(school_id: @nav[:school].id)
   end
 
   def set_month

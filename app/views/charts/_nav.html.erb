@@ -1,6 +1,29 @@
 <% all_schools = current_user.admin? || current_user.statistician? %>
 
 <nav class="w-100 d-flex gap-5 p-3 justify-content-center align-items-center">
+    <% if all_schools && @nav[:category] == 'setsumeikais' %>
+        <details class="flex-grow-1">
+            <summary class="card p-2 bg-primary text-white fw-semibold">
+              <h2>Area: <%= "#{@nav[:area].name}" %></h2>
+            </summary>
+            <div class="d-flex flex-wrap justify-content-between gap-2 my-2">
+                <%= link_to 'All Areas',
+                            charts_path(
+                                category: @nav[:category],
+                                event: @nav[:event]
+                            ),
+                            class: "card p-2 #{' bg-primary text-white fw-semibold' if @nav[:area].id == 0}" %>
+                <% @nav[:areas].each do |a| %>
+                  <%= link_to a.name,
+                              charts_path(area_id: a.id,
+                                          category: @nav[:category],
+                                          event: @nav[:event]),
+                                class: "card p-2 #{' bg-primary text-white fw-semibold' if @nav[:area].id == a.id}"  %>
+                <% end %>
+            </div>
+        </details>
+    <% end %>
+
     <% if all_schools || current_user.area_manager? %>
         <details class="flex-grow-1">
             <summary class="card p-2 bg-primary text-white fw-semibold">

@@ -28,17 +28,20 @@
 - else
   .d-flex.gap-3
     = link_to t('.prev_month'),
-              charts_path(category: @nav[:category],
+              charts_path(area_id: @nav[:area].id,
+                          category: @nav[:category],
                           event: @nav[:event],
                           month: @month - 1.month),
               class: 'btn btn-primary'
     = link_to t('.current_month'),
-              charts_path(category: @nav[:category],
+              charts_path(area_id: @nav[:area].id,
+                          category: @nav[:category],
                           event: @nav[:event],
                           month: Time.zone.now.at_beginning_of_month),
               class: 'btn btn-primary'
     = link_to t('.next_month'),
-              charts_path(category: @nav[:category],
+              charts_path(area_id: @nav[:area].id,
+                          category: @nav[:category],
                           event: @nav[:event],
                           month: @month + 1.month),
               class: 'btn btn-primary'
