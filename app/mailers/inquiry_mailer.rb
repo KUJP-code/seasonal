@@ -15,7 +15,7 @@ class InquiryMailer < ApplicationMailer
     @venue = @setsumeikai.school
     mail(
       to: @recipients,
-      subject: "【KidsUP#{@school.name}校】 説明会予約ありがとうございます"
+      subject: "【KidsUP#{@school.name}校】 無料体験レッスンのご予約ありがとうございます"
     )
   end
 
