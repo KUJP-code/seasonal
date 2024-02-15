@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-# Facilitates import/export of records for certain models
 class CsvsController < ApplicationController
-  ALLOWED_MODELS = %w[Child Invoice RegularSchedule Setsumeikai User].freeze
+  ALLOWED_MODELS = %w[Child Invoice RegularSchedule Setsumeikai TimeSlot User].freeze
 
   def index
     authorize(:csv)

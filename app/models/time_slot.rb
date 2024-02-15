@@ -5,6 +5,8 @@ class TimeSlot < ApplicationRecord
 
   attr_accessor :apply_all
 
+  acts_as_copy_target
+
   belongs_to :event
   has_one :school, through: :event
   delegate :area, to: :event
