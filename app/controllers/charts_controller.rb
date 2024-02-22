@@ -253,6 +253,7 @@ class ChartsController < ApplicationController
 
     set_month
     set_monthly_setsu
+    set_daily_inquiries
   end
 
   def area_scoped_setsu
@@ -280,9 +281,18 @@ class ChartsController < ApplicationController
              end
   end
 
+  def set_daily_inquiries
+    @daily_inquiries = @inquiries
+                       .where('created_at >= ? AND created_at <= ?',
+                              @month, @month.end_of_month)
+                       .group(:school_id)
+                       .group_by_day(:created_at)
+                       .count
+  end
+
   def set_monthly_setsu
     setsu = @setsumeikais
-            .where('start > ? AND start < ?', @month, @month.end_of_month)
+            .where('start >= ? AND start <= ?', @month, @month.end_of_month)
             .group(:school_id)
             .order(school_id: :asc)
     setsu_count = setsu.count

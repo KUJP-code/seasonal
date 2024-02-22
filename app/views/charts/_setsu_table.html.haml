@@ -1,6 +1,15 @@
 -# locals: (monthly_setsu:, schools:)
 
 :ruby
+  inquiries_w_schools =
+    @daily_inquiries.transform_keys do |k|
+      [school_name(@nav[:schools], k.first), k.last]
+    end
+  avg_daily_inquiries = @daily_inquiries.group_by { |k, _v| k.last }
+                                        .to_h do |k, v|
+                                          [['Average', k], v.last.last]
+                                        end
+  inquiries_w_average = inquiries_w_schools.merge(avg_daily_inquiries)
   total_attendance = monthly_setsu.values.sum { |v| v[:attendance] }
   total_held = monthly_setsu.values.sum { |v| v[:count] }
   total_slots = monthly_setsu.values.sum { |v| v[:slots] }
@@ -45,6 +54,10 @@
                           event: @nav[:event],
                           month: @month + 1.month),
               class: 'btn btn-primary'
+
+= line_chart inquiries_w_average,
+             title: t('.daily_inquiries'),
+             height: '45vh'
 
 %h2= t('.monthly_stats', month: @month.strftime('%B'))
 

@@ -54,6 +54,7 @@ en:
       setsu_inquiries_by_school: "Setsumeikai Inquiries by School"
     setsu_table:
       current_month: "Current Month"
+      daily_inquiries: "Daily Inquiries"
       inquiries: "Inquiries"
       inquiries_per_setsu: "Inquiries Per Setsumeikai"
       monthly_attendance: "Monthly Attendance"

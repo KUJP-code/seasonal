@@ -61,6 +61,7 @@ ja:
       setsu_inquiries_by_school: "学校ごとの説明会問い合わせ"
     setsu_table:
       current_month: "今月"
+      daily_inquiries: "日々の問い合わせ"
       inquiries: "問い合わせ数"
       inquiries_per_setsu: "説明会別問い合わせ数"
       monthly_attendance: "月間総入場者数"
