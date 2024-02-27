@@ -4,7 +4,8 @@ class InquiryMailer < ApplicationMailer
   def inquiry
     set_shared_vars
     mail(
-      to: @recipients,
+      to: @inquiry.email,
+      bcc: @recipients,
       subject: "【KidsUP#{@school.name}校】 お問い合わせがありました"
     )
   end
@@ -14,7 +15,8 @@ class InquiryMailer < ApplicationMailer
     @setsumeikai = @inquiry.setsumeikai
     @venue = @setsumeikai.school
     mail(
-      to: @recipients,
+      to: @inquiry.email,
+      bcc: @recipients,
       subject: "【KidsUP#{@school.name}校】 無料体験レッスンのご予約ありがとうございます"
     )
   end
@@ -24,6 +26,6 @@ class InquiryMailer < ApplicationMailer
   def set_shared_vars
     @inquiry = params[:inquiry]
     @school = @inquiry.school
-    @recipients = ['hq@kids-up.jp', @school.manager.email, @inquiry.email]
+    @recipients = ['hq@kids-up.jp'] + @school.managers.pluck(:email)
   end
 end
