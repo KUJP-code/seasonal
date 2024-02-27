@@ -35,14 +35,14 @@ export default class extends Controller {
     // Count the number of options registered for
     const optCount = this.optRegsTargets.reduce(
       (sum, target) => sum + target.querySelectorAll(".registered").length,
-      0
+      0,
     );
     this.optCountTarget.innerHTML = `オプション：${optCount.toString()}つ`;
 
     const registeredNodes = [...document.getElementById("reg_slots").children];
     // Count slots with an extra cost
     const extraCostNodes = registeredNodes.filter(
-      (slot) => slot.dataset.modifier !== "0"
+      (slot) => slot.dataset.modifier !== "0",
     );
     this.extraCountTarget.innerHTML = extraCostNodes.length.toString();
     // Get their total effect on the cost
@@ -98,32 +98,23 @@ export default class extends Controller {
     return this.hasAdjChangeTarget
       ? this.adjChangeTargets.reduce(
           (sum, change) => sum + parseInt(change.innerHTML),
-          0
+          0,
         )
       : 0;
-  }
-
-  calcConnectCost(numRegs) {
-    return Math.ceil(numRegs / 2) * 200;
   }
 
   // Calculates course costs if kids are both members/not
   calcCourseCost(member) {
     const courses = member ? this.memberPrice : this.nonMemberPrice;
     const id = parseInt(this.childTarget.children[0].innerHTML);
-    const level = this.childTarget.querySelector(".level").innerHTML;
 
     const cost = this.slotRegsTargets.reduce((sum, target) => {
       const numRegs = target.querySelectorAll(`.child${id}`).length;
       const courseCost = this.bestCourses(numRegs, courses);
       // If child is Kindy and has less than 5 registrations, apply the 200 yen
       // increase to half of them so price will only decrease when finalised
-      const connectCost =
-        member && numRegs < 5 && numRegs > 1 && level === "Kindy"
-          ? this.calcConnectCost(numRegs)
-          : 0;
 
-      return sum + courseCost + connectCost;
+      return sum + courseCost;
     }, 0);
 
     return cost;
