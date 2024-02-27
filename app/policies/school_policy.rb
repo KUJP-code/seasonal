@@ -40,7 +40,7 @@ class SchoolPolicy < ApplicationPolicy
     def resolve
       case user.role
       when 'admin', 'statistician'
-        scope.real
+        scope.all
       when 'area_manager'
         scope.where(id: user.area_schools.ids)
       when 'school_manager'

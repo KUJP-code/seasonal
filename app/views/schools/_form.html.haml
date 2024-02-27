@@ -1,10 +1,10 @@
 -# locals: (areas:, images:, school:)
 
 :ruby
-  bus_areas = school.details ? school.bus_areas : []
-  hiragana = school.details ? school.hiragana : []
-  nearby_schools = school.details ? school.nearby_schools : []
-  nearby_stations = school.details ? school.nearby_stations : []
+  bus_areas = school.bus_areas || []
+  hiragana = school.hiragana || []
+  nearby_schools = school.nearby_schools || []
+  nearby_stations = school.nearby_stations || []
 
 = form_with model: school,
             html: { class: 'card' },

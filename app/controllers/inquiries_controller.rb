@@ -7,7 +7,7 @@ class InquiriesController < ApplicationController
 
   def index
     authorize Inquiry
-    @schools = policy_scope(School).real.order(:id)
+    @schools = policy_scope(School).order(:id)
     school_given = params[:school] && params[:school] != '0'
     @school = school_given ? School.find(params[:school]) : default_school
     @inquiries = index_inquiries
