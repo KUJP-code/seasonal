@@ -100,13 +100,16 @@ gem 'stackprof'
 gem 'oj'
 
 # Use rack-cors to allow API requests
-gem 'rack-cors'
+gem 'rack-cors', '2.0.1'
 
 # Use haml-rails for templating
 gem 'haml-rails'
 
 # Use pghero for DB analysis
 gem 'pghero'
+
+# Lock rack version to avoid vulnerabilities
+gem 'rack', '3.0.9.1'
 
 group :development, :test do
   # Ruby LSP from shopify for autocomlete
