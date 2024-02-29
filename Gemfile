@@ -111,6 +111,12 @@ gem 'pghero'
 # Lock rack version to avoid vulnerabilities
 gem 'rack', '3.0.9.1'
 
+# Lock nokogiri to avoid vulnerabilities
+gem 'nokogiri', '1.16.2'
+
+# Lock globalid to avoid vulnerabilities
+gem 'globalid', '1.2.1'
+
 group :development, :test do
   # Ruby LSP from shopify for autocomlete
   gem 'ruby-lsp', require: false
