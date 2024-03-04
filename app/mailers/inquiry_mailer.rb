@@ -12,10 +12,10 @@ class InquiryMailer < ApplicationMailer
 
   def setsu_inquiry
     set_shared_vars
-    return online_setsu_inquiry if @school.id == 2
-
     @setsumeikai = @inquiry.setsumeikai
     @venue = @setsumeikai.school
+    return online_setsu_inquiry if @venue.id == 2
+
     mail(
       to: @inquiry.email,
       bcc: @recipients,
@@ -24,7 +24,7 @@ class InquiryMailer < ApplicationMailer
   end
 
   def online_setsu_inquiry
-    @setsumeikai = @inquiry.setsumeikai
+    @recipients = ['hq@kids-up.jp'] + @venue.managers.pluck(:email)
     mail(
       to: @inquiry.email,
       bcc: @recipients,

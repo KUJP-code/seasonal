@@ -28,6 +28,14 @@ class InquiryPreview < ActionMailer::Preview
   end
 
   def online_setsu_inquiry
+    online_setsu = Setsumeikai.create!(
+      school_id: 2,
+      start: 3.days.from_now,
+      attendance_limit: 5,
+      release_date: 1.day.from_now,
+      close_at: 2.days.from_now,
+      setsumeikai_involvements: [SetsumeikaiInvolvement.new(school_id: 2)]
+    )
     InquiryMailer.with(
       inquiry: Inquiry.create(
         parent_name: '山田太郎',
@@ -41,7 +49,7 @@ class InquiryPreview < ActionMailer::Preview
         requests: 'お疲れ様でした',
         category: 'R',
         school_id: 2,
-        setsumeikai_id: Setsumeikai.last.id
+        setsumeikai_id: online_setsu.id
       )
     ).setsu_inquiry
   end
