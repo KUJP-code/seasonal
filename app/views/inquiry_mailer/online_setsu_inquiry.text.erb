@@ -23,6 +23,9 @@ E-mail：online@kids-up.jp
 ------------------------------
 お客様情報
 ------------------------------
+お名前: <%= @inquiry.parent_name %>
+メールアドレス: <%= @inquiry.email %>
+お子様氏名: <%= @inquiry.child_name %> 様
 お問い合わせ日時: <%= @inquiry.created_at.strftime('%Y年%m月%d日 %H:%M') %>
 保育園 幼稚園名と在園状況 : <%= @inquiry.kindy %>
 小学校名と在学状況 : <%= @inquiry.ele_school %>

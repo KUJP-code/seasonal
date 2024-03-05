@@ -31,6 +31,9 @@
   %p ------------------------------
   %h4 お客様情報
   %p ------------------------------
+  %p お名前: #{@inquiry.parent_name}
+  %p メールアドレス: #{@inquiry.email}
+  %p お子様氏名: #{@inquiry.child_name} 様
   %p お問い合わせ日時: #{@inquiry.created_at.strftime('%Y年%m月%d日 %H:%M')}
   %p 保育園 幼稚園名と在園状況 : #{@inquiry.kindy}
   %p 小学校名と在学状況 : #{@inquiry.ele_school}
