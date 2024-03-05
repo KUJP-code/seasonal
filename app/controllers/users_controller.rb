@@ -115,6 +115,7 @@ class UsersController < ApplicationController
                           :children
                         ).group_by(&:name)
     @upcoming_events = Event.upcoming.real.includes(:children).group_by(&:name)
+    @managers = user.area_school_managers
   end
 
   def copy_invoices(from, to)

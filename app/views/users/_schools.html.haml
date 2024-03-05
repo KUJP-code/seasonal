@@ -1,0 +1,11 @@
+-# locals: (managers:)
+
+.card.flex-row.flex-wrap.justify-content-center
+  %h2.w-100 Schools
+
+  - managers.group_by(&:role).each do |r|
+    %h3.w-100= r.first.humanize
+    - r.last.each do |m|
+      = link_to t("schools.#{m.name}", default: m.name),
+                user_path(m),
+                class: 'btn btn-primary'

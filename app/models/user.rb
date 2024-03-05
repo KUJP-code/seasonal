@@ -48,6 +48,8 @@ class User < ApplicationRecord
   has_many :area_slots, -> { order(start_date: :desc) },
            through: :area_schools,
            source: :time_slots
+  has_many :area_school_managers, through: :area_schools,
+                                  source: :managers
   has_many :area_survey_responses, through: :area_schools,
                                    source: :survey_responses
   has_many :area_setsumeikais, through: :area_schools,

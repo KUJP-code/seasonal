@@ -33,5 +33,7 @@
       %h2 #{name} for All area_schools
       = render 'events/stats_summary', events: events
 
-  - @area_events.each do |_name, events|
+  - @area_events.each_value do |events|
     = render 'events/condensed_stats', events: events
+
+  = render 'users/schools', managers: @managers

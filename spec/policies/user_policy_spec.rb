@@ -100,6 +100,17 @@ RSpec.describe UserPolicy do
     it_behaves_like 'staff for UserPolicy'
     it_behaves_like 'non-admin staff for UserPolicy'
     it_behaves_like 'Nacrissus'
+
+    context 'when viewing profile of SM in their area' do
+      let(:record) { create(:school_manager, managed_schools: [create(:school)]) }
+
+      before do
+        user.managed_areas << record.managed_school.area
+        user.save
+      end
+
+      it { is_expected.to authorize_action(:show) }
+    end
   end
 
   context 'when school manager' do
