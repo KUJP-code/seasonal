@@ -67,11 +67,7 @@ export default class extends Controller {
   bestCourses(numRegs, courses) {
     if (numRegs === 0) return 0;
     if (numRegs === 3 || numRegs === 4) {
-      if (this.isMember(this.childTarget)) {
-        return 11_900 + this.bestCourses(numRegs - 3, courses);
-      }
-
-      return 19_100 + this.bestCourses(numRegs - 3, courses);
+      return courses[3] + this.bestCourses(numRegs - 3, courses);
     }
 
     if (numRegs >= 35) {
@@ -111,9 +107,6 @@ export default class extends Controller {
     const cost = this.slotRegsTargets.reduce((sum, target) => {
       const numRegs = target.querySelectorAll(`.child${id}`).length;
       const courseCost = this.bestCourses(numRegs, courses);
-      // If child is Kindy and has less than 5 registrations, apply the 200 yen
-      // increase to half of them so price will only decrease when finalised
-
       return sum + courseCost;
     }, 0);
 
