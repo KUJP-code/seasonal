@@ -23,18 +23,15 @@
         = aft_f.label :name, 'Name', class: 'form-label'
       .form-floating
         = aft_f.datetime_field :start_time,
-                               class: 'form-control',
-                               required: true
+                               class: 'form-control'
         = aft_f.label :start_time, 'Start Time', class: 'form-label'
       .form-floating
         = aft_f.datetime_field :end_time,
-                               class: 'form-control',
-                               required: true
+                               class: 'form-control'
         = aft_f.label :end_time, 'End Time', class: 'form-label'
       .form-floating
         = aft_f.datetime_field :close_at,
-                               class: 'form-control',
-                               required: true
+                               class: 'form-control'
         = aft_f.label :close_at, 'Close At', class: 'form-label'
       .form-floating.input-group
         = aft_f.number_field :int_modifier,
