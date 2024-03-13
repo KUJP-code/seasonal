@@ -64,6 +64,7 @@ class School < ApplicationRecord
       id: id.to_s,
       name: name,
       address: address,
+      prefecture: prefecture || '',
       phone: phone,
       image: Rails.env.production? ? image.url : '',
       busAreas: details['bus_areas'] || [''],

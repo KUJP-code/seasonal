@@ -35,6 +35,13 @@
     = f.label :address, t('.address'), class: 'form-label'
 
   .form-floating
+    = f.text_field :prefecture,
+                   class: 'form-control',
+                   placeholder: t('.prefecture'),
+                   required: true
+    = f.label :prefecture, t('.prefecture'), class: 'form-label'
+
+  .form-floating
     = f.telephone_field :phone,
                         class: 'form-control',
                         placeholder: t('.phone'),
