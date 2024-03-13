@@ -45,10 +45,22 @@ class Inquiry < ApplicationRecord
     }
   end
 
-  def setsumeikai_school
-    return '' unless setsumeikai
+  def to_gas_update
+    {
+      category: CATEGORY_MAP[category],
+      id: id.to_s,
+      target: child_name || ''
+    }
+  end
 
-    setsumeikai.school.name
+  private
+
+  def before_new_school_year?
+    Time.zone.today.month < 4 || (Time.zone.today.month == 4 && Time.zone.today.day < 1)
+  end
+
+  def born_after_school_start?
+    (child_birthday.month > 3 && child_birthday.day > 1) || child_birthday.month > 4
   end
 
   def child_grade
@@ -61,12 +73,13 @@ class Inquiry < ApplicationRecord
     YEAR_AGE_MAP[age] || ''
   end
 
-  def born_after_school_start?
-    child_birthday.month > 3 && child_birthday.day > 1
-  end
+  def event_schedule
+    return { date: '', time: '' } unless setsumeikai
 
-  def before_new_school_year?
-    Time.zone.today.month < 4 || (Time.zone.today.month == 4 && Time.zone.today.day < 1)
+    {
+      date: setsumeikai.start.strftime('%Y-%m-%d'),
+      time: setsumeikai.start.strftime('%H:%M')
+    }
   end
 
   def gas_birth
@@ -75,23 +88,10 @@ class Inquiry < ApplicationRecord
     child_birthday.strftime('%Y-%m-%d')
   end
 
-  def to_gas_update
-    {
-      category: CATEGORY_MAP[category],
-      id: id.to_s,
-      target: child_name || ''
-    }
-  end
+  def setsumeikai_school
+    return '' unless setsumeikai
 
-  private
-
-  def event_schedule
-    return { date: '', time: '' } unless setsumeikai
-
-    {
-      date: setsumeikai.start.strftime('%Y-%m-%d'),
-      time: setsumeikai.start.strftime('%H:%M')
-    }
+    setsumeikai.school.name
   end
 
   CATEGORY_MAP = {
