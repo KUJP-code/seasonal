@@ -1,0 +1,78 @@
+-# locals: (user: @user)
+
+%turbo-frame{ class: 'd-flex flex-column gap-3', id: 'add-child' }
+  - if @child
+    = link_to t('back'), '#add_child', class: 'btn btn-primary align-self-start'
+
+    %table.table
+      %thead
+        %tr.table-primary
+          %th{ scope: 'col' }= t('.ssid')
+          %th{ scope: 'col' }= t('.name')
+          %th{ scope: 'col' }= t('.katakana')
+          %th{ scope: 'col' }= t('.en')
+      %tbody
+        %tr
+          %td= @child.ssid
+          %td= @child.name
+          %td= @child.katakana_name
+          %td= @child.en_name
+        - unless @child.parent_id.nil?
+          %tr.table-danger
+            %td{ colspan: '4' }= t('.already_claimed')
+
+    - if @child.parent_id.nil?
+      = form_with url: add_child_path,
+                  html: { class: 'd-grid gap-3', id: 'add_form' } do |f|
+        %div
+          = f.check_box :first_seasonal,
+                        { class: 'form-check-input' }
+          = f.label :first_seasonal,
+                    t('.first_seasonal'),
+                    class: 'form-check-label'
+        = f.hidden_field :child_id, value: @child.id
+        = f.hidden_field :parent_id, value: user.id
+        = f.submit t('.claim_child'),
+                   class: 'btn btn-primary',
+                   data: { turbo_frame: '_top' }
+  - else
+    - if @failed
+      .bg-danger.text-white.fw-semibold.rounded.p-2
+        %p お子様の情報が見つかりません。
+        %p マイページIDと生年月日をお確かめください。
+
+    = form_with url: find_child_path,
+                method: :get,
+                html: { class: 'd-grid gap-3',
+                        data: { controller: 'count',
+                                'count-countdown-value': true },
+                        id: 'claim_child_form' } do |f|
+      = f.hidden_field :user, value: user.id
+      .form-floating
+        = f.search_field :ssid,
+                         class: 'form-control',
+                         placeholder: t('.to_ssid'),
+                         required: true,
+                         data: { 'count-target': 'input' },
+                         pattern: '\d{10,10}',
+                         title: t('.ssid_pattern'),
+                         minlength: 10,
+                         maxlength: 10
+        = f.label :ssid, t('.to_ssid'), class: 'form-label'
+        .form-text#confirm-length
+          %span{ data: { 'count-target': 'counter' } }
+      .form-floating
+        = f.date_field :bday,
+                       class: 'form-control',
+                       placeholder: t('.bday'),
+                       required: true
+        = f.label :bday, t('.bday'), class: 'form-label'
+
+      = f.submit t('.find_child'), class: 'btn btn-primary'
+
+    %hr
+
+    .add_new_child
+      = link_to t('.add_new_child'),
+                new_child_path(parent: user.id),
+                class: 'btn btn-primary'

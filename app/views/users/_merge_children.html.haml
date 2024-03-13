@@ -10,7 +10,7 @@
     %table.table.align-middle.mt-3
       %thead
         %tr.table-primary
-          %th{ scope: 'col' } SSID
+          %th{ scope: 'col' }= t('.ssid')
           %th{ scope: 'col' }= t('.name')
           %th{ scope: 'col' }= t('.katakana')
           %th{ scope: 'col' }= t('.en')
@@ -43,6 +43,7 @@
                          placeholder: t('.to_ssid'),
                          required: true,
                          data: { 'count-target': 'input' },
+                         pattern: '\d{10,10}',
                          minlength: 10,
                          maxlength: 10
         = f.label :ssid, t('.to_ssid'), class: 'form-label'

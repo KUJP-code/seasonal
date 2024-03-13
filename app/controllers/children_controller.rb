@@ -73,9 +73,9 @@ class ChildrenController < ApplicationController
   def find_child
     @child = search_result
     @failed = @child ? false : true
-    return render 'users/_add_child', locals: { parent: User.find(params[:parent_id]) } if params[:bday]
-
     @user = User.find(params[:user])
+    return render 'users/_add_child', locals: { user: @user } if params[:bday]
+
     render 'users/_merge_children', locals: { child: @child }
   end
 
