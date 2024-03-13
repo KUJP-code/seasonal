@@ -1,0 +1,51 @@
+%turbo-frame{ id: 'merge_children' }
+  - if @child
+    = link_to '戻る', user_path(@user), class: 'btn btn-primary w-25'
+
+    %h2.text-bg-info.mt-2.rounded.p-1
+      %span  入力したSSIDの生徒と同じ生徒を下から選んでください。
+      %br
+      %span.fs-3 (兄弟がいる場合は複数の選択肢が表示されます)
+
+    %table.table.align-middle.mt-3
+      %thead
+        %tr.table-primary
+          %th{ scope: 'col' } SSID
+          %th{ scope: 'col' }= t('.name')
+          %th{ scope: 'col' }= t('.katakana')
+          %th{ scope: 'col' }= t('.en')
+          %th{ scope: 'col' }= t('.category')
+          %th{ scope: 'col' }= t('.allergies')
+          %th{ scope: 'col' }= t('.parent')
+          %th{ scope: 'col' }= t('.school')
+          %th{ scope: 'col' }
+      %tbody
+        = render partial: 'children/mergeable_child', locals: { child: @child }
+        - @user.children.where(ssid: nil).find_each do |no_ssid_child|
+          = render partial: 'children/mergeable_child',
+                   locals: { child: no_ssid_child, ss_child: @child }
+  - else
+    - if @failed
+      .bg-danger.text-white.fw-semibold.rounded.p-2
+        %p お子様の情報が見つかりません。
+        %p マイページIDと生年月日をお確かめください。
+    = form_with url: find_child_path,
+                method: :get,
+                html: { class: 'd-grid gap-3 p-5 needs-validation',
+                        data: { controller: 'count',
+                                'count-countdown-value': true },
+                        id: 'merge_child_form',
+                        novalidate: true } do |f|
+      = f.hidden_field :user, value: @user.id
+      .form-floating
+        = f.search_field :ssid,
+                         class: 'form-control',
+                         placeholder: t('.to_ssid'),
+                         required: true,
+                         data: { 'count-target': 'input' },
+                         minlength: 10,
+                         maxlength: 10
+        = f.label :ssid, t('.to_ssid'), class: 'form-label'
+        .form-text#confirm-length
+          %span{ data: { 'count-target': 'counter' } }
+      = f.submit t('.find_child'), class: 'btn btn-primary'
