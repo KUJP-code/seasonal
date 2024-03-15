@@ -24,6 +24,17 @@ class Inquiry < ApplicationRecord
   scope :setsumeikai, -> { where(category: 'R') }
   scope :general, -> { where(category: 'I') }
 
+  def child_grade
+    return '' if child_birthday.nil?
+
+    school_age = Time.zone.now.year - child_birthday.year
+    school_age -= 1 if born_after_school_start?
+    school_age -= 1 if before_new_school_year?
+    return "#{real_age}歳" if school_age < 3
+
+    SCHOOL_AGE_MAP[school_age] || ''
+  end
+
   def to_gas_api
     {
       id: id,
@@ -55,22 +66,20 @@ class Inquiry < ApplicationRecord
 
   private
 
+  def before_birthday?
+    Time.zone.now.month < child_birthday.month ||
+      (Time.zone.now.month == child_birthday.month &&
+        Time.zone.now.day < child_birthday.day)
+  end
+
   def before_new_school_year?
-    Time.zone.today.month < 4 || (Time.zone.today.month == 4 && Time.zone.today.day < 1)
+    Time.zone.today.month < 4 ||
+      (Time.zone.today.month == 4 && Time.zone.today.day < 1)
   end
 
   def born_after_school_start?
-    (child_birthday.month > 3 && child_birthday.day > 1) || child_birthday.month > 4
-  end
-
-  def child_grade
-    return '' if child_birthday.nil?
-
-    age = Time.zone.now.year - child_birthday.year
-    age -= 1 if born_after_school_start?
-    age -= 1 if before_new_school_year?
-
-    YEAR_AGE_MAP[age] || ''
+    (child_birthday.month > 3 && child_birthday.day > 1) ||
+      child_birthday.month > 4
   end
 
   def event_schedule
@@ -88,6 +97,12 @@ class Inquiry < ApplicationRecord
     child_birthday.strftime('%Y-%m-%d')
   end
 
+  def real_age
+    age = Time.zone.now.year - child_birthday.year
+    age -= 1 if before_birthday?
+    age
+  end
+
   def setsumeikai_school
     return '' unless setsumeikai
 
@@ -100,9 +115,7 @@ class Inquiry < ApplicationRecord
     'R' => '説明会'
   }.freeze
 
-  YEAR_AGE_MAP = {
-    1 => '満１歳',
-    2 => '満２歳',
+  SCHOOL_AGE_MAP = {
     3 => '年少',
     4 => '年中',
     5 => '年長',
