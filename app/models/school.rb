@@ -48,7 +48,7 @@ class School < ApplicationRecord
                                    source: :setsumeikai,
                                    class_name: 'Setsumeikai'
   has_many :calendar_setsumeikais,
-           -> { where('start > ? AND release_date < ?', Time.zone.now, Time.zone.today + 1.day) },
+           -> { where('start > ? AND release_date < ?', Time.zone.today.beginning_of_month, Time.zone.today + 1.day) },
            through: :setsumeikai_involvements,
            source: :setsumeikai,
            class_name: 'Setsumeikai'
