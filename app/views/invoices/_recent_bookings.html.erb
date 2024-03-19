@@ -10,7 +10,7 @@
                     <th scope="col"><%= t('.total_cost') %></th>
                 </tr>
             </thead>
-    
+
             <tbody>
                 <% bookings.each do |i| %>
                     <tr>
@@ -19,14 +19,9 @@
                         </td>
                         <td><%= i.registrations.size %></td>
                         <td>
-                            <%= link_to number_to_currency(
-                                    i.total_cost,
-                                    unit: '円',
-                                    precision: 0,
-                                    locale: :ja
-                                ),
-                                invoice_path(i),
-                                class: (i.in_ss ? 'text-info' : 'text-danger fw-bold') %>
+                            <%= link_to number_to_currency(i.total_cost),
+                                        invoice_path(i),
+                                        class: (i.in_ss ? 'text-info' : 'text-danger fw-bold') %>
                         </td>
                     </tr>
                 <% end %>

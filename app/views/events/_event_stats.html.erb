@@ -26,7 +26,7 @@
     <h3>
         <%= link_to event.name, children_path(source: 'event', id: event.id) %>
     </h3>
-    
+
     <div class="table-responsive-lg">
         <table class="table">
             <thead>
@@ -47,40 +47,17 @@
                     <th scope="col"><%= t('.goal_percent') %></th>
                 </tr>
             </thead>
-    
+
             <tbody>
                 <tr>
                     <td><%= int_kids.size %></td>
                     <td><%= res_kids.size %></td>
                     <td><%= ext_kids.size %></td>
                     <td><%= children.count %></td>
-                    <td><%= number_to_currency(
-                                int_revenue + res_revenue,
-                                unit: '円',
-                                precision: 0,
-                                locale: :ja
-                            ) %></td>
-
-                    <td><%= number_to_currency(
-                                ext_revenue,
-                                unit: '円',
-                                precision: 0,
-                                locale: :ja
-                            ) %></td>
-
-                    <td><%= number_to_currency(
-                                total_revenue,
-                                unit: '円',
-                                precision: 0,
-                                locale: :ja
-                            ) %></td>
-
-                    <td><%= number_to_currency(
-                                event.goal,
-                                unit: '円',
-                                precision: 0,
-                                locale: :ja
-                            ) %></td>
+                    <td><%= number_to_currency(int_revenue + res_revenue) %></td>
+                    <td><%= number_to_currency(ext_revenue) %></td>
+                    <td><%= number_to_currency(total_revenue) %></td>
+                    <td><%= number_to_currency(event.goal) %></td>
 
                     <td class=<%=
                         case goal_percent
@@ -103,7 +80,7 @@
                 <tr>
                     <td>
                         <% if first_int.size.positive? %>
-                            <%= link_to first_int.size, 
+                            <%= link_to first_int.size,
                                     users_path(
                                         ids: first_int.map(&:parent_id).uniq
                                     ) %>
@@ -122,10 +99,10 @@
                             <%= first_res.size %>
                         <% end %>
                     </td>
-    
+
                     <td>
                         <% if first_ext.size.positive? %>
-                            <%= link_to first_ext.size, 
+                            <%= link_to first_ext.size,
                                     users_path(
                                         ids: first_ext.map(&:parent_id).uniq
                                     ) %>

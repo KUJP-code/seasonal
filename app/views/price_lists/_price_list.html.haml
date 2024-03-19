@@ -11,7 +11,7 @@
     - price_list.courses.each do |k, v|
       %tr
         %td= k
-        %td= number_to_currency(v, unit: '円', precision: 0, locale: :ja)
+        %td= number_to_currency(v)
 
   = link_to 'Edit', edit_price_list_path(price_list), class: 'btn btn-primary'
 
