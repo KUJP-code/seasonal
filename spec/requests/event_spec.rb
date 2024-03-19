@@ -45,7 +45,10 @@ end
 
 describe Event do
   let(:event) { create(:event) }
-  let(:child) { create(:child) }
+  let(:child) do
+    parent = create(:customer)
+    create(:child, parent: parent)
+  end
 
   before do
     sign_in(user)

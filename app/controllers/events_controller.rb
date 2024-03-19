@@ -16,6 +16,8 @@ class EventsController < ApplicationController
   def show
     @event = authorize Event.find(params[:id])
     @child = authorize params[:child] ? Child.find(params[:child]) : current_user.children.first
+    return orphan_redirect if @child.parent_id.nil?
+
     user_specific_info
     @event_slots = @event.time_slots.morning
                          .with_attached_image
@@ -136,6 +138,10 @@ class EventsController < ApplicationController
                                  .map { |blob| [blob.key, blob.id] }
     @prices = PriceList.order(:name)
     @schools = [%w[All all]] + School.order(:id).map { |school| [school.name, school.id] }
+  end
+
+  def orphan_redirect
+    redirect_to @child, alert: 'お子様がアクティビティに参加するには、保護者の同伴が必要です。'
   end
 
   def user_specific_info
