@@ -26,14 +26,8 @@
             <p class="fw-bold fs-5">
                 <%= "#{add_slot.name}: ◯" %>
             </p>
-            <% if add_slot.special? ||
-                  (add_slot.int_modifier != 0 && child.internal?) ||
-                  (add_slot.ext_modifier != 0 && child.external?) %>
-                <% if add_slot.int_modifier != 0 && child.internal? %>
-                    <p><%= t('.extra_charge', cost: number_to_currency(add_slot.int_modifier, unit: '円', precision: 0, locale: :ja))  %></p>
-                <% elsif add_slot.ext_modifier != 0 && child.external? %>
-                    <p><%= t('.extra_charge', cost: number_to_currency(add_slot.ext_modifier, unit: '円', precision: 0, locale: :ja))  %></p>
-                <% end %>
+            <% if add_slot.special? || activity_modifier(add_slot, child) %>
+                    <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(add_slot, child)))  %></p>
             <% end %>
             <% add_slot.options.each do |opt| %>
                 <% if registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
@@ -69,7 +63,7 @@
                     <% extension_ids = add_slot.options.extension.ids %>
 
                     <% if add_slot.special? || activity_modifier(add_slot, child) %>
-                      <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(add_slot, child), unit: '円', precision: 0, locale: :ja))  %></p>
+                      <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(add_slot, child)))  %></p>
                     <% end %>
 
                     <% add_slot.options.reject { |opt| (time_ids + extension_ids).include?(opt.id) }.each do |opt| %>
@@ -216,7 +210,7 @@
                         <%= "#{afternoon_slot.special? ? afternoon_slot.name : t('.afternoon')}: ◯" %>
                     </p>
                     <% if afternoon_slot.special? || activity_modifier(afternoon_slot, child).positive? %>
-                      <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(afternoon_slot, child), unit: '円', precision: 0, locale: :ja))  %></p>
+                      <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(afternoon_slot, child)))  %></p>
                     <% end %>
                     <% if afternoon_slot.snack %>
                         <p><%= "#{t('.snack')}: ◯" %></p>
@@ -266,7 +260,7 @@
                             <% end %>
 
                             <% if afternoon_slot.special? || activity_modifier(afternoon_slot, child) %>
-                              <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(afternoon_slot, child), unit: '円', precision: 0, locale: :ja))  %></p>
+                              <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(afternoon_slot, child)))  %></p>
                             <% end %>
                             <% afternoon_slot.options.reject { |opt| aft_time_ids.include?(opt.id) }.each do |opt| %>
                                 <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
