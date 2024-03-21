@@ -8,11 +8,10 @@ class UsersController < ApplicationController
     authorize User
     return new_users if params[:ids]
 
-    @users = if current_user.admin?
-               policy_scope(User).page(params[:page]).per(100)
-             else
-               policy_scope(User).page(params[:page]).per(50)
-             end
+    @users = policy_scope(User).customer
+                               .includes(:children)
+                               .page(params[:page]).per(50)
+    @users = @users.where(search_params) if params[:search]
   end
 
   def profile
@@ -246,6 +245,10 @@ class UsersController < ApplicationController
 
   def statistician_data(user)
     admin_data(user)
+  end
+
+  def search_params
+    params.require(:search).permit(:email, :name, :katakana_name).compact_blank
   end
 
   def user_params

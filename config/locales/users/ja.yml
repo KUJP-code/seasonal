@@ -87,7 +87,7 @@ ja:
       edit_info: "編集"
       email: "メールアドレス"
       filter: "フィルター"
-      katakana: "名前(カタカナ)"
+      katakana_name: "名前(カタカナ)"
       name: "名前"
       new_customer: "保護者を追加する"
     merge_children:

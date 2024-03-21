@@ -16,6 +16,7 @@ class ChildrenController < ApplicationController
     @children = policy_scope(Child)
                 .includes(:parent)
                 .page(params[:page]).per(100)
+    @children = @children.where(search_params) if params[:search]
   end
 
   def show
@@ -101,6 +102,7 @@ class ChildrenController < ApplicationController
                       .includes(:parent)
                       .page(params[:page]).per(100)
     @children = school_given ? scoped_children.where(school_id: @school.id) : scoped_children
+    @children = @children.where(search_params) if params[:search]
   end
 
   def default_school
@@ -161,6 +163,12 @@ class ChildrenController < ApplicationController
                          real_invoices: :coupons
                        ).order(:name)
     render 'children/events/event_sheet'
+  end
+
+  def search_params
+    params.require(:search).permit(
+      :email, :en_name, :name, :katakana_name, :ssid
+    ).compact_blank
   end
 
   def search_result

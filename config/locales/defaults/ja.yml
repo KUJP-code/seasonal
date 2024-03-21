@@ -224,6 +224,13 @@ ja:
     "蒲田駅前": "蒲田駅前"
     "田園調布雪谷": "田園調布雪谷"
     "オンラインコース": "オンラインコース"
+  shared:
+    search:
+      email: "メールアドレス"
+      en_name: "名前(ローマ字)"
+      name: "名前"
+      katakana_name: "カタカナ名"
+      search: "検索"
   success: "%{model}%{action}されました"
   support:
     array:

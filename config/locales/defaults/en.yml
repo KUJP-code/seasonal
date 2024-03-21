@@ -107,5 +107,11 @@ en:
     "蒲田駅前": "Kamata"
     "田園調布雪谷": "Denenchofu"
     "オンラインコース": "Online"
+  shared:
+    search:
+      email: "Email"
+      name: "Name"
+      katakana_name: "Katakana Name"
+      search: "Search"
   success: "You did it!"
   unregister: "Unregister"

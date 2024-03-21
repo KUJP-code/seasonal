@@ -1,0 +1,13 @@
+-# locals: (fields:, resource:)
+
+= form_with html: { class: 'card flex-row flex-wrap gap-3',
+                    method: 'get' },
+            scope: :search do |f|
+  .w-100.d-flex.justify-content-between.gap-3
+    - fields.each do |field|
+      - value = params[:search] ? params[:search][field] : ''
+      .form-floating
+        = f.text_field field, value: value, class: 'form-control'
+        = f.label field, t(".#{field}"), class: 'form-label'
+
+  = f.submit t('.search'), class: 'btn btn-primary w-100'

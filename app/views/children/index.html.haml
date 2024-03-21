@@ -1,4 +1,5 @@
-- columns = %w[ssid name katakana en category allergies hat parent edit_info]
+- columns = %w[ssid name katakana_name en_name category allergies hat parent]
+- unsearchable = %w[allergies category hat parent]
 
 %main#children-index
   = link_to t('.create_child'), new_child_path, class: 'btn btn-primary'
@@ -9,6 +10,10 @@
              school: @school,
              indexed_resource: 'children'
 
+  = render 'shared/search',
+           fields: columns.reject { |col| unsearchable.include?(col) },
+           resource: 'Child'
+
   = paginate @children, window: 40
 
   %table.table.table-hover.table-striped.text-center
@@ -16,11 +21,7 @@
       %tr.table-primary
         - columns.each do |col|
           %th{ scope: col }= t(".#{col}")
-
-      %tr
-        - columns.each do |col|
-          = render partial: 'shared/filter_header',
-                   locals: { column: col, siblings: '0' }
+        %th
 
     %tbody
       = render partial: 'children/child', collection: @children

@@ -1,4 +1,4 @@
-- columns = %w[name katakana email edit_info]
+- cols = %w[name katakana_name email]
 
 %main#user-index
   - if current_user.staff?
@@ -6,19 +6,18 @@
               new_user_path,
               class: 'btn btn-primary'
 
+    = render 'shared/search',
+             fields: cols,
+             resource: 'User'
+
   = paginate @users
 
   %table.table.table-hover.text-center
     %thead
       %tr.table-primary
-        - columns.each do |col|
+        - cols.each do |col|
           %th{ scope: col }= t(".#{col}")
-
-      %tr
-        - columns.reject { |col| col == 'edit_info' }.each do |col|
-          = render partial: 'shared/filter_header',
-                   locals: { column: col, siblings: '1' }
-
+        %th
     %tbody
       = render @users
 
