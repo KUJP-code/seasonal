@@ -157,7 +157,7 @@ group :development do
   gem 'web-console'
 
   # Use brakeman for static analysis
-  gem 'brakeman', '6.0.1'
+  gem 'brakeman', '~> 6.1'
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
