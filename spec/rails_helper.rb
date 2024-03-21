@@ -102,9 +102,14 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   # Use Devise helpers in feature, request and view tests
-  config.include Devise::Test::IntegrationHelpers, type: :feature
+  config.include Devise::Test::IntegrationHelpers, type: :system
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include Devise::Test::IntegrationHelpers, type: :view
+
+  # Use rack test if you don't need JS
+  config.before(:each, type: :system) do
+    driven_by :rack_test
+  end
 
   # Use route helpers
   config.include Rails.application.routes.url_helpers

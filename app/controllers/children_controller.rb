@@ -166,9 +166,15 @@ class ChildrenController < ApplicationController
   end
 
   def search_params
-    params.require(:search).permit(
+    hash = params.require(:search).permit(
       :email, :en_name, :name, :katakana_name, :ssid
-    ).compact_blank
+    ).compact_blank.to_h { |k, v| k == 'ssid' ? [k, v] : [k, "%#{v}%"] }
+    return {} if hash.empty?
+
+    string = hash.keys.map do |k|
+      k == 'ssid' ? "#{k} = :#{k}" : "#{k} LIKE :#{k}"
+    end.join(' AND ')
+    [string, hash]
   end
 
   def search_result

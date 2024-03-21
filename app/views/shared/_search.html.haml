@@ -1,6 +1,7 @@
 -# locals: (fields:, resource:)
 
 = form_with html: { class: 'card flex-row flex-wrap gap-3',
+                    id: "#{resource}_search",
                     method: 'get' },
             scope: :search do |f|
   .w-100.d-flex.justify-content-between.gap-3

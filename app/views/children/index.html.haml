@@ -12,7 +12,7 @@
 
   = render 'shared/search',
            fields: columns.reject { |col| unsearchable.include?(col) },
-           resource: 'Child'
+           resource: 'children'
 
   = paginate @children, window: 40
 
