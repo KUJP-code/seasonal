@@ -250,7 +250,7 @@ class UsersController < ApplicationController
 
   def search_params
     hash = params.require(:search).permit(:email, :name, :katakana_name)
-                 .compact_blank.to_h { |k, v| [k, "%#{v}%"] }
+                 .compact_blank.to_h { |k, v| [k, "%#{v.strip}%"] }
     return {} if hash.empty?
 
     string = hash.keys.map { |k| "#{k} LIKE :#{k}" }.join(' AND ')
