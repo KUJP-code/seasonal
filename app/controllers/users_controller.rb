@@ -165,7 +165,8 @@ class UsersController < ApplicationController
   def merge_invoices(from, to)
     from_regs = from.invoices.map(&:registrations).flatten
     to_regs = to.invoices.map(&:registrations).flatten
-    to_active_invoice = to.invoices.find_by(in_ss: false) || to.invoices.create(event_id: from.invoices.first.event_id)
+    to_active_invoice = to.invoices.where(in_ss: false).order(created_at: :desc).first ||
+                        to.invoices.create(event_id: from.invoices.first.event_id)
 
     from_regs.each do |reg|
       # Skip if already registered
