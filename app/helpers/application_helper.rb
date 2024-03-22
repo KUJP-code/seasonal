@@ -4,8 +4,7 @@ module ApplicationHelper
   def activity_modifier(activity, child)
     membership_mod = child.external? ? activity.ext_modifier : activity.int_modifier
     level_mod = child.kindy? ? activity.kindy_modifier : activity.ele_modifier
-    modifier = membership_mod + level_mod
-    modifier.zero? ? false : modifier
+    membership_mod + level_mod
   end
 
   def date_yy_mm_dd(date)

@@ -26,7 +26,7 @@
             <p class="fw-bold fs-5">
                 <%= "#{add_slot.name}: ◯" %>
             </p>
-            <% if add_slot.special? || activity_modifier(add_slot, child) %>
+            <% if add_slot.special? || activity_modifier(add_slot, child).positive? %>
                     <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(add_slot, child)))  %></p>
             <% end %>
             <% add_slot.options.each do |opt| %>
@@ -62,7 +62,7 @@
                     <% time_ids = add_slot.options.time.ids %>
                     <% extension_ids = add_slot.options.extension.ids %>
 
-                    <% if add_slot.special? || activity_modifier(add_slot, child) %>
+                    <% if add_slot.special? || activity_modifier(add_slot, child).positive? %>
                       <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(add_slot, child)))  %></p>
                     <% end %>
 
@@ -259,7 +259,7 @@
                               <p><%= "#{t('.snack')}: ◯" %></p>
                             <% end %>
 
-                            <% if afternoon_slot.special? || activity_modifier(afternoon_slot, child) %>
+                            <% if afternoon_slot.special? || activity_modifier(afternoon_slot, child).positive? %>
                               <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(afternoon_slot, child)))  %></p>
                             <% end %>
                             <% afternoon_slot.options.reject { |opt| aft_time_ids.include?(opt.id) }.each do |opt| %>
