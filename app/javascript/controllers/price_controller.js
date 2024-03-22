@@ -47,7 +47,6 @@ export default class extends Controller {
 		this.extraCountTarget.innerHTML = extraCostNodes.length.toString();
 		// Get their total effect on the cost
 		const extraCost = extraCostNodes.reduce((sum, node) => {
-			console.log(node, node.dataset.modifier);
 			return sum + Number.parseInt(node.dataset.modifier);
 		}, 0);
 
