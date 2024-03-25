@@ -13,10 +13,7 @@ class ChildrenController < ApplicationController
     authorize Child
     return index_by_school if current_user.admin? || current_user.area_manager?
 
-    @children = policy_scope(Child)
-                .includes(:parent)
-                .page(params[:page]).per(100)
-    @children = @children.where(search_params) if params[:search]
+    @children = params[:search] ? policy_scope(Child).where(search_params) : policy_scope(Child.none)
   end
 
   def show
@@ -172,7 +169,7 @@ class ChildrenController < ApplicationController
     return {} if hash.empty?
 
     string = hash.keys.map do |k|
-      k == 'ssid' ? "#{k} = :#{k}" : "#{k} LIKE :#{k}"
+      k == 'ssid' ? "children.#{k} = :#{k}" : "#{k} LIKE :#{k}"
     end.join(' AND ')
     [string, hash]
   end

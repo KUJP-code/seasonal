@@ -14,8 +14,6 @@
            fields: columns.reject { |col| unsearchable.include?(col) },
            resource: 'children'
 
-  = paginate @children, window: 40
-
   %table.table.table-hover.table-striped.text-center
     %thead
       %tr.table-primary
@@ -25,5 +23,3 @@
 
     %tbody
       = render partial: 'children/child', collection: @children
-
-  = paginate @children, window: 40

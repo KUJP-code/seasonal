@@ -10,8 +10,6 @@
              fields: cols,
              resource: 'users'
 
-  = paginate @users
-
   %table.table.table-hover.text-center
     %thead
       %tr.table-primary
@@ -20,5 +18,3 @@
         %th
     %tbody
       = render @users
-
-  = paginate @users

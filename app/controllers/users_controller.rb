@@ -8,10 +8,7 @@ class UsersController < ApplicationController
     authorize User
     return new_users if params[:ids]
 
-    @users = policy_scope(User).customer
-                               .includes(:children)
-                               .page(params[:page]).per(50)
-    @users = @users.where(search_params) if params[:search]
+    @users = params[:search] ? policy_scope(User).where(search_params) : policy_scope(User.none)
   end
 
   def profile
@@ -253,7 +250,7 @@ class UsersController < ApplicationController
                  .compact_blank.to_h { |k, v| [k, "%#{v.strip}%"] }
     return {} if hash.empty?
 
-    string = hash.keys.map { |k| "#{k} LIKE :#{k}" }.join(' AND ')
+    string = hash.keys.map { |k| "users.#{k} LIKE :#{k}" }.join(' AND ')
     [string, hash]
   end
 
