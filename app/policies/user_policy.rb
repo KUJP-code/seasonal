@@ -35,9 +35,11 @@ class UserPolicy < ApplicationPolicy
       when 'admin'
         scope.all
       when 'area_manager'
-        scope.where(id: user.area_parents.ids)
+        scope.where(id: user.area_parents.ids) +
+          User.where.missing(:children).where(role: :customer)
       when 'school_manager'
-        scope.where(id: user.school_parents.ids)
+        scope.where(id: user.school_parents.ids) +
+          User.where.missing(:children).where(role: :customer)
       else
         scope.none
       end

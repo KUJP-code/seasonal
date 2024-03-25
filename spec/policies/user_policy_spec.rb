@@ -143,22 +143,24 @@ RSpec.describe UserPolicy do
       expect(Pundit.policy_scope!(user, User.all)).to eq(users)
     end
 
-    it 'resolves area_manager to area parents' do
+    it 'resolves area_manager to area parents and childless parents' do
       user = create(:area_manager)
       user.managed_areas << create(:area)
       school = create(:school, area: user.managed_areas.first)
       area_parent = create(:customer, children: [create(:internal_child, school: school)])
-      expect(Pundit.policy_scope!(user, User.all)).to contain_exactly(area_parent)
+      childless_parent = create(:customer)
+      expect(Pundit.policy_scope!(user, User.all)).to contain_exactly(area_parent, childless_parent)
     end
 
-    it 'resolves school_manager to school parents' do
+    it 'resolves school_manager to school parents and childless parents' do
       user = create(:school_manager)
       user.managed_schools << create(:school)
       school_parent = create(
         :customer,
         children: [create(:internal_child, school: user.managed_school)]
       )
-      expect(Pundit.policy_scope!(user, User.all)).to contain_exactly(school_parent)
+      childless_parent = create(:customer)
+      expect(Pundit.policy_scope!(user, User.all)).to contain_exactly(school_parent, childless_parent)
     end
 
     it 'resolves statistician to nothing' do
