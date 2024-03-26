@@ -16,5 +16,8 @@
 
 %tr{ class: "user#{user.id} table-light details" }
   %td.text-center{ colspan: 4 }
-    - user.children.each do |child|
-      = link_to child.name, child_path(child)
+    - if user.children.empty?
+      なし
+    - else
+      - user.children.each do |child|
+        = link_to child.name, child_path(child)

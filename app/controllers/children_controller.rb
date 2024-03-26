@@ -11,9 +11,12 @@ class ChildrenController < ApplicationController
     return show_attendance_sheet if attendance_request?
 
     authorize Child
-    return index_by_school if current_user.admin? || current_user.area_manager?
 
-    @children = params[:search] ? policy_scope(Child).where(search_params) : policy_scope(Child.none)
+    @children = if params[:search]
+                  policy_scope(Child).where(search_params)
+                else
+                  policy_scope(Child.none)
+                end.limit(50)
   end
 
   def show
@@ -91,22 +94,6 @@ class ChildrenController < ApplicationController
                                   ])
   end
 
-  def index_by_school
-    @schools = policy_scope(School).order(:id)
-    school_given = params[:school] && params[:school] != '0'
-    @school = school_given ? School.find(params[:school]) : default_school
-    @children = school_given ? policy_scope(Child).where(school_id: @school.id) : policy_scope(Child)
-    @children = params[:search] ? @children.where(search_params) : @children
-  end
-
-  def default_school
-    if current_user.school_manager?
-      @schools.first
-    else
-      School.new(id: 0)
-    end
-  end
-
   def afternoon_data
     if @afternoon
       @afternoon_children = @afternoon.children.includes(
@@ -162,7 +149,7 @@ class ChildrenController < ApplicationController
   def search_params
     hash = params.require(:search).permit(
       :email, :en_name, :name, :katakana_name, :ssid
-    ).compact_blank.to_h { |k, v| k == 'ssid' ? [k, v.strip] : [k, "%#{v.strip}%"] }
+    ).compact_blank.to_h { |k, v| k == 'ssid' ? [k, v.strip] : [k, "%#{Child.sanitize_sql_like(v.strip)}%"] }
     return {} if hash.empty?
 
     string = hash.keys.map do |k|

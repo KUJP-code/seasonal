@@ -8,7 +8,11 @@ class UsersController < ApplicationController
     authorize User
     return new_users if params[:ids]
 
-    @users = params[:search] ? policy_scope(User).where(search_params) : policy_scope(User.none)
+    @users = if params[:search]
+               policy_scope(User).where(search_params)
+             else
+               policy_scope(User.none)
+             end.limit(50)
   end
 
   def profile
@@ -247,7 +251,7 @@ class UsersController < ApplicationController
 
   def search_params
     hash = params.require(:search).permit(:email, :name, :katakana_name)
-                 .compact_blank.to_h { |k, v| [k, "%#{v.strip}%"] }
+                 .compact_blank.to_h { |k, v| [k, "%#{User.sanitize_sql_like(v.strip)}%"] }
     return {} if hash.empty?
 
     string = hash.keys.map { |k| "users.#{k} LIKE :#{k}" }.join(' AND ')
