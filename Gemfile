@@ -100,7 +100,7 @@ gem 'stackprof'
 gem 'oj'
 
 # Use rack-cors to allow API requests
-gem 'rack-cors', '2.0.1'
+gem 'rack-cors', '2.0.2'
 
 # Use haml-rails for templating
 gem 'haml-rails'
@@ -116,6 +116,9 @@ gem 'nokogiri', '1.16.2'
 
 # Lock globalid to avoid vulnerabilities
 gem 'globalid', '1.2.1'
+
+# Lock rdoc to avoid CVE-2024-27281
+gem 'rdoc', '6.6.3.1'
 
 group :development, :test do
   # Ruby LSP from shopify for autocomlete
