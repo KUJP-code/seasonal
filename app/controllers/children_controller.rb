@@ -95,11 +95,8 @@ class ChildrenController < ApplicationController
     @schools = policy_scope(School).order(:id)
     school_given = params[:school] && params[:school] != '0'
     @school = school_given ? School.find(params[:school]) : default_school
-    scoped_children = policy_scope(Child)
-                      .includes(:parent)
-                      .page(params[:page]).per(100)
-    @children = school_given ? scoped_children.where(school_id: @school.id) : scoped_children
-    @children = @children.where(search_params) if params[:search]
+    @children = school_given ? policy_scope(Child).where(school_id: @school.id) : policy_scope(Child)
+    @children = params[:search] ? @children.where(search_params) : @children
   end
 
   def default_school
