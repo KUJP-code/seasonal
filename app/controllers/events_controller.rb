@@ -15,6 +15,8 @@ class EventsController < ApplicationController
 
   def show
     @event = authorize Event.find(params[:id])
+    return old_event_redirect if current_user.customer? && Time.zone.today > @event.end_date
+
     @child = authorize params[:child] ? Child.find(params[:child]) : current_user.children.first
     return orphan_redirect if @child.parent_id.nil?
 
@@ -138,6 +140,11 @@ class EventsController < ApplicationController
                                  .map { |blob| [blob.key, blob.id] }
     @prices = PriceList.order(:name)
     @schools = [%w[All all]] + School.order(:id).map { |school| [school.name, school.id] }
+  end
+
+  def old_event_redirect
+    redirect_to root_path,
+                alert: "下記カレンダーよりご希望のアクティビティをクリックし、選択してください。\n<注意>すでに終了しているアクティビティは選択をしないようご注意ください。"
   end
 
   def orphan_redirect
