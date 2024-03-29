@@ -4,6 +4,7 @@ export default class extends Controller {
 	static targets = [
 		"adjChange",
 		"child",
+		"confirm",
 		"eventCost",
 		"finalCost",
 		"optRegs",
@@ -61,6 +62,7 @@ export default class extends Controller {
 		)
 			.toString()
 			.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}円`;
+		this.preventSubmission(finalCost);
 	}
 
 	// Finds the cheapest price for the given number of regs
@@ -85,17 +87,20 @@ export default class extends Controller {
 
 	// Get the course objects on connect so you don't have to parse before each calculation
 	connect() {
+		this.confirmText = this.confirmTarget.value;
+		console.log(this.confirmText);
 		this.memberPrice = this.memberPriceValue;
 		this.nonMemberPrice = this.nonMemberPriceValue;
+		this.preventSubmission(0);
 	}
 
 	// Calculates total change due to adjustments
 	calcAdjustments() {
 		return this.hasAdjChangeTarget
 			? this.adjChangeTargets.reduce(
-					(sum, change) => sum + Number.parseInt(change.innerHTML),
-					0,
-			  )
+				(sum, change) => sum + Number.parseInt(change.innerHTML),
+				0,
+			)
 			: 0;
 	}
 
@@ -128,5 +133,15 @@ export default class extends Controller {
 	// Find the largest course that fits the number of registrations
 	nearestFive(num) {
 		return Math.floor(num / 5) * 5;
+	}
+
+	preventSubmission(finalCost) {
+		if (finalCost === 0) {
+			this.confirmTarget.disabled = true;
+			this.confirmTarget.value = "登録がなく確認できない";
+		} else {
+			this.confirmTarget.disabled = false;
+			this.confirmTarget.value = this.confirmText;
+		}
 	}
 }
