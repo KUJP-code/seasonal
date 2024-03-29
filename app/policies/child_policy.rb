@@ -40,6 +40,8 @@ class ChildPolicy < ApplicationPolicy
         scope.where(id: user.area_children.ids)
       when 'school_manager'
         scope.where(id: user.school_children.ids)
+      when 'customer'
+        scope.where(id: user.children.ids)
       else
         scope.none
       end
@@ -51,6 +53,12 @@ class ChildPolicy < ApplicationPolicy
   def staff_or_parent?
     return false if user.statistician?
 
-    user.staff? || user.id == record.parent_id
+    user.staff? || parent?
+  end
+
+  def parent?
+    return false if record.parent.nil?
+
+    user.id == record.parent_id
   end
 end

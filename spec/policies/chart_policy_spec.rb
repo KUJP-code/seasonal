@@ -12,11 +12,6 @@ RSpec.shared_examples 'school manager for ChartPolicy' do
   it { is_expected.to authorize_action(:show) }
 end
 
-RSpec.shared_examples 'unauthorized user for ChartPolicy' do
-  it { is_expected.not_to authorize_action(:index) }
-  it { is_expected.not_to authorize_action(:show) }
-end
-
 RSpec.describe ChartPolicy do
   subject(:policy) { described_class.new(user, nil) }
 
@@ -47,6 +42,6 @@ RSpec.describe ChartPolicy do
   context 'when customer' do
     let(:user) { build(:customer) }
 
-    it_behaves_like 'unauthorized user for ChartPolicy'
+    it_behaves_like 'unauthorized user'
   end
 end

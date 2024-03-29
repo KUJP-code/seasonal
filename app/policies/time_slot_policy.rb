@@ -5,7 +5,15 @@ class TimeSlotPolicy < ApplicationPolicy
     user.staff?
   end
 
+  def show?
+    authorized_staff?
+  end
+
   def new?
+    user.admin?
+  end
+
+  def create?
     user.admin?
   end
 
@@ -18,7 +26,7 @@ class TimeSlotPolicy < ApplicationPolicy
   end
 
   def attendance?
-    user.admin? || area_slot? || school_slot?
+    authorized_staff?
   end
 
   class Scope < Scope
@@ -37,6 +45,10 @@ class TimeSlotPolicy < ApplicationPolicy
   end
 
   private
+
+  def authorized_staff?
+    user.admin? || area_slot? || school_slot?
+  end
 
   def area_slot?
     user.area_manager? && user.area_slots.ids.include?(record.id)

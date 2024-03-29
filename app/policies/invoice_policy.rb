@@ -10,7 +10,9 @@ class InvoicePolicy < ApplicationPolicy
   end
 
   def new?
-    user.present?
+    return false if user.statistician?
+
+    true
   end
 
   def create?

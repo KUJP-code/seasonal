@@ -5,7 +5,7 @@ require 'rails_helper'
 describe EventPolicy do
   subject(:policy) { described_class.new(user, event) }
 
-  let(:event) { create(:event) }
+  let(:event) { build(:event) }
 
   context 'when admin' do
     let(:user) { build(:admin) }
@@ -20,7 +20,7 @@ describe EventPolicy do
 
     it 'can access attendance for area events' do
       user.managed_areas << event.area
-      user.save
+      user.save && event.save
       expect(policy).to authorize_action(:attendance)
     end
 
@@ -34,7 +34,7 @@ describe EventPolicy do
 
     it 'can access attendance for school events' do
       user.managed_schools << event.school
-      user.save
+      user.save && event.save
       expect(policy).to authorize_action(:attendance)
     end
 
@@ -76,17 +76,19 @@ describe EventPolicy do
     it 'resolves school_manager to school events' do
       user = create(:school_manager)
       user.managed_schools << create(:school)
-      expect(Pundit.policy_scope!(user, Event.all)).to eq(user.school_events)
+      school_event = create(:event)
+      user.managed_schools.first.events << school_event
+      expect(Pundit.policy_scope!(user, Event)).to eq([school_event])
     end
 
     it 'resolves statistician to all events' do
       user = build(:statistician)
-      expect(Pundit.policy_scope!(user, Event.all)).to eq(Event.all)
+      expect(Pundit.policy_scope!(user, Event)).to eq(Event.all)
     end
 
     it 'resolves customer to events children are attending' do
       user = build(:customer)
-      expect(Pundit.policy_scope!(user, Event.all)).to eq(user.events)
+      expect(Pundit.policy_scope!(user, Event)).to eq(user.events)
     end
   end
 end

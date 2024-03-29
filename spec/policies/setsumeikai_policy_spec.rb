@@ -2,35 +2,6 @@
 
 require 'rails_helper'
 
-RSpec.shared_examples 'manager of setsumeikai school for SetsumeikaiPolicy' do
-  it { is_expected.to authorize_action(:index) }
-  it { is_expected.to authorize_action(:show) }
-  it { is_expected.to authorize_action(:new) }
-  it { is_expected.to authorize_action(:create) }
-  it { is_expected.to authorize_action(:edit) }
-  it { is_expected.to authorize_action(:update) }
-  it { is_expected.to authorize_action(:destroy) }
-end
-
-RSpec.shared_examples 'manager of involved school' do
-  it { is_expected.to authorize_action(:index) }
-  it { is_expected.to authorize_action(:show) }
-  it { is_expected.not_to authorize_action(:new) }
-  it { is_expected.not_to authorize_action(:create) }
-  it { is_expected.not_to authorize_action(:edit) }
-  it { is_expected.not_to authorize_action(:update) }
-  it { is_expected.not_to authorize_action(:destroy) }
-end
-
-RSpec.shared_examples 'unauthorized user for SetsumeikaiPolicy' do
-  it { is_expected.not_to authorize_action(:show) }
-  it { is_expected.not_to authorize_action(:new) }
-  it { is_expected.not_to authorize_action(:create) }
-  it { is_expected.not_to authorize_action(:edit) }
-  it { is_expected.not_to authorize_action(:update) }
-  it { is_expected.not_to authorize_action(:destroy) }
-end
-
 RSpec.describe SetsumeikaiPolicy do
   subject(:policy) { described_class.new(user, setsumeikai) }
 
@@ -39,91 +10,79 @@ RSpec.describe SetsumeikaiPolicy do
   context 'when admin' do
     let(:user) { build(:admin) }
 
-    it_behaves_like 'manager of setsumeikai school for SetsumeikaiPolicy'
+    it_behaves_like 'fully authorized user'
   end
 
-  context 'when manager of setsumeikai area' do
-    let(:user) { create(:area_manager) }
+  context 'when area manager' do
+    let(:user) { build(:area_manager) }
 
-    before do
-      user.managed_areas << setsumeikai.area
-      user.save
+    context 'when manager of setsumeikai area' do
+      before do
+        user.managed_areas << setsumeikai.area
+        user.save
+      end
+
+      it_behaves_like 'fully authorized user'
     end
 
-    it_behaves_like 'manager of setsumeikai school for SetsumeikaiPolicy'
-  end
+    context 'when manager of involved school area' do
+      before do
+        user.managed_areas << create(:area)
+        school = create(:school, area: user.managed_areas.first)
+        user.save
+        create(:setsumeikai_involvement, school: school, setsumeikai: setsumeikai)
+      end
 
-  context 'when area manager of involved school' do
-    let(:user) { create(:area_manager) }
-
-    before do
-      user.managed_areas << create(:area)
-      school = create(:school, area: user.managed_areas.first)
-      create(:setsumeikai_involvement, school: school, setsumeikai: setsumeikai)
+      it_behaves_like 'viewer'
     end
 
-    it_behaves_like 'manager of involved school'
+    context 'when area manager of uninvolved area' do
+      it_behaves_like 'unauthorized user'
+    end
   end
 
-  context 'when area manager of uninvolved school' do
-    let(:user) { create(:area_manager) }
+  context 'when school manager' do
+    let(:user) { build(:school_manager) }
 
-    it { is_expected.to authorize_action(:index) }
+    context 'when manager of setsumeikai school' do
+      before do
+        user.managed_schools << setsumeikai.school
+      end
 
-    it_behaves_like 'unauthorized user for SetsumeikaiPolicy'
-  end
-
-  context 'when manager of setsumeikai school' do
-    let(:user) { create(:school_manager) }
-
-    before do
-      user.managed_schools << setsumeikai.school
-      user.save
+      it_behaves_like 'fully authorized user'
     end
 
-    it_behaves_like 'manager of setsumeikai school for SetsumeikaiPolicy'
-  end
+    context 'when viewer' do
+      before do
+        user.managed_schools << create(:school)
+        create(:setsumeikai_involvement, school: user.managed_schools.first, setsumeikai: setsumeikai)
+      end
 
-  context 'when manager of involved school' do
-    let(:user) { create(:school_manager) }
-
-    before do
-      user.managed_schools << create(:school)
-      create(:setsumeikai_involvement, school: user.managed_schools.first, setsumeikai: setsumeikai)
+      it_behaves_like 'viewer'
     end
 
-    it_behaves_like 'manager of involved school'
-  end
-
-  context 'when manager of uninvolved school' do
-    let(:user) { create(:school_manager) }
-
-    it { is_expected.to authorize_action(:index) }
-
-    it_behaves_like 'unauthorized user for SetsumeikaiPolicy'
+    context 'when manager of uninvolved school' do
+      it_behaves_like 'unauthorized user'
+    end
   end
 
   context 'when statistician' do
-    let(:user) { create(:statistician) }
+    let(:user) { build(:statistician) }
 
-    it { is_expected.not_to authorize_action(:index) }
-
-    it_behaves_like 'unauthorized user for SetsumeikaiPolicy'
+    it_behaves_like 'unauthorized user'
   end
 
   context 'when customer' do
-    let(:user) { create(:customer) }
+    let(:user) { build(:customer) }
 
-    it { is_expected.not_to authorize_action(:index) }
-
-    it_behaves_like 'unauthorized user for SetsumeikaiPolicy'
+    it_behaves_like 'unauthorized user'
   end
 
   context 'when resolving scope' do
-    let(:setsumeikais) { create_list(:setsumeikai, 3) }
+    let(:setsumeikais) { create_list(:setsumeikai, 2) }
 
     it 'resolves admin to all setsumeikais' do
-      user = create(:admin)
+      user = build(:admin)
       expect(Pundit.policy_scope!(user, Setsumeikai)).to eq(setsumeikais)
     end
 
@@ -143,12 +102,12 @@ RSpec.describe SetsumeikaiPolicy do
     end
 
     it 'resolves statistician to all setsumeikais' do
-      user = create(:statistician)
-      expect(Pundit.policy_scope!(user, Setsumeikai)).to eq(Setsumeikai.all)
+      user = build(:statistician)
+      expect(Pundit.policy_scope!(user, Setsumeikai)).to eq(setsumeikais)
     end
 
     it 'resolves customer to nothing' do
-      user = create(:customer)
+      user = build(:customer)
       expect(Pundit.policy_scope!(user, Setsumeikai)).to eq(Setsumeikai.none)
     end
   end

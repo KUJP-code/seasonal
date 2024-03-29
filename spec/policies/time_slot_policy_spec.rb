@@ -27,78 +27,72 @@ end
 RSpec.describe TimeSlotPolicy do
   subject(:policy) { described_class.new(user, time_slot) }
 
-  let(:time_slot) { create(:time_slot) }
+  let(:time_slot) { build(:time_slot) }
 
   context 'when admin' do
-    let(:user) { create(:admin) }
+    let(:user) { build(:admin) }
 
-    it { is_expected.to authorize_action(:index) }
-    it { is_expected.to authorize_action(:new) }
-    it { is_expected.to authorize_action(:edit) }
-    it { is_expected.to authorize_action(:update) }
-    it { is_expected.to authorize_action(:attendance) }
+    it_behaves_like 'authorized except destroy'
   end
 
-  context 'when manager of TimeSlot school area' do
-    let(:user) { create(:area_manager) }
+  context 'when area manager' do
+    let(:user) { build(:area_manager) }
 
-    before do
-      user.managed_areas << time_slot.school.area
-      user.save
+    context 'when manager of TimeSlot school area' do
+      before do
+        time_slot.save
+        user.managed_areas << time_slot.school.area
+        user.save
+      end
+
+      it { is_expected.to authorize_action(:attendance) }
+      it { is_expected.to authorize_action(:show) }
+      it { is_expected.not_to authorize_action(:new) }
+      it { is_expected.not_to authorize_action(:edit) }
+      it { is_expected.not_to authorize_action(:create) }
+      it { is_expected.to authorize_action(:update) }
+      it { is_expected.not_to authorize_action(:destroy) }
     end
 
-    it { is_expected.to authorize_action(:attendance) }
-
-    it_behaves_like 'manager for TimeSlotPolicy'
-    it_behaves_like 'area manager for TimeSlotPolicy'
+    context 'when manager of different area' do
+      it_behaves_like 'unauthorized user'
+    end
   end
 
-  context 'when manager of different area' do
-    let(:user) { create(:area_manager) }
+  context 'when school manager' do
+    let(:user) { build(:school_manager) }
 
-    it { is_expected.not_to authorize_action(:attendance) }
+    context 'when manager of TimeSlot school' do
+      before do
+        time_slot.save
+        user.managed_schools << time_slot.school
+        user.save
+      end
 
-    it_behaves_like 'manager for TimeSlotPolicy'
-    it_behaves_like 'school manager for TimeSlotPolicy'
-  end
-
-  context 'when manager of TimeSlot school' do
-    let(:user) { create(:school_manager) }
-
-    before do
-      user.managed_schools << time_slot.school
-      user.save
+      it_behaves_like 'viewer'
+      it { is_expected.to authorize_action(:attendance) }
     end
 
-    it { is_expected.to authorize_action(:attendance) }
-
-    it_behaves_like 'manager for TimeSlotPolicy'
-    it_behaves_like 'school manager for TimeSlotPolicy'
-  end
-
-  context 'when manager of different school' do
-    let(:user) { create(:school_manager) }
-
-    it { is_expected.not_to authorize_action(:attendance) }
-
-    it_behaves_like 'manager for TimeSlotPolicy'
-    it_behaves_like 'school manager for TimeSlotPolicy'
+    context 'when manager of different school' do
+      it_behaves_like 'unauthorized user'
+      it { is_expected.not_to authorize_action(:attendance) }
+    end
   end
 
   context 'when statistician' do
-    let(:user) { create(:statistician) }
+    let(:user) { build(:statistician) }
 
-    it_behaves_like 'unauthorized user for TimeSlotPolicy'
+    it_behaves_like 'unauthorized user'
   end
 
   context 'when customer' do
-    let(:user) { create(:customer) }
+    let(:user) { build(:customer) }
 
-    it_behaves_like 'unauthorized user for TimeSlotPolicy'
+    it_behaves_like 'unauthorized user'
   end
 
   context 'when resolving scopes' do
-    let(:time_slots) { create_list(:time_slot, 3) }
+    let(:time_slots) { create_list(:time_slot, 2) }
 
     it 'resolves admin to all time slots' do
       user = build(:admin)
@@ -121,12 +115,12 @@ RSpec.describe TimeSlotPolicy do
     end
 
     it 'resolves statistician to nothing' do
-      user = create(:statistician)
+      user = build(:statistician)
       expect(Pundit.policy_scope!(user, TimeSlot)).to eq(TimeSlot.none)
     end
 
     it 'resolves parent to nothing' do
-      user = create(:customer)
+      user = build(:customer)
       expect(Pundit.policy_scope!(user, TimeSlot)).to eq(TimeSlot.none)
     end
   end

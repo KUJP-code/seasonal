@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Handles authorisation for CSV upload/export
 class CsvPolicy < ApplicationPolicy
   def index?
     user.admin?

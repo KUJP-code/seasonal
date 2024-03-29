@@ -5,24 +5,28 @@ class InquiryPolicy < ApplicationPolicy
     user.staff?
   end
 
+  def show?
+    authorized_staff?
+  end
+
   def new?
     user.staff?
   end
 
   def edit?
-    user.admin? || area_inquiry? || school_inquiry?
+    authorized_staff?
   end
 
   def create?
-    true
+    authorized_staff?
   end
 
   def update?
-    user.admin? || area_inquiry? || school_inquiry?
+    authorized_staff?
   end
 
   def destroy?
-    user.staff?
+    authorized_staff?
   end
 
   class Scope < Scope
@@ -39,6 +43,10 @@ class InquiryPolicy < ApplicationPolicy
   end
 
   private
+
+  def authorized_staff?
+    user.admin? || area_inquiry? || school_inquiry?
+  end
 
   def area_inquiry?
     user.area_manager? && user.managed_areas.ids.include?(record.area.id)

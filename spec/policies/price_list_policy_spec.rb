@@ -2,14 +2,6 @@
 
 require 'rails_helper'
 
-RSpec.shared_examples 'unauthorized user for PriceListPolicy' do
-  it { is_expected.not_to authorize_action(:index) }
-  it { is_expected.not_to authorize_action(:create) }
-  it { is_expected.not_to authorize_action(:new) }
-  it { is_expected.not_to authorize_action(:edit) }
-  it { is_expected.not_to authorize_action(:update) }
-end
-
 describe PriceListPolicy do
   subject(:policy) { described_class.new(user, price_list) }
 
@@ -18,35 +10,31 @@ describe PriceListPolicy do
   context 'when admin' do
     let(:user) { build(:admin) }
 
-    it { is_expected.to authorize_action(:index) }
-    it { is_expected.to authorize_action(:create) }
-    it { is_expected.to authorize_action(:new) }
-    it { is_expected.to authorize_action(:edit) }
-    it { is_expected.to authorize_action(:update) }
+    it_behaves_like 'fully authorized user'
   end
 
   context 'when area manager' do
     let(:user) { build(:area_manager) }
 
-    it_behaves_like 'unauthorized user for PriceListPolicy'
+    it_behaves_like 'unauthorized user'
   end
 
   context 'when school manager' do
     let(:user) { build(:school_manager) }
 
-    it_behaves_like 'unauthorized user for PriceListPolicy'
+    it_behaves_like 'unauthorized user'
   end
 
   context 'when statistician' do
     let(:user) { build(:statistician) }
 
-    it_behaves_like 'unauthorized user for PriceListPolicy'
+    it_behaves_like 'unauthorized user'
   end
 
   context 'when customer' do
     let(:user) { build(:customer) }
 
-    it_behaves_like 'unauthorized user for PriceListPolicy'
+    it_behaves_like 'unauthorized user'
   end
 
   context 'when resolving scopes' do
@@ -54,7 +42,7 @@ describe PriceListPolicy do
 
     it 'resolves admin to all price lists' do
       user = build(:admin)
-      expect(Pundit.policy_scope!(user, PriceList.all)).to eq(price_lists)
+      expect(Pundit.policy_scope!(user, PriceList)).to eq(price_lists)
     end
 
     it 'resolves area_manager to nothing' do

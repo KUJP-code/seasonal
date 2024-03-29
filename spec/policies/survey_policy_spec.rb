@@ -2,62 +2,39 @@
 
 require 'rails_helper'
 
-RSpec.shared_examples 'viewer for SurveyPolicy' do
-  it { is_expected.to authorize_action(:index) }
-  it { is_expected.to authorize_action(:show) }
-  it { is_expected.not_to authorize_action(:new) }
-  it { is_expected.not_to authorize_action(:create) }
-  it { is_expected.not_to authorize_action(:edit) }
-  it { is_expected.not_to authorize_action(:update) }
-end
-
-RSpec.shared_examples 'unauthorized user for SurveyPolicy' do
-  it { is_expected.not_to authorize_action(:index) }
-  it { is_expected.not_to authorize_action(:show) }
-  it { is_expected.not_to authorize_action(:new) }
-  it { is_expected.not_to authorize_action(:create) }
-  it { is_expected.not_to authorize_action(:edit) }
-  it { is_expected.not_to authorize_action(:update) }
-end
-
 RSpec.describe SurveyPolicy do
   subject(:policy) { described_class.new(user, survey) }
 
-  let(:survey) { create(:survey) }
+  let(:survey) { build(:survey) }
 
   context 'when admin' do
-    let(:user) { create(:admin) }
+    let(:user) { build(:admin) }
 
-    it { is_expected.to authorize_action(:index) }
-    it { is_expected.to authorize_action(:show) }
-    it { is_expected.to authorize_action(:new) }
-    it { is_expected.to authorize_action(:create) }
-    it { is_expected.to authorize_action(:edit) }
-    it { is_expected.to authorize_action(:update) }
+    it_behaves_like 'authorized except destroy'
   end
 
   context 'when area manager' do
-    let(:user) { create(:area_manager) }
+    let(:user) { build(:area_manager) }
 
-    it_behaves_like 'viewer for SurveyPolicy'
+    it_behaves_like 'viewer'
   end
 
   context 'when school manager' do
-    let(:user) { create(:school_manager) }
+    let(:user) { build(:school_manager) }
 
-    it_behaves_like 'viewer for SurveyPolicy'
+    it_behaves_like 'viewer'
   end
 
   context 'when statistician' do
-    let(:user) { create(:statistician) }
+    let(:user) { build(:statistician) }
 
-    it_behaves_like 'viewer for SurveyPolicy'
+    it_behaves_like 'viewer'
   end
 
   context 'when customer' do
-    let(:user) { create(:customer) }
+    let(:user) { build(:customer) }
 
-    it_behaves_like 'unauthorized user for SurveyPolicy'
+    it_behaves_like 'unauthorized user'
   end
 
   context 'when resolving scopes' do
