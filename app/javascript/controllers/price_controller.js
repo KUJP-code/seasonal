@@ -88,19 +88,19 @@ export default class extends Controller {
 	// Get the course objects on connect so you don't have to parse before each calculation
 	connect() {
 		this.confirmText = this.confirmTarget.value;
-		console.log(this.confirmText);
+		this.initialCost = this.getInitialCost();
 		this.memberPrice = this.memberPriceValue;
 		this.nonMemberPrice = this.nonMemberPriceValue;
-		this.preventSubmission(0);
+		this.preventSubmission(this.initialCost);
 	}
 
 	// Calculates total change due to adjustments
 	calcAdjustments() {
 		return this.hasAdjChangeTarget
 			? this.adjChangeTargets.reduce(
-				(sum, change) => sum + Number.parseInt(change.innerHTML),
-				0,
-			)
+					(sum, change) => sum + Number.parseInt(change.innerHTML),
+					0,
+				)
 			: 0;
 	}
 
@@ -135,10 +135,14 @@ export default class extends Controller {
 		return Math.floor(num / 5) * 5;
 	}
 
+	getInitialCost() {
+		return Number.parseInt(this.finalCostTarget.innerHTML.replace(/\D/g, ""));
+	}
+
 	preventSubmission(finalCost) {
-		if (finalCost === 0) {
+		if (finalCost - this.initialCost <= 0) {
 			this.confirmTarget.disabled = true;
-			this.confirmTarget.value = "登録がなく確認できない";
+			this.confirmTarget.value = "お申込み/要登録";
 		} else {
 			this.confirmTarget.disabled = false;
 			this.confirmTarget.value = this.confirmText;
