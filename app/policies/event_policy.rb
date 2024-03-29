@@ -2,7 +2,7 @@
 
 class EventPolicy < ApplicationPolicy
   def index?
-    return false if user.statistician?
+    return false if user.statistician? || user.customer?
 
     true
   end
@@ -48,6 +48,8 @@ class EventPolicy < ApplicationPolicy
         scope.where(id: user.school_events.ids)
       when 'customer'
         scope.where(id: user.events.ids)
+      else
+        scope.none
       end
     end
   end
