@@ -140,7 +140,7 @@ export default class extends Controller {
 	}
 
 	preventSubmission(finalCost) {
-		if (finalCost - this.initialCost <= 0) {
+		if (finalCost - this.initialCost === 0) {
 			this.confirmTarget.disabled = true;
 			this.confirmTarget.value = "お申込み(*要選択)";
 		} else {
