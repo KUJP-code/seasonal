@@ -596,9 +596,7 @@ class Invoice < ApplicationRecord
 
   def spot_use(num_regs, courses)
     spot_cost = num_regs * courses['1']
-    unless spot_cost.zero? || @breakdown.nil?
-      @breakdown << "<p>- 1回コース x #{num_regs}: #{yenify(spot_cost)}</p>\n"
-    end
+    @breakdown << "<p>- 1回コース x #{num_regs}: #{yenify(spot_cost)}</p>\n" unless spot_cost.zero? || @breakdown.nil?
     spot_cost
   end
 

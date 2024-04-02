@@ -39,7 +39,11 @@ class Event < ApplicationRecord
   scope :real, -> { where.not(school_id: [1, 2]) }
   scope :upcoming, -> { where('end_date > ?', Time.zone.now) }
 
-  # Public Methods
+  def self.summary_json(names)
+    names.index_with do |name|
+      Event.where(name: name).map(&:to_gas_summary)
+    end
+  end
 
   def avif_id
     return nil if avif.blob.nil?
@@ -51,6 +55,21 @@ class Event < ApplicationRecord
     return if avif_id.nil?
 
     self.avif = ActiveStorage::Blob.find(avif_id)
+  end
+
+  def to_gas_summary
+    member_kids = children.where(category: %i[internal reservation])
+    external_kids = children.where(category: :external)
+
+    {
+      school_id: school_id,
+      member_count: member_kids.count,
+      member_revenue: Invoice.where(event_id: id, child_id: member_kids.ids).sum(:total_cost),
+      external_count: external_kids.count,
+      external_revenue: Invoice.where(event_id: id, child_id: external_kids.ids).sum(:total_cost),
+      total_revenue: invoices.sum(:total_cost),
+      goal: goal
+    }
   end
 
   # List children attending from other schools

@@ -2,17 +2,7 @@
 
 class SheetsApisController < ApplicationController
   skip_before_action :verify_authenticity_token, only: %i[inquiries update]
-  before_action :verify_access_key, only: %i[inquiries update]
-
-  def schools
-    schools = School.real.select(:id, :name, :email).order(id: :desc)
-    response = {
-      statusCode: 200,
-      message: 'ok',
-      results: schools.map(&:to_gas_api)
-    }
-    render json: response
-  end
+  before_action :verify_access_key, only: %i[inquiries summary update]
 
   def inquiries
     school = School.find_by(name: inquiries_params[:schoolName])
@@ -25,6 +15,20 @@ class SheetsApisController < ApplicationController
       counts: inquiries.size
     }
     render json: response
+  end
+
+  def schools
+    schools = School.real.select(:id, :name, :email).order(id: :desc)
+    response = {
+      statusCode: 200,
+      message: 'ok',
+      results: schools.map(&:to_gas_api)
+    }
+    render json: response
+  end
+
+  def summary
+    render json: Event.summary_json(params[:events])
   end
 
   def update
