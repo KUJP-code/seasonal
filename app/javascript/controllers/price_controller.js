@@ -62,7 +62,7 @@ export default class extends Controller {
 		)
 			.toString()
 			.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}円`;
-		this.preventSubmission(finalCost);
+		this.allowSubmission();
 	}
 
 	// Finds the cheapest price for the given number of regs
@@ -91,7 +91,7 @@ export default class extends Controller {
 		this.initialCost = this.getInitialCost();
 		this.memberPrice = this.memberPriceValue;
 		this.nonMemberPrice = this.nonMemberPriceValue;
-		this.preventSubmission(this.initialCost);
+		this.preventSubmission();
 	}
 
 	// Calculates total change due to adjustments
@@ -139,13 +139,13 @@ export default class extends Controller {
 		return Number.parseInt(this.finalCostTarget.innerHTML.replace(/\D/g, ""));
 	}
 
-	preventSubmission(finalCost) {
-		if (finalCost - this.initialCost === 0) {
-			this.confirmTarget.disabled = true;
-			this.confirmTarget.value = "お申込み(*要選択)";
-		} else {
-			this.confirmTarget.disabled = false;
-			this.confirmTarget.value = this.confirmText;
-		}
+	allowSubmission() {
+		this.confirmTarget.disabled = false;
+		this.confirmTarget.value = this.confirmText;
+	}
+
+	preventSubmission() {
+		this.confirmTarget.disabled = true;
+		this.confirmTarget.value = "お申込み(*要選択)";
 	}
 }
