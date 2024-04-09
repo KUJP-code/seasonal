@@ -17,8 +17,8 @@ class InvoiceMailer < ApplicationMailer
   end
 
   def sm_updated_notif
-    @sm = @invoice.school.manager || User.new(name: 'Leroy', email: 'h-leroy@kids-up.jp')
-    mail(to: @sm.email, subject: t('.invoice_updated'))
+    @recipients = @invoice.school.managers.pluck(:email) || ['h-leroy@kids-up.jp']
+    mail(to: @recipients, subject: t('.invoice_updated'))
   end
 end
 
