@@ -3,8 +3,8 @@
     - @events.each do |e|
       = render 'events/child_event',
                child: @child,
-               event: e[:event],
-               sibling_events: e[:siblings]
+               event: e,
+               sibling_events: e.sibling_events
 
   .card.w-100
     %h1.fw-bold= @child.name
@@ -49,5 +49,5 @@
     - @events.each do |e|
       = render 'events/child_event',
                child: @child,
-               event: e[:event],
-               sibling_events: e[:siblings]
+               event: e,
+               sibling_events: e.sibling_events

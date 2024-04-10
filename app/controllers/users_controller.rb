@@ -134,6 +134,7 @@ class UsersController < ApplicationController
     @events = @children.first
                        .school.events
                        .upcoming.reorder(start_date: :desc)
+                       .map(&:with_sibling_events)
   end
 
   def delete_admin?

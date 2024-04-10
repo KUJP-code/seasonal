@@ -111,19 +111,11 @@ class ChildrenController < ApplicationController
   end
 
   def child_show_events
-    school_events = @child.school
-                          .events.upcoming
-                          .includes(:avif_attachment, :image_attachment)
-                          .reorder(start_date: :desc)
-    school_events.map do |e|
-      {
-        event: e,
-        siblings: Event.real.where(name: e.name)
-                       .excluding(e)
-                       .order(:id)
-                       .includes(:school)
-      }
-    end
+    @child.school
+          .events.upcoming
+          .includes(:avif_attachment, :image_attachment)
+          .reorder(start_date: :desc)
+          .map(&:with_sibling_events)
   end
 
   def show_attendance_sheet

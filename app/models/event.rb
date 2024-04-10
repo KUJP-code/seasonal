@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Event < ApplicationRecord
+  attr_reader :sibling_events
+
   belongs_to :school
   delegate :area, to: :school
   belongs_to :member_prices, class_name: 'PriceList',
@@ -93,5 +95,12 @@ class Event < ApplicationRecord
   # free regs from siblings being registered not included
   def photo_regs
     options.sum(:registrations_count)
+  end
+
+  def with_sibling_events
+    @sibling_events = Event.where(name: name)
+                           .where.not(school_id: 2)
+                           .includes(:school)
+    self
   end
 end

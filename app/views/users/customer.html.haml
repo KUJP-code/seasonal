@@ -18,11 +18,8 @@
           %p= link_to child.name, child_path(child)
 
     - if current_user.staff?
-      %div{ data: {
-              controller: 'conditional',
-              'conditional-pin-value': current_user.pin
-            }
-          }
+      %div{ data: { controller: 'conditional',
+                    'conditional-pin-value': current_user.pin } }
         .d-none{ data: { 'conditional-target': 'target' } }
           %p #{t('.phone')}: #{@user.phone}
           %p #{t('.email')}: #{@user.email}
@@ -49,7 +46,9 @@
 
   - @events&.each do |e|
     = render partial: 'events/child_event',
-             locals: { event: e, child: @user.children.first }
+             locals: { event: e,
+                       child: @user.children.first,
+                       sibling_events: e.sibling_events }
 
   .card
     - unless @invoices.empty?

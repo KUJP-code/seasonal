@@ -1,35 +1,50 @@
 -# locals: (event:, child: current_user.children.first, sibling_events: nil)
+- online_kid = child.school_id == 2
 
 .card.d-grid
-  = link_to event_path(id: event, child: child.id) do
+  - if online_kid
+    %h2.text-bg-warning.fw-bold.p-2.rounded
+      参加希望のスクールをお選びください。
     = picture_tag((event.avif.blank? ? '' : url_for(event.avif)),
                   (event.image.blank? ? '' : url_for(event.image)),
-                  image: { class: 'img-fluid img-thumbnail', alt: event.name })
+                  image: { class: 'img-fluid img-thumbnail',
+                           alt: event.name })
+  - else
+    = link_to event_path(id: event, child: child.id) do
+      = picture_tag((event.avif.blank? ? '' : url_for(event.avif)),
+                    (event.image.blank? ? '' : url_for(event.image)),
+                    image: { class: 'img-fluid img-thumbnail',
+                             alt: event.name })
 
-  .d-flex.flex-column.flex-grow-1.gap-3
-    %h2.fw-bold
-      = link_to t('.title', name: event.name, school: t("schools.#{event.school.name}")),
-                event_path(id: event, child: child.id)
-    %p= date_yy_mm_dd(event.start_date)
+    .d-flex.flex-column.flex-grow-1.gap-3
+      %h2.fw-bold
+        = link_to t('.title',
+                    name: event.name,
+                    school: t("schools.#{event.school.name}")),
+                  event_path(id: event, child: child.id)
+      %p= date_yy_mm_dd(event.start_date)
 
-    - if sibling_events
-      %button.btn.btn-info{ data: { 'bs-toggle' => 'collapse',
-                                    'bs-target' => '#school-select' },
-                            aria: { expanded: 'false',
-                                    controls: 'school-select' },
-                            type: 'button' }
-        = t('.diff_school_reg')
+  - if sibling_events
+    %button.btn.btn-info{ class: ('hidden' if online_kid),
+                          data: { 'bs-toggle' => 'collapse',
+                                  'bs-target' => '#school-select' },
+                          aria: { expanded: online_kid ? 'true' : 'false',
+                                  controls: 'school-select' },
+                          type: 'button' }
+      = t('.diff_school_reg')
 
-      .collapse#school-select
-        = form_with method: :get,
-                    url: :diff_school_path,
-                    html: { class: 'd-grid gap-3' } do |f|
-          = f.hidden_field :child, value: child.id
-          %div
-            = f.label :id, t('.diff_school')
-            = f.collection_select :id,
-                                  sibling_events,
-                                  :id,
-                                  proc { |e| t("schools.#{e.school.name}") },
-                                  {}, class: 'form-select'
-          = f.submit t('.reg_at_selected'), class: 'btn btn-primary'
+    %div{ class: "collapse #{'show' if online_kid}", id: 'school-select' }
+      = form_with method: :get,
+                  url: :diff_school_path,
+                  html: { class: 'd-grid gap-3' } do |f|
+        = f.hidden_field :child, value: child.id
+        .d-flex.flex-column.gap-3
+          = f.label :id,
+                    t('.diff_school'),
+                    class: 'form-label fw-bold fs-4'
+          = f.collection_select :id,
+                                sibling_events,
+                                :id,
+                                proc { |e| t("schools.#{e.school.name}") },
+                                {}, class: 'form-select'
+          = f.submit t('.reg_at_selected'), class: 'btn btn-primary w-100'
