@@ -2,7 +2,7 @@
 - online_kid = child.school_id == 2
 
 .card.d-grid
-  - if online_kid
+  - if online_kid && sibling_events
     %h2.text-bg-warning.fw-bold.p-2.rounded
       参加希望のスクールをお選びください。
     = picture_tag((event.avif.blank? ? '' : url_for(event.avif)),
