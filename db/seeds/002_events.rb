@@ -152,8 +152,6 @@ french_crepe = ActiveStorage::Blob.create_and_upload!(
   filename: 'french_crepe.avif'
 )
 
-puts 'Uploading TimeSlot images...'
-
 # Create TimeSlot attributes
 
 time_slot_attrs = [
@@ -311,13 +309,7 @@ event_image = ActiveStorage::Blob.create_and_upload!(
   filename: 'summer_2023.avif'
 )
 
-puts 'Uploaded event image, silencing stdout and stderr to avoid libvips spam...'
-
-# Silence stdout and stderr since libvips has useless warnings
-original_stdout = $stdout.clone
-original_stderr = $stderr.clone
-$stderr.reopen File.new('/dev/null', 'w')
-$stdout.reopen File.new('/dev/null', 'w')
+puts 'Uploaded TimeSlot & Event images...'
 
 School.where.not(name: 'Test').each do |school|
   event = school.events.create!(
@@ -325,9 +317,5 @@ School.where.not(name: 'Test').each do |school|
     member_prices_id: 1, non_member_prices_id: 2, goal: 2_000_000, avif: event_image
   )
 
-  TimeSlot.create(time_slot_attrs.map { |attrs| attrs.merge(event_id: event.id) })
+  TimeSlot.create!(time_slot_attrs.map { |attrs| attrs.merge(event_id: event.id) })
 end
-
-# Restore stdout
-$stdout.reopen original_stdout
-$stderr.reopen original_stderr
