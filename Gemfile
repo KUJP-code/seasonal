@@ -124,6 +124,9 @@ gem 'rdoc', '6.6.3.1'
 # Include CSV gem because it won't be in stdlib from 3.4.0
 gem 'csv', '~> 3.3'
 
+# Get docker build to work
+gem 'matrix'
+
 group :development, :test do
   # Ruby LSP from shopify for autocomlete
   gem 'ruby-lsp', require: false
@@ -168,4 +171,6 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+
+  gem 'dockerfile-rails'
 end
