@@ -152,6 +152,7 @@ GEM
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
     crass (1.0.6)
+    csv (3.3.0)
     database_cleaner-active_record (2.1.0)
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
@@ -170,10 +171,10 @@ GEM
       ruby2_keywords
     erubi (1.12.0)
     execjs (2.8.1)
-    factory_bot (6.2.1)
+    factory_bot (6.4.6)
       activesupport (>= 5.0.0)
-    factory_bot_rails (6.2.0)
-      factory_bot (~> 6.2.0)
+    factory_bot_rails (6.4.3)
+      factory_bot (~> 6.4)
       railties (>= 5.0.0)
     faker (3.0.0)
       i18n (>= 1.8.11, < 2)
@@ -462,10 +463,11 @@ DEPENDENCIES
   byebug
   capybara
   chartkick
+  csv (~> 3.3)
   database_cleaner-active_record (= 2.1.0)
   devise (= 4.9.3)
   devise-i18n
-  factory_bot_rails (= 6.2.0)
+  factory_bot_rails (~> 6.4)
   faker
   faker_japanese
   globalid (= 1.2.1)
@@ -508,7 +510,7 @@ DEPENDENCIES
   web-console
 
 RUBY VERSION
-   ruby 3.0.6p216
+   ruby 3.3.1p55
 
 BUNDLED WITH
-   2.4.12
+   2.5.10

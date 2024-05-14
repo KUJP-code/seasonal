@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '3.0.6'
+ruby '3.3.1'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '7.1.3.2'
@@ -121,6 +121,9 @@ gem 'globalid', '1.2.1'
 # Lock rdoc to avoid CVE-2024-27281
 gem 'rdoc', '6.6.3.1'
 
+# Include CSV gem because it won't be in stdlib from 3.4.0
+gem 'csv', '~> 3.3'
+
 group :development, :test do
   # Ruby LSP from shopify for autocomlete
   gem 'ruby-lsp', require: false
@@ -138,7 +141,7 @@ group :development, :test do
   gem 'rspec-rails', '6.1'
 
   # Factory bot for test data creation
-  gem 'factory_bot_rails', '6.2.0'
+  gem 'factory_bot_rails', '~> 6.4'
 
   # DB cleaner for test data management
   gem 'database_cleaner-active_record', '2.1.0'
