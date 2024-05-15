@@ -2,6 +2,9 @@
 
 # Ignore git directory.
 /.git/
+/.gittattributes
+/.gitignore
+.envrc
 
 # Ignore bundler config.
 /.bundle
@@ -9,6 +12,11 @@
 # Ignore all environment files (except templates).
 /.env*
 !/.env*.erb
+
+# Ignore unnecessary dotfiles
+/.ebignore
+/.haml-lint.yml
+/.rubocop.yml
 
 # Ignore all default key files.
 /config/master.key
@@ -35,3 +43,22 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 /public/assets
+
+# Ignore specs
+/.rspec
+/spec/*
+
+# Ignore AWS-specific file
+/dockerrun.aws.json
+
+# Ignore dev seeding assets
+/spec
+/app/assets/images/*
+!/app/assets/images/arrow-right.svg
+!/app/assets/images/favicon.svg
+!/app/assets/images/logo.svg
+!/app/assets/images/white_logo.svg
+!/app/assets/images/login_splash.avif
+!/app/assets/images/login_splash.jpg
+!/app/assets/images/sm_login_splash.avif
+!/app/assets/images/sm_login_splash.png

@@ -1,8 +1,7 @@
 # syntax = docker/dockerfile:1
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.3.1
-FROM quay.io/evl.ms/fullstaq-ruby:${RUBY_VERSION}-jemalloc-slim as base
+FROM quay.io/evl.ms/fullstaq-ruby:3.3.1-jemalloc-slim as base
 
 # Rails app lives here
 WORKDIR /rails
@@ -24,10 +23,9 @@ RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
     apt-get install --no-install-recommends -y curl
 
 # Install Node.js
-ARG NODE_VERSION=18.17.1
 ENV PATH=/usr/local/node/bin:$PATH
 RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
-    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
+    /tmp/node-build-master/bin/node-build "20.13.1" /usr/local/node && \
     rm -rf /tmp/node-build-master
 
 
