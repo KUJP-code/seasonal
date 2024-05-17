@@ -2,7 +2,7 @@
 
 class User < ApplicationRecord
   # Set full name from submitted first and last names
-  before_validation :set_name, :set_kana
+  before_validation :set_name, :set_kana, :set_allowed_ips
 
   # Make sure Children are deleted when Parent is
   before_destroy :destroy_children
@@ -154,6 +154,19 @@ class User < ApplicationRecord
 
   def destroy_children
     children.destroy_all
+  end
+
+  def set_allowed_ips
+    return unless allowed_ips.instance_of?(String)
+
+    ip_array = allowed_ips.split("\n")
+    ip_array.each do |ip|
+      next if IPAddr.new(ip)
+    rescue IPAddr::InvalidAddressError => _e
+      errors.add(:allowed_ips, "#{ip} is not a valid IP address")
+    end
+
+    self.allowed_ips = ip_array
   end
 
   def set_kana

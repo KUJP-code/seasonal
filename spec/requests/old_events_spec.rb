@@ -24,10 +24,10 @@ RSpec.describe 'Old event requests' do
   end
 
   context 'when SM' do
-    let(:user) { create(:school_manager) }
+    let(:user) { create(:school_manager, allowed_ips: ['127.0.0.1']) }
 
     it 'does not prevent SMs from visiting event that finished' do
-      get event_path(id: old_event.id, child: child.id)
+      get event_path(id: old_event.id, child: child.id), env: { 'REMOTE_ADDR' => '127.0.0.1' }
       expect(response).to have_http_status(:success)
     end
   end
