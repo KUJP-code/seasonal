@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   # Make sure we're in the right language and know who's making changes
-  before_action :mini_profile, :switch_locale, :set_paper_trail_whodunnit
+  before_action :check_sm_ip, :mini_profile, :switch_locale, :set_paper_trail_whodunnit
 
   private
 
@@ -17,6 +17,19 @@ class ApplicationController < ActionController::Base
 
   def default_url_options
     { locale: I18n.locale }
+  end
+
+  def check_sm_ip
+    return unless current_user&.school_manager?
+    return if sm_allowed_url? || current_user&.allowed_ips&.include?(request.ip)
+
+    redirect_to user_path(current_user),
+                alert: t('not_in_school')
+  end
+
+  def sm_allowed_url?
+    [user_url(current_user),
+     destroy_user_session_url(locale: I18n.locale, _method: :delete)].include?(request.original_url)
   end
 
   def mini_profile

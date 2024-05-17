@@ -219,10 +219,10 @@ class UsersController < ApplicationController
 
   def school_manager_data(user)
     @school = user.managed_school
-    @upcoming_events = @school.upcoming_events.includes(
+    @upcoming_events = @school&.upcoming_events&.includes(
       :children, :invoices, :time_slots
     )
-    sm_upcoming_events_data(@upcoming_events.ids, user)
+    sm_upcoming_events_data(@upcoming_events.ids, user) if @upcoming_events
   end
 
   def sm_deleted_invoices(user, event_ids)

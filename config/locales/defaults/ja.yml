@@ -137,6 +137,7 @@ ja:
     logout: "サインアウト"
     time_slots: "開催日"
   not_authorized: "そのURLへのアクセスは許可されていない。"
+  not_in_school: "このサイトには自スクールからのみアクセスできます。このメッセージを受け取った場合は、Leroy係長に連絡してください。"
   number:
     currency:
       format:
