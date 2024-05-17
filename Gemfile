@@ -113,7 +113,7 @@ gem 'pghero'
 gem 'rack', '3.0.9.1'
 
 # Lock nokogiri to avoid vulnerabilities
-gem 'nokogiri', '1.16.2'
+gem 'nokogiri', '1.16.5'
 
 # Lock globalid to avoid vulnerabilities
 gem 'globalid', '1.2.1'
@@ -126,6 +126,9 @@ gem 'csv', '~> 3.3'
 
 # Get docker build to work
 gem 'matrix'
+
+# Lock rexml to avoid CVE-2024-35176
+gem 'rexml', '3.2.8'
 
 group :development, :test do
   # Ruby LSP from shopify for autocomlete
