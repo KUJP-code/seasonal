@@ -1,0 +1,98 @@
+:ruby
+  creating_new_user = @user.new_record? && current_user.staff?
+  editing_self = current_user.id == @user.id
+  has_pass = @user.encrypted_password.present?
+  temp_pass = SecureRandom.base36(12) unless has_pass
+
+= form_with model: @user,
+            data: { controller: :fields },
+            html: { class: 'card d-grid gap-3' } do |f|
+  = render partial: 'shared/form_errors', locals: { resource: @user }
+
+  %h3= t('.account_information')
+
+  .form-floating
+    = f.email_field :email,
+                    autofocus: true,
+                    class: 'form-control',
+                    placeholder: t('.email'),
+                    required: true
+    = f.label :email, class: 'form-label'
+
+  .form-floating
+    = f.email_field :email_confirmation,
+                    value: @user.email,
+                    class: 'form-control',
+                    placeholder: t('.email_confirmation'),
+                    required: true
+    = f.label :email_confirmation,
+              t('.email_confirmation'),
+              class: 'form-label'
+
+  - if f.object.new_record?
+    .form-floating
+      = f.text_field :password,
+                     value: (has_pass ? nil : temp_pass),
+                     class: 'form-control',
+                     placeholder: t('.password'),
+                     readonly: true
+      = f.label :password, class: 'form-label'
+
+    .form-floating
+      = f.text_field :password_confirmation,
+                     value: (has_pass ? nil : temp_pass),
+                     class: 'form-control',
+                     placeholder: t('.password_confirmation'),
+                     readonly: true
+      = f.label :password_confirmation,
+                t('.password_confirmation'),
+                class: 'form-label'
+
+  %div
+    = f.label :first_name, t('.name'), class: 'form-label'
+    .input-group
+      = text_field_tag 'user[family_name]',
+                       (@user.name ? @user.name.split[0] : ''),
+                       class: 'form-control',
+                       required: true,
+                       placeholder: t('.family_name')
+      %span.input-group-text
+      = text_field_tag 'user[first_name]',
+                       (@user.name ? @user.name.split[1] : ''),
+                       class: 'form-control',
+                       required: true,
+                       placeholder: t('.first_name')
+
+  %div
+    = f.label :kana_first, t('.kana_name'), class: 'form-label'
+    .input-group
+      = text_field_tag 'user[kana_family]',
+                       (@user.katakana_name ? @user.katakana_name.split[0] : ''),
+                       class: 'form-control',
+                       required: true,
+                       placeholder: t('.kana_family')
+      %span.input-group-text
+      = text_field_tag 'user[kana_first]',
+                       (@user.katakana_name ? @user.katakana_name.split[1] : ''),
+                       class: 'form-control',
+                       required: true,
+                       placeholder: t('.kana_first')
+
+  - if creating_new_user || editing_self
+    = render 'users/contact_fields', f:, user: @user
+  - else
+    %div{ data: { controller: 'conditional',
+                  'conditional-pin-value': current_user.pin } }
+      .d-grid.gap-3.d-none{ data: { 'conditional-target': 'target' } }
+        = render 'users/contact_fields', f:, user: @user
+      .form-floating{ data: { 'conditional-target': 'target' } }
+        = text_field_tag t('enter_pin', info: t('contact_info')),
+                         '',
+                         class: 'form-control',
+                         placeholder: t('enter_pin', info: t('contact_info')),
+                         required: true,
+                         max_length: 4,
+                         data: { 'conditional-target': 'condition',
+                                 action: 'conditional#pin' }
+
+  = f.submit class: 'btn btn-primary'

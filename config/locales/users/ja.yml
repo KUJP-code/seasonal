@@ -44,6 +44,12 @@ ja:
       surveys: "顧客調査"
       total_kids: "合計人数"
       total_revenue: "合計売上"
+    contact_fields:
+      address: "ご住所"
+      postcode: "郵便番号"
+      phone: "携帯電話番号"
+      prefecture: "都道府県"
+      school: "学校"
     create:
       failure: "%{name}を作成できませんでした"
       success: "%{name}の作成に成功"
