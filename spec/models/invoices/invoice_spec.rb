@@ -22,10 +22,10 @@ RSpec.describe Invoice do
 
   context 'when using calc_cost' do
     let(:event) { create(:event) }
-    let(:invoice) { build(:invoice, event: event) }
+    let(:invoice) { build(:invoice, event:) }
 
     it 'returns total_cost as an integer' do
-      time_slot = create(:time_slot, event: event)
+      time_slot = create(:time_slot, event:)
       invoice.slot_regs << build(
         :slot_reg,
         registerable_id: time_slot.id,

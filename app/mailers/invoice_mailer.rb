@@ -27,6 +27,13 @@ private
 def set_shared_vars
   @invoice = params[:invoice]
   @child = @invoice.child
-  @updater = User.find(@invoice.versions.last.whodunnit) unless @invoice.versions.empty?
+  @updater = find_updater
   @parent = @child.parent
+end
+
+def find_updater
+  return nil if @invoice.versions.empty?
+  return nil if @invoice.versions.last.whodunnit.nil?
+
+  User.find(@invoice.versions.last.whodunnit)
 end

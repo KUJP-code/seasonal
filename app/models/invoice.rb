@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'prawn/measurement_extensions'
-
 class Invoice < ApplicationRecord
+  include InvoicePdfable
+
   before_save :update_regs_child, :calc_cost
 
   belongs_to :child
@@ -60,21 +60,6 @@ class Invoice < ApplicationRecord
     calculated_cost = course_cost + adjustments + option_cost
     calculated_cost = 0 if calculated_cost.negative?
     update_cost(calculated_cost)
-  end
-
-  def pdf
-    pdf = Prawn::Document.new
-    pdf.font_families.update(
-      'NotoSans' => {
-        normal: Rails.root.join('app/assets/fonts/NotoSansJP-Medium.ttf')
-      }
-    )
-    pdf.font('NotoSans')
-    pdf.define_grid(columns: 20, rows: 20)
-    pdf_header(pdf)
-    pdf_summary(pdf)
-    pdf_footer(pdf)
-    pdf.render
   end
 
   def id_and_cost
@@ -167,8 +152,12 @@ class Invoice < ApplicationRecord
         <div class='d-flex flex-column align-items-start gap-1'>
         <p>#{yenify(course_cost)} (#{num_regs}回)</p>"
       )
-      @breakdown << "<p>追加料金 x #{extra_cost_count}: #{yenify(extra_cost)}</p>" if extra_cost_count.positive?
-      @breakdown << "<p>午後コースおやつ代 x #{snack_count}: #{yenify(snack_cost)}</p>" if snack_count.positive?
+      if extra_cost_count.positive?
+        @breakdown << "<p>追加料金 x #{extra_cost_count}: #{yenify(extra_cost)}</p>"
+      end
+      if snack_count.positive?
+        @breakdown << "<p>午後コースおやつ代 x #{snack_count}: #{yenify(snack_cost)}</p>"
+      end
       @breakdown << '</div>'
     end
 
@@ -217,7 +206,8 @@ class Invoice < ApplicationRecord
   end
 
   def check_event_opts
-    opt_regs.where(registerable_id: event.options.ids, registerable_type: 'Option').find_each do |reg|
+    opt_regs.where(registerable_id: event.options.ids,
+                   registerable_type: 'Option').find_each do |reg|
       reg.destroy if child.siblings.any? { |s| s.options.include?(reg.registerable) }
     end
   end
@@ -230,9 +220,11 @@ class Invoice < ApplicationRecord
     registration_cost = 1_100
     reason = '初回登録料(初めてシーズナルスクールに参加する非会員の方)'
     return if adjustments.any? { |adj| adj.change == registration_cost && adj.reason == reason } ||
-              child.adjustments.any? { |adj| adj.change == registration_cost && adj.reason == reason }
+              child.adjustments.any? do |adj|
+                adj.change == registration_cost && adj.reason == reason
+              end
 
-    adjustments.new(change: registration_cost, reason: reason)
+    adjustments.new(change: registration_cost, reason:)
   end
 
   def generate_details
@@ -332,271 +324,20 @@ class Invoice < ApplicationRecord
 
     option = Option.find(opt_reg['registerable_id'])
     # If for special day extension, only delete if neither registered
-    return slot_regs.none? { |r| r.registerable.special? } if option.extension? || option.k_extension?
+    if option.extension? || option.k_extension?
+      return slot_regs.none? do |r|
+               r.registerable.special?
+             end
+    end
 
     slot_regs.none? { |s_reg| s_reg.registerable_id == option.optionable_id }
   end
 
-  def pdf_adj(pdf)
-    pdf.move_down(2.mm)
-    pdf.text('調整', color: '000000')
-    pdf.move_down(2.mm)
-    pdf.text(adjustments.map(&:reason_cost).join("\n"),
-             color: '000000',
-             leading: 1.mm,
-             size: 8)
-  end
-
-  def pdf_footer(pdf)
-    tax = yenify(0.1 * total_cost)
-    without_tax = yenify(0.9 * total_cost)
-
-    # Tax box
-    pdf.grid([18, 0], [18, 2]).bounding_box do
-      pdf.stroke_bounds
-      pdf.fill_rectangle(pdf.bounds.top_left, 29.mm, 13.mm)
-      pdf.pad(4.mm) { pdf.text('税率区分', align: :center, color: 'ffffff') }
-    end
-
-    pdf.grid([18, 3], [18, 5]).bounding_box do
-      pdf.stroke_bounds
-      pdf.fill_rectangle(pdf.bounds.top_left, 29.mm, 13.mm)
-      pdf.pad(4.mm) { pdf.text('消費税', align: :center, color: 'ffffff') }
-    end
-
-    pdf.grid([18, 6], [18, 8]).bounding_box do
-      pdf.stroke_bounds
-      pdf.fill_rectangle(pdf.bounds.top_left, 29.mm, 13.mm)
-      pdf.pad(4.mm) { pdf.text('金額（税抜）', align: :center, color: 'ffffff') }
-    end
-
-    pdf.grid([19, 0], [19, 2]).bounding_box do
-      pdf.stroke_bounds
-      pdf.pad(4.mm) { pdf.text('10%対象', align: :center, color: '000000') }
-    end
-
-    pdf.grid([19, 3], [19, 5]).bounding_box do
-      pdf.stroke_bounds
-      pdf.pad(4.mm) { pdf.text(tax, align: :center, color: '000000') }
-    end
-
-    pdf.grid([19, 6], [19, 8]).bounding_box do
-      pdf.stroke_bounds
-      pdf.pad(4.mm) { pdf.text(without_tax, align: :center, color: '000000') }
-    end
-
-    # Summary box
-    pdf.grid([17, 12], [17, 15]).bounding_box do
-      pdf.stroke_bounds
-      pdf.fill_rectangle(pdf.bounds.top_left, 38.mm, 13.mm)
-      pdf.pad(4.mm) { pdf.text('小計', align: :center, color: 'ffffff') }
-    end
-
-    pdf.grid([18, 12], [18, 15]).bounding_box do
-      pdf.stroke_bounds
-      pdf.fill_rectangle(pdf.bounds.top_left, 38.mm, 13.mm)
-      pdf.pad(4.mm) { pdf.text('消費税', align: :center, color: 'ffffff') }
-    end
-
-    pdf.grid([19, 12], [19, 15]).bounding_box do
-      pdf.stroke_bounds
-      pdf.fill_rectangle(pdf.bounds.top_left, 38.mm, 13.mm)
-      pdf.pad(4.mm) { pdf.text('合計', align: :center, color: 'ffffff') }
-    end
-
-    pdf.grid([17, 16], [17, 19]).bounding_box do
-      pdf.stroke_bounds
-      pdf.pad(4.mm) { pdf.text(without_tax, align: :center, color: '000000') }
-    end
-
-    pdf.grid([18, 16], [18, 19]).bounding_box do
-      pdf.stroke_bounds
-      pdf.pad(4.mm) { pdf.text(tax, align: :center, color: '000000') }
-    end
-
-    pdf.grid([19, 16], [19, 19]).bounding_box do
-      pdf.stroke_bounds
-      pdf.pad(4.mm) { pdf.text(yenify(total_cost), align: :center, color: '000000') }
-    end
-  end
-
-  def pdf_header(pdf)
-    # Title
-    pdf.grid([0, 0], [1, 19]).bounding_box do
-      pdf.fill_color '2864f0'
-      pdf.fill_rectangle(pdf.bounds.top_left, 191.mm, 1.cm)
-      pdf.pad(1.mm) { pdf.text('請求書', align: :center, color: 'ffffff', size: 20) }
-    end
-
-    # Total Cost
-    pdf.grid([1, 0], [1, 9]).bounding_box do
-      pdf.pad(2.mm) { pdf.text("#{child.parent.name}様 御中", size: 20, color: '000000') }
-    end
-    pdf.grid([2, 0], [2, 9]).bounding_box do
-      pdf.stroke_bounds
-      pdf.fill_rectangle(pdf.bounds.top_left, 95.mm, 13.mm)
-      pdf.pad(3.mm) { pdf.text('金額（税込）', align: :center, color: 'ffffff', size: 20) }
-    end
-    pdf.grid([3, 0], [3, 9]).bounding_box do
-      pdf.stroke_bounds
-      pdf.pad(3.mm) { pdf.text(yenify(total_cost), align: :right, color: '000000', size: 20) }
-    end
-
-    # Date & Registration number
-    pdf.grid([1, 11], [2, 19]).bounding_box do
-      pdf.text("発行日: #{Time.zone.now.strftime('%F')}", align: :right, color: '000000')
-    end
-
-    # Company Info
-    pdf.grid([2, 11], [4, 19]).bounding_box do
-      pdf.text("株式会社Kids-UP\n" \
-               "〒120-0034\n" \
-               "住所：東京都足立区千住\n" \
-               "1-4-1東京芸術センター11階\n" \
-               "電話：03-3870-0099\n",
-               align: :right,
-               color: '000000',
-               leading: 1.mm,
-               size: 11)
-    end
-  end
-
-  def pdf_options(pdf)
-    pdf.move_down(2.mm)
-    pdf.text('オプション', color: '000000')
-    pdf.move_down(2.mm)
-    pdf.text(options.group(:name)
-                    .count
-                    .map { |k, v| "#{k} x #{v}" }
-                    .join("\n"),
-             color: '000000',
-             leading: 1.mm,
-             size: 8)
-  end
-
-  def pdf_slots(pdf)
-    pdf.move_down(2.mm)
-    pdf.text('コース', color: '000000')
-    pdf.move_down(2.mm)
-    pdf.text(time_slots.sort_by(&:start_time).map(&:name_date).join("\n"),
-             color: '000000',
-             leading: 1.mm,
-             size: 8)
-  end
-
-  def pdf_summary(pdf)
-    pdf.grid([4, 0], [16, 19]).bounding_box do
-      pdf.stroke_bounds
-    end
-
-    pdf.grid([4, 0], [7, 12]).bounding_box do
-      pdf.stroke_bounds
-    end
-
-    pdf.grid([4, 13], [7, 15]).bounding_box do
-      pdf.stroke_bounds
-    end
-
-    # Headers
-    # Contents
-    pdf.grid([4, 0], [4, 12]).bounding_box do
-      pdf.stroke_bounds
-      pdf.fill_rectangle(pdf.bounds.top_left, 124.mm, 13.mm)
-      pdf.pad(4.mm) { pdf.text('内容', align: :center, color: 'ffffff') }
-    end
-
-    # Quantity
-    pdf.grid([4, 13], [4, 15]).bounding_box do
-      pdf.stroke_bounds
-      pdf.fill_rectangle(pdf.bounds.top_left, 30.mm, 13.mm)
-      pdf.pad(4.mm) { pdf.text('数量', align: :center, color: 'ffffff') }
-    end
-
-    # Total Cost
-    pdf.grid([4, 16], [4, 19]).bounding_box do
-      pdf.stroke_bounds
-      pdf.fill_rectangle(pdf.bounds.top_left, 38.mm, 13.mm)
-      pdf.pad(4.mm) { pdf.text('金額（税抜）', align: :center, color: 'ffffff') }
-    end
-
-    # Summary Names
-    # Adjustments
-    pdf.grid([5, 0], [5, 19]).bounding_box do
-      pdf.stroke_bounds
-      pdf.indent(1.mm) do
-        pdf.pad(4.mm) { pdf.text('調整', color: '000000', size: 14) }
-      end
-    end
-
-    # Options
-    pdf.grid([6, 0], [6, 19]).bounding_box do
-      pdf.stroke_bounds
-      pdf.indent(1.mm) do
-        pdf.pad(4.mm) { pdf.text('オプション', color: '000000', size: 14) }
-      end
-    end
-
-    # Courses
-    pdf.grid([7, 0], [7, 19]).bounding_box do
-      pdf.stroke_bounds
-      pdf.indent(1.mm) do
-        pdf.pad(4.mm) { pdf.text('コース', color: '000000', size: 14) }
-      end
-    end
-
-    # Summary Quantities
-    # Adjustments
-    pdf.grid([5, 13], [5, 15]).bounding_box do
-      pdf.stroke_bounds
-      pdf.pad(4.mm) { pdf.text(adjustments.size.to_s, align: :center, color: '000000', size: 14) }
-    end
-
-    # Options
-    pdf.grid([6, 13], [6, 15]).bounding_box do
-      pdf.stroke_bounds
-      pdf.pad(4.mm) { pdf.text(opt_regs.size.to_s, align: :center, color: '000000', size: 14) }
-    end
-
-    # Courses
-    pdf.grid([7, 13], [7, 15]).bounding_box do
-      pdf.stroke_bounds
-      pdf.pad(4.mm) { pdf.text(slot_regs.size.to_s, align: :center, color: '000000', size: 14) }
-    end
-
-    # Summary Costs
-    # Adjustments
-    pdf.grid([5, 16], [5, 19]).bounding_box do
-      pdf.stroke_bounds
-      pdf.pad(4.mm) { pdf.text(yenify(adjustments.sum(:change)), align: :center, color: '000000', size: 14) }
-    end
-
-    # Options
-    pdf.grid([6, 16], [6, 19]).bounding_box do
-      pdf.stroke_bounds
-      pdf.pad(4.mm) { pdf.text(yenify(options.sum(:cost)), align: :center, color: '000000', size: 14) }
-    end
-
-    # Courses
-    pdf.grid([7, 16], [7, 19]).bounding_box do
-      pdf.stroke_bounds
-      pdf.pad(4.mm) { pdf.text(yenify(calc_course_cost), align: :center, color: '000000', size: 14) }
-    end
-
-    # Course Details
-    pdf.grid([8, 0], [16, 19]).bounding_box do
-      pdf.column_box([0, pdf.cursor], columns: 3, width: pdf.bounds.width, height: pdf.bounds.height) do
-        pdf.indent(2.mm) do
-          pdf_adj(pdf) unless adjustments.empty?
-          pdf_options(pdf) unless options.empty?
-          pdf_slots(pdf)
-        end
-      end
-    end
-  end
-
   def spot_use(num_regs, courses)
     spot_cost = num_regs * courses['1']
-    @breakdown << "<p>- 1回コース x #{num_regs}: #{yenify(spot_cost)}</p>\n" unless spot_cost.zero? || @breakdown.nil?
+    unless spot_cost.zero? || @breakdown.nil?
+      @breakdown << "<p>- 1回コース x #{num_regs}: #{yenify(spot_cost)}</p>\n"
+    end
     spot_cost
   end
 
@@ -617,13 +358,13 @@ class Invoice < ApplicationRecord
       return
     end
 
-    adjustments.new(change: discount, reason: reason)
+    adjustments.new(change: discount, reason:)
   end
 
   def repeater_applied_this_event?(discount, reason)
     adjustments = child.invoices
-                       .where(event_id: event_id)
-                       .where.not(id: id)
+                       .where(event_id:)
+                       .where.not(id:)
                        .map(&:adjustments).flatten
     adjustments.find { |a| a.change == discount && a.reason == reason }
   end
@@ -640,7 +381,7 @@ class Invoice < ApplicationRecord
     return if slot_regs.empty? || slot_regs.first.child_id == child_id
 
     registrations.each do |reg|
-      reg.update!(child_id: child_id)
+      reg.update!(child_id:)
     end
   end
 

@@ -6,8 +6,8 @@ RSpec.describe Invoice do
   subject(:invoice) do
     build_stubbed(
       :invoice,
-      event: event,
-      child: child,
+      event:,
+      child:,
       slot_regs: build_list(:slot_reg, 6, registerable: slot),
       opt_regs: [build(:slot_opt_reg, registerable: slot_option),
                  build(:slot_opt_reg, registerable: slot_option),
@@ -93,8 +93,8 @@ RSpec.describe Invoice do
       extra_cost_slot = create(:time_slot, int_modifier: 100)
       invoice = build_stubbed(
         :invoice,
-        event: event,
-        child: child,
+        event:,
+        child:,
         slot_regs: [build(:slot_reg, registerable: extra_cost_slot)]
       )
       invoice.calc_cost
