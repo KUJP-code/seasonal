@@ -43,12 +43,6 @@ module InvoiceCalculatable
     spot_use(num_regs, courses)
   end
 
-  def blank_or_dup(coupon)
-    return true if coupon['code'].empty? || coupons.map(&:code).include?(coupon['code'])
-
-    false
-  end
-
   def calc_adjustments(num_regs)
     return 0 unless adjustments.size.positive? || needs_hat? || first_time?(num_regs) || repeater?
 
