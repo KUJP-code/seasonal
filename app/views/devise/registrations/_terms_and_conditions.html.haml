@@ -1,0 +1,32 @@
+%button.btn.btn-primary{ data: { 'bs-toggle': 'modal',
+                                 'bs-target': '#privacyModal' },
+                         type: 'button' }
+  = t('.view_policy')
+
+.modal.fade#privacyModal{ aria: { labelledby: 'privacyModalLabel',
+                                  hidden: true },
+                          tabindex: '-1' }
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h1.modal-title.fs-5#privacyModalLabel プライバシーポリシー
+        %button{ 'aria-label': 'Close', class: 'btn-close',
+                 'data-bs-dismiss': 'modal', type: 'button' }
+      .modal-body
+        = render 'devise/registrations/privacy_policy'
+      .modal-footer
+        .btn.btn-primary{ data: { 'bs-dismiss': 'modal' },
+                          type: 'button' }
+          = t('.close')
+
+.form-check
+  = check_box_tag 'privacy',
+                  nil,
+                  false,
+                  class: 'form-check-input',
+                  data: { action: 'conditional#allowSubmit',
+                          'conditional-target': 'condition' },
+                  required: true
+
+  %label.form-check-label{ for: 'privacy', style: 'font-size: 14px;' }
+    = t('.accept_policy')

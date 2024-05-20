@@ -27,7 +27,6 @@ ja:
         sign_up: "新規登録"
     registrations:
       new:
-        accept_policy: "P-UPプライバシーポリシーに同意する"
         account_information: "お客様情報"
         address: "ご住所"
         email: "メールアドレス"
@@ -49,8 +48,10 @@ ja:
         school: "学校"
         sign_up: "新規登録"
         sign_up_msg: "新規にアカウントを作成する場合は、以下にお客様の情報を入力してください。"
-        view_policy: "プライバシーポリシーはこちら"
         welcome: "Welcome"
+      terms_and_conditions:
+        accept_policy: "P-UPプライバシーポリシーに同意する"
+        view_policy: "プライバシーポリシーはこちら"
     sessions:
       new:
         email: "メールアドレス"

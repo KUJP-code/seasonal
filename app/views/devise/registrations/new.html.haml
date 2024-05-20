@@ -1,0 +1,139 @@
+%main#sign-up
+  = form_for resource,
+             as: resource_name,
+             url: user_registration_path,
+             html: { class: 'h-adr d-grid gap-3 p-3 needs-validation',
+                     novalidate: true },
+             data: { controller: 'conditional' } do |f|
+    .text-end= image_tag 'favicon.svg'
+
+    %h2= t('.welcome')
+    %p= t('.sign_up_msg')
+
+    - if resource.errors.any?
+      .card.bg-danger.text-white
+        = render('devise/shared/error_messages', resource:)
+
+    .form-floating.confirmed
+      = f.email_field :email,
+                      autofocus: true,
+                      autocomplete: 'email',
+                      class: 'form-control',
+                      placeholder: t('.email'),
+                      required: true
+      = f.label :email, t('.email'), class: 'form-label'
+
+    .form-floating.confirmed
+      = f.email_field :email_confirmation,
+                      autocomplete: 'email',
+                      class: 'form-control',
+                      placeholder: t('.email_confirmation'),
+                      required: true
+      = f.label :email_confirmation,
+                t('.email_confirmation'),
+                class: 'form-label'
+
+    .form-floating.confirmed{ 'data-controller': 'count' }
+      = f.password_field :password,
+                         autocomplete: 'new-password',
+                         'aria-labelledby': 'pwd-length',
+                         class: 'form-control',
+                         placeholder: t('.password'),
+                         minlength: 10,
+                         required: true,
+                         data: { 'count-target': 'input' }
+      = f.label :password, class: 'form-label'
+      .form-text#pwd-length
+        = t('.min_length', length: @minimum_password_length)
+        %span{ 'data-count-target': 'counter' }
+
+    .form-floating.confirmed{ 'data-controller': 'count' }
+      = f.password_field :password_confirmation,
+                         autocomplete: 'new-password',
+                         'aria-labelledby': 'confirm-length',
+                         class: 'form-control',
+                         placeholder: t('.password_confirmation'),
+                         minlength: 10,
+                         required: true,
+                         data: { 'count-target': 'input' }
+      = f.label :password_confirmation, class: 'form-label'
+      .form-text#confirm-length
+        = t('.min_length', length: @minimum_password_length)
+        %span{ 'data-count-target': 'counter' }
+
+      %p.fw-semibold
+        保護者様のお名前でご登録ください。ご登録後、保護者様のページよりお子様の情報をご追加いただきます。
+
+    %div
+      = f.label :first_name, t('.name'), class: 'form-label'
+      .input-group
+        = text_field_tag 'user[family_name]',
+                         '',
+                         class: 'form-control',
+                         required: true,
+                         placeholder: t('.family_name')
+        %span.input-group-text
+        = text_field_tag 'user[first_name]',
+                         '',
+                         class: 'form-control',
+                         required: true,
+                         placeholder: t('.first_name')
+
+    %div
+      = f.label :kana_first, t('.kana_name'), class: 'form-label'
+      .input-group
+        = text_field_tag 'user[kana_family]',
+                         '',
+                         class: 'form-control',
+                         required: true,
+                         placeholder: t('.kana_family')
+        %span.input-group-text
+        = text_field_tag 'user[kana_first]',
+                         '',
+                         class: 'form-control',
+                         required: true,
+                         placeholder: t('.kana_first')
+
+    .form-floating
+      = f.text_field :postcode,
+                     size: 8,
+                     maxlength: 8,
+                     autocomplete: 'postcode',
+                     class: 'form-control',
+                     placeholder: t('.postcode'),
+                     required: true
+      = f.label :postcode, t('.postcode'), class: 'form-label'
+
+    .form-floating
+      = f.text_field :prefecture,
+                     class: 'form-control',
+                     placeholder: t('.prefecture'),
+                     required: true
+      = f.label :prefecture, t('.prefecture'), class: 'form-label'
+
+    .form-floating
+      = f.text_area :address,
+                    class: 'form-control',
+                    autocomplete: 'address',
+                    placeholder: t('.address'),
+                    required: true
+      = f.label :address, t('.address'), class: 'form-label'
+
+    .form-floating
+      = f.telephone_field :phone,
+                          autocomplete: 'tel',
+                          class: 'form-control',
+                          placeholder: t('.phone'),
+                          required: true
+      = f.label :phone, t('.phone'), class: 'form-label'
+
+    = render 'devise/registrations/terms_and_conditions'
+
+    .d-grid.gap-3
+      = f.submit t('.sign_up'),
+                 class: 'btn btn-primary',
+                 disabled: true,
+                 data: { 'conditional-target': 'target' }
+      = link_to t('.log_in'),
+                new_user_session_path(resource_name),
+                class: 'btn btn-secondary'
