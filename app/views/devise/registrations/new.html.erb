@@ -5,9 +5,9 @@
         url: user_registration_path,
         html: {
             class: 'h-adr d-grid gap-3 p-3 needs-validation',
-            novalidate: true 
+            novalidate: true
           },
-          data: { 
+          data: {
             controller: 'conditional'
           }) do |f| %>
 
@@ -21,7 +21,7 @@
         <%= render "devise/shared/error_messages", resource: resource %>
       </div>
     <% end %>
-      
+
     <div class="form-floating confirmed">
       <%= f.email_field :email,
                         autofocus: true,
@@ -59,9 +59,9 @@
         <span data-count-target="counter"></span>
       </div>
     </div>
-  
+
     <div class="form-floating confirmed" data-controller="count">
-      <%= f.password_field :password_confirmation, 
+      <%= f.password_field :password_confirmation,
                            autocomplete: "new-password",
                            'aria-labelledby': 'confirm-length',
                            class: 'form-control',
@@ -79,12 +79,12 @@
     <p class="fw-semibold">
       保護者様のお名前でご登録ください。ご登録後、保護者様のページよりお子様の情報をご追加いただきます。
     </p>
-    
+
     <div>
       <%= f.label :first_name, t('.name'), class: 'form-label' %>
       <div class="input-group">
         <%= text_field_tag "user[family_name]",
-                           (resource.name.split[0] unless resource.name.nil?),
+                           '',
                            class: 'form-control',
                            required: true,
                            placeholder: t('.family_name') %>
@@ -92,18 +92,18 @@
         <span class="input-group-text"></span>
 
         <%= text_field_tag "user[first_name]",
-                           (resource.name.split[1] unless resource.name.nil?),
+                           '',
                            class: 'form-control',
                            required: true,
                            placeholder: t('.first_name') %>
       </div>
     </div>
-  
+
     <div>
       <%= f.label :kana_first, t('.kana_name'), class: 'form-label' %>
       <div class="input-group">
         <%= text_field_tag "user[kana_family]",
-          (resource.katakana_name.split[0] unless resource.katakana_name.nil?),
+          '',
           class: 'form-control',
           required: true,
           placeholder: t('.kana_family') %>
@@ -111,7 +111,7 @@
         <span class="input-group-text"></span>
 
         <%= text_field_tag "user[kana_first]",
-          (resource.katakana_name.split[1] unless resource.katakana_name.nil?),
+          '',
           class: 'form-control',
           required: true,
           placeholder: t('.kana_first') %>
@@ -145,17 +145,17 @@
                       required: true %>
       <%= f.label :address, t('.address'), class: 'form-label' %>
     </div>
-  
+
     <div class="form-floating">
       <%= f.telephone_field :phone,
-                            autocomplete: "tel", 
+                            autocomplete: "tel",
                             class: 'form-control',
                             placeholder: t('.phone'),
                             required: true %>
       <%= f.label :phone, t('.phone'), class: 'form-label' %>
     </div>
 
-    <button type="button" class="btn btn-primary" 
+    <button type="button" class="btn btn-primary"
             data-bs-toggle="modal" data-bs-target="#privacyModal">
             <%= t('.view_policy') %>
     </button>
@@ -167,7 +167,7 @@
             <h1 class="modal-title fs-5" id="privacyModalLabel">プライバシーポリシー</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">         
+          <div class="modal-body">
             <h5>株式会社P-UP World（ピーアップワールド）</h5>
             <h5>代表取締役社長　中込 正典</h5>
             <br>
@@ -334,21 +334,21 @@
                         nil,
                         false,
                         class: "form-check-input",
-                        data: { 
+                        data: {
                           action: 'conditional#allowSubmit',
-                          'conditional-target' => 'condition' 
+                          'conditional-target' => 'condition'
                         },
                         required: true %>
       <label for="privacy" class="form-check-label" style="font-size:14px;">
         <%= t('.accept_policy') %>
       </label>
     </div>
-  
+
     <div class="d-grid gap-3">
       <%= f.submit t('.sign_up'),
                    class: 'btn btn-primary',
                    disabled: true,
-                   data: { 
+                   data: {
                     'conditional-target' => 'target'
                    } %>
       <%= link_to t('.log_in'),

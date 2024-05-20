@@ -27,7 +27,7 @@
                     <%= f.label :first_name, t('.name'), class: 'form-label' %>
                     <div class="input-group">
                         <%= text_field_tag "child[family_name]",
-                                (@child.name.strip.split[0] unless @child.name.nil?),
+                                family_name(@child),
                                 class: 'form-control',
                                 autofocus: true,
                                 required: true,
@@ -36,7 +36,7 @@
                         <span class="input-group-text"></span>
 
                         <%= text_field_tag "child[first_name]",
-                                (@child.name.strip.split[1] unless @child.name.nil?),
+                                first_name(@child),
                                 class: 'form-control',
                                 required: true,
                                 placeholder: t('.first_name')%>
@@ -47,7 +47,7 @@
                     <%= f.label :kana_first, t('.kana'), class: 'form-label' %>
                     <div class="input-group">
                         <%= text_field_tag "child[kana_family]",
-                                (@child.katakana_name.split[0] unless @child.name.nil?),
+                                kana_family(@child),
                                 class: 'form-control',
                                 required: true,
                                 placeholder: t('.kana_family') %>
@@ -55,7 +55,7 @@
                         <span class="input-group-text"></span>
 
                         <%= text_field_tag "child[kana_first]",
-                                (@child.katakana_name.split[1] unless @child.name.nil?),
+                                kana_first(@child),
                                 class: 'form-control',
                                 required: true,
                                 placeholder: t('.kana_first') %>

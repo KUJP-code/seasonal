@@ -1,6 +1,6 @@
 <main id="user-show" class="gap-3">
     <div class="card text-center">
-        <h1 class="fw-bold"><%= "yo #{@user.name.split[0]}" %></h1>
+        <h1 class="fw-bold"><%= "yo #{first_name(@user)}" %></h1>
     </div>
 
     <%= render partial: 'invoices/recent_bookings',

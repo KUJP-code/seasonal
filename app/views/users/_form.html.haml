@@ -52,13 +52,13 @@
     = f.label :first_name, t('.name'), class: 'form-label'
     .input-group
       = text_field_tag 'user[family_name]',
-                       (@user.name ? @user.name.split[0] : ''),
+                       family_name(@user),
                        class: 'form-control',
                        required: true,
                        placeholder: t('.family_name')
       %span.input-group-text
       = text_field_tag 'user[first_name]',
-                       (@user.name ? @user.name.split[1] : ''),
+                       first_name(@user),
                        class: 'form-control',
                        required: true,
                        placeholder: t('.first_name')
@@ -67,13 +67,13 @@
     = f.label :kana_first, t('.kana_name'), class: 'form-label'
     .input-group
       = text_field_tag 'user[kana_family]',
-                       (@user.katakana_name ? @user.katakana_name.split[0] : ''),
+                       kana_family(@user),
                        class: 'form-control',
                        required: true,
                        placeholder: t('.kana_family')
       %span.input-group-text
       = text_field_tag 'user[kana_first]',
-                       (@user.katakana_name ? @user.katakana_name.split[1] : ''),
+                       kana_first(@user),
                        class: 'form-control',
                        required: true,
                        placeholder: t('.kana_first')
@@ -90,7 +90,6 @@
                          '',
                          class: 'form-control',
                          placeholder: t('enter_pin', info: t('contact_info')),
-                         required: true,
                          max_length: 4,
                          data: { 'conditional-target': 'condition',
                                  action: 'conditional#pin' }

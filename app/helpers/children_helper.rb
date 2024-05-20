@@ -1,6 +1,30 @@
 # frozen_string_literal: true
 
 module ChildrenHelper
+  def family_name(child)
+    return '' if child.name.nil?
+
+    child.name.split.first
+  end
+
+  def first_name(child)
+    return '' if child.name.nil?
+
+    child.name.split.last
+  end
+
+  def kana_family(child)
+    return '' if child.name.nil?
+
+    child.katakana_name.split.first
+  end
+
+  def kana_first(child)
+    return '' if child.name.nil?
+
+    child.katakana_name.split.last
+  end
+
   def kanji_category(category)
     case category
     when 'internal'
