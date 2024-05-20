@@ -6,7 +6,7 @@ module InvoiceSummarisable
   included do
     private
 
-    def generate_details
+    def generate_details(data)
       @breakdown.prepend(
         "<div class='d-flex gap-3 flex-column align-items-start'>\n
       <h2 class='fw-semibold'>#{child.name}</h2>\n
@@ -21,7 +21,23 @@ module InvoiceSummarisable
                                 end}</h4>\n
       <h3 class='fw-semibold'>#{event.name} @ #{event.school.name}</h3>\n"
       )
-      @breakdown << "</div><h2 class='fw-semibold text-start'>お申込内容:</h2>\n"
+      @breakdown << '</div>'
+      unless data[:num_regs].zero?
+        @breakdown.prepend(
+          "<h4 class='fw-semibold'>コース:</h4>
+        <div class='d-flex flex-column align-items-start gap-1'>
+        <p>#{yenify(data[:course_cost])} (#{data[:num_regs]}回)</p>"
+        )
+        if data[:extra_cost_count].positive?
+          @breakdown << "<p>追加料金 x #{data[:extra_cost_count]}: #{yenify(data[:extra_cost])}</p>"
+        end
+        if data[:snack_count].positive?
+          @breakdown << "<p>午後コースおやつ代 x #{data[:snack_count]}: #{yenify(data[:snack_cost])}</p>"
+        end
+        @breakdown << '</div>'
+      end
+
+      @breakdown << "<h2 class='fw-semibold text-start'>お申込内容:</h2>\n"
 
       e_opt_regs = opt_regs.where(registerable: event.options)
       unless e_opt_regs.empty?

@@ -67,7 +67,7 @@ class InvoicesController < ApplicationController
                      permitted_attributes(Invoice)['slot_regs_attributes'].keep_if do |_, v|
                        v['_destroy'] == '1'
                      end.to_h.transform_values do |v|
-                       v['id'].to_i
+                       v['registerable_id'].to_i
                      end.values
                    end
     ignore_opts = if permitted_attributes(Invoice)['opt_regs_attributes'].nil?
@@ -76,7 +76,7 @@ class InvoicesController < ApplicationController
                     permitted_attributes(Invoice)['opt_regs_attributes'].keep_if do |_, v|
                       v['_destroy'] == '1'
                     end.to_h.transform_values do |v|
-                      v['id'].to_i
+                      v['registerable_id'].to_i
                     end.values
                   end
 
@@ -90,7 +90,8 @@ class InvoicesController < ApplicationController
     @invoice.slot_regs.each
 
     @invoice.calc_cost(ignore_slots, ignore_opts)
-    @ss_invoices = Invoice.where(event_id: @invoice.event_id, in_ss: true, child_id: @invoice.child_id)
+    @ss_invoices = Invoice.where(event_id: @invoice.event_id, in_ss: true,
+                                 child_id: @invoice.child_id)
   end
 
   def confirmed
@@ -150,10 +151,10 @@ class InvoicesController < ApplicationController
 
   def copy_invoice(target, event, origin)
     # List of registrations to copy
-    og_regs = origin.invoices.where(event: event).map(&:registrations).flatten
+    og_regs = origin.invoices.where(event:).map(&:registrations).flatten
     # Get the target's modifiable invoice, create one if none
-    target_invoice = target.invoices.where(event: event).find_by(in_ss: false) || target.invoices.create(event: event)
-    t_regs = target.invoices.where(event: event).reduce([]) { |a, i| a + i.registrations }
+    target_invoice = target.invoices.where(event:).find_by(in_ss: false) || target.invoices.create(event:)
+    t_regs = target.invoices.where(event:).reduce([]) { |a, i| a + i.registrations }
 
     og_regs.each do |o_reg|
       # Skip if already on target invoice or slot is closed
@@ -168,7 +169,7 @@ class InvoicesController < ApplicationController
       # If not on target invoice, add registration
       target_invoice.registrations.create!(
         child: target,
-        registerable_id: registerable_id,
+        registerable_id:,
         registerable_type: o_reg.registerable_type,
         invoice: target_invoice
       )
@@ -179,7 +180,8 @@ class InvoicesController < ApplicationController
   end
 
   def find_equivalent_id(option)
-    return option.id unless %w[arrival k_arrival departure k_departure extension k_extension].include?(option.category)
+    return option.id unless %w[arrival k_arrival departure k_departure extension
+                               k_extension].include?(option.category)
 
     # Switch the category to the correct one for target's kindy/elementary
     category = option.category
@@ -246,7 +248,7 @@ class InvoicesController < ApplicationController
   def send_emails(invoice)
     if permitted_attributes(@invoice)['in_ss'] == 'true'
       InvoiceMailer.with(
-        invoice: invoice,
+        invoice:,
         user: invoice.child.parent
       ).confirmation_notif.deliver_now
     end
@@ -258,12 +260,12 @@ class InvoicesController < ApplicationController
 
   def send_update_emails(invoice)
     InvoiceMailer.with(
-      invoice: invoice,
+      invoice:,
       user: invoice.child.parent
     ).updated_notif.deliver_now
 
     InvoiceMailer.with(
-      invoice: invoice,
+      invoice:,
       user: invoice.school.manager
     ).sm_updated_notif.deliver_now
   end

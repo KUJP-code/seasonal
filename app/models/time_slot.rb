@@ -82,9 +82,9 @@ class TimeSlot < ApplicationRecord
 
   def same_name_slots
     event_ids = Event.where(name: event.name).ids
-    TimeSlot.where(name: name,
-                   morning: morning,
-                   category: category,
+    TimeSlot.where(name:,
+                   morning:,
+                   category:,
                    event_id: event_ids)
   end
 
@@ -95,6 +95,13 @@ class TimeSlot < ApplicationRecord
 
   def day
     start_time.strftime('%A')
+  end
+
+  def extra_cost_for(child)
+    category_cost = child.external? ? ext_modifier : int_modifier
+    grade_cost = child.kindy ? kindy_modifier : ele_modifier
+
+    category_cost + grade_cost
   end
 
   def f_end_time
@@ -130,13 +137,13 @@ class TimeSlot < ApplicationRecord
     return if party? || special?
 
     create_afternoon_slot(
-      name: name,
+      name:,
       start_time: start_time + 5.hours,
       end_time: end_time + 5.hours,
-      close_at: close_at,
+      close_at:,
       category: :seasonal,
       morning: false,
-      event_id: event_id,
+      event_id:,
       snack: true
     )
   end

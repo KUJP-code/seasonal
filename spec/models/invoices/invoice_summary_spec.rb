@@ -8,9 +8,8 @@ RSpec.describe Invoice do
       :invoice,
       event:,
       child:,
-      slot_regs: build_list(:slot_reg, 6, registerable: slot),
+      slot_regs: [build(:slot_reg, registerable: slot)],
       opt_regs: [build(:slot_opt_reg, registerable: slot_option),
-                 build(:slot_opt_reg, registerable: slot_option),
                  build(:event_opt_reg, registerable: event_opt)],
       adjustments: [build(:adjustment, reason: 'Adjustment', change: 10)]
     )
@@ -31,15 +30,15 @@ RSpec.describe Invoice do
       expect(invoice.summary).to include_all %w[Child 幼児 通学生]
     end
 
-    it 'includes course heading, count, snack info, course number and spot use' do
+    it 'includes course heading and count with course name' do
       expect(invoice.summary).to include_all [
-        'コース:', '6円 (6回)', '5回コース: 5円', '1回コース x 1: 1円'
+        'コース:', '1円 (1回)', '1回コース x 1: 1円'
       ]
     end
 
     it 'gives option heading, grouped count of options by name' do
       expect(invoice.summary).to include_all [
-        'オプション:', '30円 (3オプション)', 'Event Option x 1: 10円', 'Slot Option x 2: 20円'
+        'オプション:', '20円 (2オプション)', 'Event Option x 1: 10円', 'Slot Option x 1: 10円'
       ]
     end
 
@@ -52,7 +51,7 @@ RSpec.describe Invoice do
     end
 
     it 'gives total cost' do
-      expect(invoice.summary).to include('合計（税込）: 46円')
+      expect(invoice.summary).to include('合計（税込）: 31円')
     end
   end
 

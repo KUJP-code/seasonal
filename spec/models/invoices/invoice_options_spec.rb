@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Invoice do
   let(:event) { create(:event) }
-  let(:invoice) { build(:invoice, event: event) }
+  let(:invoice) { build(:invoice, event:) }
 
   context 'when calculating cost for slot options' do
     let(:slot_option) { create(:slot_option, cost: 10) }
@@ -24,8 +24,8 @@ RSpec.describe Invoice do
 
     it 'destroys orphan options' do
       child = create(:child)
-      invoice.slot_regs << build(:slot_reg, registerable: slot_option.optionable, child: child)
-      invoice.opt_regs << build(:slot_opt_reg, registerable: slot_option, child: child)
+      invoice.slot_regs << build(:slot_reg, registerable: slot_option.optionable, child:)
+      invoice.opt_regs << build(:slot_opt_reg, registerable: slot_option, child:)
       invoice.calc_cost && invoice.save
       invoice.update(slot_regs: [])
       expect(invoice.reload.opt_regs.count).to eq(0)
@@ -35,8 +35,8 @@ RSpec.describe Invoice do
   context 'when calculating cost for event options' do
     let(:event_option) { create(:event_option, cost: 10, optionable: event) }
 
-    it 'calculates cost for event options if at least one activity registration' do
-      invoice.slot_regs << build(:slot_reg)
+    it 'calculates cost for event options if at least one slot registered' do
+      invoice.slot_regs << build(:slot_reg, registerable: create(:time_slot))
       invoice.opt_regs << build(:event_opt_reg, registerable: event_option)
       invoice.calc_cost
       expect(invoice.total_cost).to eq(11)
@@ -51,7 +51,8 @@ RSpec.describe Invoice do
     it 'does not charge for event option sibling is registered for' do
       parent = build(:user, children: create_list(:child, 2))
       create(:event_opt_reg, registerable: event_option, child: parent.children.first)
-      invoice.opt_regs << build(:event_opt_reg, registerable: event_option, child: parent.children.last)
+      invoice.opt_regs << build(:event_opt_reg, registerable: event_option,
+                                                child: parent.children.last)
       invoice.calc_cost
       expect(invoice.total_cost).to eq(0)
     end

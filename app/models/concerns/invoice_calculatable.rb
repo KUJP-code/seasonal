@@ -8,14 +8,38 @@ module InvoiceCalculatable
       @ignore_slots = ignore_slots
       @ignore_opts = ignore_opts
       @breakdown = +''
-      course_cost = calc_course_cost
+      @data = {
+        child:,
+        options: Option.where(id: opt_regs.map(&:registerable_id) - @ignore_opts),
+        time_slots: TimeSlot.where(id: slot_regs.map(&:registerable_id) - @ignore_slots)
+      }
+      calc_course_cost(@data[:time_slots])
       option_cost = calc_option_cost
       adjustments = calc_adjustments(slot_regs.size - @ignore_slots.size)
-      generate_details
+      generate_details(@data)
 
-      calculated_cost = course_cost + adjustments + option_cost
+      calculated_cost = @data[:course_cost] + adjustments + option_cost
       calculated_cost = 0 if calculated_cost.negative?
       update_cost(calculated_cost)
+      @data[:total_cost] = calculated_cost
+      @data
+    end
+  end
+
+  def calc_course_cost(slots)
+    @data[:num_regs] = @data[:time_slots].size
+    calc_snack_cost(slots)
+    calc_extra_cost(slots)
+
+    @data[:course_cost] =
+      slot_cost(@data[:num_regs]) + @data[:extra_cost] + @data[:snack_cost]
+  end
+
+  def slot_cost(num_regs)
+    if child.member?
+      best_price(num_regs, member_prices)
+    else
+      best_price(num_regs, non_member_prices)
     end
   end
 
@@ -43,6 +67,20 @@ module InvoiceCalculatable
     spot_use(num_regs, courses)
   end
 
+  def calc_snack_cost(slots)
+    @data[:snack_count] = slots.count(&:snack)
+    @data[:snack_cost] = @data[:snack_count] * 165
+  end
+
+  def calc_extra_cost(slots)
+    @data[:extra_cost_count] = 0
+    @data[:extra_cost] = slots.reduce(0) do |sum, slot|
+      extra_cost = slot.extra_cost_for(child)
+      @data[:extra_cost_count] += 1 if extra_cost.positive?
+      sum + extra_cost
+    end
+  end
+
   def calc_adjustments(num_regs)
     return 0 unless adjustments.size.positive? || needs_hat? || first_time?(num_regs) || repeater?
 
@@ -58,55 +96,6 @@ module InvoiceCalculatable
     @breakdown << '</div>'
 
     generic_adj
-  end
-
-  def calc_course_cost
-    num_regs = if @ignore_slots
-                 slot_regs.size - @ignore_slots.size
-               else
-                 slot_regs.size
-               end
-
-    course_cost = if child.member?
-                    best_price(num_regs, member_prices)
-                  else
-                    best_price(num_regs, non_member_prices)
-                  end
-
-    slots = slot_regs.map(&:registerable)
-
-    snack_count = slot_regs.count do |reg|
-      !reg._destroy && slots.find { |slot| slot.id == reg.registerable_id }.snack
-    end
-
-    snack_cost = snack_count * 165
-
-    extra_cost_count = 0
-    extra_cost = slots.reduce(0) do |sum, slot|
-      category_cost = child.external? ? slot.ext_modifier : slot.int_modifier
-      grade_cost = child.kindy ? slot.kindy_modifier : slot.ele_modifier
-      extra_cost_count += 1 if category_cost.positive? || grade_cost.positive?
-      sum + category_cost + grade_cost
-    end
-
-    course_cost += extra_cost + snack_cost
-
-    unless @breakdown.nil? || num_regs.zero?
-      @breakdown.prepend(
-        "<h4 class='fw-semibold'>コース:</h4>
-        <div class='d-flex flex-column align-items-start gap-1'>
-        <p>#{yenify(course_cost)} (#{num_regs}回)</p>"
-      )
-      if extra_cost_count.positive?
-        @breakdown << "<p>追加料金 x #{extra_cost_count}: #{yenify(extra_cost)}</p>"
-      end
-      if snack_count.positive?
-        @breakdown << "<p>午後コースおやつ代 x #{snack_count}: #{yenify(snack_cost)}</p>"
-      end
-      @breakdown << '</div>'
-    end
-
-    course_cost
   end
 
   def calc_option_cost
