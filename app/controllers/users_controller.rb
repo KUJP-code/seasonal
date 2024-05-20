@@ -142,7 +142,8 @@ class UsersController < ApplicationController
   end
 
   def find_equivalent_id(option)
-    return option.id unless %w[arrival k_arrival departure k_departure extension k_extension].include?(option.category)
+    return option.id unless %w[arrival k_arrival departure k_departure extension
+                               k_extension].include?(option.category)
 
     # Switch the category to the correct one for target's kindy/elementary
     category = option.category
@@ -182,7 +183,8 @@ class UsersController < ApplicationController
                         end
 
       # Else associate reg with to child and their open invoice
-      reg.update(child_id: to.id, invoice_id: to_active_invoice.id, registerable_id: registerable_id)
+      reg.update(child_id: to.id, invoice_id: to_active_invoice.id,
+                 registerable_id:)
     end
 
     # Update the newly merged invoice
@@ -202,7 +204,7 @@ class UsersController < ApplicationController
                             reg.registerable_id
                           end
 
-        reg.update(child_id: to.id, registerable_id: registerable_id)
+        reg.update(child_id: to.id, registerable_id:)
       end
       # Update the invoice to reflect its new owner
       invoice.reload && invoice.save
@@ -263,7 +265,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(
       :id, :email, :kana_first, :prefecture, :address, :postcode, :phone,
       :first_name, :family_name, :email_confirmation, :kana_family, :password,
-      :password_confirmation
+      :password_confirmation, :allowed_ips
     )
   end
 end

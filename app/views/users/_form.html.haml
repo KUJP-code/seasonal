@@ -94,4 +94,13 @@
                          data: { 'conditional-target': 'condition',
                                  action: 'conditional#pin' }
 
+  - if @user.school_manager? && current_user.admin?
+    %div
+      = f.label :allowed_ips, class: 'form-label'
+      = f.text_area :allowed_ips,
+                    value: @user.allowed_ips.join("\n"),
+                    class: 'form-control',
+                    rows: 3
+      %small Add each IP address on a new line
+
   = f.submit class: 'btn btn-primary'
