@@ -23,11 +23,10 @@ module InvoiceSummarisable
       )
       @breakdown << '</div>'
       unless data[:num_regs].zero?
-        @breakdown.prepend(
+        @breakdown <<
           "<h4 class='fw-semibold'>コース:</h4>
         <div class='d-flex flex-column align-items-start gap-1'>
         <p>#{yenify(data[:course_cost])} (#{data[:num_regs]}回)</p>"
-        )
         if data[:extra_cost_count].positive?
           @breakdown << "<p>追加料金 x #{data[:extra_cost_count]}: #{yenify(data[:extra_cost])}</p>"
         end
@@ -36,6 +35,13 @@ module InvoiceSummarisable
         end
         @breakdown << '</div>'
       end
+
+      if @data[:options].size.positive?
+        @breakdown << "<h4 class='fw-semibold'>オプション:</h4>
+                     <div class='d-flex flex-column align-items-start gap-1'>
+                     <p>#{yenify(@data[:opt_cost])} (#{@data[:options].size}オプション)<p>"
+      end
+      @breakdown << '</div>'
 
       @breakdown << "<h2 class='fw-semibold text-start'>お申込内容:</h2>\n"
 
@@ -47,6 +53,12 @@ module InvoiceSummarisable
           @breakdown << "<p>- #{opt.name}: #{yenify(opt.cost)}</p>\n"
         end
         @breakdown << '</div>'
+      end
+      #
+      # Display options with count and cost
+      per_name_costs = @data[:options].group(:name).sum(:cost)
+      @data[:options].group(:name).count.each do |name, count|
+        @breakdown << "<p>- #{name} x #{count}: #{yenify(per_name_costs[name])}</p>"
       end
 
       @breakdown << "<h4 class='fw-semibold text-start'>登録</h4>\n"

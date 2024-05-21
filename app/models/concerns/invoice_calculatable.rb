@@ -2,6 +2,7 @@
 
 module InvoiceCalculatable
   extend ActiveSupport::Concern
+  include OptionCalculator
   include CourseCalculator
 
   included do
@@ -11,16 +12,16 @@ module InvoiceCalculatable
       @breakdown = +''
       @data = {
         child:,
-        options: Option.where(id: opt_regs.map(&:registerable_id) - @ignore_opts),
+        options: validated_options(ignore_opts),
         time_slots: TimeSlot.where(id: slot_regs.map(&:registerable_id) - @ignore_slots)
       }
       @data[:num_regs] = @data[:time_slots].size
       calc_course_cost(@data[:time_slots])
-      option_cost = calc_option_cost
+      calc_option_cost(@data[:options])
       adjustments = calc_adjustments(slot_regs.size - @ignore_slots.size)
       generate_details(@data)
 
-      calculated_cost = @data[:course_cost] + adjustments + option_cost
+      calculated_cost = @data[:course_cost] + adjustments + @data[:opt_cost]
       calculated_cost = 0 if calculated_cost.negative?
       update_cost(calculated_cost)
       @data[:total_cost] = calculated_cost
@@ -29,54 +30,6 @@ module InvoiceCalculatable
   end
 
   private
-
-  def calc_option_cost
-    # Prevent multiple siblings registering for same event option
-    check_event_opts
-    # Ignore options to be deleted on confirmation screen
-    valid_opt_regs = opt_regs.reject do |reg|
-      @ignore_opts.include?(reg.id) || orphan_option?(reg)
-    end
-    opt_cost = valid_opt_regs.reduce(0) { |sum, reg| sum + reg.registerable.cost }
-    if opt_regs.size.positive?
-      @breakdown << "<h4 class='fw-semibold'>オプション:</h4>
-                     <div class='d-flex flex-column align-items-start gap-1'>
-                     <p>#{yenify(opt_cost)} (#{valid_opt_regs.size}オプション)<p>"
-    end
-
-    # Find the options on this invoice, even if not saved
-    temp_opts = {}
-    opt_regs.each do |reg|
-      next if @ignore_opts.include?(reg.id) || orphan_option?(reg)
-
-      opt = reg.registerable
-      next if opt.name == 'なし'
-
-      if temp_opts[opt.name].nil?
-        temp_opts[opt.name] = {
-          cost: opt.cost,
-          count: 1
-        }
-      else
-        temp_opts[opt.name][:count] += 1
-        temp_opts[opt.name][:cost] += opt.cost
-      end
-    end
-    # Display options with count and cost
-    temp_opts.each do |name, _|
-      @breakdown << "<p>- #{name} x #{temp_opts[name][:count]}: #{yenify(temp_opts[name][:cost])}</p>"
-    end
-
-    @breakdown << '</div>'
-    opt_cost
-  end
-
-  def check_event_opts
-    opt_regs.where(registerable_id: event.options.ids,
-                   registerable_type: 'Option').find_each do |reg|
-      reg.destroy if child.siblings.any? { |s| s.options.include?(reg.registerable) }
-    end
-  end
 
   def calc_adjustments(num_regs)
     return 0 unless adjustments.size.positive? || needs_hat? || first_time?(num_regs) || repeater?

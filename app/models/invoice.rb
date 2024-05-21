@@ -62,23 +62,6 @@ class Invoice < ApplicationRecord
     false
   end
 
-  # Remove options where the slot is no longer registered for
-  def orphan_option?(opt_reg)
-    return true if slot_regs.empty?
-    # Exclude event options from the check
-    return false if event.options.ids.include?(opt_reg['registerable_id'].to_i)
-
-    option = Option.find(opt_reg['registerable_id'])
-    # If for special day extension, only delete if neither registered
-    if option.extension? || option.k_extension?
-      return slot_regs.none? do |r|
-               r.registerable.special?
-             end
-    end
-
-    slot_regs.none? { |s_reg| s_reg.registerable_id == option.optionable_id }
-  end
-
   def update_regs_child
     return if slot_regs.empty? || slot_regs.first.child_id == child_id
 
