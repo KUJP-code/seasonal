@@ -3,14 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Statistics summary API for Google Sheet' do
-  let!(:member_prices) { create(:member_prices, course1: 10) }
-  let!(:non_member_prices) { create(:non_member_prices, course1: 20) }
+  let!(:member_prices) { create(:member_prices, course1: '10') }
+  let!(:non_member_prices) { create(:non_member_prices, course1: '20') }
   let!(:event) do
-    create(:event,
-           name: 'Test Event', goal: 10, member_prices: member_prices,
-           non_member_prices: non_member_prices)
+    create(:event, name: 'Test Event', goal: 10, member_prices:, non_member_prices:)
   end
-  let!(:time_slot) { create(:time_slot, event: event) }
+  let!(:time_slot) { create(:time_slot, event:) }
 
   before do
     create_list(:child, 2, category: :internal)

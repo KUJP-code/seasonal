@@ -1,0 +1,23 @@
+- possible_courses = %w[1 3 5 10 15 20 25 30 35 40 45 50]
+
+%main#price_list_edit
+  = form_with model: @price_list, html: { class: 'card' } do |f|
+    .form-floating
+      = f.text_field :name,
+                      class: 'form-control',
+                      placeholder:  t('.name'),
+                      required: true
+      = f.label :name, t('.name'), class: 'form-label'
+
+    %h2= t('.courses')
+    - possible_courses.each do |course|
+      .form-floating.input-group
+        = number_field_tag "price_list[course#{course}]",
+                           course_cost(@price_list, course),
+                           class: 'form-control',
+                           placeholder: course
+        = label_tag "price_list[course#{course}]",
+                    course,
+                    class: 'form-label'
+        %span.input-group-text 円
+    = f.submit class: 'btn btn-primary'

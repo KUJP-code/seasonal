@@ -11,7 +11,10 @@
     - price_list.courses.each do |k, v|
       %tr
         %td= k
-        %td= number_to_currency(v)
+        - if v
+          %td= number_to_currency(v)
+        - else
+          %td.fw-bold.text-danger Not set
 
   = link_to 'Edit', edit_price_list_path(price_list), class: 'btn btn-primary'
 

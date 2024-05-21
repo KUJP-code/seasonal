@@ -18,7 +18,6 @@ class PriceList < ApplicationRecord
 
   validates :name, :courses, presence: true
 
-  # Public methods
   # Simplifies getting the list of events using a given price list
   def events
     member_events.or(non_member_events)
@@ -34,6 +33,14 @@ class PriceList < ApplicationRecord
       '40' => course40, '45' => course45, '50' => course50
     }
 
-    self.courses = hash.transform_values(&:to_i)
+    self.courses = course_prices_to_int(hash)
+  end
+
+  def course_prices_to_int(course_hash)
+    course_hash.transform_values do |v|
+      next if v.instance_of?(Integer)
+
+      v.empty? ? nil : v.to_i
+    end
   end
 end

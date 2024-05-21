@@ -46,4 +46,14 @@ RSpec.describe PriceList do
     price_list = create(:member_prices, course1: '1')
     expect(price_list.courses['1']).to eq(1)
   end
+
+  it 'allows empty course fields' do
+    price_list = create(:member_prices, course1: '')
+    expect(price_list).to be_valid
+  end
+
+  it 'sets course cost to nil if left empty' do
+    price_list = create(:member_prices, course1: '')
+    expect(price_list.courses['1']).to be_nil
+  end
 end
