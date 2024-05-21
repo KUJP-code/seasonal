@@ -8,13 +8,10 @@ module InvoiceCalculatable
 
   included do
     def calc_cost(ignore_slots = [], ignore_opts = [])
-      @ignore_slots = ignore_slots
-      @ignore_opts = ignore_opts
       @breakdown = +''
       @data = {
-        child:,
         options: validated_options(ignore_opts),
-        time_slots: TimeSlot.where(id: slot_regs.map(&:registerable_id) - @ignore_slots)
+        time_slots: TimeSlot.where(id: slot_regs.map(&:registerable_id) - ignore_slots)
       }
       @data[:num_regs] = @data[:time_slots].size
       calc_course_cost(@data[:time_slots])

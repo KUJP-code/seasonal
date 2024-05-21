@@ -36,10 +36,10 @@ module InvoiceSummarisable
         @breakdown << '</div>'
       end
 
-      if @data[:options].size.positive?
+      if data[:options].size.positive?
         @breakdown << "<h4 class='fw-semibold'>オプション:</h4>
                      <div class='d-flex flex-column align-items-start gap-1'>
-                     <p>#{yenify(@data[:opt_cost])} (#{@data[:options].size}オプション)<p>"
+                     <p>#{yenify(data[:opt_cost])} (#{data[:options].size}オプション)<p>"
       end
       @breakdown << '</div>'
 
@@ -54,8 +54,8 @@ module InvoiceSummarisable
       end
 
       # Display options with count and cost
-      per_name_costs = @data[:options].group(:name).sum(:cost)
-      @data[:options].group(:name).count.each do |name, count|
+      per_name_costs = data[:options].group(:name).sum(:cost)
+      data[:options].group(:name).count.each do |name, count|
         @breakdown << "<p>- #{name} x #{count}: #{yenify(per_name_costs[name])}</p>"
       end
 
@@ -71,11 +71,7 @@ module InvoiceSummarisable
       @breakdown << "<h2 class='fw-semibold text-start'>お申込内容:</h2>\n"
       @breakdown << "<h4 class='fw-semibold text-start'>登録</h4>\n"
       @breakdown << '<div class="d-flex flex-column gap-3 p-3 justify-content-start flex-wrap">'
-      slot_regs.sort_by { |r| r.registerable.start_time }.each do |slot_reg|
-        next if @ignore_slots.include?(slot_reg.id)
-
-        slot = slot_reg.registerable
-
+      data[:time_slots].order(start_time: :desc).each do |slot|
         @breakdown << if slot.morning
                         "<div class='slot_regs d-flex flex-wrap gap-3 text-start'><h5>#{slot.name} (#{slot.date})</h5>\n"
                       else
@@ -83,10 +79,8 @@ module InvoiceSummarisable
                       end
 
         # Show details for all registered options, even unsaved
-        opt_regs.select { |reg| slot.options.ids.include?(reg.registerable_id) }.each do |opt_reg|
-          next if opt_reg.nil? || @ignore_opts.include?(opt_reg.id)
-
-          opt = opt_reg.registerable
+        slot_options = slot.options.ids
+        data[:options].select { |opt| slot_options.include?(opt.id) }.each do |opt|
           next if opt.name == 'なし'
 
           @breakdown << "<p> - #{opt.name}: #{yenify(opt.cost)}</p>\n"
