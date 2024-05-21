@@ -2,6 +2,7 @@
 
 module InvoiceCalculatable
   extend ActiveSupport::Concern
+  include CourseCalculator
 
   included do
     def calc_cost(ignore_slots = [], ignore_opts = [])
@@ -13,6 +14,7 @@ module InvoiceCalculatable
         options: Option.where(id: opt_regs.map(&:registerable_id) - @ignore_opts),
         time_slots: TimeSlot.where(id: slot_regs.map(&:registerable_id) - @ignore_slots)
       }
+      @data[:num_regs] = @data[:time_slots].size
       calc_course_cost(@data[:time_slots])
       option_cost = calc_option_cost
       adjustments = calc_adjustments(slot_regs.size - @ignore_slots.size)
@@ -26,60 +28,7 @@ module InvoiceCalculatable
     end
   end
 
-  def calc_course_cost(slots)
-    @data[:num_regs] = @data[:time_slots].size
-    calc_snack_cost(slots)
-    calc_extra_cost(slots)
-
-    @data[:course_cost] =
-      slot_cost(@data[:num_regs]) + @data[:extra_cost] + @data[:snack_cost]
-  end
-
-  def slot_cost(num_regs)
-    if child.member?
-      best_price(num_regs, member_prices)
-    else
-      best_price(num_regs, non_member_prices)
-    end
-  end
-
-  def best_price(num_regs, courses)
-    return 0 if num_regs.zero?
-
-    if [3, 4].include?(num_regs)
-      cost = courses['3']
-
-      @breakdown << "<p>- 3回コース: #{yenify(cost)}</p>" unless @breakdown.nil?
-      return cost + best_price(num_regs - 3, courses)
-    end
-
-    if num_regs >= 55
-      @breakdown << "<p>- 50回コース: #{yenify(courses['50'])}</p>" unless @breakdown.nil?
-      return courses['50'] + best_price(num_regs - 50, courses)
-    end
-
-    course = nearest_five(num_regs)
-    cost = courses[course.to_s]
-
-    @breakdown << "<p>- #{course}回コース: #{yenify(cost)}</p>" unless cost.nil? || @breakdown.nil?
-    return cost + best_price(num_regs - course, courses) unless num_regs < 5
-
-    spot_use(num_regs, courses)
-  end
-
-  def calc_snack_cost(slots)
-    @data[:snack_count] = slots.count(&:snack)
-    @data[:snack_cost] = @data[:snack_count] * 165
-  end
-
-  def calc_extra_cost(slots)
-    @data[:extra_cost_count] = 0
-    @data[:extra_cost] = slots.reduce(0) do |sum, slot|
-      extra_cost = slot.extra_cost_for(child)
-      @data[:extra_cost_count] += 1 if extra_cost.positive?
-      sum + extra_cost
-    end
-  end
+  private
 
   def calc_adjustments(num_regs)
     return 0 unless adjustments.size.positive? || needs_hat? || first_time?(num_regs) || repeater?
