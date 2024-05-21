@@ -30,23 +30,6 @@ module InvoiceCalculatable
 
   private
 
-  def calc_adjustments(num_regs)
-    return 0 unless adjustments.size.positive? || needs_hat? || first_time?(num_regs) || repeater?
-
-    @breakdown << '<h4 class="fw-semibold text-start">調整:</h4>'
-    @breakdown << '<div class="d-flex flex-column align-items-start gap-1">'
-    hat_adjustment if needs_hat?
-    first_time_adjustment if first_time?(num_regs)
-    repeater_discount if repeater?
-    generic_adj = adjustments.reduce(0) { |sum, adj| sum + adj.change }
-    adjustments.each do |adj|
-      @breakdown << "<p>#{adj.reason}: #{yenify(adj.change)}</p>"
-    end
-    @breakdown << '</div>'
-
-    generic_adj
-  end
-
   def calc_option_cost
     # Prevent multiple siblings registering for same event option
     check_event_opts
@@ -93,6 +76,23 @@ module InvoiceCalculatable
                    registerable_type: 'Option').find_each do |reg|
       reg.destroy if child.siblings.any? { |s| s.options.include?(reg.registerable) }
     end
+  end
+
+  def calc_adjustments(num_regs)
+    return 0 unless adjustments.size.positive? || needs_hat? || first_time?(num_regs) || repeater?
+
+    @breakdown << '<h4 class="fw-semibold text-start">調整:</h4>'
+    @breakdown << '<div class="d-flex flex-column align-items-start gap-1">'
+    hat_adjustment if needs_hat?
+    first_time_adjustment if first_time?(num_regs)
+    repeater_discount if repeater?
+    generic_adj = adjustments.reduce(0) { |sum, adj| sum + adj.change }
+    adjustments.each do |adj|
+      @breakdown << "<p>#{adj.reason}: #{yenify(adj.change)}</p>"
+    end
+    @breakdown << '</div>'
+
+    generic_adj
   end
 
   def first_time?(num_regs)
