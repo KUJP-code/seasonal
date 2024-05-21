@@ -15,16 +15,9 @@ RSpec.describe Invoice do
 
     let(:valid_hat_invoice) do
       child = build(:child, category: :external, received_hat: false)
-      invoice = build(
-        :invoice,
-        event: event,
-        child: child,
-        slot_regs: [build(
-          :slot_reg,
-          child: child,
-          registerable: build(:time_slot, category: 'outdoor')
-        )]
-      )
+      invoice = build(:invoice, event:, child:, slot_regs:
+                        [build(:slot_reg, child:, registerable:
+                                 create(:time_slot, category: 'outdoor'))])
       invoice
     end
 
@@ -80,12 +73,8 @@ RSpec.describe Invoice do
 
     let(:valid_first_time_invoice) do
       child = build(:child, category: :external, first_seasonal: true)
-      invoice = build(
-        :invoice,
-        event: event,
-        child: child,
-        slot_regs: [build(:slot_reg, child: child)]
-      )
+      invoice = build(:invoice, event:, child:, slot_regs:
+                        [build(:slot_reg, child:, registerable: create(:time_slot))])
       invoice
     end
 
@@ -137,14 +126,11 @@ RSpec.describe Invoice do
 
     let(:valid_repeater_invoice) do
       child = build(:child, category: :external, first_seasonal: false)
-      invoice = build(
-        :invoice,
-        event: event,
-        child: child,
-        slot_regs: build_list(:slot_reg, 5, child: child)
-      )
+      invoice = build(:invoice, event:, child:, slot_regs:
+                        time_slots.map { |s| build(:slot_reg, child:, registerable: s) })
       invoice
     end
+    let(:time_slots) { create_list(:time_slot, 5) }
 
     it 'applies if external kid not attending first seasonal and >= 5 activity regs' do
       valid_repeater_invoice.calc_cost
@@ -167,7 +153,8 @@ RSpec.describe Invoice do
     end
 
     it 'does not apply if < 5 activity regs' do
-      valid_repeater_invoice.slot_regs = build_list(:slot_reg, 4, child: valid_repeater_invoice.child)
+      valid_repeater_invoice.slot_regs = build_list(:slot_reg, 4,
+                                                    child: valid_repeater_invoice.child)
       valid_repeater_invoice.calc_cost
       repeater_adj = find_repeater_discount(valid_repeater_invoice)
       expect(repeater_adj).to be_nil
@@ -184,23 +171,19 @@ RSpec.describe Invoice do
     end
 
     it 'does not apply if applied to other invoice for same event' do
-      create(
-        :invoice,
-        child: valid_repeater_invoice.child,
-        event: event,
-        adjustments: [create(:adjustment, change: -10_000, reason: '非会員リピーター割引(以前シーズナルスクールに参加された非会員の方)')]
-      )
+      create(:invoice, child: valid_repeater_invoice.child, event:, adjustments:
+               [create(:adjustment,
+                       change: -10_000,
+                       reason: '非会員リピーター割引(以前シーズナルスクールに参加された非会員の方)')])
       valid_repeater_invoice.calc_cost
       expect(find_repeater_discount(valid_repeater_invoice)).to be_nil
     end
 
     it 'applies if applied to invoice for other event' do
-      create(
-        :invoice,
-        child: valid_repeater_invoice.child,
-        event: create(:event),
-        adjustments: [create(:adjustment, change: -10_000, reason: '非会員リピーター割引(以前シーズナルスクールに参加された非会員の方)')]
-      )
+      create(:invoice, child: valid_repeater_invoice.child, event: create(:event), adjustments:
+               [create(:adjustment,
+                       change: -10_000,
+                       reason: '非会員リピーター割引(以前シーズナルスクールに参加された非会員の方)')])
       valid_repeater_invoice.calc_cost
       expect(find_repeater_discount(valid_repeater_invoice)).to be_present
     end

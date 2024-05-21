@@ -43,8 +43,6 @@ module InvoiceSummarisable
       end
       @breakdown << '</div>'
 
-      @breakdown << "<h2 class='fw-semibold text-start'>お申込内容:</h2>\n"
-
       e_opt_regs = opt_regs.where(registerable: event.options)
       unless e_opt_regs.empty?
         @breakdown << "<h4 class='fw-semibold text-start'>イベントのオプション:</h4>\n"
@@ -54,13 +52,23 @@ module InvoiceSummarisable
         end
         @breakdown << '</div>'
       end
-      #
+
       # Display options with count and cost
       per_name_costs = @data[:options].group(:name).sum(:cost)
       @data[:options].group(:name).count.each do |name, count|
         @breakdown << "<p>- #{name} x #{count}: #{yenify(per_name_costs[name])}</p>"
       end
 
+      if adjustments.size.positive?
+        @breakdown << '<h4 class="fw-semibold text-start">調整:</h4>'
+        @breakdown << '<div class="d-flex flex-column align-items-start gap-1">'
+        adjustments.each do |adj|
+          @breakdown << "<p>#{adj.reason}: #{yenify(adj.change)}</p>"
+        end
+        @breakdown << '</div>'
+      end
+
+      @breakdown << "<h2 class='fw-semibold text-start'>お申込内容:</h2>\n"
       @breakdown << "<h4 class='fw-semibold text-start'>登録</h4>\n"
       @breakdown << '<div class="d-flex flex-column gap-3 p-3 justify-content-start flex-wrap">'
       slot_regs.sort_by { |r| r.registerable.start_time }.each do |slot_reg|

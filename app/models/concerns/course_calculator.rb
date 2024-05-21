@@ -43,6 +43,28 @@ module CourseCalculator
     spot_use(num_regs, courses)
   end
 
+  def member_prices
+    event.member_prices.courses
+  end
+
+  def non_member_prices
+    event.non_member_prices.courses
+  end
+
+  # Finds the nearest multiple of 5 to the passed integer
+  # Because courses are in multiples of 5, other than spot use
+  def nearest_five(num)
+    (num / 5).floor(0) * 5
+  end
+
+  def spot_use(num_regs, courses)
+    spot_cost = num_regs * courses['1']
+    unless spot_cost.zero? || @breakdown.nil?
+      @breakdown << "<p>- 1回コース x #{num_regs}: #{yenify(spot_cost)}</p>\n"
+    end
+    spot_cost
+  end
+
   def snack_cost(slots)
     snack_count = slots.count(&:snack)
     snack_cost = snack_count * 165
