@@ -50,6 +50,16 @@ class Invoice < ApplicationRecord
   # Validations
   validates :total_cost, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
+  def calc_cost(ignore_slots = [], ignore_opts = [])
+    @data = { options: validated_options(ignore_opts),
+              time_slots: TimeSlot.where(id: slot_regs.map(&:registerable_id) - ignore_slots) }
+    @data[:num_regs] = @data[:time_slots].size
+    generate_data
+    self.total_cost = @data[:total_cost]
+    self.summary = generate_summary(@data)
+    @data
+  end
+
   def id_and_cost
     "##{id}, #{yenify(total_cost)}"
   end
@@ -68,9 +78,5 @@ class Invoice < ApplicationRecord
     registrations.each do |reg|
       reg.update!(child_id:)
     end
-  end
-
-  def yenify(number)
-    "#{number.to_i.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円"
   end
 end

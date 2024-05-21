@@ -6,7 +6,8 @@ module InvoiceSummarisable
   included do
     private
 
-    def generate_details(data)
+    def generate_summary(data)
+      @breakdown = +''
       @breakdown.prepend(
         "<div class='d-flex gap-3 flex-column align-items-start'>\n
       <h2 class='fw-semibold'>#{child.name}</h2>\n
@@ -26,7 +27,8 @@ module InvoiceSummarisable
         @breakdown <<
           "<h4 class='fw-semibold'>コース:</h4>
         <div class='d-flex flex-column align-items-start gap-1'>
-        <p>#{yenify(data[:course_cost])} (#{data[:num_regs]}回)</p>"
+        <p>#{yenify(data[:course_cost])} (#{data[:num_regs]}回)</p>
+        #{data[:course_summary]}"
         if data[:extra_cost_count].positive?
           @breakdown << "<p>追加料金 x #{data[:extra_cost_count]}: #{yenify(data[:extra_cost])}</p>"
         end
@@ -88,6 +90,11 @@ module InvoiceSummarisable
         @breakdown << '</div>'
       end
       @breakdown << '</div>'
+      @breakdown << "<h2 id='final_cost' class='fw-semibold text-start'>合計（税込）: #{yenify(data[:total_cost])}</h2>\n"
+    end
+
+    def yenify(number)
+      "#{number.to_i.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}円"
     end
   end
 end
