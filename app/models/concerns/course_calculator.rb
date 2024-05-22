@@ -20,30 +20,6 @@ module CourseCalculator
     end
   end
 
-  def best_price(num_regs, courses)
-    return 0 if num_regs.zero?
-
-    if [3, 4].include?(num_regs)
-      cost = courses['3']
-
-      @data[:course_summary] << "<p>- 3回コース: #{yenify(cost)}</p>"
-      return cost + best_price(num_regs - 3, courses)
-    end
-
-    if num_regs >= 55
-      @data[:course_summary] << "<p>- 50回コース: #{yenify(courses['50'])}</p>"
-      return courses['50'] + best_price(num_regs - 50, courses)
-    end
-
-    course = nearest_five(num_regs)
-    cost = courses[course.to_s]
-
-    @data[:course_summary] << "<p>- #{course}回コース: #{yenify(cost)}</p>" unless cost.nil?
-    return cost + best_price(num_regs - course, courses) unless num_regs < 5
-
-    spot_use(num_regs, courses)
-  end
-
   def member_prices
     event.member_prices.courses
   end
@@ -52,10 +28,37 @@ module CourseCalculator
     event.non_member_prices.courses
   end
 
-  # Finds the nearest multiple of 5 to the passed integer
-  # Because courses are in multiples of 5, other than spot use
-  def nearest_five(num)
+  def best_price(num_regs, courses)
+    return 0 if num_regs.zero?
+    return spot_use(num_regs, courses) if num_regs < 3
+
+    course = next_lowest_course(num_regs)
+    cost = courses[course.to_s]
+    return handle_missing_course(num_regs, courses) if cost.nil?
+
+    @data[:course_summary] << "<p>- #{course}回コース: #{yenify(cost)}</p>"
+    cost + best_price(num_regs - course, courses)
+  end
+
+  def next_lowest_course(num)
+    # 50 is the largest course on the price list
+    return 50 if num > 55
+    # there's a 3 course (sometimes)
+    return 3 if num < 5 && num >= 3
+
+    # all other courses are multiples of 5
     (num / 5).floor(0) * 5
+  end
+
+  def handle_missing_course(num_regs, courses)
+    # sometimes we don't have the 3 course, could also miss others
+    if num_regs > 6
+      best_price(num_regs - 5, courses) + best_price(5, courses)
+    elsif num_regs > 3
+      best_price(num_regs - 3, courses) + best_price(3, courses)
+    else
+      spot_use(num_regs, courses)
+    end
   end
 
   def spot_use(num_regs, courses)

@@ -95,6 +95,20 @@ RSpec.describe Invoice do
       expected_cost = member_prices.courses['1'] + member_prices.courses['5']
       expect(invoice.total_cost).to eq(expected_cost)
     end
+
+    it 'handles registrations beyond price list' do
+      slots = create_list(:time_slot, 56)
+      invoice = build(
+        :invoice,
+        event:,
+        slot_regs: slots.map { |s| build(:slot_reg, child:, registerable: s) },
+        child:
+      )
+      invoice.calc_cost
+      expect(invoice.total_cost).to eq(
+        member_prices.courses['50'] + member_prices.courses['5'] + member_prices.courses['1']
+      )
+    end
   end
 
   context 'when calculating snack cost' do
@@ -263,9 +277,7 @@ RSpec.describe Invoice do
         child:
       )
       invoice.calc_cost
-      expect(invoice.total_cost).to eq(
-        member_prices.courses['1'] + member_prices.courses['5']
-      )
+      expect(invoice.total_cost).to eq(member_prices.courses['3'] * 2)
     end
 
     it 'can handle missing 5 course when < 5 slots registered' do
@@ -291,7 +303,104 @@ RSpec.describe Invoice do
         child:
       )
       invoice.calc_cost
-      expect(invoice.total_cost).to eq(member_prices.courses['1'] * 5)
+      expect(invoice.total_cost).to eq(
+        (member_prices.courses['1'] * 2) + member_prices.courses['3']
+      )
+    end
+
+    it 'handles both 3 & 5 course missing' do
+      member_prices.update(course3: '', course5: '')
+      time_slots = create_list(:time_slot, 6)
+      invoice = build(
+        :invoice,
+        event:,
+        slot_regs: time_slots.map { |s| build(:slot_reg, child:, registerable: s) },
+        child:
+      )
+      invoice.calc_cost
+      expect(invoice.total_cost).to eq(member_prices.courses['1'] * 6)
+    end
+
+    it 'can handle missing 10 course when > 10 slots registered' do
+      member_prices.update(course10: '')
+      time_slots = create_list(:time_slot, 11)
+      invoice = build(
+        :invoice,
+        event:,
+        slot_regs: time_slots.map { |s| build(:slot_reg, child:, registerable: s) },
+        child:
+      )
+      invoice.calc_cost
+      expect(invoice.total_cost).to eq(
+        (member_prices.courses['5'] * 2) + member_prices.courses['1']
+      )
+    end
+
+    it 'can handle missing 10 course when < 10 slots registered' do
+      member_prices.update(course10: '')
+      time_slots = create_list(:time_slot, 8)
+      invoice = build(
+        :invoice,
+        event:,
+        slot_regs: time_slots.map { |s| build(:slot_reg, child:, registerable: s) },
+        child:
+      )
+      invoice.calc_cost
+      expect(invoice.total_cost).to eq(member_prices.courses['5'] + member_prices.courses['3'])
+    end
+
+    it 'falls back to smaller courses comboed if 10 course missing' do
+      member_prices.update(course10: '')
+      time_slots = create_list(:time_slot, 10)
+      invoice = build(
+        :invoice,
+        event:,
+        slot_regs: time_slots.map { |s| build(:slot_reg, child:, registerable: s) },
+        child:
+      )
+      invoice.calc_cost
+      expect(invoice.total_cost).to eq(member_prices.courses['5'] * 2)
+    end
+
+    it 'can handle missing 50 course when > 50 slots registered' do
+      member_prices.update(course50: '')
+      time_slots = create_list(:time_slot, 51)
+      invoice = build(
+        :invoice,
+        event:,
+        slot_regs: time_slots.map { |s| build(:slot_reg, child:, registerable: s) },
+        child:
+      )
+      invoice.calc_cost
+      expect(invoice.total_cost).to eq(
+        member_prices.courses['45'] + member_prices.courses['1'] + member_prices.courses['5']
+      )
+    end
+
+    it 'can handle missing 50 course when < 50 slots registered' do
+      member_prices.update(course50: '')
+      time_slots = create_list(:time_slot, 48)
+      invoice = build(
+        :invoice,
+        event:,
+        slot_regs: time_slots.map { |s| build(:slot_reg, child:, registerable: s) },
+        child:
+      )
+      invoice.calc_cost
+      expect(invoice.total_cost).to eq(member_prices.courses['45'] + member_prices.courses['3'])
+    end
+
+    it 'falls back to smaller courses comboed if 50 course missing' do
+      member_prices.update(course50: '')
+      time_slots = create_list(:time_slot, 50)
+      invoice = build(
+        :invoice,
+        event:,
+        slot_regs: time_slots.map { |s| build(:slot_reg, child:, registerable: s) },
+        child:
+      )
+      invoice.calc_cost
+      expect(invoice.total_cost).to eq(member_prices.courses['45'] + member_prices.courses['5'])
     end
   end
 end
