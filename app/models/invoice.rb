@@ -51,10 +51,7 @@ class Invoice < ApplicationRecord
   validates :total_cost, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   def calc_cost(ignore_slots = [], ignore_opts = [])
-    @data = { options: validated_options(ignore_opts),
-              time_slots: TimeSlot.where(id: slot_regs.map(&:registerable_id) - ignore_slots) }
-    @data[:num_regs] = @data[:time_slots].size
-    generate_data
+    generate_data(ignore_slots, ignore_opts)
     self.total_cost = @data[:total_cost]
     self.summary = generate_summary(@data)
     @data

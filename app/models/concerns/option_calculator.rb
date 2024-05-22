@@ -32,10 +32,4 @@ module OptionCalculator
 
     slot_regs.none? { |s_reg| s_reg.registerable_id == option.optionable_id }
   end
-
-  def validated_options(ignore_opts)
-    valid_regs = opt_regs.reject { |reg| orphan_option?(reg) }
-                         .map(&:registerable_id)
-    Option.where(id: valid_regs - ignore_opts)
-  end
 end

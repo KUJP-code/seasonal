@@ -9,7 +9,8 @@ RSpec.describe Invoice do
       event:,
       child:,
       slot_regs: [build(:slot_reg, registerable: slot)],
-      opt_regs: [build(:slot_opt_reg, registerable: slot_option),
+      opt_regs: [build(:slot_opt_reg, registerable:
+                         create(:slot_option, name: 'Slot Option', cost: 10, optionable: slot)),
                  build(:event_opt_reg, registerable: event_opt)],
       adjustments: [build(:adjustment, reason: 'Adjustment', change: 10)]
     )
@@ -19,7 +20,9 @@ RSpec.describe Invoice do
   let(:child) { build_stubbed(:child, category: :internal, name: 'Child', kindy: true) }
   let(:slot) { create(:time_slot, name: 'Slot', snack: false) }
   let(:event_opt) { create(:event_option, name: 'Event Option', cost: 10, optionable: event) }
-  let(:slot_option) { create(:event_option, name: 'Slot Option', cost: 10, optionable: slot) }
+  let(:spare_slot_option) do
+    create(:slot_option, name: 'Spare Slot Option', cost: 10, optionable: slot)
+  end
 
   context 'when generating a summary' do
     before do
@@ -48,6 +51,10 @@ RSpec.describe Invoice do
 
     it 'lists all registered slots with options' do
       expect(invoice.summary).to include_all ['Slot', '- Slot Option: 10円']
+    end
+
+    it 'does not list unregistered options for registered slots' do
+      expect(invoice.summary).not_to include(spare_slot_option.name)
     end
 
     it 'gives total cost' do

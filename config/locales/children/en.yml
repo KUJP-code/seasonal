@@ -1,5 +1,9 @@
 en:
   children:
+    child:
+      external: "非会員"
+      internal: "通学生"
+      reservation: "予約生"
     event_child:
       reg_for_opt: "Register"
       register: "Register"

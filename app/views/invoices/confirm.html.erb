@@ -65,7 +65,8 @@
                             </div>
 
                             <%= f.submit t('.confirm_changes'),
-                                         class: 'btn btn-primary mb-5' %>
+                                         class: 'btn btn-primary mb-5',
+                                         data: { 'turbo-frame': '_top' } %>
                         <% end %>
                         <% unless @ss_invoices.empty? %>
                             <h1><%= t('.confirmed') %></h1>
