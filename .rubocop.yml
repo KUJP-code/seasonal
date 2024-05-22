@@ -32,3 +32,5 @@ RSpec/MultipleExpectations:
   Enabled: false
 Style/Documentation:
   Enabled: false
+Style/ParallelAssignment:
+  Enabled: false
