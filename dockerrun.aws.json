@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.1.4-puma-solidqueue"
+    "Name": "thatbballguy/event_site:2.1.5-platform-swap"
   },
   "Ports": [
     {
