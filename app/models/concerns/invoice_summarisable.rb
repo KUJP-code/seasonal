@@ -76,7 +76,7 @@ module InvoiceSummarisable
   end
 
   def slot_details(slots)
-    registered_opts = opt_regs.pluck(:registerable_id)
+    registered_opts = @data[:options].map(&:id)
     "<h4 class='fw-semibold text-start'>登録</h4>\n
      <div class='d-flex flex-column gap-3 justify-content-start flex-wrap'>
        #{slots.order(start_time: :desc).map { |slot| detailed_slot(slot, registered_opts) }.join}
