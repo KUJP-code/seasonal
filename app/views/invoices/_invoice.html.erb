@@ -1,6 +1,6 @@
 <div class="card p-3 card-invoice"
-    data-controller='clipboard' 
-    data-clipboard-success-content='コピーされました' 
+    data-controller='clipboard'
+    data-clipboard-success-content='コピーされました'
     data-clipboard-target='source'>
     <% if !index && current_user.staff? %>
         <button type="button" class="btn btn-primary" data-action="clipboard#copy" data-clipboard-target="button">コピー</button>
@@ -27,7 +27,7 @@
                                          } %>
                         <% end %>
                     <% end %>
-                    
+
                     <p class="btn btn-info"><%= "Booking##{invoice.id}" %></p>
                 <% else %>
                     <%= link_to t('.adjustments'), edit_adjustment_path(invoice), class: 'btn btn-primary' %>

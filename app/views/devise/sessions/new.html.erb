@@ -1,14 +1,27 @@
+<%= content_for :head do %>
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-MGWSQLH');
+    </script>
+<% end %>
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGWSQLH"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
 <main id="login" class="container-fluid">
   <div class="row">
     <div id="login_splash" class="col-12 col-lg-8"></div>
-    
+
     <%= form_for(
           resource,
           as: resource_name,
           url: session_path(resource_name),
-          html: { 
+          html: {
             class: 'needs-validation col-12 col-lg-4 d-flex flex-column justify-content-center gap-3 p-3',
-            novalidate: true 
+            novalidate: true
           }
         ) do |f| %>
       <div id="login_logo"></div>
@@ -29,8 +42,8 @@
         <div class="invalid-feedback">
           <%= t('.enter_email') %>
         </div>
-      </div>  
-    
+      </div>
+
       <div class="form-floating">
         <%= f.password_field :password, class: 'form-control',
                                         autocomplete: "current-password",
@@ -48,7 +61,7 @@
           <%= t('.enter_pwd') %>
         </div>
       </div>
-    
+
       <% if devise_mapping.rememberable? %>
         <div class="form-check">
           <%= f.check_box :remember_me, class: 'form-check-input' %>
