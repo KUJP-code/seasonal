@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.1.6-improved-swap"
+    "Name": "thatbballguy/event_site:2.1.7-integrate-gtm"
   },
   "Ports": [
     {
