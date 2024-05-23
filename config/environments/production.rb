@@ -54,23 +54,19 @@ Rails.application.configure do
 
   # Log to STDOUT by default
   config.logger = ActiveSupport::Logger.new(STDOUT)
-    .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
-    .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
+                                       .tap  { |logger| logger.formatter = Logger::Formatter.new }
+                                       .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  config.log_tags = [:request_id]
 
   # Info include generic and useful information about system operation, but avoids logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII). If you
   # want to log everything, set the level to "debug".
-  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
+  config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'info')
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
-
-  # Use a real queuing backend for Active Job (and separate queues per environment).
-  # config.active_job.queue_adapter = :resque
-  # config.active_job.queue_name_prefix = "db_prototype_v2_production"
 
   config.action_mailer.perform_deliveries = true
   config.x.mail_from = %(Kids Up Events <no-reply@kids-up.app>)
@@ -80,8 +76,8 @@ Rails.application.configure do
     address: 'email-smtp.ap-northeast-1.amazonaws.com',
     port: 587,
     authentication: :plain,
-    user_name: ENV['SES_USERNAME'],
-    password: ENV['SES_PASSWORD'],
+    user_name: ENV.fetch('SES_USERNAME', nil),
+    password: ENV.fetch('SES_PASSWORD', nil),
     enable_starttls_auto: true
   }
   config.action_mailer.raise_delivery_errors = false

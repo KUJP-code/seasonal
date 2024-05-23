@@ -250,7 +250,7 @@ class InvoicesController < ApplicationController
       InvoiceMailer.with(
         invoice:,
         user: invoice.child.parent
-      ).confirmation_notif.deliver_now
+      ).confirmation_notif.deliver_later
     end
 
     return if current_user.admin?
@@ -262,12 +262,12 @@ class InvoicesController < ApplicationController
     InvoiceMailer.with(
       invoice:,
       user: invoice.child.parent
-    ).updated_notif.deliver_now
+    ).updated_notif.deliver_later
 
     InvoiceMailer.with(
       invoice:,
       user: invoice.school.manager
-    ).sm_updated_notif.deliver_now
+    ).sm_updated_notif.deliver_later
   end
 
   def show_banner_and_survey

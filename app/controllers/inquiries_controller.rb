@@ -114,9 +114,9 @@ class InquiriesController < ApplicationController
 
   def send_mail(inquiry)
     if inquiry.category == 'R'
-      InquiryMailer.with(inquiry: @inquiry).setsu_inquiry.deliver_now
+      InquiryMailer.with(inquiry: @inquiry).setsu_inquiry.deliver_later
     else
-      InquiryMailer.with(inquiry: @inquiry).inquiry.deliver_now
+      InquiryMailer.with(inquiry: @inquiry).inquiry.deliver_later
     end
   end
 end

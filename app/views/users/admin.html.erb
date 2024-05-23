@@ -47,6 +47,10 @@
         <%= link_to 'Surveys',
                     surveys_path,
                     class: 'btn btn-primary flex-grow-1' %>
+
+        <%= link_to 'Jobs',
+                    mission_control_jobs_path,
+                    class: 'btn btn-primary flex-grow-1' if current_user.admin? %>
     </div>
 
     <%= render partial: 'users/schools',

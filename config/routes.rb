@@ -3,6 +3,7 @@
 Rails.application.routes.draw do
   # My DB analytics dashboard
   authenticate :user, ->(user) { user.admin? && user.id == 1 } do
+    mount MissionControl::Jobs::Engine, at: '/jobs'
     mount PgHero::Engine, at: 'pghero'
   end
 

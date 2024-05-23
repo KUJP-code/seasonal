@@ -28,7 +28,7 @@ module DbPrototypeV2
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
-    config.autoload_lib(ignore: %w(assets tasks))
+    config.autoload_lib(ignore: %w[assets tasks])
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -46,6 +46,10 @@ module DbPrototypeV2
     config.action_controller.include_all_helpers = false
 
     # Search sub folders in locales for translations
-    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
+    config.i18n.load_path += Dir[Rails.root.join('config/locales/**/*.{rb,yml}')]
+
+    # Use SolidQueue for ActiveJob
+    config.active_job.queue_adapter = :solid_queue
+    config.active_job.queue_name_prefix = "event_site_#{Rails.env}"
   end
 end
