@@ -11,7 +11,7 @@ RSpec.describe 'PgHero' do
     sign_out user
   end
 
-  context 'when admin who is not User #1' do
+  context 'when admin who is not User 1' do
     let(:user) { create(:admin) }
 
     it 'cannot access the dashboard' do

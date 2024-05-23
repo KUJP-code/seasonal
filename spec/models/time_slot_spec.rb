@@ -9,7 +9,7 @@ RSpec.describe TimeSlot do
     expect(create(:time_slot)).to be_valid
   end
 
-  context 'when calling #closed?' do
+  context 'when calling closed?' do
     it 'returns true if closed' do
       time_slot.closed = true
       expect(time_slot.closed?).to be true

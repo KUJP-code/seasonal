@@ -9,7 +9,7 @@ RSpec.configure do |c|
 end
 
 describe Survey do
-  context 'with #criteria_match' do
+  context 'with criteria_match' do
     it 'returns false if all criteria blank' do
       criterialess_survey = create(:criterialess_survey)
 
@@ -19,14 +19,14 @@ describe Survey do
     it 'returns false if child has responded to the survey' do
       child = create(:child, category: :external)
       answered_survey = create(:survey, criteria: { 'category' => 'external' })
-      create(:survey_response, survey: answered_survey, child: child)
+      create(:survey_response, survey: answered_survey, child:)
 
       expect(answered_survey.criteria_match?(child)).to be false
     end
 
     it 'returns false if sibling has responded to the survey' do
       parent = create(:user)
-      children = create_list(:child, 2, parent: parent, category: :external)
+      children = create_list(:child, 2, parent:, category: :external)
       answered_survey = create(:survey, criteria: { 'category' => 'external' })
       create(:survey_response, survey: answered_survey, child: children.first)
 
@@ -51,7 +51,7 @@ describe Survey do
 
     it 'returns true when SSID criteria & it matches' do
       criteria = { 'ssid' => Faker::Number.number(digits: 10) }
-      single_criteria_survey = create(:active_survey, criteria: criteria)
+      single_criteria_survey = create(:active_survey, criteria:)
       child = create(:child, ssid: criteria['ssid'])
 
       expect(single_criteria_survey.criteria_match?(child)).to be true
@@ -61,7 +61,7 @@ describe Survey do
       criteria = {
         'birthday' => Faker::Date.between(from: 10.years.ago, to: 6.years.ago)
       }
-      single_criteria_survey = create(:active_survey, criteria: criteria)
+      single_criteria_survey = create(:active_survey, criteria:)
       child = create(:child, birthday: criteria['birthday'])
 
       expect(single_criteria_survey.criteria_match?(child)).to be true

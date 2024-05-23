@@ -1,19 +1,19 @@
 {
-	"AWSEBDockerrunVersion": "1",
-	"containerDefinitions": [
-		{
-			"linuxParameters": {
-				"maxSwap": 48000,
-				"swappiness": 0
-			}
-		}
-	],
-	"Image": {
-		"Name": "thatbballguy/event_site:2.0.0-aws-migration"
-	},
-	"Ports": [
-		{
-			"ContainerPort": 80
-		}
-	]
+  "AWSEBDockerrunVersion": "1",
+  "containerDefinitions": [
+    {
+      "linuxParameters": {
+        "maxSwap": 48000,
+        "swappiness": 0
+      }
+    }
+  ],
+  "Image": {
+    "Name": "thatbballguy/event_site:2.1.0-solidqueue-missioncontrol"
+  },
+  "Ports": [
+    {
+      "ContainerPort": 80
+    }
+  ]
 }

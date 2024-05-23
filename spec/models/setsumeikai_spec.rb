@@ -12,7 +12,7 @@ RSpec.describe Setsumeikai do
     expect(setsumeikai.close_at.strftime('%H:%M')).to eq('18:00')
   end
 
-  context 'when using #full?' do
+  context 'when using full?' do
     it 'is full when inquiries_count == attendance_limit' do
       setsumeikai.inquiries_count = setsumeikai.attendance_limit
       expect(setsumeikai.full?).to be true
