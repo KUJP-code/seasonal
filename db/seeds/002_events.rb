@@ -1,12 +1,12 @@
 PriceList.create!(
-  [{ name: 'Spring 2024 Member', course1: 5_000, course3: 11_900, course5: 19_600,
-     course10: 34_600, course15: 51_900, course20: 69_200, course25: 86_500,
-     course30: 103_800, course35: 121_000, course40: 138_000, course45: 155_000,
-     course50: 170_000 },
-   { name: 'Spring 2024 Non-Member', course1: 6_930, course3: 19_100, course5: 31_500,
-     course10: 57_750, course15: 84_000, course20: 105_000, course25: 126_000,
-     course30: 147_000, course35: 168_000, course40: 189_000, course45: 209_000,
-     course50: 229_000 }]
+  [{ name: 'Spring 2024 Member', course1: '5_000', course3: '11_900', course5: '19_600',
+     course10: '34_600', course15: '51_900', course20: '69_200', course25: '86_500',
+     course30: '103_800', course35: '121_000', course40: '138_000', course45: '155_000',
+     course50: '170_000' },
+   { name: 'Spring 2024 Non-Member', course1: '6_930', course3: '19_100', course5: '31_500',
+     course10: '57_750', course15: '84_000', course20: '105_000', course25: '126_000',
+     course30: '147_000', course35: '168_000', course40: '189_000', course45: '209_000',
+     course50: '229_000' }]
 )
 
 # Upload TimeSlot images
