@@ -13,6 +13,7 @@ namespace :eb do
     update_dockerrun(version)
     commit_changes(version)
     deploy_to_eb(version)
+    `git push`
   end
 end
 
