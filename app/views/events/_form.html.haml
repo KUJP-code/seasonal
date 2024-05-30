@@ -1,0 +1,84 @@
+= form_with model: @event,
+            data: { controller: 'fields' },
+            html: { class: 'd-grid gap-3 card needs-validation w-50',
+                    novalidate: true } do |f|
+  = render partial: 'shared/form_errors', locals: { resource: @event }
+
+  .d-grid.gap-3
+    %h3 Event Fields
+
+    .form-floating
+      = f.text_field :name,
+                     class: 'form-control',
+                     placeholder: 'Name',
+                     required: true
+      = f.label :name, class: 'form-label'
+
+    %div
+      = f.label :image_id, class: 'form-label'
+      = f.select :image_id, @images, {}, { class: 'form-select' }
+
+    %div
+      = f.label :avif_id, class: 'form-label'
+      = f.select :avif_id, @images, {}, { class: 'form-select' }
+
+    .form-floating
+      = f.date_field :start_date,
+                     class: 'form-control',
+                     placeholder: 'Start date',
+                     required: true
+      = f.label :start_date, class: 'form-label'
+
+    .form-floating
+      = f.date_field :end_date,
+                     class: 'form-control',
+                     placeholder: 'End date',
+                     required: true
+      = f.label :end_date, class: 'form-label'
+
+    %div
+      = f.label :school_id, class: 'form-label'
+      = f.select :school_id, @schools, {}, { class: 'form-select' }
+
+    .form-floating
+      = f.number_field :goal,
+                       class: 'form-control',
+                       placeholder: 'Goal',
+                       required: true
+      = f.label :goal, class: 'form-label'
+
+    %div
+      = f.label :member_prices_id, class: 'form-label'
+      = f.collection_select :member_prices_id,
+                            @prices, :id,
+                            :name, {},
+                            { class: 'form-select' }
+
+    %div
+      = f.label :non_member_prices_id, class: 'form-label'
+      = f.collection_select :non_member_prices_id,
+                            @prices, :id,
+                            :name, {},
+                            { class: 'form-select' }
+
+    .d-grid.gap-3
+      %h3 Event Option Fields
+
+      = f.fields_for :options do |opt_f|
+        = render 'options/opt_fields', f: opt_f
+
+      %template{ 'data-fields-target': 'template' }
+        = f.fields_for :options,
+                       Option.new(optionable_id: @event.id,
+                                  optionable_type: 'Event',
+                                  category: :event),
+                       child_index: 'CHILD' do |opt_f|
+          = render 'options/opt_fields', f: opt_f
+
+      .d-none.w-100{ 'data-fields-target': 'target' }
+
+      = button_tag 'Add Event Option',
+                   type: 'button',
+                   data: { action: 'fields#add' },
+                   class: 'btn btn-info'
+      = f.submit class: 'btn btn-primary'
