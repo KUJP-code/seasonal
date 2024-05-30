@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TimeSlotsController < ApplicationController
+  include BlobGroupable
+
   after_action :verify_authorized
   after_action :verify_policy_scoped, only: :index
 
@@ -21,12 +23,12 @@ class TimeSlotsController < ApplicationController
     else
       @event = Event.find(params[:event])
     end
-    @images = slot_blobs
+    @images = blobs_by_folder('time_slots')
   end
 
   def edit
     @slot = authorize TimeSlot.find(params[:id])
-    @images = slot_blobs
+    @images = blobs_by_folder('time_slots')
   end
 
   def update
@@ -39,7 +41,7 @@ class TimeSlotsController < ApplicationController
         school: @slot.school.id
       ), notice: "Updated #{@slot.name}"
     else
-      @images = slot_blobs
+      @images = blobs_by_folder('time_slots')
       render :edit, status: :unprocessable_entity, alert: "#{@slot.name} couldn't be updated"
     end
   end
@@ -59,17 +61,6 @@ class TimeSlotsController < ApplicationController
     )
   end
 
-  def blobs_by_folder(blobs)
-    paths = blobs.to_h { |b| [slice_path(b.first), []] }
-
-    blobs.each do |b|
-      paths[slice_path(b.first)]
-        .push([slice_filename(b.first), b.last])
-    end
-
-    paths
-  end
-
   def bulk_create_aft_slots
     same_name_slots = @slot.same_name_slots
 
@@ -81,11 +72,6 @@ class TimeSlotsController < ApplicationController
 
     redirect_to time_slots_path,
                 notice: "All #{@slot.name} activities created"
-  end
-
-  def find_blobs
-    ActiveStorage::Blob.where('key LIKE ?', '%slots%')
-                       .map { |blob| [blob.key, blob.id] }
   end
 
   def index_schools
@@ -112,18 +98,5 @@ class TimeSlotsController < ApplicationController
          .with_attached_image
          .with_attached_avif
          .order(start_time: :asc)
-  end
-
-  def slice_filename(key)
-    key.split('/').last
-  end
-
-  def slice_path(key)
-    key.split('/')[0..-2].join('/')
-  end
-
-  def slot_blobs
-    blobs = find_blobs
-    blobs_by_folder(blobs)
   end
 end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class EventsController < ApplicationController
+  include BlobGroupable
+
   after_action :verify_authorized
   after_action :verify_policy_scoped, only: :index
 
@@ -137,30 +139,9 @@ class EventsController < ApplicationController
   end
 
   def form_info
-    @images = images_by_folder
+    @images = blobs_by_folder('events')
     @prices = PriceList.order(:name)
     @schools = [%w[All all]] + School.order(:id).map { |school| [school.name, school.id] }
-  end
-
-  def images_by_folder
-    blobs = ActiveStorage::Blob.where('key LIKE ?', '%events%')
-                               .map { |blob| [blob.key, blob.id] }
-    paths = blobs.to_h { |b| [slice_path(b.first), []] }
-
-    blobs.each do |b|
-      paths[slice_path(b.first)]
-        .push([slice_filename(b.first), b.last])
-    end
-
-    paths
-  end
-
-  def slice_filename(key)
-    key.split('/').last
-  end
-
-  def slice_path(key)
-    key.split('/')[0..-2].join('/')
   end
 
   def old_event_redirect
