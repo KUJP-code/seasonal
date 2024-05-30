@@ -60,7 +60,8 @@ class EventsController < ApplicationController
           ),
                       notice: "#{params[:event][:name]} created for all schools"
         else
-          redirect_to events_path, notice: "Created activities for #{params[:event][:name]} at all schools"
+          redirect_to events_path,
+                      notice: "Created activities for #{params[:event][:name]} at all schools"
         end
       else
         failed_schools = results.reject { |r| r[:created] }.pluck(:school)
@@ -136,10 +137,30 @@ class EventsController < ApplicationController
   end
 
   def form_info
-    @images = ActiveStorage::Blob.where('key LIKE ?', '%events%')
-                                 .map { |blob| [blob.key, blob.id] }
+    @images = images_by_folder
     @prices = PriceList.order(:name)
     @schools = [%w[All all]] + School.order(:id).map { |school| [school.name, school.id] }
+  end
+
+  def images_by_folder
+    blobs = ActiveStorage::Blob.where('key LIKE ?', '%events%')
+                               .map { |blob| [blob.key, blob.id] }
+    paths = blobs.to_h { |b| [slice_path(b.first), []] }
+
+    blobs.each do |b|
+      paths[slice_path(b.first)]
+        .push([slice_filename(b.first), b.last])
+    end
+
+    paths
+  end
+
+  def slice_filename(key)
+    key.split('/').last
+  end
+
+  def slice_path(key)
+    key.split('/')[0..-2].join('/')
   end
 
   def old_event_redirect
