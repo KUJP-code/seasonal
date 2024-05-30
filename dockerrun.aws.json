@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.1.7-integrate-gtm"
+    "Name": "thatbballguy/event_site:2.1.8-nginx-bodysize"
   },
   "Ports": [
     {
