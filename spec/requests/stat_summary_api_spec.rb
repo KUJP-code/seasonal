@@ -27,10 +27,12 @@ RSpec.describe 'Statistics summary API for Google Sheet' do
       'Test Event' => [
         {
           'school_id' => event.school_id,
-          'member_count' => 4,
-          'member_revenue' => 40,
+          'internal_count' => 2,
+          'internal_revenue' => 20,
           'external_count' => 2,
           'external_revenue' => 2240,
+          'reservation_count' => 2,
+          'reservation_revenue' => 20,
           'total_revenue' => event.invoices.sum(:total_cost),
           'goal' => 10
         }

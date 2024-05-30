@@ -145,7 +145,7 @@ class User < ApplicationRecord
   def subscribed_to_mailer?(mailer)
     MailerSubscription.find_by(
       user: self,
-      mailer: mailer,
+      mailer:,
       subscribed: false
     ).nil?
   end
@@ -183,5 +183,11 @@ class User < ApplicationRecord
     return if first_name.nil? && family_name.nil?
 
     self.name = [family_name.strip, first_name.strip].join(' ')
+  end
+
+  protected
+
+  def send_devise_notification(notification, *)
+    devise_mailer.send(notification, self, *).deliver_later
   end
 end

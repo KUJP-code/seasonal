@@ -43,7 +43,7 @@ class Event < ApplicationRecord
 
   def self.summary_json(names)
     names.index_with do |name|
-      Event.where(name: name).map(&:to_gas_summary)
+      Event.where(name:).map(&:to_gas_summary)
     end
   end
 
@@ -60,23 +60,27 @@ class Event < ApplicationRecord
   end
 
   def to_gas_summary
-    member_kids = children.where(category: %i[internal reservation])
-    external_kids = children.where(category: :external)
+    external_kids = children.external
+    internal_kids = children.internal
+    reservation_kids = children.reservation
 
     {
-      school_id: school_id,
-      member_count: member_kids.count,
-      member_revenue: Invoice.where(event_id: id, child_id: member_kids.ids).sum(:total_cost),
+      school_id:,
+      internal_count: internal_kids.count,
+      internal_revenue: Invoice.where(event_id: id, child_id: internal_kids.ids).sum(:total_cost),
       external_count: external_kids.count,
       external_revenue: Invoice.where(event_id: id, child_id: external_kids.ids).sum(:total_cost),
+      reservation_count: reservation_kids.count,
+      reservation_revenue: Invoice.where(event_id: id,
+                                         child_id: reservation_kids.ids).sum(:total_cost),
       total_revenue: invoices.sum(:total_cost),
-      goal: goal
+      goal:
     }
   end
 
   # List children attending from other schools
   def diff_school_children
-    children.where.not(school: school).distinct
+    children.where.not(school:).distinct
   end
 
   def image_id
@@ -98,7 +102,7 @@ class Event < ApplicationRecord
   end
 
   def with_sibling_events
-    @sibling_events = Event.where(name: name)
+    @sibling_events = Event.where(name:)
                            .where.not(school_id: 2)
                            .includes(:school)
     self

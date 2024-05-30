@@ -65,4 +65,6 @@ end
 User.find_by(role: 'area_manager').managed_areas << Area.last
 School.find_by(name: '大倉山').managers << User.find_by(role: 'school_manager')
 
+customer.children << Child.last(2)
+
 puts 'Created schools and their users'

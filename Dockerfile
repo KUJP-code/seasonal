@@ -80,6 +80,11 @@ RUN gem install foreman && \
     sed -i 's/access_log\s.*;/access_log \/dev\/stdout;/' /etc/nginx/nginx.conf && \
     sed -i 's/error_log\s.*;/error_log \/dev\/stderr info;/' /etc/nginx/nginx.conf
 
+# configure client_max_body_size
+COPY <<-EOF /etc/nginx/conf.d/client_max_body_size.conf
+client_max_body_size 10M;
+EOF
+
 COPY <<-"EOF" /etc/nginx/sites-available/default
 server {
   listen 80 default_server;
