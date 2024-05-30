@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.1.8-nginx-bodysize"
+    "Name": "thatbballguy/event_site:2.1.9-group-blobs"
   },
   "Ports": [
     {
