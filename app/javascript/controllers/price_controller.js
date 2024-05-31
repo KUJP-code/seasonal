@@ -54,6 +54,19 @@ export default class extends Controller {
 		// Inner text set in the invoice controller if the time slot has a snack fee
 		const snackCost = Number.parseInt(this.snackCountTarget.innerText) * 165;
 
+		console.log(
+			"optionCost",
+			optionCost,
+			"courseCost",
+			courseCost,
+			"adjustmentCost",
+			adjustmentCost,
+			"snackCost",
+			snackCost,
+			"extraCost",
+			extraCost,
+		);
+
 		const finalCost =
 			optionCost + courseCost + adjustmentCost + snackCost + extraCost;
 		this.finalCostTarget.innerHTML = `合計（税込）: ${finalCost}円`;
@@ -68,21 +81,14 @@ export default class extends Controller {
 	// Finds the cheapest price for the given number of regs
 	bestCourses(numRegs, courses) {
 		if (numRegs === 0) return 0;
-		if (numRegs === 3 || numRegs === 4) {
-			return courses[3] + this.bestCourses(numRegs - 3, courses);
-		}
+		if (numRegs < 3) return this.spotUse(numRegs, courses);
 
-		if (numRegs >= 35) {
-			return courses[30] + this.bestCourses(numRegs - 30, courses);
-		}
+		const course = this.nextLowestCourse(numRegs);
+		const cost = courses[course];
 
-		if (numRegs >= 5) {
-			const bestCourse = this.nearestFive(numRegs);
-			const cost = courses[bestCourse];
-			return cost + this.bestCourses(numRegs - bestCourse, courses);
-		}
+		if (cost === null) return this.handleMissingCourse(numRegs, courses);
 
-		return this.spotUse(numRegs, courses);
+		return cost + this.bestCourses(numRegs - course, courses);
 	}
 
 	// Get the course objects on connect so you don't have to parse before each calculation
@@ -98,9 +104,13 @@ export default class extends Controller {
 	calcAdjustments() {
 		return this.hasAdjChangeTarget
 			? this.adjChangeTargets.reduce(
-					(sum, change) => sum + Number.parseInt(change.innerHTML),
-					0,
-				)
+				(sum, change) =>
+					sum +
+					Number.parseInt(
+						change.innerHTML.replace(",", "").replace("円", ""),
+					),
+				0,
+			)
 			: 0;
 	}
 
@@ -123,15 +133,35 @@ export default class extends Controller {
 		return courses[1] * numRegs;
 	}
 
+	handleMissingCourse(numRegs, courses) {
+		if (numRegs > 6) {
+			return (
+				this.bestCourses(numRegs - 5, courses) + this.bestCourses(5, courses)
+			);
+		}
+		if (numRegs > 3) {
+			return (
+				this.bestCourses(numRegs - 3, courses) + this.bestCourses(3, courses)
+			);
+		}
+
+		return this.spotUse(numRegs, courses);
+	}
+
 	// True if child is a member
 	isMember(child) {
 		const membership = child.querySelector(".membership").innerHTML;
 
-		return membership === "Yes" ? true : false;
+		return membership === "Yes";
 	}
 
 	// Find the largest course that fits the number of registrations
-	nearestFive(num) {
+	nextLowestCourse(num) {
+		// 50 is the largest possible course
+		if (num > 55) return 50;
+		// 3 is the smallest possible course (other than spot)
+		if (num < 5 && num >= 3) return 3;
+
 		return Math.floor(num / 5) * 5;
 	}
 
