@@ -128,46 +128,10 @@
 
             <div id="event-collapseOne" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  <%= render 'events/price_list',
+                  <%= render 'events/more_info',
+                             adjustments:,
                              child: @child,
                              price_list: @child.member? ? @member_prices : @non_member_prices %>
-                    <% unless adjustments.empty? %>
-                        <table class="table table-info table-striped table-hover text-center">
-                            <caption class="caption-top">
-                                <h3><%= t('.adjustments') %></h3>
-                            </caption>
-                            <thead>
-                                <tr>
-                                    <th><%= t('.change') %></th>
-                                    <th><%= t('.reason') %></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% adjustments.each do |adj| %>
-                                    <tr>
-                                        <td data-price-target="adjChange"><%= adj.change %></td>
-                                        <td><%= adj.reason %></td>
-                                    </tr>
-                                <% end %>
-                            </tbody>
-                        </table>
-                    <% end %>
-                    <% if @child.regular_schedule %>
-                        <table class="table table-striped table-info text-center">
-                            <thead>
-                                <tr>
-                                    <th><%= t('.regular_schedule') %></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <%= @child.regular_schedule.days %>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    <% end %>
                 </div>
             </div>
         </div>

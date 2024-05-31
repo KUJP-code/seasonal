@@ -1,0 +1,42 @@
+-# locals: (adjustments:, child:, price_list:)
+
+.d-flex.w-100.justify-content-center.align-items-center.flex-shrink-1.gap-3
+  %table.table.table-sm.table-info.table-striped.table-hover.text-center
+    %caption.caption-top.text-center
+      %h3.text-start
+        = child.member? ? t('.member_prices') : t('.non_member_prices')
+    %thead
+      %tr
+        %th= t('.course')
+        %th= t('.price')
+    %tbody
+      - price_list.courses.each do |course, price|
+        - next if price.blank?
+
+        %tr
+          %td= course
+          %td= number_to_currency(price)
+
+- unless adjustments.empty?
+  %table.table.table-info.table-striped.table-hover.text-center
+    %caption.caption-top
+      %h3= t('.adjustments')
+    %thead
+      %tr
+        %th= t('.change')
+        %th= t('.reason')
+    %tbody
+      - adjustments.each do |adjustment|
+        %tr
+          %td{ 'data-price-target': 'adjChange' }
+            = number_to_currency(adjustment.change)
+          %td= adjustment.reason
+
+- if child.regular_schedule
+  %table.table.table-striped.table-info.text-center
+    %thead
+      %tr
+        %th= t('.regular_schedule')
+    %tbody
+      %tr
+        %td= child.regular_schedule.days
