@@ -128,68 +128,9 @@
 
             <div id="event-collapseOne" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                    <div class="d-flex w-100 justify-content-center align-items-center flex-shrink-1 gap-3">
-                        <% if @child.member? && !@member_prices.nil? %>
-                            <table class="table table-sm table-info table-striped table-hover text-center">
-                                <caption class="caption-top text-center">
-                                    <h3 class="text-start">
-                                        <%= t('.member_prices') %>
-                                    </h3>
-                                </caption>
-                                <thead>
-                                    <tr>
-                                        <th><%= t('.course') %></th>
-                                        <th><%= t('.price') %></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% @member_prices.courses
-                                                     .sort_by { |k, _v| k.to_i }
-                                                     .each do |course, price| %>
-                                        <tr>
-                                            <td><%= course %></td>
-                                            <td>
-                                                <%= number_to_currency(
-                                                    price,
-                                                    unit: '円',
-                                                    precision: 0,
-                                                    locale: :ja)  %>
-                                            </td>
-                                        </tr>
-                                    <% end %>
-                                </tbody>
-                            </table>
-                        <% end %>
-                        <% unless @child.member? || @non_member_prices.nil? %>
-                            <table class="table table-sm table-info table-striped table-hover text-center">
-                                <caption class="caption-top text-center">
-                                    <h3 class="text-start"><%= t('.non_member_prices') %></h3>
-                                </caption>
-                                <thead>
-                                    <tr>
-                                        <th><%= t('.course') %></th>
-                                        <th><%= t('.price') %></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% @non_member_prices.courses
-                                                         .sort_by { |k, _v| k.to_i }
-                                                         .each do |course, price| %>
-                                        <tr>
-                                            <td><%= course %></td>
-                                            <td>
-                                                <%= number_to_currency(
-                                                    price,
-                                                    unit: '円',
-                                                    precision: 0,
-                                                    locale: :ja)  %>
-                                            </td>
-                                        </tr>
-                                    <% end %>
-                                </tbody>
-                            </table>
-                        <% end %>
-                    </div>
+                  <%= render 'events/price_list',
+                             child: @child,
+                             price_list: @child.member? ? @member_prices : @non_member_prices %>
                     <% unless adjustments.empty? %>
                         <table class="table table-info table-striped table-hover text-center">
                             <caption class="caption-top">

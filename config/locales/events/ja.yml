@@ -34,6 +34,11 @@ ja:
       revenue: "売り上げ"
       total_kids: "合計人数"
       total_revenue: "合計売上"
+    price_list:
+      course: "コース"
+      member_prices: "会員料金"
+      non_member_prices: "非会員料金"
+      price: "料金"
     show:
       adjustments: "調整"
       confirm_invoice: "お申込内容を確認する"
@@ -42,7 +47,6 @@ ja:
       course: "コース"
       change: "調整額"
       event_cost: "%{event}の合計: %{cost}"
-      member_prices: "会員料金"
       more_info: "詳細はこちら"
       non_member_prices: "非会員料金"
       num_options: "オプション：%{num}つ"
