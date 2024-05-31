@@ -1,8 +1,6 @@
 :ruby
   creating_new_user = @user.new_record? && current_user.staff?
   editing_self = current_user.id == @user.id
-  has_pass = @user.encrypted_password.present?
-  temp_pass = SecureRandom.base36(12) unless has_pass
 
 = form_with model: @user,
             data: { controller: :fields },
@@ -29,39 +27,30 @@
               t('.email_confirmation'),
               class: 'form-label'
 
-  - if f.object.new_record?
-    .form-floating
-      = f.text_field :password,
-                     value: (has_pass ? nil : temp_pass),
-                     class: 'form-control',
-                     placeholder: t('.password'),
-                     readonly: true
-      = f.label :password, class: 'form-label'
+  = render 'users/password_fields', f:, user: @user if @user.new_record?
 
+  - if @user.school_manager?
     .form-floating
-      = f.text_field :password_confirmation,
-                     value: (has_pass ? nil : temp_pass),
+      = f.text_field :name,
                      class: 'form-control',
-                     placeholder: t('.password_confirmation'),
-                     readonly: true
-      = f.label :password_confirmation,
-                t('.password_confirmation'),
-                class: 'form-label'
-
-  %div
-    = f.label :first_name, t('.name'), class: 'form-label'
-    .input-group
-      = text_field_tag 'user[family_name]',
-                       family_name(@user),
-                       class: 'form-control',
-                       required: true,
-                       placeholder: t('.family_name')
-      %span.input-group-text
-      = text_field_tag 'user[first_name]',
-                       first_name(@user),
-                       class: 'form-control',
-                       required: true,
-                       placeholder: t('.first_name')
+                     placeholder: t('.name'),
+                     required: true
+      = f.label :name, t('.name'), class: 'form-label'
+  - else
+    %div
+      = f.label :first_name, t('.name'), class: 'form-label'
+      .input-group
+        = text_field_tag 'user[family_name]',
+                         family_name(@user),
+                         class: 'form-control',
+                         required: true,
+                         placeholder: t('.family_name')
+        %span.input-group-text
+        = text_field_tag 'user[first_name]',
+                         first_name(@user),
+                         class: 'form-control',
+                         required: true,
+                         placeholder: t('.first_name')
 
   %div
     = f.label :kana_first, t('.kana_name'), class: 'form-label'

@@ -21,7 +21,7 @@ class UsersController < ApplicationController
 
   def show
     @user = authorize User.find(params[:id])
-    send("#{@user.role}_data", @user)
+    send(:"#{@user.role}_data", @user)
     render "users/#{@user.role}"
   end
 
@@ -265,7 +265,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(
       :id, :email, :kana_first, :prefecture, :address, :postcode, :phone,
       :first_name, :family_name, :email_confirmation, :kana_family, :password,
-      :password_confirmation, :allowed_ips
+      :password_confirmation, :allowed_ips, :name
     )
   end
 end
