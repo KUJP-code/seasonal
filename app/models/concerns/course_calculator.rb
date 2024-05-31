@@ -3,6 +3,9 @@
 module CourseCalculator
   private
 
+  # WHEN YOU CHANGE CODE HERE
+  # ALSO CHANGE CODE IN THE JS PRICE CALCULATION
+  # YES, I'M TALKING TO YOU FUTURE ME
   def calc_course_cost(slots)
     @data[:snack_cost], @data[:snack_count] = snack_cost(slots)
     @data[:extra_cost], @data[:extra_cost_count] = extra_cost(slots)
