@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
 
   def check_sm_ip
     return unless current_user&.school_manager?
-    return if sm_allowed_url? || current_user&.allowed_ips&.include?(request.ip)
+    return if sm_allowed_url? || sm_allowed_ip?
 
     redirect_to user_path(current_user),
                 alert: t('not_in_school')
@@ -30,6 +30,14 @@ class ApplicationController < ActionController::Base
   def sm_allowed_url?
     [user_url(current_user),
      destroy_user_session_url(locale: I18n.locale, _method: :delete)].include?(request.original_url)
+  end
+
+  def sm_allowed_ip?
+    allowed_ips = current_user&.allowed_ips
+    return false if allowed_ips.blank?
+    return true if allowed_ips.include?('*')
+
+    allowed_ips.include?(request.ip)
   end
 
   def mini_profile

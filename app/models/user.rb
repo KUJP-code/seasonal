@@ -161,9 +161,9 @@ class User < ApplicationRecord
 
     ip_array = allowed_ips.split("\n")
     ip_array.each do |ip|
-      next if IPAddr.new(ip)
+      next if ip == '*' || IPAddr.new(ip)
     rescue IPAddr::InvalidAddressError => _e
-      errors.add(:allowed_ips, "#{ip} is not a valid IP address")
+      errors.add(:allowed_ips, " #{ip} is not a valid IP address")
     end
 
     self.allowed_ips = ip_array

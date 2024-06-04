@@ -16,7 +16,7 @@ RSpec.describe User do
     it 'throw descriptive error if invalid IP address provided' do
       invalid_ip = build(:user, allowed_ips: 'invalid')
       invalid_ip.valid?
-      expect(invalid_ip.errors[:allowed_ips]).to include('invalid is not a valid IP address')
+      expect(invalid_ip.errors[:allowed_ips]).to include(' invalid is not a valid IP address')
     end
 
     it 'always returns an array even if only one step is passed' do
@@ -27,6 +27,16 @@ RSpec.describe User do
     it 'retains current IP addresses if none provided' do
       user = create(:user, allowed_ips: '')
       expect(user.allowed_ips).to eq([])
+    end
+
+    it 'allows wildcard (*) as a valid IP address' do
+      user = create(:user, allowed_ips: '*')
+      expect(user.allowed_ips).to eq(['*'])
+    end
+
+    it 'allows wildcard (*) to be included with other IPs' do
+      user = create(:user, allowed_ips: "1.1.1.1\n*")
+      expect(user.allowed_ips).to eq(['1.1.1.1', '*'])
     end
   end
 end
