@@ -1,0 +1,34 @@
+-# locals: (child:, children:, event:)
+
+%table.table.table-info.table-striped.table-hover.text-center.align-middle
+  %tbody
+    %tr
+      %td.fw-bold.text-secondary
+        = t('.regs_for', child: child.name)
+      %td
+        = link_to event_path(id: event.id, child: child.id) do
+          %div{ class: 'child bg-info rounded-pill p-2 text-white active',
+                'data-price-target': 'child' }
+            = child.name
+            .hidden= child.id.to_s
+            %p.hidden.level= child.kindy ? 'Kindy' : 'Elementary'
+            %p.hidden.membership= child.member? ? 'Yes' : 'No'
+
+    - if event.end_date > Time.zone.now
+      - children.reject { |c| c.id == child.id }.each do |sibling|
+        %tr
+          %td
+            = link_to t('.copy_regs', from: child.name, to: sibling.name),
+                      copy_invoice_path(origin: child.id,
+                                        target: sibling.id,
+                                        event: event.id),
+                      class: 'copy text-black-50',
+                      data: { turbo_method: :put,
+                              turbo_confirm: t('.confirm_copy',
+                                               from: child.name,
+                                               to: sibling.name) }
+          %td
+            = link_to event_path(id: event.id, child: sibling.id) do
+              %div{ class: 'child bg-info rounded-pill p-2 text-white',
+                    'data-price-target': 'sibling' }
+                = sibling.name

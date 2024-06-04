@@ -5,6 +5,10 @@ en:
       diff_school_reg: "Register at a different school"
       reg_at_selected: "Register at the selected school"
       title: "%{name} at %{school}"
+    child_switcher:
+      confirm_copy: "Are you sure you want to copy all registrations from %{from} to %{to}?"
+      copy_regs: "Copy regs from %{from} to %{to}"
+      regs_for: "Registrations for %{child}"
     condensed_stats:
       ext_kids: "External Kids"
       external_revenue: "External Revenue"
@@ -20,12 +24,10 @@ en:
       all_slots: "See all time slots for %{event}"
       confirm_invoice: "Confirm Booking"
       confirm_registrations: "Confirm Registrations"
-      copy_regs: "Copy regs from %{from} to %{to}"
       event_cost: "Total cost for %{event}: %{cost}"
       member: "Member"
       non_member: "Non Member"
       num_options: "options registered"
-      regs_for: "Registrations for %{child}"
       sibling_reg: "Sibling registered"
       snack_count: "Afternoon Snacks: %{count}"
       title: "%{name} at %{school}"

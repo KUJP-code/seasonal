@@ -29,63 +29,15 @@
         <% end %>
     </div>
 
-    <table class="table table-info table-striped table-hover text-center align-middle">
-        <tbody>
-            <tr>
-                <td class="fw-bold text-secondary"><%= t('.regs_for', child: @child.name) %></td>
-                <td>
-                    <%= link_to event_path(id: @event.id, child: @child.id) do %>
-                        <div class="child bg-info rounded-pill p-2 text-white active" data-price-target="child">
-                            <div class="hidden"><%= "#{@child.id}" %></div>
-                            <%= @child.name %>
-                            <p class="hidden level"><%= (@child.kindy) ? 'Kindy' : "Elementary" %></p>
-                            <% if @child.member? %>
-                                <p class="hidden membership">Yes</p>
-                            <% else %>
-                                <p class="hidden membership">No</p>
-                            <% end %>
-                        </div>
-                    <% end %>
-                </td>
-            </tr>
-
-            <% @children.reject { |c| c.id == @child.id }.each do |child| %>
-                <tr>
-                    <td>
-                      <% if @event.end_date > Time.zone.now %>
-                          <%= link_to t('.copy_regs', from: @child.name, to: child.name),
-                                copy_invoice_path(origin: @child.id, target: child.id, event: @event.id), class: 'copy text-black-50',
-                                  data: {
-                                    turbo_method: :put,
-                                    turbo_confirm: "#{@child.name}から#{child.name}にお申込内容をコピーしてよろしいですか？「OK」を押すと#{child.name}のお申込内容がスクールに送信されます。"
-                                  } unless child.id == @child.id
-                          %>
-                      <% end %>
-                    </td>
-                    <td>
-                        <%= link_to event_path(id: @event.id, child: child.id) do %>
-                            <div class="child bg-info rounded-pill p-2 text-white">
-                                <div class="hidden"><%= "#{child.id}" %></div>
-                                <%= child.name %>
-                                <p class="hidden level"><%= (child.kindy) ? 'Kindy' : "Elementary" %></p>
-                                <% if child.member? %>
-                                    <p class="hidden membership"><%= t('.member') %></p>
-                                <% else %>
-                                    <p class="hidden membership"><%= t('.non_member') %></p>
-                                <% end %>
-                            </div>
-                        <% end %>
-                    </td>
-                </tr>
-            <% end %>
-        </tbody>
-    </table>
+    <%= render 'events/child_switcher', child: @child, children: @children, event: @event %>
 
     <% if @children.size > 1 %>
         <h5 class="text-center">＋ボタンを押すと、お子様のお申込内容を他のお子様に反映させることができ、ご兄弟で同じ日程のお申込が出来ます。（反映させる前に、1人目のお申込を確定させる必要がございます。）</h5>
     <% end %>
 
-    <h5 class="text-center w-100">通常レッスン日(午後)は選択しないでください。</h5>
+    <% if @child.internal? %>
+      <h5 class="text-center w-100">通常レッスン日(午後)は選択しないでください。</h5>
+    <% end %>
 
     <hr class="border border-secondary border-1 w-100">
 
