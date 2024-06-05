@@ -1,0 +1,41 @@
+-# locals: ()
+
+.card.flex-row.flex-wrap.justify-content-between.gap-3
+  %h2.w-100 Admin Links
+
+  = link_to 'New Event',
+            new_event_path,
+            class: 'btn btn-primary flex-grow-1'
+
+  = link_to 'Import/Export Files',
+            csvs_path,
+            class: 'btn btn-primary flex-grow-1'
+
+  = link_to 'Price Lists',
+            price_lists_path,
+            class: 'btn btn-primary flex-grow-1'
+
+  = link_to 'Schools/Areas',
+            areas_path,
+            class: 'btn btn-primary flex-grow-1'
+
+  = link_to 'Setsumeikais',
+            setsumeikais_path,
+            class: 'btn btn-primary flex-grow-1'
+
+  = link_to 'Inquiries',
+            inquiries_path,
+            class: 'btn btn-primary flex-grow-1'
+
+  = link_to 'Surveys',
+            surveys_path,
+            class: 'btn btn-primary flex-grow-1'
+
+  = link_to 'Jobs',
+            mission_control_jobs_path,
+            class: 'btn btn-primary flex-grow-1'
+
+  - if current_user.id == 1
+    = link_to 'DB',
+              pg_hero_path,
+              class: 'btn btn-primary flex-grow-1'

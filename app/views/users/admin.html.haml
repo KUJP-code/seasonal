@@ -1,0 +1,14 @@
+%main.gap-3#user-show
+  .card.text-center
+    .h1.fw-bold yo #{first_name(@user)}
+
+  = render 'invoices/recent_bookings', bookings: @recent_bookings
+  = render 'users/admin_links'
+
+  - @upcoming_events.each do |name, events|
+    .card
+      .h2 #{name} for All Schools
+      = render 'events/stats_summary', events:
+    = render 'events/condensed_stats', events:
+
+  = render 'users/schools', managers: @managers
