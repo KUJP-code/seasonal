@@ -18,7 +18,7 @@ RSpec.describe Invoice do
 
   let(:event) { create(:event) }
   let(:child) { build_stubbed(:child, category: :internal, name: 'Child', kindy: true) }
-  let(:slot) { create(:time_slot, name: 'Slot', snack: false) }
+  let(:slot) { create(:time_slot, name: 'Slot', snack: false, morning: false) }
   let(:event_opt) { create(:event_option, name: 'Event Option', cost: 10, optionable: event) }
   let(:spare_slot_option) do
     create(:slot_option, name: 'Spare Slot Option', cost: 10, optionable: slot)
@@ -51,6 +51,10 @@ RSpec.describe Invoice do
 
     it 'lists all registered slots with options' do
       expect(invoice.summary).to include_all ['Slot', '- Slot Option: 10円']
+    end
+
+    it 'tags afternoon slots as "(午後)"' do
+      expect(invoice.summary).to include('午後').once
     end
 
     it 'does not list unregistered options for registered slots' do

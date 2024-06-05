@@ -79,12 +79,12 @@ module InvoiceSummarisable
     registered_opts = @data[:options].map(&:id)
     "<h4 class='fw-semibold text-start'>登録</h4>\n
      <div class='d-flex flex-column gap-3 justify-content-start flex-wrap'>
-       #{slots.order(start_time: :desc).map { |slot| detailed_slot(slot, registered_opts) }.join}
+       #{slots.order(start_time: :asc).map { |slot| detailed_slot(slot, registered_opts) }.join}
     </div>"
   end
 
   def detailed_slot(slot, registered_opts)
-    afternoon_text = slot.morning ? '' : ' (午前)'
+    afternoon_text = slot.morning ? '' : ' (午後)'
     "<div class='slot_regs d-flex flex-wrap gap-3 text-start'>
       <h5>#{slot.name} (#{slot.date}) #{afternoon_text}</h5>
       #{detailed_slot_options(slot, registered_opts).join}\n
