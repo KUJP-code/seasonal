@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.1.11-sq-recurring"
+    "Name": "thatbballguy/event_site:2.1.12-ip-debug"
   },
   "Ports": [
     {

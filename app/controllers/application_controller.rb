@@ -33,6 +33,8 @@ class ApplicationController < ActionController::Base
   end
 
   def sm_allowed_ip?
+    logger.info request.ip
+    logger.info current_user&.allowed_ips
     allowed_ips = current_user&.allowed_ips
     return false if allowed_ips.blank?
     return true if allowed_ips.include?('*')
