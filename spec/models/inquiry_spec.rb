@@ -9,6 +9,10 @@ describe Inquiry do
     expect(build(:inquiry)).to be_valid
   end
 
+  it 'has a valid setsumeikai inquiry factory' do
+    expect(build(:setsumeikai_inquiry)).to be_valid
+  end
+
   context 'when calculating school grade during 2023 school year' do
     before do
       travel_to Date.new(2024, 3, 14)
