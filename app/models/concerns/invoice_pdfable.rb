@@ -265,7 +265,8 @@ module InvoicePdfable
     pdf.grid([7, 16], [7, 19]).bounding_box do
       pdf.stroke_bounds
       pdf.pad(4.mm) do
-        pdf.text(yenify(calc_course_cost), align: :center, color: '000000', size: 14)
+        pdf.text(yenify(calc_course_cost(time_slots)),
+                 align: :center, color: '000000', size: 14)
       end
     end
 

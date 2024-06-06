@@ -7,12 +7,13 @@ module CourseCalculator
   # ALSO CHANGE CODE IN THE JS PRICE CALCULATION
   # YES, I'M TALKING TO YOU FUTURE ME
   def calc_course_cost(slots)
+    @data = @data.presence || {}
     @data[:snack_cost], @data[:snack_count] = snack_cost(slots)
     @data[:extra_cost], @data[:extra_cost_count] = extra_cost(slots)
     @data[:course_summary] = +''
 
     @data[:course_cost] =
-      slot_cost(@data[:num_regs]) + @data[:extra_cost] + @data[:snack_cost]
+      slot_cost(slots.size) + @data[:extra_cost] + @data[:snack_cost]
   end
 
   def slot_cost(num_regs)

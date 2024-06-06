@@ -30,6 +30,7 @@ module InvoiceCalculatable
   end
 
   def validated_slots(ignore_slots)
-    TimeSlot.where(id: slot_regs.map(&:registerable_id) - ignore_slots).includes(:options)
+    TimeSlot.where(id: slot_regs.map(&:registerable_id) - ignore_slots)
+            .includes(:options)
   end
 end
