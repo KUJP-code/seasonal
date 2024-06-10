@@ -51,5 +51,8 @@ module DbPrototypeV2
     # Use SolidQueue for ActiveJob
     config.active_job.queue_adapter = :solid_queue
     config.active_job.queue_name_prefix = "event_site_#{Rails.env}"
+
+    # Lazyload images by default
+    config.action_view.image_loading = "lazy"
   end
 end
