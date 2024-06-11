@@ -24,7 +24,7 @@ gem 'turbo-rails'
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem 'stimulus-rails'
-#
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
@@ -79,15 +79,6 @@ gem 'groupdate'
 
 # Use prawn for PDF invoices
 gem 'prawn'
-
-# Use rack-mini-profiler for performance monitoring
-gem 'rack-mini-profiler'
-
-# For memory profiling
-gem 'memory_profiler'
-
-# For call-stack profiling flamegraphs
-gem 'stackprof'
 
 # And oj to serialize it quickly
 gem 'oj'

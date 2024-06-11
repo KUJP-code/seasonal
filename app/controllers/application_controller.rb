@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   # Make sure we're in the right language and know who's making changes
-  before_action :check_sm_ip, :mini_profile, :switch_locale, :set_paper_trail_whodunnit
+  before_action :check_sm_ip, :switch_locale, :set_paper_trail_whodunnit
 
   private
 
@@ -33,17 +33,11 @@ class ApplicationController < ActionController::Base
   end
 
   def sm_allowed_ip?
-    logger.info request.ip
-    logger.info current_user&.allowed_ips
     allowed_ips = current_user&.allowed_ips
     return false if allowed_ips.blank?
     return true if allowed_ips.include?('*')
 
     allowed_ips.include?(request.ip)
-  end
-
-  def mini_profile
-    Rack::MiniProfiler.authorize_request if current_user&.admin?
   end
 
   def switch_locale
