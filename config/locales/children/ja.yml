@@ -40,7 +40,7 @@ ja:
         ssid: "マイページID"
         summary: "詳細"
     form:
-      allergies: "アレルギーや健康上の注意等"
+      allergies: "アレルギーがない場合は「なし」と入力してください。"
       birthday: "誕生日"
       category: "（通学生・予約生・非会員）選択してください。"
       ele_school: "お通いの保育園／幼稚園／小学校"

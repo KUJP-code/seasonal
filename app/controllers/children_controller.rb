@@ -83,15 +83,12 @@ class ChildrenController < ApplicationController
   private
 
   def child_params
-    params.require(:child).permit(:id, :first_name, :family_name,
-                                  :kana_first, :kana_family, :en_name, :category, :birthday, :level, :allergies,
-                                  :grade, :ssid, :ele_school_name,
-                                  :photos, :first_seasonal,
-                                  :received_hat, :parent_id, :school_id,
-                                  registrations_attributes: %i[
-                                    child_id registerable_type
-                                    registerable_id
-                                  ])
+    params.require(:child).permit(:id, :first_name, :family_name, :parent_id,
+                                  :kana_first, :kana_family, :en_name, :category, :birthday, :level,
+                                  :allergies, :grade, :ssid, :ele_school_name,
+                                  :photos, :first_seasonal, :received_hat, :school_id,
+                                  registrations_attributes:
+                                    %i[child_id registerable_type registerable_id])
   end
 
   def afternoon_data
@@ -141,7 +138,15 @@ class ChildrenController < ApplicationController
   def search_params
     hash = params.require(:search).permit(
       :email, :en_name, :name, :katakana_name, :ssid
-    ).compact_blank.to_h { |k, v| k == 'ssid' ? [k, v.strip] : [k, "%#{Child.sanitize_sql_like(v.strip)}%"] }
+    ).compact_blank.to_h do |k, v|
+      if k == 'ssid'
+        [k,
+         v.strip]
+      else
+        [k,
+         "%#{Child.sanitize_sql_like(v.strip)}%"]
+      end
+    end
     return {} if hash.empty?
 
     string = hash.keys.map do |k|

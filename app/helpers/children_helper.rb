@@ -1,6 +1,21 @@
 # frozen_string_literal: true
 
 module ChildrenHelper
+  def child_categories
+    forbidden = %w[default unknown]
+    Child.categories.keys.reject { |k| forbidden.include?(k) }
+         .map { |k| [t(".#{k}"), k] }
+  end
+
+  def child_photos
+    forbidden = %w[マイページOK Unknown]
+    Child.photos.keys.reject { |k| forbidden.include?(k) }
+  end
+
+  def child_primary_grades
+    Child.grades.keys[3..11].map { |k| [k, k] }
+  end
+
   def family_name(child)
     return '' if child.name.nil?
 

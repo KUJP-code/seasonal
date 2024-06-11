@@ -1,0 +1,129 @@
+.card
+  = turbo_frame_tag 'add_child' do
+    = form_with model: @child,
+                class: 'child_form',
+                html: { class: 'd-grid gap-3 ' } do |f|
+      = render 'shared/form_errors', resource: @child
+
+      - if current_user.customer?
+        = f.hidden_field :parent_id,
+                         value: current_user.id
+
+      .personal_info.d-grid.gap-3
+        %h3= t('.personal_info')
+
+      %div
+        = f.label :family_name, t('.name'), class: 'form-label'
+        .input-group
+          = f.text_field :family_name,
+                         value: family_name(@child),
+                         class: 'form-control',
+                         autofocus: true,
+                         required: true,
+                         placeholder: t('.family_name')
+          .input-group-text
+          = f.text_field :first_name,
+                         value: first_name(@child),
+                         class: 'form-control',
+                         required: true,
+                         placeholder: t('.first_name')
+
+      %div
+        = f.label :kana_first, t('.kana'), class: 'form-label'
+        .input-group
+          = f.text_field :kana_family,
+                         value: kana_family(@child),
+                         class: 'form-control',
+                         required: true,
+                         placeholder: t('.kana_family')
+          .input-group-text
+          = f.text_field :kana_first,
+                         value: kana_first(@child),
+                         class: 'form-control',
+                         required: true,
+                         placeholder: t('.kana_first')
+
+      .form-floating
+        = f.text_field :en_name,
+                       class: 'form-control',
+                       placeholder: t('.en_name'),
+                       required: true
+        = f.label :en_name, t('.en_name'), class: 'form-label'
+
+      .form-floating
+        = f.date_field :birthday,
+                       class: 'form-control',
+                       placeholder: t('.birthday'),
+                       required: true
+        = f.label :birthday, t('.birthday'), class: 'form-label'
+
+      %p アレルギー
+      .form-floating
+        = f.text_field :allergies, class: 'form-control',
+                       required: true, placeholder: t('.allergies')
+        = f.label :allergies, t('.allergies'), class: 'form-label'
+
+      %div
+        = f.label :grade, t('.grade'), class: 'form-label'
+        = f.select :grade, child_primary_grades,
+                   {}, { class: 'form-select', required: true }
+
+      - if @child.new_record?
+        .form-floating
+          = f.text_field :ele_school_name,
+                         class: 'form-control',
+                         placeholder: t('ele_school')
+          = f.label :ele_school_name, t('ele_school'), class: 'form-label'
+
+      - if current_user.staff?
+        %div{ data: { controller: 'conditional',
+                      'conditional-pin-value': current_user.pin } }
+          .form-floating.d-none{ 'data-conditional-target': 'target' }
+            = f.text_field :ele_school_name,
+                           class: 'form-control',
+                           placeholder: t('ele_school')
+            = f.label :ele_school_name, t('ele_school'), class: 'form-label'
+
+          .form-floating{ 'data-conditional-target': 'target' }
+            = text_field_tag t('enter_pin', info: t('ele_school')),
+                             '',
+                             class: 'form-control',
+                             placeholder: t('enter_pin', info: t('ele_school')),
+                             maxlength: 4,
+                             data: { 'conditional-target': 'condition',
+                                     action: 'conditional#pin' }
+            = label_tag t('enter_pin', info: t('ele_school')),
+                        nil,
+                        class: 'form-label'
+
+      .school-info.d-grid.gap-3.pt-0
+        %h3= t('.school_info')
+
+        %div
+          = f.label :school_id, t('.school'), class: 'form-label'
+          - if current_user.school_manager?
+            = f.collection_select :school_id, current_user.managed_schools,
+                                  :id, :name, {}, { class: 'form-select' }
+          - else
+            = f.collection_select :school_id, School.real, :id, :name, {},
+                                  { class: 'form-select' }
+
+        %div
+          = f.label :category, t('.category'), class: 'form-label'
+          = f.select :category, child_categories,
+                     {}, { class: 'form-select', required: true }
+
+        %div
+          = f.label :photos, t('.photos'), class: 'form-label'
+          = f.select :photos, child_photos, {},
+                     { class: 'form-select', required: true }
+
+        - if current_user.staff? || (current_user.customer? && @child.new_record?)
+          %div
+            = f.check_box :first_seasonal, { class: 'form-check-input' }
+            = f.label :first_seasonal, t('.first_seasonal'),
+                      class: 'form-check-label'
+
+      = f.submit t('.reg_child'),
+                 class: 'btn btn-primary',
+                 data: { turbo_frame: '_top' }

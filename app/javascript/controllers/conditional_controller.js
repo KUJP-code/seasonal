@@ -10,26 +10,6 @@ export default class extends Controller {
 		this.toggle;
 	}
 
-	allergy() {
-		const allergy = this.conditionTarget.value;
-		const target = this.targetTarget;
-
-		switch (allergy) {
-			case "なし":
-				target.value = "なし";
-				target.readOnly = true;
-				break;
-			case "有":
-				target.removeAttribute("readOnly");
-				target.value = "";
-				break;
-			default:
-				target.value = null;
-				target.readOnly = true;
-				break;
-		}
-	}
-
 	pin() {
 		const pin = this.conditionTarget.value;
 		if (pin !== this.pinValue) {

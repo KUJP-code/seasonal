@@ -45,7 +45,6 @@ class Child < ApplicationRecord
                   unknown: 3,
                   default: :external
 
-  # Map grade int in table to a grade
   enum :grade, '満１歳' => 0,
                '満２歳' => 1,
                '年々少' => 2,
@@ -83,7 +82,6 @@ class Child < ApplicationRecord
   # Uniqueness
   validates :ssid, uniqueness: { allow_blank: true }
 
-  # Model methods
   def arrival_time(slot)
     arr_opt = options.find_by(optionable: slot, category: :arrival)
     return slot.start_time.strftime('%I:%M%p') if arr_opt.nil?
@@ -99,7 +97,7 @@ class Child < ApplicationRecord
   end
 
   def diff_school_events
-    events.where.not(school: school).distinct
+    events.where.not(school:).distinct
   end
 
   def names_string
@@ -110,7 +108,6 @@ class Child < ApplicationRecord
     upcoming_events.first
   end
 
-  # Checks which price list the child uses
   def member?
     return false if external?
 
@@ -118,7 +115,7 @@ class Child < ApplicationRecord
   end
 
   def registered?(registerable)
-    return true if registrations.find_by(registerable: registerable)
+    return true if registrations.find_by(registerable:)
 
     false
   end
