@@ -1,4 +1,4 @@
-%turbo-frame{ id: 'merge_children' }
+= turbo_frame_tag 'merge_children' do
   - if @child
     = link_to '戻る', user_path(@user), class: 'btn btn-primary w-25'
 
@@ -49,4 +49,6 @@
         = f.label :ssid, t('.to_ssid'), class: 'form-label'
         .form-text#confirm-length
           %span{ data: { 'count-target': 'counter' } }
-      = f.submit t('.find_child'), class: 'btn btn-primary'
+
+      = f.submit t('.find_child'),
+                 class: 'btn btn-primary'

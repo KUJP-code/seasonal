@@ -14,7 +14,7 @@
     <td class="parent">
         <% if child.parent %>
         <%= link_to child.parent.name, user_path(child.parent) %>
-        <% else %>   
+        <% else %>
             なし
         <% end %>
     </td>
@@ -36,7 +36,7 @@
             </div>
 
             <div class="modal fade" id="<%= "merge#{child.id}" %>" tabindex="-1">
-                <div class="modal-dialog modal-xl d-flex">
+                <div class="modal-dialog modal-fullscreen d-flex">
                     <div class="modal-content d-flex gap-2">
                         <div class="modal-header">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -79,7 +79,7 @@
                                         <td class="parent">
                                             <% if ss_child.parent %>
                                             <%= link_to ss_child.parent.name, user_path(ss_child.parent) %>
-                                            <% else %>   
+                                            <% else %>
                                                 なし
                                             <% end %>
                                         </td>
@@ -107,7 +107,7 @@
                                         <td class="parent">
                                             <% if child.parent %>
                                             <%= link_to child.parent.name, user_path(child.parent) %>
-                                            <% else %>   
+                                            <% else %>
                                                 なし
                                             <% end %>
                                         </td>
@@ -129,7 +129,9 @@
                             <%= form_with url: merge_children_path, html: { class: 'd-grid' } do |f| %>
                                 <%= f.hidden_field :ss_kid, value: @child.id %>
                                 <%= f.hidden_field :non_ss_kid, value: child.id %>
-                                <%= f.submit t('.merge_children'), class: 'btn btn-primary' %>
+                                <%= f.submit t('.merge_children'),
+                                             class: 'btn btn-primary',
+                                             data: { turbo_frame: '_top' } %>
                             <% end %>
                         </div>
                     </div>
