@@ -58,9 +58,11 @@
         = f.label :birthday, t('.birthday'), class: 'form-label'
 
       %p アレルギー
-      .form-floating
-        = f.text_field :allergies, class: 'form-control',
-                       required: true, placeholder: t('.allergies')
+      .form-floating{ 'data-controller': 'allergy' }
+        = f.text_field :allergies,
+                       class: 'form-control',
+                       required: true, placeholder: t('.allergies'),
+                       data: { 'allergy-target': 'allergyInput' }
         = f.label :allergies, t('.allergies'), class: 'form-label'
 
       %div

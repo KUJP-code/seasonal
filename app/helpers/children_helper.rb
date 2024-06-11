@@ -29,13 +29,13 @@ module ChildrenHelper
   end
 
   def kana_family(child)
-    return '' if child.name.nil?
+    return '' if child.katakana_name.nil?
 
     child.katakana_name.split.first
   end
 
   def kana_first(child)
-    return '' if child.name.nil?
+    return '' if child.katakana_name.nil?
 
     child.katakana_name.split.last
   end
