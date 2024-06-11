@@ -17,20 +17,20 @@ RSpec.describe 'search' do
       visit users_path
       within '#users_search' do
         fill_in 'search_name', with: ' Tom'
-        click_button I18n.t('shared.search.search')
+        click_on I18n.t('shared.search.search')
       end
       expect(page).to have_content(target.name)
-      expect(page).not_to have_content(extra.name)
+      expect(page).to have_no_content(extra.name)
     end
 
     it 'can search by name for partial match' do
       visit users_path
       within '#users_search' do
         fill_in 'search_name', with: 'Tom'
-        click_button I18n.t('shared.search.search')
+        click_on I18n.t('shared.search.search')
       end
       expect(page).to have_content(target.name)
-      expect(page).not_to have_content(extra.name)
+      expect(page).to have_no_content(extra.name)
     end
   end
 
@@ -42,30 +42,30 @@ RSpec.describe 'search' do
       visit children_path
       within '#children_search' do
         fill_in 'search_katakana_name', with: 'カタカナ '
-        click_button I18n.t('shared.search.search')
+        click_on I18n.t('shared.search.search')
       end
       expect(page).to have_content(target.name)
-      expect(page).not_to have_content(extra.name)
+      expect(page).to have_no_content(extra.name)
     end
 
     it 'can search by katakana name for partial match' do
       visit children_path
       within '#children_search' do
         fill_in 'search_katakana_name', with: 'カタ'
-        click_button I18n.t('shared.search.search')
+        click_on I18n.t('shared.search.search')
       end
       expect(page).to have_content(target.katakana_name)
-      expect(page).not_to have_content(extra.name)
+      expect(page).to have_no_content(extra.name)
     end
 
     it 'can search by ssid' do
       visit children_path
       within '#children_search' do
         fill_in 'search_ssid', with: '1234567890'
-        click_button I18n.t('shared.search.search')
+        click_on I18n.t('shared.search.search')
       end
       expect(page).to have_content(target.name)
-      expect(page).not_to have_content(extra.name)
+      expect(page).to have_no_content(extra.name)
     end
   end
 end

@@ -108,6 +108,11 @@ RSpec.configure do |config|
     driven_by :rack_test
   end
 
+  config.before(:each, :js, type: :system) do
+    driven_by :selenium_chrome_headless
+    default_url_options[:locale] = I18n.default_locale
+  end
+
   # Use route helpers
   config.include Rails.application.routes.url_helpers
 end

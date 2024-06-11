@@ -4,7 +4,7 @@
              url: user_registration_path,
              html: { class: 'd-grid gap-3 p-3 needs-validation',
                      novalidate: true },
-             data: { controller: 'conditional' } do |f|
+             data: { controller: 'privacy' } do |f|
     .text-end= image_tag 'favicon.svg'
 
     %h2= t('.welcome')
@@ -132,8 +132,7 @@
     .d-grid.gap-3
       = f.submit t('.sign_up'),
                  class: 'btn btn-primary',
-                 disabled: true,
-                 data: { 'conditional-target': 'target' }
+                 data: { 'privacy-target': 'submit' }
       = link_to t('.log_in'),
                 new_user_session_path,
                 class: 'btn btn-secondary'

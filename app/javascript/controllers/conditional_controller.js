@@ -30,17 +30,6 @@ export default class extends Controller {
 		}
 	}
 
-	allowSubmit() {
-		const condition = this.conditionTarget.checked;
-		const target = this.targetTarget;
-
-		if (condition) {
-			target.removeAttribute("disabled");
-		} else {
-			target.setAttribute("disabled", true);
-		}
-	}
-
 	pin() {
 		const pin = this.conditionTarget.value;
 		if (pin !== this.pinValue) {
