@@ -265,7 +265,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(
       :id, :email, :kana_first, :prefecture, :address, :postcode, :phone,
       :first_name, :family_name, :email_confirmation, :kana_family, :password,
-      :password_confirmation, :allowed_ips, :name
+      :password_confirmation, :name
     )
   end
 end

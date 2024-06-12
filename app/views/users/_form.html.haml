@@ -83,8 +83,4 @@
                          data: { 'conditional-target': 'condition',
                                  action: 'conditional#pin' }
 
-  - if @user.school_manager? && current_user.admin?
-    = render 'users/allowed_ips',
-             f:, user: @user
-
   = f.submit class: 'btn btn-primary'

@@ -15,14 +15,8 @@
                 class: 'btn btn-primary flex-grow-1'
       - if current_user.admin?
         = link_to 'Edit SM',
-                  edit_user_path(@user),
+                  edit_staff_user_path(@user),
                   class: 'btn btn-primary flex-grow-1'
-      -# link_to t('.manage_setsumeikais'),
-                setsumeikais_path,
-                class: 'btn btn-primary flex-grow-1'
-      -# link_to t('.manage_inquiries'),
-                inquiries_path,
-                class: 'btn btn-primary flex-grow-1'
 
     - unless @recent_bookings.empty?
       = render 'invoices/recent_bookings',
