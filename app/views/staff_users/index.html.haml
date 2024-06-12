@@ -1,0 +1,19 @@
+%main
+  = link_to 'Create Staff',
+            new_staff_user_path,
+            class: 'btn btn-primary'
+
+  .card
+    %table.table.table-striped.table-hover.text-center
+      %thead
+        %tr.table-primary
+          %th Name
+          %th Email
+          %th Role
+          %th Manages
+          %th Edit
+          %th Delete
+      %tbody
+        = render partial: 'staff_users/staff_user',
+                 collection: @staff,
+                 as: :staff_user

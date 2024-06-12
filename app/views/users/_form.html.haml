@@ -5,7 +5,7 @@
 = form_with model: @user,
             data: { controller: :fields },
             html: { class: 'card d-grid gap-3' } do |f|
-  = render partial: 'shared/form_errors', locals: { resource: @user }
+  = render 'shared/form_errors', resource: @user
 
   %h3= t('.account_information')
 
@@ -79,17 +79,12 @@
                          '',
                          class: 'form-control',
                          placeholder: t('enter_pin', info: t('contact_info')),
-                         max_length: 4,
+                         maxlength: 4,
                          data: { 'conditional-target': 'condition',
                                  action: 'conditional#pin' }
 
   - if @user.school_manager? && current_user.admin?
-    %div
-      = f.label :allowed_ips, class: 'form-label'
-      = f.text_area :allowed_ips,
-                    value: @user.allowed_ips.join("\n"),
-                    class: 'form-control',
-                    rows: 3
-      %small Add each IP address on a new line
+    = render 'users/allowed_ips',
+             f:, user: @user
 
   = f.submit class: 'btn btn-primary'

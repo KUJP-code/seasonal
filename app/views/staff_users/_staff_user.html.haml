@@ -1,0 +1,30 @@
+-# locals: (staff_user:)
+
+:ruby
+  schools = staff_user.managed_schools
+  areas = staff_user.managed_areas
+
+%tr.table-secondary
+  %td= link_to staff_user.name, user_path(staff_user)
+  %td= mail_to staff_user.email, staff_user.email
+  %td= staff_user.role.titleize
+  %td
+    - if schools.any?
+      %ul
+        - schools.each do |school|
+          %li
+            = link_to "#{school.name} (#{t("schools.#{school.name}")})",
+                      edit_school_path(school)
+    - if areas.any?
+      Areas:
+      - areas.each do |area|
+        = link_to area.name, edit_area_path(area)
+
+  %td
+    = link_to 'Edit', edit_staff_user_path(staff_user),
+              class: 'btn btn-primary'
+  %td
+    = link_to 'Delete', staff_user_path(staff_user),
+              data: { turbo_method: :delete,
+                      turbo_confirm: 'Are you sure?' },
+              class: 'btn btn-danger'

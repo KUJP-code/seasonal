@@ -1,0 +1,47 @@
+-# locals: (schools:, user:)
+
+- roles = [['Area Manager', 'area_manager'],
+           ['School Manager', 'school_manager'],
+           ['Statistician', 'statistician']]
+
+= form_with model: user, url: staff_users_path,
+            html: { class: 'card d-grid gap-3 w-50' } do |f|
+  = render 'shared/form_errors', resource: user
+
+  = f.hidden_field :address, value: '1-2-3'
+  = f.hidden_field :katakana_name, value: 'カタカナ'
+  = f.hidden_field :phone, value: '0123456789'
+  = f.hidden_field :postcode, value: '1234567'
+  = f.hidden_field :prefecture, value: '東京都'
+
+  %div
+    = f.label :role, class: 'form-label'
+    = f.select :role, roles, {}, class: 'form-select'
+
+  .form-floating
+    = f.text_field :name,
+                   autofocus: true,
+                   class: 'form-control',
+                   placeholder: 'Name',
+                   required: true
+    = f.label :name, class: 'form-label'
+
+  .form-floating
+    = f.text_field :email,
+                   class: 'form-control',
+                   placeholder: 'Email',
+                   required: true
+    = f.label :email, class: 'form-label'
+
+  .form-floating
+    = f.text_field :pin,
+                   class: 'form-control',
+                   placeholder: 'PIN',
+                   maxlength: 4,
+                   required: true
+    = f.label :pin, 'PIN', class: 'form-label'
+
+  = render('users/password_fields', f:, user:) if user.new_record?
+  = render('users/allowed_ips', f:, user:)
+
+  = f.submit class: 'btn btn-primary'

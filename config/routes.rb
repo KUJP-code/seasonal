@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       resources :price_lists, except: %i[destroy show]
       resources :schools, except: %i[destroy index]
       resources :setsumeikais
+      resources :staff_users, except: %i[show]
       resources :surveys, except: %i[destroy]
       resources :survey_responses, only: %i[create update]
       resources :time_slots, except: %i[create destroy show]

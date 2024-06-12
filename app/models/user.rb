@@ -13,7 +13,9 @@ class User < ApplicationRecord
   # Staff associations
   has_many :managements, foreign_key: :manager_id,
                          inverse_of: :manager,
-                         dependent: :destroy
+                         dependent: :restrict_with_error
+  accepts_nested_attributes_for :managements, allow_destroy: true,
+                                              reject_if: :all_blank
   has_many :managed_schools, through: :managements,
                              source: :manageable,
                              source_type: 'School'

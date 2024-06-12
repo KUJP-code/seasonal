@@ -12,7 +12,7 @@ class UsersController < ApplicationController
                policy_scope(User).where(search_params)
              else
                policy_scope(User.none)
-             end.limit(50)
+             end.customer.limit(50).includes(:children)
   end
 
   def profile
