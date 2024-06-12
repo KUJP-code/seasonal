@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.1.16-privacy-fix"
+    "Name": "thatbballguy/event_site:2.2.0-staff-users"
   },
   "Ports": [
     {
