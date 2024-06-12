@@ -1,0 +1,31 @@
+= form_with model: @area, html: { class: 'card' },
+            data: { controller: 'fields' } do |f|
+  = render 'shared/form_errors', resource: @area
+
+  .form-floating
+    = f.text_field :name,
+                   class: 'form-control',
+                   placeholder: 'Area Name',
+                   autofocus: true,
+                   required: true
+    = f.label :name, 'Area Name', class: 'form-label'
+
+  = f.fields_for :managements, @area.managements do |m_f|
+    = render 'managements/fields',
+             f: m_f, manageables: [@area],
+             managers: @managers, type: :area
+
+  = f.fields_for :managements, Management.new, child_index: 'CHILD' do |m_f|
+    %template{ 'data-fields-target': 'template' }
+      = render 'managements/fields',
+               f: m_f, manageables: [@area],
+               managers: @managers, type: :area
+
+  .d-none.w-100{ 'data-fields-target': 'target' }
+
+  .d-flex.gap-3.align-items-center.justify-content-around.w-100
+    = button_tag 'Add Manager',
+                 type: 'button',
+                 class: 'btn btn-info',
+                 data: { action: 'fields#add' }
+    = f.submit class: 'btn btn-primary'
