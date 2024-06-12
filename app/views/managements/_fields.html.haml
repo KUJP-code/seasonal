@@ -2,7 +2,7 @@
 
 .fields_wrapper.d-grid.gap-3{ 'data-new-record': f.object.new_record?.to_s }
   = f.hidden_field :id
-  = f.hidden_field :manageable_type, value: type
+  = f.hidden_field :manageable_type, value: type.to_s.capitalize
 
   %div
     = f.label :manager_id, 'Manager', class: 'form-label'

@@ -3,12 +3,13 @@
 :ruby
   area_managements = user.managements.where(manageable_type: 'Area')
   school_managements = user.managements.where(manageable_type: 'School')
+  url = user.new_record? ? staff_users_path : staff_user_path(user)
 
 - roles = [['Area Manager', 'area_manager'],
            ['School Manager', 'school_manager'],
            ['Statistician', 'statistician']]
 
-= form_with model: user, url: staff_users_path,
+= form_with model: user, url:,
             html: { class: 'card d-grid gap-3 w-50' } do |f|
   = render 'shared/form_errors', resource: user
 
