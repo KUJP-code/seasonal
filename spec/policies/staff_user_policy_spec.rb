@@ -12,6 +12,18 @@ RSpec.describe StaffUserPolicy do
     let(:user) { build(:admin) }
 
     it_behaves_like 'fully authorized user'
+
+    context 'when editing self' do
+      let(:staff_user) { user }
+
+      it_behaves_like 'fully authorized user'
+    end
+
+    context 'when editing other admin' do
+      let(:staff_user) { build(:admin) }
+
+      it_behaves_like 'unauthorized user'
+    end
   end
 
   context 'when area manager' do

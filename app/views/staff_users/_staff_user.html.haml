@@ -21,8 +21,9 @@
         = link_to area.name, edit_area_path(area)
 
   %td
-    = link_to 'Edit', edit_staff_user_path(staff_user),
-              class: 'btn btn-primary'
+    - unless staff_user.admin?
+      = link_to 'Edit', edit_staff_user_path(staff_user),
+                class: 'btn btn-primary'
   %td
     - unless staff_user.admin?
       = link_to 'Delete', staff_user_path(staff_user),
