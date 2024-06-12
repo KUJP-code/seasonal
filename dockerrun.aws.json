@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.1.14-confirmation-mailer"
+    "Name": "thatbballguy/event_site:2.1.15-progressive-enhancement"
   },
   "Ports": [
     {
