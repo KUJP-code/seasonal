@@ -1,4 +1,8 @@
--# locals: (schools:, user:)
+-# locals: (areas:, schools:, user:)
+
+:ruby
+  area_managements = user.managements.where(manageable_type: 'Area')
+  school_managements = user.managements.where(manageable_type: 'School')
 
 - roles = [['Area Manager', 'area_manager'],
            ['School Manager', 'school_manager'],
@@ -17,6 +21,47 @@
   %div
     = f.label :role, class: 'form-label'
     = f.select :role, roles, {}, class: 'form-select'
+
+  - if school_managements.any?
+    .d-grid.gap-3{ 'data-controller': 'fields' }
+      %h3 Managed Schools
+
+      = f.fields_for :managements, school_managements do |mf|
+        = render 'managements/fields', f: mf, manageables: schools,
+                                       managers: [user], type: :school
+
+      %template{ 'data-fields-target': 'template' }
+        = f.fields_for :managements, Management.new,
+                       child_index: 'CHILD' do |mf|
+          = render 'managements/fields', f: mf, manageables: schools,
+                                         managers: [user], type: :school
+      = button_tag 'Add Managed School',
+                   type: 'button',
+                   data: { action: 'fields#add' },
+                   class: 'btn btn-info w-100'
+
+      .d-none.w-100{ data: { 'fields-target': 'target' } }
+
+  - if area_managements.any?
+    .d-grid.gap-3{ 'data-controller': 'fields' }
+      %h3 Managed Areas
+      = f.fields_for :managements,
+                     user.managements.where(manageable_type: 'Area') do |mf|
+        = render 'managements/fields', f: mf, manageables: areas,
+                                       managers: [user], type: :area
+
+      %template{ 'data-fields-target': 'template' }
+        = f.fields_for :managements, Management.new,
+                       child_index: 'CHILD' do |mf|
+          = render 'managements/fields', f: mf, manageables: areas,
+                                         managers: [user], type: :area
+
+      = button_tag 'Add Managed Area',
+                   type: 'button',
+                   data: { action: 'fields#add' },
+                   class: 'btn btn-info w-100'
+
+      .d-none.w-100{ data: { 'fields-target': 'target' } }
 
   .form-floating
     = f.text_field :name,
