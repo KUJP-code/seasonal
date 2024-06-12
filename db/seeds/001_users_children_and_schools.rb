@@ -20,6 +20,11 @@ customer = FactoryBot.create(
          role: :customer
 )
 
+FactoryBot.create(
+  :user, email: 'stats@gmail.com', password: 'statstatstat',
+         role: :statistician
+)
+
 puts 'Created test accounts'
 
 area = Area.create!(name: '中川')
