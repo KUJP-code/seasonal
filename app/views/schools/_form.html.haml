@@ -88,13 +88,15 @@
                             :id, :name, {}, { class: 'form-select' }
 
     = f.fields_for :managements, school.managements do |mf|
-      = render 'managements/fields', f: mf, id: @school.id, type: 'School'
+      = render 'managements/fields', f: mf, manageables: [school],
+                                     managers: @managers, type: :school
 
-    %template{ data: { 'fields-target': 'template' } }
+    %template{ 'data-fields-target': 'template' }
       = f.fields_for :managements,
                      Management.new,
                      child_index: 'CHILD' do |mf|
-        = render 'managements/fields', f: mf, id: @school.id, type: 'School'
+        = render 'managements/fields', f: mf, manageables: [school],
+                                       managers: @managers, type: :school
 
     .d-none.w-100{ data: { 'fields-target': 'target' } }
 
