@@ -45,6 +45,11 @@ class StaffUsersController < ApplicationController
   end
 
   def destroy
+    if @user.admin?
+      return redirect_to staff_users_path,
+                         alert: 'Only Brett deletes Admins'
+    end
+
     if @user.destroy
       redirect_to staff_users_path,
                   notice: 'User deleted successfully.'

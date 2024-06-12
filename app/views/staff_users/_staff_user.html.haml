@@ -24,7 +24,8 @@
     = link_to 'Edit', edit_staff_user_path(staff_user),
               class: 'btn btn-primary'
   %td
-    = link_to 'Delete', staff_user_path(staff_user),
-              data: { turbo_method: :delete,
-                      turbo_confirm: 'Are you sure?' },
-              class: 'btn btn-danger'
+    - unless staff_user.admin?
+      = link_to 'Delete', staff_user_path(staff_user),
+                data: { turbo_method: :delete,
+                        turbo_confirm: 'Are you sure?' },
+                class: 'btn btn-danger'
