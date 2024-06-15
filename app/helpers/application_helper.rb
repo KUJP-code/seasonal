@@ -15,4 +15,8 @@ module ApplicationHelper
   def full_address(user)
     "#{t('.address')}: #{user.prefecture}, #{user.address}, #{user.postcode}"
   end
+
+  def importmap_shim_src
+    'https://ga.jspm.io/npm:es-module-shims@1.10.0/dist/es-module-shims.js'
+  end
 end
