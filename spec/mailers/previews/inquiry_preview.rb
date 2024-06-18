@@ -4,11 +4,25 @@
 class InquiryPreview < ActionMailer::Preview
   def inquiry
     InquiryMailer.with(
-      inquiry: Inquiry.general.order(:created_at).last
+      inquiry: Inquiry.create!(
+        category: 'I',
+        school_id: 32,
+        parent_name: '山田太郎',
+        phone: '090-1234-5678',
+        email: 'XkxZs@example.com'
+      )
     ).inquiry
   end
 
   def setsu_inquiry
+    setsu = Setsumeikai.create!(
+      school_id: 32,
+      start: 3.days.from_now,
+      attendance_limit: 5,
+      release_date: 1.day.from_now,
+      close_at: 2.days.from_now,
+      setsumeikai_involvements: [SetsumeikaiInvolvement.new(school_id: 32)]
+    )
     InquiryMailer.with(
       inquiry: Inquiry.create(
         parent_name: '山田太郎',
@@ -22,7 +36,7 @@ class InquiryPreview < ActionMailer::Preview
         requests: 'お疲れ様でした',
         category: 'R',
         school_id: 32,
-        setsumeikai_id: Setsumeikai.first.id
+        setsumeikai_id: setsu.id
       )
     ).setsu_inquiry
   end
