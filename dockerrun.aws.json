@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.2.1-correct-urls"
+    "Name": "thatbballguy/event_site:2.2.2-importmap-shims"
   },
   "Ports": [
     {
