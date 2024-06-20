@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.2.3-redact-emails"
+    "Name": "thatbballguy/event_site:2.2.4-emails-corrected"
   },
   "Ports": [
     {
