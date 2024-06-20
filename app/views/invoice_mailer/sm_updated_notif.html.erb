@@ -5,10 +5,14 @@
     </head>
     <body>
         <h4>新しい申込の追加、またはお申込内容の変更が行われました。</h4>
-        <h2>名前：</h2>
-
-        <%= sanitize @invoice.summary, tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id] %>
 
         <%= link_to t('.view_invoice'), invoice_url(id: @invoice.id) %>
+
+        <% unless @child.ssid.blank? %>
+          <h4>マイページID: <%= @child.ssid %></h4>
+        <% end %>
+        <%= sanitize @invoice.summary,
+                     tags: %w[h2 h3 h4 h5 div p],
+                     attributes: %w[class id] %>
     </body>
 </html>

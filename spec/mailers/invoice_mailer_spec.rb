@@ -8,7 +8,7 @@ RSpec.describe InvoiceMailer do
   context 'when sending confirmation notification' do
     subject(:mail) { described_class.with(invoice:, user:).confirmation_notif }
 
-    let(:user) { create(:user, children: [create(:internal_child)]) }
+    let(:user) { create(:user, children: [create(:internal_child, ssid: 1)]) }
 
     it 'sends an email' do
       expect { mail.deliver_now }
@@ -45,8 +45,8 @@ RSpec.describe InvoiceMailer do
         .to change { ActionMailer::Base.deliveries.count }.by(1)
     end
 
-    it 'includes child name in body' do
-      expect(mail.html_part.body).to match(user.children.first.name)
+    it 'includes child ssid in body' do
+      expect(mail.html_part.body).to match(user.children.first.ssid.to_s)
     end
   end
 
@@ -54,7 +54,10 @@ RSpec.describe InvoiceMailer do
     subject(:mail) { described_class.with(invoice:, user:).updated_notif }
 
     let(:user) { create(:user, :school_manager) }
-    let(:child) { create(:internal_child, parent: create(:user, :customer)) }
+    let(:child) do
+      create(:internal_child, ssid: 1,
+                              parent: create(:user, :customer))
+    end
 
     it 'has invoice updated subject' do
       expect(mail.subject)
@@ -66,23 +69,23 @@ RSpec.describe InvoiceMailer do
         .to change { ActionMailer::Base.deliveries.count }.by(1)
     end
 
-    it 'includes child name in body' do
-      expect(mail.html_part.body).to match(child.name)
+    it 'includes child ssid in body' do
+      expect(mail.html_part.body).to match(child.ssid.to_s)
     end
   end
 
   context 'when sending SM updated notification' do
     subject(:mail) { described_class.with(invoice:, user:).sm_updated_notif }
 
-    let(:user) { create(:user, children: [create(:internal_child)]) }
+    let(:user) { create(:user, children: [create(:internal_child, ssid: 1)]) }
 
     it 'sends an email' do
       expect { mail.deliver_now }
         .to change { ActionMailer::Base.deliveries.count }.by(1)
     end
 
-    it 'includes child name in body' do
-      expect(mail.html_part.body).to match(user.children.first.name)
+    it 'includes child ssid in body' do
+      expect(mail.html_part.body).to match(user.children.first.ssid.to_s)
     end
   end
 end

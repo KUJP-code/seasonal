@@ -17,7 +17,10 @@ RSpec.describe Invoice do
   end
 
   let(:event) { create(:event) }
-  let(:child) { build_stubbed(:child, category: :internal, name: 'Child', kindy: true) }
+  let(:child) do
+    build_stubbed(:child, category: :internal, name: 'Child',
+                          kindy: true)
+  end
   let(:slot) { create(:time_slot, name: 'Slot', snack: false, morning: false) }
   let(:event_opt) { create(:event_option, name: 'Event Option', cost: 10, optionable: event) }
   let(:spare_slot_option) do
@@ -30,7 +33,7 @@ RSpec.describe Invoice do
     end
 
     it "contains invoice child's basic information" do
-      expect(invoice.summary).to include_all %w[Child 幼児 通学生]
+      expect(invoice.summary).to include_all %w[幼児 通学生]
     end
 
     it 'includes course heading and count with course name' do

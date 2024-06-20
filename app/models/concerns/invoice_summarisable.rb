@@ -24,7 +24,6 @@ module InvoiceSummarisable
 
   def header
     "<div class='d-flex gap-3 flex-column align-items-start'>\n
-      <h2 class='fw-semibold'>#{child.name}</h2>\n
       <h4 class-'fw-semibold'>#{child.kindy ? '幼児' : '小学生'}</h4>\n
       <h4 class-'fw-semibold'>#{I18n.t("children.child.#{child.category}")}</h4>\n
       <h3 class='fw-semibold'>#{event.name} @ #{event.school.name}</h3>\n

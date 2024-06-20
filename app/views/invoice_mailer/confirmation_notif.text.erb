@@ -1,6 +1,6 @@
 <%= "#{@parent.name}様" %>
 <%= "#{@parent.name}" %>様のお申込が確定されました。お申込内容の変更をご希望の場合はスクールまでお問い合わせください。
 
-<%= strip_tags @invoice.summary %>
-
 お申込内容を確認する: <%= invoice_url(id: @invoice.id) %>
+
+<%= strip_tags @invoice.summary %>
