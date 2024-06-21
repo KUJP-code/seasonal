@@ -6,7 +6,8 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   # Make sure we're in the right language and know who's making changes
-  before_action :check_sm_ip, :switch_locale, :set_paper_trail_whodunnit
+  around_action :switch_locale
+  before_action :check_sm_ip, :set_paper_trail_whodunnit
 
   private
 
@@ -40,10 +41,10 @@ class ApplicationController < ActionController::Base
     allowed_ips.include?(request.ip)
   end
 
-  def switch_locale
+  def switch_locale(&)
     locale = params[:locale] || I18n.default_locale
     locale = :en if current_user&.admin?
-    I18n.locale = locale
+    I18n.with_locale(locale, &)
   end
 
   def user_not_authorized
