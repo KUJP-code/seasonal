@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       resources :charts, only: %i[show index]
       resources :children
       resources :csvs, only: %i[index]
+      resources :document_uploads, only: %i[index]
       resources :events, except: %i[destroy]
       resources :invoices, except: %i[edit]
       resources :inquiries, except: %i[show]
@@ -82,6 +83,9 @@ Rails.application.routes.draw do
 
   # Route to auto-unsubscribe from emails
   resources :mailer_subscription_unsubcribes, only: %i[show update]
+
+  # Allow unauthenticated document_uploads
+  resources :document_uploads, only: %i[new create]
 
   # Defines the root path route ("/")
   authenticated :user do
