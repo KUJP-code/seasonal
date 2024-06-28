@@ -84,8 +84,10 @@ Rails.application.routes.draw do
   # Route to auto-unsubscribe from emails
   resources :mailer_subscription_unsubcribes, only: %i[show update]
 
-  # Allow unauthenticated document_uploads
-  resources :document_uploads, only: %i[new create]
+  scope '(/:locale)', locale: /ja|en/ do
+    # Allow unauthenticated document_uploads
+    resources :document_uploads, only: %i[create new show]
+  end
 
   # Defines the root path route ("/")
   authenticated :user do
