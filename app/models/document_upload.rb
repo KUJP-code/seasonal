@@ -32,7 +32,7 @@ class DocumentUpload < ApplicationRecord
     return true if VALID_CONTENT_TYPES.include?(document.content_type)
 
     document.purge
-    errors.add(:document, 'must be PNG, JPG, JPEG, PDF, DOC, DOCX or HEIC')
+    errors.add(:document, ' must be PNG, JPG, JPEG, PDF, DOC, DOCX or HEIC')
     false
   end
 end

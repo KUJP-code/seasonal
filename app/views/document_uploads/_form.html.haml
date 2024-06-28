@@ -1,0 +1,33 @@
+-# locals: (document_upload:, schools:)
+
+= form_with model: document_upload, class: 'card' do |f|
+  = render 'shared/form_errors', resource: document_upload
+
+  .form-floating
+    = f.text_field :child_name,
+                   autofocus: true,
+                   required: true,
+                   class: 'form-control',
+                   placeholder: t('.child_name')
+    = f.label :child_name, t('.child_name'), class: 'form-label'
+
+  .form-group
+    = f.label :school_id, t('.school')
+    = f.select :school_id, schools, {}, class: 'form-select'
+
+  .form-group
+    = f.label :category, t('.category')
+    = f.select :category,
+               (DocumentUpload.categories.map { |k, _| [t(".#{k}"), k] }),
+               {},
+               class: 'form-select'
+
+  .form-group.d-flex.items-center.flex-column.gap-2
+    = f.label :document, t('.document')
+    = f.file_field :document,
+                   accept: DocumentUpload::VALID_CONTENT_TYPES
+    %small.form-text
+      %p 許可されるファイルタイプ:
+      %p .png, .jpg, .jpeg, .pdf, .doc, .docx, .heic
+
+  = f.submit class: 'btn btn-primary'
