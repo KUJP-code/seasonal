@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_23_030646) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_28_080152) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -88,6 +89,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_030646) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["couponable_type", "couponable_id"], name: "index_coupons_on_couponable"
+  end
+
+  create_table "document_uploads", force: :cascade do |t|
+    t.string "child_name"
+    t.bigint "school_id", null: false
+    t.integer "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_document_uploads_on_school_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -233,10 +243,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_030646) do
   create_table "setsumeikais", force: :cascade do |t|
     t.datetime "start"
     t.integer "attendance_limit"
-    t.integer "inquiries_count", default: 0
     t.bigint "school_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "inquiries_count", default: 0
     t.date "release_date"
     t.datetime "close_at"
     t.index ["school_id"], name: "index_setsumeikais_on_school_id"
@@ -433,6 +443,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_030646) do
   add_foreign_key "adjustments", "invoices"
   add_foreign_key "children", "schools"
   add_foreign_key "children", "users", column: "parent_id"
+  add_foreign_key "document_uploads", "schools"
   add_foreign_key "events", "price_lists", column: "member_prices_id"
   add_foreign_key "events", "price_lists", column: "non_member_prices_id"
   add_foreign_key "events", "schools"
