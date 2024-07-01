@@ -1,6 +1,10 @@
 -# locals: (document_upload:, schools:)
 
 = form_with model: document_upload, class: 'card' do |f|
+  = image_tag 'favicon.svg',
+              height: 100, width: 100,
+              class: 'align-self-center'
+
   = render 'shared/form_errors', resource: document_upload
 
   .form-floating
