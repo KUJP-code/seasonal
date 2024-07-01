@@ -9,11 +9,9 @@ class ApplicationMailer < ActionMailer::Base
   after_action :prevent_delivery_if_recipient_opted_out, if: :should_unsubscribe?
 
   default from: 'bookings@kids-up.app',
-          headers: {
-            'List-Unsubscribe-Post' => 'List-Unsubscribe=One-Click',
-            'List-Unsubscribe' => 'https://kids-up.app/mailer_subscriptions'
-          }
-  layout 'mailer', except: %i[inquiry setsu_inquiry]
+          headers: { 'List-Unsubscribe-Post' => 'List-Unsubscribe=One-Click',
+                     'List-Unsubscribe' => 'https://kids-up.app/mailer_subscriptions' }
+  layout 'mailer', except: %i[inquiry setsu_inquiry sm_notification]
 
   private
 
