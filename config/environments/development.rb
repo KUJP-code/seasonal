@@ -49,6 +49,7 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
+  config.active_storage.current_url_options = { host: 'localhost', port: 3000 }
 
   # Don't care if the mailer can't send.
   config.action_mailer.delivery_method = :test
@@ -60,7 +61,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
   # Use Rspec path for mailer previews
-  config.action_mailer.preview_path = "#{Rails.root}/spec/mailers/previews"
+  config.action_mailer.preview_path = "#{Rails.root.join('spec/mailers/previews')}"
   config.action_mailer.show_previews = true
 
   # Print deprecation notices to the Rails logger.

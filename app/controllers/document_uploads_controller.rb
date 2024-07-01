@@ -5,7 +5,13 @@ class DocumentUploadsController < ApplicationController
 
   def index
     authorize DocumentUpload
-    @document_uploads = policy_scope DocumentUpload
+    @schools = policy_scope(School).order(:id) if current_user.admin? || current_user.area_manager?
+    @school = params[:school] ? School.find(params[:school]) : default_school
+    authorize @school, :show?
+    @document_uploads = policy_scope(DocumentUpload)
+                        .where(school_id: @school.id)
+                        .order(created_at: :desc)
+                        .includes(document_attachment: :blob)
   end
 
   def show; end
@@ -33,5 +39,9 @@ class DocumentUploadsController < ApplicationController
 
   def document_upload_params
     params.require(:document_upload).permit(:category, :child_name, :document, :school_id)
+  end
+
+  def default_school
+    @schools ? @schools.first : current_user.managed_school
   end
 end

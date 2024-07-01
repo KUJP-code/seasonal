@@ -1,16 +1,25 @@
-%table
-  %thead
-    %tr
-      %th Child name
-      %th School
-      %th Category
+%main
+  - if @schools
+    = render 'shared/school_nav',
+             schools: @schools,
+             school: @school,
+             include_all: false,
+             indexed_resource: 'document_uploads'
 
-  %tbody
-    - @document_uploads.each do |document_upload|
-      %tr
-        %td= document_upload.child_name
-        %td= document_upload.school.name
-        %td= document_upload.category
-%br
+  %table.table.table-hover.table-striped.text-center
+    %thead
+      %tr.table-primary
+        %th= t('.child_name')
+        %th= t('.category')
+        %th= t('.file')
 
-= link_to 'New Document upload', new_document_upload_path
+    %tbody
+      - @document_uploads.each do |document_upload|
+        %tr
+          %td= document_upload.child_name
+          %td= t(".#{document_upload.category}")
+          %td
+            = link_to document_upload.document.filename,
+                      url_for(document_upload.document),
+                      target: '_blank',
+                      rel: 'noopener'
