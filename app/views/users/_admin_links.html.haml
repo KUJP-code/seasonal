@@ -3,6 +3,10 @@
 .card.flex-row.flex-wrap.justify-content-between.gap-3
   %h2.w-100 Admin Links
 
+  = link_to 'Document Uploads',
+            document_uploads_path,
+            class: 'btn btn-primary flex-grow-1'
+
   = link_to 'Manage Staff',
             staff_users_path,
             class: 'btn btn-primary flex-grow-1'

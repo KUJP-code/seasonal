@@ -1,0 +1,18 @@
+en:
+  document_uploads:
+    form:
+      category: "Category"
+      child_name: "Name"
+      document: "Document"
+      infection_report: "Infection Report"
+      other: "Other"
+      schedule_change: "Schedule Change"
+      school_letter: "School Letter"
+    index:
+      category: "Category"
+      child_name: "Name"
+      file: "File"
+      infection_report: "Infection Report"
+      other: "Other"
+      schedule_change: "Schedule Change"
+      school_letter: "School Letter"

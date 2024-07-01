@@ -57,6 +57,7 @@ en:
       find_child: "Find Child"
       merge_children: "Merge Children"
     school_manager:
+      document_uploads: "Uploaded Documents"
       greet: "Hello、%{user}さん!"
       managed_schools: "Managed Schools"
     update:

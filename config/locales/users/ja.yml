@@ -28,6 +28,7 @@ ja:
       to_ssid: "マイページID"
     area_manager:
       area_schools: "地域の学校の詳細を編集する"
+      document_uploads: "アップロードされたドキュメントのリスト"
       greet: "Hello、%{user}さん!"
       ext_kids: "非会員生人数"
       external_revenue: "非会員生売り上げ"
@@ -112,6 +113,7 @@ ja:
       ss_kid: "反映する生徒情報"
       to_ssid: "反映する生徒情報のSSID"
     school_manager:
+      document_uploads: "アップロードされたドキュメントのリスト"
       edit_school_info: "学校情報の編集"
       greet: "Hello、%{user} School Manager!"
       manage_inquiries: "問い合わせフォーム確認・編集"
