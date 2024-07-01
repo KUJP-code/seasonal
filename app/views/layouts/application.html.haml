@@ -25,10 +25,7 @@
   %body
     %turbo_frame#flash
       = render 'shared/flash'
-    - if user_signed_in? && controller_name != 'document_uploads'
-      = render 'nav/navbar'
-    - elsif controller_name == 'document_uploads'
-      = render 'document_uploads/nav'
+    = render 'nav/navbar' if user_signed_in?
     %noscript
       %iframe{ src: 'https://www.googletagmanager.com/ns.html?id=GTM-MGWSQLH',
                height: '0', width: '0', style: 'display:none;visibility:hidden' }
