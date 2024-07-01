@@ -1,0 +1,7 @@
+ja:
+  document_upload_mailer:
+    sm_notification:
+      schedule_change: "曜日・週回数・コース変更届"
+      school_letter: "学校・園からのお便りなど"
+      infection_report: "感染症関連"
+      other: "その他"

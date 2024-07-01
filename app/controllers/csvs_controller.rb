@@ -42,7 +42,10 @@ class CsvsController < ApplicationController
       update_schedule(csv)
     end
 
-    redirect_to csvs_path, notice: "#{params[:model] if ALLOWED_MODELS.include?(params[:model])} records updated."
+    redirect_to csvs_path,
+                notice: "#{if ALLOWED_MODELS.include?(params[:model])
+                             params[:model]
+                           end} records updated."
   end
 
   def upload
@@ -58,7 +61,10 @@ class CsvsController < ApplicationController
       row[13] = time
     end
 
-    redirect_to csvs_path, notice: "#{params[:model] if ALLOWED_MODELS.include?(params[:model])} records imported."
+    redirect_to csvs_path,
+                notice: "#{if ALLOWED_MODELS.include?(params[:model])
+                             params[:model]
+                           end} records imported."
   end
 
   private
@@ -124,7 +130,7 @@ class CsvsController < ApplicationController
       if Child.find(child_id)&.regular_schedule.nil?
         Child.find(child_id).create_regular_schedule(row.to_hash)
       else
-        RegularSchedule.find_by(child_id: child_id).update!(row.to_hash)
+        RegularSchedule.find_by(child_id:).update!(row.to_hash)
       end
     end
   end

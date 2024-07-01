@@ -1,0 +1,7 @@
+en:
+  document_upload_mailer:
+    sm_notification:
+      schedule_change: "Schedule Change"
+      school_letter: "School Letter"
+      infection_report: "Infection Report"
+      other: "Other"

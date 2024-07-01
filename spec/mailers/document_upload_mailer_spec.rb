@@ -13,8 +13,10 @@ RSpec.describe DocumentUploadMailer do
   end
 
   it 'includes the category of document uploaded' do
+    rand_category = DocumentUpload.categories.keys.sample
+    document_upload.category = rand_category
     expect(mail.html_part.body)
-      .to match(I18n.t("document_upload_mailer.#{document_upload.category}"))
+      .to match(I18n.t("document_upload_mailer.sm_notification.#{rand_category}"))
   end
 
   it 'includes a link to the index of document uploads' do

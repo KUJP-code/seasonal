@@ -19,6 +19,9 @@ class DocumentUploadsController < ApplicationController
     @document_upload = DocumentUpload.new(document_upload_params)
 
     if @document_upload.save
+      DocumentUploadMailer.with(document_upload: @document_upload)
+                          .sm_notification
+                          .deliver_later
       redirect_to @document_upload, notice: '書類を受け取りました'
     else
       @schools = School.real.order(:id).pluck(:name, :id)
