@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DocumentUploadsController < ApplicationController
-  layout 'unauthenticated'
+  layout 'unauthenticated', except: :index
 
   after_action :verify_authorized, only: %i[index]
 
