@@ -1,25 +1,16 @@
-%h1 Listing document_uploads
-
 %table
   %thead
     %tr
       %th Child name
       %th School
       %th Category
-      %th
-      %th
-      %th
 
   %tbody
     - @document_uploads.each do |document_upload|
       %tr
         %td= document_upload.child_name
-        %td= document_upload.school
+        %td= document_upload.school.name
         %td= document_upload.category
-        %td= link_to 'Show', document_upload
-        %td= link_to 'Edit', edit_document_upload_path(document_upload)
-        %td= link_to 'Destroy', document_upload, method: :delete, data: { confirm: 'Are you sure?' }
-
 %br
 
 = link_to 'New Document upload', new_document_upload_path
