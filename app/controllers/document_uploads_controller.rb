@@ -19,7 +19,7 @@ class DocumentUploadsController < ApplicationController
 
   def new
     @document_upload = DocumentUpload.new
-    @schools = School.real.order(:id).pluck(:name, :id)
+    @schools = School.order(:id).pluck(:name, :id)
   end
 
   def create
@@ -39,7 +39,9 @@ class DocumentUploadsController < ApplicationController
   private
 
   def document_upload_params
-    params.require(:document_upload).permit(:category, :child_name, :document, :school_id)
+    params.require(:document_upload).permit(
+      :category, :child_name, :document, :other_description, :school_id
+    )
   end
 
   def set_school

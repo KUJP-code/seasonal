@@ -1,12 +1,15 @@
 -# locals: (document_upload:, schools:)
 
-= form_with model: document_upload, class: 'card' do |f|
+= form_with model: document_upload,
+            html: { 'data-controller': 'document-uploads',
+                    class: 'card' } do |f|
   = image_tag 'favicon.svg',
               height: 100, width: 100,
               class: 'align-self-center'
 
   = render 'shared/form_errors', resource: document_upload
 
+  %h3 Kids UP 提出書類送信フォーム
   .form-floating
     = f.text_field :child_name,
                    autofocus: true,
@@ -24,7 +27,15 @@
     = f.select :category,
                (DocumentUpload.categories.map { |k, _| [t(".#{k}"), k] }),
                {},
-               class: 'form-select'
+               class: 'form-select',
+               data: { action: 'document-uploads#toggleOtherDescription' }
+
+  .form-floating
+    = f.text_field :other_description,
+                   class: 'form-control',
+                   placeholder: t('.other_description'),
+                   'data-document-uploads-target': 'otherDescription'
+    = f.label :other_description, t('.other_description')
 
   .form-group.d-flex.items-center.flex-column.gap-2
     = f.label :document, t('.document')
@@ -34,4 +45,4 @@
       %p 許可されるファイルタイプ:
       %p .png, .jpg, .jpeg, .pdf, .doc, .docx, .heic
 
-  = f.submit class: 'btn btn-primary'
+  = f.submit '送信する', class: 'btn btn-primary'

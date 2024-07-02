@@ -24,6 +24,9 @@ class DocumentUpload < ApplicationRecord
 
   validates :category, :child_name, :document, presence: true
   validate :valid_document_filetype?
+  with_options if: :other? do
+    validates :other_description, presence: true
+  end
 
   private
 

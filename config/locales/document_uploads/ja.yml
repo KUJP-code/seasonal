@@ -1,13 +1,14 @@
 ja:
   document_uploads:
     form:
-      category: "カテゴリー"
-      child_name: "名前"
-      document: "ドキュメント"
+      category: "提出書類を選択してください。"
+      child_name: "お子様のお名前を入力してください。"
+      document: "提出書類の画像を添付してください。"
       infection_report: "感染症関連"
       other: "その他"
+      other_description: "その他の書類の詳細"
       schedule_change: "曜日・週回数・コース変更届"
-      school: "学校"
+      school: "ご通学中、ご予約されたスクールを選択してください。"
       school_letter: "学校・園からのお便りなど"
     index:
       category: "カテゴリー"

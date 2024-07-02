@@ -17,7 +17,7 @@
       - @document_uploads.each do |document_upload|
         %tr
           %td= document_upload.child_name
-          %td= t(".#{document_upload.category}")
+          %td= category_or_other(document_upload)
           %td
             = link_to document_upload.document.filename,
                       url_for(document_upload.document),
