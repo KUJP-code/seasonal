@@ -11,9 +11,18 @@
             'data-turbo-track': 'reload' }
     = javascript_importmap_tags
     = favicon_link_tag asset_path('favicon.svg')
+    %meta{ property: 'og:image',
+           content: "#{request.base_url}#{image_path('opengraph.svg')}" }
+    %meta{ property: 'og:title',
+           content: "Kids UPシーズナルスクール申込フォーム"}
+    %meta{ property: 'og:description',
+           content: "KidsUPイベント登録サイト"}
     = yield :head
   %body
     %turbo_frame#flash
       = render 'shared/flash'
-    = render 'document_uploads/nav'
+    %nav.navbar.navbar-expand-lg.bg-secondary.sticky-top.px-3
+      = link_to image_tag('white_logo.svg', alt: 'KidsUp Logo', height: '50'),
+                root_path,
+                class: 'navbar-brand'
     = yield
