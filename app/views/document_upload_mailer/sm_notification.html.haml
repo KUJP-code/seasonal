@@ -3,5 +3,11 @@
 %head
   %meta{ content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }
 %body
-  %p 新しい#{t(".#{@document_upload.category}")}文書をアップロードしました。このリンクからご覧ください：
+  %p Kids UP 提出書類送信フォームにデータがアップロードされました。
+  %p
+    - if @document_upload.other?
+      = @document_upload.other_description
+    - else
+      = t(".#{@document_upload.category}")
+  %p ログインしてご確認ください。
   %a{ href: document_uploads_url } アップロードされたドキュメントのリスト
