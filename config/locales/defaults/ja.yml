@@ -9,6 +9,7 @@ ja:
           has_many: "%{record}が存在しているので削除できません"
   am_closed: "午前中：申込受付を終了"
   back: "戻る"
+  confirm: "本当にやりたいのか？"
   date:
     abbr_day_names:
       - 日

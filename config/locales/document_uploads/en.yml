@@ -11,6 +11,7 @@ en:
     index:
       category: "Category"
       child_name: "Name"
+      created_at: "Submission Date"
       file: "File"
       infection_report: "Infection Report"
       other: "Other"

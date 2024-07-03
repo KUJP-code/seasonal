@@ -19,7 +19,7 @@ class DocumentUploadsController < ApplicationController
 
   def new
     @document_upload = DocumentUpload.new
-    @schools = School.order(:id).pluck(:name, :id)
+    @schools = School.order(id: :desc).pluck(:name, :id)
   end
 
   def create
@@ -33,6 +33,18 @@ class DocumentUploadsController < ApplicationController
     else
       @schools = School.real.order(:id).pluck(:name, :id)
       render :new, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @document_upload = DocumentUpload.find(params[:id])
+
+    if @document_upload.destroy
+      redirect_to document_uploads_url(school: @document_upload.school_id),
+                  notice: t('success', model: '書類', action: '削除')
+    else
+      redirect_to document_uploads_url(school: @document_upload.school_id),
+                  alert: t('failure', model: '書類', action: '削除')
     end
   end
 

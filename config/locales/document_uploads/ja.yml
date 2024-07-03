@@ -12,6 +12,7 @@ ja:
       school_letter: "学校・園からのお便りなど"
     index:
       category: "カテゴリー"
+      created_at: "提出日"
       child_name: "名前"
       document: "ドキュメント"
       infection_report: "感染症関連"

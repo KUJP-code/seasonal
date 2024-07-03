@@ -19,7 +19,7 @@ Rails.application.routes.draw do
       resources :charts, only: %i[show index]
       resources :children
       resources :csvs, only: %i[index]
-      resources :document_uploads, only: %i[index]
+      resources :document_uploads, only: %i[destroy index]
       resources :events, except: %i[destroy]
       resources :invoices, except: %i[edit]
       resources :inquiries, except: %i[show]
