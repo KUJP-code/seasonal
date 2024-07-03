@@ -13,9 +13,10 @@ ja:
     index:
       category: "カテゴリー"
       created_at: "提出日"
-      child_name: "名前"
+      child_name: "お子様のお名前"
       document: "ドキュメント"
       infection_report: "感染症関連"
       other: "その他"
       schedule_change: "曜日・週回数・コース変更届"
+      school: "学校"
       school_letter: "学校・園からのお便りなど"

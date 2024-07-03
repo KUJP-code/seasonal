@@ -9,8 +9,9 @@ class DocumentUploadsController < ApplicationController
     authorize DocumentUpload
     @schools = policy_scope(School).order(:id) if current_user.admin? || current_user.area_manager?
     set_school
+    set_categories
     @document_uploads = policy_scope(DocumentUpload)
-                        .where(school_id: @school.id)
+                        .where(school_id: @school.id, category: @category)
                         .order(created_at: :desc)
                         .includes(document_attachment: :blob)
   end
@@ -54,6 +55,11 @@ class DocumentUploadsController < ApplicationController
     params.require(:document_upload).permit(
       :category, :child_name, :document, :other_description, :school_id
     )
+  end
+
+  def set_categories
+    @categories = DocumentUpload.categories.keys
+    @category = params[:category] || @categories.first
   end
 
   def set_school

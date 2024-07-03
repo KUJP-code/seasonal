@@ -10,10 +10,11 @@ en:
       school_letter: "School Letter"
     index:
       category: "Category"
-      child_name: "Name"
+      child_name: "Child Name"
       created_at: "Submission Date"
       file: "File"
       infection_report: "Infection Report"
       other: "Other"
       schedule_change: "Schedule Change"
+      school: "School"
       school_letter: "School Letter"

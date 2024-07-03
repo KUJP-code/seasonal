@@ -1,10 +1,20 @@
 %main
   - if @schools
+    %h2= t('.school')
     = render 'shared/school_nav',
              schools: @schools,
              school: @school,
              include_all: false,
              indexed_resource: 'document_uploads'
+
+  %h2= t('.category')
+  %nav.d-flex.flex-row.flex-wrap.justify-content-center.gap-3
+    - @categories.each do |c|
+      - selected = c == @category
+
+      = link_to t(".#{c}"),
+                document_uploads_path(school: @school.id, category: c),
+                class: "card #{'bg-primary text-white fw-semibold' if selected}"
 
   %table.table.table-hover.table-striped.text-center
     %thead
