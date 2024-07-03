@@ -13,7 +13,7 @@ ja:
     index:
       category: "カテゴリー"
       created_at: "提出日"
-      child_name: "お子様のお名前"
+      child_name: "生徒名"
       document: "ドキュメント"
       infection_report: "感染症関連"
       other: "その他"
