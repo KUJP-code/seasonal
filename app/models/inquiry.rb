@@ -30,20 +30,20 @@ class Inquiry < ApplicationRecord
     school_age = Time.zone.now.year - child_birthday.year
     school_age -= 1 if born_after_school_start?
     school_age -= 1 if before_new_school_year?
-    return "#{real_age}歳" if school_age < 3
+    return "#{calendar_age}歳" if school_age < 3
 
     SCHOOL_AGE_MAP[school_age] || ''
   end
 
   def to_gas_api
     {
-      id: id,
-      category: category,
+      id:,
+      category:,
       created_at: created_at.strftime('%Y-%m-%d'),
       name_child: child_name,
       name: parent_name,
       tel: phone,
-      email: email,
+      email:,
       body: requests || '',
       birth: gas_birth,
       kinder_attend: kindy,
@@ -52,7 +52,7 @@ class Inquiry < ApplicationRecord
       school_name: setsumeikai_school,
       trigger: referrer,
       age: child_grade,
-      event_schedule: event_schedule
+      event_schedule:
     }
   end
 
@@ -67,14 +67,16 @@ class Inquiry < ApplicationRecord
   private
 
   def before_birthday?
-    Time.zone.now.month < child_birthday.month ||
-      (Time.zone.now.month == child_birthday.month &&
+    current_month = Time.zone.today.month
+    current_month < child_birthday.month ||
+      (current_month == child_birthday.month &&
         Time.zone.now.day < child_birthday.day)
   end
 
   def before_new_school_year?
-    Time.zone.today.month < 4 ||
-      (Time.zone.today.month == 4 && Time.zone.today.day < 1)
+    current_month = Time.zone.today.month
+    current_month < 4 ||
+      (current_month == 4 && Time.zone.today.day < 1)
   end
 
   def born_after_school_start?
@@ -85,10 +87,8 @@ class Inquiry < ApplicationRecord
   def event_schedule
     return { date: '', time: '' } unless setsumeikai
 
-    {
-      date: setsumeikai.start.strftime('%Y-%m-%d'),
-      time: setsumeikai.start.strftime('%H:%M')
-    }
+    { date: setsumeikai.start.strftime('%Y-%m-%d'),
+      time: setsumeikai.start.strftime('%H:%M') }
   end
 
   def gas_birth
@@ -97,7 +97,7 @@ class Inquiry < ApplicationRecord
     child_birthday.strftime('%Y-%m-%d')
   end
 
-  def real_age
+  def calendar_age
     age = Time.zone.now.year - child_birthday.year
     age -= 1 if before_birthday?
     age

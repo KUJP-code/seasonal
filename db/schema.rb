@@ -12,6 +12,7 @@
 
 ActiveRecord::Schema[7.1].define(version: 2024_07_02_063152) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -243,10 +244,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_02_063152) do
   create_table "setsumeikais", force: :cascade do |t|
     t.datetime "start"
     t.integer "attendance_limit"
-    t.integer "inquiries_count", default: 0
     t.bigint "school_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "inquiries_count", default: 0
     t.date "release_date"
     t.datetime "close_at"
     t.index ["school_id"], name: "index_setsumeikais_on_school_id"
