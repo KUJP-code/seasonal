@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.2.8-docupload-tweaks"
+    "Name": "thatbballguy/event_site:2.2.9-parent-emails"
   },
   "Ports": [
     {
