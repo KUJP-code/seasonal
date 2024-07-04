@@ -1,0 +1,66 @@
+- models = [%w[Activities TimeSlot], %w[Children Child],
+            ['Regular Schedules', 'RegularSchedule'], %w[Bookings Invoice],
+            %w[Users User]]
+
+%main.w-100.d-grid#csvs_index
+  .row.gap-5
+    .card.col
+      %h1 Import
+      %p Faster, only if all records are new
+      = form_with url: upload_csv_path,
+                  html: { class: 'd-grid gap-3 p-5' } do |f|
+        .fields
+          = f.label :model, class: 'form-label'
+          = f.select :model, models, {}, class: 'form-select'
+
+        .field
+          = f.label :csv, class: 'form-label'
+          = f.file_field :csv, class: 'form-control', required: true
+
+        = f.submit 'Import Records', class: 'btn btn-primary'
+
+    .card.col
+      %h1 Update
+      %p Slower, only if records need to be updated
+      = form_with url: update_csv_path,
+                  html: { class: 'd-grid gap-3 p-5' } do |f|
+        .fields
+          = f.label :model, class: 'form-label'
+          = f.select :model,
+                     [%w[Children Child],
+                      ['Regular Schedules', 'RegularSchedule'],
+                      %w[Setsumeikais Setsumeikai]],
+                     {},
+                     class: 'form-select'
+
+        .field
+          = f.label :csv, class: 'form-label'
+          = f.file_field :csv, class: 'form-control', required: true
+
+        = f.submit 'Update Records', class: 'btn btn-primary'
+
+    .row.gap-5
+      .card.d-grid.gap-3.p-5.col
+        %h1= t('.export')
+        - models.each do |model|
+          - if model[0] == 'Bookings'
+            - @events.each do |e|
+              = link_to "#{e} Bookings",
+                        download_csv_path(model: model[1], event: e),
+                        class: 'btn btn-primary',
+                        data: { turbolinks: false }
+          - else
+            = link_to model[0],
+                      download_csv_path(model: model[1]),
+                      class: 'btn btn-primary',
+                      data: { turbolinks: false }
+
+      .card.col.justify-content-center.align-items-center
+        = link_to 'Upload Assets', new_upload_path, class: 'btn btn-primary'
+
+        %h1 Download signed-up parent emails
+        - @events.each do |e|
+          = link_to e,
+                    download_emails_path(event: e),
+                    class: 'btn btn-primary',
+                    data: { turbolinks: false }

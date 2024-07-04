@@ -9,6 +9,10 @@ class CsvPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def emails?
+    user.admin?
+  end
+
   def update?
     user.admin?
   end

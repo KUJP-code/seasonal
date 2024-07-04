@@ -5,6 +5,7 @@ class CsvsController < ApplicationController
 
   def index
     authorize(:csv)
+    @events = Event.group(:name).pluck(:name)
   end
 
   def download
@@ -26,6 +27,19 @@ class CsvsController < ApplicationController
         end
       end
     end
+
+    send_file path, type: 'text/csv', disposition: 'attachment'
+  end
+
+  def emails
+    authorize(:csv)
+    event_ids = Event.where(name: params[:event]).ids
+    emails = Child.includes(:invoices,
+                            :parent).where(invoices: { event_id: event_ids }).pluck('users.email')
+    time = Time.zone.now.strftime('%Y%m%d%H%M')
+    path = "/tmp/#{params[:event].downcase.tr(' ', '_')}emails#{time}.csv"
+
+    generate_email_csv(path, emails)
 
     send_file path, type: 'text/csv', disposition: 'attachment'
   end
@@ -69,15 +83,6 @@ class CsvsController < ApplicationController
 
   private
 
-  # Find the child from provided SSID and set their child_id/
-  # remove ssid from the hash
-  def get_child_id(row)
-    child_id = Child.find_by(ssid: row['ssid']).id
-    row['child_id'] = child_id
-    row.delete('ssid')
-    child_id
-  end
-
   # Some SS data is missing required fields, so we need to set default values
   def defaults(row)
     row['name'] = 'なし' if row['name'].nil?
@@ -86,6 +91,24 @@ class CsvsController < ApplicationController
     row['birthday'] = 'なし' if row['birthday'].nil?
     row['allergies'] = 'Unknown' if row['allergies'].nil?
     row['photos'] = 'NG' if row['photos'].nil?
+  end
+
+  def generate_email_csv(path, emails)
+    CSV.open(path, 'wb') do |csv|
+      csv << ['email']
+      emails.each do |email|
+        csv << [email]
+      end
+    end
+  end
+
+  # Find the child from provided SSID and set their child_id/
+  # remove ssid from the hash
+  def get_child_id(row)
+    child_id = Child.find_by(ssid: row['ssid']).id
+    row['child_id'] = child_id
+    row.delete('ssid')
+    child_id
   end
 
   # The CSV method doesn't accept int values for enums, so we need to
