@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.2.7.3-og-unignored"
+    "Name": "thatbballguy/event_site:2.2.8-docupload-tweaks"
   },
   "Ports": [
     {
