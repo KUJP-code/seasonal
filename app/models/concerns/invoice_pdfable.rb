@@ -111,7 +111,7 @@ module InvoicePdfable
 
     # Total Cost
     pdf.grid([1, 0], [1, 9]).bounding_box do
-      pdf.pad(2.mm) { pdf.text("#{child.parent.name}様 御中", size: 20, color: '000000') }
+      pdf.pad(2.mm) { pdf.text("#{child.parent.name}様", size: 20, color: '000000') }
     end
     pdf.grid([2, 0], [2, 9]).bounding_box do
       pdf.stroke_bounds
