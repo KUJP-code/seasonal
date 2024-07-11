@@ -1,3 +1,12 @@
+= content_for :title do
+  %title Kids UP 提出書類送信フォーム
+
+= content_for :opengraph do
+  %meta{ property: 'og:title',
+         content: "Kids UP 提出書類送信フォーム"}
+  %meta{ property: 'og:description',
+         content: "Kids UP 提出書類送信フォーム"}
+
 %main.flex.items-center.justify-center
   = render 'document_uploads/form',
            document_upload: @document_upload,
