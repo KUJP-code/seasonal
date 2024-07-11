@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.2.9-parent-emails"
+    "Name": "thatbballguy/event_site:2.2.10-invoice-translation"
   },
   "Ports": [
     {
