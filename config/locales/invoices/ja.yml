@@ -9,6 +9,7 @@ ja:
       email_will_send: "「お申込」を押すとお申込み内容がスクールに送信されます。"
       in_ss: "他のお申込"
       not_done: "(今の時点ではまだお申込が完了しておりません。)"
+      please_make_selection: "アクティビティが選択されていません。画面を一度閉じるか、戻るボタンを押してください。"
     deleted:
       cost: "合計"
       deleted_bookings: "消去したお申込"

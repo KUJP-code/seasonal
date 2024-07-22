@@ -1,14 +1,20 @@
 <main id="invoice_confirm">
-    <% if @invoice %>
-        <turbo-frame id=<%= "child#{@invoice.child_id}invoice#{@invoice.id}" %>
-                     class="modal fade" tabindex="-1">
-            <div class="modal-dialog modal-fullscreen d-grid">
-                <div class="modal-content d-grid gap-2">
-                    <div class="modal-header">
-                        <h5 class="modal-title"></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex flex-column justify-content-start align-items-center gap-3">
+      <turbo-frame id=<%= "child#{@invoice.child_id}invoice#{@invoice.id}" %>
+                   class="modal fade" tabindex="-1">
+          <div class="modal-dialog modal-fullscreen d-grid">
+              <div class="modal-content d-grid gap-2">
+                  <div class="modal-header">
+                      <h5 class="modal-title"></h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body d-flex flex-column justify-content-start align-items-center gap-3">
+                    <% if @invoice.total_cost.zero? || @invoice.slot_regs.empty? %>
+                      <div class="h-100 d-flex flex-column justify-content-center align-items-center">
+                        <h1 class="text-lg text-bg-danger p-3 rounded text-center">
+                          <%= t('.please_make_selection') %>
+                        </h1>
+                      </div>
+                    <% elsif @invoice %>
                         <h1 class="text-center"><%= t('.email_will_send') %></h1>
                         <h4 class="w-75 text-center bg-warning rounded p-3 shadow"><%= t('.not_done') %></h4>
                         <%= render @invoice, index: false %>
@@ -72,14 +78,14 @@
                             <h1><%= t('.confirmed') %></h1>
                             <%= render partial: 'invoices/invoice', collection: @ss_invoices, locals: { index: false } %>
                         <% end %>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t('.close') %></button>
-                    </div>
-                </div>
-            </div>
-        </turbo-frame>
-    <% else %>
-        <h1><%= t('.already_confirmed') %></h1>
-    <% end %>
+                  <% else %>
+                      <h1><%= t('.already_confirmed') %></h1>
+                  <% end %>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t('.close') %></button>
+                  </div>
+              </div>
+          </div>
+      </turbo-frame>
 </main>
