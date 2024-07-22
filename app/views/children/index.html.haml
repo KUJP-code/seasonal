@@ -2,8 +2,6 @@
 - unsearchable = %w[allergies category hat parent]
 
 %main#children-index
-  = link_to t('.create_child'), new_child_path, class: 'btn btn-primary'
-
   = render 'shared/search',
            fields: columns.reject { |col| unsearchable.include?(col) },
            resource: 'children'
