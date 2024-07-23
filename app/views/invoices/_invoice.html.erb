@@ -45,8 +45,6 @@
                         <%= f.submit t('.confirm_no_email'), class: 'btn btn-primary' %>
                     <% end %>
 
-                    <%= link_to t('.delete'), invoice_path(invoice), data: { turbo_method: :delete, turbo_confirm: t('.you_sure') }, class: 'btn btn-danger' %>
-
                     <% unless Invoice.where(child_id: invoice.child_id, event_id: invoice.event_id).excluding(invoice).empty? %>
                         <%= form_with url: merge_invoices_path, html: { class: 'd-flex align-items-center gap-3' } do |f| %>
                             <%= f.hidden_field :merge_from, value: invoice.id %>
@@ -58,6 +56,9 @@
                             %>
                         <% end %>
                     <% end %>
+
+                    <%= link_to t('.delete'), invoice_path(invoice), data: { turbo_method: :delete, turbo_confirm: t('.you_sure') }, class: 'btn btn-danger' %>
+
                 <% end %>
             <% end %>
         </div>

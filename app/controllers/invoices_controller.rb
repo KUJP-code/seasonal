@@ -141,7 +141,7 @@ class InvoicesController < ApplicationController
 
   def child_index_data
     @child = authorize Child.find(params[:child]), :show?
-    @invoices = @child.real_invoices.distinct.order(updated_at: :desc)
+    @invoices = @child.invoices.distinct.order(updated_at: :desc)
     @events = @child.events.includes(
       :school,
       image_attachment: %i[blob],

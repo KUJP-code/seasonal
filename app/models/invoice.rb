@@ -44,7 +44,7 @@ class Invoice < ApplicationRecord
   acts_as_copy_target
 
   # Scopes
-  # Only invoices with at least one time slot registered
+  # Only invoices with at least one time slot/option registered
   scope :real, -> { where('registrations_count > 0') }
 
   # Validations

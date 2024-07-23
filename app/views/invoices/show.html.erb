@@ -78,7 +78,6 @@
                     <% unless Invoice.where(child_id: @invoice.child_id, event_id: @invoice.event_id).excluding(@invoice).empty? %>
                         <%= form_with url: merge_invoices_path, html: { class: 'd-flex align-items-center gap-3' } do |f| %>
                             <%= f.hidden_field :merge_from, value: @invoice.id %>
-                            <%# Give the option to merge  %>
                             <div class="field">
                                 <%= f.collection_select :merge_to, Invoice.where(child_id: @invoice.child_id, event_id: @invoice.event_id).excluding(@invoice), :id, :id_and_cost %>
                             </div>
