@@ -20,7 +20,8 @@ module InvoicePdfable
     pdf = Prawn::Document.new
     pdf.font_families.update(
       'NotoSans' => {
-        normal: Rails.root.join('app/assets/fonts/NotoSansJP-Medium.ttf')
+        normal: { file: Rails.root.join('app/assets/fonts/NotoSansJP-Medium.ttf'),
+                  subset: false }
       }
     )
     pdf.font('NotoSans')

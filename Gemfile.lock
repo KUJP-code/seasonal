@@ -510,7 +510,7 @@ DEPENDENCIES
   pg (~> 1.1)
   pghero
   postgres-copy
-  prawn
+  prawn (~> 2.5.0)
   puma (~> 6.4.2)
   pundit (= 2.3.1)
   pundit-matchers (~> 3.1)

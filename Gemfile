@@ -78,7 +78,7 @@ gem 'chartkick'
 gem 'groupdate'
 
 # Use prawn for PDF invoices
-gem 'prawn'
+gem 'prawn', '~> 2.5.0'
 
 # And oj to serialize it quickly
 gem 'oj'
