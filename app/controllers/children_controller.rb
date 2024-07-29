@@ -109,7 +109,7 @@ class ChildrenController < ApplicationController
 
   def child_show_events
     @child.school
-          .events.upcoming
+          .events.upcoming.where(released: true)
           .includes(:avif_attachment, :image_attachment)
           .reorder(start_date: :desc)
           .map(&:with_sibling_events)
