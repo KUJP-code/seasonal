@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_29_061818) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_29_081118) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -112,6 +112,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_29_061818) do
     t.bigint "member_prices_id"
     t.bigint "non_member_prices_id"
     t.boolean "released", default: true
+    t.date "early_bird_date", default: "2024-07-28"
+    t.integer "early_bird_discount", default: 0
     t.index ["member_prices_id"], name: "index_events_on_member_prices_id"
     t.index ["non_member_prices_id"], name: "index_events_on_non_member_prices_id"
     t.index ["school_id"], name: "index_events_on_school_id"

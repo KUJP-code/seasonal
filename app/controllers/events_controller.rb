@@ -3,6 +3,7 @@
 class EventsController < ApplicationController
   include BlobGroupable
 
+  before_action :set_form_data, only: %i[new edit create update]
   after_action :verify_authorized
   after_action :verify_policy_scoped, only: :index
 
@@ -35,12 +36,10 @@ class EventsController < ApplicationController
 
   def new
     @event = authorize Event.new
-    form_info
   end
 
   def edit
     @event = authorize Event.find(params[:id])
-    form_info
   end
 
   def create
@@ -127,8 +126,8 @@ class EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(
-      :name, :start_date, :image_id, :end_date, :school_id, :released,
-      :member_prices_id, :goal, :non_member_prices_id, :avif_id,
+      :name, :start_date, :image_id, :end_date, :school_id, :released, :early_bird_date,
+      :member_prices_id, :goal, :non_member_prices_id, :avif_id, :early_bird_discount,
       time_slots_attributes:
         %i[id name start_time end_time category event_id morning snack avif_id close_at
            morning_slot_id image_id int_modifier ext_modifier kindy_modifier ele_modifier _destroy],
@@ -138,7 +137,7 @@ class EventsController < ApplicationController
     )
   end
 
-  def form_info
+  def set_form_data
     @images = blobs_by_folder('events')
     @prices = PriceList.order(:name)
     @schools = [%w[All all]] + School.order(:id).map { |school| [school.name, school.id] }
