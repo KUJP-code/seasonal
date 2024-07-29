@@ -61,6 +61,10 @@
                             :name, {},
                             { class: 'form-select' }
 
+    %div
+      = f.label :released, class: 'form-check-label'
+      = f.check_box :released, class: 'form-check-input'
+
     .d-grid.gap-3
       %h3 Event Option Fields
 
