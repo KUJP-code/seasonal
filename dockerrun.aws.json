@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.3.0-party-changes"
+    "Name": "thatbballguy/event_site:2.3.0.1-wrong-param"
   },
   "Ports": [
     {
