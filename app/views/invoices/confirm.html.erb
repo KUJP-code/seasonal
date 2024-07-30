@@ -8,7 +8,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body d-flex flex-column justify-content-start align-items-center gap-3">
-                    <% if @invoice.total_cost.zero? || @invoice.slot_regs.empty? %>
+                    <% if @invoice.slot_regs.empty? %>
                       <div class="h-100 d-flex flex-column justify-content-center align-items-center">
                         <h1 class="text-lg text-bg-danger p-3 rounded text-center">
                           <%= t('.please_make_selection') %>

@@ -5,6 +5,7 @@ module AdjustmentCalculator
 
   def calc_adjustments(num_regs)
     first_time_adjustment if first_time?(num_regs)
+    early_bird_adjustment if Time.zone.today < event.early_bird_date
     hat_adjustment if needs_hat?
     repeater_discount if repeater?(num_regs)
     adjustments.reduce(0) { |sum, adj| sum + adj.change }
@@ -17,9 +18,7 @@ module AdjustmentCalculator
   def first_time_adjustment
     change = 1_100
     reason = '初回登録料(初めてシーズナルスクールに参加する非会員の方)'
-    return if applied_to_invoice?(change, reason) || child_has_adjustment?(change, reason)
-
-    adjustments.new(change:, reason:)
+    apply_if_not_applied(change, reason)
   end
 
   def applied_to_invoice?(change, reason)
@@ -28,6 +27,12 @@ module AdjustmentCalculator
 
   def child_has_adjustment?(change, reason)
     child.adjustments.any? { |adj| adj.change == change && adj.reason == reason }
+  end
+
+  def early_bird_adjustment
+    change = event.early_bird_discount
+    reason = '早割'
+    apply_if_not_applied_to_event(change, reason)
   end
 
   def needs_hat?
@@ -39,9 +44,7 @@ module AdjustmentCalculator
   def hat_adjustment
     change = 1_100
     reason = '帽子代(野外アクティビティに参加される方でKids UP帽子をお持ちでない方のみ)'
-    return if applied_to_invoice?(change, reason) || child_has_adjustment?(change, reason)
-
-    adjustments.new(change:, reason:)
+    apply_if_not_applied(change, reason)
   end
 
   def repeater?(num_regs)
@@ -51,16 +54,26 @@ module AdjustmentCalculator
   def repeater_discount
     change = -10_000
     reason = '非会員リピーター割引(以前シーズナルスクールに参加された非会員の方)'
-    return if applied_to_invoice?(change, reason) || repeater_applied_this_event?(change, reason)
+    apply_if_not_applied_to_event(change, reason)
+  end
+
+  def apply_if_not_applied(change, reason)
+    return if applied_to_invoice?(change, reason) || child_has_adjustment?(change, reason)
 
     adjustments.new(change:, reason:)
   end
 
-  def repeater_applied_this_event?(change, reason)
-    repeater_adjustments = child.invoices
-                                .where(event_id:)
-                                .where.not(id:)
-                                .map(&:adjustments).flatten
-    repeater_adjustments.any? { |a| a.change == change && a.reason == reason }
+  def apply_if_not_applied_to_event(change, reason)
+    return if applied_to_invoice?(change, reason) || applied_this_event?(change, reason)
+
+    adjustments.new(change:, reason:)
+  end
+
+  def applied_this_event?(change, reason)
+    event_adjustments = child.invoices
+                             .where(event_id:)
+                             .where.not(id:)
+                             .map(&:adjustments).flatten
+    event_adjustments.any? { |a| a.change == change && a.reason == reason }
   end
 end

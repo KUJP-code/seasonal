@@ -347,3 +347,24 @@ School.where.not(name: 'Test').each do |school|
 
   TimeSlot.create!(time_slot_attrs.map { |attrs| attrs.merge(event_id: event.id) })
 end
+
+puts 'Creating Party event'
+
+PriceList.create!(
+  name: 'Free Demo Event', course1: '0', course3: '0', course5: '0',
+  course10: '0', course15: '0', course20: '0', course25: '0',
+  course30: '0', course35: '0', course40: '0', course45: '0',
+  course50: '0'
+)
+
+School.where.not(name: 'Test').each do |school|
+  event = school.events.create!(
+    name: 'Test Party', start_date: 2.months.from_now, end_date: 2.months.from_now,
+    member_prices_id: 3, non_member_prices_id: 3, goal: 10
+  )
+
+  4.times do |i|
+    event.time_slots.create!(name: "Party #{i}", start_time: 2.months.from_now, morning: true,
+                             end_time: 2.months.from_now + 2.hours, close_at: 2.months.from_now)
+  end
+end

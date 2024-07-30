@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class TimeSlot < ApplicationRecord
-  after_create :create_default_opts, :create_aft_slot
+  after_create :create_default_opts, :create_aft_slot,
+               unless: proc { |ts| ts.party? }
 
   attr_accessor :apply_all
 
@@ -37,10 +38,12 @@ class TimeSlot < ApplicationRecord
   validates :name, :start_time, :end_time, presence: true
   validates_comparison_of :end_time, greater_than: :start_time
 
-  enum :category, seasonal: 0,
-                  special: 1,
-                  party: 2,
-                  outdoor: 3
+  enum :category, {
+    seasonal: 0,
+    special: 1,
+    party: 2,
+    outdoor: 3
+  }
 
   scope :morning, -> { where(morning: true) }
   scope :afternoon, -> { where(morning: false) }

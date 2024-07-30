@@ -33,8 +33,9 @@ class Event < ApplicationRecord
 
   paginates_per 40
 
-  validates :name, :start_date, :end_date, presence: true
+  validates :name, :start_date, :end_date, :early_bird_date, presence: true
 
+  validates_comparison_of :early_bird_discount, less_than_or_equal_to: 0
   validates_comparison_of :end_date, greater_than_or_equal_to: :start_date
 
   # Scopes

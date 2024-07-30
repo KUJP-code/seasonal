@@ -132,7 +132,7 @@ class UsersController < ApplicationController
     return if @children.empty?
 
     @events = @children.first
-                       .school.events
+                       .school.events.where(released: true)
                        .upcoming.reorder(start_date: :desc)
                        .map(&:with_sibling_events)
   end

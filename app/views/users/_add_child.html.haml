@@ -70,9 +70,10 @@
 
       = f.submit t('.find_child'), class: 'btn btn-primary'
 
-    %hr
+    - if current_user.customer?
+      %hr
 
-    .add_new_child
-      = link_to t('.add_new_child'),
-                new_child_path(parent: user.id),
-                class: 'btn btn-primary'
+      .add_new_child
+        = link_to t('.add_new_child'),
+                  new_child_path(parent: user.id),
+                  class: 'btn btn-primary'
