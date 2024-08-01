@@ -52,7 +52,8 @@ class CsvsController < ApplicationController
     invoices = Invoice.where(event_id: event_ids)
                       .includes(:options, child: :parent)
                       .reject { |i| i.options.any? { |opt| photo_opt_ids.include?(opt.id) } }
-    emails = invoices.map { |i| i.child.parent.email }.uniq
+    # TODO: name/format this properly
+    emails = invoices.map { |i| [i.child.parent.email, i.child.school_id, i.event_id] }.uniq
     time = Time.zone.now.strftime('%Y%m%d%H%M')
     path = "/tmp/#{params[:event].downcase.tr(' ', '_')}emails#{time}.csv"
 
