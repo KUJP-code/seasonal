@@ -10,8 +10,10 @@ RSpec.describe Invoice do
     let(:slot_option) { create(:slot_option, cost: 10) }
 
     it 'calculates cost with option on time slot' do
-      invoice.slot_regs << build(:slot_reg, registerable: slot_option.optionable)
-      invoice.opt_regs << build(:slot_opt_reg, registerable: slot_option)
+      invoice.slot_regs =
+        [create(:slot_reg, registerable: slot_option.optionable, invoice:)]
+      invoice.opt_regs =
+        [create(:slot_opt_reg, registerable: slot_option, invoice:)]
       invoice.calc_cost
       expect(invoice.total_cost).to eq(11)
     end
@@ -24,8 +26,10 @@ RSpec.describe Invoice do
 
     it 'destroys orphan options' do
       child = create(:child)
-      invoice.slot_regs << build(:slot_reg, registerable: slot_option.optionable, child:)
-      invoice.opt_regs << build(:slot_opt_reg, registerable: slot_option, child:)
+      invoice.slot_regs <<
+        build(:slot_reg, registerable: slot_option.optionable, child:)
+      invoice.opt_regs <<
+        build(:slot_opt_reg, registerable: slot_option, child:)
       invoice.calc_cost && invoice.save
       invoice.update(slot_regs: [])
       expect(invoice.reload.opt_regs.count).to eq(0)
@@ -42,17 +46,19 @@ RSpec.describe Invoice do
       expect(invoice.total_cost).to eq(11)
     end
 
-    it 'does not calculate cost for event options when no activity registrations' do
+    it 'calculates cost for event options when no activity registrations' do
       invoice.opt_regs << build(:event_opt_reg, registerable: event_option)
       invoice.calc_cost
-      expect(invoice.total_cost).to eq(0)
+      expect(invoice.total_cost).to eq(10)
     end
 
     it 'does not charge for event option sibling is registered for' do
-      parent = build(:user, children: create_list(:child, 2))
-      create(:event_opt_reg, registerable: event_option, child: parent.children.first)
+      parent = build(:user)
+      children = create_list(:child, 2, parent:)
+      create(:event_opt_reg, registerable: event_option, child: children.first)
+      invoice.child = children.last
       invoice.opt_regs << build(:event_opt_reg, registerable: event_option,
-                                                child: parent.children.last)
+                                                child: children.last)
       invoice.calc_cost
       expect(invoice.total_cost).to eq(0)
     end

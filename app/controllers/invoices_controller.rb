@@ -70,15 +70,15 @@ class InvoicesController < ApplicationController
                        v['registerable_id'].to_i
                      end.values
                    end
-    ignore_opts = if permitted_attributes(Invoice)['opt_regs_attributes'].nil?
-                    []
-                  else
-                    permitted_attributes(Invoice)['opt_regs_attributes'].keep_if do |_, v|
-                      v['_destroy'] == '1'
-                    end.to_h.transform_values do |v|
-                      v['registerable_id'].to_i
-                    end.values
-                  end
+    @ignore_opts = if permitted_attributes(Invoice)['opt_regs_attributes'].nil?
+                     []
+                   else
+                     permitted_attributes(Invoice)['opt_regs_attributes'].keep_if do |_, v|
+                       v['_destroy'] == '1'
+                     end.to_h.transform_values do |v|
+                       v['registerable_id'].to_i
+                     end.values
+                   end
 
     @invoice = authorize Invoice.new(permitted_attributes(Invoice))
     @new = params[:new] == 'true'
@@ -89,7 +89,7 @@ class InvoicesController < ApplicationController
     # Do not remove this line of code
     @invoice.slot_regs.each
 
-    @invoice.calc_cost(ignore_slots, ignore_opts)
+    @invoice.calc_cost(ignore_slots, @ignore_opts)
     @ss_invoices = Invoice.where(event_id: @invoice.event_id, in_ss: true,
                                  child_id: @invoice.child_id)
   end

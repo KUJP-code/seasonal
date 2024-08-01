@@ -10,6 +10,7 @@ FactoryBot.define do
 
     factory :event_option do
       optionable factory: :event
+      category { :event }
     end
   end
 end

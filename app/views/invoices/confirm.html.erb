@@ -1,3 +1,7 @@
+<% event_option = @invoice.event.options.first.id %>
+<% opt_ids = @invoice.opt_regs.map(&:registerable_id) - @ignore_opts %>
+
+
 <main id="invoice_confirm">
       <turbo-frame id=<%= "child#{@invoice.child_id}invoice#{@invoice.id}" %>
                    class="modal fade" tabindex="-1">
@@ -8,7 +12,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body d-flex flex-column justify-content-start align-items-center gap-3">
-                    <% if @invoice.slot_regs.empty? %>
+                    <% if @invoice.slot_regs.empty? && opt_ids.none?(event_option) %>
                       <div class="h-100 d-flex flex-column justify-content-center align-items-center">
                         <h1 class="text-lg text-bg-danger p-3 rounded text-center">
                           <%= t('.please_make_selection') %>
