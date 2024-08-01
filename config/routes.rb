@@ -44,6 +44,8 @@ Rails.application.routes.draw do
       post 'csv/update', to: 'csvs#update', as: :update_csv
       get 'csv/download', to: 'csvs#download', as: :download_csv
       get 'csv/emails/:event', to: 'csvs#emails', as: :download_emails
+      get 'csv/no_photo_emails/:event', to: 'csvs#no_photo_emails',
+                                        as: :download_no_photo_emails
 
       # Non-REST routes for Events controller
       get 'event/diff_school', to: 'events#show', as: :diff_school_path

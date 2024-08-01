@@ -34,8 +34,25 @@ class CsvsController < ApplicationController
   def emails
     authorize(:csv)
     event_ids = Event.where(name: params[:event]).ids
-    emails = Child.includes(:invoices,
-                            :parent).where(invoices: { event_id: event_ids }).pluck('users.email')
+    emails = Child.includes(:invoices, :parent)
+                  .where(invoices: { event_id: event_ids })
+                  .pluck('users.email')
+    time = Time.zone.now.strftime('%Y%m%d%H%M')
+    path = "/tmp/#{params[:event].downcase.tr(' ', '_')}emails#{time}.csv"
+
+    generate_email_csv(path, emails)
+
+    send_file path, type: 'text/csv', disposition: 'attachment'
+  end
+
+  def no_photo_emails
+    authorize(:csv)
+    event_ids = Event.where(name: params[:event]).ids
+    photo_opt_ids = Option.where(category: :event, optionable_id: event_ids).ids
+    invoices = Invoice.where(event_id: event_ids)
+                      .includes(:options, child: :parent)
+                      .reject { |i| i.options.any? { |opt| photo_opt_ids.include?(opt.id) } }
+    emails = invoices.map { |i| i.child.parent.email }.uniq
     time = Time.zone.now.strftime('%Y%m%d%H%M')
     path = "/tmp/#{params[:event].downcase.tr(' ', '_')}emails#{time}.csv"
 

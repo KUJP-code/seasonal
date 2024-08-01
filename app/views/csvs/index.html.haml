@@ -64,3 +64,10 @@
                     download_emails_path(event: e),
                     class: 'btn btn-primary',
                     data: { turbolinks: false }
+
+        %h1 Download no-photo parent emails
+        - @events.each do |e|
+          = link_to e,
+                    download_no_photo_emails_path(event: e),
+                    class: 'btn btn-primary',
+                    data: { turbolinks: false }
