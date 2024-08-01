@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.3.1-photoless-parents"
+    "Name": "thatbballguy/event_site:2.3.1.1-add-schoolevent"
   },
   "Ports": [
     {
