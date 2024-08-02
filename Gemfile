@@ -110,8 +110,8 @@ gem 'csv', '~> 3.3'
 # Get docker build to work
 gem 'matrix'
 
-# Lock rexml to avoid CVE-2024-35176
-gem 'rexml', '3.2.8'
+# Lock rexml to avoid CVE-2024-39908
+gem 'rexml', '>= 3.3.3'
 
 # Use SolidQueue and MissionControlJobs for background jobs
 gem 'mission_control-jobs', '~> 0.2'
