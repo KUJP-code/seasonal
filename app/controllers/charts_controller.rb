@@ -7,13 +7,13 @@ class ChartsController < ApplicationController
   def index
     authorize(:chart)
     @nav = nav_data('index')
-    send("#{@nav[:category]}_data")
+    send(:"#{@nav[:category]}_data")
   end
 
   def show
     authorize(:chart)
     @nav = nav_data('show')
-    send("#{@nav[:category]}_data")
+    send(:"#{@nav[:category]}_data")
   end
 
   private
@@ -29,13 +29,17 @@ class ChartsController < ApplicationController
   end
 
   def activities_all_data
-    event_ids = Event.where(name: @nav[:event], school_id: School.real.ids).ids
+    @events = Event.where(name: @nav[:event],
+                          school_id: School.real.select(:id))
+                   .includes(:school)
 
-    @slots = TimeSlot.where(event_id: event_ids)
+    @slots = TimeSlot.where(event_id: @events.ids)
     @activities = @slots.morning.or(@slots.special)
                         .group(:name).sum(:registrations_count)
     @afternoons = @slots.afternoon.where.not(category: :special)
                         .group(:name).sum(:registrations_count)
+    @date_attendance = @slots.group_by_day(:start_time).group(:event_id)
+                             .sum(:registrations_count)
   end
 
   def activities_school_data(school)
@@ -58,7 +62,8 @@ class ChartsController < ApplicationController
   end
 
   def bookings_all_data
-    events = Event.where(name: @nav[:event], school_id: School.real.ids)
+    events = Event.where(name: @nav[:event],
+                         school_id: School.real.select(:id))
                   .includes(:school)
 
     @invoices = Invoice.real.where(event_id: events.ids)
@@ -87,7 +92,8 @@ class ChartsController < ApplicationController
   end
 
   def children_all_data
-    @event_ids = Event.where(name: @nav[:event], school_id: School.real.ids).ids
+    @event_ids = Event.where(name: @nav[:event],
+                             school_id: School.real.select(:id)).ids
     @children = children_all(@event_ids)
   end
 
@@ -109,7 +115,8 @@ class ChartsController < ApplicationController
     school = @nav[:school]
 
     event_ids = if school.id.zero?
-                  Event.where(name: @nav[:event], school_id: School.real.ids).ids
+                  Event.where(name: @nav[:event],
+                              school_id: School.real.select(:id)).ids
                 else
                   school.events.find_by(name: @nav[:event]).id
                 end
@@ -168,7 +175,12 @@ class ChartsController < ApplicationController
 
   def nav_area(action)
     if action == 'index'
-      params[:area_id].to_i.zero? ? Area.new(id: 0, name: 'All Areas') : authorize(Area.find(params[:area_id]))
+      if params[:area_id].to_i.zero?
+        Area.new(id: 0,
+                 name: 'All Areas')
+      else
+        authorize(Area.find(params[:area_id]))
+      end
     else
       Area.new(id: 0, name: 'All Areas')
     end
@@ -207,7 +219,7 @@ class ChartsController < ApplicationController
   def optionable_ids_all
     event_ids = Event.where(
       name: @nav[:event],
-      school_id: School.real.ids
+      school_id: School.real.select(:id)
     ).ids
     TimeSlot.where(event_id: event_ids).ids + event_ids
   end
@@ -283,8 +295,7 @@ class ChartsController < ApplicationController
 
   def set_daily_inquiries
     @daily_inquiries = @inquiries
-                       .where('created_at >= ? AND created_at <= ?',
-                              @month, @month.end_of_month)
+                       .where(created_at: @month..@month.end_of_month)
                        .group(:school_id)
                        .group_by_day(:created_at)
                        .count
@@ -292,7 +303,7 @@ class ChartsController < ApplicationController
 
   def set_monthly_setsu
     setsu = @setsumeikais
-            .where('start >= ? AND start <= ?', @month, @month.end_of_month)
+            .where(start: @month..@month.end_of_month)
             .group(:school_id)
             .order(school_id: :asc)
     setsu_count = setsu.count
