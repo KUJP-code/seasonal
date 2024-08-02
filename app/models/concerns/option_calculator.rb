@@ -27,7 +27,7 @@ module OptionCalculator
     return false if event.options.ids.include?(opt_reg['registerable_id'].to_i)
     return true if slot_regs.empty?
 
-    option = opt_reg.registerable
+    option = Option.find(opt_reg['registerable_id'])
     # If for special day extension, only delete if neither registered
     if option.extension? || option.k_extension?
       return slot_regs.none? do |r|
