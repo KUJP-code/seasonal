@@ -9,8 +9,6 @@
   morn_aft = { 'Morning' => @activities.reduce(0) { |sum, a| sum + a[1] },
                'Afternoon' => @afternoons.reduce(0) { |sum, a| sum + a[1] } }
 
-  dates = @date_attendance.keys.map(&:first).uniq
-
 = column_chart @activities.sort_by { |_k, v| v }.reverse,
                title: t('.popularity'),
                height: '80vh'
@@ -30,16 +28,19 @@
   = pie_chart by_category, title: t('.category_popularity'),
                            height: '50vh'
 
-%table.table.table-striped.table-hover.align-self-start
-  %thead.table-primary
-    %tr
-      %th
-      - dates.each do |date|
-        %th= date.strftime('%m/%d')
-  %tbody
-    - @events.each do |event|
+- if @school.id.zero?
+  - dates = @date_attendance.keys.map(&:first).uniq
+
+  %table.table.table-striped.table-hover.align-self-start
+    %thead.table-primary
       %tr
-        %th= t("schools.#{event.school.name}")
+        %th
         - dates.each do |date|
-          %td.text-end
-            = @date_attendance[[date, event.id]]
+          %th= date.strftime('%m/%d')
+    %tbody
+      - @events.each do |event|
+        %tr
+          %th= t("schools.#{event.school.name}")
+          - dates.each do |date|
+            %td.text-end
+              = @date_attendance[[date, event.id]]

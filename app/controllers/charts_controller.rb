@@ -19,12 +19,12 @@ class ChartsController < ApplicationController
   private
 
   def activities_data
-    school = @nav[:school]
+    @school = @nav[:school]
 
-    if school.id.zero?
+    if @school.id.zero?
       activities_all_data
     else
-      activities_school_data(school)
+      activities_school_data(@school)
     end
   end
 
