@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.3.2-daniel-table"
+    "Name": "thatbballguy/event_site:2.3.2.1-sm-notable"
   },
   "Ports": [
     {
