@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.3.2.1-sm-notable"
+    "Name": "thatbballguy/event_site:2.3.2.2-nodelete-opts"
   },
   "Ports": [
     {
