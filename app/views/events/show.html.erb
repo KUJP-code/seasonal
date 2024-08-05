@@ -61,10 +61,11 @@
                     data-register-cost-value=<%= opt.cost %>>
                     <h4>
                       <label for=<%="eopt#{opt.id}"%> data-register-target="name">
-                        <%= "#{opt.name} (#{number_to_currency(opt.cost, unit: '円', precision: 0, locale: :ja)})" %>
+                        <%= image_tag 'photo_service.gif', height: '50px' %>
+                        <%= number_to_currency(opt.cost, unit: '円', precision: 0, locale: :ja) %>
                       </label>
                     </h4>
-                    <%= check_box_tag "eopt#{opt.id}", "eopt#{opt.id}", (true if opt_registered), class: 'form-check-input', data: { action: 'register#toggle', 'register-target': 'button' } %>
+                    <%= check_box_tag "eopt#{opt.id}", "eopt#{opt.id}", (true if opt_registered), data: { action: 'register#toggle', 'register-target': 'button' } %>
                 </div>
             <% end %>
         <% end %>
