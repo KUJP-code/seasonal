@@ -201,7 +201,7 @@
                                     <%= opt_f.hidden_field :child_id %>
                                     <%= opt_f.hidden_field :registerable_id %>
                                     <%= opt_f.hidden_field :registerable_type %>
-                                    <div class="opt_cost hidden registered" data-price-target="optCost"><%= @options.find { |opt| opt.id == opt_f.object.registerable_id }.cost %></div>
+                                    <div class="opt_cost hidden registered" data-price-target="optCost"><%= @options.find { |opt| opt.id == opt_f.object.registerable_id }&.cost || 0 %></div>
                                 </div>
                             <% end %>
                             <% unless f.object.in_ss %>

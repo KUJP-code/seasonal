@@ -1,6 +1,5 @@
-<% event_option = @invoice.event.options.first.id %>
+<% event_option = @invoice.event.options&.first&.id %>
 <% opt_ids = @invoice.opt_regs.map(&:registerable_id) - @ignore_opts %>
-
 
 <main id="invoice_confirm">
       <turbo-frame id=<%= "child#{@invoice.child_id}invoice#{@invoice.id}" %>

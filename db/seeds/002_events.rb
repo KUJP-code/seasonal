@@ -344,6 +344,8 @@ School.where.not(name: 'Test').each do |school|
     name: 'Summer School', start_date: 1.month.from_now, end_date: 2.months.from_now,
     member_prices_id: 1, non_member_prices_id: 2, goal: 2_000_000, avif: event_image
   )
+  Option.create!(name: 'Photo Service', category: :event,
+                 optionable: event, cost: 1_100)
 
   TimeSlot.create!(time_slot_attrs.map { |attrs| attrs.merge(event_id: event.id) })
 end

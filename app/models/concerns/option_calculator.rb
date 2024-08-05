@@ -15,7 +15,6 @@ module OptionCalculator
         child.siblings.any? { |s| s.options.include?(opt) }
     end
     duplicated.each do |opt|
-      @data[:options].delete(opt)
       opt_regs.find_by(registerable_id: opt.id)&.destroy
     end
     duplicated

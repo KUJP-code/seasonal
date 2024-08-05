@@ -7,7 +7,7 @@ class Option < ApplicationRecord
   delegate :area, to: :school
 
   has_many :registrations, as: :registerable,
-                           dependent: :destroy
+                           dependent: :restrict_with_error
   has_many :children, through: :registrations
   has_many :coupons, as: :couponable,
                      dependent: :destroy
