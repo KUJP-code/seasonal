@@ -1,0 +1,27 @@
+%main.container-fluid#login
+  .row
+    .col-12.col-lg-8#login_splash
+
+    .col-12.col-lg-4.d-flex.flex-column.justify-content-center.p-3.text-center#new_user
+      .mb-5#login_logo
+
+      .d-flex.flex-column.justify-content-end.gap-3
+        .d-flex.flex-column.gap-2
+          = link_to '申込サイトの使い方はこちら',
+                    Rails.root.join('/instructions.pdf').to_s,
+                    target: :blank, class: 'fw-bold link-underline-primary'
+          %p.form-text はじめてご利用の方は、初回にアカウント登録が必要です。
+
+          = link_to new_user_registration_path, class: 'btn btn-primary' do
+            %span.flex-grow-1.ms-3= t('.sign_up')
+            = image_tag 'arrow-right.svg', class: 'img-fluid'
+
+        %hr
+
+        .d-flex.flex-column.justify-content-start.gap-3
+          .d-flex.flex-column
+            %p.form-text 既にアカウントをお持ちの方は、こちらより
+            %p.form-text ログインしてください
+          = link_to new_user_session_path, class: 'btn btn-grey d-flex' do
+            %span.flex-grow-1.ms-3= t('.log_in')
+            = image_tag 'arrow-right.svg', class: 'img-fluid'
