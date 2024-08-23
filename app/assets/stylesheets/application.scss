@@ -20,7 +20,7 @@ $info: #9cc1d8;
 /* Custom bootstrap variables must be set or imported *before* bootstrap. */
 @import "bootstrap";
 
-details summary>* {
+details summary > * {
   display: inline;
 }
 
@@ -44,7 +44,6 @@ details summary>* {
 }
 
 @media print {
-
   .links,
   .counter,
   .nav_bar {
@@ -195,8 +194,8 @@ input[type="text"]:disabled {
   padding-left: 0;
 }
 
-#event_children_index>h1,
-#event_children_index>h2 {
+#event_children_index > h1,
+#event_children_index > h2 {
   align-self: center;
 }
 
@@ -271,11 +270,11 @@ input[type="text"]:disabled {
   justify-content: flex-start;
 }
 
-#slot_attendance>h1 {
+#slot_attendance > h1 {
   align-self: center;
 }
 
-#slot_attendance>h2 {
+#slot_attendance > h2 {
   align-self: center;
 }
 
@@ -310,7 +309,8 @@ input[type="text"]:disabled {
 
 #login .btn-primary:hover img,
 #sign-up .btn-primary:hover img {
-  filter: invert(46%) sepia(51%) saturate(1917%) hue-rotate(8deg) brightness(103%) contrast(103%);
+  filter: invert(46%) sepia(51%) saturate(1917%) hue-rotate(8deg)
+    brightness(103%) contrast(103%);
 }
 
 #login .btn-primary:active img,
@@ -330,11 +330,15 @@ input[type="text"]:disabled {
 
 #login_splash {
   background-image: image-url("login_splash.jpg");
-  background-image: -webkit-image-set(url("login_splash.avif") type("image/avif"),
-      url("login_splash.jpg") type("image/jpeg"));
-  background-image: image-set(url("login_splash.avif") type("image/avif"),
-      url("login_splash.jpg") type("image/jpeg"));
-  background-position: center;
+  background-image: -webkit-image-set(
+    url("login_splash.avif") type("image/avif"),
+    url("login_splash.jpg") type("image/jpeg")
+  );
+  background-image: image-set(
+    url("login_splash.avif") type("image/avif"),
+    url("login_splash.jpg") type("image/jpeg")
+  );
+  background-position: top center;
   background-size: cover;
   background-repeat: no-repeat;
   height: 60%;
@@ -342,10 +346,14 @@ input[type="text"]:disabled {
 
   @media (min-width: 992px) {
     background-image: image-url("sm_login_splash.png");
-    background-image: -webkit-image-set(url("sm_login_splash.avif") type("image/avif"),
-        url("sm_login_splash.png") type("image/png"));
-    background-image: image-set(url("sm_login_splash.avif") type("image/avif"),
-        url("sm_login_splash.png") type("image/png"));
+    background-image: -webkit-image-set(
+      url("sm_login_splash.avif") type("image/avif"),
+      url("sm_login_splash.png") type("image/png")
+    );
+    background-image: image-set(
+      url("sm_login_splash.avif") type("image/avif"),
+      url("sm_login_splash.png") type("image/png")
+    );
     background-position: center;
     border-radius: 2rem 0 0 2rem;
     height: 90vh;
@@ -466,7 +474,7 @@ main#event-index nav {
 
 // Forms
 
-form>.errors {
+form > .errors {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
@@ -555,7 +563,7 @@ form .input-group-text {
   gap: 0.5vw;
 }
 
-#user-show .daily-attendance>.card {
+#user-show .daily-attendance > .card {
   width: 100%;
 
   @media (min-width: 992px) {
