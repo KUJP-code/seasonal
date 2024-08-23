@@ -1,11 +1,11 @@
 %main.container-fluid#login
   .row
-    .col-12.col-lg-8#login_splash
+    .col-12.col-lg-8#login-splash
 
     = form_for resource, as: resource_name,
                          url: session_path(resource_name),
                          html: { class: 'col-12 col-lg-4 d-flex flex-column justify-content-center gap-3 p-3' } do |f|
-      #login_logo
+      #login-logo
 
       %h2.mt-1= t('.login')
       .form-floating
