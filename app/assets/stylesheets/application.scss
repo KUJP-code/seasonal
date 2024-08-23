@@ -300,6 +300,10 @@ input[type="text"]:disabled {
   padding-top: 0;
   padding-bottom: 0;
   margin: 0;
+
+  @media (max-width: 992px) {
+    background-color: #7e4795;
+  }
 }
 
 #login .btn-primary img,
@@ -329,32 +333,35 @@ input[type="text"]:disabled {
 }
 
 #login_splash {
+  // background-image: image-url("login_splash.jpg");
+  // background-image: -webkit-image-set(
+  //   url("login_splash.avif") type("image/avif"),
+  //   url("login_splash.jpg") type("image/jpeg")
+  // );
+  // background-image: image-set(
+  //   url("login_splash.avif") type("image/avif"),
+  //   url("login_splash.jpg") type("image/jpeg")
+  // );
   background-image: image-url("login_splash.jpg");
-  background-image: -webkit-image-set(
-    url("login_splash.avif") type("image/avif"),
-    url("login_splash.jpg") type("image/jpeg")
-  );
-  background-image: image-set(
-    url("login_splash.avif") type("image/avif"),
-    url("login_splash.jpg") type("image/jpeg")
-  );
   background-position: top center;
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
   height: 60%;
   margin-bottom: -50%;
 
   @media (min-width: 992px) {
-    background-image: image-url("sm_login_splash.png");
-    background-image: -webkit-image-set(
-      url("sm_login_splash.avif") type("image/avif"),
-      url("sm_login_splash.png") type("image/png")
-    );
-    background-image: image-set(
-      url("sm_login_splash.avif") type("image/avif"),
-      url("sm_login_splash.png") type("image/png")
-    );
-    background-position: center;
+    // background-image: image-url("sm_login_splash.png");
+    // background-image: -webkit-image-set(
+    //   url("sm_login_splash.avif") type("image/avif"),
+    //   url("sm_login_splash.png") type("image/png")
+    // );
+    // background-image: image-set(
+    //   url("sm_login_splash.avif") type("image/avif"),
+    //   url("sm_login_splash.png") type("image/png")
+    // );
+    background-image: image-url("sm_login_splash.jpg");
+    background-position: top center;
+    background-size: cover;
     border-radius: 2rem 0 0 2rem;
     height: 90vh;
   }
@@ -396,6 +403,14 @@ input[type="text"]:disabled {
 
   @media (min-width: 992px) {
     width: 10%;
+  }
+}
+
+#login #new_user {
+  @media (max-width: 992px) {
+    position: absolute;
+    bottom: 0;
+    height: 60vh;
   }
 }
 
