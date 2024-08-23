@@ -5,6 +5,6 @@ FactoryBot.define do
     child_name { 'Lil Tommy' }
     school
     category { :schedule_change }
-    document { Rails.root.join('app/assets/images/sm_login_splash.png').open }
+    document { Rails.root.join('app/assets/images/login_splash.jpg').open }
   end
 end
