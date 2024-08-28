@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.3.4-halloween-banners"
+    "Name": "thatbballguy/event_site:2.3.5-multi-earlybird"
   },
   "Ports": [
     {
