@@ -10,6 +10,11 @@ en:
     area_manager:
       greet: "Hello、%{user}さん!"
       managed_areas: "Managed Areas"
+    badge_invoices:
+      badge_kids: "Students who should receive a badge"
+      kana_name: "Katakana Name"
+      name: "Name"
+      num_regs: "Number of Registrations"
     child_fields:
       external: "External"
       internal: "Internal"

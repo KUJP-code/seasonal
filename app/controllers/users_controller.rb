@@ -187,10 +187,15 @@ class UsersController < ApplicationController
 
   def school_manager_data(user)
     @school = user.managed_school
-    @upcoming_events = @school&.upcoming_events&.includes(
+    return unless @school
+
+    @upcoming_events = @school.upcoming_events.includes(
       :children, :invoices, :time_slots
     )
     sm_upcoming_events_data(@upcoming_events.ids, user) if @upcoming_events
+    @badge_invoices = Invoice.where(event_id: @upcoming_events.ids)
+                             .includes(:child, :slot_regs)
+                             .select { |i| i.slot_regs.size >= 5 }
   end
 
   def sm_deleted_invoices(user, event_ids)

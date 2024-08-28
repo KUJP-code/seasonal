@@ -1,0 +1,16 @@
+-# locals: (badge_invoices:)
+
+.card
+  %h3.w-100= t('.badge_kids')
+  %table.table.table-hover.table-striped
+    %thead
+      %tr.table-primary
+        %th= t('.name')
+        %th= t('.kana_name')
+        %th= t('.num_regs')
+    %tbody
+      - badge_invoices.sort_by { |i| i.slot_regs.size }.reverse_each do |i|
+        %tr
+          %td= link_to i.child.name, child_path(i.child)
+          %td= link_to i.child.katakana_name, child_path(i.child)
+          %td= link_to i.slot_regs.size, invoice_path(i)

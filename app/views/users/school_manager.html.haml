@@ -29,6 +29,9 @@
       = render('events/event_stats', event:)
       = render('events/daily_attendance', event:)
 
+    = render 'users/badge_invoices',
+             badge_invoices: @badge_invoices
+
     - unless @deleted_invoices.empty?
       = render 'invoices/deleted',
                deleted_invoices: @deleted_invoices

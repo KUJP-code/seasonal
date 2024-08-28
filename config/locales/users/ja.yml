@@ -45,6 +45,11 @@ ja:
       surveys: "顧客調査"
       total_kids: "合計人数"
       total_revenue: "合計売上"
+    badge_invoices:
+      badge_kids: "バッジ配布対象生徒"
+      kana_name: "名前(カタカナ)"
+      name: "名前"
+      num_regs: "参加アクティビティ数"
     contact_fields:
       address: "ご住所"
       postcode: "郵便番号"
