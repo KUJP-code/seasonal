@@ -211,20 +211,21 @@ RSpec.describe Invoice do
       expect(early_adj).to be_present
     end
 
-    it 'does not apply if applied to other invoice for same event' do
-      event.update(early_bird_date: 7.days.from_now)
-      create(:invoice, child: valid_early_invoice.child, event:, adjustments:
-               [create(:adjustment, change:, reason:)])
-      valid_early_invoice.calc_cost
-      expect(find_adjustment(valid_early_invoice)).to be_nil
-    end
-
     it 'applies if applied to invoice for other event' do
       event.update(early_bird_date: 7.days.from_now)
       create(:invoice, child: valid_early_invoice.child, event: create(:event), adjustments:
                [create(:adjustment, change:, reason:)])
       valid_early_invoice.calc_cost
       expect(find_adjustment(valid_early_invoice)).to be_present
+    end
+
+    it 'applies once for each party attended' do
+      event.update(early_bird_date: 7.days.from_now)
+      valid_early_invoice.slot_regs += [build(:slot_reg, child: valid_early_invoice.child,
+                                                         registerable: create(:time_slot))]
+      valid_early_invoice.calc_cost
+      early_bird_count = valid_early_invoice.adjustments.count { |adj| adj.reason == '早割' }
+      expect(early_bird_count).to eq(2)
     end
   end
 end

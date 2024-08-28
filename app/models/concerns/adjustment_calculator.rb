@@ -5,7 +5,7 @@ module AdjustmentCalculator
 
   def calc_adjustments(num_regs)
     first_time_adjustment if first_time?(num_regs)
-    early_bird_adjustment if Time.zone.today < event.early_bird_date
+    early_bird_adjustment(num_regs) if Time.zone.today < event.early_bird_date
     hat_adjustment if needs_hat?
     repeater_discount if repeater?(num_regs)
     adjustments.reduce(0) { |sum, adj| sum + adj.change }
@@ -18,7 +18,7 @@ module AdjustmentCalculator
   def first_time_adjustment
     change = 1_100
     reason = '初回登録料(初めてシーズナルスクールに参加する非会員の方)'
-    apply_if_not_applied(change, reason)
+    apply_if_never_applied(change, reason)
   end
 
   def applied_to_invoice?(change, reason)
@@ -29,10 +29,15 @@ module AdjustmentCalculator
     child.adjustments.any? { |adj| adj.change == change && adj.reason == reason }
   end
 
-  def early_bird_adjustment
+  def early_bird_adjustment(num_regs)
     change = event.early_bird_discount
     reason = '早割'
-    apply_if_not_applied_to_event(change, reason)
+
+    early_bird_count = adjustments.count { |adj| adj.reason == reason }
+    while early_bird_count < num_regs
+      adjustments.new(change:, reason:)
+      early_bird_count += 1
+    end
   end
 
   def needs_hat?
@@ -44,7 +49,7 @@ module AdjustmentCalculator
   def hat_adjustment
     change = 1_100
     reason = '帽子代(野外アクティビティに参加される方でKids UP帽子をお持ちでない方のみ)'
-    apply_if_not_applied(change, reason)
+    apply_if_never_applied(change, reason)
   end
 
   def repeater?(num_regs)
@@ -57,7 +62,7 @@ module AdjustmentCalculator
     apply_if_not_applied_to_event(change, reason)
   end
 
-  def apply_if_not_applied(change, reason)
+  def apply_if_never_applied(change, reason)
     return if applied_to_invoice?(change, reason) || child_has_adjustment?(change, reason)
 
     adjustments.new(change:, reason:)
