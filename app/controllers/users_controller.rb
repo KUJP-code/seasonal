@@ -118,14 +118,6 @@ class UsersController < ApplicationController
     @managers = user.area_school_managers
   end
 
-  def copy_invoices(from, to)
-    if to.invoices.empty?
-      move_invoices(from, to)
-    else
-      merge_invoices(from, to)
-    end
-  end
-
   def customer_data(user)
     @children = user.children.includes(:school)
     @invoices = user.real_invoices
@@ -161,34 +153,8 @@ class UsersController < ApplicationController
     to.update(parent_id: from.parent_id, first_seasonal: from.first_seasonal)
     to.update(school_id: from.school_id) if to.school_id.nil?
     to.survey_responses << from.survey_responses
-    copy_invoices(from, to)
+    move_invoices(from, to)
     from.update(parent_id: nil)
-  end
-
-  def merge_invoices(from, to)
-    from_regs = from.invoices.map(&:registrations).flatten
-    to_regs = to.invoices.map(&:registrations).flatten
-    to_active_invoice = to.invoices.where(in_ss: false).order(created_at: :desc).first ||
-                        to.invoices.create(event_id: from.invoices.first.event_id)
-
-    from_regs.each do |reg|
-      # Skip if already registered
-      next if already_registered?(to_regs, reg)
-
-      # Check the created and SS child are same level, adjust options if not
-      registerable_id = if reg.registerable_type == 'Option' && from.kindy != to.kindy
-                          find_equivalent_id(reg.registerable)
-                        else
-                          reg.registerable_id
-                        end
-
-      # Else associate reg with to child and their open invoice
-      reg.update(child_id: to.id, invoice_id: to_active_invoice.id,
-                 registerable_id:)
-    end
-
-    # Update the newly merged invoice
-    to_active_invoice.reload && to_active_invoice.save
   end
 
   def move_invoices(from, to)
