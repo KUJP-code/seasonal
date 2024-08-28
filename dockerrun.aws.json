@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.3.5-multi-earlybird"
+    "Name": "thatbballguy/event_site:2.3.6-nomerge-copy"
   },
   "Ports": [
     {
