@@ -1,5 +1,6 @@
 -# locals: (adjustments:, child:, price_list:)
 
+
 .d-flex.w-100.justify-content-center.align-items-center.flex-shrink-1.gap-3
   %table.table.table-sm.table-info.table-striped.table-hover.text-center
     %caption.caption-top.text-center
@@ -10,12 +11,19 @@
         %th= t('.course')
         %th= t('.price')
     %tbody
-      - price_list.courses.each do |course, price|
-        - next if price.blank?
-
+      - if price_list.courses['1'] == 3_500
+        -# FIXME: Temp workaround for parties to only show first course
+          even though we need the 3 course just in case of multi-reg
         %tr
-          %td= course
-          %td= number_to_currency(price)
+          %td 1
+          %td= number_to_currency(3_500)
+      - else
+        - price_list.courses.each do |course, price|
+          - next if price.blank?
+
+          %tr
+            %td= course
+            %td= number_to_currency(price)
 
 - unless adjustments.empty?
   %table.table.table-info.table-striped.table-hover.text-center
