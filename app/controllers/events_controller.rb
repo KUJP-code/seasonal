@@ -163,7 +163,19 @@ class EventsController < ApplicationController
 
     return unless @all_invoices.empty? || @all_invoices.all?(&:in_ss)
 
-    temp_invoice = Invoice.new(child: @child, event: @event, total_cost: 0)
-    @all_invoices.push(temp_invoice)
+    @all_invoices << build_temp_invoice(@child, @event)
+  end
+
+  def build_temp_invoice(child, event)
+    temp_invoice = Invoice.new(child:, event:, total_cost: 0)
+
+    # We add it here so the JS can take it into account
+    if event.early_bird_discount.negative? &&
+       Time.zone.today < event.early_bird_date
+      temp_invoice.adjustments.build(change: event.early_bird_discount,
+                                     reason: '早割')
+    end
+
+    temp_invoice
   end
 end

@@ -54,8 +54,9 @@ export default class extends Controller {
 		// Inner text set in the invoice controller if the time slot has a snack fee
 		const snackCost = Number.parseInt(this.snackCountTarget.innerText) * 165;
 
-		const finalCost =
+		let finalCost =
 			optionCost + courseCost + adjustmentCost + snackCost + extraCost;
+		if (finalCost < 0) finalCost = 0;
 		this.finalCostTarget.innerHTML = `合計（税込）: ${finalCost}円`;
 		this.eventCostTarget.innerHTML = `サマースクール 2023の合計: ${(
 			this.otherCostValue + finalCost
