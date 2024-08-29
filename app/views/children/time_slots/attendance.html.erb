@@ -10,7 +10,7 @@
 
 <% options = @options.reject { |o| (time_ids + ext_ids).include?(o.id) } %>
 
-<% columns = %w[arrival attend name 幼児/小学生 allergy photo] %>
+<% columns = %w[arrival attend name level allergy photo] %>
 
 <main id="slot_attendance" class="align-items-start">
     <div class="slot_attendance mb-5"
@@ -106,23 +106,23 @@
                 <tr class="search">
                     <% columns.each do |col| %>
                         <%= render partial: 'shared/filter_header',
-                                locals: { column: col, siblings: '0' } %>
+                          locals: { col_class: ".#{col}", siblings: '0' } %>
                     <% end %>
 
                     <% @event_options.each do |o| %>
                         <%= render partial: 'shared/filter_header',
-                                    locals: { column: o.name, siblings: '0' } %>
+                                    locals: { col_class: o.name, siblings: '0' } %>
                     <% end %>
 
                     <% options.each do |o| %>
                         <%= render partial: 'shared/filter_header',
-                                    locals: { column: o.name, siblings: '0' } %>
+                                    locals: { col_class: o.name, siblings: '0' } %>
                     <% end %>
 
                     <% if @slot.special? && extensions.size.positive? %>
                         <%= render partial: 'shared/filter_header',
                                    locals: {
-                                       column: 'extend',
+                                       col_class: 'extend',
                                        siblings: '0'
                                    } %>
                     <% end %>
@@ -130,21 +130,21 @@
                     <% if @afternoon %>
                         <%= render partial: 'shared/filter_header',
                                    locals: {
-                                       column: 'afternoon',
+                                       col_class: 'afternoon',
                                        siblings: '0'
                                    } %>
 
                         <% @afternoon_options.each do |o| %>
                             <%= render partial: 'shared/filter_header',
                                        locals: {
-                                           column: o.name,
+                                           col_class: o.name,
                                            siblings: '0'
                                        } %>
                         <% end %>
 
                         <%= render partial: 'shared/filter_header',
                                    locals: {
-                                       column: 'depart',
+                                       col_class: 'depart',
                                        siblings: '0'
                                    } %>
                     <% end %>

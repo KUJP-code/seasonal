@@ -188,78 +188,78 @@ input[type="text"]:disabled {
 
 // Child#event_attendance
 
-#event_children_index {
+#event-children-index {
   justify-content: flex-start;
   align-items: flex-start;
   padding-left: 0;
 }
 
-#event_children_index > h1,
-#event_children_index > h2 {
+#event-children-index > h1,
+#event-children-index > h2 {
   align-self: center;
 }
 
-#event_children_index table thead {
+#event-children-index table thead {
   height: 88px;
 }
 
-#event_children_index .order-header {
+#event-children-index .order-header {
   position: sticky;
   left: 0px;
   min-width: 30px;
 }
 
-#event_children_index .name-header {
+#event-children-index .name-header {
   position: sticky;
   left: 30px;
   min-width: 150px;
 }
 
-#event_children_index .en-name-header {
+#event-children-index .en-name-header {
   position: sticky;
   left: 180px;
   min-width: 150px;
 }
 
-#event_children_index .ssid-header {
+#event-children-index .ssid-header {
   position: sticky;
   left: 330px;
   min-width: 110px;
 }
 
-#event_children_index .photos-header {
+#event-children-index .photos-header {
   min-width: 75px;
 }
 
-#event_children_index .not-entered {
+#event-children-index .not-entered {
   background: #dc3545;
   width: 30px;
   height: 30px;
 }
 
-#event_children_index .not-entered:hover {
+#event-children-index .not-entered:hover {
   background: #e15f6c;
   transform: scale(110%);
 }
 
-#event_children_index .entered {
+#event-children-index .entered {
   background: #198754;
   width: 30px;
   height: 30px;
 }
 
-#event_children_index .entered:hover {
+#event-children-index .entered:hover {
   background: #3ea072;
   transform: scale(110%);
 }
 
-#event_children_index .cant-enter {
+#event-children-index .cant-enter {
   background: #bfbfbf;
   width: 30px;
   height: 30px;
 }
 
-#event_children_index .small-entered {
+#event-children-index .small-entered {
   width: 16px;
   height: 16px;
 }

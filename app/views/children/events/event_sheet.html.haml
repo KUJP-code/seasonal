@@ -1,0 +1,52 @@
+%main#event-children-index{ data: { controller: 'refresh' } }
+  = render 'children/events/event_slots_dropdown', slots: @slots
+
+  %h1 #{@source.name} at #{t("schools.#{@source.school.name}")}
+  %h2.counter
+    %span{ 'data-refresh-target': 'counter' } 10:00
+    %span にページが更新される。
+
+  %table.table.table-sm.table-light.table-striped.table-hover.table-bordered.text-center.text-nowrap.align-middle
+    %thead.sticky-top
+      %tr.table-primary
+        %th.order-header{ scope: 'col' }
+        %th.name-header{ scope: 'col' } Name (日本語)
+        %th.en-name-header{ scope: 'col' } Name (英語)
+        %th.ssid-header{ scope: 'col' } SSID
+        %th{ scope: 'col' } 担当校舎
+        %th{ scope: 'col' }= t('.invoices')
+        %th{ scope: 'col' }= t('.cost')
+        %th{ scope: 'col' }= t('.summary')
+        %th{ scope: 'col' }= t('.changes')
+        %th{ scope: 'col' } SS登録済
+        %th{ scope: 'col' }= t('.email_sent')
+        %th{ scope: 'col' }= t('.coupons')
+        %th{ scope: 'col' }
+          %p 幼児
+          %p 小学生
+        %th{ scope: 'col' }
+          %p 通学生
+          %p 予約生
+          %p 非会員
+        %th{ scope: 'col' }= t('.reg_days')
+        %th{ scope: 'col' }= t('.allergy')
+        %th{ scope: 'col' }= t('.photo')
+
+    %tbody
+      %tr
+        %td
+
+        - %w[.name .en-name .ssid .diff_school .invoices .cost].each do |col_class|
+          = render 'shared/filter_header', col_class:, siblings: '1'
+
+        %td
+        %td
+        %td
+        %td
+
+        - %w[.coupons .kindy .membership .regular_schedule .allergies .photos].each do |col_class|
+          = render 'shared/filter_header', col_class:, siblings: '1'
+
+      = render partial: 'children/events/event_child',
+               collection: @children,
+               locals: { event: @source, slots: @slots }
