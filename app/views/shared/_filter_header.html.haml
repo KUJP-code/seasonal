@@ -1,0 +1,12 @@
+-# locals: (col_class:, siblings:)
+
+%th{ data: { controller: 'filter', 'filter-siblings-value': siblings,
+             'filter-col-value': col_class } }
+  .form-floating
+    = text_field_tag "#{col_class}_filter",
+                     nil,
+                     { placeholder: t('.filter'),
+                       class: 'form-control',
+                       data: { action: 'keydown.enter->filter#change',
+                               'filter-target': 'input' } }
+    = label_tag "#{col_class}_filter", t('.filter'), class: 'form-label'
