@@ -9,6 +9,9 @@ en:
       register: "Register"
       summaries_for: "Summaries for %{child}"
       templates_for: "Templates for %{child}"
+    events:
+      event_slots_dropdown:
+        daily_attendance: "Event Activities Attendance"
     form:
       external: "External"
       internal: "Internal"

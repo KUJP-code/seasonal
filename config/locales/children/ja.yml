@@ -31,7 +31,6 @@ ja:
         changes: "変更"
         cost: "合計金額"
         coupons: "福利厚生クーポン"
-        daily_attendance: "アテンダントシート"
         email_sent: "確定メール送信"
         filter: "フィルター"
         invoices: "お申込リスト"
@@ -39,6 +38,8 @@ ja:
         reg_days: "通学日"
         ssid: "マイページID"
         summary: "詳細"
+      event_slots_dropdown:
+        daily_attendance: "アテンダントシート"
     form:
       allergies: "アレルギーがない場合は「なし」と入力してください。"
       birthday: "誕生日"

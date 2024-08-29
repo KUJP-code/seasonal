@@ -1,17 +1,9 @@
 -# locals: (slots:)
 
-.accordion.w-100#accordion-attendance
-  .accordion-item
-    %h2.accordion-header
-      %button.accordion-button.collapsed{ type: 'button',
-                                          data: { bsToggle: 'collapse',
-                                                  bsTarget: '#collapseOne' },
-                                          ariaExpanded: 'false',
-                                          ariaControls: 'collapseOne' }
-        = t('.daily_attendance')
-    .accordion-collapse.collapse#collapseOne{ data: { bsParent: '#accordion-attendance' } }
-      .slots.p-3.d-flex.flex-wrap.gap-3.justify-content-start
-        - slots.each do |slot|
-          = link_to slot.name_date,
-                    children_path(id: slot.id, source: 'time_slot'),
-                    class: 'btn btn-primary'
+%details.w-100.m-1.bg-light.rounded
+  %summary.p-3= t('.daily_attendance')
+  .slots.d-flex.flex-wrap.gap-3.justify-content-start.p-3
+    - slots.each do |slot|
+      = link_to slot.name_date,
+                children_path(id: slot.id, source: 'time_slot'),
+                class: 'btn btn-primary'
