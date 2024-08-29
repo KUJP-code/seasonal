@@ -103,6 +103,20 @@
       .school-info.d-grid.gap-3.pt-0
         %h3= t('.school_info')
 
+        - if current_user.admin?
+          .form-floating{ data: { controller: 'count',
+                                  'count-countdown-value': true } }
+            = f.text_field :ssid,
+                           class: 'form-control',
+                           placeholder: 'SSID',
+                           data: { 'count-target': 'input' },
+                           pattern: '\d{10,10}',
+                           minlength: 10,
+                           maxlength: 10
+            = f.label :ssid, 'SSID', class: 'form-label'
+            .form-text#confirm-length
+              %span{ data: { 'count-target': 'counter' } }
+
         %div
           = f.label :school_id, t('.school'), class: 'form-label'
           - if current_user.school_manager?

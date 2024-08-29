@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
 class Child < ApplicationRecord
-  # Set names, kindy from meta-fields
+  # Set names, kindy from attr_accessors
   before_validation :set_name, :set_kana, :set_kindy
 
   # Allow use of separate fields to ensure consistent name formatting
   attr_accessor :first_name, :family_name, :kana_first, :kana_family
 
-  # List associations to other models
   belongs_to :parent, class_name: 'User', optional: true, inverse_of: :children
   belongs_to :school, optional: true
   has_many :upcoming_events, through: :school,
@@ -70,11 +69,6 @@ class Child < ApplicationRecord
   # Validations
   # Format
   validates :katakana_name, format: { with: /\A[ァ-ヶヶ　ー ]+\z/ }
-
-  # Inclusion
-  validates :category, inclusion: { in: categories.keys }
-  validates :grade, inclusion: { in: grades.keys }
-  validates :photos, inclusion: { in: photos.keys }
 
   # Presence
   validates :allergies, :category, :en_name, :grade, :katakana_name, :name, :photos, presence: true

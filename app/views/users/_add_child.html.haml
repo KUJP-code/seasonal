@@ -48,6 +48,7 @@
                                 'count-countdown-value': true },
                         id: 'claim_child_form' } do |f|
       = f.hidden_field :user, value: user.id
+
       .form-floating
         = f.search_field :ssid,
                          class: 'form-control',
@@ -61,6 +62,7 @@
         = f.label :ssid, t('.to_ssid'), class: 'form-label'
         .form-text#confirm-length
           %span{ data: { 'count-target': 'counter' } }
+
       .form-floating
         = f.date_field :bday,
                        class: 'form-control',
