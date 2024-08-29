@@ -1,25 +1,19 @@
 -# locals: (adjustments:, child:, event:, price_list:)
 
+.d-flex.flex-column.w-100.flex-shrink-1.gap-3
+  %article.w-full= event.description
 
-.d-flex.flex-column.w-100.justify-content-center.align-items-center.flex-shrink-1.gap-3
-  = event.description
-
-  %table.table.table-sm.table-info.table-striped.table-hover.text-center
-    %caption.caption-top.text-center
-      %h3.text-start
-        = child.member? ? t('.member_prices') : t('.non_member_prices')
-    %thead
-      %tr
-        %th= t('.course')
-        %th= t('.price')
-    %tbody
-      - if price_list.courses['1'] == 3_500
-        -# FIXME: Temp workaround for parties to only show first course
-          even though we need the 3 course just in case of multi-reg
+  -# No early bird discount means it's a party, so no price list displayed
+  - if event.early_bird_discount.zero?
+    %table.table.table-sm.table-info.table-striped.table-hover.text-center
+      %caption.caption-top.text-center
+        %h3.text-start
+          = child.member? ? t('.member_prices') : t('.non_member_prices')
+      %thead
         %tr
-          %td 1
-          %td= number_to_currency(3_500)
-      - else
+          %th= t('.course')
+          %th= t('.price')
+      %tbody
         - price_list.courses.each do |course, price|
           - next if price.blank?
 
@@ -39,7 +33,7 @@
         - adjustments.each do |adjustment|
           %tr
             %td{ 'data-price-target': 'adjChange' }
-              = number_to_currency(adjustment.change)
+              = number_to_currency(adjustment.change, locale: :ja)
             %td= adjustment.reason
 
   - if child.regular_schedule
