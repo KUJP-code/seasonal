@@ -31,6 +31,8 @@ module InvoiceSummarisable
   end
 
   def course_summary(data)
+    return party_summary(data) if event.early_bird_discount.negative?
+
     extra_cost = if data[:extra_cost].positive?
                    "<p>追加料金 x #{data[:extra_cost_count]}: #{yenify(data[:extra_cost])}</p>\n"
                  else
@@ -47,6 +49,12 @@ module InvoiceSummarisable
         #{data[:course_summary]}\n
         #{extra_cost}
         #{snack_cost}
+    </div>"
+  end
+
+  def party_summary(data)
+    "<div class='d-flex flex-column align-items-start gap-1'>
+        <p>イベント x #{data[:num_regs]}: #{yenify(data[:course_cost])}</p>
     </div>"
   end
 

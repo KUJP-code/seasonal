@@ -114,4 +114,27 @@ RSpec.describe Invoice do
       expect(invoice.summary).to include('追加料金 x 1: 100円')
     end
   end
+
+  context 'when summarising a party' do
+    it 'displays event * 1 = 1 course rather than usual course section' do
+      invoice = build_stubbed(
+        :invoice,
+        event: create(:event, early_bird_discount: -500),
+        slot_regs: [build(:slot_reg, registerable: slot)]
+      )
+      invoice.calc_cost
+      expect(invoice.summary).to include('イベント x 1: 1円')
+    end
+
+    it 'displays event * n = 1 course * n when multiple parties attended' do
+      invoice = build_stubbed(
+        :invoice,
+        event: create(:event, early_bird_discount: -500),
+        slot_regs: [build(:slot_reg, registerable: slot),
+                    build(:slot_reg, registerable: create(:time_slot))]
+      )
+      invoice.calc_cost
+      expect(invoice.summary).to include('イベント x 2: 2円')
+    end
+  end
 end
