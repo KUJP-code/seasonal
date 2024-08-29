@@ -37,7 +37,7 @@
                      data-register-id-value=<%= add_slot.id %>
                      data-register-type-value="TimeSlot"
                      data-register-modifier-value=<%= activity_modifier(add_slot, child) %>
-                     data-register-name-value=<%= add_slot.name.concat(' (午前)').gsub(' ', '_') %>
+                     data-register-name-value=<%= add_slot.name.tr(' ', '_') %>
                      data-register-child-value=<%= child.id %>
                      data-register-snack-value="false">
                     <label for=<%= "m_slot#{add_slot.id}" %>

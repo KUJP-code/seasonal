@@ -139,7 +139,7 @@
                     <div id="reg_slots">
                         <% all_registered_slots.each do |slot| %>
                             <p data-modifier=<%= activity_modifier(slot, @child) %> >
-                                <%= slot.name + (slot.morning ? ' (午前)' : ' (午後)') %>
+                                <%= slot.name.concat(slot.morning ? '' : ' (午後)') %>
                             </p>
                         <% end %>
                     </div>
