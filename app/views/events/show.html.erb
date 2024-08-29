@@ -16,6 +16,7 @@
       data-price-member-price-value=<%= @member_prices.courses.to_json unless @member_prices.nil? %>
       data-price-non-member-price-value=<%= @non_member_prices.courses.to_json unless @non_member_prices.nil? %>
       data-price-other-cost-value="<%= others_cost || 0 %>"
+      data-price-event-name-value="<%= @event.name %>"
       class="d-flex flex-column justify-content-start align-items-start text-start bg-white">
 
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 w-100">

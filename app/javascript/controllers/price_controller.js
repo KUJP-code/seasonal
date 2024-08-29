@@ -15,6 +15,7 @@ export default class extends Controller {
 	];
 
 	static values = {
+		eventName: String,
 		memberPrice: Object,
 		nonMemberPrice: Object,
 		otherCost: Number,
@@ -56,7 +57,7 @@ export default class extends Controller {
 			optionCost + courseCost + adjustmentCost + snackCost + extraCost;
 		if (finalCost < 0) finalCost = 0;
 		this.finalCostTarget.innerHTML = `合計（税込）: ${finalCost}円`;
-		this.eventCostTarget.innerHTML = `サマースクール 2023の合計: ${(
+		this.eventCostTarget.innerHTML = `${this.eventNameValue}の合計: ${(
 			this.otherCostValue + finalCost
 		)
 			.toString()
