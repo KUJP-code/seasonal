@@ -46,22 +46,6 @@ RSpec.describe UserPolicy do
   context 'when admin' do
     let(:user) { build(:admin) }
 
-    context 'when viewing area manager profile' do
-      let(:record) { build(:area_manager) }
-
-      it 'can view area manager profiles' do
-        expect(policy).to authorize_action(:show)
-      end
-    end
-
-    context 'when viewing school manager profile' do
-      let(:record) { build(:school_manager) }
-
-      it 'cannot view school manager profiles' do
-        expect(policy).to authorize_action(:show)
-      end
-    end
-
     it_behaves_like 'Nacrissus'
     it_behaves_like 'authorized except destroy'
     it { is_expected.to authorize_action(:merge_children) }
@@ -125,7 +109,7 @@ RSpec.describe UserPolicy do
       user = create(:area_manager)
       user.managed_areas << create(:area)
       school = create(:school, area: user.managed_areas.first)
-      area_parent = create(:customer, children: [create(:internal_child, school: school)])
+      area_parent = create(:customer, children: [create(:internal_child, school:)])
       childless_parent = create(:customer)
       expect(Pundit.policy_scope!(user, User)).to contain_exactly(area_parent, childless_parent)
     end

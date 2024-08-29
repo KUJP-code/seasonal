@@ -5,7 +5,8 @@
   school_managements = user.managements.where(manageable_type: 'School')
   url = user.new_record? ? staff_users_path : staff_user_path(user)
 
-- roles = [['Area Manager', 'area_manager'],
+- roles = [['Admin', 'admin'],
+           ['Area Manager', 'area_manager'],
            ['School Manager', 'school_manager'],
            ['Statistician', 'statistician']]
 

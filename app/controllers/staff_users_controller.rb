@@ -9,7 +9,7 @@ class StaffUsersController < ApplicationController
   def index
     @staff = policy_scope(
       User.staff.or(User.statistician)
-          .order(id: :asc)
+          .order(role: :desc)
           .includes(:managed_areas, :managed_schools),
       policy_scope_class: StaffUserPolicy::Scope
     )

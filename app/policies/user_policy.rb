@@ -54,7 +54,8 @@ class UserPolicy < ApplicationPolicy
     if record.staff?
       user.admin? ||
         user.id == record.id ||
-        (user.area_manager? && user.area_school_managers.ids.include?(record.id))
+        (user.area_manager? &&
+         user.area_school_managers.ids.include?(record.id))
     else
       user.staff? || user.id == record.id
     end
