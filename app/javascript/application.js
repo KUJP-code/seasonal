@@ -50,3 +50,6 @@ document.addEventListener("turbo:load", () => {
 	const toastElList = document.querySelectorAll(".toast");
 	[...toastElList].map((toastEl) => new bootstrap.Toast(toastEl).show());
 });
+
+import "trix"
+import "@rails/actiontext"

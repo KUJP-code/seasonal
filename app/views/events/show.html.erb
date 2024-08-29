@@ -83,6 +83,7 @@
                 <div class="accordion-body">
                   <%= render 'events/more_info',
                              adjustments:,
+                             event: @event,
                              child: @child,
                              price_list: @child.member? ? @member_prices : @non_member_prices %>
                 </div>

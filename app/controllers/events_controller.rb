@@ -127,7 +127,7 @@ class EventsController < ApplicationController
   def event_params
     params.require(:event).permit(
       :name, :start_date, :image_id, :end_date, :school_id, :released, :early_bird_date,
-      :member_prices_id, :goal, :non_member_prices_id, :avif_id, :early_bird_discount,
+      :member_prices_id, :goal, :non_member_prices_id, :avif_id, :early_bird_discount, :description,
       time_slots_attributes:
         %i[id name start_time end_time category event_id morning snack avif_id close_at
            morning_slot_id image_id int_modifier ext_modifier kindy_modifier ele_modifier _destroy],

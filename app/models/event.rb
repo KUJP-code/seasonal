@@ -31,6 +31,8 @@ class Event < ApplicationRecord
   has_one_attached :image
   has_one_attached :avif
 
+  has_rich_text :description
+
   paginates_per 40
 
   validates :name, :start_date, :end_date, :early_bird_date, presence: true

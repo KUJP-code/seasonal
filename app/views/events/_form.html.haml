@@ -1,6 +1,6 @@
 = form_with model: @event,
             data: { controller: 'fields' },
-            html: { class: 'd-grid gap-3 card needs-validation w-50',
+            html: { class: 'd-grid gap-3 card needs-validation w-100',
                     novalidate: true } do |f|
   = render partial: 'shared/form_errors', locals: { resource: @event }
 
@@ -12,6 +12,12 @@
                      class: 'form-control', placeholder: 'Name',
                      required: true
       = f.label :name, class: 'form-label'
+
+    %div
+      = f.label :description, class: 'form-label'
+      = f.rich_text_area :description,
+                         class: 'form-control', placeholder: 'Description',
+                         required: true
 
     %div
       = f.label :image_id, class: 'form-label'

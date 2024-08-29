@@ -1,7 +1,9 @@
--# locals: (adjustments:, child:, price_list:)
+-# locals: (adjustments:, child:, event:, price_list:)
 
 
-.d-flex.w-100.justify-content-center.align-items-center.flex-shrink-1.gap-3
+.d-flex.flex-column.w-100.justify-content-center.align-items-center.flex-shrink-1.gap-3
+  = event.description
+
   %table.table.table-sm.table-info.table-striped.table-hover.text-center
     %caption.caption-top.text-center
       %h3.text-start
@@ -25,26 +27,26 @@
             %td= course
             %td= number_to_currency(price)
 
-- unless adjustments.empty?
-  %table.table.table-info.table-striped.table-hover.text-center
-    %caption.caption-top
-      %h3= t('.adjustments')
-    %thead
-      %tr
-        %th= t('.change')
-        %th= t('.reason')
-    %tbody
-      - adjustments.each do |adjustment|
+  - unless adjustments.empty?
+    %table.table.table-info.table-striped.table-hover.text-center
+      %caption.caption-top
+        %h3= t('.adjustments')
+      %thead
         %tr
-          %td{ 'data-price-target': 'adjChange' }
-            = number_to_currency(adjustment.change)
-          %td= adjustment.reason
+          %th= t('.change')
+          %th= t('.reason')
+      %tbody
+        - adjustments.each do |adjustment|
+          %tr
+            %td{ 'data-price-target': 'adjChange' }
+              = number_to_currency(adjustment.change)
+            %td= adjustment.reason
 
-- if child.regular_schedule
-  %table.table.table-striped.table-info.text-center
-    %thead
-      %tr
-        %th= t('.regular_schedule')
-    %tbody
-      %tr
-        %td= child.regular_schedule.days
+  - if child.regular_schedule
+    %table.table.table-striped.table-info.text-center
+      %thead
+        %tr
+          %th= t('.regular_schedule')
+      %tbody
+        %tr
+          %td= child.regular_schedule.days
