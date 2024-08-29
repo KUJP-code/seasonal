@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.3.8-new-halloween"
+    "Name": "thatbballguy/event_site:2.3.9-event-actiontext"
   },
   "Ports": [
     {
