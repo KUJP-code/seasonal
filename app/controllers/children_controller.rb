@@ -126,13 +126,10 @@ class ChildrenController < ApplicationController
 
   def event_attendance
     @source = authorize(Event.find(params[:id]), :attendance?)
-    @slots = @source.time_slots.includes(:options)
+    @slots = @source.time_slots.morning.or(@source.time_slots.special).distinct
     @children = @source.children
-                       .includes(
-                         :options, :invoices, :regular_schedule,
-                         time_slots: %i[options afternoon_slot],
-                         real_invoices: :coupons
-                       ).order(:name)
+                       .includes(:regular_schedule, real_invoices: :coupons)
+                       .order(ssid: :desc)
     render 'children/events/event_sheet'
   end
 

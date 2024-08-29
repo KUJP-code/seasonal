@@ -1,24 +1,13 @@
-<%# Slots at this event the child has registered for %>
-<% reg_slots = event_child.time_slots.select { |slot| slot.event_id == event.id && slot.category != 'special' }.sort_by{ |slot| slot.start_time } %>
-<%# Special days for this event %>
-<% event_special = slots.select { |slot| slot.category == 'special' } %>
-<%# Special days the child is registered for %>
-<% reg_special = event_child.time_slots.select { |slot| slot.category == 'special' } %>
-<%# Options the child has registered for at this event %>
-<% event_opts = event_child.options.select { |opt| (reg_slots + reg_special).map { |slot| slot.id}.include?(opt.optionable_id) } %>
 <%# Child's invoices for this event %>
 <% event_invoices = event_child.real_invoices.select { |invoice| invoice.event_id == event.id } %>
 <%# The invoice that's still available to edit %>
 <% active_invoice = event_invoices.reject(&:in_ss).last %>
-<%# Categories for arrival/departure times %>
-<% arrive_categories = %w[arrival k_arrival] %>
-<% depart_categories = %w[departure k_departure] %>
 
 <tr class=<%= "child#{event_child.id}" %>>
-    <th scope="row" rowspan="2" class="order order-header"><%= event_child_iteration.index + 1 %></th>
-    <th scope="row" rowspan="2" class="name name-header"><%= link_to event_child.name, child_path(event_child) %></th>
-    <th scope="row" rowspan="2" class="en-name en-name-header"><%= link_to event_child.en_name, child_path(event_child) %></th>
-    <th scope="row" rowspan="2" class="ssid ssid-header<%= ' table-danger' if event_child.ssid.nil? %>">
+    <th scope="row" class="order order-header"><%= event_child_iteration.index + 1 %></th>
+    <th scope="row" class="name name-header"><%= link_to event_child.name, child_path(event_child) %></th>
+    <th scope="row" class="en-name en-name-header"><%= link_to event_child.en_name, child_path(event_child) %></th>
+    <th scope="row" class="ssid ssid-header<%= ' table-danger' if event_child.ssid.nil? %>">
         <% if event_child.ssid %>
             <%= link_to event_child.ssid, child_path(event_child) %>
         <% elsif event_child.ssid.nil? && event_child.parent_id.nil? %>
@@ -28,13 +17,13 @@
         <% end %>
     </th>
 
-    <td rowspan="2" class="diff-school<%= ' table-danger' unless event_child.school_id == event.school_id %>">
+    <td class="diff-school<%= ' table-danger' unless event_child.school_id == event.school_id %>">
         <% unless event_child.school_id == event.school_id %>
             <button type="button" class="btn btn-danger" data-bs-toggle="popover" data-bs-title="担当校舎" data-bs-content=<%= t("schools.#{event_child.school.name}") %>>担当校舎</button>
         <% end %>
     </td>
 
-    <td class="invoices" rowspan="2" id=<%= "child#{event_child.id}invoices" %>>
+    <td class="invoices" id=<%= "child#{event_child.id}invoices" %>>
         <% event_invoices.each do |invoice| %>
             <% if invoice.in_ss %>
                 <p><%= link_to number_to_currency(invoice.total_cost, unit: '円', precision: 0, locale: :ja), invoice_path(invoice), class: 'text-info' %></p>
@@ -44,11 +33,11 @@
         <% end %>
     </td>
 
-    <td class="cost" rowspan="2">
+    <td class="cost">
         <%= number_to_currency(event_invoices.reduce(0) { |sum, invoice| sum + invoice.total_cost }, unit: '円', precision: 0, locale: :ja) %>
     </td>
 
-    <td class="summary" rowspan="2">
+    <td class="summary">
         <button type="button" class="btn btn-primary"
             data-bs-toggle="modal" data-bs-target="#<%= "child#{event_child.id}summaries" %>">
             <%= t('.view_summary') %>
@@ -85,7 +74,7 @@
         <% unseen = active_invoice.seen_at.nil? ||
                     (!active_invoice.versions.empty? &&
                      active_invoice.versions.last.created_at > active_invoice.seen_at) %>
-        <td rowspan="2"
+        <td
             id=<%= "child#{event_child.id}changes" %>
             class="<%= 'table-danger' if unseen %>">
             <% if unseen %>
@@ -101,10 +90,10 @@
             <% end %>
         </td>
     <% else %>
-        <td rowspan="2"></td>
+        <td></td>
     <% end %>
 
-    <td rowspan="2" id=<%= "child#{event_child.id}entered" %>>
+    <td id=<%= "child#{event_child.id}entered" %>>
         <% if event_invoices.size == 1 %>
             <% i = event_invoices.first %>
             <% if i.entered %>
@@ -155,7 +144,7 @@
         <% end %>
     </td>
 
-    <td rowspan="2" id=<%= "child#{event_child.id}sent" %>>
+    <td id=<%= "child#{event_child.id}sent" %>>
         <% if event_invoices.size == 1 %>
             <% i = event_invoices.first %>
             <% if i.email_sent %>
@@ -206,7 +195,7 @@
         <% end %>
     </td>
 
-    <td class="coupons" rowspan="2"><% event_invoices.each do |invoice| %>
+    <td class="coupons"><% event_invoices.each do |invoice| %>
         <% unless invoice.coupons.size.zero? %>
             <% invoice.coupons.each do |coupon| %>
                 <p><%= coupon.code %></p>
@@ -214,7 +203,7 @@
         <% end %>
     <% end %></td>
 
-    <td class="kindy" rowspan="2">
+    <td class="kindy">
         <% if event_child.kindy %>
           幼児
         <% else %>
@@ -222,7 +211,7 @@
         <% end %>
     </td>
 
-    <td class="membership" rowspan="2">
+    <td class="membership">
         <%= case event_child.category
             when 'internal'
                 '通学生'
@@ -234,137 +223,7 @@
         %>
     </td>
 
-    <td class="regular_schedule" rowspan="2"><%= event_child.regular_schedule.days if event_child.regular_schedule %></td>
-    <td class="allergies" rowspan="2"><%= event_child.allergies %></td>
-    <td class="photos" rowspan="2"><%= event_child.photos unless event_child.photos == 'OK' %></td>
-
-    <% if reg_special.size.zero? || event_special.empty? %>
-        <td colspan="3"></td>
-    <% else %>
-        <td colspan="3">
-            <%= link_to "#{event_special.first.name} (午前) / #{event_special.last.name} (午後)", children_path(id: event_special.first.id, source: 'time_slot') %>
-        </td>
-    <% end %>
-
-    <% reg_slots.each do |slot| %>
-        <% if slot.morning %>
-            <td colspan="3"><%= link_to "#{slot.name} (#{slot.start_time.strftime('%m月%d日')})", children_path(id: slot.id, source: 'time_slot') %></td>
-        <% elsif reg_slots.map(&:id).include?(slot.morning_slot_id) %>
-            <% next %>
-        <% else %>
-            <td colspan="3"><%= link_to "#{slot.name} (#{slot.start_time.strftime('%m月%d日')})", children_path(id: slot.id, source: 'time_slot') %></td>
-        <% end %>
-    <% end %>
-
-    <%# TODO: Probably a more efficient way to do this %>
-    <% (cols - reg_slots.select{ |slot| slot.morning }.size - reg_slots.reject { |slot| slot.morning || reg_slots.any? { |e_slot| e_slot.id == slot.morning_slot_id} }.size).times do %>
-        <td colspan="3"></td>
-    <% end %>
-</tr>
-<tr class=<%= "child#{event_child.id}" %>>
-    <% if reg_special.size.zero? || event_special.empty? %>
-        <td></td>
-        <td></td>
-        <td></td>
-    <% else %>
-        <% arrival_option = event_opts.find { |opt| arrive_categories.include?(opt.category) && opt.optionable_id == event_special.first.id } %>
-        <% extend_option = event_opts.find { |opt| (opt.category == 'extension' || opt.category == 'k_extension') && opt.optionable_id == event_special.first.id } %>
-        <% departure_option = event_opts.find { |opt| depart_categories.include?(opt.category) && opt.optionable_id == event_special.last.id } %>
-        <td><%=
-            if reg_special.include?(event_special.first) && reg_special.include?(event_special.last)
-                '午前 / 午後'
-            elsif reg_special.include?(event_special.first)
-                '午前'
-            elsif reg_special.include?(event_special.last)
-                '午後'
-            else
-                ''
-            end
-        %></td>
-        <td><%=
-            if event_opts.include?(event_special.first.options.find{ |opt| opt.name == '昼食'})
-                '昼食'
-            end
-        %></td>
-        <td><%=
-            if reg_special.include?(event_special.first) && reg_special.include?(event_special.last) && arrival_option && departure_option
-                "#{(event_special.first.start_time + arrival_option.modifier.minutes).strftime('%I:%M%p')}~ / #{'中延長 ' if extend_option} / #{(event_special.last.end_time + departure_option.modifier.minutes).strftime('%I:%M%p')}"
-            elsif reg_special.include?(event_special.first) && arrival_option
-                "#{(event_special.first.start_time + arrival_option.modifier.minutes).strftime('%I:%M%p')}~ #{'/ 中延長 ' if extend_option} "
-            elsif reg_special.include?(event_special.last) && departure_option
-                "#{(event_special.last.end_time + departure_option.modifier.minutes).strftime('%I:%M%p')}"
-            else
-                ''
-            end
-        %></td>
-    <% end %>
-
-    <% reg_slots.each do |slot| %>
-        <% lunch = slot.options.find{ |opt| opt.name == '昼食'} %>
-        <% dinner = slot.options.find{ |opt| opt.name == '夕食'} %>
-        <% arrival_option = event_opts.find { |opt| arrive_categories.include?(opt.category) && opt.optionable_id == slot.id } %>
-        <% departure_option = event_opts.find { |opt| depart_categories.include?(opt.category) && opt.optionable_id == slot.id } %>
-
-        <% if slot.morning %>
-            <%# Opt info for morning slots %>
-            <% afternoon_slot = slot.afternoon_slot %>
-            <td><%=
-                if reg_slots.include?(afternoon_slot)
-                    '午前 / 午後'
-                else
-                    '午前'
-                end
-            %></td>
-
-            <td><%=
-                if event_opts.include?(lunch) && event_opts.include?(dinner)
-                    '昼食 / 夕食'
-                elsif event_opts.include?(lunch)
-                    '昼食'
-                elsif event_opts.include?(dinner)
-                    '夕食'
-                else
-                    ''
-                end
-            %></td>
-
-            <td><%=
-                if reg_slots.include?(afternoon_slot) && reg_slots.include?(slot) && arrival_option && departure_option
-                    "#{(slot.start_time + arrival_option.modifier.minutes).strftime('%I:%M%p')} / #{(slot.end_time + departure_option.modifier.minutes).strftime('%I:%M%p')}"
-                elsif reg_slots.include?(slot) && arrival_option
-                    (slot.start_time + arrival_option.modifier.minutes).strftime('%I:%M%p').concat('~')
-                else
-                    ''
-                end
-             %></td>
-        <% elsif reg_slots.map(&:id).include?(slot.morning_slot_id) %>
-            <%# Skip if it's an afternoon slot whose morning slot is %>
-            <%# registered, as the morning info will cover it %>
-            <% next %>
-        <% else %>
-            <%# Opt info for afternoon slots %>
-            <td>午後</td>
-
-            <td><%=
-                if event_opts.include?(dinner)
-                    '夕食'
-                else
-                    ''
-                end
-            %></td>
-
-            <% if departure_option %>
-                <td><%= '~'.concat((slot.end_time + departure_option.modifier.minutes).strftime('%I:%M%p')) %></td>
-            <% else %>
-                <td></td>
-            <% end %>
-        <% end %>
-    <% end %>
-
-    <%# TODO: Probabaly a more efficient way to do this %>
-    <% (cols - reg_slots.select{ |slot| slot.morning }.size - reg_slots.reject { |slot| slot.morning || reg_slots.any? { |e_slot| e_slot.id == slot.morning_slot_id} }.size).times do %>
-            <td></td>
-            <td></td>
-            <td></td>
-    <% end %>
+    <td class="regular_schedule"><%= event_child.regular_schedule.days if event_child.regular_schedule %></td>
+    <td class="allergies"><%= event_child.allergies %></td>
+    <td class="photos"><%= event_child.photos unless event_child.photos == 'OK' %></td>
 </tr>
