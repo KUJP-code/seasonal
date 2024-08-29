@@ -39,6 +39,7 @@ class Event < ApplicationRecord
 
   validates_comparison_of :early_bird_discount, less_than_or_equal_to: 0
   validates_comparison_of :end_date, greater_than_or_equal_to: :start_date
+  validates_comparison_of :goal, less_than: 2_147_483_647
 
   # Scopes
   scope :real, -> { where.not(school_id: [1, 2]) }

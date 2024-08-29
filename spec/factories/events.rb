@@ -8,5 +8,6 @@ FactoryBot.define do
     name { 'Test Event' }
     start_date { 1.day.from_now }
     end_date { 2.days.from_now }
+    goal { 10 }
   end
 end
