@@ -4,7 +4,7 @@
     - if content_for? :title
       = yield :title
     - else
-      %title Kids UPシーズナルスクール申込フォーム
+      %title Kids UP申込フォーム
     %meta{ charset: 'utf-8' }
     %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1' }
     = csrf_meta_tags
@@ -19,10 +19,8 @@
     - if content_for :opengraph
       = yield :opengraph
     - else
-      %meta{ property: 'og:title',
-             content: "Kids UPシーズナルスクール申込フォーム"}
-      %meta{ property: 'og:description',
-             content: "KidsUPイベント登録サイト"}
+      %meta{ property: 'og:title', content: 'Kids UP申込フォーム' }
+      %meta{ property: 'og:description', content: 'KidsUPイベント登録サイト' }
     = yield :head
   %body
     %turbo_frame#flash
