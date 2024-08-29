@@ -134,39 +134,22 @@
         <h3 id="total_cost" class="text-white fw-bold" data-price-target="finalCost"><%="#{t('.total_cost')}: #{@all_invoices.reduce(0) {|sum, i| sum + i.total_cost}}円"%></h3>
 
         <div class="d-flex justify-content-around gap-2">
-            <div class="d-flex flex-column gap-2">
-                <div id="reg_details" class="collapse multi-collapse text-white">
-                    <div id="reg_slots">
-                        <% all_registered_slots.each do |slot| %>
-                            <p data-modifier=<%= activity_modifier(slot, @child) %> >
-                                <%= slot.name.concat(slot.morning ? '' : ' (午後)') %>
-                            </p>
-                        <% end %>
-                    </div>
-                    <p>
-                        追加料金:
-                        <span data-price-target="extraCount">
-                            <%= all_registered_slots.count do |s|
-                                                @child.external? ?
-                                                s.ext_modifier != 0 :
-                                                s.int_modifier != 0 ||
-                                                @child.kindy? ?
-                                                s.kindy_modifier != 0 :
-                                                s.ele_modifier != 0
-                                               end %>
-                        </span>つ
+            <div id="reg_slots">
+                <% all_registered_slots.each do |slot| %>
+                    <p class='hidden' data-modifier=<%= activity_modifier(slot, @child) %> >
+                        <%= slot.name.concat(slot.morning ? '' : ' (午後)') %>
                     </p>
-                    <p>
-                        午後コースおやつ代： <span data-price-target="snackCount"
-                       data-invoice-target="snackCount"><%= all_registered_slots.count { |s| s.snack } %></span>つ
-                    </p>
-                    <p data-price-target="optCount"><%= t('.num_options', num: @all_invoices.reduce(0) { |sum, i| sum + i.options.size  })%></p>
-                </div>
-                <button class="btn btn-primary"
-                        type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-expanded="false" aria-controls="collapseSlots">
-                    <%= t('.see_more') %>
-                </button>
+                <% end %>
             </div>
+            <span data-price-target="snackCount"
+                  data-invoice-target="snackCount"
+                  class='hidden'>
+              <%= all_registered_slots.count { |s| s.snack } %>
+            </span>
+            <p data-price-target="optCount" class='hidden'>
+              <%= t('.num_options', num: @all_invoices.reduce(0) { |sum, i| sum + i.options.size  })%>
+            </p>
+
             <% @all_invoices.each do |invoice| %>
                 <turbo-frame class="<%= "d-none" if invoice.in_ss %>">
                     <%= form_with model: invoice,

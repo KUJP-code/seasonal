@@ -12,7 +12,6 @@ export default class extends Controller {
 		"optCount",
 		"slotRegs",
 		"snackCount",
-		"extraCount",
 	];
 
 	static values = {
@@ -45,7 +44,6 @@ export default class extends Controller {
 		const extraCostNodes = registeredNodes.filter(
 			(slot) => slot.dataset.modifier !== "0",
 		);
-		this.extraCountTarget.innerHTML = extraCostNodes.length.toString();
 		// Get their total effect on the cost
 		const extraCost = extraCostNodes.reduce((sum, node) => {
 			return sum + Number.parseInt(node.dataset.modifier);
