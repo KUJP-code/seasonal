@@ -1,0 +1,84 @@
+-# locals: (event:, slots:)
+
+:ruby
+  event_invoices = event_child.real_invoices
+                              .select { |i| i.event_id == event.id }
+  active_invoice = event_invoices.reject(&:in_ss).last
+  unseen = active_invoice.seen_at.nil? ||
+           (!active_invoice.versions.empty? &&
+             active_invoice.versions.last.created_at > active_invoice.seen_at)
+  diff_school = event_child.school_id != event.school_id
+
+%tr{ class: "child#{event_child.id}" }
+  %th.order.order-header{ scope: 'row' }= event_child_iteration.index + 1
+  %th.name.name-header{ scope: 'row' }
+    = link_to event_child.name, child_path(event_child)
+  %th.en-name.en-name-header{ scope: 'row' }
+    = link_to event_child.en_name, child_path(event_child)
+  %th{ class: "ssid ssid-header#{' table-danger' if event_child.ssid.nil?}",
+       scope: 'row' }
+    - if event_child.ssid.present?
+      = link_to event_child.ssid, child_path(event_child)
+    - elsif event_child.parent_id.nil?
+      = link_to t('.no_ssid'), child_path(event_child)
+    - else
+      = link_to t('.no_ssid'),
+                user_path(event_child.parent, anchor: 'merge_children')
+
+  %td{ class: "diff-school #{'table-danger' if diff_school}" }
+    %button{ type: 'button', class: 'btn btn-danger',
+             data_bs_toggle: 'popover', data_bs_title: '担当校舎',
+             data_bs_content: t("schools.#{event_child.school.name}") }
+      担当校舎
+  %td.invoices{ id: "child#{event_child.id}invoices" }
+    - event_invoices.each do |invoice|
+      - if invoice.in_ss
+        %p
+          = link_to number_to_currency(invoice.total_cost, locale: :ja),
+                    invoice_path(invoice), class: 'text-info'
+      - else
+        %p
+          = link_to number_to_currency(invoice.total_cost, locale: :ja),
+                    invoice_path(invoice), class: 'text-danger fw-bold'
+  %td.cost
+    - event_total = event_invoices.reduce(0) { |sum, i| sum + i.total_cost }
+    = number_to_currency(event_total, locale: :ja)
+
+  %td.summary
+    %button{ type: 'button', data_bs_toggle: 'modal',
+             data_bs_target: "#child#{event_child.id}summaries",
+             class: 'btn btn-primary' }
+      = t('.view_summary')
+
+    .modal.fade{ id: "child#{event_child.id}summaries", tabindex: "-1" }
+      .modal-dialog.modal-fullscreen.d-grid
+        .modal-content.d-grid.gap-2
+          .modal-header
+            %h3.modal-title= event_child.name
+            %button.btn-close{ type: 'button', data_bs_dismiss: 'modal',
+                               aria_label: 'Close' }
+          .modal-body
+            - event_invoices.each do |invoice|
+              .card.mb-3{ data: { controller: 'clipboard',
+                                  'clipboard-success-content': 'コピーした',
+                                  'clipboard-target': 'source' } }
+                %button.btn.btn-primary{ data: { action: 'clipboard#copy',
+                                                 clipboard_target: 'button' } }
+                  コピー
+                %p= sanitize invoice.summary,
+                    tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id]
+
+          .modal-footer
+            %button.btn.btn-secondary{ type: 'button',
+                                       data_bs_dismiss: 'modal' }
+              = t('.close')
+
+  %td{ class: ('table-danger' if unseen),
+       id: "child#{event_child.id}changes" }
+    - if unseen
+      = button_to t('.seen'),
+                  seen_invoice_path(id: active_invoice.id),
+                  class: 'btn btn-secondary',
+                  style: 'font-size:0.75rem;'
+
+  %td{ id: "child#{event_child.id}entered" }

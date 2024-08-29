@@ -26,9 +26,9 @@
     <td class="invoices" id=<%= "child#{event_child.id}invoices" %>>
         <% event_invoices.each do |invoice| %>
             <% if invoice.in_ss %>
-                <p><%= link_to number_to_currency(invoice.total_cost, unit: '円', precision: 0, locale: :ja), invoice_path(invoice), class: 'text-info' %></p>
+                <p><%= link_to number_to_currency(invoice.total_cost, locale: :ja), invoice_path(invoice), class: 'text-info' %></p>
             <% else %>
-                <p><%= link_to number_to_currency(invoice.total_cost, unit: '円', precision: 0, locale: :ja), invoice_path(invoice), class: 'text-danger fw-bold' %></p>
+                <p><%= link_to number_to_currency(invoice.total_cost, locale: :ja), invoice_path(invoice), class: 'text-danger fw-bold' %></p>
             <% end %>
         <% end %>
     </td>
