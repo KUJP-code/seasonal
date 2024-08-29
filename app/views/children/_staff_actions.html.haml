@@ -17,3 +17,9 @@
                      value: (@child.photos == 'OK' ? 'NG' : 'OK')
     = f.submit "#{t('.photos')} #{@child.photos == 'OK' ? 'NG' : 'OK'}",
                class: 'btn btn-primary'
+
+  - if current_user.admin? && @child.parent_id.present?
+    = form_with model: @child do |f|
+      = f.hidden_field :parent_id, value: nil
+      = f.submit 'Remove from parent',
+                 class: 'btn btn-primary'
