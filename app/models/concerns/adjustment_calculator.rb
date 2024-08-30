@@ -4,10 +4,14 @@ module AdjustmentCalculator
   private
 
   def calc_adjustments(num_regs)
-    first_time_adjustment if first_time?(num_regs)
     early_bird_adjustment(num_regs) if Time.zone.today < event.early_bird_date
-    hat_adjustment if needs_hat?
-    repeater_discount if repeater?(num_regs)
+    # The following discounts only apply to seasonal events
+    # Seasonal events don't have an early bird discount
+    if event.early_bird_discount.zero?
+      first_time_adjustment if first_time?(num_regs)
+      hat_adjustment if needs_hat?
+      repeater_discount if repeater?(num_regs)
+    end
     adjustments.reduce(0) { |sum, adj| sum + adj.change }
   end
 

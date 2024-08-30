@@ -22,6 +22,14 @@ RSpec.describe Invoice do
       invoice
     end
 
+    it 'does not apply to parties' do
+      party = create(:event, early_bird_discount: -500)
+      valid_hat_invoice.update(event_id: party.id)
+      valid_hat_invoice.calc_cost
+      hat_adj = find_adjustment(valid_hat_invoice)
+      expect(hat_adj).to be_nil
+    end
+
     it 'applies if external kid with no hat & registered for outdoor' do
       valid_hat_invoice.calc_cost
       hat_adj = find_adjustment(valid_hat_invoice)
@@ -73,6 +81,14 @@ RSpec.describe Invoice do
       invoice
     end
 
+    it 'does not apply to parties' do
+      party = create(:event, early_bird_discount: -500)
+      valid_first_time_invoice.update(event_id: party.id)
+      valid_first_time_invoice.calc_cost
+      first_time_adj = find_adjustment(valid_first_time_invoice)
+      expect(first_time_adj).to be_nil
+    end
+
     it 'applies if external kid attending first seasonal and non-zero regs' do
       valid_first_time_invoice.calc_cost
       first_time_adj = find_adjustment(valid_first_time_invoice)
@@ -120,6 +136,14 @@ RSpec.describe Invoice do
       invoice
     end
     let(:time_slots) { create_list(:time_slot, 5) }
+
+    it 'does not apply to parties' do
+      party = create(:event, early_bird_discount: -500)
+      valid_repeater_invoice.update(event_id: party.id)
+      valid_repeater_invoice.calc_cost
+      repeater_adj = find_adjustment(valid_repeater_invoice)
+      expect(repeater_adj).to be_nil
+    end
 
     it 'applies if external kid not attending first seasonal and >= 5 activity regs' do
       valid_repeater_invoice.calc_cost
