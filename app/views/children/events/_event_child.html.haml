@@ -29,10 +29,11 @@
                'data-bs-content': t("schools.#{event_child.school.name}") }
         担当校舎
   %td.invoices{ id: "child#{event_child.id}invoices" }
-    - event_invoices.each do |i|
-      = link_to number_to_currency(i.total_cost, locale: :ja),
-                invoice_path(i),
-                class: i.in_ss ? 'text-info' : 'text-danger fw-bold'
+    .d-flex.flex-column.gap-1
+      - event_invoices.each do |i|
+        = link_to number_to_currency(i.total_cost, locale: :ja),
+                  invoice_path(i),
+                  class: i.in_ss ? 'text-info' : 'text-danger fw-bold'
 
   %td.cost
     - event_total = event_invoices.reduce(0) { |sum, i| sum + i.total_cost }

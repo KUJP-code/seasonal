@@ -3,6 +3,7 @@
 %td{ id: "child#{child_id}#{attr}" }
   - if invoices.size == 1
     - i = invoices.first
+
     - if i.send(attr)
       = form_with model: i do |f|
         = f.hidden_field attr, value: false
@@ -14,21 +15,23 @@
     - else
       .d-flex.justify-content-center.align-items-center.gap-1
         .rounded.cant-enter
+
   - else
-    - invoices.each do |i|
-      - if i.send(attr)
-        = form_with model: i do |f|
-          = f.hidden_field attr, value: false
-          .d-flex.gap-1
+    .d-flex.flex-column.gap-1
+      - invoices.each do |i|
+        - if i.send(attr)
+          = form_with model: i do |f|
+            = f.hidden_field attr, value: false
+            .d-flex.gap-1
+              = number_to_currency(i.total_cost, locale: :ja)
+              = f.submit '', class: 'rounded entered small-entered'
+        - elsif i.in_ss
+          = form_with model: i do |f|
+            = f.hidden_field attr, value: true
+            .d-flex.gap-1.align-items-center
+              = number_to_currency(i.total_cost, locale: :ja)
+              = f.submit '', class: 'rounded not-entered small-entered'
+        - else
+          .d-flex.justify-content-center.align-items-center.gap-1
             = number_to_currency(i.total_cost, locale: :ja)
-            = f.submit '', class: 'rounded entered small-entered'
-      - elsif i.in_ss
-        = form_with model: i do |f|
-          = f.hidden_field attr, value: true
-          .d-flex.gap-1
-            = number_to_currency(i.total_cost, locale: :ja)
-            = f.submit '', class: 'rounded not-entered'
-      - else
-        .d-flex.justify-content-center.align-items-center.gap-1
-          = number_to_currency(i.total_cost, locale: :ja)
-          .rounded.cant-enter.small-entered
+            .rounded.cant-enter.small-entered
