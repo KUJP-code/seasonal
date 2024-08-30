@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class BulkEventsController < ApplicationController
+  after_action :verify_authorized, only: :update
+  after_action :verify_policy_scoped, only: %i[index release]
+
   def index
     @events = policy_scope(Event)
 
@@ -13,7 +16,7 @@ class BulkEventsController < ApplicationController
   end
 
   def update
-    @event = Event.find(params[:id])
+    @event = authorize Event.find(params[:id])
 
     if @event.update(event_params)
       redirect_to bulk_events_path(name: @event.name),
