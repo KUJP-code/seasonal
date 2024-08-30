@@ -1,0 +1,73 @@
+- active_name = @selected_events.first.name
+
+%main
+  .d-flex.flex-wrap.gap-3
+    - @events.pluck(:name).uniq.each do |name|
+      - active = name == active_name
+
+      = link_to name,
+                bulk_events_path(name:),
+                class: "btn #{active ? 'btn-primary' : 'btn-secondary'}"
+
+  %h2= active_name
+
+  .d-flex.gap-3
+    = form_with url: release_event_path(name: active_name) do |f|
+      = f.hidden_field :release, value: true
+      = f.submit "Release all #{active_name} events",
+                 class: 'btn btn-primary'
+
+    = form_with url: release_event_path(name: active_name) do |f|
+      = f.hidden_field :release, value: false
+      = f.submit "Un-Release all #{active_name} events",
+                 class: 'btn btn-primary',
+                 data: { turbo_confirm: "Hide #{active_name} from parents?" }
+
+  %table.table.table-hover.table-striped.text-center.align-middle
+    %thead
+      %tr.table-primary
+        %th School
+        %th Goal
+        %th Release Status
+        %th Early Bird Date
+        %th Early Bird Discount
+        %th Submit Changes
+        %th Full Edit
+
+    %tbody
+      - @selected_events.each do |event|
+        - form_id = "event#{event.id}"
+
+        %tr
+          %td.fw-bold= event.school.name
+          %td
+            = number_field_tag 'event[goal]',
+                               event.goal,
+                               class: 'form-control', required: true, min: 1,
+                               max: 2_147_483_600, form: form_id
+          %td
+            = hidden_field_tag 'event[released]', 0, form: form_id
+            = check_box_tag 'event[released]',
+                            event.released,
+                            class: 'form-check-input', checked: event.released,
+                            form: form_id
+          %td
+            = date_field_tag 'event[early_bird_date]',
+                             event.early_bird_date,
+                             class: 'form-control', required: true,
+                             form: form_id
+          %td
+            = number_field_tag 'event[early_bird_discount]',
+                               event.early_bird_discount,
+                               class: 'form-control', required: true,
+                               max: 0, min: -2_147_483_600, form: form_id
+          %td
+            = form_with model: event,
+                        url: bulk_event_path(event),
+                        html: { class: 'd-flex justify-content-center',
+                                id: form_id } do |f|
+              = f.submit class: 'btn btn-primary'
+          %td
+            = link_to 'Full Edit',
+                      edit_event_path(event),
+                      class: 'btn btn-secondary'

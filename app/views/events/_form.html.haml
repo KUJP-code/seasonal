@@ -46,7 +46,7 @@
     .form-floating
       = f.number_field :goal,
                        class: 'form-control', placeholder: 'Goal',
-                       max: 2_147_483_600,
+                       min: 1, max: 2_147_483_600,
                        required: true
       = f.label :goal, class: 'form-label'
 
