@@ -1,0 +1,16 @@
+= turbo_stream.replace "child#{@invoice.child_id}invoices" do
+  %td.invoices{ id: "child#{@invoice.child_id}invoices" }
+    - @child_invoices.each do |i|
+      = link_to number_to_currency(i.total_cost, locale: :ja),
+                invoice_path(i),
+                class: i.in_ss ? 'text-info' : 'text-danger fw-bold'
+
+= turbo_stream.replace "child#{@invoice.child_id}entered" do
+  = render 'children/events/invoice_status_toggle',
+           attr: :entered, child_id: @invoice.child_id,
+           invoices: @child_invoices
+
+= turbo_stream.replace "child#{@invoice.child_id}email_sent" do
+  = render 'children/events/invoice_status_toggle',
+           attr: :email_sent, child_id: @invoice.child_id,
+           invoices: @child_invoices

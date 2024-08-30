@@ -1,0 +1,17 @@
+-# locals: (active_invoice:, child_id:)
+
+- if active_invoice.nil?
+  %td
+- else
+  :ruby
+    unseen = active_invoice.seen_at.nil? ||
+             (!active_invoice.versions.empty? &&
+               active_invoice.versions.last.created_at > active_invoice.seen_at)
+
+  %td{ class: ('table-danger' if unseen), id: "child#{child_id}changes" }
+    - if unseen
+      .d-flex.align-items-center.justify-content-center
+        = button_to t('.seen'),
+                    seen_invoice_path(id: active_invoice.id),
+                    class: 'btn btn-secondary',
+                    style: 'font-size:0.75rem;'

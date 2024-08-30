@@ -4,11 +4,6 @@
   event_invoices = event_child.real_invoices
                               .select { |i| i.event_id == event.id }
   active_invoice = event_invoices.reject(&:in_ss).last
-  if active_invoice
-    unseen = active_invoice.seen_at.nil? ||
-             (!active_invoice.versions.empty? &&
-               active_invoice.versions.last.created_at > active_invoice.seen_at)
-  end
   diff_school = event_child.school_id != event.school_id
 
 %tr{ class: "child#{event_child.id}" }
@@ -25,7 +20,7 @@
       = link_to t('.no_ssid'), child_path(event_child)
     - else
       = link_to t('.no_ssid'),
-                user_path(event_child.parent, anchor: 'merge_children')
+                user_path(event_child.parent_id, anchor: 'merge_children')
 
   %td{ class: "diff-school #{'table-danger' if diff_school}" }
     - if diff_school
@@ -34,15 +29,11 @@
                'data-bs-content': t("schools.#{event_child.school.name}") }
         担当校舎
   %td.invoices{ id: "child#{event_child.id}invoices" }
-    - event_invoices.each do |invoice|
-      - if invoice.in_ss
-        %p
-          = link_to number_to_currency(invoice.total_cost, locale: :ja),
-                    invoice_path(invoice), class: 'text-info'
-      - else
-        %p
-          = link_to number_to_currency(invoice.total_cost, locale: :ja),
-                    invoice_path(invoice), class: 'text-danger fw-bold'
+    - event_invoices.each do |i|
+      = link_to number_to_currency(i.total_cost, locale: :ja),
+                invoice_path(i),
+                class: i.in_ss ? 'text-info' : 'text-danger fw-bold'
+
   %td.cost
     - event_total = event_invoices.reduce(0) { |sum, i| sum + i.total_cost }
     = number_to_currency(event_total, locale: :ja)
@@ -76,80 +67,14 @@
                                        'data-bs-dismiss': 'modal' }
               = t('.close')
 
-  %td{ class: ('table-danger' if unseen),
-       id: "child#{event_child.id}changes" }
-    - if unseen
-      .d-flex.align-items-center.justify-content-center
-        = button_to t('.seen'),
-                    seen_invoice_path(id: active_invoice.id),
-                    class: 'btn btn-secondary',
-                    style: 'font-size:0.75rem;'
+  = render 'children/events/seen_button',
+           active_invoice:, child_id: event_child.id
 
-  %td{ id: "child#{event_child.id}entered" }
-    - if event_invoices.size == 1
-      - i = event_invoices.first
-      - if i.entered
-        = form_with model: i do |f|
-          = f.hidden_field :entered, value: false
-          = f.submit '', class: 'form-check-input rounded entered text-center'
-      - elsif i.in_ss
-        = form_with model: i do |f|
-          = f.hidden_field :entered, value: true
-          = f.submit '', class: 'form-check-input rounded not-entered'
-      - else
-        .d-flex.justify-content-center.align-items-center.gap-1
-          .form-check-input.rounded.cant-enter
-    - else
-      - event_invoices.each do |i|
-        - if i.entered
-          = form_with model: i do |f|
-            = f.hidden_field :entered, value: false
-            .d-flex.gap-1
-              = number_to_currency(i.total_cost, locale: :ja)
-              = f.submit '', class: 'form-check-input rounded entered text-center small-entered'
-        - elsif i.in_ss
-          = form_with model: i do |f|
-            = f.hidden_field :entered, value: true
-            .d-flex.gap-1
-              = number_to_currency(i.total_cost, locale: :ja)
-              = f.submit '', class: 'form-check-input rounded not-entered'
-        - else
-          .d-flex.justify-content-center.align-items-center.gap-1
-            = number_to_currency(i.total_cost, locale: :ja)
-            .form-check-input.rounded.cant-enter.small-entered
+  = render 'children/events/invoice_status_toggle',
+           attr: :entered, child_id: event_child.id, invoices: event_invoices
 
-  %td{ id: "child#{event_child.id}sent" }
-    - if event_invoices.size == 1
-      - i = event_invoices.first
-      - if i.email_sent
-        = form_with model: i do |f|
-          = f.hidden_field :email_sent, value: false
-          = f.submit '', class: 'form-check-input rounded entered text-center'
-      - elsif i.in_ss
-        = form_with model: i do |f|
-          = f.hidden_field :email_sent, value: true
-          = f.submit '', class: 'form-check-input rounded not-entered'
-      - else
-        .d-flex.justify-content-center.align-items-center.gap-1
-          .form-check-input.rounded.cant-enter
-    - else
-      - event_invoices.each do |i|
-        - if i.email_sent
-          = form_with model: i do |f|
-            = f.hidden_field :email_sent, value: false
-            .d-flex.gap-1
-              = number_to_currency(i.total_cost, locale: :ja)
-              = f.submit '', class: 'form-check-input rounded entered text-center small-entered'
-        - elsif i.in_ss
-          = form_with model: i do |f|
-            = f.hidden_field :email_sent, value: true
-            .d-flex.gap-1
-              = number_to_currency(i.total_cost, locale: :ja)
-              = f.submit '', class: 'form-check-input rounded not-entered'
-        - else
-          .d-flex.justify-content-center.align-items-center.gap-1
-            = number_to_currency(i.total_cost, locale: :ja)
-            .form-check-input.rounded.cant-enter.small-entered
+  = render 'children/events/invoice_status_toggle',
+           attr: :email_sent, child_id: event_child.id, invoices: event_invoices
 
   %td.coupons
     - event_invoices.each do |i|

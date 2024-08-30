@@ -1,0 +1,3 @@
+= turbo_stream.replace "child#{@invoice.child_id}changes" do
+  = render 'children/events/seen_button',
+           active_invoice: @invoice, child_id: @invoice.child_id
