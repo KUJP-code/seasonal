@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_29_080632) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_30_083704) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -392,8 +392,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_29_080632) do
 
   create_table "time_slots", force: :cascade do |t|
     t.string "name"
-    t.datetime "start_time"
-    t.datetime "end_time"
+    t.datetime "start_time", default: "2022-02-02 01:00:00"
+    t.datetime "end_time", default: "2022-02-02 04:30:00"
     t.integer "category", default: 0
     t.boolean "closed", default: false
     t.boolean "morning", default: false
@@ -405,7 +405,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_29_080632) do
     t.integer "ext_modifier", default: 0
     t.boolean "snack"
     t.integer "registrations_count", default: 0
-    t.datetime "close_at", default: "2024-01-05 06:54:41"
+    t.datetime "close_at", default: "2022-02-01 05:00:00"
     t.integer "ele_modifier", default: 0
     t.integer "kindy_modifier", default: 0
     t.index ["event_id"], name: "index_time_slots_on_event_id"

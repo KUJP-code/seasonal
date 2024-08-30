@@ -6,58 +6,70 @@
   = form_with model: slot,
               html: { class: 'card', data: { controller: 'fields' } } do |f|
     = render 'shared/form_errors', resource: slot
+
     .form-floating
       = f.text_field :name,
                      class: 'form-control',
                      placeholder: 'Name',
                      required: true
       = f.label :name, t('.name'), class: 'form-label'
+
     %div
       = f.label :image_id, 'Image', class: 'form-label'
       = f.select :image_id, images, {}, { class: 'form-select' }
+
     %div
       = f.label :avif_id, 'Avif', class: 'form-label'
       = f.select :avif_id, images, {}, { class: 'form-select' }
+
     .form-floating
       = f.datetime_field :start_time,
                          class: 'form-control',
                          placeholder: 'Start time',
                          required: true
       = f.label :start_time, 'Start time', class: 'form-label'
+
     .form-floating
       = f.datetime_field :end_time,
                          class: 'form-control',
                          placeholder: 'End time',
                          required: true
       = f.label :end_time, 'End time', class: 'form-label'
+
     .form-floating
       = f.datetime_field :close_at,
                          class: 'form-control',
                          placeholder: 'Close At',
                          required: true
       = f.label :close_at, 'Close At', class: 'form-label'
+
     %div
       = f.label :category, 'Category', class: 'form-label'
       = f.select :category,
                  TimeSlot.categories.map { |k, _v| [k.capitalize, k] },
                  {},
                  class: 'form-select'
+
     .form-floating.input-group
       = f.number_field :int_modifier, class: 'form-control', placeholder: 0
       = f.label :int_modifier, 'Internal Extra Charge', class: 'form-label'
       %span.input-group-text 円
+
     .form-floating.input-group
       = f.number_field :ext_modifier, class: 'form-control', placeholder: 0
       = f.label :ext_modifier, 'External Extra Charge', class: 'form-label'
       %span.input-group-text 円
+
     .form-floating.input-group
       = f.number_field :kindy_modifier, class: 'form-control', placeholder: 0
       = f.label :kindy_modifier, 'Kindy Extra Charge', class: 'form-label'
       %span.input-group-text 円
+
     .form-floating.input-group
       = f.number_field :ele_modifier, class: 'form-control', placeholder: 0
       = f.label :ele_modifier, 'Elementary Extra Charge', class: 'form-label'
       %span.input-group-text 円
+
     - if slot.morning == false
       .form-check
         = f.check_box :snack, class: 'form-check-input'
@@ -73,9 +85,7 @@
     %hr.text-primary.opacity-75
 
     = render 'time_slots/opt_fields',
-             f: f,
-             slot: slot,
-             special_no_arvo: special_no_arvo
+             f:, slot:, special_no_arvo:
 
   - if slot.afternoon_slot
     .card

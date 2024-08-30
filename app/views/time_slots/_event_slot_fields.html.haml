@@ -26,6 +26,7 @@
                        placeholder: 'Start Time',
                        required: true
     = f.label :start_time, 'Start Time', class: 'form-label'
+    %small.form-text Default start time is 10am
 
   .form-floating
     = f.datetime_field :end_time,
@@ -33,6 +34,7 @@
                        placeholder: 'End Time',
                        required: true
     = f.label :end_time, 'End Time', class: 'form-label'
+    %small.form-text Default end time is 1:30pm
 
   .form-floating
     = f.datetime_field :close_at,
@@ -40,6 +42,7 @@
                        placeholder: 'Close At',
                        required: true
     = f.label :close_at, 'Close At', class: 'form-label'
+    %small.form-text Should be 2pm on the preceding work day
 
   %div
     = f.label :category, 'Category', class: 'form-label'
