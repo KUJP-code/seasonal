@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.3.13-party-noadjust"
+    "Name": "thatbballguy/event_site:2.3.13.1-missing-local"
   },
   "Ports": [
     {
