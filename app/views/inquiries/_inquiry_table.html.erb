@@ -9,8 +9,8 @@
         </tr>
         <tr>
             <% columns.each do |col| %>
-                <%= render partial: 'shared/filter_header',
-                        locals: { column: col, siblings: '0' } %>
+                <%= render 'shared/filter_header',
+                           col_class: ".#{col}", siblings: '0' %>
             <% end %>
         </tr>
     </thead>
