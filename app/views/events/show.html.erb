@@ -10,7 +10,7 @@
 <% others_cost = @child.parent.invoices.where(event_id: @event.id).where.not(child_id: @child.id).reduce(0) { |sum, invoice| sum + invoice.total_cost } unless @child.parent.nil? %>
 
 
-<main id="event_show"
+<main id="event-show"
       data-controller="invoice price"
       data-action="register:toggle->invoice#change invoice:add@window->price#calculate invoice:remove@window->price#calculate"
       data-price-member-price-value=<%= @member_prices.courses.to_json unless @member_prices.nil? %>

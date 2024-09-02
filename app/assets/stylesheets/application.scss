@@ -435,13 +435,13 @@ main#event-index nav {
 
 // Event#show
 
-#event_show .child.active {
+#event-show .child.active {
   box-shadow:
     0 0 10px var(--ku-orange),
     0 0 10px var(--ku-orange);
 }
 
-#event_show .copy:after {
+#event-show .copy:after {
   content: "\2b";
   color: white;
   background: $info;
@@ -452,16 +452,16 @@ main#event-index nav {
 }
 
 @media (min-width: 992px) {
-  #event_show .card {
+  #event-show .card {
     width: 45%;
   }
 }
 
-#event_show .card div:first-child {
+#event-show .card div:first-child {
   width: 45%;
 }
 
-#event_show #price_bar {
+#event-show #price_bar {
   bottom: 1vw;
 }
 
@@ -469,11 +469,11 @@ main#event-index nav {
 
 #invoice-index .card,
 #invoice_show .card,
-#event_show .card.card-invoice {
+#event-show .card.card-invoice {
   width: 90%;
 }
 
-#event_show .card.card-invoice div {
+#event-show .card.card-invoice div {
   width: 100%;
 }
 

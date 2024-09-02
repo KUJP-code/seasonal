@@ -17,7 +17,22 @@ class InvoicesController < ApplicationController
   end
 
   def new
-    @invoice = authorize Invoice.new
+    @event = authorize Event.find(params[:event_id]), :show?
+    return old_event_redirect if current_user.customer? && Time.zone.today > @event.end_date
+
+    @child = authorize params[:child] ? Child.find(params[:child]) : current_user.children.first,
+                       :show?
+    return orphan_redirect if @child.parent_id.nil?
+
+    user_specific_info
+    @event_slots = @event.time_slots.morning
+                         .with_attached_image
+                         .with_attached_avif
+                         .includes(
+                           :options,
+                           afternoon_slot: %i[options]
+                         ).order(start_time: :asc)
+    @options = @event.options + @event.slot_options
   end
 
   def create
@@ -306,5 +321,41 @@ class InvoicesController < ApplicationController
       :real_invoices,
       events: %i[avif_attachment image_attachment school]
     )
+  end
+
+  def old_event_redirect
+    redirect_to root_path,
+                alert: "下記カレンダーよりご希望のアクティビティをクリックし、選択してください。\n<注意>すでに終了しているアクティビティは選択をしないようご注意ください。"
+  end
+
+  def orphan_redirect
+    redirect_to @child, alert: 'お子様がアクティビティに参加するには、保護者の同伴が必要です。'
+  end
+
+  def user_specific_info
+    @member_prices = @event.member_prices
+    @non_member_prices = @event.non_member_prices
+    @children = @child.siblings.to_a.unshift(@child)
+    @all_invoices = @child.invoices
+                          .where(event: @event)
+                          .includes(:registrations)
+                          .to_a
+
+    return unless @all_invoices.empty? || @all_invoices.all?(&:in_ss)
+
+    @all_invoices << build_temp_invoice(@child, @event)
+  end
+
+  def build_temp_invoice(child, event)
+    temp_invoice = Invoice.new(child:, event:, total_cost: 0)
+
+    # We add it here so the JS can take it into account
+    if event.party? &&
+       Time.zone.today < event.early_bird_date
+      temp_invoice.adjustments.build(change: event.early_bird_discount,
+                                     reason: '早割')
+    end
+
+    temp_invoice
   end
 end
