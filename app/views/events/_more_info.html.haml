@@ -4,7 +4,7 @@
   %article.w-full= event.description
 
   -# No early bird discount means it's a party, so no price list displayed
-  - if event.early_bird_discount.zero?
+  - if event.seasonal?
     %table.table.table-sm.table-info.table-striped.table-hover.text-center
       %caption.caption-top.text-center
         %h3.text-start

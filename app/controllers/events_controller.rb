@@ -170,7 +170,7 @@ class EventsController < ApplicationController
     temp_invoice = Invoice.new(child:, event:, total_cost: 0)
 
     # We add it here so the JS can take it into account
-    if event.early_bird_discount.negative? &&
+    if event.party? &&
        Time.zone.today < event.early_bird_date
       temp_invoice.adjustments.build(change: event.early_bird_discount,
                                      reason: '早割')

@@ -31,8 +31,12 @@ module InvoiceSummarisable
   end
 
   def course_summary(data)
-    return party_summary(data) if event.early_bird_discount.negative?
+    return party_summary(data) if event.party?
 
+    seasonal_summary(data)
+  end
+
+  def seasonal_summary(data)
     extra_cost = if data[:extra_cost].positive?
                    "<p>追加料金 x #{data[:extra_cost_count]}: #{yenify(data[:extra_cost])}</p>\n"
                  else

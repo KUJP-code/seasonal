@@ -352,8 +352,8 @@ end
 
 puts 'Creating Party event'
 
-PriceList.create!(
-  name: 'Free Demo Event', course1: '0', course3: '0', course5: '0',
+party_prices = PriceList.create!(
+  name: 'Party Price List', course1: '3500', course3: '10500', course5: '0',
   course10: '0', course15: '0', course20: '0', course25: '0',
   course30: '0', course35: '0', course40: '0', course45: '0',
   course50: '0'
@@ -362,7 +362,8 @@ PriceList.create!(
 School.where.not(name: 'Test').each do |school|
   event = school.events.create!(
     name: 'Test Party', start_date: 2.months.from_now, end_date: 2.months.from_now,
-    member_prices_id: 3, non_member_prices_id: 3, goal: 10
+    member_prices_id: party_prices.id, non_member_prices_id: party_prices.id, goal: 10,
+    early_bird_date: 1.month.from_now, early_bird_discount: -500
   )
 
   4.times do |i|

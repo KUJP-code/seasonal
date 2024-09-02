@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class Event < ApplicationRecord
+  def self.summary_json(names)
+    names.index_with do |name|
+      Event.where(name:).map(&:to_gas_summary)
+    end
+  end
+
   attr_reader :sibling_events
 
   belongs_to :school
@@ -45,12 +51,6 @@ class Event < ApplicationRecord
   scope :real, -> { where.not(school_id: [1, 2]) }
   scope :upcoming, -> { where('end_date > ?', Time.zone.now) }
 
-  def self.summary_json(names)
-    names.index_with do |name|
-      Event.where(name:).map(&:to_gas_summary)
-    end
-  end
-
   def avif_id
     return nil if avif.blob.nil?
 
@@ -61,25 +61,6 @@ class Event < ApplicationRecord
     return if avif_id.nil?
 
     self.avif = ActiveStorage::Blob.find(avif_id)
-  end
-
-  def to_gas_summary
-    external_kids = children.external
-    internal_kids = children.internal
-    reservation_kids = children.reservation
-
-    {
-      school_id:,
-      internal_count: internal_kids.count,
-      internal_revenue: Invoice.where(event_id: id, child_id: internal_kids.ids).sum(:total_cost),
-      external_count: external_kids.count,
-      external_revenue: Invoice.where(event_id: id, child_id: external_kids.ids).sum(:total_cost),
-      reservation_count: reservation_kids.count,
-      reservation_revenue: Invoice.where(event_id: id,
-                                         child_id: reservation_kids.ids).sum(:total_cost),
-      total_revenue: invoices.sum(:total_cost),
-      goal:
-    }
   end
 
   # List children attending from other schools
@@ -99,10 +80,36 @@ class Event < ApplicationRecord
     self.image = ActiveStorage::Blob.find(image_id)
   end
 
-  # Returns num of registrations for the フォトサービス event option
-  # free regs from siblings being registered not included
+  def party?
+    early_bird_discount.negative?
+  end
+
+  # Free regs from siblings being registered not included
   def photo_regs
     options.sum(:registrations_count)
+  end
+
+  def seasonal?
+    early_bird_discount.zero?
+  end
+
+  def to_gas_summary
+    external_kids = children.external
+    internal_kids = children.internal
+    reservation_kids = children.reservation
+
+    {
+      school_id:,
+      internal_count: internal_kids.count,
+      internal_revenue: Invoice.where(event_id: id, child_id: internal_kids.ids).sum(:total_cost),
+      external_count: external_kids.count,
+      external_revenue: Invoice.where(event_id: id, child_id: external_kids.ids).sum(:total_cost),
+      reservation_count: reservation_kids.count,
+      reservation_revenue: Invoice.where(event_id: id,
+                                         child_id: reservation_kids.ids).sum(:total_cost),
+      total_revenue: invoices.sum(:total_cost),
+      goal:
+    }
   end
 
   def with_sibling_events
