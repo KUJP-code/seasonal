@@ -5,6 +5,6 @@ FactoryBot.define do
     child_name { 'Lil Tommy' }
     school
     category { :schedule_change }
-    document { Rails.root.join('app/assets/images/login_splash.png').open }
+    document { Rails.public_path.join('apple-touch-icon.png').open }
   end
 end
