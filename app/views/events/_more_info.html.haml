@@ -3,7 +3,6 @@
 .d-flex.flex-column.w-100.flex-shrink-1.gap-3
   %article.w-full= event.description
 
-  -# No early bird discount means it's a party, so no price list displayed
   - if event.seasonal?
     %table.table.table-sm.table-info.table-striped.table-hover.text-center
       %caption.caption-top.text-center

@@ -37,7 +37,6 @@ class Child < ApplicationRecord
   # Allow export/import with postgres-copy
   acts_as_copy_target
 
-  # Map category int in table to a category
   enum :category, internal: 0,
                   reservation: 1,
                   external: 2,
@@ -60,20 +59,13 @@ class Child < ApplicationRecord
                '中学２年' => 13,
                '高校生以上' => 14
 
-  # Map photos int in table to a permission
   enum :photos, 'NG' => 0,
                 'マイページOK' => 1,
                 'OK' => 3,
                 'Unknown' => 4
 
-  # Validations
-  # Format
   validates :katakana_name, format: { with: /\A[ァ-ヶヶ　ー ]+\z/ }
-
-  # Presence
   validates :allergies, :category, :en_name, :grade, :katakana_name, :name, :photos, presence: true
-
-  # Uniqueness
   validates :ssid, uniqueness: { allow_blank: true }
 
   def arrival_time(slot)
