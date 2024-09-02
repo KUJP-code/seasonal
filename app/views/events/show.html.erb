@@ -213,7 +213,11 @@
                                 </div>
                             <% end %>
                         </template>
-                        <%= f.submit t('.confirm_invoice'), class: 'btn btn-primary w-100', data: { 'bs-toggle' => 'modal', 'bs-target' => "#child#{invoice.child_id}invoice#{invoice.id}", 'price-target' => 'confirm' } unless f.object.in_ss %>
+                        <%= f.submit t('.confirm_invoice'),
+                                     class: 'btn btn-primary w-100',
+                                     data: { 'bs-toggle' => 'modal',
+                                             'bs-target' => "#child#{invoice.child_id}invoice#{invoice.id}",
+                                             'price-target' => 'confirm' } unless f.object.in_ss %>
                     <% end %>
                 </turbo-frame>
             <% end %>

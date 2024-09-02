@@ -1,1 +1,218 @@
-%main#event-show
+:ruby
+  all_registered_slots = @child.time_slots.where(event_id: @event.id).order(start_time: :asc)
+  registered_slots = @child.time_slots.morning.where(event_id: @event.id).order(start_time: :asc)
+  unregistered_slots = @event_slots.where.not(id: registered_slots.ids)
+
+  active_invoice = @all_invoices.find { |i| i.in_ss == false }
+
+  registrations = @all_invoices.reduce([]) { |array, invoice| array + invoice.registrations }
+  adjustments = @all_invoices.reduce([]) { |array, inv| array + inv.adjustments }
+
+  slots_in_ss = @all_invoices.select(&:in_ss)
+                             .reduce([]) { |array, invoice| array + invoice.slot_regs }
+  opt_regs_in_ss = @all_invoices.select(&:in_ss)
+                                .reduce([]) { |array, invoice| array + invoice.opt_regs }
+
+  stimulus_actions = 'register:toggle->invoice#change ' \
+                     'invoice:add@window->price#calculate ' \
+                     'invoice:remove@window->price#calculate'
+
+  event_cost = @child.parent.invoices.where(event_id: @event.id)
+                     .reduce(0) { |sum, invoice| sum + invoice.total_cost }
+  others_cost = @child.parent.invoices.where(event_id: @event.id)
+                      .where.not(child_id: @child.id)
+                      .reduce(0) { |sum, invoice| sum + invoice.total_cost }
+
+%main{ class: 'd-flex flex-column justify-content-start align-items-start text-start bg-white',
+       data: { controller: 'invoice price',
+               action: stimulus_actions,
+               'price-member-price-value': @member_prices.courses.to_json,
+               'price-non-member-price-value': @non_member_prices.courses.to_json,
+               'price-other-cost-value': others_cost || 0,
+               'price-event-name-value': @event.name },
+       id: 'event-show' }
+
+  .d-flex.justify-content-between.align-items-center.flex-wrap.gap-3.w-100
+    %h1.fw-bolder.text-center
+      = t('.title', name: @event.name,
+                    school: t("schools.#{@event.school.name}"))
+
+      .card.bg-info
+        %h2{ data: { 'price-target': 'eventCost' } }
+          = t('.event_cost', cost: number_to_currency(event_cost, locale: :ja),
+                             event: @event.name)
+          %p複数のお子様のお申し込みをされた場合、合算された金額となります。
+
+  = render 'events/child_switcher',
+           child: @child, children: @children, event: @event
+
+  - if @children.size > 1
+    %h3.text-center
+      ＋ボタンを押すと、お子様のお申込内容を他のお子様に反映させることができ、ご兄弟で同じ日程のお申込が出来ます。（反映させる前に、1人目のお申込を確定させる必要がございます。）
+
+  - if @child.internal? && @event.seasonal?
+    %h3.text-center
+      通常レッスン日(午後)は選択しないでください。
+
+  %hr.border.border-secondary.border-1.w-100
+
+  - @event.options.each do |opt|
+    - if @child.siblings.any? { |sib| sib.registered?(opt) }
+      .d-flex.gap-2.align-items-center
+        %h3 #{opt.name}: #{t('.sibling_reg', opt: opt.name)}
+    - elsif opt_regs_in_ss.any? { |reg| reg.registerable_id == opt.id }
+      .d-flex.gap-2.align-items-center
+        %h3 #{opt.name} (#{number_to_currency(opt.cost, locale: :ja)}): ◯
+    - else
+      - registered = registrations.any? { |reg| reg.child_id == @child.id && reg.registerable_id == opt.id }
+
+      .d-flex.gap-2.align-items-center{ data: { controller: 'register',
+                                                'register-id-value': opt.id,
+                                                'register-type-value': 'Option',
+                                                'register-child-value': @child.id,
+                                                'register-cost-value': opt.cost } }
+        %h3
+          %label{ 'data-register-target': 'name',
+                  for: "eopt#{opt.id}" }
+            = image_tag 'photo_service.gif', height: '50px'
+            = number_to_currency(opt.cost, locale: :ja)
+        = check_box_tag "eopt#{opt.id}",
+                        "eopt#{opt.id}",
+                        (true if registered),
+                        data: { action: 'register#toggle',
+                                'register-target': 'button' }
+
+  .accordion.w-100#accordionEvent
+    .accordion-item
+      %h2.accordion-header
+        %button{ aria: { expanded: 'false', controls: 'event-collapseOne' },
+                 class: 'accordion-button collapsed text-bg-primary',
+                 data: { 'bs-toggle': 'collapse',
+                         'bs-target': '#event-collapseOne' },
+                 type: 'button' }
+          = t('.more_info')
+
+      .accordion-collapse.collapse#event-collapseOne
+        .accordion-body
+          = render 'events/more_info',
+                   adjustments:,
+                   event: @event,
+                   child: @child,
+                   price_list: @child.member? ? @member_prices : @non_member_prices
+
+    .accordion-item
+      %h2.accordion-header
+        %button{ aria: { expanded: 'true', controls: 'panelsStayOpen-collapseTwo' },
+                 class: 'accordion-button text-bg-primary',
+                 data: { 'bs-toggle': 'collapse',
+                         'bs-target': '#event-collapseTwo' },
+                 type: 'button' }
+          = t('.unregistered_slots')
+      .accordion-collapse.collapse.show#event-collapseTwo
+        .accordion-body
+          .d-flex.flex-column.flex-lg-row.flex-lg-wrap.justify-content-lg-around.gap-3
+            = render partial: 'time_slots/add_slot',
+                     collection: unregistered_slots,
+                     locals: { child: @child, registrations:,
+                               event: @event, slots_in_ss:, opt_regs_in_ss: }
+
+    .accordion-item
+      %h2.accordion-header
+        %button{ aria: { expanded: 'false', controls: 'panelsStayOpen-collapseThree' },
+                 class: 'accordion-button collapsed text-bg-primary',
+                 data: { 'bs-toggle': 'collapse',
+                         'bs-target': '#event-collapseThree' },
+                 type: 'button' }
+          = t('.registered_slots')
+
+      .accordion-collapse.collapse#event-collapseThree
+        .accordion-body
+          .d-flex.flex-column.flex-lg-row.flex-lg-wrap.justify-content-lg-around.gap-3
+            = render partial: 'time_slots/add_slot',
+                     collection: registered_slots,
+                     locals: { child: @child, registrations:,
+                               event: @event, slots_in_ss:, opt_regs_in_ss: }
+
+  .w-100.d-flex.justify-content-evenly.align-items-center.flex-wrap.gap-2.bg-info.p-2.rounded.sticky-bottom#price_bar
+    %h2.text-white.fw-bold#total_cost{ data: { 'price-target': 'finalCost' } }
+      = t('.total_cost')
+      = ':'
+      = number_to_currency(@all_invoices.reduce(0) { |sum, i| sum + i.total_cost },
+                           locale: :ja)
+
+    .d-flex.justify-content-around.gap-2
+      #reg_slots
+        - all_registered_slots.each do |slot|
+          %p.hidden{ 'data-modifier': activity_modifier(slot, @child) }
+            = slot.name.concat(slot.morning ? '' : ' (午後)')
+
+      %span.hidden{ data: { 'price-target': 'snackCount',
+                           'invoice-target': 'snackCount' } }
+        = all_registered_slots.count(&:snack)
+
+      %p.hidden{ data: { 'price-target': 'optCount' } }
+        = t('.num_options', num: @all_invoices.reduce(0) { |sum, i| sum + i.options.size })
+
+    - @all_invoices.each do |invoice|
+      - id = "child#{invoice.child_id}invoice#{invoice.id}"
+
+      = turbo_frame_tag id, class: (invoice.in_ss ? 'd-none' : '') do
+        = form_with model: invoice,
+                    url: confirm_new_invoice_path(new: invoice.new_record?),
+                    data: { turbo: false, 'turbo-frame': id },
+                    class: 'align-self-center d-flex gap-3' do |f|
+          = f.hidden_field :id
+          = f.hidden_field :child_id
+          = f.hidden_field :event_id
+
+          .slot_regs{ data: { 'price-target': 'slotRegs' } }
+            = f.fields_for :slot_regs do |slot_f|
+              %div{ class: "slot_reg child#{slot_f.object.child_id}",
+                    id: "slot#{slot_f.object.registerable_id}child#{slot_f.object.child_id}" }
+                = slot_f.hidden_field :_destroy, value: 0
+                = slot_f.hidden_field :id
+                = slot_f.hidden_field :child_id
+                = slot_f.hidden_field :registerable_id
+                = slot_f.hidden_field :registerable_type
+
+            - unless f.object.in_ss
+              %div{ data: { 'invoice-target': 'slotTarget' } }
+
+          .opt_regs{ data: { 'price-target': 'optRegs' } }
+            = f.fields_for :opt_regs do |opt_f|
+              %div{ class: "opt_reg child#{opt_f.object.child_id}",
+                    id: "opt#{opt_f.object.registerable_id}child#{opt_f.object.child_id}" }
+                = opt_f.hidden_field :_destroy, value: 0
+                = opt_f.hidden_field :id
+                = opt_f.hidden_field :child_id
+                = opt_f.hidden_field :registerable_id
+                = opt_f.hidden_field :registerable_type
+                .opt_cost.hidden.registered{ data: { 'price-target': 'optCost' } }
+                  = @options.find { |opt| opt.id == opt_f.object.registerable_id }&.cost || 0
+
+            - unless f.object.in_ss
+              %div{ 'data-invoice-target': 'optTarget' }
+
+          %template{ 'data-invoice-target': 'slotTemplate' }
+            = f.fields_for :slot_regs, Registration.new, child_index: 'REG_INDEX' do |reg_f|
+              .slot_reg.NEW_CLASS{ 'data-new-record': reg_f.object.new_record?, id: "NEW_ID" }
+                = reg_f.hidden_field :child_id, value: 'NEW_CHILD_ID'
+                = reg_f.hidden_field :registerable_id, value: 'NEW_REGISTERABLE_ID'
+                = reg_f.hidden_field :registerable_type, value: 'TimeSlot'
+
+          %template{ 'data-invoice-target': 'optTemplate' }
+            = f.fields_for :opt_regs, Registration.new, child_index: 'REG_INDEX' do |reg_f|
+              .opt_reg.NEW_CLASS{ 'data-new-record': reg_f.object.new_record?, id: "NEW_ID" }
+                = reg_f.hidden_field :child_id, value: 'NEW_CHILD_ID'
+                = reg_f.hidden_field :registerable_id, value: 'NEW_REGISTERABLE_ID'
+                = reg_f.hidden_field :registerable_type, value: 'Option'
+
+          - unless f.object.in_ss
+            = f.submit t('.confirm_invoice'),
+                       class: 'btn btn-primary w-100',
+                       data: { 'bs-toggle': 'modal',
+                               'bs-target': "#child#{@child.id}invoice#{active_invoice.id}",
+                               'price-target': 'confirm' }
+
+  = turbo_frame_tag "child#{@child.id}invoice#{active_invoice.id}",
+                    class: 'modal fade', tabindex: '-1'
