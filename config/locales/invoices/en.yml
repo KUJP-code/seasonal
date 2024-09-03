@@ -13,6 +13,9 @@ en:
       merge_bookings: "Merge Bookings"
       revert_to: "Revert to this version"
       unconfirm_booking: "Unconfirm Booking"
+    registration_page:
+      price_footer:
+        confirm_changes: "Confirm Changes"
     show:
       changed_by: "Changed by: %{user}"
       change: "Change: %{action}"
