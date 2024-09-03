@@ -51,7 +51,7 @@
                                 <% end %>
                             </div>
 
-                            <% if @invoice.event.early_bird_discount.zero? %>
+                            <% if @invoice.event.seasonal? %>
                               <button class="btn btn-info mb-3" type="button"
                                       data-bs-toggle="collapse"
                                       data-bs-target="#coupons"

@@ -107,6 +107,9 @@ class InvoicesController < ApplicationController
     @invoice.calc_cost(ignore_slots, @ignore_opts)
     @ss_invoices = Invoice.where(event_id: @invoice.event_id, in_ss: true,
                                  child_id: @invoice.child_id)
+
+    # Temp solution while working on the registration page refactor
+    render params[:rework] ? 'invoices/_confirm_rework' : 'invoices/confirm'
   end
 
   def confirmed

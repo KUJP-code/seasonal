@@ -21,6 +21,8 @@
                       .where.not(child_id: @child.id)
                       .reduce(0) { |sum, invoice| sum + invoice.total_cost }
 
+  frame_id = "child#{@child.id}invoice#{active_invoice.id}"
+
 %main{ class: 'd-flex flex-column justify-content-start align-items-start text-start bg-white',
        data: { controller: 'invoice price',
                action: stimulus_actions,
@@ -89,9 +91,9 @@
                      locals: { child: @child, registrations:,
                                event: @event, slots_in_ss:, confirmed_opt_regs: }
 
-  = render('invoices/registration_page/price_footer',
-           active_invoice:, all_invoices: @all_invoices,
-           all_registered_slots:, child: @child, options: @options)
+  = render 'invoices/registration_page/price_footer',
+           all_invoices: @all_invoices, all_registered_slots:,
+           child: @child, frame_id:, options: @options
 
-  = turbo_frame_tag "child#{@child.id}invoice#{active_invoice.id}",
-                    class: 'modal fade', tabindex: '-1'
+%dialog#invoice-preview.rounded.w-100.h-100
+  = turbo_frame_tag frame_id
