@@ -82,7 +82,7 @@
                                         end %>
 
                     <% registered_arrival = arrival_options.find do |o|
-                        opt_regs_in_ss.any? { |r| r.registerable_id == o.id }
+                        confirmed_opt_regs.any? { |r| r.registerable_id == o.id }
                     end %>
 
                     <% if registered_arrival %>
@@ -128,7 +128,7 @@
                                             end %>
 
                     <% reg_morn_depart = morn_depart_options.find do |opt|
-                        opt_regs_in_ss.any? { |reg| reg.registerable_id == opt.id }
+                        confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id }
                     end %>
 
                     <% if reg_morn_depart %>
@@ -256,7 +256,7 @@
                             <% end %>
                             <% afternoon_slot.options.reject { |opt| aft_time_ids.include?(opt.id) }.each do |opt| %>
                                 <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
-                                <% if opt_regs_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
+                                <% if confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id } %>
                                     <p><%= "#{opt.name}: ◯" %></p>
                                 <% else %>
                                     <div class="add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100 mt-2"
@@ -283,7 +283,7 @@
                                                 end %>
 
                             <% registered_depart = depart_options.find do |o|
-                                opt_regs_in_ss.any? { |r| r.registerable_id == o.id }
+                                confirmed_opt_regs.any? { |r| r.registerable_id == o.id }
                             end %>
 
                             <% if registered_depart %>

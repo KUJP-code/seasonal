@@ -5,7 +5,7 @@
 <% registrations = @all_invoices.reduce([]) { |array, invoice| array + invoice.registrations } %>
 <% adjustments = @all_invoices.reduce([]) { |array, inv| array + inv.adjustments } %>
 <% slots_in_ss = @all_invoices.select { |invoice| invoice.in_ss }.reduce([]) { |array, invoice| array + invoice.slot_regs } %>
-<% opt_regs_in_ss = @all_invoices.select { |invoice| invoice.in_ss }.reduce([]) { |array, invoice| array + invoice.opt_regs } %>
+<% confirmed_opt_regs = @all_invoices.select { |invoice| invoice.in_ss }.reduce([]) { |array, invoice| array + invoice.opt_regs } %>
 <% event_cost = @child.parent.invoices.where(event_id: @event.id).reduce(0) { |sum, invoice| sum + invoice.total_cost } unless @child.parent.nil? %>
 <% others_cost = @child.parent.invoices.where(event_id: @event.id).where.not(child_id: @child.id).reduce(0) { |sum, invoice| sum + invoice.total_cost } unless @child.parent.nil? %>
 
@@ -20,19 +20,9 @@
       class="d-flex flex-column justify-content-start align-items-start text-start bg-white">
 
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 w-100">
-        <h1 class="fw-bolder text-center"><%= t('.title', name: @event.name, school: t("schools.#{@event.school.name}")) %></h1>
+    <%= render 'invoices/registration_page/header', child: @child, siblings: @siblings, event: @event %>
 
-        <% unless @child.parent.nil? %>
-            <div class="card bg-info">
-                <h4 data-price-target="eventCost"><%= t('.event_cost', cost: number_to_currency(event_cost, unit: '円', precision: 0, locale: :ja), event: @event.name) %></h4>
-                <p>複数のお子様のお申し込みをされた場合、合算された金額となります。</p>
-            </div>
-        <% end %>
-    </div>
-
-    <%= render 'events/child_switcher', child: @child, children: @children, event: @event %>
-
-    <% if @children.size > 1 %>
+    <% if @siblings.size > 1 %>
         <h5 class="text-center">＋ボタンを押すと、お子様のお申込内容を他のお子様に反映させることができ、ご兄弟で同じ日程のお申込が出来ます。（反映させる前に、1人目のお申込を確定させる必要がございます。）</h5>
     <% end %>
 
@@ -48,7 +38,7 @@
                 <div class="d-flex gap-2 align-items-center">
                     <h4><%= "#{opt.name}: #{t('.sibling_reg', opt: opt.name)}" %></h4>
                 </div>
-            <% elsif opt_regs_in_ss.any? { |reg| reg.registerable_id == opt.id } %>
+            <% elsif confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id } %>
                 <div class="d-flex gap-2 align-items-center">
                     <h4><%= "#{opt.name} (#{number_to_currency(opt.cost, unit: '円', precision: 0, locale: :ja)}): ◯" %></h4>
                 </div>
@@ -82,7 +72,7 @@
 
             <div id="event-collapseOne" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  <%= render 'events/more_info',
+                  <%= render 'invoices/registration_page/more_info',
                              adjustments:,
                              event: @event,
                              child: @child,
@@ -108,7 +98,7 @@
                                         registrations: registrations,
                                         event: @event,
                                         slots_in_ss: slots_in_ss,
-                                        opt_regs_in_ss: opt_regs_in_ss
+                                        confirmed_opt_regs: confirmed_opt_regs
                                    } %>
                     </div>
                 </div>
@@ -124,7 +114,7 @@
             <div id="event-collapseThree" class="accordion-collapse collapse">
                 <div class="accordion-body">
                     <div class="d-flex flex-column flex-lg-row flex-lg-wrap justify-content-lg-around gap-3">
-                        <%= render partial: 'time_slots/add_slot', collection: registered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, opt_regs_in_ss: opt_regs_in_ss } %>
+                        <%= render partial: 'time_slots/add_slot', collection: registered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, confirmed_opt_regs: confirmed_opt_regs } %>
                     </div>
                 </div>
             </div>

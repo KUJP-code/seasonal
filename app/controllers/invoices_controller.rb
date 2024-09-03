@@ -335,7 +335,7 @@ class InvoicesController < ApplicationController
   def user_specific_info
     @member_prices = @event.member_prices
     @non_member_prices = @event.non_member_prices
-    @children = @child.siblings.to_a.unshift(@child)
+    @siblings = @child.siblings
     @all_invoices = @child.invoices
                           .where(event: @event)
                           .includes(:registrations)

@@ -1,4 +1,20 @@
--# locals: (child:, children:, event:)
+-# locals: (child:, siblings:, event:)
+
+:ruby
+  # FIXME: DB query in view
+  event_cost = child.parent.invoices.where(event_id: event.id)
+                    .reduce(0) { |sum, invoice| sum + invoice.total_cost }
+
+.d-flex.justify-content-between.align-items-center.flex-wrap.gap-3.w-100
+  %h1.fw-bolder.text-center
+    = t('.title', name: event.name,
+                  school: t("schools.#{event.school.name}"))
+
+  .card.bg-info
+    %h2{ data: { 'price-target': 'eventCost' } }
+      = t('.event_cost', cost: number_to_currency(event_cost, locale: :ja),
+                         event: event.name)
+    %p複数のお子様のお申し込みをされた場合、合算された金額となります。
 
 %table.table.table-info.table-striped.table-hover.text-center.align-middle
   %tbody
@@ -15,7 +31,7 @@
             %p.hidden.membership= child.member? ? 'Yes' : 'No'
 
     - if event.end_date > Time.zone.now
-      - children.reject { |c| c.id == child.id }.each do |sibling|
+      - siblings.each do |sibling|
         %tr
           %td
             = link_to t('.copy_regs', from: child.name, to: sibling.name),
