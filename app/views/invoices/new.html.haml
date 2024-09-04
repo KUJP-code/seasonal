@@ -1,17 +1,24 @@
 :ruby
-  all_registered_slots = @child.time_slots.where(event_id: @event.id).order(start_time: :asc)
-  registered_slots = @child.time_slots.morning.where(event_id: @event.id).order(start_time: :asc)
+  all_registered_slots = @child.time_slots.where(event_id: @event.id)
+                               .order(start_time: :asc)
+  registered_slots = @child.time_slots.morning
+                           .where(event_id: @event.id)
+                           .order(start_time: :asc)
   unregistered_slots = @event_slots.where.not(id: registered_slots.ids)
 
   active_invoice = @all_invoices.find { |i| i.in_ss == false }
 
-  registrations = @all_invoices.reduce([]) { |array, invoice| array + invoice.registrations }
-  adjustments = @all_invoices.reduce([]) { |array, inv| array + inv.adjustments }
+  registrations = @all_invoices
+                  .reduce([]) { |array, invoice| array + invoice.registrations }
+  adjustments = @all_invoices
+                .reduce([]) { |array, inv| array + inv.adjustments }
 
-  slots_in_ss = @all_invoices.select(&:in_ss)
-                             .reduce([]) { |array, invoice| array + invoice.slot_regs }
-  confirmed_opt_regs = @all_invoices.select(&:in_ss)
-                                .reduce([]) { |array, invoice| array + invoice.opt_regs }
+  slots_in_ss = @all_invoices
+                .select(&:in_ss)
+                .reduce([]) { |array, invoice| array + invoice.slot_regs }
+  confirmed_opt_regs = @all_invoices
+                       .select(&:in_ss)
+                       .reduce([]) { |array, invoice| array + invoice.opt_regs }
 
   stimulus_actions = 'register:toggle->invoice#change ' \
                      'invoice:add@window->price#calculate ' \
@@ -42,54 +49,28 @@
            child: @child, siblings: @siblings, confirmed_opt_regs:,
            event: @event, registrations:
 
-  .accordion.w-100#accordionEvent
-    .accordion-item
-      %h2.accordion-header
-        %button{ aria: { expanded: 'false', controls: 'event-collapseOne' },
-                 class: 'accordion-button collapsed text-bg-primary',
-                 data: { 'bs-toggle': 'collapse',
-                         'bs-target': '#event-collapseOne' },
-                 type: 'button' }
-          = t('.more_info')
+  %details.w-100.border.rounded{ name: 'accordion' }
+    %summary.bg-primary.rounded.p-3
+      = t('.more_info')
+    = render 'invoices/registration_page/more_info',
+             adjustments:, event: @event, child: @child,
+             price_list: @child.member? ? @member_prices : @non_member_prices
 
-      .accordion-collapse.collapse#event-collapseOne
-        .accordion-body
-          = render 'invoices/registration_page/more_info',
-                   adjustments:, event: @event, child: @child,
-                   price_list: @child.member? ? @member_prices : @non_member_prices
+  %details.w-100.border.rounded.mt-n3{ name: 'accordion', open: true }
+    %summary.bg-primary.rounded.p-3= t('.unregistered_slots')
+    .d-flex.flex-column.justify-content-around.flex-lg-row.flex-wrap.gap-3.p-3
+      = render partial: 'time_slots/add_slot',
+               collection: unregistered_slots,
+               locals: { child: @child, registrations:, event: @event,
+                         slots_in_ss:, confirmed_opt_regs: }
 
-    .accordion-item
-      %h2.accordion-header
-        %button{ aria: { expanded: 'true', controls: 'panelsStayOpen-collapseTwo' },
-                 class: 'accordion-button text-bg-primary',
-                 data: { 'bs-toggle': 'collapse',
-                         'bs-target': '#event-collapseTwo' },
-                 type: 'button' }
-          = t('.unregistered_slots')
-      .accordion-collapse.collapse.show#event-collapseTwo
-        .accordion-body
-          .d-flex.flex-column.flex-lg-row.flex-lg-wrap.justify-content-lg-around.gap-3
-            = render partial: 'time_slots/add_slot',
-                     collection: unregistered_slots,
-                     locals: { child: @child, registrations:,
-                               event: @event, slots_in_ss:, confirmed_opt_regs: }
-
-    .accordion-item
-      %h2.accordion-header
-        %button{ aria: { expanded: 'false', controls: 'panelsStayOpen-collapseThree' },
-                 class: 'accordion-button collapsed text-bg-primary',
-                 data: { 'bs-toggle': 'collapse',
-                         'bs-target': '#event-collapseThree' },
-                 type: 'button' }
-          = t('.registered_slots')
-
-      .accordion-collapse.collapse#event-collapseThree
-        .accordion-body
-          .d-flex.flex-column.flex-lg-row.flex-lg-wrap.justify-content-lg-around.gap-3
-            = render partial: 'time_slots/add_slot',
-                     collection: registered_slots,
-                     locals: { child: @child, registrations:,
-                               event: @event, slots_in_ss:, confirmed_opt_regs: }
+  %details.w-100.border.rounded.mt-n3{ name: 'accordion' }
+    %summary.bg-primary.rounded.p-3= t('.registered_slots')
+    .d-flex.flex-column.justify-content-around.flex-lg-row.flex-wrap.gap-3.p-3
+      = render partial: 'time_slots/add_slot',
+               collection: registered_slots,
+               locals: { child: @child, registrations:, event: @event,
+                         slots_in_ss:, confirmed_opt_regs: }
 
   = render 'invoices/registration_page/price_footer',
            all_invoices: @all_invoices, all_registered_slots:,
