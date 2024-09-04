@@ -37,6 +37,13 @@ ja:
       num_slots: "お申込スポット数"
       recent_bookings: "最新の新規お申込"
       total_cost: "合計金額"
+    registration_page:
+      header:
+        confirm_copy: "%{from}から%{to}にお申込内容をコピーしてよろしいですか？「OK」を押すと%{to}のお申込内容がスクールに送信されます。"
+        copy_regs: "%{from}と同じお申込内容を%{to}に反映させる"
+        event_cost: "%{event}の合計: %{cost}"
+        regs_for: "%{child}の登録"
+        title: "%{name} @ %{school}"
     show:
       adjustments: "調整内容を追加する"
       changed_by: "変更者: %{user}"

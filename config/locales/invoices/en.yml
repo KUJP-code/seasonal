@@ -14,6 +14,12 @@ en:
       revert_to: "Revert to this version"
       unconfirm_booking: "Unconfirm Booking"
     registration_page:
+      header:
+        confirm_copy: "Are you sure you want to copy all registrations from %{from} to %{to}?"
+        copy_regs: "Copy regs from %{from} to %{to}"
+        event_cost: "Total cost for %{event}: %{cost}"
+        regs_for: "Registrations for %{child}"
+        title: "%{name} at %{school}"
       price_footer:
         confirm_changes: "Confirm Changes"
     show:
