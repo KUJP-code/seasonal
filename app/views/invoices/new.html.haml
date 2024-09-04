@@ -1,6 +1,4 @@
 :ruby
-  all_registered_slots = @child.time_slots.where(event_id: @event.id)
-                               .order(start_time: :asc)
   registered_slots = @child.time_slots.morning
                            .where(event_id: @event.id)
                            .order(start_time: :asc)
@@ -74,8 +72,8 @@
                          confirmed_slot_regs:, confirmed_opt_regs:, opt_regs: }
 
   = render 'invoices/registration_page/price_footer',
-           all_invoices: @all_invoices, all_registered_slots:,
-           child: @child, frame_id:, options: @options
+           all_invoices: @all_invoices, child: @child,
+           frame_id:, options: @options
 
 %dialog.rounded#invoice-preview
   = turbo_frame_tag frame_id

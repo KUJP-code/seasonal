@@ -1,7 +1,8 @@
--# locals: (all_invoices:, all_registered_slots:, child:, frame_id:, options:)
+-# locals: (all_invoices:, child:, frame_id:, options:)
 
 :ruby
-  num_options = all_invoices.reduce(0) { |sum, i| sum + i.options.size }
+  all_registered_slots = all_invoices.map(&:time_slots).flatten
+  num_options = all_invoices.reduce(0) { |sum, i| sum + i.opt_regs.size }
   total_cost = all_invoices.reduce(0) { |sum, i| sum + i.total_cost }
 
 
