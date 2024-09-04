@@ -44,6 +44,8 @@ ja:
         event_cost: "%{event}の合計: %{cost}"
         regs_for: "%{child}の登録"
         title: "%{name} @ %{school}"
+      price_footer:
+        confirm_invoice: "お申込内容を確認する"
     show:
       adjustments: "調整内容を追加する"
       changed_by: "変更者: %{user}"

@@ -21,7 +21,7 @@ en:
         regs_for: "Registrations for %{child}"
         title: "%{name} at %{school}"
       price_footer:
-        confirm_changes: "Confirm Changes"
+        confirm_invoice: "Preview Changes"
     show:
       changed_by: "Changed by: %{user}"
       change: "Change: %{action}"
