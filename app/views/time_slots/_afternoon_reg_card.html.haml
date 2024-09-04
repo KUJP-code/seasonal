@@ -1,1 +1,125 @@
--# locals: (slot:)
+-# locals: (confirmed_slot_regs:, confirmed_opt_regs:,
+  child:, opt_regs:, registrations:, slot:)
+  Rubocop was going crazy with false positives, so turned the cop off
+  rubocop:disable Layout/IndentationConsistency
+
+:ruby
+  return if slot.nil?
+
+  confirmed = confirmed_slot_regs.any? { |reg| reg.registerable_id == slot.id }
+  registered = registrations.any? do |reg|
+    reg.registerable_id == slot.id && reg.registerable_type == 'TimeSlot'
+  end
+
+  # Departure variables
+  depart_category = child.kindy ? :k_departure? : :departure?
+  depart_options = slot.options.select(&depart_category).sort_by(&:modifier)
+  confirmed_depart = depart_options.find do |o|
+    confirmed_opt_regs.any? { |reg| reg.registerable_id == o.id }
+  end
+
+
+
+- if slot.closed && current_user.customer?
+  %p.d-flex.align-items-center.justify-content-center.text-bg-warning.p-1.rounded
+    = t('pm_closed')
+
+- else
+  - if confirmed
+    %p.fw-bold.fs-5 #{slot.special? ? slot.name : t('.afternoon')}: ◯
+
+    - if activity_modifier(slot, child).positive?
+      %p= t('.extra_charge',
+            cost: number_to_currency(activity_modifier(slot, child)))
+
+    - if slot.snack
+      %p #{t('.snack')}: ◯
+
+    - slot.options.each do |opt|
+      - next if opt_regs.none? { |reg| reg.registerable_id == opt.id }
+
+      %p #{opt.name}: ◯
+
+  - else
+    .afternoon.w-100{ data: { controller: 'popup',
+                              action: 'register:toggle->popup#listen' } }
+      %div{ class: 'add_reg w-100 form-check form-switch p-0 d-flex flex-column justify-content-center align-items-center gap-3',
+            data: { controller: 'register',
+                    'register-child-value': child.id,
+                    'register-id-value': slot.id,
+                    'register-modifier-value': activity_modifier(slot, child),
+                    'register-name-value': slot.name.concat(' (午後)').tr(' ', '_'),
+                    'register-snack-value': slot.snack,
+                    'register-type-value': 'TimeSlot' } }
+        %label.fw-bold.fs-5.form-check-label{ for: "a_slot#{slot.id}",
+                                              'data-register-target': 'name' }
+          = slot.special? ? slot.name : t('.afternoon')
+
+        - if confirmed_slot_regs.any? { |reg| reg.registerable_id == slot.id }
+          %p ◯
+        - elsif child.regular_schedule && child.regular_schedule[slot.day.downcase]
+          %p.text-bg-danger.rounded.p-1= t('.regular_day')
+        - elsif slot.closed?
+          %p.d-flex.align-items-center.justify-content-center.text-bg-warning.p-1.rounded
+            = t('pm_closed')
+
+        = check_box_tag "a_slot#{slot.id}",
+                        '', (true if registered),
+                        class: 'form-check-input m-0',
+                        data: { action: 'register#toggle',
+                                'register-target': 'button' },
+                        role: 'switch'
+
+        %div{ class: "options mt-2 #{'hidden' unless registered}",
+              'data-popup-target': 'popup' }
+
+          - if activity_modifier(slot, child).positive?
+            %p= t('.extra_charge',
+                  cost: number_to_currency(activity_modifier(slot, child)))
+
+          - if slot.snack
+            %p #{t('.snack')}: ◯
+
+          - slot.options.each do |opt|
+            - next if opt.time?
+
+            - registered = opt_regs.any? { |reg| reg.registerable_id == opt.id }
+
+            - if confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id }
+              %p #{opt.name}: ◯
+            - else
+              %div{ class: 'add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100',
+                    data: { controller: 'register',
+                            'register-child-value': child.id,
+                            'register-cost-value': opt.cost,
+                            'register-id-value': opt.id,
+                            'register-type-value': 'Option' } }
+                %label.form-check-label{ for: "opt#{opt.id}",
+                                         'data-register-target': 'name' }
+                  = opt.name
+                = check_box_tag "opt#{opt.id}",
+                                '', (true if registered),
+                                class: 'form-check-input m-0',
+                                data: { action: 'register#toggle',
+                                        'register-target': 'button' },
+                                role: 'switch'
+
+          - if confirmed_depart
+            %p #{confirmed_depart.name}: ◯
+          - elsif depart_options.size.positive?
+            %fieldset.mt-2.form-switch.p-0.d-flex.flex-column.gap-2
+              %legend.fs-6.fw-bold= t('.depart_options')
+
+              -# always checked because will be overridden if
+                 any opts are actually registered
+              = render 'options/radio',
+                       opt: Option.new(name: 'なし', optionable_id: slot.id),
+                       child_id: child.id, checked: true
+
+              - depart_options.each do |o|
+                - checked = opt_regs.any? { |reg| reg.registerable_id == o.id }
+
+                = render 'options/radio',
+                         opt: o, child_id: child.id, checked:
+
+-# rubocop:enable Layout/IndentationConsistency

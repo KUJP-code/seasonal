@@ -7,7 +7,8 @@ class RegularSchedule < ApplicationRecord
   acts_as_copy_target
 
   def days
-    "#{'月, ' if monday}#{'火, ' if tuesday}#{'水, ' if wednesday}#{'木, ' if thursday}#{'金' if friday}".chomp(', ')
+    "#{'月, ' if monday}#{'火, ' if tuesday}#{'水, ' if wednesday}" \
+    "#{'木, ' if thursday}#{'金' if friday}".chomp(', ')
   end
 
   def en_days

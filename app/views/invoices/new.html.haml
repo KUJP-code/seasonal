@@ -10,6 +10,7 @@
 
   registrations = @all_invoices
                   .reduce([]) { |array, invoice| array + invoice.registrations }
+  opt_regs = registrations.select { |reg| reg.registerable_type == 'Option' }
   adjustments = @all_invoices
                 .reduce([]) { |array, inv| array + inv.adjustments }
 
@@ -62,7 +63,7 @@
       = render partial: 'time_slots/add_slot_rework',
                collection: unregistered_slots,
                locals: { child: @child, registrations:, event: @event,
-                         confirmed_slot_regs:, confirmed_opt_regs: }
+                         confirmed_slot_regs:, confirmed_opt_regs:, opt_regs: }
 
   %details.w-100.border.rounded.mt-n3{ name: 'accordion' }
     %summary.bg-primary.rounded.p-3= t('.registered_slots')
@@ -70,7 +71,7 @@
       = render partial: 'time_slots/add_slot_rework',
                collection: registered_slots,
                locals: { child: @child, registrations:, event: @event,
-                         confirmed_slot_regs:, confirmed_opt_regs: }
+                         confirmed_slot_regs:, confirmed_opt_regs:, opt_regs: }
 
   = render 'invoices/registration_page/price_footer',
            all_invoices: @all_invoices, all_registered_slots:,

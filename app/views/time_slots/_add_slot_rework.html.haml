@@ -1,4 +1,5 @@
--# locals: (add_slot_rework:, child:, registrations:, event:, confirmed_slot_regs:, confirmed_opt_regs:)
+-# locals: (add_slot_rework:, child:, confirmed_slot_regs:,
+  confirmed_opt_regs:, opt_regs:, registrations:, event:)
 
 :ruby
   # temp for compatibility till I rename the partial
@@ -6,7 +7,7 @@
 
   kindy = child.kindy?
   opt_regs = registrations.select { |reg| reg.registerable_type == 'Option' }
-  in_ss = confirmed_slot_regs.any? { |reg| reg.registerable_id == add_slot.id }
+  confirmed = confirmed_slot_regs.any? { |reg| reg.registerable_id == add_slot.id }
   registered = registrations.any? do |reg|
     reg.registerable_id == add_slot.id && reg.registerable_type == 'TimeSlot'
   end
@@ -35,7 +36,7 @@
       %p.d-flex.align-items-center.justify-content-center.text-bg-warning.p-1.rounded
         = t('am_closed')
 
-    - elsif in_ss
+    - elsif confirmed
       %p.fw-bold.fs-5 #{add_slot.name}: ◯
 
       - if activity_modifier(add_slot, child).positive?
@@ -62,7 +63,6 @@
                   class: 'fw-bold fs-5 form-check-label',
                   data: { 'register-target': 'name' } }
             = add_slot.name
-
 
           - if add_slot.closed?
             %p.d-flex.align-items-center.justify-content-center.text-bg-warning.p-1.rounded
@@ -107,7 +107,7 @@
           - if confirmed_arrival
             %p #{confirmed_arrival.name}: ◯
           - elsif arrive_options.size.positive?
-            %fieldset.mt-2
+            %fieldset.mt-2.form-switch.p-0.d-flex.flex-column.gap-2
               %legend.fs-6.fw-bold= t('.arrival_options')
 
               -# always checked because will be overridden if
@@ -125,7 +125,7 @@
           - if confirmed_depart
             %p #{confirmed_depart.name}: ◯
           - elsif depart_options.size.positive?
-            %fieldset.mt-2
+            %fieldset.mt-2.form-switch.p-0.d-flex.flex-column.gap-2
               %legend.fs-6.fw-bold= t('.depart_options')
 
               -# always checked because will be overridden if
@@ -164,4 +164,6 @@
                                   'register-target': 'button' },
                           role: 'switch'
 
-        = render 'time_slots/afternoon_reg_card', slot: add_slot.afternoon_slot
+    = render 'time_slots/afternoon_reg_card',
+             confirmed_slot_regs:, confirmed_opt_regs:, child:,
+             opt_regs:, registrations:, slot: add_slot.afternoon_slot
