@@ -1,0 +1,167 @@
+-# locals: (add_slot_rework:, child:, registrations:, event:, confirmed_slot_regs:, confirmed_opt_regs:)
+
+:ruby
+  # temp for compatibility till I rename the partial
+  add_slot = add_slot_rework
+
+  kindy = child.kindy?
+  opt_regs = registrations.select { |reg| reg.registerable_type == 'Option' }
+  in_ss = confirmed_slot_regs.any? { |reg| reg.registerable_id == add_slot.id }
+  registered = registrations.any? do |reg|
+    reg.registerable_id == add_slot.id && reg.registerable_type == 'TimeSlot'
+  end
+
+  # Arrival variables
+  arrive_category = kindy ? :k_arrival? : :arrival?
+  arrive_options = add_slot.options.select(&arrive_category).sort_by(&:modifier)
+  confirmed_arrival = arrive_options.find do |o|
+    confirmed_opt_regs.any? { |reg| reg.registerable_id == o.id }
+  end
+
+  # Departure variables
+  depart_category = kindy ? :k_departure? : :departure?
+  depart_options = add_slot.options.select(&depart_category).sort_by(&:modifier)
+  confirmed_depart = depart_options.find do |o|
+    confirmed_opt_regs.any? { |reg| reg.registerable_id == o.id }
+  end
+
+.card.d-flex.flex-row.flex-nowrap.bg-white
+  .d-flex.flex-column
+    %p.text-black-50= add_slot.date
+    = render 'shared/picture_for', resource: add_slot
+
+  .d-grid.gap-3.w-50
+    - if add_slot.closed? && current_user.customer?
+      %p.d-flex.align-items-center.justify-content-center.text-bg-warning.p-1.rounded
+        = t('am_closed')
+
+    - elsif in_ss
+      %p.fw-bold.fs-5 #{add_slot.name}: ◯
+
+      - if activity_modifier(add_slot, child).positive?
+        %p= t('.extra_charge',
+              cost: number_to_currency(activity_modifier(add_slot, child)))
+
+      - add_slot.options.each do |opt|
+        - next if opt_regs.none? { |reg| reg.registerable_id == opt.id }
+
+        %p #{opt.name}: ◯
+
+    - else
+      .morning.w-100{ data: { controller: 'popup',
+                              action: 'register:toggle->popup#listen' } }
+        %div{ class: 'add_reg w-100 form-check form-switch p-0 d-flex flex-column justify-content-center align-items-center gap-3',
+              data: { controller: 'register',
+                      'register-id-value': add_slot.id,
+                      'register-type-value': 'TimeSlot',
+                      'register-modifier-value': activity_modifier(add_slot, child),
+                      'register-name-value': add_slot.name.tr(' ', '_'),
+                      'register-child-value': child.id,
+                      'register-snack-value': 'false' } }
+          %label{ for: "m_slot#{add_slot.id}",
+                  class: 'fw-bold fs-5 form-check-label',
+                  data: { 'register-target': 'name' } }
+            = add_slot.name
+
+
+          - if add_slot.closed?
+            %p.d-flex.align-items-center.justify-content-center.text-bg-warning.p-1.rounded
+              = t('am_closed')
+
+          = check_box_tag "m_slot#{add_slot.id}",
+                          '', (true if registered),
+                          class: 'form-check-input m-0',
+                          data: { action: 'register#toggle',
+                                  'register-target': 'button' },
+                          role: 'switch'
+        %div{ class: "options mt-2 #{'hidden' unless registered}",
+              'data-popup-target': 'popup' }
+          - if activity_modifier(add_slot, child).positive?
+            %p= t('.extra_charge',
+                  cost: number_to_currency(activity_modifier(add_slot, child)))
+
+          - add_slot.options.each do |opt|
+            :ruby
+              next if opt.time? || opt.extension?
+
+              registered = opt_regs.any? { |reg| reg.registerable_id == opt.id }
+
+            %div{ class: 'add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100',
+                  data: { controller: 'register',
+                          'register-id-value': opt.id,
+                          'register-type-value': 'Option',
+                          'register-child-value': child.id,
+                          'register-cost-value': opt.cost } }
+              %label{ class: 'form-check-label d-flex align-items-center gap-2',
+                      'data-register-target': 'name',
+                      for: "opt#{opt.id}" }
+                = opt.name
+
+                = check_box_tag "opt#{opt.id}",
+                                '', (true if registered),
+                                class: 'form-check-input m-0',
+                                data: { action: 'register#toggle',
+                                        'register-target': 'button' },
+                                role: 'switch'
+
+          - if confirmed_arrival
+            %p #{confirmed_arrival.name}: ◯
+          - elsif arrive_options.size.positive?
+            %fieldset.mt-2
+              %legend.fs-6.fw-bold= t('.arrival_options')
+
+              -# always checked because will be overridden if
+                 any opts are actually registered
+              = render 'options/radio',
+                       opt: Option.new(name: 'なし', optionable_id: add_slot.id),
+                       child_id: child.id, checked: true
+
+              - arrive_options.each do |o|
+                - checked = opt_regs.any? { |reg| reg.registerable_id == o.id }
+
+                = render 'options/radio',
+                         opt: o, child_id: child.id, checked:
+
+          - if confirmed_depart
+            %p #{confirmed_depart.name}: ◯
+          - elsif depart_options.size.positive?
+            %fieldset.mt-2
+              %legend.fs-6.fw-bold= t('.depart_options')
+
+              -# always checked because will be overridden if
+                 any opts are actually registered
+              = render 'options/radio',
+                       opt: Option.new(name: 'なし', optionable_id: add_slot.id),
+                       child_id: child.id, checked: true
+
+              - depart_options.each do |o|
+                - checked = opt_regs.any? { |reg| reg.registerable_id == o.id }
+
+                = render 'options/radio',
+                         opt: o, child_id: child.id, checked:
+
+      - if add_slot.special? && add_slot.morning?
+        :ruby
+          category = kindy ? :k_extension? : :extension?
+          ext_opt = add_slot.options.find(&category)
+          ext_opt_registered =
+            ext_opt && opt_regs.any? { |reg| reg.registerable_id == ext_opt.id }
+
+        %div{ class: 'add_reg form-check form-switch p-0 d-flex flex-column justify-content-center align-items-center gap-2 p-2 w-100 border',
+              data: { controller: 'register',
+                      'register-child-value': child.id,
+                      'register-cost-value': ext_opt.cost,
+                      'register-id-value': ext_opt.id,
+                      'register-type-value': 'Option' } }
+          %label.form-check-label{ 'data-register-target': 'name',
+                                   for: "opt#{ext_opt.id}" }
+            = ext_opt.name
+
+          = check_box_tag "opt#{ext_opt.id}",
+                          '', (true if ext_opt_registered),
+                          class: 'form-check-input m-0',
+                          data: { action: 'register#toggle',
+                                  'register-target': 'button' },
+                          role: 'switch'
+
+        = render 'time_slots/afternoon_reg_card', slot: add_slot.afternoon_slot

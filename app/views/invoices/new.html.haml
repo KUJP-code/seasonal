@@ -13,9 +13,9 @@
   adjustments = @all_invoices
                 .reduce([]) { |array, inv| array + inv.adjustments }
 
-  slots_in_ss = @all_invoices
-                .select(&:in_ss)
-                .reduce([]) { |array, invoice| array + invoice.slot_regs }
+  confirmed_slot_regs = @all_invoices
+                        .select(&:in_ss)
+                        .reduce([]) { |array, invoice| array + invoice.slot_regs }
   confirmed_opt_regs = @all_invoices
                        .select(&:in_ss)
                        .reduce([]) { |array, invoice| array + invoice.opt_regs }
@@ -59,18 +59,18 @@
   %details.w-100.border.rounded.mt-n3{ name: 'accordion', open: true }
     %summary.bg-primary.rounded.p-3= t('.unregistered_slots')
     .d-flex.flex-column.justify-content-around.flex-lg-row.flex-wrap.gap-3.p-3
-      = render partial: 'time_slots/add_slot',
+      = render partial: 'time_slots/add_slot_rework',
                collection: unregistered_slots,
                locals: { child: @child, registrations:, event: @event,
-                         slots_in_ss:, confirmed_opt_regs: }
+                         confirmed_slot_regs:, confirmed_opt_regs: }
 
   %details.w-100.border.rounded.mt-n3{ name: 'accordion' }
     %summary.bg-primary.rounded.p-3= t('.registered_slots')
     .d-flex.flex-column.justify-content-around.flex-lg-row.flex-wrap.gap-3.p-3
-      = render partial: 'time_slots/add_slot',
+      = render partial: 'time_slots/add_slot_rework',
                collection: registered_slots,
                locals: { child: @child, registrations:, event: @event,
-                         slots_in_ss:, confirmed_opt_regs: }
+                         confirmed_slot_regs:, confirmed_opt_regs: }
 
   = render 'invoices/registration_page/price_footer',
            all_invoices: @all_invoices, all_registered_slots:,

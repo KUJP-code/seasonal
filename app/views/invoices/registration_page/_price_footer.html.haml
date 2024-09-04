@@ -86,6 +86,8 @@
             = reg_f.hidden_field :registerable_id,
                                  value: 'NEW_REGISTERABLE_ID'
             = reg_f.hidden_field :registerable_type, value: 'Option'
+            .opt_cost.hidden.registered{ data: { 'price-target': 'optCost' } }
+              NEW_COST
 
       - unless f.object.in_ss
         = f.submit t('.confirm_invoice'),

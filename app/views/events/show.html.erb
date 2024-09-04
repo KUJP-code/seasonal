@@ -4,7 +4,7 @@
 <% active_invoice = @all_invoices.find { |i| i.in_ss == false } %>
 <% registrations = @all_invoices.reduce([]) { |array, invoice| array + invoice.registrations } %>
 <% adjustments = @all_invoices.reduce([]) { |array, inv| array + inv.adjustments } %>
-<% slots_in_ss = @all_invoices.select { |invoice| invoice.in_ss }.reduce([]) { |array, invoice| array + invoice.slot_regs } %>
+<% confirmed_slot_regs = @all_invoices.select { |invoice| invoice.in_ss }.reduce([]) { |array, invoice| array + invoice.slot_regs } %>
 <% confirmed_opt_regs = @all_invoices.select { |invoice| invoice.in_ss }.reduce([]) { |array, invoice| array + invoice.opt_regs } %>
 <% event_cost = @child.parent.invoices.where(event_id: @event.id).reduce(0) { |sum, invoice| sum + invoice.total_cost } unless @child.parent.nil? %>
 <% others_cost = @child.parent.invoices.where(event_id: @event.id).where.not(child_id: @child.id).reduce(0) { |sum, invoice| sum + invoice.total_cost } unless @child.parent.nil? %>
@@ -97,7 +97,7 @@
                                         child: @child,
                                         registrations: registrations,
                                         event: @event,
-                                        slots_in_ss: slots_in_ss,
+                                        confirmed_slot_regs: confirmed_slot_regs,
                                         confirmed_opt_regs: confirmed_opt_regs
                                    } %>
                     </div>
@@ -114,7 +114,7 @@
             <div id="event-collapseThree" class="accordion-collapse collapse">
                 <div class="accordion-body">
                     <div class="d-flex flex-column flex-lg-row flex-lg-wrap justify-content-lg-around gap-3">
-                        <%= render partial: 'time_slots/add_slot', collection: registered_slots, locals: { child: @child, registrations: registrations, event: @event, slots_in_ss: slots_in_ss, confirmed_opt_regs: confirmed_opt_regs } %>
+                        <%= render partial: 'time_slots/add_slot', collection: registered_slots, locals: { child: @child, registrations: registrations, event: @event, confirmed_slot_regs: confirmed_slot_regs, confirmed_opt_regs: confirmed_opt_regs } %>
                     </div>
                 </div>
             </div>

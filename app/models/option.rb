@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Option < ApplicationRecord
+  TIME_CATEGORIES = %i[arrival departure k_arrival k_departure].freeze
+
   belongs_to :optionable, polymorphic: true
   delegate :event, to: :optionable
   delegate :school, to: :event
@@ -38,5 +40,11 @@ class Option < ApplicationRecord
   scope :not_time, -> { where.not(category: TIME_CATEGORIES) }
   scope :time, -> { where(category: TIME_CATEGORIES) }
 
-  TIME_CATEGORIES = %i[arrival departure k_arrival k_departure].freeze
+  def extension?
+    category == 'extension' || category == 'k_extension'
+  end
+
+  def time?
+    TIME_CATEGORIES.include?(category.to_sym)
+  end
 end

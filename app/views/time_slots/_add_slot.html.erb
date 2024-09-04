@@ -8,7 +8,7 @@
         <%= render 'shared/picture_for', resource: add_slot %>
     </div>
 
-    <% in_ss = slots_in_ss.any? { |reg| reg.registerable_id == add_slot.id } %>
+    <% in_ss = confirmed_slot_regs.any? { |reg| reg.registerable_id == add_slot.id } %>
     <% registered = registrations.any? { |reg| reg.registerable_id == add_slot.id && reg.registerable_type == 'TimeSlot' } %>
 
     <div class="d-grid gap-3 w-50">
@@ -95,7 +95,6 @@
                                 </legend>
 
                                 <% none_selected = arrival_options.none? { |a_opt| opt_regs.include?(a_opt) } %>
-
 
                                 <%= render 'options/radio',
                                                 opt: deregister,
@@ -194,7 +193,7 @@
             <% if afternoon_slot.closed? && current_user.customer? %>
               <p class="d-flex align-items-center justify-content-center text-bg-warning p-1 rounded"><%= t('pm_closed') %></p>
             <% else %>
-                <% in_ss = slots_in_ss.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
+                <% in_ss = confirmed_slot_regs.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
                 <% aft_registered = registrations.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
 
                 <% if in_ss %>
@@ -231,7 +230,7 @@
                                 class="fw-bold fs-5 form-check-label">
                                 <%= afternoon_slot.special? ? afternoon_slot.name : t('.afternoon') %>
                             </label>
-                            <% if slots_in_ss.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
+                            <% if confirmed_slot_regs.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
                                 <p>◯</p>
                             <% else %>
                                 <% if child.regular_schedule && child.regular_schedule[afternoon_slot.day.downcase] %>
