@@ -89,6 +89,11 @@ class Event < ApplicationRecord
     options.sum(:registrations_count)
   end
 
+  def price_list_for(child)
+    price_list = child.member? ? member_prices : non_member_prices
+    price_list.courses
+  end
+
   def seasonal?
     early_bird_discount.zero?
   end

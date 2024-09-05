@@ -13,7 +13,7 @@
           %th= t('.course')
           %th= t('.price')
       %tbody
-        - price_list.courses.each do |course, price|
+        - price_list.each do |course, price|
           - next if price.blank?
 
           %tr

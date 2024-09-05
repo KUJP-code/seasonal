@@ -20,9 +20,13 @@ module NewInvoiceable
     end
 
     def get_child_data(child, event)
+      @price_list = event.price_list_for(child)
       @siblings = child.siblings
       @event_cost =
         child.parent.invoices.where(event_id: event.id).sum(:total_cost)
+      @siblings_event_cost =
+        Invoice.where(child: @siblings, event_id: event.id)
+               .sum(:total_cost)
       @all_invoices =
         child.invoices.where(event:)
              .includes(:adjustments, :opt_regs, :registrations,
@@ -47,8 +51,6 @@ module NewInvoiceable
                                       image_attachment: %i[blob]
                           ).order(start_time: :asc)
       @options = event.options + event.slot_options
-      @member_prices = event.member_prices
-      @non_member_prices = event.non_member_prices
     end
 
     def old_event?(event)
