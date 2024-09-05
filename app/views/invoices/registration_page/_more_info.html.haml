@@ -31,7 +31,7 @@
       %tbody
         - adjustments.each do |adjustment|
           %tr
-            %td{ 'data-new-price-target': 'adjChange' }
+            %td{ 'data-price-target': 'adjChange' }
               = number_to_currency(adjustment.change, locale: :ja)
             %td= adjustment.reason
 

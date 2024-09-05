@@ -1,14 +1,14 @@
 <% if opt.name == 'なし' %>
     <div class="add_reg w-100 form-check d-flex justify-content-center align-items-center"
-        data-controller="new-register"
-        data-new-register-id-value="0"
-        data-new-register-type-value="Radio"
-        data-new-register-child-value=<%= child_id %>
-        data-new-register-cost-value="0"
-        data-new-register-name-value=<%= opt.name %>>
+        data-controller="register"
+        data-register-id-value="0"
+        data-register-type-value="Radio"
+        data-register-child-value=<%= child_id %>
+        data-register-cost-value="0"
+        data-register-name-value=<%= opt.name %>>
 
         <label for="<%= "arrival#{opt.optionable_id}opt0" %>"
-            data-new-register-target="name"
+            data-register-target="name"
             class="form-check-label me-2">
             <%= opt.name %>
         </label>
@@ -17,21 +17,21 @@
             name=<%= "arrival#{opt.optionable_id}child#{child_id}" %>
             id="<%= "arrival#{opt.optionable_id}opt0" %>"
             <%= 'checked' if checked %>
-            data-new-register-target='button'
-            data-action="change->new-register#toggle"
+            data-register-target='button'
+            data-action="change->register#toggle"
             class="form-check-input m-0">
     </div>
 <% else %>
     <div class="add_reg w-100 form-check d-flex justify-content-center align-items-center"
-        data-controller="new-register"
-        data-new-register-id-value=<%= opt.id %>
-        data-new-register-type-value="Radio"
-        data-new-register-child-value=<%= child_id %>
-        data-new-register-cost-value=<%= opt.cost %>
-        data-new-register-name-value=<%= opt.name %>>
+        data-controller="register"
+        data-register-id-value=<%= opt.id %>
+        data-register-type-value="Radio"
+        data-register-child-value=<%= child_id %>
+        data-register-cost-value=<%= opt.cost %>
+        data-register-name-value=<%= opt.name %>>
 
         <label for="<%= "arrival#{opt.optionable_id}opt#{opt.id}" %>"
-            data-new-register-target="name"
+            data-register-target="name"
             class="form-check-label">
             <%= opt.name %>
         </label>
@@ -40,8 +40,8 @@
             name=<%= "arrival#{opt.optionable_id}child#{child_id}" %>
             id="<%= "arrival#{opt.optionable_id}opt#{opt.id}" %>"
             <%= 'checked' if checked %>
-            data-new-register-target='button'
-            data-action="change->new-register#toggle"
+            data-register-target='button'
+            data-action="change->register#toggle"
             class="form-check-input m-0">
     </div>
 <% end %>

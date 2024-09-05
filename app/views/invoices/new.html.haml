@@ -17,20 +17,20 @@
     @all_invoices.select(&:in_ss)
                  .reduce([]) { |array, invoice| array + invoice.opt_regs }
 
-  stimulus_actions = 'new-register:toggle->new-invoice#change ' \
-                     'new-invoice:add@window->new-price#calculate ' \
-                     'new-invoice:remove@window->new-price#calculate'
+  stimulus_actions = 'register:toggle->invoice#change ' \
+                     'invoice:add@window->price#calculate ' \
+                     'invoice:remove@window->price#calculate'
 
   frame_id = "child#{@child.id}invoice#{active_invoice.id}"
 
-%main{ class: 'd-flex flex-column justify-content-start ' \
-              'text-start bg-white',
-       data: { controller: 'new-invoice new-price',
+%main{ class: 'd-flex flex-column justify-content-start' \
+              'align-items-start text-start bg-white',
+       data: { controller: 'invoice price',
                action: stimulus_actions,
-               'new-price-member-price-value': @price_list.to_json,
-               'new-price-non-member-price-value': @price_list.to_json,
-               'new-price-other-cost-value': @siblings_event_cost || 0,
-               'new-price-event-name-value': @event.name },
+               'price-member-price-value': @price_list.to_json,
+               'price-non-member-price-value': @price_list.to_json,
+               'price-other-cost-value': @siblings_event_cost || 0,
+               'price-event-name-value': @event.name },
        id: 'event-show' }
 
   = render 'invoices/registration_page/header',

@@ -37,20 +37,20 @@
       %p #{opt.name}: ◯
 
   - else
-    .afternoon.w-100{ data: { controller: 'expand',
-                              action: 'new-register:toggle->expand#listen' } }
+    .afternoon.w-100{ data: { controller: 'popup',
+                              action: 'register:toggle->popup#listen' } }
       %div{ class: 'add_reg w-100 form-check form-switch p-0 d-flex ' \
                    'flex-column justify-content-center align-items-center ' \
                    'gap-3',
-            data: { controller: 'new-register',
-                    'new-register-child-value': child.id,
-                    'new-register-id-value': slot.id,
-                    'new-register-modifier-value': activity_modifier(slot, child),
-                    'new-register-name-value': slot.name.concat(' (午後)').tr(' ', '_'),
-                    'new-register-snack-value': slot.snack,
-                    'new-register-type-value': 'TimeSlot' } }
+            data: { controller: 'register',
+                    'register-child-value': child.id,
+                    'register-id-value': slot.id,
+                    'register-modifier-value': activity_modifier(slot, child),
+                    'register-name-value': slot.name.concat(' (午後)').tr(' ', '_'),
+                    'register-snack-value': slot.snack,
+                    'register-type-value': 'TimeSlot' } }
         %label.fw-bold.fs-5.form-check-label{ for: "a_slot#{slot.id}",
-                                              'data-new-register-target': 'name' }
+                                              'data-register-target': 'name' }
           = slot.special? ? slot.name : t('.afternoon')
 
         - if confirmed_slot_regs.any? { |reg| reg.registerable_id == slot.id }
@@ -64,12 +64,12 @@
         = check_box_tag "a_slot#{slot.id}",
                         '', (true if registered),
                         class: 'form-check-input m-0',
-                        data: { action: 'new-register#toggle',
-                                'new-register-target': 'button' },
+                        data: { action: 'register#toggle',
+                                'register-target': 'button' },
                         role: 'switch'
 
         %div{ class: "options mt-2 #{'hidden' unless registered}",
-              'data-expand-target': 'expandedElement' }
+              'data-popup-target': 'popup' }
 
           - if activity_modifier(slot, child).positive?
             %p= t('.extra_charge',
@@ -87,19 +87,19 @@
               %p #{opt.name}: ◯
             - else
               %div{ class: 'add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100',
-                    data: { controller: 'new-register',
-                            'new-register-child-value': child.id,
-                            'new-register-cost-value': opt.cost,
-                            'new-register-id-value': opt.id,
-                            'new-register-type-value': 'Option' } }
+                    data: { controller: 'register',
+                            'register-child-value': child.id,
+                            'register-cost-value': opt.cost,
+                            'register-id-value': opt.id,
+                            'register-type-value': 'Option' } }
                 %label.form-check-label{ for: "opt#{opt.id}",
-                                         'data-new-register-target': 'name' }
+                                         'data-register-target': 'name' }
                   = opt.name
                 = check_box_tag "opt#{opt.id}",
                                 '', (true if registered),
                                 class: 'form-check-input m-0',
-                                data: { action: 'new-register#toggle',
-                                        'new-register-target': 'button' },
+                                data: { action: 'register#toggle',
+                                        'register-target': 'button' },
                                 role: 'switch'
 
           - if confirmed_depart
