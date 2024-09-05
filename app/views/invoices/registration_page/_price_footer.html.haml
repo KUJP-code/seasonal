@@ -8,7 +8,7 @@
 
 %footer.w-100.d-flex.justify-content-center.justify-content-md-evenly.align-items-center.flex-wrap.gap-3.bg-info.p-2.rounded.sticky-bottom#price_bar
 
-  %h2.text-white.fw-bold#total_cost{ data: { 'price-target': 'finalCost' } }
+  %h2.text-white.fw-bold#total_cost{ data: { 'new-price-target': 'finalCost' } }
     = t('.total_cost')
     = ':'
     = number_to_currency(total_cost, locale: :ja)
@@ -19,11 +19,11 @@
         %p.hidden{ 'data-modifier': activity_modifier(slot, @child) }
           = slot.name.concat(slot.morning ? '' : ' (午後)')
 
-    %span.hidden{ data: { 'price-target': 'snackCount',
-                         'invoice-target': 'snackCount' } }
+    %span.hidden{ data: { 'new-price-target': 'snackCount',
+                         'new-invoice-target': 'snackCount' } }
       = all_registered_slots.count(&:snack)
 
-    %p.hidden{ data: { 'price-target': 'optCount' } }
+    %p.hidden{ data: { 'new-price-target': 'optCount' } }
       = t('.num_options', num: num_options)
 
   - all_invoices.each do |invoice|
@@ -38,7 +38,7 @@
       = f.hidden_field :child_id
       = f.hidden_field :event_id
 
-      .slot_regs.hidden{ data: { 'price-target': 'slotRegs' } }
+      .slot_regs.hidden{ data: { 'new-price-target': 'slotRegs' } }
         = f.fields_for :slot_regs do |slot_f|
           - slot_id = "slot#{slot_f.object.registerable_id}child#{slot_f.object.child_id}"
 
@@ -51,9 +51,9 @@
             = slot_f.hidden_field :registerable_type
 
         - unless f.object.in_ss
-          %div{ data: { 'invoice-target': 'slotTarget' } }
+          %div{ data: { 'new-invoice-target': 'slotTarget' } }
 
-      .opt_regs.hidden{ data: { 'price-target': 'optRegs' } }
+      .opt_regs.hidden{ data: { 'new-price-target': 'optRegs' } }
         = f.fields_for :opt_regs do |opt_f|
           - opt_id = "opt#{opt_f.object.registerable_id}child#{opt_f.object.child_id}"
 
@@ -64,13 +64,13 @@
             = opt_f.hidden_field :child_id
             = opt_f.hidden_field :registerable_id
             = opt_f.hidden_field :registerable_type
-            .opt_cost.hidden.registered{ data: { 'price-target': 'optCost' } }
+            .opt_cost.hidden.registered{ data: { 'new-price-target': 'optCost' } }
               = options.find { |opt| opt.id == opt_f.object.registerable_id }&.cost || 0
 
         - unless f.object.in_ss
-          %div{ 'data-invoice-target': 'optTarget' }
+          %div{ 'data-new-invoice-target': 'optTarget' }
 
-      %template{ 'data-invoice-target': 'slotTemplate' }
+      %template{ 'data-new-invoice-target': 'slotTemplate' }
         = f.fields_for :slot_regs, Registration.new,
                        child_index: 'REG_INDEX' do |reg_f|
           .slot_reg.NEW_CLASS{ 'data-new-record': 'true', id: 'NEW_ID' }
@@ -79,7 +79,7 @@
                                  value: 'NEW_REGISTERABLE_ID'
             = reg_f.hidden_field :registerable_type, value: 'TimeSlot'
 
-      %template{ 'data-invoice-target': 'optTemplate' }
+      %template{ 'data-new-invoice-target': 'optTemplate' }
         = f.fields_for :opt_regs, Registration.new,
                        child_index: 'REG_INDEX' do |reg_f|
           .opt_reg.NEW_CLASS{ 'data-new-record': 'true', id: 'NEW_ID' }
@@ -87,7 +87,7 @@
             = reg_f.hidden_field :registerable_id,
                                  value: 'NEW_REGISTERABLE_ID'
             = reg_f.hidden_field :registerable_type, value: 'Option'
-            .opt_cost.hidden.registered{ data: { 'price-target': 'optCost' } }
+            .opt_cost.hidden.registered{ data: { 'new-price-target': 'optCost' } }
               NEW_COST
 
       - unless f.object.in_ss
@@ -95,6 +95,6 @@
                    class: 'btn btn-primary w-100',
                    data: { action: 'dialog#open',
                            controller: 'dialog',
-                           'dialog-dialog-value': 'invoice-preview',
+                           'dialog-dialog-value': 'new-invoice-preview',
                            'dialog-frame-value': frame_id,
-                           'price-target': 'confirm' }
+                           'new-price-target': 'confirm' }

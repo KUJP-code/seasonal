@@ -6,7 +6,7 @@
                   school: t("schools.#{event.school.name}"))
 
   .card.bg-info
-    %h2{ data: { 'price-target': 'eventCost' } }
+    %h2{ data: { 'new-price-target': 'eventCost' } }
       = t('.event_cost', cost: number_to_currency(event_cost, locale: :ja),
                          event: event.name)
     %p複数のお子様のお申し込みをされた場合、合算された金額となります。
@@ -19,7 +19,7 @@
       %td
         = link_to event_path(id: event.id, child: child.id) do
           %div{ class: 'child bg-info rounded-pill p-2 text-white active',
-                'data-price-target': 'child' }
+                'data-new-price-target': 'child' }
             = child.name
             .hidden= child.id.to_s
             %p.hidden.level= child.kindy ? 'Kindy' : 'Elementary'
@@ -41,5 +41,5 @@
           %td
             = link_to event_path(id: event.id, child: sibling.id) do
               %div{ class: 'child bg-info rounded-pill p-2 text-white',
-                    'data-price-target': 'sibling' }
+                    'data-new-price-target': 'sibling' }
                 = sibling.name
