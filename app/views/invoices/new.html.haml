@@ -26,7 +26,8 @@
 
   frame_id = "child#{@child.id}invoice#{active_invoice.id}"
 
-%main{ class: 'd-flex flex-column justify-content-start align-items-start text-start bg-white',
+%main{ class: 'd-flex flex-column justify-content-start' \
+              'align-items-start text-start bg-white',
        data: { controller: 'invoice price',
                action: stimulus_actions,
                'price-member-price-value': @member_prices.courses.to_json,

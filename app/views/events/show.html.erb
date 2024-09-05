@@ -20,7 +20,7 @@
       class="d-flex flex-column justify-content-start align-items-start text-start bg-white">
 
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 w-100">
-    <%= render 'invoices/registration_page/header', child: @child, siblings: @siblings, event: @event %>
+    <%= render 'invoices/registration_page/header', child: @child, siblings: @siblings, event: @event, event_cost: @event_cost %>
 
     <% if @siblings.size.positive? %>
         <h5 class="text-center">＋ボタンを押すと、お子様のお申込内容を他のお子様に反映させることができ、ご兄弟で同じ日程のお申込が出来ます。（反映させる前に、1人目のお申込を確定させる必要がございます。）</h5>

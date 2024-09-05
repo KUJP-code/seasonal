@@ -156,6 +156,9 @@ class EventsController < ApplicationController
     @member_prices = @event.member_prices
     @non_member_prices = @event.non_member_prices
     @siblings = @child.siblings
+    @event_cost = @child.parent.invoices
+                        .where(event_id: @event.id)
+                        .sum(:total_cost)
     @all_invoices = @child.invoices
                           .where(event: @event)
                           .includes(:registrations)
