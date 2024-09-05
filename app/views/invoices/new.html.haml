@@ -3,18 +3,19 @@
 
   active_invoice = @all_invoices.find { |i| i.in_ss == false }
 
-  registrations = @all_invoices
-                  .reduce([]) { |array, invoice| array + invoice.registrations }
-  opt_regs = registrations.select { |reg| reg.registerable_type == 'Option' }
-  adjustments = @all_invoices
-                .reduce([]) { |array, inv| array + inv.adjustments }
+  registrations =
+    @all_invoices.reduce([]) { |array, invoice| array + invoice.registrations }
+  opt_regs =
+    registrations.select { |reg| reg.registerable_type == 'Option' }
+  adjustments =
+    @all_invoices.reduce([]) { |array, inv| array + inv.adjustments }
 
-  confirmed_slot_regs = @all_invoices
-                        .select(&:in_ss)
-                        .reduce([]) { |array, invoice| array + invoice.slot_regs }
-  confirmed_opt_regs = @all_invoices
-                       .select(&:in_ss)
-                       .reduce([]) { |array, invoice| array + invoice.opt_regs }
+  confirmed_slot_regs =
+    @all_invoices.select(&:in_ss)
+                 .reduce([]) { |array, invoice| array + invoice.slot_regs }
+  confirmed_opt_regs =
+    @all_invoices.select(&:in_ss)
+                 .reduce([]) { |array, invoice| array + invoice.opt_regs }
 
   stimulus_actions = 'register:toggle->invoice#change ' \
                      'invoice:add@window->price#calculate ' \

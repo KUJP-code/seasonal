@@ -25,7 +25,7 @@ class InvoicesController < ApplicationController
     @child = set_child
     return orphan_redirect(@child) if @child.parent_id.nil?
 
-    get_event_data(@event)
+    get_event_data(@event, @child)
     get_child_data(@child, @event)
   end
 

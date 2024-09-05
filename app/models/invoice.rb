@@ -46,9 +46,16 @@ class Invoice < ApplicationRecord
   # Scopes
   # Only invoices with at least one time slot/option registered
   scope :real, -> { where('registrations_count > 0') }
+  scope :for_registration_page,
+        lambda { |event|
+          where(event_id: event)
+            .includes(:adjustments, :opt_regs, :registrations,
+                      :slot_regs, :time_slots)
+        }
 
   # Validations
-  validates :total_cost, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :total_cost,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   def calc_cost(ignore_slots = [], ignore_opts = [])
     generate_data(ignore_slots, ignore_opts)

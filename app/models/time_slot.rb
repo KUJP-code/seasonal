@@ -45,8 +45,17 @@ class TimeSlot < ApplicationRecord
     outdoor: 3
   }
 
-  scope :morning, -> { where(morning: true) }
   scope :afternoon, -> { where(morning: false) }
+  scope :for_registration_page,
+        lambda { |event|
+          where(event_id: event.id, morning: true)
+            .includes(:options,
+                      afternoon_slot: %i[options],
+                      avif_attachment: %(blob),
+                      image_attachment: %i[blob])
+            .order(start_time: :desc)
+        }
+  scope :morning, -> { where(morning: true) }
 
   def avif_id
     return nil if avif.blob.nil?

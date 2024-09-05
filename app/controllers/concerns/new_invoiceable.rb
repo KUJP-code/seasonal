@@ -20,37 +20,24 @@ module NewInvoiceable
     end
 
     def get_child_data(child, event)
-      @price_list = event.price_list_for(child)
       @siblings = child.siblings
-      @event_cost =
-        child.parent.invoices.where(event_id: event.id).sum(:total_cost)
-      @siblings_event_cost =
-        Invoice.where(child: @siblings, event_id: event.id)
-               .sum(:total_cost)
-      @all_invoices =
-        child.invoices.where(event:)
-             .includes(:adjustments, :opt_regs, :registrations,
-                       :slot_regs, :time_slots).to_a
-      @registered_slots =
-        child.time_slots.morning.where(event_id: event.id)
-             .includes(:options, afternoon_slot: %i[options],
-                                 avif_attachment: %i[blob],
-                                 image_attachment: %i[blob])
-             .order(start_time: :asc)
+      @all_invoices = child.invoices.for_registration_page(event)
+      @registered_slots = child.time_slots.for_registration_page(event)
 
       return unless @all_invoices.empty? || @all_invoices.all?(&:in_ss)
 
       @all_invoices << build_temp_invoice(child, event)
     end
 
-    def get_event_data(event)
-      @event_slots = event.time_slots.morning
-                          .includes(
-                            :options, afternoon_slot: %i[options],
-                                      avif_attachment: %i[blob],
-                                      image_attachment: %i[blob]
-                          ).order(start_time: :asc)
+    def get_event_data(event, child)
+      @price_list = event.price_list_for(child)
+      @event_slots = event.time_slots.for_registration_page(event)
       @options = event.options + event.slot_options
+      @event_cost =
+        child.parent.invoices.where(event_id: event.id).sum(:total_cost)
+      @siblings_event_cost =
+        Invoice.where(child: @siblings, event_id: event.id)
+               .sum(:total_cost)
     end
 
     def old_event?(event)
