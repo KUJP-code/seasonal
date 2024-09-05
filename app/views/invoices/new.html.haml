@@ -1,8 +1,5 @@
 :ruby
-  registered_slots = @child.time_slots.morning
-                           .where(event_id: @event.id)
-                           .order(start_time: :asc)
-  unregistered_slots = @event_slots.where.not(id: registered_slots.ids)
+  unregistered_slots = @event_slots - @registered_slots
 
   active_invoice = @all_invoices.find { |i| i.in_ss == false }
 
@@ -39,7 +36,8 @@
        id: 'event-show' }
 
   = render 'invoices/registration_page/header',
-           child: @child, siblings: @siblings, event: @event
+           child: @child, siblings: @siblings, event: @event,
+           event_cost: @event_cost
 
   = render 'invoices/registration_page/parent_messages',
            child: @child, siblings: @siblings, event: @event
@@ -67,7 +65,7 @@
     %summary.bg-primary.rounded.p-3= t('.registered_slots')
     .d-flex.flex-column.justify-content-around.flex-lg-row.flex-wrap.gap-3.p-3
       = render partial: 'time_slots/add_slot_rework',
-               collection: registered_slots,
+               collection: @registered_slots,
                locals: { child: @child, registrations:, event: @event,
                          confirmed_slot_regs:, confirmed_opt_regs:, opt_regs: }
 

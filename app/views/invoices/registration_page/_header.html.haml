@@ -1,9 +1,4 @@
--# locals: (child:, siblings:, event:)
-
-:ruby
-  # FIXME: DB query in view
-  event_cost = child.parent.invoices.where(event_id: event.id)
-                    .reduce(0) { |sum, invoice| sum + invoice.total_cost }
+-# locals: (child:, siblings:, event:, event_cost:)
 
 .d-flex.justify-content-between.align-items-center.flex-wrap.gap-3.w-100
   %h1.fw-bolder.text-center

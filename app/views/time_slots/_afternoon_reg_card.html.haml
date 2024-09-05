@@ -1,7 +1,5 @@
 -# locals: (confirmed_slot_regs:, confirmed_opt_regs:,
   child:, opt_regs:, registrations:, slot:)
-  Rubocop was going crazy with false positives, so turned the cop off
-  rubocop:disable Layout/IndentationConsistency
 
 :ruby
   return if slot.nil?
@@ -17,8 +15,6 @@
   confirmed_depart = depart_options.find do |o|
     confirmed_opt_regs.any? { |reg| reg.registerable_id == o.id }
   end
-
-
 
 - if slot.closed && current_user.customer?
   %p.d-flex.align-items-center.justify-content-center.text-bg-warning.p-1.rounded
@@ -43,7 +39,9 @@
   - else
     .afternoon.w-100{ data: { controller: 'popup',
                               action: 'register:toggle->popup#listen' } }
-      %div{ class: 'add_reg w-100 form-check form-switch p-0 d-flex flex-column justify-content-center align-items-center gap-3',
+      %div{ class: 'add_reg w-100 form-check form-switch p-0 d-flex ' \
+                   'flex-column justify-content-center align-items-center ' \
+                   'gap-3',
             data: { controller: 'register',
                     'register-child-value': child.id,
                     'register-id-value': slot.id,
@@ -121,5 +119,3 @@
 
                 = render 'options/radio',
                          opt: o, child_id: child.id, checked:
-
--# rubocop:enable Layout/IndentationConsistency

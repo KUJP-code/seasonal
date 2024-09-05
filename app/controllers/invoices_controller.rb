@@ -27,9 +27,9 @@ class InvoicesController < ApplicationController
     user_specific_info
     @event_slots = @event.time_slots.morning
                          .includes(
-                           :options,
-                           afternoon_slot: %i[options], avif_attachment: %i[blob],
-                           image_attachment: %i[blob]
+                           :options, afternoon_slot: %i[options],
+                                     avif_attachment: %i[blob],
+                                     image_attachment: %i[blob]
                          ).order(start_time: :asc)
     @options = @event.options + @event.slot_options
   end
@@ -338,11 +338,20 @@ class InvoicesController < ApplicationController
     @member_prices = @event.member_prices
     @non_member_prices = @event.non_member_prices
     @siblings = @child.siblings
+    @event_cost = @child.parent.invoices
+                        .where(event_id: @event.id)
+                        .sum(:total_cost)
     @all_invoices = @child.invoices
                           .where(event: @event)
                           .includes(:adjustments, :opt_regs, :registrations,
                                     :slot_regs, :time_slots)
                           .to_a
+    @registered_slots = @child.time_slots.morning
+                              .where(event_id: @event.id)
+                              .includes(:options, afternoon_slot: %i[options],
+                                                  avif_attachment: %i[blob],
+                                                  image_attachment: %i[blob])
+                              .order(start_time: :asc)
 
     return unless @all_invoices.empty? || @all_invoices.all?(&:in_ss)
 
