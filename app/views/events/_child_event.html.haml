@@ -1,5 +1,14 @@
--# locals: (event:, child: current_user.children.first, sibling_events: nil)
-- online_kid = child.school_id == 2
+-# locals: (event:, child: current_user.children.first, sibling_events:)
+
+:ruby
+  online_kid = child.school_id == 2
+  # Trainers want staff they're teaching to be able to create
+  # bookings at online for fake online students
+  if current_user.staff?
+    sibling_events =
+      [Event.find_by(name: sibling_events.first.name, school_id: 2)] +
+      sibling_events
+  end
 
 .card.d-grid
   - if online_kid && sibling_events
@@ -44,7 +53,6 @@
                     class: 'form-label fw-bold fs-4'
           = f.collection_select :id,
                                 sibling_events,
-                                :id,
-                                proc { |e| t("schools.#{e.school.name}") },
+                                :id, proc { |e| t("schools.#{e.school.name}") },
                                 {}, class: 'form-select'
           = f.submit t('.reg_at_selected'), class: 'btn btn-primary w-100'
