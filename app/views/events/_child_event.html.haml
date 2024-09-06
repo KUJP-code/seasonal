@@ -4,7 +4,7 @@
   online_kid = child.school_id == 2
   # Trainers want staff they're teaching to be able to create
   # bookings at online for fake online students
-  if current_user.staff?
+  if current_user.staff? && sibling_events
     sibling_events =
       [Event.find_by(name: sibling_events.first.name, school_id: 2)] +
       sibling_events
