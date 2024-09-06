@@ -1,0 +1,38 @@
+-# locals: (child_id:, opt_regs:, options:, slot:, translation_key:)
+
+- deregister = Option.new(name: 'なし', optionable_id: slot.id)
+
+%fieldset.mt-2.form-switch.p-0.d-flex.flex-column.gap-2
+  %legend.fs-6.fw-bold= t(".#{translation_key}")
+
+  - options.prepend(deregister).each_with_index do |opt, i|
+    :ruby
+      checked = i == deregister ||
+                opt_regs.any? { |reg| reg.registerable_id == opt.id }
+      # Special values for the 'deregister' option
+      if opt.name == 'なし'
+        opt_id = 0
+        cost = 0
+      else
+        opt_id = opt.id
+        cost = opt.cost
+      end
+
+    %div{ class: 'add_reg w-100 form-check d-flex ' \
+                 'justify-content-center align-items-center',
+          data: { controller: 'register',
+                  'register-id-value': opt_id,
+                  'register-type-value': 'Radio',
+                  'register-child-value': child_id,
+                  'register-cost-value': cost,
+                  'register-name-value': opt.name } }
+      %label.form-check-label{ for: "arrival#{opt.optionable_id}opt#{opt_id}",
+                               'data-register-target': 'name' }
+        .w-100.me-2= opt.name
+
+      %input{ type: 'radio',
+              name: "arrival#{opt.optionable_id}child#{child_id}",
+              id: "arrival#{opt.optionable_id}opt#{opt_id}", checked:,
+              data: { register_target: 'button',
+                      action: 'change->register#toggle' },
+              class: 'form-check-input m-0' }

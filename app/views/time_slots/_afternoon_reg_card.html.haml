@@ -86,7 +86,9 @@
             - if confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id }
               %p #{opt.name}: ◯
             - else
-              %div{ class: 'add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100',
+              %div{ class: 'add_reg form-check form-switch p-0 d-flex ' \
+                           'justify-content-center align-items-center ' \
+                           'gap-2 w-100',
                     data: { controller: 'register',
                             'register-child-value': child.id,
                             'register-cost-value': opt.cost,
@@ -105,17 +107,7 @@
           - if confirmed_depart
             %p #{confirmed_depart.name}: ◯
           - elsif depart_options.size.positive?
-            %fieldset.mt-2.form-switch.p-0.d-flex.flex-column.gap-2
-              %legend.fs-6.fw-bold= t('.depart_options')
-
-              -# always checked because will be overridden if
-                 any opts are actually registered
-              = render 'options/radio',
-                       opt: Option.new(name: 'なし', optionable_id: slot.id),
-                       child_id: child.id, checked: true
-
-              - depart_options.each do |o|
-                - checked = opt_regs.any? { |reg| reg.registerable_id == o.id }
-
-                = render 'options/radio',
-                         opt: o, child_id: child.id, checked:
+            = render 'options/time_options',
+                     child_id: child.id, opt_regs:,
+                     options: depart_options, slot:,
+                     translation_key: 'depart_options'

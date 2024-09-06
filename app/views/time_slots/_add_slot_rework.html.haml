@@ -12,6 +12,7 @@
     reg.registerable_id == add_slot.id && reg.registerable_type == 'TimeSlot'
   end
 
+  deregister = Option.new(name: 'なし', optionable_id: add_slot.id)
   # Arrival variables
   arrive_category = kindy ? :k_arrival? : :arrival?
   arrive_options = add_slot.options.select(&arrive_category).sort_by(&:modifier)
@@ -86,7 +87,9 @@
 
               registered = opt_regs.any? { |reg| reg.registerable_id == opt.id }
 
-            %div{ class: 'add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100',
+            %div{ class: 'add_reg form-check form-switch p-0 d-flex ' \
+                         'justify-content-center align-items-center ' \
+                         'gap-2 w-100',
                   data: { controller: 'register',
                           'register-id-value': opt.id,
                           'register-type-value': 'Option',
@@ -107,38 +110,18 @@
           - if confirmed_arrival
             %p #{confirmed_arrival.name}: ◯
           - elsif arrive_options.size.positive?
-            %fieldset.mt-2.form-switch.p-0.d-flex.flex-column.gap-2
-              %legend.fs-6.fw-bold= t('.arrival_options')
-
-              -# always checked because will be overridden if
-                 any opts are actually registered
-              = render 'options/radio',
-                       opt: Option.new(name: 'なし', optionable_id: add_slot.id),
-                       child_id: child.id, checked: true
-
-              - arrive_options.each do |o|
-                - checked = opt_regs.any? { |reg| reg.registerable_id == o.id }
-
-                = render 'options/radio',
-                         opt: o, child_id: child.id, checked:
+            = render 'options/time_options',
+                     child_id: child.id, opt_regs:,
+                     options: arrive_options, slot: add_slot,
+                     translation_key: 'arrival_options'
 
           - if confirmed_depart
             %p #{confirmed_depart.name}: ◯
           - elsif depart_options.size.positive?
-            %fieldset.mt-2.form-switch.p-0.d-flex.flex-column.gap-2
-              %legend.fs-6.fw-bold= t('.depart_options')
-
-              -# always checked because will be overridden if
-                 any opts are actually registered
-              = render 'options/radio',
-                       opt: Option.new(name: 'なし', optionable_id: add_slot.id),
-                       child_id: child.id, checked: true
-
-              - depart_options.each do |o|
-                - checked = opt_regs.any? { |reg| reg.registerable_id == o.id }
-
-                = render 'options/radio',
-                         opt: o, child_id: child.id, checked:
+            = render 'options/time_options',
+                     child_id: child.id, opt_regs:,
+                     options: depart_options, slot: add_slot,
+                     translation_key: 'depart_options'
 
       - if add_slot.special? && add_slot.morning?
         :ruby
@@ -147,7 +130,9 @@
           ext_opt_registered =
             ext_opt && opt_regs.any? { |reg| reg.registerable_id == ext_opt.id }
 
-        %div{ class: 'add_reg form-check form-switch p-0 d-flex flex-column justify-content-center align-items-center gap-2 p-2 w-100 border',
+        %div{ class: 'add_reg form-check form-switch p-0 d-flex ' \
+                     'flex-column justify-content-center ' \
+                     'align-items-center gap-2 p-2 w-100 border',
               data: { controller: 'register',
                       'register-child-value': child.id,
                       'register-cost-value': ext_opt.cost,
