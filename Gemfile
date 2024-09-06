@@ -151,6 +151,9 @@ group :development, :test do
 
   # Get some custom Pundit matchers for clearer testing
   gem 'pundit-matchers', '~> 3.1'
+
+  # to launch system specs in browser for easier debugging
+  gem 'launchy'
 end
 
 group :development do
