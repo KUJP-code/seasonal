@@ -1,0 +1,40 @@
+-# locals: (checked:, child_id:, opt:)
+
+- if opt.name == 'なし'
+  %div{ class: 'add_reg w-100 form-check d-flex ' \
+               'justify-content-center align-items-center',
+        data: { controller: 'register',
+                'register-id-value': '0',
+                'register-type-value': 'Radio',
+                'register-child-value': child_id,
+                'register-cost-value': '0',
+                'register-name-value': opt.name } }
+    %label.form-check-label{ for: "arrival#{opt.optionable_id}opt0",
+                             'data-register-target': 'name' }
+      = opt.name
+
+    %input{ type: 'radio',
+            name: "arrival#{opt.optionable_id}child#{child_id}",
+            id: "arrival#{opt.optionable_id}opt0", checked:,
+            data: { register_target: 'button',
+                    action: 'change->register#toggle' },
+            class: 'form-check-input m-0' }
+- else
+  %div{ class: 'add_reg w-100 form-check d-flex ' \
+               'justify-content-center align-items-center',
+        data: { controller: 'register',
+                'register-id-value': opt.id,
+                'register-type-value': 'Radio',
+                'register-child-value': child_id,
+                'register-cost-value': opt.cost,
+                'register-name-value': opt.name } }
+    %label.form-check-label{ for: "arrival#{opt.optionable_id}opt#{opt.id}",
+                             'data-register-target': 'name' }
+      = opt.name
+
+    %input{ type: 'radio',
+            name: "arrival#{opt.optionable_id}child#{child_id}",
+            id: "arrival#{opt.optionable_id}opt#{opt.id}", checked:,
+            data: { register_target: 'button',
+                    action: 'change->register#toggle' },
+            class: 'form-check-input m-0' }
