@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.3.15.1-missing-local"
+    "Name": "thatbballguy/event_site:2.3.15.2-siblingevent-check"
   },
   "Ports": [
     {
