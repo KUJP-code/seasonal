@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.3.15.2-siblingevent-check"
+    "Name": "thatbballguy/event_site:2.4.0-test-regflow"
   },
   "Ports": [
     {
