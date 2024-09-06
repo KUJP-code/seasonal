@@ -70,47 +70,14 @@ class InvoicesController < ApplicationController
   end
 
   def confirm
-    ignore_slots = if permitted_attributes(Invoice)['slot_regs_attributes'].nil?
-                     []
-                   else
-                     permitted_attributes(Invoice)['slot_regs_attributes'].keep_if do |_, v|
-                       v['_destroy'] == '1'
-                     end.to_h.transform_values do |v|
-                       v['registerable_id'].to_i
-                     end.values
-                   end
-    @ignore_opts = if permitted_attributes(Invoice)['opt_regs_attributes'].nil?
-                     []
-                   else
-                     permitted_attributes(Invoice)['opt_regs_attributes'].keep_if do |_, v|
-                       v['_destroy'] == '1'
-                     end.to_h.transform_values do |v|
-                       v['registerable_id'].to_i
-                     end.values
-                   end
-
     @invoice = authorize Invoice.new(permitted_attributes(Invoice))
-    @new = params[:new] == 'true'
-
-    # This makes it work??????????
-    # I do not know why
-    # I likely never will
-    # Do not remove this line of code
-    @invoice.slot_regs.each
-
-    @invoice.calc_cost(ignore_slots, @ignore_opts)
+    @invoice.calc_cost
     @ss_invoices = Invoice.where(event_id: @invoice.event_id, in_ss: true,
                                  child_id: @invoice.child_id)
+    @new = params[:new] == 'true'
 
-    # Temp solution while working on the registration page refactor
+    # Temp redirect while working on the registration page refactor
     render params[:rework] ? 'invoices/_confirm_rework' : 'invoices/confirm'
-  end
-
-  def confirmed
-    authorize Invoice
-    @invoice = nil
-
-    render 'invoices/confirm'
   end
 
   def copy

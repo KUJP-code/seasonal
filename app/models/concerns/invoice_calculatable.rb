@@ -7,9 +7,9 @@ module InvoiceCalculatable
   include OptionCalculator
 
   included do
-    def generate_data(ignore_slots, ignore_opts)
-      @data = { options: validated_options(ignore_opts),
-                time_slots: validated_slots(ignore_slots) }
+    def generate_data
+      @data = { options: validated_options,
+                time_slots: validated_slots }
       @data[:num_regs] = @data[:time_slots].size
       calc_course_cost(@data[:time_slots])
       calc_option_cost(@data[:options])
@@ -23,14 +23,18 @@ module InvoiceCalculatable
     end
   end
 
-  def validated_options(ignore_opts)
-    valid_regs = opt_regs.reject { |reg| orphan_option?(reg) }
-                         .map(&:registerable_id)
-    Option.where(id: valid_regs - ignore_opts)
+  def validated_options
+    valid_reg_ids = opt_regs.reject do |reg|
+      reg.marked_for_destruction? || orphan_option?(reg)
+    end.map(&:registerable_id)
+
+    Option.where(id: valid_reg_ids)
   end
 
-  def validated_slots(ignore_slots)
-    TimeSlot.where(id: slot_regs.map(&:registerable_id) - ignore_slots)
-            .includes(:options)
+  def validated_slots
+    valid_reg_ids = slot_regs.reject(&:marked_for_destruction?)
+                             .map(&:registerable_id)
+
+    TimeSlot.where(id: valid_reg_ids).includes(:options)
   end
 end

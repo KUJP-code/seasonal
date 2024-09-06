@@ -2,7 +2,7 @@
   coupon_options = [[nil, nil], %w[WELBOX WELBOX],
                     %w[すくすくえいど すくすくえいど]]
   event_option = @invoice.event.options&.first&.id
-  opt_ids = @invoice.opt_regs.map(&:registerable_id) - @ignore_opts
+  opt_ids = @invoice.opt_regs.map(&:registerable_id)
 
 = turbo_frame_tag "child#{@invoice.child_id}invoice#{@invoice.id}" do
   .d-flex.flex-column.align-items-center.gap-3
@@ -66,9 +66,10 @@
                  class: 'btn btn-primary',
                  'data-turbo-frame': '_top'
 
-    %h1= t('.confirmed')
-    .w-100.d-flex.flex-column.gap-3
-      = render @ss_invoices, index: false
+    - if @ss_invoices.any?
+      %h1= t('.confirmed')
+      .w-100.d-flex.flex-column.gap-3
+        = render @ss_invoices, index: false
 
     %hr.border.border-secondary.border-1.w-100
 

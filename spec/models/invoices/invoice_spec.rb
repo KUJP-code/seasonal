@@ -31,26 +31,27 @@ RSpec.describe Invoice do
     it 'calculates cost on save' do
       slot = create(:time_slot)
       invoice.slot_regs << build(:slot_reg, registerable: slot)
-      invoice.opt_regs << build(
-        :event_opt_reg,
-        registerable: create(:event_option, cost: 10, optionable: event)
-      )
+      invoice.opt_regs <<
+        build(:event_opt_reg, registerable: create(:event_option, cost: 10))
       invoice.save
       expect(invoice.total_cost).to eq(11)
     end
 
-    it 'ignores a time slot whose id is in the array passed as the first parameter' do
+    it 'ignores a time slot reg marked for destruction' do
       ignored_slot = create(:time_slot)
-      invoice.slot_regs << build(:slot_reg, registerable: ignored_slot)
-      expect(invoice.calc_cost([ignored_slot.id])[:total_cost]).to eq(0)
+      ignored_reg = build(:slot_reg, registerable: ignored_slot)
+      ignored_reg.mark_for_destruction
+      invoice.slot_regs << ignored_reg
+      expect(invoice.calc_cost[:total_cost]).to eq(0)
     end
 
-    it 'ignores an option whose id is in the array passed as the second parameter' do
-      ignored_opt = create(:event_option)
+    it 'ignores an option reg marked for destruction' do
+      ignored_opt = create(:event_option, cost: 10)
       invoice.slot_regs << build(:slot_reg, registerable: create(:time_slot))
-      invoice.opt_regs << build(:event_opt_reg, registerable: ignored_opt)
-      result = invoice.calc_cost([], [ignored_opt.id])
-      expect(result[:total_cost]).to eq(1)
+      ignored_reg = build(:event_opt_reg, registerable: ignored_opt)
+      ignored_reg.mark_for_destruction
+      invoice.opt_regs << ignored_reg
+      expect(invoice.calc_cost[:total_cost]).to eq(1)
     end
 
     it 'rejects negative costs and returns 0 instead' do

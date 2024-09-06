@@ -20,18 +20,15 @@ module OptionCalculator
     duplicated
   end
 
-  # Remove options if their slot is no longer registered for
   def orphan_option?(opt_reg)
-    # Exclude event options from the check
-    return false if event.options.ids.include?(opt_reg['registerable_id'].to_i)
+    option = Option.find(opt_reg['registerable_id'])
+    # we want event options to be registerable no matter what
+    return false if option.event?
     return true if slot_regs.empty?
 
-    option = Option.find(opt_reg['registerable_id'])
     # If for special day extension, only delete if neither registered
     if option.extension? || option.k_extension?
-      return slot_regs.none? do |r|
-               r.registerable.special?
-             end
+      return slot_regs.none? { |r| r.registerable.special? }
     end
 
     slot_regs.none? { |s_reg| s_reg.registerable_id == option.optionable_id }
