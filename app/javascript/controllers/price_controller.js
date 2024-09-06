@@ -16,17 +16,13 @@ export default class extends Controller {
 
 	static values = {
 		eventName: String,
-		memberPrice: Object,
-		nonMemberPrice: Object,
+		priceList: Object,
 		otherCost: Number,
 	};
 
 	// Base function called when form modified
 	calculate() {
-		const courseCost = this.isMember(this.childTarget)
-			? this.calcCourseCost(true)
-			: this.calcCourseCost(false);
-
+		const courseCost = this.calcCourseCost();
 		const optionCost = this.optCostTargets
 			.filter((cost) => cost.classList.contains("registered"))
 			.reduce((sum, option) => sum + Number.parseInt(option.innerHTML), 0);
@@ -82,8 +78,7 @@ export default class extends Controller {
 	connect() {
 		this.confirmText = this.confirmTarget.value;
 		this.initialCost = this.getInitialCost();
-		this.memberPrice = this.memberPriceValue;
-		this.nonMemberPrice = this.nonMemberPriceValue;
+		this.priceList = this.priceListValue;
 		this.preventSubmission();
 	}
 
@@ -101,14 +96,12 @@ export default class extends Controller {
 			: 0;
 	}
 
-	// Calculates course costs if kids are both members/not
-	calcCourseCost(member) {
-		const courses = member ? this.memberPrice : this.nonMemberPrice;
+	calcCourseCost() {
 		const id = Number.parseInt(this.childTarget.children[0].innerHTML);
 
 		const cost = this.slotRegsTargets.reduce((sum, target) => {
 			const numRegs = target.querySelectorAll(`.child${id}`).length;
-			const courseCost = this.bestCourses(numRegs, courses);
+			const courseCost = this.bestCourses(numRegs, this.priceList);
 			return sum + courseCost;
 		}, 0);
 
@@ -133,13 +126,6 @@ export default class extends Controller {
 		}
 
 		return this.spotUse(numRegs, courses);
-	}
-
-	// True if child is a member
-	isMember(child) {
-		const membership = child.querySelector(".membership").innerHTML;
-
-		return membership === "Yes";
 	}
 
 	// Find the largest course that fits the number of registrations

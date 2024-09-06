@@ -153,8 +153,7 @@ class EventsController < ApplicationController
   end
 
   def user_specific_info
-    @member_prices = @event.member_prices
-    @non_member_prices = @event.non_member_prices
+    @price_list = (@child.member? ? @event.member_prices : @event.non_member_prices).courses
     @siblings = @child.siblings
     @event_cost = @child.parent.invoices
                         .where(event_id: @event.id)

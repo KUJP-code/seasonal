@@ -13,8 +13,7 @@
 <main id="event-show"
       data-controller="invoice price"
       data-action="register:toggle->invoice#change invoice:add@window->price#calculate invoice:remove@window->price#calculate"
-      data-price-member-price-value=<%= @member_prices.courses.to_json unless @member_prices.nil? %>
-      data-price-non-member-price-value=<%= @non_member_prices.courses.to_json unless @non_member_prices.nil? %>
+      data-price-price-list-value=<%= @price_list.to_json %>
       data-price-other-cost-value="<%= others_cost || 0 %>"
       data-price-event-name-value="<%= @event.name %>"
       class="d-flex flex-column justify-content-start align-items-start text-start bg-white">
@@ -76,7 +75,7 @@
                              adjustments:,
                              event: @event,
                              child: @child,
-                             price_list: @child.member? ? @member_prices.courses : @non_member_prices.courses %>
+                             price_list: @price_list %>
                 </div>
             </div>
         </div>
