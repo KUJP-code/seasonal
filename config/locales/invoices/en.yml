@@ -1,7 +1,21 @@
 en:
   invoices:
     confirm:
+      apply_coupon: "Apply Coupon"
       confirm_changes: "Confirm Changes"
+      confirmed: "In SS, editing locked"
+      coupon: "Coupon"
+      email_will_send: "You will receive a confirmation email after confirming"
+      not_done: "Your booking is not complete, confirm before closing the window"
+      please_make_selection: "You must register for something to make a booking"
+    confirm_rework:
+      apply_coupon: "Apply Coupon"
+      confirm_changes: "Confirm Changes"
+      confirmed: "In SS, editing locked"
+      coupon: "Coupon"
+      email_will_send: "You will receive a confirmation email after confirming"
+      not_done: "Your booking is not complete, confirm before closing the window"
+      please_make_selection: "You must register for something to make a booking"
     event_cost:
       event_cost: "Total cost for %{event}: %{cost}"
     invoice:

@@ -26,8 +26,8 @@
 
     = form_with model: @invoice,
                 method: (@new ? :post : :patch),
-                url: (@new ? invoices_path : invoice_path(@invoice.id)),
-                html: { class: 'd-flex flex-column align-items-center gap-3' } do |f|
+                html: { class: 'd-flex flex-column gap-3' },
+                url: (@new ? invoices_path : invoice_path(@invoice.id)) do |f|
       = f.hidden_field :id
       = f.hidden_field :child_id
       = f.hidden_field :event_id
@@ -49,8 +49,8 @@
           = opt_f.hidden_field :registerable_type
 
       - if @invoice.event.seasonal?
-        %details.w-50
-          %summary.btn.btn-info.mb-3
+        %details.w-100
+          %summary.btn.btn-info.mb-3.text-nowrap
             = t('.apply_coupon')
 
           = f.fields_for :coupons, f.object.coupons.new do |coupon_f|

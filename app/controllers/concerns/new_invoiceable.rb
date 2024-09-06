@@ -26,7 +26,7 @@ module NewInvoiceable
 
       return unless @all_invoices.empty? || @all_invoices.all?(&:in_ss)
 
-      @all_invoices << build_temp_invoice(child, event)
+      @all_invoices = @all_invoices.to_a + [build_temp_invoice(child, event)]
     end
 
     def get_event_data(event, child)
