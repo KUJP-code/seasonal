@@ -3,14 +3,14 @@
         <%= link_to t('.setsumeikai_list'),
                     setsumeikais_path,
                     class: 'btn btn-primary' %>
-        
+
         <%= link_to t('.inquiry_list'),
                 inquiries_path,
                 class: 'btn btn-primary' %>
     </div>
 
     <div class="card">
-        <h2><%= @setsumeikai.school_date_time %></h2>
+        <h2><%= school_date_time(@setsumeikai) %></h2>
         <h3>
             <%= "#{@setsumeikai.inquiries.size}/#{@setsumeikai.attendance_limit}" %>
         </h3>
@@ -24,7 +24,7 @@
                         class: 'btn btn-primary' %>
         </div>
     </div>
-    
+
     <% unless @inquiries.empty? %>
         <h3><%= t('.inquiries') %></h3>
 

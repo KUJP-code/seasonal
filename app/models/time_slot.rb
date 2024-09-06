@@ -89,9 +89,7 @@ class TimeSlot < ApplicationRecord
 
   def same_name_slots
     event_ids = Event.where(name: event.name).ids
-    TimeSlot.where(name:,
-                   morning:,
-                   category:,
+    TimeSlot.where(name:, morning:, category:,
                    event_id: event_ids)
   end
 

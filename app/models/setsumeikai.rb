@@ -21,34 +21,20 @@ class Setsumeikai < ApplicationRecord
   validate :host_school_involved
 
   scope :upcoming, -> { where('start > ?', Time.zone.now) }
-  scope :visible, -> { where('release_date < ?', Time.zone.today + 1.day) }
+  scope :visible, -> { where(release_date: ...Time.zone.today + 1.day) }
   scope :calendar, -> { upcoming.visible }
 
   def as_json(_options = {})
     {
       id: id.to_s,
-      start: start,
+      start:,
       title: school.name,
       full: full?
     }
   end
 
-  def date
-    start.strftime('%Y年%m月%d日') + " #{ja_day}"
-  end
-
-  def date_time
-    "#{date} #{start.strftime('%H:%M')}"
-  end
-
   def full?
     inquiries_count >= attendance_limit || Time.zone.now > close_at
-  end
-
-  def ja_day
-    en_day = start.strftime('%A')
-
-    "(#{DAYS[en_day]})"
   end
 
   def set_close_at
