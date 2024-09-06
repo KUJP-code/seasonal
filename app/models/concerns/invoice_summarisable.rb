@@ -96,8 +96,15 @@ module InvoiceSummarisable
 
   def detailed_slot(slot, registered_opts)
     afternoon_text = slot.morning ? '' : ' (午後)'
+    ja_days = { 'Sunday' => '日', 'Monday' => '月',
+                'Tuesday' => '火', 'Wednesday' => '水',
+                'Thursday' => '木', 'Friday' => '金',
+                'Saturday' => '土' }.freeze
+    ja_day = ja_days[slot.start_time.strftime('%A')]
+    date = "#{slot.start_time.strftime('%m月%d日')} #{ja_day}"
+
     "<div class='slot_regs d-flex flex-wrap gap-3 text-start'>
-      <h5>#{slot.name} (#{slot.date}) #{afternoon_text}</h5>
+      <h5>#{slot.name} (#{date}) #{afternoon_text}</h5>
       #{detailed_slot_options(slot, registered_opts).join}\n
     </div>"
   end

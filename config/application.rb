@@ -42,9 +42,6 @@ module DbPrototypeV2
     # Don't generate system test files.
     config.generators.system_tests = nil
 
-    # Scope helpers to their controller
-    config.action_controller.include_all_helpers = false
-
     # Search sub folders in locales for translations
     config.i18n.load_path += Dir[Rails.root.join('config/locales/**/*.{rb,yml}')]
 
@@ -53,6 +50,6 @@ module DbPrototypeV2
     config.active_job.queue_name_prefix = "event_site_#{Rails.env}"
 
     # Lazyload images by default
-    config.action_view.image_loading = "lazy"
+    config.action_view.image_loading = 'lazy'
   end
 end

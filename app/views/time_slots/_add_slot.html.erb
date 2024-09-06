@@ -3,7 +3,7 @@
 
 <div class="card d-flex flex-row flex-nowrap bg-white">
     <div class="d-flex flex-column">
-        <p class="text-black-50"><%= add_slot.date %></p>
+        <p class="text-black-50"><%= ja_date(add_slot.start_time) %></p>
 
         <%= render 'shared/picture_for', resource: add_slot %>
     </div>
@@ -233,7 +233,7 @@
                             <% if confirmed_slot_regs.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
                                 <p>◯</p>
                             <% else %>
-                                <% if child.regular_schedule && child.regular_schedule[afternoon_slot.day.downcase] %>
+                                <% if child.regular_schedule && child.regular_schedule[day(afternoon_slot).downcase] %>
                                     <p class="bg-danger text-white rounded p-1"><%= t('.regular_day') %></p>
                                 <% end %>
                                 <% if afternoon_slot.closed? %>

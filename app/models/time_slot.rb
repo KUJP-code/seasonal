@@ -38,12 +38,7 @@ class TimeSlot < ApplicationRecord
   validates :name, :start_time, :end_time, presence: true
   validates_comparison_of :end_time, greater_than: :start_time
 
-  enum :category, {
-    seasonal: 0,
-    special: 1,
-    party: 2,
-    outdoor: 3
-  }
+  enum :category, { seasonal: 0, special: 1, party: 2, outdoor: 3 }
 
   scope :afternoon, -> { where(morning: false) }
   scope :for_registration_page,
@@ -100,46 +95,11 @@ class TimeSlot < ApplicationRecord
                    event_id: event_ids)
   end
 
-  # These convert the start/end datetimes into something more useful for display
-  def date
-    start_time.strftime('%m月%d日') + " #{ja_day}"
-  end
-
-  def day
-    start_time.strftime('%A')
-  end
-
   def extra_cost_for(child)
     category_cost = child.external? ? ext_modifier : int_modifier
     grade_cost = child.kindy ? kindy_modifier : ele_modifier
 
     category_cost + grade_cost
-  end
-
-  def f_end_time
-    end_time.strftime('%I:%M%p')
-  end
-
-  def f_start_time
-    start_time.strftime('%I:%M%p')
-  end
-
-  def ja_day
-    en_day = start_time.strftime('%A')
-
-    "(#{DAYS[en_day]})"
-  end
-
-  def name_date
-    if morning
-      "#{name} (#{date})"
-    else
-      "#{name} (#{date}) (午後)"
-    end
-  end
-
-  def times
-    "#{f_start_time} - #{f_end_time}"
   end
 
   private

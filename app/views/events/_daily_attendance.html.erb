@@ -15,21 +15,21 @@
         <div class="card <%= case
                             when regs < 10
                                 'bg-danger'
-                            when regs < 20 
+                            when regs < 20
                                 'bg-warning'
                             else
                                 'bg-success'
                             end %> justify-content-between text-white fw-semibold">
             <h6 class="bg-light rounded-3 p-2">
                 <% if slot.special? && slot.morning == false %>
-                    <%= link_to "#{slot.name} (#{slot.date})",
+                    <%= link_to name_date(slot),
                                 children_path(
                                     source: 'time_slot',
                                     id: slot.morning_slot_id
                                 ),
                                 class: 'fw-semibold' %>
                 <% else %>
-                    <%= link_to "#{slot.name} (#{slot.date})", children_path(source: 'time_slot', id: slot.id), class: 'fw-semibold' %>
+                    <%= link_to name_date(slot), children_path(source: 'time_slot', id: slot.id), class: 'fw-semibold' %>
                 <% end %>
             </h6>
             <h3>

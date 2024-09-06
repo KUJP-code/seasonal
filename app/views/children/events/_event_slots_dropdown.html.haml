@@ -4,6 +4,6 @@
   %summary.p-3= t('.daily_attendance')
   .slots.d-flex.flex-wrap.gap-3.justify-content-start.p-3
     - slots.each do |slot|
-      = link_to slot.name_date,
+      = link_to name_date(slot),
                 children_path(id: slot.id, source: 'time_slot'),
                 class: 'btn btn-primary'

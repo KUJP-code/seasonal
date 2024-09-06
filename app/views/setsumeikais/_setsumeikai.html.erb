@@ -1,6 +1,6 @@
 <tr>
     <td>
-        <%= link_to setsumeikai.date_time, setsumeikai_path(setsumeikai) %>
+        <%= link_to ja_datetime(setsumeikai.start), setsumeikai_path(setsumeikai) %>
     </td>
 
     <td>
@@ -21,11 +21,11 @@
     </td>
 
     <td>
-        <%= date_yy_mm_dd(setsumeikai.release_date) %>
+        <%= ja_date(setsumeikai.release_date) %>
     </td>
 
     <td>
-        <%= date_yy_mm_dd(setsumeikai.close_at) %>
+        <%= ja_date(setsumeikai.close_at) %>
     </td>
 
     <td>

@@ -12,7 +12,6 @@
     reg.registerable_id == add_slot.id && reg.registerable_type == 'TimeSlot'
   end
 
-  deregister = Option.new(name: 'なし', optionable_id: add_slot.id)
   # Arrival variables
   arrive_category = kindy ? :k_arrival? : :arrival?
   arrive_options = add_slot.options.select(&arrive_category).sort_by(&:modifier)
@@ -29,7 +28,7 @@
 
 .card.d-flex.flex-row.flex-nowrap.bg-white
   .d-flex.flex-column
-    %p.text-black-50= add_slot.date
+    %p.text-black-50= ja_date(add_slot.start_time)
     = render 'shared/picture_for', resource: add_slot
 
   .d-grid.gap-3.w-50
@@ -52,7 +51,9 @@
     - else
       .morning.w-100{ data: { controller: 'popup',
                               action: 'register:toggle->popup#listen' } }
-        %div{ class: 'add_reg w-100 form-check form-switch p-0 d-flex flex-column justify-content-center align-items-center gap-3',
+        %div{ class: 'add_reg w-100 form-check form-switch p-0 d-flex ' \
+                     'flex-column justify-content-center ' \
+                     'align-items-center gap-3',
               data: { controller: 'register',
                       'register-id-value': add_slot.id,
                       'register-type-value': 'TimeSlot',
