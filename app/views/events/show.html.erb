@@ -123,7 +123,15 @@
 
 
     <div id="price_bar" class="w-100 d-flex justify-content-evenly align-items-center flex-wrap gap-2 bg-info p-2 rounded sticky-bottom">
-        <h3 id="total_cost" class="text-white fw-bold" data-price-target="finalCost"><%="#{t('.total_cost')}: #{@all_invoices.reduce(0) {|sum, i| sum + i.total_cost}}円"%></h3>
+      <h3 id="total_cost"
+          class="text-white fw-bold"
+          data-price-target="finalCost">
+        <% initial_cost = @all_invoices.reduce(0) do |sum, i|
+             sum + i.total_cost
+        end %>
+        <%= "#{t('.total_cost')}: #{number_to_currency(initial_cost,
+                                                       locale: :ja)}" %>
+      </h3>
 
         <div class="d-flex justify-content-around gap-2">
             <div id="reg_slots">

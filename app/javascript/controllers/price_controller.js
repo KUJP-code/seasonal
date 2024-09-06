@@ -56,7 +56,7 @@ export default class extends Controller {
 		let finalCost =
 			optionCost + courseCost + adjustmentCost + snackCost + extraCost;
 		if (finalCost < 0) finalCost = 0;
-		this.finalCostTarget.innerHTML = `合計（税込）: ${finalCost}円`;
+		this.finalCostTarget.innerHTML = `合計（税込）: ${finalCost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}円`;
 		this.eventCostTarget.innerHTML = `${this.eventNameValue}の合計: ${(
 			this.otherCostValue + finalCost
 		)
