@@ -23,7 +23,6 @@
             = child.name
             .hidden= child.id.to_s
             %p.hidden.level= child.kindy ? 'Kindy' : 'Elementary'
-            %p.hidden.membership= child.member? ? 'Yes' : 'No'
 
     - if event.end_date > Time.zone.now
       - siblings.each do |sibling|

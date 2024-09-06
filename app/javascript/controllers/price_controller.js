@@ -17,7 +17,7 @@ export default class extends Controller {
 	static values = {
 		eventName: String,
 		priceList: Object,
-		otherCost: Number,
+		siblingEventCost: Number,
 	};
 
 	// Base function called when form modified
@@ -54,7 +54,7 @@ export default class extends Controller {
 		if (finalCost < 0) finalCost = 0;
 		this.finalCostTarget.innerHTML = `合計（税込）: ${finalCost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}円`;
 		this.eventCostTarget.innerHTML = `${this.eventNameValue}の合計: ${(
-			this.otherCostValue + finalCost
+			this.siblingEventCostValue + finalCost
 		)
 			.toString()
 			.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}円`;
