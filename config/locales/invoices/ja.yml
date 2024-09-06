@@ -29,6 +29,24 @@ ja:
       view_summary: "詳細を見る"
     event_cost:
       event_cost: "%{event}の合計: %{cost}"
+    new:
+      adjustments: "調整"
+      confirm_invoice: "お申込内容を確認する"
+      coupon: "クーポン"
+      course: "コース"
+      change: "調整額"
+      more_info: "詳細はこちら"
+      num_options: "オプション：%{num}つ"
+      price: "料金"
+      reason: "調整理由"
+      registered_slots: "お申込済みの内容"
+      see_more: "詳細を見る"
+      sibling_reg: "%{opt}は1家族につき1名様のお申込みでご利用可能です"
+      snack_count: "午後コースおやつ代: %{count}つ"
+      special_count: "追加料金: %{count}つ"
+      total_cost: "合計（税込）"
+      time_slot: "%{event}のタイムスロット"
+      unregistered_slots: "お申込可能な日程・アクティビティ"
     invoice:
       adjustments: "調整内容を追加する"
       confirm_no_email: "申込確定（メールなし）"
@@ -54,6 +72,15 @@ ja:
         event_cost: "%{event}の合計: %{cost}"
         regs_for: "%{child}の登録"
         title: "%{name} @ %{school}"
+      more_info:
+        adjustments: "調整"
+        change: "調整額"
+        course: "コース"
+        member_prices: "会員料金"
+        non_member_prices: "非会員料金"
+        price: "料金"
+        reason: "調整理由"
+        regular_schedule: "通常スケジュール"
       price_footer:
         confirm_invoice: "お申込内容を確認する"
     show:

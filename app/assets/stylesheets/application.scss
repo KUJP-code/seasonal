@@ -13,6 +13,7 @@ $enable-negative-margins: true;
   --ku-dark-accent: #d45e69;
   --ku-background: #80b4cf;
   --ku-dark-background: #1487b8;
+  --ku-info: #9cc1d8;
   --main-heading-size: 32px;
   --near-black: #222222;
   --near-white: #f2f2f2;
@@ -480,7 +481,7 @@ main#event-index nav {
 
 dialog#invoice-preview {
   &::backdrop {
-    background-color: var(--ku-orange);
+    background-color: var(--ku-info);
     backdrop-filter: opacity(0.5);
   }
 }
