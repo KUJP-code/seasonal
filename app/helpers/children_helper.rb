@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module ChildrenHelper
+  def arrival_time_for(slot, arrive_opt)
+    f_time(slot.start_time + arrive_opt.modifier.minutes).concat('~')
+  end
+
   def child_categories
     forbidden = %w[default unknown]
     Child.categories.keys.reject { |k| forbidden.include?(k) }
@@ -14,6 +18,10 @@ module ChildrenHelper
 
   def child_primary_grades
     Child.grades.keys[3..11].map { |k| [k, k] }
+  end
+
+  def departure_time_for(slot, depart_opt)
+    f_time(slot.end_time + depart_opt.modifier.minutes).concat('~')
   end
 
   def family_name(child)

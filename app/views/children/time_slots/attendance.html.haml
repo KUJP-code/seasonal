@@ -1,5 +1,4 @@
 :ruby
-  child_ids = @children.map(&:id)
   kindy_count = @children.count(&:kindy)
   ele_count = @children.count { |c| !c.kindy }
   aft_kindy_count = @afternoon_children.count(&:kindy)
@@ -51,7 +50,7 @@
         %th= t('.photo')
 
         - @event_options.each do |o|
-          - reg_count = o.registrations.count { |r| child_ids.find(r.child_id) }
+          - reg_count = @children.count { |c| c.registered?(o) || c.siblings.any? { |s| s.registered?(o) } }
 
           %th{ scope: 'col' } #{o.name}: #{reg_count}
 

@@ -1,13 +1,59 @@
 :ruby
-  arrival_option = child.options.find { |o| o.arrival? && o.optionable_id == slot.id }
+  arrival_option =
+    child.options.find { |o| o.arrival? && o.optionable_id == slot.id }
   if afternoon
-    depart_options =
+    depart_option =
       child.options
            .find { |o| o.departure? && o.optionable_id == afternoon.id }
   end
-  sibling_ids = child.siblings.ids
 
 %tr
   %th.arrival{ scope: 'row' }
-    - if arrival_option
-      = f_time(slot.start_time + arrival_option.modifier.minutes).concat('~')
+    = arrival_time_for(slot, arrival_option) if arrival_option
+
+  %th.morning{ scope: 'row' }
+    = '◯' if child.time_slots.include?(slot)
+
+  %th.name{ scope: 'row' }
+    :ruby
+      link_text = "#{child.katakana_name} (#{child.en_name})"
+      link_text = "(H) #{link_text}" if slot.outdoor? && child.hat_adjustment?
+
+    = link_to link_text, child_path(child)
+
+  %th.level{ scope: 'row' }= child.kindy ? '幼児' : '小学生'
+  %td.allergy{ scope: 'row' }= child.allergies
+  %td.photo{ scope: 'row' }= child.photos unless child.photos == 'OK'
+
+  - event_options.each do |o|
+    %td{ class: o.name }
+      :ruby
+        next unless child.registered?(slot)
+
+        child_registered = child.registered?(o)
+        # FIXME: DB queries in view, N+1
+        sibling_registered = child.siblings.any? { |s| s.registered?(o) }
+
+      = o.name if child_registered || sibling_registered
+
+  - options.each do |o|
+    %td{ class: o.name }
+      = (o.name == '昼食' ? 'Lunch' : o.name) if child.registered?(o)
+
+  -# FIXME: Probably passing the wrong thing here, n+1 queries
+  - if slot.special? && ext_ids.size.positive?
+    %td.extend
+      - registered = child.registered?(slot.options.extension.first)
+
+      = slot.options.extension.first.name if registered
+
+  - if afternoon
+    %td.afternoon
+      = '◯' if child.registered?(afternoon)
+      = 'ご通学日' if child.regular_schedule&.has?(afternoon.start_time)
+
+    - afternoon_options.each do |opt|
+      %td{ class: opt.name }= opt.name if child.registered?(opt)
+
+    %td.depart
+      = departure_time_for(afternoon, depart_option) if depart_option

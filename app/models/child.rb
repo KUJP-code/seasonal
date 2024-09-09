@@ -86,6 +86,11 @@ class Child < ApplicationRecord
     events.where.not(school:).distinct
   end
 
+  def hat_adjustment?
+    adjustments.find_by(reason: '帽子代(野外アクティビティに参加される方でKids UP帽子をお持ちでない方のみ)',
+                        change: 1_100).present?
+  end
+
   def names_string
     "#{name}, #{katakana_name}, #{en_name}"
   end
@@ -101,7 +106,8 @@ class Child < ApplicationRecord
   end
 
   def registered?(registerable)
-    return true if registrations.find_by(registerable:)
+    return true if registrations.find_by(registerable_id: registerable.id,
+                                         registerable_type: registerable.class.name)
 
     false
   end

@@ -140,16 +140,6 @@ class TimeSlot < ApplicationRecord
     afternoon_slot[:name].blank?
   end
 
-  DAYS = {
-    'Sunday' => '日',
-    'Monday' => '月',
-    'Tuesday' => '火',
-    'Wednesday' => '水',
-    'Thursday' => '木',
-    'Friday' => '金',
-    'Saturday' => '土'
-  }.freeze
-
   DEFAULT_AFT_OPTS = [
     {
       name: '夕食',
