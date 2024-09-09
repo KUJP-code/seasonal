@@ -19,7 +19,6 @@ ja:
       event_child:
         makes_editable: "(同じ生徒の)他のお申込があるのに他のお申込が未確認の場合、が壊れてしまいます。もし2つの請求書がある場合、編集のために未確認にする前にマージする必要があります。"
         no_ssid: "なし"
-        seen: "変更を確認済み"
         templates_for: "%{child}のテンプレート"
         unconfirmed_invoice: "この学生には未確認の請求書があります。他の請求書を未確認にするには、この請求書を確認、結合、または削除する必要があります。"
         view: "変更を見る"
@@ -40,6 +39,8 @@ ja:
         summary: "詳細"
       event_slots_dropdown:
         daily_attendance: "アテンダントシート"
+      seen_button:
+        seen: "変更を確認済み"
     form:
       allergies: "アレルギーがない場合は「なし」と入力してください。"
       birthday: "誕生日"
