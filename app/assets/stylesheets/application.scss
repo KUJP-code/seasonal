@@ -269,19 +269,19 @@ input[type="text"]:disabled {
 
 // Child#time_slot_index
 
-#slot_attendance {
+#slot-attendance {
   justify-content: flex-start;
 }
 
-#slot_attendance>h1 {
+#slot-attendance>h1 {
   align-self: center;
 }
 
-#slot_attendance>h2 {
+#slot-attendance>h2 {
   align-self: center;
 }
 
-.slot_attendance .allergy {
+.slot-attendance .allergy {
   max-width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -527,20 +527,20 @@ form .input-group-text {
     top: 0;
   }
 
-  .slot_attendance a,
+  .slot-attendance a,
   .daily-attendance a {
     color: black;
   }
 
-  .slot_attendance {
+  .slot-attendance {
     position: absolute;
     top: 0;
     transform: scale(95%);
   }
 
-  .slot_attendance td,
-  .slot_attendance th,
-  .slot_attendance thead th {
+  .slot-attendance td,
+  .slot-attendance th,
+  .slot-attendance thead th {
     border: 3px black solid;
   }
 }

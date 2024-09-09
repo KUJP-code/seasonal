@@ -5,7 +5,7 @@ export default class extends Controller {
 
   print() {
     // List all other attendance tables
-    const sheets = document.querySelectorAll(".slot_attendance");
+    const sheets = document.querySelectorAll(".slot-attendance");
 
     // Hide all other attendance tables
     for (let sheet of sheets) {

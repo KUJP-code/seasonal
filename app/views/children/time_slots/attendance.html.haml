@@ -1,0 +1,105 @@
+:ruby
+  child_ids = @children.map(&:id)
+  kindy_count = @children.count(&:kindy)
+  ele_count = @children.count { |c| !c.kindy }
+  aft_kindy_count = @afternoon_children.count(&:kindy)
+  aft_ele_count = @afternoon_children.count { |c| !c.kindy }
+
+  extensions = @options.select(&:extension?)
+  ext_ids = extensions.map(&:id)
+
+  options = @options.reject { |o| o.extension? || o.time? }
+
+  child_columns = %w[arrival attend name level allergy photo]
+
+%main.align-items-start#slot-attendance
+  .slot-attendance.w-100{ data: { controller: 'refresh print',
+                                  'print-target': 'print' } }
+    .links.d-flex.gap-3
+      = link_to t('.back_to_event'),
+                children_path(id: @slot.event_id, source: 'event'),
+                class: 'btn btn-primary ms-3'
+
+      = button_tag t('.print'),
+                   class: 'btn btn-primary print',
+                   'data-action': 'click->print#print'
+
+      - if @slot.special? && @afternoon
+        = link_to @afternoon.name,
+                  children_path(id: @afternoon.id, source: 'time_slot'),
+                  class: 'btn btn-primary'
+      - elsif @slot.special? && @slot.morning_slot
+        = link_to @slot.morning_slot.name,
+                  children_path(id: @slot.morning_slot.id, source: 'time_slot'),
+                  class: 'btn btn-primary'
+
+    %h1.text-center= name_date(@slot)
+    %h2.counter.text-center
+      %span{ 'data-refresh-target': 'counter' } 10:00
+      後にページが更新される。
+
+  %table.table.table-sm.table-light.table-striped.table-hover.table-bordered.text-center.text-nowrap.align-middle
+    %thead.sticky-top
+      %tr.table-primary
+        %th= t('.arrival')
+        %th
+          %p= t('.attend')
+          %p K: #{kindy_count}, E: #{ele_count}
+        %th= t('.name')
+        %th 幼児/小学生
+        %th= t('.allergy')
+        %th= t('.photo')
+
+        - @event_options.each do |o|
+          - reg_count = o.registrations.count { |r| child_ids.find(r.child_id) }
+
+          %th{ scope: 'col' } #{o.name}: #{reg_count}
+
+        - options.each do |o|
+          %th{ scope: 'col' }
+            #{o.name == '昼食' ? 'Lunch' : o.name}: #{o.registrations_count}
+
+        - if @slot.special? && extensions.size.positive?
+          %th{ scope: 'col' }
+            中延長:
+            #{extensions.reduce(0) { |sum, e| sum + e.registrations_count }}
+
+        - if @afternoon
+          %th#afternoon-header{ scope: 'col' }
+            %p= t('.attend_afternoon')
+            %p K: #{aft_kindy_count}, E: #{aft_ele_count}
+
+          - @afternoon_options.each do |o|
+            %th{ scope: 'col' } #{o.name}: #{o.registrations_count}
+
+          %th#depart-header{ scope: 'col' }= t('.depart')
+
+    %tbody
+      %tr.search
+        - child_columns.each do |col|
+          = render 'shared/filter_header', col_class: ".#{col}", siblings: '0'
+
+        - (@event_options + options).each do |o|
+          = render 'shared/filter_header',
+                   col_class: ".#{o.name.downcase.tr(' ', '_')}", siblings: '0'
+
+        - if @slot.special? && extensions.size.positive?
+          = render 'shared/filter_header',
+                   col_class: '.extend', siblings: '0'
+
+        - if @afternoon
+          = render 'shared/filter_header',
+                   col_class: '.afternoon', siblings: '0'
+
+          - @afternoon_options.each do |o|
+            = render 'shared/filter_header',
+                     col_class: ".#{o.name}", siblings: '0'
+
+          = render 'shared/filter_header', col_class: '.depart', siblings: '0'
+
+      = render partial: 'children/time_slots/child_row',
+               collection: @children + (@afternoon_children - @children),
+               as: :child,
+               locals: { afternoon: @afternoon, event_options: @event_options,
+                         afternoon_options: @afternoon_options, ext_ids:,
+                         options:, slot: @slot }
