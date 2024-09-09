@@ -55,7 +55,7 @@
 
         - if confirmed_slot_regs.any? { |reg| reg.registerable_id == slot.id }
           %p ◯
-        - elsif child.regular_schedule && child.regular_schedule[day(slot).downcase]
+        - elsif child.regular_schedule && child.regular_schedule.has?(slot.start_time)
           %p.text-bg-danger.rounded.p-1= t('.regular_day')
         - elsif slot.closed?
           %p.d-flex.align-items-center.justify-content-center.text-bg-warning.p-1.rounded

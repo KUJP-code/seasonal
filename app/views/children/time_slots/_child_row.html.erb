@@ -53,7 +53,7 @@
   <% if afternoon %>
     <td class="afternoon">
       <%= '◯' if child.registrations.find { |reg| reg.registerable_type == 'TimeSlot' && reg.registerable_id == afternoon.id } %>
-      <%= 'ご通学日' if child.regular_schedule && child.regular_schedule[day(slot).downcase] %>
+      <%= 'ご通学日' if child.regular_schedule && child.regular_schedule.has?(afternoon.start_time) %>
     </td>
 
     <% afternoon_options.each do |opt| %>

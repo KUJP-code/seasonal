@@ -20,4 +20,11 @@ class RegularSchedule < ApplicationRecord
       'Friday' => friday
     }
   end
+
+  def has?(date)
+    day = date.strftime('%A').downcase
+    return false if %w[saturday sunday].include?(day)
+
+    send(:"#{date.strftime('%A').downcase}")
+  end
 end

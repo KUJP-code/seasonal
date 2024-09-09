@@ -233,7 +233,7 @@
                             <% if confirmed_slot_regs.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
                                 <p>◯</p>
                             <% else %>
-                                <% if child.regular_schedule && child.regular_schedule[day(afternoon_slot).downcase] %>
+                                <% if child.regular_schedule && child.regular_schedule.has?(afternoon_slot.start_time) %>
                                     <p class="bg-danger text-white rounded p-1"><%= t('.regular_day') %></p>
                                 <% end %>
                                 <% if afternoon_slot.closed? %>
