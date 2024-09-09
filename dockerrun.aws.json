@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.4.1-fix-sort"
+    "Name": "thatbballguy/event_site:2.4.2-rogue-helpers"
   },
   "Ports": [
     {
