@@ -40,7 +40,7 @@ ja:
       event_slots_dropdown:
         daily_attendance: "アテンダントシート"
       seen_button:
-        seen: "変更を確認済み"
+        seen: "既読"
     form:
       allergies: "アレルギーがない場合は「なし」と入力してください。"
       birthday: "誕生日"
