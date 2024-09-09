@@ -75,6 +75,15 @@ class TimeSlot < ApplicationRecord
     end
   end
 
+  def name_date
+    en_day = start_time.strftime('%A')
+    date = start_time.strftime('%m月%d日')
+    base = "#{name} (#{date} #{DAYS[en_day]})"
+    return base if morning
+
+    "#{base} (午後)"
+  end
+
   def image_id
     return nil if image.blob.nil?
 
@@ -253,4 +262,8 @@ class TimeSlot < ApplicationRecord
       cost: 1_740
     }
   ].freeze
+
+  DAYS = { 'Sunday' => '日', 'Monday' => '月', 'Tuesday' => '火',
+           'Wednesday' => '水', 'Thursday' => '木', 'Friday' => '金',
+           'Saturday' => '土' }.freeze
 end

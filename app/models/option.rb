@@ -40,6 +40,14 @@ class Option < ApplicationRecord
   scope :not_time, -> { where.not(category: TIME_CATEGORIES) }
   scope :time, -> { where(category: TIME_CATEGORIES) }
 
+  def arrival?
+    category == 'arrival' || category == 'k_arrival'
+  end
+
+  def departure?
+    category == 'departure' || category == 'k_departure'
+  end
+
   def extension?
     category == 'extension' || category == 'k_extension'
   end

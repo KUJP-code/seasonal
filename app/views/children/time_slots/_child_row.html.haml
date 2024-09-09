@@ -1,0 +1,13 @@
+:ruby
+  arrival_option = child.options.find { |o| o.arrival? && o.optionable_id == slot.id }
+  if afternoon
+    depart_options =
+      child.options
+           .find { |o| o.departure? && o.optionable_id == afternoon.id }
+  end
+  sibling_ids = child.siblings.ids
+
+%tr
+  %th.arrival{ scope: 'row' }
+    - if arrival_option
+      = f_time(slot.start_time + arrival_option.modifier.minutes).concat('~')
