@@ -47,7 +47,7 @@ RSpec.describe UserPolicy do
     let(:user) { build(:admin) }
 
     it_behaves_like 'Nacrissus'
-    it_behaves_like 'authorized except destroy'
+    it_behaves_like 'fully authorized user'
     it { is_expected.to authorize_action(:merge_children) }
   end
 

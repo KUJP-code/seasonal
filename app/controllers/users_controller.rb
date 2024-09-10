@@ -59,6 +59,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @user = authorize User.find(params[:id])
+
+    if @user.destroy
+      redirect_to users_path,
+                  notice: t('success', model: '保護者', action: '削除')
+    else
+      redirect_to user_path(@user),
+                  alert: 'Parents with children cannot be deleted'
+    end
+  end
+
   def add_child
     @child = Child.find(params[:child_id])
 

@@ -25,6 +25,10 @@ class UserPolicy < ApplicationPolicy
     staff_or_user?
   end
 
+  def destroy?
+    user.admin?
+  end
+
   def merge_children?
     user.staff?
   end

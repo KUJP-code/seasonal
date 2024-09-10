@@ -33,7 +33,7 @@ Rails.application.routes.draw do
       resources :survey_responses, only: %i[create update]
       resources :time_slots, except: %i[create destroy show]
       resources :uploads, only: %i[create new]
-      resources :users, except: %i[destroy]
+      resources :users
 
       # Mailer subscription routes
       resources :mailer_subscriptions, only: %i[index create update]
