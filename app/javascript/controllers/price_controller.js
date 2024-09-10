@@ -36,7 +36,7 @@ export default class extends Controller {
 		);
 		this.optCountTarget.innerHTML = `オプション：${optCount.toString()}つ`;
 
-		const registeredNodes = [...document.getElementById("reg_slots").children];
+		const registeredNodes = [...document.getElementById("reg-slots").children];
 		// Count slots with an extra cost
 		const extraCostNodes = registeredNodes.filter(
 			(slot) => slot.dataset.modifier !== "0",

@@ -48,7 +48,7 @@ export default class extends Controller {
 
 		if (type === "TimeSlot") {
 			// Add the name of the registration to the registration list
-			const nameContainer = document.getElementById("reg_slots");
+			const nameContainer = document.getElementById("reg-slots");
 			const nameP = document.createElement("p");
 			nameP.dataset.modifier = modifier;
 			nameP.innerText = name.replaceAll("_", " ");
@@ -127,7 +127,7 @@ export default class extends Controller {
 		}
 
 		if (name) {
-			const nameContainer = document.getElementById("reg_slots");
+			const nameContainer = document.getElementById("reg-slots");
 			nameContainer.childNodes.forEach((node) => {
 				if (node.innerText === name.replaceAll("_", " ")) {
 					nameContainer.removeChild(node);

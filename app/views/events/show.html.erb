@@ -121,7 +121,7 @@
     </div>
 
 
-    <div id="price_bar" class="w-100 d-flex justify-content-evenly align-items-center flex-wrap gap-2 bg-info p-2 rounded sticky-bottom">
+    <div id="price-bar" class="w-100 d-flex justify-content-evenly align-items-center flex-wrap gap-2 bg-info p-2 rounded sticky-bottom">
       <h3 id="total_cost"
           class="text-white fw-bold"
           data-price-target="finalCost">
@@ -133,7 +133,7 @@
       </h3>
 
         <div class="d-flex justify-content-around gap-2">
-            <div id="reg_slots">
+            <div id="reg-slots">
                 <% all_registered_slots.each do |slot| %>
                     <p class='hidden' data-modifier=<%= activity_modifier(slot, @child) %> >
                         <%= slot.name.concat(slot.morning ? '' : ' (午後)') %>
