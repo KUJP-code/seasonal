@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:1
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-FROM quay.io/evl.ms/fullstaq-ruby:3.3.1-jemalloc-slim as base
+FROM quay.io/evl.ms/fullstaq-ruby:3.3.1-jemalloc-slim AS base
 
 # Rails app lives here
 WORKDIR /rails
@@ -30,7 +30,7 @@ RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz
 
 
 # Throw-away build stage to reduce size of final image
-FROM base as build
+FROM base AS build
 
 # Install packages needed to build gems
 RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
