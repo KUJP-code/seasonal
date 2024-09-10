@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.4.3-refactor-attendance"
+    "Name": "thatbballguy/event_site:2.4.4-versions-export"
   },
   "Ports": [
     {
