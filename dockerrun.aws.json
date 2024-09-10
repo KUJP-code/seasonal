@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.4.5-confirm-emails"
+    "Name": "thatbballguy/event_site:2.4.5.1-not-unconfirm"
   },
   "Ports": [
     {
