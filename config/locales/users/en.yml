@@ -23,6 +23,7 @@ en:
       failure: "Couldn't create %{name}"
       success: "Successfully created %{name}"
     customer:
+      address: "Address"
       all_registrations: "All registrations"
       children: "Children:"
       child: "Child:"

@@ -4,9 +4,6 @@ class User < ApplicationRecord
   # Set full name from submitted first and last names
   before_validation :set_name, :set_kana, :set_allowed_ips
 
-  # Make sure Children are deleted when Parent is
-  before_destroy :destroy_children
-
   # Allow use of separate fields to ensure consistent name formatting
   attr_accessor :first_name, :family_name, :kana_first, :kana_family
 
@@ -62,7 +59,7 @@ class User < ApplicationRecord
                                         source: :setsumeikai_inquiries
 
   # Customer associations
-  has_many :children, dependent: nil,
+  has_many :children, dependent: :restrict_with_error,
                       foreign_key: :parent_id,
                       inverse_of: :parent
   accepts_nested_attributes_for :children,
@@ -153,10 +150,6 @@ class User < ApplicationRecord
   end
 
   private
-
-  def destroy_children
-    children.destroy_all
-  end
 
   def set_allowed_ips
     return unless allowed_ips.instance_of?(String)

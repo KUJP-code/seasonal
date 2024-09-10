@@ -23,7 +23,14 @@
         .d-none{ data: { 'conditional-target': 'target' } }
           %p #{t('.phone')}: #{@user.phone}
           %p #{t('.email')}: #{@user.email}
-          %p #{t('.address')}: #{full_address(@user)}
+          %p= full_address(@user)
+
+          - if current_user.admin?
+            = link_to 'Delete User',
+                      user_path(@user),
+                      data: { turbo_method: :delete,
+                              turbo_confirm: 'THIS WILL DELETE THE USER. ARE YOU SURE?' },
+                      class: 'btn btn-danger'
 
         .form-floating{ data: { 'conditional-target': 'target' } }
           = text_field_tag t('enter_pin',
