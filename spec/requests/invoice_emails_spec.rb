@@ -15,6 +15,16 @@ RSpec.describe 'Automated invoice emails' do
       .count { |j| j['job_class'] == 'ActionMailer::MailDeliveryJob' }).to eq(1)
   end
 
+  it 'does not send an update email when the invoice is de-confirmed' do
+    user = create(:school_manager, allowed_ips: ['*'])
+    sign_in user
+    ActiveJob::Base.queue_adapter.enqueued_jobs.clear
+    patch invoice_path(id: invoice.id, params:
+                       { invoice: { in_ss: 'false' } })
+    expect(ActiveJob::Base.queue_adapter.enqueued_jobs
+      .count { |j| j['job_class'] == 'ActionMailer::MailDeliveryJob' }).to eq(0)
+  end
+
   it 'only sends update emails to SM/parent when modified' do
     user = create(:customer)
     user.children << invoice.child

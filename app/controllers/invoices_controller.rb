@@ -233,7 +233,11 @@ class InvoicesController < ApplicationController
       return
     end
 
-    return if current_user.admin?
+    # Don't let parents know when we're fixing stuff
+    # Or an invoice needs to be unconfirmed for changes
+    # They'll be notified when the changes are made
+    return if current_user.admin? ||
+              permitted_attributes(@invoice)['in_ss'] == 'false'
 
     send_update_emails(invoice)
   end
