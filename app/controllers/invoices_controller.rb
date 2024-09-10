@@ -230,6 +230,7 @@ class InvoicesController < ApplicationController
         invoice:,
         user: invoice.child.parent
       ).confirmation_notif.deliver_later
+      return
     end
 
     return if current_user.admin?
