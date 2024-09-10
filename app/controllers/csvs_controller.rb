@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class CsvsController < ApplicationController
-  ALLOWED_MODELS = %w[Child Invoice RegularSchedule Setsumeikai TimeSlot User].freeze
+  ALLOWED_MODELS = %w[Child Invoice PaperTrail::Version
+                      RegularSchedule Setsumeikai TimeSlot
+                      User].freeze
 
   def index
     authorize(:csv)
