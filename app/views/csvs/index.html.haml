@@ -49,6 +49,16 @@
                         download_csv_path(model: model[1], event: e),
                         class: 'btn btn-primary',
                         data: { turbolinks: false }
+          - elsif model[0] == 'Versions'
+            = link_to 'Versions (all, maybe memory issues)',
+                      download_csv_path(model: model[1]),
+                      class: 'btn btn-primary',
+                      data: { turbolinks: false }
+
+            = link_to 'Versions (last month, use me if possible)',
+                      download_csv_path(model: model[1], from: 1.month.ago),
+                      class: 'btn btn-primary',
+                      data: { turbolinks: false }
           - else
             = link_to model[0],
                       download_csv_path(model: model[1]),

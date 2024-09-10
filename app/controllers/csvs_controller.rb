@@ -23,6 +23,10 @@ class CsvsController < ApplicationController
         model.where(event_id: event_ids).copy_to do |line|
           f.write line
         end
+      elsif model == PaperTrail::Version
+        model.where(created_at: params[:from]..).copy_to do |line|
+          f.write line
+        end
       else
         model.copy_to do |line|
           f.write line
