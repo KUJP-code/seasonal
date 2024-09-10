@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.4.4.1-routes-exist"
+    "Name": "thatbballguy/event_site:2.4.5-confirm-emails"
   },
   "Ports": [
     {
