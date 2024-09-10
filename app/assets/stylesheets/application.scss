@@ -335,11 +335,13 @@ input[type="text"]:disabled {
 }
 
 #login-splash {
-  background-image: image-url("sm_login_splash.jpg");
-  // background-image: -webkit-image-set(url("login_splash.avif") type("image/avif"),
-  //     url("login_splash.png") type("image/png"));
-  // background-image: image-set(url("login_splash.avif") type("image/avif"),
-  //     url("login_splash.png") type("image/png"));
+  // Sometimes I just get a JPG, in that case uncomment this
+  // And comment out the uncommented background image lines
+  // background-image: image-url("login_splash.jpg");
+  background-image: -webkit-image-set(url("login_splash.avif") type("image/avif"),
+      url("login_splash.png") type("image/png"));
+  background-image: image-set(url("login_splash.avif") type("image/avif"),
+      url("login_splash.png") type("image/png"));
   background-position: top center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -347,11 +349,13 @@ input[type="text"]:disabled {
   margin-bottom: -50%;
 
   @media (min-width: 992px) {
-    background-image: image-url("sm_login_splash.jpg");
-    // background-image: -webkit-image-set(url("sm_login_splash.avif") type("image/avif"),
-    //     url("sm_login_splash.png") type("image/png"));
-    // background-image: image-set(url("sm_login_splash.avif") type("image/avif"),
-    //     url("sm_login_splash.png") type("image/png"));
+    // Sometimes I just get a JPG, in that case uncomment this
+    // And comment out the uncommented background image lines
+    // background-image: image-url("login_splash.jpg");
+    background-image: -webkit-image-set(url("login_splash.avif") type("image/avif"),
+        url("login_splash.png") type("image/png"));
+    background-image: image-set(url("login_splash.avif") type("image/avif"),
+        url("login_splash.png") type("image/png"));
     background-position: top center;
     background-size: cover;
     border-radius: 2rem 0 0 2rem;
