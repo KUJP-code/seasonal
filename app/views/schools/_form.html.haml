@@ -55,6 +55,7 @@
                   value: nearby_schools.join(', '),
                   required: true
     = f.label :nearby_schools, t('.nearby_schools'), class: 'form-label'
+    %small Separate the list with commas. A single space is OK
 
   .form-floating
     = f.text_area :bus_areas,
@@ -63,6 +64,7 @@
                   value: bus_areas.join(', '),
                   required: true
     = f.label :bus_areas, t('.bus_areas'), class: 'form-label'
+    %small Separate the list with commas. A single space is OK
 
   .form-floating
     = f.text_area :nearby_stations,
@@ -71,6 +73,7 @@
                   value: nearby_stations.join(', '),
                   required: true
     = f.label :nearby_stations, t('.nearby_stations'), class: 'form-label'
+    %small Separate the list with commas. A single space is OK
 
   .form-floating
     = f.text_area :hiragana,
@@ -79,6 +82,7 @@
                   value: hiragana.join(', '),
                   required: true
     = f.label :hiragana, t('.hiragana'), class: 'form-label'
+    %small Separate the list with commas. A single space is OK
 
   - if current_user.admin?
     %div
