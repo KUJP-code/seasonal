@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.4.5.1-not-unconfirm"
+    "Name": "thatbballguy/event_site:2.4.6-fix-dupopts"
   },
   "Ports": [
     {
