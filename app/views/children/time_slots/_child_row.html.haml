@@ -1,10 +1,10 @@
 :ruby
   arrival_option =
-    child.options.find { |o| o.arrival? && o.optionable_id == slot.id }
+    child.options.find { |o| o.any_arrival? && o.optionable_id == slot.id }
   if afternoon
     depart_option =
       child.options
-           .find { |o| o.departure? && o.optionable_id == afternoon.id }
+           .find { |o| o.any_departure? && o.optionable_id == afternoon.id }
   end
 
 %tr
