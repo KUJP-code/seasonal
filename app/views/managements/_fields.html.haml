@@ -4,19 +4,20 @@
   = f.hidden_field :id
   = f.hidden_field :manageable_type, value: type.to_s.capitalize
 
-  %div
-    = f.label :manager_id, 'Manager', class: 'form-label'
-    = f.collection_select :manager_id, managers,
-                          :id, :name, {},
-                          { class: 'form-select' }
-
-  %div
-    = f.label :manageable_id,
-              (type == :area ? 'Area' : 'School'),
-              class: 'form-label'
-    = f.collection_select :manageable_id, manageables,
-                          :id, :name, {},
-                          { class: 'form-select' }
+  - if f.object.instance_of?(User)
+    %div
+      = f.label :manageable_id,
+                (type == :area ? 'Area' : 'School'),
+                class: 'form-label'
+      = f.collection_select :manageable_id, manageables,
+                            :id, :name, {},
+                            { class: 'form-select' }
+  - else
+    %div
+      = f.label :manager_id, 'Manager', class: 'form-label'
+      = f.collection_select :manager_id, managers,
+                            :id, :name, {},
+                            { class: 'form-select' }
 
   - if f.object.new_record?
     %div
@@ -26,4 +27,4 @@
   - else
     .form-check
       = f.check_box :_destroy, class: 'form-check-input'
-      = f.label :_destroy, 'Remove Manager', class: 'form-check-label'
+      = f.label :_destroy, 'Remove Management', class: 'form-check-label'
