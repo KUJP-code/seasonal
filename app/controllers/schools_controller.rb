@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SchoolsController < ApplicationController
-  before_action :set_school, only: %i[edit show update]
+  before_action :set_school, only: %i[destroy edit show update]
   after_action :verify_authorized, except: %i[index]
 
   def index
@@ -41,6 +41,15 @@ class SchoolsController < ApplicationController
       form_data
       render :edit, status: :unprocessable_entity,
                     alert: "Couldn't update #{@school.name}"
+    end
+  end
+
+  def destroy
+    if @school.destroy
+      redirect_to areas_path, notice: "Deleted #{@school.name}"
+    else
+      redirect_to school_path(@school),
+                  alert: "Couldn't delete #{@school.name}. Check it has no children"
     end
   end
 

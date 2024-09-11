@@ -21,6 +21,10 @@ class SchoolPolicy < ApplicationPolicy
     user.admin? || area_school? || sm_managed_school?
   end
 
+  def destroy?
+    user.admin?
+  end
+
   def permitted_attributes
     always_permit = %i[
       name address phone nearby_stations bus_areas hiragana image_id email

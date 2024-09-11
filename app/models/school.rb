@@ -17,7 +17,7 @@ class School < ApplicationRecord
                                 allow_destroy: true,
                                 reject_if: :all_blank
   has_many :managers, through: :managements
-  has_many :children, dependent: nil
+  has_many :children, dependent: :restrict_with_error
   has_many :invoices, through: :children
   has_many :coupons, through: :invoices
   has_many :parents, -> { distinct }, through: :children,
@@ -48,7 +48,10 @@ class School < ApplicationRecord
                                    source: :setsumeikai,
                                    class_name: 'Setsumeikai'
   has_many :calendar_setsumeikais,
-           -> { where('start > ? AND release_date < ?', Time.zone.today.beginning_of_month, Time.zone.today + 1.day) },
+           lambda {
+             where('start > ? AND release_date < ?', Time.zone.today.beginning_of_month,
+                   Time.zone.today + 1.day)
+           },
            through: :setsumeikai_involvements,
            source: :setsumeikai,
            class_name: 'Setsumeikai'
@@ -62,10 +65,10 @@ class School < ApplicationRecord
   def as_json(_options = {})
     {
       id: id.to_s,
-      name: name,
-      address: address,
+      name:,
+      address:,
       prefecture: prefecture || '',
-      phone: phone,
+      phone:,
       image: Rails.env.production? ? image.url : '',
       busAreas: details['bus_areas'] || [''],
       hiragana: details['hiragana'] || [''],

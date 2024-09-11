@@ -29,7 +29,7 @@ RSpec.describe SchoolPolicy do
   context 'when admin' do
     let(:user) { build(:admin) }
 
-    it_behaves_like 'authorized except destroy'
+    it_behaves_like 'fully authorized user'
 
     it 'permits all attributes' do
       expect(policy).to permit_attributes(

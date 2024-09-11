@@ -26,7 +26,7 @@ Rails.application.routes.draw do
       resources :invoices, except: %i[edit]
       resources :inquiries, except: %i[show]
       resources :price_lists, except: %i[destroy show]
-      resources :schools, except: %i[destroy index]
+      resources :schools, except: %i[index]
       resources :setsumeikais
       resources :staff_users, except: %i[show]
       resources :surveys, except: %i[destroy]

@@ -106,4 +106,11 @@
                    type: 'button',
                    data: { action: 'fields#add' },
                    class: 'btn btn-info'
+
+      = link_to 'Delete School',
+                school_path(school),
+                class: 'btn btn-danger',
+                data: { turbo_method: 'delete',
+                        turbo_confirm: 'YOU ALMOST CERTAINLY DO NOT WANT TO DO THIS.' }
+
     = f.submit class: 'btn btn-primary'
