@@ -1,9 +1,8 @@
--# locals: (child:, event:, confirmed_opt_regs:, registrations:, siblings:)
+-# locals: (child:, event_options:, confirmed_opt_regs:,
+  registrations:, siblings:)
 
-- event.options.each do |opt|
+- event_options.each do |opt|
   - if siblings.any? { |sibling| sibling.registered?(opt) }
-    - next if sibling.id == child.id
-
     .d-flex.gap-2.align-items-center
       %h3 #{opt.name}: #{t('.sibling_reg', opt: opt.name)}
 
@@ -17,19 +16,22 @@
         reg.child_id == child.id && reg.registerable_id == opt.id
       end
 
-    %div{ class: 'd-flex gap-2 align-items-center',
+    %div{ class: 'add_ref d-flex gap-2 justify-content-center ' \
+                 'align-items-center form-check form-switch p-0',
           data: { controller: 'register',
                   'register-id-value': opt.id,
                   'register-type-value': 'Option',
                   'register-child-value': @child.id,
                   'register-cost-value': opt.cost } }
       %h3
-        %label{ 'data-register-target': 'name',
-                for: "eopt#{opt.id}" }
-          = image_tag 'photo_service.gif', height: '50px'
-          = number_to_currency(opt.cost, locale: :ja)
+        %label{ class: 'form-check-label d-flex flex-column align-items-center',
+                'data-register-target': 'name', for: "eopt#{opt.id}" }
+          = image_tag 'photo_service.gif', height: '30px'
+          .text-white.fw-bold= number_to_currency(opt.cost, locale: :ja)
       = check_box_tag "eopt#{opt.id}",
                       "eopt#{opt.id}",
                       (true if registered),
+                      class: 'form-check-input m-0',
                       data: { action: 'register#toggle',
-                              'register-target': 'button' }
+                              'register-target': 'button' },
+                      role: 'switch'

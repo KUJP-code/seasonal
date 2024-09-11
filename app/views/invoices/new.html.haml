@@ -39,10 +39,6 @@
   = render 'invoices/registration_page/parent_messages',
            child: @child, siblings: @siblings, event: @event
 
-  = render 'invoices/registration_page/event_options',
-           child: @child, siblings: @siblings, confirmed_opt_regs:,
-           event: @event, registrations:
-
   %details.w-100.border.rounded{ name: 'accordion' }
     %summary.bg-primary.rounded.p-3
       = t('.more_info')
@@ -67,8 +63,9 @@
                          confirmed_slot_regs:, confirmed_opt_regs:, opt_regs: }
 
   = render 'invoices/registration_page/price_footer',
-           all_invoices: @all_invoices, child: @child,
-           frame_id:, options: @options
+           all_invoices: @all_invoices, child: @child, confirmed_opt_regs:,
+           event_options: @event.options, frame_id:, options: @options,
+           registrations:, siblings: @siblings
 
 %dialog.rounded.w-100.h-100#invoice-preview
   = turbo_frame_tag frame_id
