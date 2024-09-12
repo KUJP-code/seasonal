@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class AreasController < ApplicationController
+  before_action :set_area, only: %i[destroy edit show update]
   after_action :verify_authorized
   after_action :verify_policy_scoped, only: :index
 
@@ -11,9 +12,7 @@ class AreasController < ApplicationController
     )
   end
 
-  def show
-    @area = authorize Area.find(params[:id])
-  end
+  def show; end
 
   def new
     @area = authorize Area.new
@@ -21,7 +20,6 @@ class AreasController < ApplicationController
   end
 
   def edit
-    @area = authorize Area.find(params[:id])
     @managers = User.area_managers
   end
 
@@ -37,13 +35,20 @@ class AreasController < ApplicationController
   end
 
   def update
-    @area = authorize Area.find(params[:id])
-
     if @area.update(area_params)
       redirect_to area_path(@area), notice: "Updated #{@area.name}!"
     else
       render :edit, status: unprocessable_entity,
                     alert: "Couldn't update #{@area.name}"
+    end
+  end
+
+  def destroy
+    if @area.destroy
+      redirect_to areas_path, notice: "Deleted #{@area.name}"
+    else
+      redirect_to area_path(@area),
+                  alert: "Couldn't delete #{@area.name}. Check it has no schools"
     end
   end
 
@@ -54,5 +59,9 @@ class AreasController < ApplicationController
       :name, managements_attributes:
         %i[id manageable_id manageable_type manager_id _destroy]
     )
+  end
+
+  def set_area
+    @area = authorize Area.find(params[:id])
   end
 end

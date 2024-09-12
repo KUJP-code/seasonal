@@ -28,4 +28,12 @@
                  type: 'button',
                  class: 'btn btn-info',
                  data: { action: 'fields#add' }
+
+    - unless @area.new_record?
+      = link_to 'Delete Area',
+                area_path(area),
+                class: 'btn btn-danger',
+                data: { turbo_method: 'delete',
+                        turbo_confirm: 'YOU ALMOST CERTAINLY DO NOT WANT TO DO THIS.' }
+
     = f.submit class: 'btn btn-primary'

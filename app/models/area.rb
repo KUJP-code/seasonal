@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Area < ApplicationRecord
-  has_many :schools, inverse_of: :area, dependent: nil
+  has_many :schools, inverse_of: :area, dependent: :restrict_with_error
   has_many :parents, -> { distinct }, through: :schools
   has_many :children, through: :schools
   has_many :invoices, through: :children

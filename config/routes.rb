@@ -15,7 +15,7 @@ Rails.application.routes.draw do
     # Require users to be signed in to view these resources
     authenticate :user do
       resources :adjustments, only: %i[edit]
-      resources :areas, except: %i[destroy]
+      resources :areas
       resources :bulk_events, only: %i[index update]
       post 'bulk_events/release/:name',
            to: 'bulk_events#release', as: :release_event
