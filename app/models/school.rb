@@ -117,14 +117,11 @@ class School < ApplicationRecord
   private
 
   def set_details
-    # This saves us creating a bunch of stuff for testing
-    return if details.nil?
-
     self.details = {
-      bus_areas: bus_areas.split(/, |,/),
-      hiragana: hiragana.split(/, |,/),
-      nearby_schools: nearby_schools.split(/, |,/),
-      nearby_stations: nearby_stations.split(/, |,/)
+      bus_areas: bus_areas ? bus_areas.split(/, |,/) : [],
+      hiragana: hiragana ? hiragana.split(/, |,/) : [],
+      nearby_schools: nearby_schools ? nearby_schools.split(/, |,/) : [],
+      nearby_stations: nearby_stations ? nearby_stations.split(/, |,/) : []
     }
   end
 end
