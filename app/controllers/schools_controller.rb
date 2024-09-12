@@ -36,7 +36,10 @@ class SchoolsController < ApplicationController
 
   def update
     if @school.update(permitted_attributes(@school))
-      redirect_to school_path(@school), notice: "Updated #{@school.name}!"
+      changing_position = permitted_attributes(@school)['position'].present?
+      url = changing_position ? schools_url : school_url(@school)
+
+      redirect_to url, notice: "Updated #{@school.name}!"
     else
       form_data
       render :edit, status: :unprocessable_entity,
@@ -63,7 +66,7 @@ class SchoolsController < ApplicationController
   end
 
   def html_index
-    @schools = policy_scope(School)
+    @schools = policy_scope(School).order(position: :asc)
   end
 
   def json_index

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_12_011242) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_12_032646) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -242,6 +242,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_12_011242) do
     t.jsonb "details", default: {}
     t.string "email"
     t.string "prefecture"
+    t.integer "position", default: 0
     t.index ["area_id"], name: "index_schools_on_area_id"
   end
 

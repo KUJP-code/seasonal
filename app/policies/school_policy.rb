@@ -34,7 +34,7 @@ class SchoolPolicy < ApplicationPolicy
     return nil unless user.admin?
 
     always_permit + [
-      :area_id,
+      :area_id, :position,
       { managements_attributes:
        %i[id manageable_id manageable_type manager_id _destroy] }
     ]

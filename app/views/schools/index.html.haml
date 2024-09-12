@@ -12,7 +12,7 @@
         %tr
           %td
             = number_field_tag 'school[position]',
-                               '', form: form_id
+                               school.position, form: form_id
           %td= t(".schools.#{school.name}")
           %td
             = form_with model: school,
