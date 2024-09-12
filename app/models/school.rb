@@ -74,7 +74,8 @@ class School < ApplicationRecord
       hiragana: details['hiragana'] || [''],
       nearbySchools: details['nearby_schools'] || [''],
       nearbyStations: details['nearby_stations'] || [''],
-      setsumeikais: calendar_setsumeikais
+      setsumeikais: calendar_setsumeikais,
+      position:
     }
   end
 
