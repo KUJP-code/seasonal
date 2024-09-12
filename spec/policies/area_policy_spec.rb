@@ -10,7 +10,7 @@ describe AreaPolicy do
   context 'when admin' do
     let(:user) { build(:admin) }
 
-    it_behaves_like 'authorized except destroy'
+    it_behaves_like 'fully authorized user'
   end
 
   context 'when area manager' do
