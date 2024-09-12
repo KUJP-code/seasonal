@@ -17,7 +17,8 @@ Rails.application.routes.draw do
       resources :adjustments, only: %i[edit]
       resources :areas, except: %i[destroy]
       resources :bulk_events, only: %i[index update]
-      post 'bulk_events/release/:name', to: 'bulk_events#release', as: :release_event
+      post 'bulk_events/release/:name',
+           to: 'bulk_events#release', as: :release_event
       resources :charts, only: %i[show index]
       resources :children
       resources :csvs, only: %i[index]
@@ -26,7 +27,7 @@ Rails.application.routes.draw do
       resources :invoices, except: %i[edit]
       resources :inquiries, except: %i[show]
       resources :price_lists, except: %i[destroy show]
-      resources :schools, except: %i[index]
+      resources :schools
       resources :setsumeikais
       resources :staff_users, except: %i[show]
       resources :surveys, except: %i[destroy]
@@ -68,8 +69,11 @@ Rails.application.routes.draw do
       get '/:locale', to: 'users#profile'
     end
   end
-  # School API endpoint
-  resources :schools, only: %i[index], defaults: { format: :json }
+
+  # Setsu calendar school API endpoint
+  get 'setsu_schools',
+      constraints: ->(req) { req.format == :json },
+      to: 'schools#index'
 
   # Legacy API for GAS Sheets
   get 'gas_schools', to: 'sheets_apis#schools'

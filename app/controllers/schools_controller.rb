@@ -5,9 +5,9 @@ class SchoolsController < ApplicationController
   after_action :verify_authorized, except: %i[index]
 
   def index
-    @schools = School.real.order(id: :desc).includes(calendar_setsumeikais: %i[school])
     respond_to do |f|
-      f.json { render json: School.all }
+      f.html { html_index }
+      f.json { json_index }
     end
   end
 
@@ -60,6 +60,15 @@ class SchoolsController < ApplicationController
     @areas = Area.all
     @images = ActiveStorage::Blob.where('key LIKE ?', '%schools%')
                                  .map { |blob| [blob.key, blob.id] }
+  end
+
+  def html_index
+    @schools = policy_scope(School)
+  end
+
+  def json_index
+    @schools = School.real.order(id: :desc).includes(calendar_setsumeikais: %i[school])
+    render json: School.all
   end
 
   def set_school
