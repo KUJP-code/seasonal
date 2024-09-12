@@ -1,6 +1,8 @@
-= form_with model: @area, html: { class: 'card' },
+-# locals: (area:, managers:)
+
+= form_with model: area, html: { class: 'card' },
             data: { controller: 'fields' } do |f|
-  = render 'shared/form_errors', resource: @area
+  = render 'shared/form_errors', resource: area
 
   .form-floating
     = f.text_field :name,
@@ -10,16 +12,16 @@
                    required: true
     = f.label :name, 'Area Name', class: 'form-label'
 
-  = f.fields_for :managements, @area.managements do |m_f|
+  = f.fields_for :managements, area.managements do |m_f|
     = render 'managements/fields',
-             f: m_f, manageables: [@area],
-             managers: @managers, type: :area
+             f: m_f, manageables: [area],
+             managers:, type: :area
 
   = f.fields_for :managements, Management.new, child_index: 'CHILD' do |m_f|
     %template{ 'data-fields-target': 'template' }
       = render 'managements/fields',
-               f: m_f, manageables: [@area],
-               managers: @managers, type: :area
+               f: m_f, manageables: [area],
+               managers:, type: :area
 
   .d-none.w-100{ 'data-fields-target': 'target' }
 
@@ -29,7 +31,7 @@
                  class: 'btn btn-info',
                  data: { action: 'fields#add' }
 
-    - unless @area.new_record?
+    - unless area.new_record?
       = link_to 'Delete Area',
                 area_path(area),
                 class: 'btn btn-danger',

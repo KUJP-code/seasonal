@@ -1,0 +1,6 @@
+%main.justify-content-start#areas-new
+  = link_to 'School List',
+            areas_path,
+            class: 'btn btn-secondary align-self-start'
+
+  = render 'areas/form', area: @area, managers: @managers
