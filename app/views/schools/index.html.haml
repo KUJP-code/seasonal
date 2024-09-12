@@ -17,7 +17,7 @@
           %td
             = number_field_tag 'school[position]',
                                school.position, form: form_id
-          %td= t(".schools.#{school.name}")
+          %td= t("schools.#{school.name}")
           %td
             = form_with model: school,
                         html: { class: 'd-flex justify-content-center',
