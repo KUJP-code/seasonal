@@ -1,0 +1,22 @@
+%main
+  = form_with url: uploads_path, class: 'card' do |f|
+    %h2 Upload Assets
+
+    .form-group
+      = f.label :uploads, class: 'form-label'
+      = f.file_field :uploads,
+                     class: 'form-control',
+                     multiple: true,
+                     include_hidden: false
+
+    .form-group
+      = f.label :folder, class: 'form-label'
+      = f.select :folder, @folders, {}, { class: 'form-select' }
+
+    .form-floating
+      = f.text_field :subfolder,
+                     class: 'form-control',
+                     placeholder: 'Subfolder'
+      = f.label :subfolder, 'Subfolder', class: 'form-label'
+
+    = f.submit 'Upload', class: 'btn btn-primary'

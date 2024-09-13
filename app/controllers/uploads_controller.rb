@@ -2,6 +2,12 @@
 
 # Handles direct uploads to ActiveStorage
 class UploadsController < ApplicationController
+  ALLOWED_FILETYPES = %w[image/avif image/jpeg image/png
+                         image/svg+xml image/webp].freeze
+  FOLDERS = [%w[Assets assets], %w[Events events],
+             %w[Schools schools], %w[Splashes splashes],
+             ['Time Slots', 'time_slots']].freeze
+
   def new
     @folders = FOLDERS
   end
@@ -25,12 +31,13 @@ class UploadsController < ApplicationController
   private
 
   def upload_params
-    params.permit(:event, :folder, :uploads)
+    params.permit(:subfolder, :folder, :uploads)
   end
 
   def generate_key(file)
-    event = params[:event].downcase.tr(' ', '_')
-    "#{Rails.env}/#{params[:folder]}/#{event}/#{file.original_filename}"
+    subfolder = params[:subfolder].downcase.tr(' ', '_')
+    filename = "#{file.original_filename}#{Time.zone.now.strftime('%H%M%S')}"
+    "#{Rails.env}/#{params[:folder]}/#{subfolder}/#{filename}"
   end
 
   def upload_file(file, key)
@@ -42,12 +49,4 @@ class UploadsController < ApplicationController
       key:
     )
   end
-
-  ALLOWED_FILETYPES = %w[image/avif image/jpeg image/png image/svg+xml image/webp].freeze
-  FOLDERS = [
-    %w[Assets assets],
-    %w[Events events],
-    %w[Schools schools],
-    ['Time Slots', 'time_slots']
-  ].freeze
 end
