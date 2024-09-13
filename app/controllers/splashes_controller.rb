@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
-# Controller for the login splash
+# Finds the latest splash images for the welcome/login pages
 class SplashesController < ApplicationController
-  def landing; end
+  include BlobFindable
+
+  def landing
+    @fallback = latest_splash_upload('image/png')
+    @avif = latest_splash_upload('image/avif')
+  end
 end

@@ -9,7 +9,8 @@ Rails.application.routes.draw do
 
   scope '(/:locale)', locale: /ja|en/ do
     devise_for :users, path: 'auth', controllers: {
-      registrations: 'users/registrations'
+      registrations: 'users/registrations',
+      sessions: 'users/sessions'
     }
 
     # Require users to be signed in to view these resources

@@ -2,12 +2,15 @@
 
 module Users
   class SessionsController < Devise::SessionsController
+    include BlobFindable
     # before_action :configure_sign_in_params, only: [:create]
 
     # GET /resource/sign_in
-    # def new
-    #   super
-    # end
+    def new
+      @fallback = latest_splash_upload('image/png')
+      @avif = latest_splash_upload('image/avif')
+      super
+    end
 
     # POST /resource/sign_in
     # def create

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class EventsController < ApplicationController
-  include BlobGroupable
+  include BlobFindable
 
   before_action :set_form_data, only: %i[new edit create update]
   after_action :verify_authorized

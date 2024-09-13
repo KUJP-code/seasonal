@@ -1,7 +1,6 @@
 %main.p-0
   #login
-    = picture_tag 'login_splash.png', 'login_splash.avif',
-                  id: 'splash-img', image: { loading: 'eager' }
+    = render 'shared/splash_image', avif: @avif, fallback: @fallback
     = form_for resource, as: resource_name,
                          url: session_path(resource_name),
                          html: { class: '', id: 'action-pane' } do |f|

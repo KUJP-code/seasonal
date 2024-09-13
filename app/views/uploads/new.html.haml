@@ -6,8 +6,8 @@
       = f.label :uploads, class: 'form-label'
       = f.file_field :uploads,
                      class: 'form-control',
-                     multiple: true,
-                     include_hidden: false
+                     multiple: true, include_hidden: false,
+                     required: true
 
     .form-group
       = f.label :folder, class: 'form-label'

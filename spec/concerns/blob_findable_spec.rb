@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe BlobGroupable do
+RSpec.describe BlobFindable do
   include ActiveSupport::Testing::TimeHelpers
 
   [EventsController, TimeSlotsController].each do |controller|
@@ -14,7 +14,7 @@ RSpec.describe BlobGroupable do
           filename: 'fruit_smoothie.avif',
           key: "#{parent_folder}/summer_2023/fruit_smoothie.avif"
         )
-        images = controller.new.blobs_by_folder(parent_folder)
+        images = controller.new.send(:blobs_by_folder, parent_folder)
         expect(images).to eq({ "#{parent_folder}/summer_2023" =>
                                [['fruit_smoothie.avif', blob.id]] })
       end
@@ -27,7 +27,7 @@ RSpec.describe BlobGroupable do
           key: "#{parent_folder}/summer_2023/fruit_smoothie.avif"
         )
         travel_to(2.months.from_now + 1.day)
-        images = controller.new.blobs_by_folder(parent_folder)
+        images = controller.new.send(:blobs_by_folder, parent_folder)
         expect(images).to be_blank
       end
     end
