@@ -70,8 +70,8 @@ rescue ArgumentError
 end
 
 def build_docker_image(version)
-  puts "Tag will be 'thatbballguy/event_site:#{version}'"
-  system("docker build . -t thatbballguy/event_site:#{version}")
+  puts "Tag will be 'kidsup/event_site:#{version}'"
+  system("docker build . -t kidsup/event_site:#{version}")
   return if $CHILD_STATUS.exitstatus.zero?
 
   puts 'Docker build failed. Aborting'
@@ -79,8 +79,8 @@ def build_docker_image(version)
 end
 
 def push_docker_image(version)
-  puts "Pushing 'thatbballguy/event_site:#{version}' to docker hub..."
-  system("docker push thatbballguy/event_site:#{version}")
+  puts "Pushing 'kidsup/event_site:#{version}' to docker hub..."
+  system("docker push kidsup/event_site:#{version}")
   return if $CHILD_STATUS.exitstatus.zero?
 
   puts 'Docker push failed. Aborting'
@@ -88,11 +88,11 @@ def push_docker_image(version)
 end
 
 def update_dockerrun(version)
-  puts "Updating dockerrrun.aws.json with 'thatbballguy/event_site:#{version}' as image"
+  puts "Updating dockerrrun.aws.json with 'kidsup/event_site:#{version}' as image"
   data = File.open('dockerrun.aws.json') do |file|
     JSON.parse(file.read)
   end
-  data['Image']['Name'] = "thatbballguy/event_site:#{version}"
+  data['Image']['Name'] = "kidsup/event_site:#{version}"
   File.write('dockerrun.aws.json', JSON.pretty_generate(data))
 end
 
