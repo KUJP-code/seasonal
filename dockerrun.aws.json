@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.4.9-auto-splash"
+    "Name": "kidsup/event_site:2.4.10-company-dockerhub"
   },
   "Ports": [
     {
