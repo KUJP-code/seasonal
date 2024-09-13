@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/event_site:2.4.8-confirm-text"
+    "Name": "thatbballguy/event_site:2.4.9-auto-splash"
   },
   "Ports": [
     {
