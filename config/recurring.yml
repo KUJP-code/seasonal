@@ -1,0 +1,4 @@
+production:
+  clear_finished_transactions:
+    class: ClearFinishedTransactionsJob
+    schedule: "every sunday at midnight"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_02_005457) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_02_011412) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -359,7 +359,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_02_005457) do
     t.text "arguments"
     t.string "queue_name"
     t.integer "priority", default: 0
-    t.boolean "static", default: true
+    t.boolean "static", default: true, null: false
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

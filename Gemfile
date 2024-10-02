@@ -115,7 +115,7 @@ gem 'rexml', '>= 3.3.3'
 
 # Use SolidQueue and MissionControlJobs for background jobs
 gem 'mission_control-jobs', '~> 0.3'
-gem 'solid_queue', '0.6'
+gem 'solid_queue', '~> 1.0'
 
 group :development, :test do
   # Ruby LSP from shopify for autocomlete

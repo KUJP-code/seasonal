@@ -2,10 +2,6 @@ default: &default
   dispatchers:
     - polling_interval: 2
       batch_size: 500
-      recurring_tasks:
-        clear_finished_transactions:
-          class: ClearFinishedTransactionsJob
-          schedule: "every sunday at midnight"
   workers:
     - queues: "*"
       threads: 3
