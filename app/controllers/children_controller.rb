@@ -3,7 +3,7 @@
 class ChildrenController < ApplicationController
   # No policy_scope verification as too complex with children attending
   # from different schools. Index action is authorized instead
-  after_action :verify_authorized, except: :find_child
+  after_action :verify_authorized, except: %i[attended_seasonal find_child]
 
   ALLOWED_SOURCES = %w[event time_slot].freeze
 
@@ -17,6 +17,7 @@ class ChildrenController < ApplicationController
                 else
                   policy_scope(Child.none)
                 end.limit(50)
+    @events = Event.distinct.pluck(:name) if current_user.admin?
   end
 
   def show
@@ -69,6 +70,21 @@ class ChildrenController < ApplicationController
     else
       redirect_to user_path(current_user), alert: t('failure', action: '削除', model: '生徒')
     end
+  end
+
+  def attended_seasonal
+    authorize Child
+
+    name = params[:event_name]
+    children = Child.joins(:invoices)
+                    .where(
+                      invoices: { event_id: Event.where(name:).select(:id) },
+                      children: { first_seasonal: true }
+                    )
+    children.each { |c| StudentSeasonalUpdateJob.perform_later(c) }
+
+    redirect_to root_path,
+                notice: "Updates queued for children who attended #{name}."
   end
 
   def find_child

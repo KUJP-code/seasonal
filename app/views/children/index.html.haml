@@ -2,6 +2,8 @@
 - unsearchable = %w[allergies category hat parent]
 
 %main#children-index
+  = render 'children/seasonal_attendance_update', events: @events
+
   = render 'shared/search',
            fields: columns.reject { |col| unsearchable.include?(col) },
            resource: 'children'

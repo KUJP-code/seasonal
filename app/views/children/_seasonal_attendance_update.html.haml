@@ -1,0 +1,14 @@
+-# locals: (events:)
+
+- return if @events.empty?
+
+.card
+  %h2 Press these buttons after each seasonal
+  %p Marks the kids who attended that event as having attended a seasonal event
+  %p So they don't get the first seasonal discount
+  .d-flex.justify-content-center.gap-3
+    - @events.each do |event_name|
+      = button_to event_name,
+                  attended_seasonal_path(event_name:),
+                  class: 'btn btn-primary',
+                  method: :patch

@@ -31,6 +31,10 @@ class ChildPolicy < ApplicationPolicy
     user.staff?
   end
 
+  def attended_seasonal?
+    user.admin?
+  end
+
   class Scope < Scope
     def resolve
       case user.role

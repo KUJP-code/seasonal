@@ -11,18 +11,21 @@ describe ChildPolicy do
     let(:user) { build(:admin) }
 
     it_behaves_like 'fully authorized user'
+    it { is_expected.to authorize_action(:attended_seasonal) }
   end
 
   context 'when area_manager' do
     let(:user) { build(:area_manager) }
 
     it_behaves_like 'fully authorized user'
+    it { is_expected.not_to authorize_action(:attended_seasonal) }
   end
 
   context 'when school_manager' do
     let(:user) { build(:school_manager) }
 
     it_behaves_like 'fully authorized user'
+    it { is_expected.not_to authorize_action(:attended_seasonal) }
   end
 
   context 'when parent of child' do
@@ -30,18 +33,21 @@ describe ChildPolicy do
     let(:child) { create(:child, parent: user) }
 
     it_behaves_like 'authorized except destroy'
+    it { is_expected.not_to authorize_action(:attended_seasonal) }
   end
 
   context 'when statistician' do
     let(:user) { build(:statistician) }
 
     it_behaves_like 'unauthorized user'
+    it { is_expected.not_to authorize_action(:attended_seasonal) }
   end
 
   context 'when not parent of child' do
     let(:user) { build(:customer) }
 
     it_behaves_like 'only authorized for new'
+    it { is_expected.not_to authorize_action(:attended_seasonal) }
   end
 
   context 'when resolving scopes' do

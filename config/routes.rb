@@ -21,6 +21,8 @@ Rails.application.routes.draw do
       post 'bulk_events/release/:name',
            to: 'bulk_events#release', as: :release_event
       resources :charts, only: %i[show index]
+      patch 'children/attended_seasonal/:event_name',
+            to: 'children#attended_seasonal', as: :attended_seasonal
       resources :children
       resources :csvs, only: %i[index]
       resources :document_uploads, only: %i[destroy index]
