@@ -44,7 +44,7 @@ class Setsumeikai < ApplicationRecord
   end
 
   def school_date_time
-    "#{school.name} #{date} #{start.strftime('%H:%M')}"
+    "#{school.name} #{start.strftime('%m月%d日 %H:%M')}"
   end
 
   private

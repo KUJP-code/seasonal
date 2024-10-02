@@ -6,21 +6,17 @@
             <%= f.label :category, t('.category'),
                                    class: 'form-label' %>
             <%= f.select :category,
-                         [
-                            %w[説明会のお問い合わせ R],
+                         [%w[説明会のお問い合わせ R],
                             %w[全般お問い合わせ I],
-                            %w[コールセンターへのお問合せ C]
-                         ],
-                         {},
-                         { class: 'form-select' } %>
+                            %w[コールセンターへのお問合せ C]],
+                         {}, { class: 'form-select' } %>
         </div>
         <div class="w-25">
             <%= f.label :setsumeikai_id, t('.setsumeikai'),
                                          class: 'form-label' %>
             <%= f.collection_select :setsumeikai_id,
                                     @setsumeikais,
-                                    :id,
-                                    :school_date_time,
+                                    :id, :school_date_time,
                                     { prompt: '説明会について' },
                                     { class: 'form-select' } %>
         </div>
