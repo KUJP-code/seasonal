@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.4.10-company-dockerhub"
+    "Name": "kidsup/event_site:2.4.11-version-bumps"
   },
   "Ports": [
     {
