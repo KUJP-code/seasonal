@@ -249,9 +249,10 @@ GEM
     mini_mime (1.1.5)
     mini_portile2 (2.8.6)
     minitest (5.22.3)
-    mission_control-jobs (0.2.1)
+    mission_control-jobs (0.3.1)
       importmap-rails
-      rails (~> 7.1)
+      irb (~> 1.13)
+      rails (>= 7.1)
       stimulus-rails
       turbo-rails
     msgpack (1.7.2)
@@ -429,7 +430,7 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    solid_queue (0.3.2)
+    solid_queue (0.5.0)
       activejob (>= 7.1)
       activerecord (>= 7.1)
       concurrent-ruby (>= 1.3.1)
@@ -510,7 +511,7 @@ DEPENDENCIES
   launchy
   mail (= 2.7.1)
   matrix
-  mission_control-jobs (~> 0.2)
+  mission_control-jobs (~> 0.3)
   nokogiri (= 1.16.5)
   oj
   paper_trail (= 15.1.0)
@@ -535,7 +536,7 @@ DEPENDENCIES
   ruby-vips (~> 2.2.1)
   sassc-rails
   selenium-webdriver
-  solid_queue (~> 0.3.2)
+  solid_queue (= 0.5)
   sprockets-rails
   stimulus-rails
   turbo-rails
