@@ -141,11 +141,18 @@ class ChildrenController < ApplicationController
   end
 
   def event_attendance
-    @source = authorize(Event.find(params[:id]), :attendance?)
-    @slots = @source.time_slots.morning.or(@source.time_slots.special).distinct
-    @children = @source.children
-                       .includes(:regular_schedule, real_invoices: :coupons)
-                       .order(ssid: :desc)
+    @event = authorize(Event.find(params[:id]), :attendance?)
+    @slots = @event.time_slots.morning.or(@event.time_slots.special).distinct
+    # this will work as long as photo service is the only event opt
+    @photo_kids = Child.where(
+      parent_id:
+        Child.where(id: @event.options.first.registrations.select(:child_id))
+             .select(:parent_id)
+    ).ids
+    @children = @event.children
+                      .includes(:regular_schedule,
+                                real_invoices: :coupons)
+                      .order(ssid: :desc)
     render 'children/events/event_sheet'
   end
 
@@ -154,11 +161,9 @@ class ChildrenController < ApplicationController
       :email, :en_name, :name, :katakana_name, :ssid
     ).compact_blank.to_h do |k, v|
       if k == 'ssid'
-        [k,
-         v.strip]
+        [k, v.strip]
       else
-        [k,
-         "%#{Child.sanitize_sql_like(v.strip)}%"]
+        [k, "%#{Child.sanitize_sql_like(v.strip)}%"]
       end
     end
     return {} if hash.empty?

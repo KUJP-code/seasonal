@@ -1,4 +1,4 @@
--# locals: (event:, event_child:, event_child_iteration:, slots:)
+-# locals: (event:, event_child:, event_child_iteration:, photo_kids:, slots:)
 
 :ruby
   event_invoices = event_child.real_invoices
@@ -21,6 +21,9 @@
     - else
       = link_to t('.no_ssid'),
                 user_path(event_child.parent_id, anchor: 'merge_children')
+
+  %td.photo
+    = 'フォトサービス' if photo_kids.include?(event_child.id)
 
   %td{ class: "diff-school #{'table-danger' if diff_school}" }
     - if diff_school

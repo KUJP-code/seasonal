@@ -1,7 +1,7 @@
 %main#event-children-index{ data: { controller: 'refresh' } }
   = render 'children/events/event_slots_dropdown', slots: @slots
 
-  %h1 #{@source.name} at #{t("schools.#{@source.school.name}")}
+  %h1 #{@event.name} at #{t("schools.#{@event.school.name}")}
   %h2.counter
     %span{ 'data-refresh-target': 'counter' } 10:00
     %span にページが更新される。
@@ -13,6 +13,7 @@
         %th.name-header{ scope: 'col' } Name (日本語)
         %th.en-name-header{ scope: 'col' } Name (英語)
         %th.ssid-header{ scope: 'col' } SSID
+        %th{ scope: 'col' } フォトサービス
         %th{ scope: 'col' } 担当校舎
         %th{ scope: 'col' }= t('.invoices')
         %th{ scope: 'col' }= t('.cost')
@@ -35,8 +36,7 @@
     %tbody
       %tr
         %td
-
-        - %w[.name .en-name .ssid .diff_school .invoices .cost].each do |col_class|
+        - %w[.name .en-name .ssid .photo .diff_school .invoices .cost].each do |col_class|
           = render 'shared/filter_header', col_class:, siblings: '1'
 
         %td
@@ -49,4 +49,5 @@
 
       = render partial: 'children/events/event_child',
                collection: @children,
-               locals: { event: @source, slots: @slots }
+               locals: { event: @event, photo_kids: @photo_kids,
+                         slots: @slots }
