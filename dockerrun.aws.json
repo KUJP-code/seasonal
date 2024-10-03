@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.4.13-eventsheet-photos"
+    "Name": "kidsup/event_site:2.5.0-new-regpage"
   },
   "Ports": [
     {
