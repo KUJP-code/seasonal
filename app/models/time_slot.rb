@@ -200,12 +200,12 @@ class TimeSlot < ApplicationRecord
     {
       name: '中延長',
       category: :extension,
-      cost: 1_380
+      cost: 1_650
     },
     {
       name: '中延長',
       category: :k_extension,
-      cost: 1_740
+      cost: 1_980
     }
   ].freeze
 
