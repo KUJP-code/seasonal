@@ -22,7 +22,7 @@ $enable-negative-margins: true;
 /* Custom bootstrap variables must be set or imported *before* bootstrap. */
 @import "bootstrap";
 
-details summary>* {
+details summary > * {
   display: inline;
 }
 
@@ -46,7 +46,6 @@ details summary>* {
 }
 
 @media print {
-
   .links,
   .counter,
   .nav_bar {
@@ -197,8 +196,8 @@ input[type="text"]:disabled {
   padding-left: 0;
 }
 
-#event-children-index>h1,
-#event-children-index>h2 {
+#event-children-index > h1,
+#event-children-index > h2 {
   align-self: center;
 }
 
@@ -273,11 +272,11 @@ input[type="text"]:disabled {
   justify-content: flex-start;
 }
 
-#slot-attendance>h1 {
+#slot-attendance > h1 {
   align-self: center;
 }
 
-#slot-attendance>h2 {
+#slot-attendance > h2 {
   align-self: center;
 }
 
@@ -365,7 +364,8 @@ input[type="text"]:disabled {
   }
 
   .btn-primary:hover img {
-    filter: invert(46%) sepia(51%) saturate(1917%) hue-rotate(8deg) brightness(103%) contrast(103%);
+    filter: invert(46%) sepia(51%) saturate(1917%) hue-rotate(8deg)
+      brightness(103%) contrast(103%);
   }
 
   .btn-primary:active img {
@@ -444,9 +444,7 @@ main#event-index nav {
 // Event#show
 
 #event-show .child.active {
-  box-shadow:
-    0 0 10px var(--ku-orange),
-    0 0 10px var(--ku-orange);
+  box-shadow: 0 0 10px var(--ku-orange), 0 0 10px var(--ku-orange);
 }
 
 #event-show .copy:after {
@@ -463,6 +461,26 @@ main#event-index nav {
   #event-show .card {
     width: 45%;
   }
+}
+
+.photoservice-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+}
+
+.photoservice-label {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  font-size: calc(1.225rem + 0.5vw);
+}
+
+.photoservice-image,
+.photoservice-picture {
+  max-height: 50px;
 }
 
 #event-show .card div:first-child {
@@ -494,7 +512,7 @@ dialog#invoice-preview {
 
 // Forms
 
-form>.errors {
+form > .errors {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
@@ -583,7 +601,7 @@ form .input-group-text {
   gap: 0.5vw;
 }
 
-#user-show .daily-attendance>.card {
+#user-show .daily-attendance > .card {
   width: 100%;
 
   @media (min-width: 992px) {
@@ -626,17 +644,21 @@ trix-editor {
   border-radius: 0.5rem;
 }
 
-.trix-content .attachment-gallery>action-text-attachment,
-.trix-content .attachment-gallery>.attachment {
+.trix-content .attachment-gallery > action-text-attachment,
+.trix-content .attachment-gallery > .attachment {
   flex: 1 0 33%;
   padding: 0 0.5em;
   max-width: 33%;
 }
 
-.trix-content .attachment-gallery.attachment-gallery--2>action-text-attachment,
-.trix-content .attachment-gallery.attachment-gallery--2>.attachment,
-.trix-content .attachment-gallery.attachment-gallery--4>action-text-attachment,
-.trix-content .attachment-gallery.attachment-gallery--4>.attachment {
+.trix-content
+  .attachment-gallery.attachment-gallery--2
+  > action-text-attachment,
+.trix-content .attachment-gallery.attachment-gallery--2 > .attachment,
+.trix-content
+  .attachment-gallery.attachment-gallery--4
+  > action-text-attachment,
+.trix-content .attachment-gallery.attachment-gallery--4 > .attachment {
   flex-basis: 50%;
   max-width: 50%;
 }
