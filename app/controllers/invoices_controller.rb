@@ -37,7 +37,7 @@ class InvoicesController < ApplicationController
       redirect_to invoice_path(@invoice, updated: true),
                   notice: t('success', model: 'お申込', action: '追加')
     else
-      redirect_to event_path(@invoice.event_id),
+      redirect_to new_invoice_path(event_id: @invoice.event_id, child: @invoice.child_id),
                   alert: t('failure', model: 'お申込', action: '追加')
     end
   end
@@ -186,7 +186,7 @@ class InvoicesController < ApplicationController
         updated: true
       ), notice: t('success', model: 'お申込', action: '更新')
     else
-      redirect_to event_path(id: @invoice.event_id, child: @invoice.child_id),
+      redirect_to new_invoice_path(event_id: @invoice.event_id, child: @invoice.child_id),
                   status: :unprocessable_entity,
                   notice: t('failure', model: 'お申込', action: '更新')
     end

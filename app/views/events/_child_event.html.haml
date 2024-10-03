@@ -19,7 +19,7 @@
                   image: { class: 'img-fluid img-thumbnail',
                            alt: event.name })
   - else
-    = link_to event_path(id: event, child: child.id) do
+    = link_to new_invoice_path(event_id: event, child: child.id) do
       = picture_tag((event.avif.blank? ? '' : url_for(event.avif)),
                     (event.image.blank? ? '' : url_for(event.image)),
                     image: { class: 'img-fluid img-thumbnail',
@@ -30,7 +30,7 @@
         = link_to t('.title',
                     name: event.name,
                     school: t("schools.#{event.school.name}")),
-                  event_path(id: event, child: child.id)
+                  new_invoice_path(event_id: event, child: child.id)
       %p= date_yy_mm_dd(event.start_date)
 
   - if sibling_events

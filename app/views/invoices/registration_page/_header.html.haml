@@ -17,7 +17,7 @@
       %td.fw-bold.text-secondary
         = t('.regs_for', child: child.name)
       %td
-        = link_to event_path(id: event.id, child: child.id) do
+        = link_to new_invoice_path(event_id: event.id, child: child.id) do
           %div{ class: 'child bg-info rounded-pill p-2 text-white active',
                 'data-price-target': 'child' }
             = child.name
@@ -38,7 +38,7 @@
                                                from: child.name,
                                                to: sibling.name) }
           %td
-            = link_to event_path(id: event.id, child: sibling.id) do
+            = link_to new_invoice_path(event_id: event.id, child: sibling.id) do
               %div{ class: 'child bg-info rounded-pill p-2 text-white',
                     'data-price-target': 'sibling' }
                 = sibling.name
