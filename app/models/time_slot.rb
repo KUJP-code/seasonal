@@ -144,55 +144,55 @@ class TimeSlot < ApplicationRecord
     {
       name: '夕食',
       category: :meal,
-      cost: 770
+      cost: 880
     },
     {
       name: '~19:00（1コマ）',
       category: :departure,
       modifier: 30,
-      cost: 460
+      cost: 550
     },
     {
       name: '~19:30（2コマ）',
       category: :departure,
       modifier: 60,
-      cost: 920
+      cost: 1_100
     },
     {
       name: '~20:00（3コマ）',
       category: :departure,
       modifier: 90,
-      cost: 1_380
+      cost: 1_650
     },
     {
       name: '~20:30（4コマ）',
       category: :departure,
       modifier: 120,
-      cost: 1_840
+      cost: 2_200
     },
     {
       name: '~19:00（1コマ）',
       category: :k_departure,
       modifier: 30,
-      cost: 580
+      cost: 660
     },
     {
       name: '~19:30（2コマ）',
       category: :k_departure,
       modifier: 60,
-      cost: 1_160
+      cost: 1_320
     },
     {
       name: '~20:00（3コマ）',
       category: :k_departure,
       modifier: 90,
-      cost: 1_740
+      cost: 1_980
     },
     {
       name: '~20:30（4コマ）',
       category: :k_departure,
       modifier: 120,
-      cost: 2_320
+      cost: 2_640
     }
   ].freeze
 
@@ -213,43 +213,43 @@ class TimeSlot < ApplicationRecord
     {
       name: '昼食',
       category: :meal,
-      cost: 770
+      cost: 880
     },
     {
       name: '9:30~（1コマ）',
       category: :arrival,
       modifier: -30,
-      cost: 460
+      cost: 550
     },
     {
       name: '9:00~（2コマ）',
       category: :arrival,
       modifier: -60,
-      cost: 920
+      cost: 1_100
     },
     {
       name: '8:30~（3コマ）',
       category: :arrival,
       modifier: -90,
-      cost: 1_380
+      cost: 1_650
     },
     {
       name: '9:30~（1コマ）',
       category: :k_arrival,
       modifier: -30,
-      cost: 580
+      cost: 660
     },
     {
       name: '9:00~（2コマ）',
       category: :k_arrival,
       modifier: -60,
-      cost: 1_160
+      cost: 1_320
     },
     {
       name: '8:30~（3コマ）',
       category: :k_arrival,
       modifier: -90,
-      cost: 1_740
+      cost: 1_980
     }
   ].freeze
 
