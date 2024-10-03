@@ -1,6 +1,6 @@
 :ruby
   snack_cost = @slots.select(&:snack).reduce(0) do |sum, s|
-    sum + (s.registrations_count * 165)
+    sum + (s.registrations_count * TimeSlot::SNACK_COST)
   end
 
   by_category = @slots.each_with_object(Hash.new(0)) do |slot, hash|

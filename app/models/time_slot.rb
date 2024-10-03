@@ -253,6 +253,8 @@ class TimeSlot < ApplicationRecord
     }
   ].freeze
 
+  SNACK_COST = 200
+
   DAYS = { 'Sunday' => '日', 'Monday' => '月', 'Tuesday' => '火',
            'Wednesday' => '水', 'Thursday' => '木', 'Friday' => '金',
            'Saturday' => '土' }.freeze

@@ -18,10 +18,12 @@ export default class extends Controller {
 		eventName: String,
 		priceList: Object,
 		siblingEventCost: Number,
+		snackCost: Number,
 	};
 
 	// Base function called when form modified
 	calculate() {
+		console.log(this.snackCostValue, this.siblingEventCostValue)
 		const courseCost = this.calcCourseCost();
 		const optionCost = this.optCostTargets
 			.filter((cost) => cost.classList.contains("registered"))
@@ -47,8 +49,7 @@ export default class extends Controller {
 		}, 0);
 
 		// Inner text set in the invoice controller if the time slot has a snack fee
-		const snackCost = Number.parseInt(this.snackCountTarget.innerText) * 165;
-
+		const snackCost = Number.parseInt(this.snackCountTarget.innerText) * this.snackCostValue;
 		let finalCost =
 			optionCost + courseCost + adjustmentCost + snackCost + extraCost;
 		if (finalCost < 0) finalCost = 0;

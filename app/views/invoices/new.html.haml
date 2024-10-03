@@ -28,6 +28,7 @@
        data: { controller: 'invoice price',
                action: stimulus_actions,
                'price-price-list-value': @price_list.to_json,
+               'price-snack-cost-value': TimeSlot::SNACK_COST,
                'price-sibling-event-cost-value': @siblings_event_cost || 0,
                'price-event-name-value': @event.name },
        id: 'event-show' }

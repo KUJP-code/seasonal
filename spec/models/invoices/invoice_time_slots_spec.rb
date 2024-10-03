@@ -112,7 +112,7 @@ RSpec.describe Invoice do
   end
 
   context 'when calculating snack cost' do
-    it 'applies 165yen snack cost for each slot where snack boolean is true' do
+    it "applies #{TimeSlot::SNACK_COST} snack cost for each slot where snack boolean is true" do
       snack_slot = create(:time_slot, snack: true)
       no_snack_slot = create(:time_slot, snack: false)
       invoice = build(
@@ -122,8 +122,7 @@ RSpec.describe Invoice do
                     build(:slot_reg, registerable: no_snack_slot)]
       )
       invoice.calc_cost
-      snack_cost = 165
-      expect(invoice.total_cost).to eq(snack_cost + (member_prices.courses['1'] * 2))
+      expect(invoice.total_cost).to eq(TimeSlot::SNACK_COST + (member_prices.courses['1'] * 2))
     end
   end
 

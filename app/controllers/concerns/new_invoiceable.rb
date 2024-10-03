@@ -29,14 +29,14 @@ module NewInvoiceable
       @all_invoices = @all_invoices.to_a + [build_temp_invoice(child, event)]
     end
 
-    def get_event_data(event, child)
+    def get_event_data(event, child, siblings)
       @price_list = event.price_list_for(child)
       @event_slots = event.time_slots.for_registration_page(event)
       @options = event.options + event.slot_options
       @event_cost =
         child.parent.invoices.where(event_id: event.id).sum(:total_cost)
       @siblings_event_cost =
-        Invoice.where(child: @siblings, event_id: event.id)
+        Invoice.where(child: siblings, event_id: event.id)
                .sum(:total_cost)
     end
 

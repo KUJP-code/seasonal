@@ -29,7 +29,6 @@ RSpec.describe 'Registration flow', :js do
   end
 
   it 'can register for activities and options' do
-    snack_cost = 165
     expected_cost = 0
     visit event_path(id: event.id, child: child.id)
     total_cost = find_by_id('total_cost')
@@ -50,7 +49,7 @@ RSpec.describe 'Registration flow', :js do
     # expect(total_cost.text).to eq cost_text(expected_cost)
 
     check "a_slot#{time_slot.afternoon_slot.id}"
-    expected_cost += event.member_prices.courses['1'] + snack_cost
+    expected_cost += event.member_prices.courses['1'] + TimeSlot::SNACK_COST
     expect(total_cost.text).to eq cost_text(expected_cost)
 
     check "eopt#{event.options.first.id}"
@@ -72,7 +71,6 @@ RSpec.describe 'Registration flow', :js do
   end
 
   it 'the new registration page can register for activities and options' do
-    snack_cost = 165
     expected_cost = 0
     visit new_invoice_path(event_id: event.id, child: child.id)
     total_cost = find_by_id('total_cost')
@@ -93,7 +91,7 @@ RSpec.describe 'Registration flow', :js do
     # expect(total_cost.text).to eq cost_text(expected_cost)
 
     check "a_slot#{time_slot.afternoon_slot.id}"
-    expected_cost += event.member_prices.courses['1'] + snack_cost
+    expected_cost += event.member_prices.courses['1'] + TimeSlot::SNACK_COST
     expect(total_cost.text).to eq cost_text(expected_cost)
 
     check "eopt#{event.options.first.id}"

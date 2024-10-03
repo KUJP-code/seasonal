@@ -75,7 +75,7 @@ module CourseCalculator
 
   def snack_cost(slots)
     snack_count = slots.count(&:snack)
-    snack_cost = snack_count * 165
+    snack_cost = snack_count * TimeSlot::SNACK_COST
 
     [snack_cost, snack_count]
   end
