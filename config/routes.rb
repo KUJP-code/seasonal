@@ -44,7 +44,6 @@ Rails.application.routes.draw do
 
       # Non-REST routes for Children controller
       get 'child/find_child', to: 'children#find_child', as: :find_child
-
       # Non-REST routes for CSVs controller
       post 'csv/upload', to: 'csvs#upload', as: :upload_csv
       post 'csv/update', to: 'csvs#update', as: :update_csv
@@ -52,6 +51,8 @@ Rails.application.routes.draw do
       get 'csv/emails/:event', to: 'csvs#emails', as: :download_emails
       get 'csv/no_photo_emails/:event', to: 'csvs#no_photo_emails',
                                         as: :download_no_photo_emails
+      get 'csv/photo_kids/:event', to: 'csvs#photo_kids',
+                                   as: :download_photo_kids
 
       # Non-REST routes for Events controller
       get 'event/diff_school', to: 'events#show', as: :diff_school_path

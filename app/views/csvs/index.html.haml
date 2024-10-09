@@ -66,8 +66,6 @@
                       data: { turbolinks: false }
 
       .card.col.justify-content-center.align-items-center
-        = link_to 'Upload Assets', new_upload_path, class: 'btn btn-primary'
-
         %h1 Download signed-up parent emails
         - @events.each do |e|
           = link_to e,
@@ -79,5 +77,16 @@
         - @events.each do |e|
           = link_to e,
                     download_no_photo_emails_path(event: e),
+                    class: 'btn btn-primary',
+                    data: { turbolinks: false }
+
+      .card.col.justify-content-center.align-items-center
+        = link_to 'Upload Assets', new_upload_path, class: 'btn btn-primary'
+
+      .card.col.justify-content-center.align-items-center
+        %h3 Photo Kids
+        - @events.each do |e|
+          = link_to e,
+                    download_photo_kids_path(event: e),
                     class: 'btn btn-primary',
                     data: { turbolinks: false }

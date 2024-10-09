@@ -13,6 +13,10 @@ class CsvPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def photo_kids?
+    user.admin?
+  end
+
   def no_photo_emails?
     user.admin?
   end

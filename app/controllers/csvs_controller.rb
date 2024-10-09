@@ -37,6 +37,29 @@ class CsvsController < ApplicationController
     send_file path, type: 'text/csv', disposition: 'attachment'
   end
 
+  def photo_kids
+    authorize(:csv)
+    path = "/tmp/photo_kids#{Time.zone.now.strftime('%Y%m%d%H%M')}.csv"
+    photo_kids = Child.where(
+      parent_id: Child.where(
+        id: Registration.where(
+          registerable_id: Option.where(
+            optionable_id: Event.where(name: params[:event]).select(:id), optionable_type: 'Event'
+          ).select(:id), registerable_type: 'Option'
+        ).select(:child_id)
+      ).select(:parent_id)
+    ).includes(:school)
+
+    CSV.open(path, 'wb') do |csv|
+      csv << %w[name katakana_name en_name category school SSID]
+      photo_kids.each do |kid|
+        csv << [kid.name, kid.katakana_name, kid.en_name, kid.category, kid.school.name,
+                kid.ssid]
+      end
+    end
+    send_file path, type: 'text/csv', disposition: 'attachment'
+  end
+
   def emails
     authorize(:csv)
     event_ids = Event.where(name: params[:event]).ids
