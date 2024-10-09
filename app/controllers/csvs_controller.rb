@@ -49,12 +49,21 @@ class CsvsController < ApplicationController
         ).select(:child_id)
       ).select(:parent_id)
     ).includes(:school)
+    headers = %w[name katakana_name en_name category school SSID]
+    is_party = Event.find_by(name: params[:event]).party?
+    if is_party
+      photo_kids = kids_with_timeslot(photo_kids,
+                                      params[:event])
+      headers << 'party_name'
+    end
 
     CSV.open(path, 'wb') do |csv|
-      csv << %w[name katakana_name en_name category school SSID]
+      csv << headers
       photo_kids.each do |kid|
-        csv << [kid.name, kid.katakana_name, kid.en_name, kid.category, kid.school.name,
-                kid.ssid]
+        values = [kid.name, kid.katakana_name, kid.en_name, kid.category, kid.school.name,
+                  kid.ssid]
+        values << kid.time_slots.map(&:name).join(' & ')
+        csv << values
       end
     end
     send_file path, type: 'text/csv', disposition: 'attachment'
@@ -129,6 +138,10 @@ class CsvsController < ApplicationController
   end
 
   private
+
+  def kids_with_timeslot(relation, event_name)
+    relation.includes(:time_slots).where(time_slots: { event_id: Event.where(name: event_name).select(:id) })
+  end
 
   # Some SS data is missing required fields, so we need to set default values
   def defaults(row)
