@@ -62,10 +62,8 @@ class CsvsController < ApplicationController
       photo_kids.each do |kid|
         values = [kid.name, kid.katakana_name, kid.en_name, kid.category, kid.school.name,
                   kid.ssid]
-        if is_party
-          values << kid.time_slots.map(&:name).join(' & ')
-          csv << values
-        end
+        values << kid.time_slots.map(&:name).join(' & ') if is_party
+        csv << values
       end
     end
     send_file path, type: 'text/csv', disposition: 'attachment'
