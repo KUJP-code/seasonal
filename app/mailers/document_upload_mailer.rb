@@ -2,8 +2,8 @@
 
 class DocumentUploadMailer < ApplicationMailer
   default from: 'documents@kids-up.app',
-          headers: { 'List-Unsubscribe-Post' => 'List-Unsubscribe=One-Click',
-                     'List-Unsubscribe' => 'https://kids-up.app/mailer_subscriptions' }
+          'List-Unsubscribe-Post' => 'List-Unsubscribe=One-Click',
+          'List-Unsubscribe' => 'https://kids-up.app/mailer_subscriptions'
 
   def sm_notification
     @document_upload = params[:document_upload]

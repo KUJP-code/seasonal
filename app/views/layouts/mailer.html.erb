@@ -17,7 +17,6 @@
     <p><%= @child.school.name %></p>
     <p><%= "Email: #{@child.school.managers.pluck(:email).join(', ')}" %></p>
     <p><%= "Tel: #{@child.school.phone}" %></p>
-    <%= image_tag "https://kids-up.app/images/logo_gif.gif" %>
     <p>株式会社Kids-UP</p>
 
     <%= link_to t('.unsubscribe'), @unsubscribe_url if @unsubscribe_url.present? %>
