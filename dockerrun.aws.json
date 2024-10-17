@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.5.2-inquiry-initialfix"
+    "Name": "kidsup/event_site:2.5.1.1-first-inquiryfix"
   },
   "Ports": [
     {
