@@ -71,12 +71,10 @@ class SchoolsController < ApplicationController
   end
 
   def html_index
-    p 'htmlindex'
     @schools = policy_scope(School).order(position: :asc)
   end
 
   def json_index
-    p 'jsonindex'
     @schools = School.real.order(id: :desc).includes(calendar_setsumeikais: %i[school])
     render json: @schools
   end
