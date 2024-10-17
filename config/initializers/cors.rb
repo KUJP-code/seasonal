@@ -9,6 +9,6 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
   end
   allow do
     origins 'https://kids-up.jp'
-    resource '/schools', headers: :any, methods: %i[post]
+    resource '/schools', headers: :any, methods: %i[post get]
   end
 end
