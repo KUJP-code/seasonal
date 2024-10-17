@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SchoolsController < ApplicationController
+  skip_before_action :authenticate_user!, only: %i[index json_index]
+  skip_after_action :verify_authorized, only: [:json_index]
   before_action :set_school, only: %i[destroy edit show update]
   after_action :verify_authorized, except: %i[index]
 
