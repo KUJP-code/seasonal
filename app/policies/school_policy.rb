@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class SchoolPolicy < ApplicationPolicy
-  def index?
-    true
-  end
-
   def show?
     user.admin? || user.statistician? || area_school? || sm_managed_school?
   end

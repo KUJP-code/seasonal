@@ -5,9 +5,14 @@ class SchoolsController < ApplicationController
   after_action :verify_authorized, except: %i[index]
 
   def index
-    respond_to do |f|
-      f.html { html_index }
-      f.json { json_index }
+    # Specifically to solve inquiries issues
+    if request.referer&.include?('kids-up.jp')
+      json_index
+    else
+      respond_to do |format|
+        format.html { html_index }
+        format.json { json_index }
+      end
     end
   end
 
@@ -66,10 +71,12 @@ class SchoolsController < ApplicationController
   end
 
   def html_index
+    p 'htmlindex'
     @schools = policy_scope(School).order(position: :asc)
   end
 
   def json_index
+    p 'jsonindex'
     @schools = School.real.order(id: :desc).includes(calendar_setsumeikais: %i[school])
     render json: @schools
   end
