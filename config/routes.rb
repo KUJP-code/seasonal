@@ -12,11 +12,12 @@ Rails.application.routes.draw do
       registrations: 'users/registrations',
       sessions: 'users/sessions'
     }
-
+    resources :schools, only: [:index]
     # Require users to be signed in to view these resources
     authenticate :user do
       resources :adjustments, only: %i[edit]
       resources :areas
+      resources :schools, except: [:index]
       resources :bulk_events, only: %i[index update]
       post 'bulk_events/release/:name',
            to: 'bulk_events#release', as: :release_event
@@ -30,7 +31,7 @@ Rails.application.routes.draw do
       resources :invoices, except: %i[edit]
       resources :inquiries, except: %i[show]
       resources :price_lists, except: %i[destroy show]
-      resources :schools
+
       resources :setsumeikais
       resources :staff_users, except: %i[show]
       resources :surveys, except: %i[destroy]

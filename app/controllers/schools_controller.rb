@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SchoolsController < ApplicationController
-  skip_after_action :verify_authorized, only: [:json_index]
   before_action :set_school, only: %i[destroy edit show update]
   after_action :verify_authorized, except: %i[index]
 
@@ -72,7 +71,7 @@ class SchoolsController < ApplicationController
 
   def json_index
     @schools = School.real.order(id: :desc).includes(calendar_setsumeikais: %i[school])
-    render json: School.all
+    render json: @schools
   end
 
   def set_school
