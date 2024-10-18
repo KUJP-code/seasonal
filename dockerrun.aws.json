@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.5.3.7-setsu-fix"
+    "Name": "kidsup/event_site:2.5.3.8-setsu-fix"
   },
   "Ports": [
     {
