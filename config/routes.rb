@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       registrations: 'users/registrations',
       sessions: 'users/sessions'
     }
+    resources :schools, only: [:index]
     # Require users to be signed in to view these resources
     authenticate :user do
       resources :adjustments, only: %i[edit]
@@ -29,7 +30,7 @@ Rails.application.routes.draw do
       resources :invoices, except: %i[edit]
       resources :inquiries, except: %i[show]
       resources :price_lists, except: %i[destroy show]
-      resources :schools
+      resources :schools, except: [:index]
       resources :setsumeikais
       resources :staff_users, except: %i[show]
       resources :surveys, except: %i[destroy]
