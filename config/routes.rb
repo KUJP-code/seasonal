@@ -17,7 +17,6 @@ Rails.application.routes.draw do
     authenticate :user do
       resources :adjustments, only: %i[edit]
       resources :areas
-      resources :schools, except: [:index]
       resources :bulk_events, only: %i[index update]
       post 'bulk_events/release/:name',
            to: 'bulk_events#release', as: :release_event

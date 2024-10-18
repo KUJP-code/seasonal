@@ -71,7 +71,7 @@ class SchoolsController < ApplicationController
 
   def json_index
     @schools = School.real.order(id: :desc).includes(calendar_setsumeikais: %i[school])
-    render json: @schools
+    render json: School.all
   end
 
   def set_school
