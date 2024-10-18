@@ -12,7 +12,6 @@ Rails.application.routes.draw do
       registrations: 'users/registrations',
       sessions: 'users/sessions'
     }
-
     # Require users to be signed in to view these resources
     authenticate :user do
       resources :adjustments, only: %i[edit]
