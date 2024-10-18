@@ -5,9 +5,14 @@ class SchoolsController < ApplicationController
   after_action :verify_authorized, except: %i[index]
 
   def index
-    respond_to do |format|
-      format.html { html_index }
-      format.json { json_index }
+    # Enforce json format on kidsupjp
+    if request.referer&.include?('kids-up.jp')
+      json_index
+    else
+      respond_to do |format|
+        format.html { html_index }
+        format.json { json_index }
+      end
     end
   end
 
