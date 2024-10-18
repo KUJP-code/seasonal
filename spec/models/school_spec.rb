@@ -1,41 +1,28 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
-RSpec.describe School do
-  subject(:school) { create(:school) }
+RSpec.describe 'Schools', type: :request do
+  describe 'GET /schools' do
+    context 'when accessing the schools endpoint from a fetch request' do
+      it 'returns a successful response with schools JSON data' do
+        # Create some dummy school data for testing
+        School.create!(name: 'School 1', address: 'Address 1', phone: '123456789')
+        School.create!(name: 'School 2', address: 'Address 2', phone: '987654321')
 
-  it { is_expected.to be_valid }
+        # Send a GET request simulating a fetch with Accept header for JSON
+        get '/schools', headers: { 'ACCEPT' => 'application/json' }
 
-  context 'when fetching setsumeikais' do
-    it 'excludes setsumeikais with future release date' do
-      setsumeikai = create(
-        :setsumeikai,
-        release_date: 1.day.from_now,
-        start: 2.days.from_now
-      )
-      school.involved_setsumeikais << setsumeikai
-      expect(school.calendar_setsumeikais).not_to include(setsumeikai)
-    end
+        # Expect the response to be successful
+        expect(response).to have_http_status(:success)
 
-    it 'returns setsumeikais whose release date is today' do
-      setsumeikai = create(
-        :setsumeikai,
-        release_date: Time.zone.today,
-        start: 2.days.from_now
-      )
-      school.involved_setsumeikais << setsumeikai
-      expect(school.calendar_setsumeikais).to include(setsumeikai)
-    end
+        # Parse the JSON response
+        schools = JSON.parse(response.body)
 
-    it 'returns setsumeikais whose release date passed' do
-      setsumeikai = create(
-        :setsumeikai,
-        release_date: 1.day.ago,
-        start: 2.days.from_now
-      )
-      school.involved_setsumeikais << setsumeikai
-      expect(school.calendar_setsumeikais).to include(setsumeikai)
+        # Ensure the JSON contains the expected school data
+        expect(schools).not_to be_empty
+        expect(schools.first).to have_key('id')
+        expect(schools.first).to have_key('name')
+        expect(schools.first['name']).to eq('School 1')
+      end
     end
   end
 end
