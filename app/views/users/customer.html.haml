@@ -51,12 +51,20 @@
                       nil,
                       class: 'form-label'
 
-  - @events&.each do |e|
-    = render partial: 'events/child_event',
-             locals: { event: e,
-                       child: @user.children.first,
-                       sibling_events: e.sibling_events }
-
+  - if @events.size > 1
+    .event-card-container
+      - @events&.each do |e|
+        = render partial: 'events/child_event',
+                          locals: { event: e,
+                          child: @user.children.first,
+                          sibling_events: e.sibling_events }
+  - else
+    .single-event-card 
+      - @events&.each do |e|
+        = render partial: 'events/child_event',
+                          locals: { event: e,
+                          child: @user.children.first,
+                          sibling_events: e.sibling_events }
   .card
     - unless @invoices.empty?
       = link_to t('.user_bookings', user: @user.name),

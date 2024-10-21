@@ -1,10 +1,20 @@
 %main#child-show
   - if @child.school_id && current_user.customer?
-    - @events.each do |e|
-      = render 'events/child_event',
-               child: @child,
-               event: e,
-               sibling_events: e.sibling_events
+    - if @events.size > 1
+      .event-card-container
+        - @events.each do |e|
+          = render 'events/child_event',
+                   child: @child,
+                   event: e,
+                   sibling_events: e.sibling_events
+    - else
+      .single-event-card
+        - @events.each do |e|
+          = render 'events/child_event',
+                   child: @child,
+                   event: e,
+                   sibling_events: e.sibling_events
+
 
   .card.w-100
     %h1.fw-bold= @child.name
@@ -46,8 +56,18 @@
                 class: 'btn btn-primary'
 
   - if @child.school_id && current_user.staff?
-    - @events.each do |e|
-      = render 'events/child_event',
-               child: @child,
-               event: e,
-               sibling_events: e.sibling_events
+    - if @events.size > 1
+      .event-card-container
+        - @events&.each do |e|
+          = render partial: 'events/child_event',
+                            locals: { event: e,
+                            child: @user.children.first,
+                            sibling_events: e.sibling_events }
+    - else
+      .single-event-card
+        - @events&.each do |e|
+          = render partial: 'events/child_event',
+                            locals: { event: e,
+                            child: @user.children.first,
+                            sibling_events: e.sibling_events }
+

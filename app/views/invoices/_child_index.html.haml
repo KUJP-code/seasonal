@@ -8,12 +8,26 @@
            locals: { cost: event_cost, event: next_event.name }
 
 %h1= link_to @child.name, child_path(@child)
-- @events.each do |e|
-  - next unless @child.real_invoices.find { |i| i.event_id == e.id }
 
-  = render partial: 'events/child_event',
-           locals: { event: e, child: @child }
+- if @events > 1
+  .event-card-container
+    - @events.each do |e|
+      - next unless @child.real_invoices.find { |i| i.event_id == e.id }
 
-  = render partial: 'invoices/invoice',
-           collection: @invoices.select { |i| i.event_id == e.id },
-           locals: { index: true }
+      = render partial: 'events/child_event',
+              locals: { event: e, child: @child }
+
+      = render partial: 'invoices/invoice',
+              collection: @invoices.select { |i| i.event_id == e.id },
+              locals: { index: true }
+- else
+  .single-event-card 
+    - @events.each do |e|
+      - next unless @child.real_invoices.find { |i| i.event_id == e.id }
+
+      = render partial: 'events/child_event',
+              locals: { event: e, child: @child }
+
+      = render partial: 'invoices/invoice',
+              collection: @invoices.select { |i| i.event_id == e.id },
+              locals: { index: true }
