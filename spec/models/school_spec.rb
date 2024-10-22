@@ -4,9 +4,10 @@ RSpec.describe 'Schools', type: :request do
   describe 'GET /schools' do
     context 'when accessing the schools endpoint from a fetch request' do
       it 'returns a successful response with schools JSON data' do
+        area = Area.create
         # Create some dummy school data for testing
-        School.create!(name: 'School 1', address: 'Address 1', phone: '123456789')
-        School.create!(name: 'School 2', address: 'Address 2', phone: '987654321')
+        School.create!(name: 'School 1', address: 'Address 1', phone: '123456789', area:)
+        School.create!(name: 'School 2', address: 'Address 2', phone: '987654321', area:)
 
         # Send a GET request simulating a fetch with Accept header for JSON
         get '/schools', headers: { 'ACCEPT' => 'application/json' }
