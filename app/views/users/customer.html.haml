@@ -51,7 +51,7 @@
                       nil,
                       class: 'form-label'
 
-  - if @events.size > 1
+  - if @events&.size.to_i > 1
     .event-card-container
       - @events&.each do |e|
         = render partial: 'events/child_event',
