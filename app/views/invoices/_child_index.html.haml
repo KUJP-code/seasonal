@@ -9,7 +9,8 @@
 
 %h1= link_to @child.name, child_path(@child)
 
-- if @events > 1
+- if @events&.size.to_i > 1
+
   .event-card-container
     - @events.each do |e|
       - next unless @child.real_invoices.find { |i| i.event_id == e.id }
