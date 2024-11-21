@@ -36,9 +36,3 @@
                       target: '_blank',
                       rel: 'noopener'
           %td= date_yy_mm_dd(document_upload.created_at)
-          %td
-            = link_to t('.delete'),
-                      document_upload_path(document_upload),
-                      data: { turbo_method: :delete,
-                              turbo_confirm: t('confirm') },
-                      class: 'btn btn-danger'
