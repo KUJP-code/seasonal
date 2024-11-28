@@ -6,6 +6,9 @@ Rails.application.routes.draw do
     mount MissionControl::Jobs::Engine, at: '/jobs'
     mount PgHero::Engine, at: 'pghero'
   end
+  
+  # custom routes
+  get '/choco25', to: 'redirects#choco25'
 
   scope '(/:locale)', locale: /ja|en/ do
     devise_for :users, path: 'auth', controllers: {
