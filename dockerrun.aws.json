@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.5.6.1-docupload-button"
+    "Name": "kidsup/event_site:2.5.7-choco-redirect"
   },
   "Ports": [
     {
