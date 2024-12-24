@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_02_011412) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_24_015109) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -203,6 +203,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_02_011412) do
   create_table "price_lists", force: :cascade do |t|
     t.string "name"
     t.jsonb "courses"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "qr_code_usages", force: :cascade do |t|
+    t.bigint "qr_code_id", null: false
+    t.string "ip_address"
+    t.text "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["qr_code_id"], name: "index_qr_code_usages_on_qr_code_id"
+  end
+
+  create_table "qr_codes", force: :cascade do |t|
+    t.string "name"
+    t.integer "usage_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -486,6 +502,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_02_011412) do
   add_foreign_key "invoices", "events"
   add_foreign_key "mailer_subscriptions", "users"
   add_foreign_key "managements", "users", column: "manager_id"
+  add_foreign_key "qr_code_usages", "qr_codes"
   add_foreign_key "registrations", "children"
   add_foreign_key "registrations", "invoices"
   add_foreign_key "regular_schedules", "children"
