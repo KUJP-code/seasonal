@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.5.8-datefields"
+    "Name": "kidsup/event_site:2.5.8.1-extoptbug"
   },
   "Ports": [
     {
