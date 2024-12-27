@@ -130,18 +130,18 @@
           ext_opt = add_slot.options.find(&category)
           ext_opt_registered =
             ext_opt && opt_regs.any? { |reg| reg.registerable_id == ext_opt.id }
-
-        %div{ class: 'add_reg form-check form-switch p-0 d-flex ' \
-                     'flex-column justify-content-center ' \
-                     'align-items-center gap-2 p-2 w-100 border',
-              data: { controller: 'register',
-                      'register-child-value': child.id,
-                      'register-cost-value': ext_opt.cost,
-                      'register-id-value': ext_opt.id,
-                      'register-type-value': 'Option' } }
-          %label.form-check-label{ 'data-register-target': 'name',
-                                   for: "opt#{ext_opt.id}" }
-            = ext_opt.name
+        - if ext_opt.present?
+          %div{ class: 'add_reg form-check form-switch p-0 d-flex ' \
+                       'flex-column justify-content-center ' \
+                       'align-items-center gap-2 p-2 w-100 border',
+                data: { controller: 'register',
+                        'register-child-value': child.id,
+                        'register-cost-value': ext_opt.cost,
+                        'register-id-value': ext_opt.id,
+                        'register-type-value': 'Option' } }
+            %label.form-check-label{ 'data-register-target': 'name',
+                                     for: "opt#{ext_opt.id}" }
+              = ext_opt.name
 
           = check_box_tag "opt#{ext_opt.id}",
                           '', (true if ext_opt_registered),
@@ -149,7 +149,8 @@
                           data: { action: 'register#toggle',
                                   'register-target': 'button' },
                           role: 'switch'
-
+        - else 
+          %p.text-danger Extension missing.
     = render 'time_slots/afternoon_reg_card',
              confirmed_slot_regs:, confirmed_opt_regs:, child:,
              opt_regs:, registrations:, slot: add_slot.afternoon_slot
