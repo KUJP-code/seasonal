@@ -22,6 +22,7 @@ en:
       confirm_no_email: "Confirm (No email)"
       confirm_w_email: "Confirm (Send email)"
       in_ss: "In SS, editing locked"
+      download_invoice: "Download Invoice"
       makes_editable: "Customers will be able to edit this invoice if it's unconfirmed. Are you sure?"
       mark_in_ss: "Mark In SS"
       merge_bookings: "Merge Bookings"

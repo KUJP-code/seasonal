@@ -1,66 +1,64 @@
-<div class="card p-3 card-invoice"
-    data-controller='clipboard'
-    data-clipboard-success-content='コピーされました'
-    data-clipboard-target='source'>
+<div class="card p-3 card-invoice" data-controller='clipboard' data-clipboard-success-content='コピーされました' data-clipboard-target='source'>
     <% if !index && current_user.staff? %>
-        <button type="button" class="btn btn-primary" data-action="clipboard#copy" data-clipboard-target="button">コピー</button>
+    <button type="button" class="btn btn-primary" data-action="clipboard#copy" data-clipboard-target="button">コピー</button>
     <% end %>
     <%= sanitize invoice.summary, tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id] %>
 
     <% if index %>
-        <div class="d-flex gap-3 justify-content-center align-items-center flex-wrap">
-            <%= link_to t('.edit_registrations'), new_invoice_path(event_id: invoice.event_id, child: invoice.child_id), class: 'btn btn-primary' unless invoice.in_ss %>
-            <%= link_to t('.view_history'), invoice_path(invoice), class: 'btn btn-primary' %>
+    <div class="d-flex gap-3 justify-content-center align-items-center flex-wrap">
+        <%= link_to t('.edit_registrations'), new_invoice_path(event_id: invoice.event_id, child: invoice.child_id), class: 'btn btn-primary' unless invoice.in_ss %>
+        <%= link_to t('.view_history'), invoice_path(invoice), class: 'btn btn-primary' %>
+        <%= link_to t('.download_invoice'), invoice_path(@invoice, format: pdf), class: 'btn btn-primary' if invoice.in_ss %>
 
-            <% if current_user.staff? %>
-                <% if invoice.in_ss %>
-                    <% if invoice.child
+        <% if current_user.staff? %>
+        <% if invoice.in_ss %>
+        <% if invoice.child
                                  .invoices
                                  .select { |i| i.event_id == invoice.event_id }
                                  .all?(&:in_ss) %>
-                        <%= form_with model: invoice do |f| %>
-                            <%= f.hidden_field :in_ss, value: false %>
-                            <%= f.submit t('.unconfirm_booking'),
+        <%= form_with model: invoice do |f| %>
+        <%= f.hidden_field :in_ss, value: false %>
+        <%= f.submit t('.unconfirm_booking'),
                                          class: 'btn btn-primary',
                                          data: {
                                             turbo_confirm: t('.makes_editable')
                                          } %>
-                        <% end %>
-                    <% end %>
+        <% end %>
+        <% end %>
 
-                    <p class="btn btn-info"><%= "Booking##{invoice.id}" %></p>
-                <% else %>
-                    <%= link_to t('.adjustments'), edit_adjustment_path(invoice), class: 'btn btn-primary' %>
+        <p class="btn btn-info"><%= "Booking##{invoice.id}" %></p>
+        <% else %>
+        <%= link_to t('.adjustments'), edit_adjustment_path(invoice), class: 'btn btn-primary' %>
 
-                    <%= form_with model: invoice do |f| %>
-                        <%= f.hidden_field :in_ss, value: true %>
-                        <%= f.hidden_field :email_sent, value: true %>
+        <%= form_with model: invoice do |f| %>
+        <%= f.hidden_field :in_ss, value: true %>
+        <%= f.hidden_field :email_sent, value: true %>
 
-                        <%= f.submit t('.confirm_w_email'), class: 'btn btn-primary' %>
-                    <% end %>
+        <%= f.submit t('.confirm_w_email'), class: 'btn btn-primary' %>
+        <% end %>
 
-                    <%= form_with model: invoice do |f| %>
-                        <%= f.hidden_field :in_ss, value: true %>
+        <%= form_with model: invoice do |f| %>
+        <%= f.hidden_field :in_ss, value: true %>
 
-                        <%= f.submit t('.confirm_no_email'), class: 'btn btn-primary' %>
-                    <% end %>
+        <%= f.submit t('.confirm_no_email'), class: 'btn btn-primary' %>
+        <% end %>
 
-                    <% unless Invoice.where(child_id: invoice.child_id, event_id: invoice.event_id).excluding(invoice).empty? %>
-                        <%= form_with url: merge_invoices_path, html: { class: 'd-flex align-items-center gap-3' } do |f| %>
-                            <%= f.hidden_field :merge_from, value: invoice.id %>
-                            <%# Give the option to merge  %>
-                            <div class="field">
-                                <%= f.collection_select :merge_to, Invoice.where(child_id: invoice.child_id, event_id: invoice.event_id).excluding(invoice), :id, :id_and_cost  %>
-                            </div>
-                            <%= f.submit t('.merge_bookings'), class: 'btn btn-primary', data: { turbo_confirm: t('.merge_warning') }
-                            %>
-                        <% end %>
-                    <% end %>
-
-                    <%= link_to t('.delete'), invoice_path(invoice), data: { turbo_method: :delete, turbo_confirm: t('.you_sure') }, class: 'btn btn-danger' %>
-
-                <% end %>
-            <% end %>
+        <% unless Invoice.where(child_id: invoice.child_id, event_id: invoice.event_id).excluding(invoice).empty? %>
+        <%= form_with url: merge_invoices_path, html: { class: 'd-flex align-items-center gap-3' } do |f| %>
+        <%= f.hidden_field :merge_from, value: invoice.id %>
+        <%# Give the option to merge  %>
+        <div class="field">
+            <%= f.collection_select :merge_to, Invoice.where(child_id: invoice.child_id, event_id: invoice.event_id).excluding(invoice), :id, :id_and_cost  %>
         </div>
+        <%= f.submit t('.merge_bookings'), class: 'btn btn-primary', data: { turbo_confirm: t('.merge_warning') }
+                            %>
+        <% end %>
+        <% end %>
+
+        <%= link_to t('.delete'), invoice_path(invoice), data: { turbo_method: :delete, turbo_confirm: t('.you_sure') }, class: 'btn btn-danger' %>
+
+        <% end %>
+        <% end %>
+    </div>
     <% end %>
 </div>

@@ -16,6 +16,16 @@ class InvoicesController < ApplicationController
     @previous_versions = @invoice.versions.where.not(object: nil)
                                  .reorder(created_at: :desc)
                                  .reject { |v| v.reify.total_cost.zero? }
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        send_data @invoice.pdf,
+                  filename: "invoice-#{@invoice.id}.pdf",
+                  type: 'application/pdf',
+                  disposition: 'attachment'
+      end
+    end
   end
 
   def new

@@ -52,6 +52,7 @@ ja:
       confirm_no_email: "申込確定（メールなし）"
       confirm_w_email: "申込確定（メールあり）"
       delete: "消去"
+      download_invoice: "お申込内容をダウンロード"
       edit_registrations: "登録内容の変更"
       makes_editable: "(同じ生徒の)他のお申込があるのに他のお申込が未確認の場合、が壊れてしまいます。もし2つの請求書がある場合、編集のために未確認にする前にマージする必要があります。"
       merge_bookings: "お申込内容を一つにする"
