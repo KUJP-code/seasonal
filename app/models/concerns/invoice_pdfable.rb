@@ -30,8 +30,9 @@ module InvoicePdfable
   end
 
   def pdf_footer(pdf)
-    tax = yenify(total_cost * (0.1 / 1.1)).round
-    without_tax = total_cost - tax
+    tax_int = (total_cost * (0.1 / 1.1)).round
+    tax = yenify(tax_int)
+    without_tax = yenify(total_cost - tax_int)
 
     # Tax box
     pdf.grid([18, 0], [18, 2]).bounding_box do
