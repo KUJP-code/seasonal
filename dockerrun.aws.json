@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.5.9.1-invoice_calc"
+    "Name": "kidsup/event_site:2.5.9.5-invoice_dl"
   },
   "Ports": [
     {
