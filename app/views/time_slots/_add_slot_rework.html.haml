@@ -128,10 +128,8 @@
         :ruby
           category = kindy ? :k_extension? : :extension?
           ext_opt = add_slot.options.find(&category)
-          -# TODO: Check ext_opt present from history and fix
           ext_opt_registered =
             ext_opt && opt_regs.any? { |reg| reg.registerable_id == ext_opt.id }
-
         %div{ class: 'add_reg form-check form-switch p-0 d-flex ' \
                      'flex-column justify-content-center ' \
                      'align-items-center gap-2 p-2 w-100 border',
@@ -143,6 +141,14 @@
           %label.form-check-label{ 'data-register-target': 'name',
                                    for: "opt#{ext_opt.id}" }
             = ext_opt.name
+
+          = check_box_tag "opt#{ext_opt.id}",
+                          '', (true if ext_opt_registered),
+                          class: 'form-check-input m-0',
+                          data: { action: 'register#toggle',
+                                  'register-target': 'button' },
+                          role: 'switch'
+
     = render 'time_slots/afternoon_reg_card',
              confirmed_slot_regs:, confirmed_opt_regs:, child:,
              opt_regs:, registrations:, slot: add_slot.afternoon_slot
