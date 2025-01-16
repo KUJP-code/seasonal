@@ -8,7 +8,7 @@
     <div class="d-flex gap-3 justify-content-center align-items-center flex-wrap">
         <%= link_to t('.edit_registrations'), new_invoice_path(event_id: invoice.event_id, child: invoice.child_id), class: 'btn btn-primary' unless invoice.in_ss %>
         <%= link_to t('.view_history'), invoice_path(invoice), class: 'btn btn-primary' %>
-        <%= link_to t('.download_invoice'), invoice_path(@invoice, format: pdf), class: 'btn btn-primary' if invoice.in_ss %>
+        <%= link_to t('.download_invoice'), invoice_path(@invoice, format: :pdf), class: 'btn btn-primary' if invoice.in_ss %>
 
         <% if current_user.staff? %>
         <% if invoice.in_ss %>
