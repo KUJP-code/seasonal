@@ -48,3 +48,5 @@ en:
       merge_bookings: "Merge Bookings"
       unconfirm_booking: "Unconfirm Booking"
       version_from: "Version from: %{date}"
+    new:
+    total_cost: "合計（税込）"

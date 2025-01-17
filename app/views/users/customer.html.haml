@@ -1,11 +1,12 @@
 %main.gap-3#user-show
+
+
   - unless @user.confirmed?
     .card.justify-content-center.align-items-center.bg-danger
       %h3= t('.please_confirm_email')
       = button_to t('.resend_confirm_email'),
                   user_confirmation_path(user: { email: @user.email }),
                   class: 'btn btn-primary'
-
   .card.text-center
     %h1.fw-bold= t('.greet', user: @user.name)
 

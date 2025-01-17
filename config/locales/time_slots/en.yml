@@ -1,11 +1,11 @@
 en:
   time_slots:
     add_slot:
-      afternoon: "Afternoon"
-      arrival_options: "Arrival Options"
-      depart_options: "Depart Options"
-      extra_charge: "Extra Charge: %{cost}"
-      snack: "Snack"
+      afternoon: "午後（通常レッスン）"
+      arrival_options: "延長(前)"
+      depart_options: "延長(後"
+      extra_charge: "追加料金: %{cost}"
+      snack: "午後コースおやつ代"
     close_buttons:
       aft_close: "Close Afternoon"
       aft_reopen: "Reopen Afternoon"
