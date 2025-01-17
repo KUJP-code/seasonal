@@ -13,65 +13,50 @@
 
     <div class="d-grid gap-3 w-50">
         <% if add_slot.closed? && current_user.customer? %>
-            <p class="d-flex align-items-center justify-content-center text-bg-warning p-1 rounded"><%= t('am_closed') %></p>
+        <p class="d-flex align-items-center justify-content-center text-bg-warning p-1 rounded"><%= t('am_closed') %></p>
         <% elsif in_ss %>
-            <p class="fw-bold fs-5">
-                <%= "#{add_slot.name}: ◯" %>
-            </p>
-            <% if add_slot.special? || activity_modifier(add_slot, child).positive? %>
-                    <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(add_slot, child)))  %></p>
-            <% end %>
-            <% add_slot.options.each do |opt| %>
-                <% if registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
-                    <p><%= "#{opt.name}: ◯" %></p>
-                <% end %>
-            <% end %>
+        <p class="fw-bold fs-5">
+            <%= "#{add_slot.name}: ◯" %>
+        </p>
+        <% if add_slot.special? || activity_modifier(add_slot, child).positive? %>
+        <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(add_slot, child)))  %></p>
+        <% end %>
+        <% add_slot.options.each do |opt| %>
+        <% if registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
+        <p><%= "#{opt.name}: ◯" %></p>
+        <% end %>
+        <% end %>
         <% else %>
 
-            <% deregister = Option.new(name: 'なし', optionable_id: add_slot.id) %>
+        <% deregister = Option.new(name: 'なし', optionable_id: add_slot.id) %>
 
-            <div class="morning w-100" data-controller="popup"
-                 data-action="register:toggle->popup#listen">
-                <div class="add_reg w-100 form-check form-switch p-0 d-flex flex-column justify-content-center align-items-center gap-3"
-                     data-controller="register"
-                     data-register-id-value=<%= add_slot.id %>
-                     data-register-type-value="TimeSlot"
-                     data-register-modifier-value=<%= activity_modifier(add_slot, child) %>
-                     data-register-name-value=<%= add_slot.name.tr(' ', '_') %>
-                     data-register-child-value=<%= child.id %>
-                     data-register-snack-value="false">
-                    <label for=<%= "m_slot#{add_slot.id}" %>
-                           data-register-target="name"
-                           class="fw-bold fs-5 form-check-label">
-                        <%= add_slot.name %>
-                    </label>
-                    <% if add_slot.closed? %>
-                        <p class="d-flex align-items-center justify-content-center text-bg-warning p-1 rounded"><%= t('am_closed')  %></p>
-                    <% end %>
-                    <%= check_box_tag "m_slot#{add_slot.id}", '', (true if registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
+        <div class="morning w-100" data-controller="popup" data-action="register:toggle->popup#listen">
+            <div class="add_reg w-100 form-check form-switch p-0 d-flex flex-column justify-content-center align-items-center gap-3" data-controller="register" data-register-id-value=<%= add_slot.id %> data-register-type-value="TimeSlot" data-register-modifier-value=<%= activity_modifier(add_slot, child) %> data-register-name-value=<%= add_slot.name.tr(' ', '_') %> data-register-child-value=<%= child.id %> data-register-snack-value="false">
+                <label for=<%= "m_slot#{add_slot.id}" %> data-register-target="name" class="fw-bold fs-5 form-check-label">
+                    <%= add_slot.name %>
+                </label>
+                <% if add_slot.closed? %>
+                <p class="d-flex align-items-center justify-content-center text-bg-warning p-1 rounded"><%= t('am_closed')  %></p>
+                <% end %>
+                <%= check_box_tag "m_slot#{add_slot.id}", '', (true if registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
+            </div>
+            <div class="options mt-2<%= ' hidden' unless registered %>" data-popup-target="popup">
+                <% time_ids = add_slot.options.time.ids %>
+                <% extension_ids = add_slot.options.extension.ids %>
+
+                <% if add_slot.special? || activity_modifier(add_slot, child).positive? %>
+                <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(add_slot, child)))  %></p>
+                <% end %>
+
+                <% add_slot.options.reject { |opt| (time_ids + extension_ids).include?(opt.id) }.each do |opt| %>
+                <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
+                <div class="add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100" data-controller="register" data-register-id-value=<%= opt.id %> data-register-type-value="Option" data-register-child-value=<%= child.id %> data-register-cost-value=<%= opt.cost %>>
+                    <label for=<%= "opt#{opt.id}" %> class="form-check-label" data-register-target="name"><%= opt.name %></label>
+                    <%= check_box_tag "opt#{opt.id}", '', (true if opt_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
                 </div>
-                <div class="options mt-2<%= ' hidden' unless registered %>" data-popup-target="popup">
-                    <% time_ids = add_slot.options.time.ids %>
-                    <% extension_ids = add_slot.options.extension.ids %>
+                <% end %>
 
-                    <% if add_slot.special? || activity_modifier(add_slot, child).positive? %>
-                      <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(add_slot, child)))  %></p>
-                    <% end %>
-
-                    <% add_slot.options.reject { |opt| (time_ids + extension_ids).include?(opt.id) }.each do |opt| %>
-                        <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
-                        <div class="add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100"
-                             data-controller="register"
-                             data-register-id-value=<%= opt.id %>
-                             data-register-type-value="Option"
-                             data-register-child-value=<%= child.id %>
-                             data-register-cost-value=<%= opt.cost %>>
-                            <label for=<%= "opt#{opt.id}" %> class="form-check-label" data-register-target="name"><%= opt.name %></label>
-                            <%= check_box_tag "opt#{opt.id}", '', (true if opt_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
-                        </div>
-                    <% end %>
-
-                    <% arrival_options = if kindy
+                <% arrival_options = if kindy
                                             add_slot.options
                                                     .select { |o| o.k_arrival? }
                                                     .sort_by { |o| o.modifier }
@@ -81,42 +66,42 @@
                                                     .sort_by { |o| o.modifier }
                                         end %>
 
-                    <% registered_arrival = arrival_options.find do |o|
+                <% registered_arrival = arrival_options.find do |o|
                         confirmed_opt_regs.any? { |r| r.registerable_id == o.id }
                     end %>
 
-                    <% if registered_arrival %>
-                        <p><%= "#{registered_arrival.name}: ◯" %></p>
-                    <% else %>
-                        <% unless arrival_options.size.zero? %>
-                            <fieldset class="mt-2">
-                                <legend class="fs-6 fw-bold">
-                                    <%= t('.arrival_options') %>
-                                </legend>
+                <% if registered_arrival %>
+                <p><%= "#{registered_arrival.name}: ◯" %></p>
+                <% else %>
+                <% unless arrival_options.size.zero? %>
+                <fieldset class="mt-2">
+                    <legend class="fs-6 fw-bold">
+                        <%= t('.arrival_options') %>
+                    </legend>
 
-                                <% none_selected = arrival_options.none? { |a_opt| opt_regs.include?(a_opt) } %>
+                    <% none_selected = arrival_options.none? { |a_opt| opt_regs.include?(a_opt) } %>
 
-                                <%= render 'options/radio',
+                    <%= render 'options/radio',
                                                 opt: deregister,
                                                 child_id: child.id,
                                                 checked: none_selected %>
 
-                                <% arrival_options.each do |o| %>
-                                    <% checked = registrations.any? do |r|
+                    <% arrival_options.each do |o| %>
+                    <% checked = registrations.any? do |r|
                                                     r.registerable_id == o.id &&
                                                         r.registerable_type == 'Option'
                                     end %>
 
-                                    <%= render 'options/radio',
+                    <%= render 'options/radio',
                                                 opt: o,
                                                 child_id: child.id,
                                                 checked: checked %>
-                                <% end %>
-                            </fieldset>
-                        <% end %>
                     <% end %>
+                </fieldset>
+                <% end %>
+                <% end %>
 
-                    <% morn_depart_options = if kindy
+                <% morn_depart_options = if kindy
                                                 add_slot.options
                                                 .select { |o| o.k_departure? }
                                                 .sort_by { |o| o.modifier }
@@ -126,152 +111,130 @@
                                                 .sort_by { |o| o.modifier }
                                             end %>
 
-                    <% reg_morn_depart = morn_depart_options.find do |opt|
+                <% reg_morn_depart = morn_depart_options.find do |opt|
                         confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id }
                     end %>
 
-                    <% if reg_morn_depart %>
-                        <p><%= "#{reg_morn_depart.name}: ◯" %></p>
-                    <% else %>
-                        <% unless morn_depart_options.size.zero? %>
-                            <fieldset class="mt-2">
-                                <legend class="fs-6 fw-bold">
-                                    <%= t('.depart_options') %>
-                                </legend>
+                <% if reg_morn_depart %>
+                <p><%= "#{reg_morn_depart.name}: ◯" %></p>
+                <% else %>
+                <% unless morn_depart_options.size.zero? %>
+                <fieldset class="mt-2">
+                    <legend class="fs-6 fw-bold">
+                        <%= t('.depart_options') %>
+                    </legend>
 
-                                <% none_selected = morn_depart_options.none? { |o| opt_regs.include?(o) } %>
+                    <% none_selected = morn_depart_options.none? { |o| opt_regs.include?(o) } %>
 
 
-                                <%= render 'options/radio',
+                    <%= render 'options/radio',
                                                 opt: deregister,
                                                 child_id: child.id,
                                                 checked: none_selected %>
 
-                                <% morn_depart_options.each do |opt| %>
-                                    <% checked = registrations.any? do |r|
+                    <% morn_depart_options.each do |opt| %>
+                    <% checked = registrations.any? do |r|
                                                     r.registerable_id == o.id &&
                                                         r.registerable_type == 'Option'
                                     end %>
 
-                                    <%= render 'options/radio',
+                    <%= render 'options/radio',
                                                 opt: o,
                                                 child_id: child.id,
                                                 checked: checked %>
-                                <% end %>
-                            </fieldset>
-                        <% end %>
                     <% end %>
-                </div>
+                </fieldset>
+                <% end %>
+                <% end %>
             </div>
+        </div>
         <% end %>
 
         <% if add_slot.special? && add_slot.morning %>
-            <% ext_opt = if kindy
+        <% ext_opt = if kindy
                             add_slot.options.extension.find_by(category: 'k_extension')
                             else
                             add_slot.options.extension.find_by(category: 'extension')
                             end %>
 
-            <% if ext_opt  %>
-              <% ext_opt_registered = registrations.any? { |reg| reg.registerable_id == ext_opt.id && reg.registerable_type == 'Option' } %>
+        <% if ext_opt  %>
+        <% ext_opt_registered = registrations.any? { |reg| reg.registerable_id == ext_opt.id && reg.registerable_type == 'Option' } %>
 
-                <div class="add_reg form-check form-switch p-0 d-flex flex-column justify-content-center align-items-center gap-2 p-2 w-100 border border"
-                    data-controller="register"
-                    data-controller="register"
-                    data-register-id-value=<%= ext_opt.id %>
-                    data-register-type-value="Option"
-                    data-register-child-value=<%= child.id %>
-                    data-register-cost-value=<%= ext_opt.cost %>>
-                    <label for=<%= "opt#{ext_opt.id}" %> class="form-check-label" data-register-target="name"><%= ext_opt.name %></label>
-                    <%= check_box_tag "opt#{ext_opt.id}", '', (true if ext_opt_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
-                </div>
-            <% end %>
+        <div class="add_reg form-check form-switch p-0 d-flex flex-column justify-content-center align-items-center gap-2 p-2 w-100 border border" data-controller="register" data-controller="register" data-register-id-value=<%= ext_opt.id %> data-register-type-value="Option" data-register-child-value=<%= child.id %> data-register-cost-value=<%= ext_opt.cost %>>
+            <label for=<%= "opt#{ext_opt.id}" %> class="form-check-label" data-register-target="name"><%= ext_opt.name %></label>
+            <%= check_box_tag "opt#{ext_opt.id}", '', (true if ext_opt_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
+        </div>
+        <% end %>
         <% end %>
 
         <% afternoon_slot = add_slot.afternoon_slot %>
         <% unless afternoon_slot.nil? %>
-            <% if afternoon_slot.closed? && current_user.customer? %>
-              <p class="d-flex align-items-center justify-content-center text-bg-warning p-1 rounded"><%= t('pm_closed') %></p>
-            <% else %>
-                <% in_ss = confirmed_slot_regs.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
-                <% aft_registered = registrations.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
+        <% if afternoon_slot.closed? && current_user.customer? %>
+        <p class="d-flex align-items-center justify-content-center text-bg-warning p-1 rounded"><%= t('pm_closed') %></p>
+        <% else %>
+        <% in_ss = confirmed_slot_regs.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
+        <% aft_registered = registrations.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
 
-                <% if in_ss %>
-                    <p class="fw-bold fs-5">
-                        <%= "#{afternoon_slot.special? ? afternoon_slot.name : t('.afternoon')}: ◯" %>
-                    </p>
-                    <% if afternoon_slot.special? || activity_modifier(afternoon_slot, child).positive? %>
-                      <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(afternoon_slot, child)))  %></p>
-                    <% end %>
-                    <% if afternoon_slot.snack %>
-                        <p><%= "#{t('.snack')}: ◯" %></p>
-                    <% end %>
-                    <% afternoon_slot.options.each do |opt| %>
-                        <% if registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
-                            <p><%= "#{opt.name}: ◯" %></p>
-                        <% end %>
-                    <% end %>
+        <% if in_ss %>
+        <p class="fw-bold fs-5">
+            <%= "#{afternoon_slot.special? ? afternoon_slot.name : t('.afternoon')}: ◯" %>
+        </p>
+        <% if afternoon_slot.special? || activity_modifier(afternoon_slot, child).positive? %>
+        <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(afternoon_slot, child)))  %></p>
+        <% end %>
+        <% if afternoon_slot.snack %>
+        <p><%= "#{t('.snack')}: ◯" %></p>
+        <% end %>
+        <% afternoon_slot.options.each do |opt| %>
+        <% if registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
+        <p><%= "#{opt.name}: ◯" %></p>
+        <% end %>
+        <% end %>
+        <% else %>
+
+        <% deregister = Option.new(name: 'なし', optionable_id: afternoon_slot.id) %>
+
+        <div class="afternoon w-100" data-controller="popup" data-action="register:toggle->popup#listen">
+            <div class="add_reg w-100 form-check form-switch p-0 d-flex flex-column justify-content-center align-items-center gap-3" data-controller="register" data-register-id-value=<%= afternoon_slot.id %> data-register-type-value="TimeSlot" data-register-modifier-value=<%= activity_modifier(afternoon_slot, child) %> data-register-name-value=<%= afternoon_slot.name.concat(' (午後)').gsub(' ', '_') %> data-register-child-value=<%= child.id %> data-register-snack-value=<%= afternoon_slot.snack %>>
+                <label for=<%= "a_slot#{afternoon_slot.id}" %> data-register-target="name" class="fw-bold fs-5 form-check-label">
+                    <%= afternoon_slot.special? ? afternoon_slot.name : t('.afternoon') %>
+                </label>
+                <% if confirmed_slot_regs.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
+                <p>◯</p>
                 <% else %>
+                <% if child.regular_schedule && child.regular_schedule.has?(afternoon_slot.start_time) %>
+                <p class="bg-danger text-white rounded p-1"><%= t('.regular_day') %></p>
+                <% end %>
+                <% if afternoon_slot.closed? %>
+                <p class="d-flex align-items-center justify-content-center text-bg-warning p-1 rounded"><%= t('pm_closed')  %></p>
+                <% end %>
+                <%= check_box_tag "a_slot#{afternoon_slot.id}", '', (true if aft_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
+                <% end %>
+            </div>
 
-                    <% deregister = Option.new(name: 'なし', optionable_id: afternoon_slot.id) %>
+            <% aft_time_ids = afternoon_slot.options.time.ids %>
 
-                    <div class="afternoon w-100" data-controller="popup"
-                        data-action="register:toggle->popup#listen">
-                        <div class="add_reg w-100 form-check form-switch p-0 d-flex flex-column justify-content-center align-items-center gap-3"
-                            data-controller="register"
-                            data-register-id-value=<%= afternoon_slot.id %>
-                            data-register-type-value="TimeSlot"
-                            data-register-modifier-value=<%= activity_modifier(afternoon_slot, child) %>
-                            data-register-name-value=<%= afternoon_slot.name.concat(' (午後)').gsub(' ', '_') %>
-                            data-register-child-value=<%= child.id %>
-                            data-register-snack-value=<%= afternoon_slot.snack %>>
-                            <label for=<%= "a_slot#{afternoon_slot.id}" %>
-                                data-register-target="name"
-                                class="fw-bold fs-5 form-check-label">
-                                <%= afternoon_slot.special? ? afternoon_slot.name : t('.afternoon') %>
-                            </label>
-                            <% if confirmed_slot_regs.any? { |reg| reg.registerable_id == afternoon_slot.id } %>
-                                <p>◯</p>
-                            <% else %>
-                                <% if child.regular_schedule && child.regular_schedule.has?(afternoon_slot.start_time) %>
-                                    <p class="bg-danger text-white rounded p-1"><%= t('.regular_day') %></p>
-                                <% end %>
-                                <% if afternoon_slot.closed? %>
-                                    <p class="d-flex align-items-center justify-content-center text-bg-warning p-1 rounded"><%= t('pm_closed')  %></p>
-                                <% end %>
-                                <%= check_box_tag "a_slot#{afternoon_slot.id}", '', (true if aft_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
-                            <% end %>
-                        </div>
+            <div class="options mt-2<%= ' hidden' unless aft_registered %>" data-popup-target="popup">
+                <% if afternoon_slot.snack %>
+                <p><%= "#{t('.snack')}: ◯" %></p>
+                <% end %>
 
-                        <% aft_time_ids = afternoon_slot.options.time.ids %>
+                <% if afternoon_slot.special? || activity_modifier(afternoon_slot, child).positive? %>
+                <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(afternoon_slot, child)))  %></p>
+                <% end %>
+                <% afternoon_slot.options.reject { |opt| aft_time_ids.include?(opt.id) }.each do |opt| %>
+                <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
+                <% if confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id } %>
+                <p><%= "#{opt.name}: ◯" %></p>
+                <% else %>
+                <div class="add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100 mt-2" data-controller="register" data-controller="register" data-register-id-value=<%= opt.id %> data-register-type-value="Option" data-register-child-value=<%= child.id %> data-register-cost-value=<%= opt.cost %>>
+                    <label for=<%= "opt#{opt.id}" %> class="form-check-label" data-register-target="name"><%= opt.name %></label>
+                    <%= check_box_tag "opt#{opt.id}", '', (true if opt_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
+                </div>
+                <% end %>
+                <% end %>
 
-                        <div class="options mt-2<%= ' hidden' unless aft_registered %>" data-popup-target="popup">
-                            <% if afternoon_slot.snack %>
-                              <p><%= "#{t('.snack')}: ◯" %></p>
-                            <% end %>
-
-                            <% if afternoon_slot.special? || activity_modifier(afternoon_slot, child).positive? %>
-                              <p><%= t('.extra_charge', cost: number_to_currency(activity_modifier(afternoon_slot, child)))  %></p>
-                            <% end %>
-                            <% afternoon_slot.options.reject { |opt| aft_time_ids.include?(opt.id) }.each do |opt| %>
-                                <% opt_registered = registrations.any? { |reg| reg.registerable_id == opt.id && reg.registerable_type == 'Option' } %>
-                                <% if confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id } %>
-                                    <p><%= "#{opt.name}: ◯" %></p>
-                                <% else %>
-                                    <div class="add_reg form-check form-switch p-0 d-flex justify-content-center align-items-center gap-2 w-100 mt-2"
-                                        data-controller="register"
-                                        data-controller="register"
-                                        data-register-id-value=<%= opt.id %>
-                                        data-register-type-value="Option"
-                                        data-register-child-value=<%= child.id %>
-                                        data-register-cost-value=<%= opt.cost %>>
-                                        <label for=<%= "opt#{opt.id}" %> class="form-check-label" data-register-target="name"><%= opt.name %></label>
-                                        <%= check_box_tag "opt#{opt.id}", '', (true if opt_registered), class: 'form-check-input m-0', data: { action: 'register#toggle', 'register-target': 'button' }, role: 'switch' %>
-                                    </div>
-                                <% end %>
-                            <% end %>
-
-                            <% depart_options = if kindy
+                <% depart_options = if kindy
                                                     afternoon_slot.options
                                                     .select { |o| o.k_departure? }
                                                     .sort_by { |o| o.modifier }
@@ -281,45 +244,45 @@
                                                     .sort_by { |o| o.modifier }
                                                 end %>
 
-                            <% registered_depart = depart_options.find do |o|
+                <% registered_depart = depart_options.find do |o|
                                 confirmed_opt_regs.any? { |r| r.registerable_id == o.id }
                             end %>
 
-                            <% if registered_depart %>
-                                <p><%= "#{registered_depart.name}: ◯" %></p>
-                            <% else %>
-                                <% unless depart_options.size.zero? %>
-                                    <fieldset class="mt-2">
-                                        <legend class="fs-6 fw-bold">
-                                            <%= t('.depart_options') %>
-                                        </legend>
+                <% if registered_depart %>
+                <p><%= "#{registered_depart.name}: ◯" %></p>
+                <% else %>
+                <% unless depart_options.size.zero? %>
+                <fieldset class="mt-2">
+                    <legend class="fs-6 fw-bold">
+                        <%= t('.depart_options') %>
+                    </legend>
 
-                                        <% none_selected = depart_options.none? { |a_opt| opt_regs.include?(a_opt) } %>
+                    <% none_selected = depart_options.none? { |a_opt| opt_regs.include?(a_opt) } %>
 
 
-                                        <%= render 'options/radio',
+                    <%= render 'options/radio',
                                                     opt: deregister,
                                                     child_id: child.id,
                                                     checked: none_selected %>
 
-                                        <% depart_options.each do |o| %>
-                                            <% checked = registrations.any? do |r|
+                    <% depart_options.each do |o| %>
+                    <% checked = registrations.any? do |r|
                                                 r.registerable_id == o.id &&
                                                     r.registerable_type == 'Option'
                                             end %>
 
-                                            <%= render 'options/radio',
+                    <%= render 'options/radio',
                                                         opt: o,
                                                         child_id: child.id,
                                                         checked: checked %>
-                                        <% end %>
-                                    </fieldset>
-                                <% end %>
-                            <% end %>
-                        </div>
-                    </div>
+                    <% end %>
+                </fieldset>
                 <% end %>
-            <% end %>
+                <% end %>
+            </div>
+        </div>
+        <% end %>
+        <% end %>
         <% end %>
     </div>
 </div>

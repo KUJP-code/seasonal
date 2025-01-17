@@ -84,6 +84,7 @@ ja:
         regular_schedule: "通常スケジュール"
       price_footer:
         confirm_invoice: "お申込内容を確認する"
+        total_cost: "合計（税込）"
     show:
       adjustments: "調整内容を追加する"
       changed_by: "変更者: %{user}"

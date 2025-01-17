@@ -1,1 +1,5 @@
 ja:
+  options:
+    time_options:
+      depart_options: "延長(後)"
+      arrival_options: "延長(前)"

@@ -1,5 +1,14 @@
 ja:
   time_slots:
+    add_slot_rework:
+      extra_charge: "追加料金: %{cost}"
+    time_options:
+      depart_options: "延長(後)"
+    afternoon_reg_card:
+      afternoon: "午後（通常レッスン）"
+      snack: "午後コースおやつ代"
+      depart_options: "延長(後)"
+      extra_charge: "追加料金: %{cost}"
     add_slot:
       afternoon: "午後（通常レッスン）"
       arrival_options: "延長(前)"
