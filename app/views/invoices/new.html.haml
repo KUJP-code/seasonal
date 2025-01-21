@@ -1,6 +1,6 @@
 :ruby
   unregistered_slots = @event_slots - @registered_slots
-
+  unregistered_slots = unregistered_slots.reverse
   active_invoice = @all_invoices.find { |i| i.in_ss == false }
 
   registrations =
