@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.5.9.3-setsu-mailer"
+    "Name": "kidsup/event_site:2.5.9.4-id-field"
   },
   "Ports": [
     {
