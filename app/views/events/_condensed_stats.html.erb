@@ -7,12 +7,12 @@
 
             <thead>
                 <tr class="table-primary">
-                    <th scope="col" data-controller="sort" data-sort-event-value=<%= event_name %> data-sort-col-value=".id">
+                    <th scope="col" data-controller="sort" data-sort-event-value=<%= event_name %> data-sort-col-value=".school-id">
                         ID
                         <button class="btn-sort ascending" data-sort-target="toggle" data-action="click->sort#sort">
                             &#9650;
                         </button>
-                <tr class="table-primary">
+                    </th>
                     <th scope="col" data-controller="sort" data-sort-event-value=<%= event_name %> data-sort-col-value=".school">
                         School
                         <button class="btn-sort ascending" data-sort-target="toggle" data-action="click->sort#sort">
@@ -82,7 +82,7 @@
                 <% goal_percent = (total_revenue / event.goal.to_f * 100).truncate %>
 
                 <tr>
-                    <td class="school-id"><%=event.school.id>
+                    <td class="school-id"><%=event.school.id%></td>
                     <td class="school"><%= link_to t("schools.#{event.school.name}"), children_path(source: 'event', id: event.id) %></td>
                     <td class="int_kids"><%= int_kids %></td>
                     <td class="res_kids"><%= res_kids %></td>
