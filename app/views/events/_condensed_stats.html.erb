@@ -7,112 +7,63 @@
 
             <thead>
                 <tr class="table-primary">
-                    <th scope="col"
-                        data-controller="sort"
-                        data-sort-event-value=<%= event_name %>
-                        data-sort-col-value=".school">
+                    <th scope="col" data-controller="sort" data-sort-event-value=<%= event_name %> data-sort-col-value=".id">
+                        ID
+                        <button class="btn-sort ascending" data-sort-target="toggle" data-action="click->sort#sort">
+                            &#9650;
+                        </button>
+                <tr class="table-primary">
+                    <th scope="col" data-controller="sort" data-sort-event-value=<%= event_name %> data-sort-col-value=".school">
                         School
-                        <button
-                            class="btn-sort ascending"
-                            data-sort-target="toggle"
-                            data-action="click->sort#sort">
+                        <button class="btn-sort ascending" data-sort-target="toggle" data-action="click->sort#sort">
                             &#9650;
                         </button>
                     </th>
-                    <th scope="col"
-                        data-controller="sort"
-                        data-sort-event-value=<%= event_name %>
-                        data-sort-col-value=".int_kids"
-                        >
+                    <th scope="col" data-controller="sort" data-sort-event-value=<%= event_name %> data-sort-col-value=".int_kids">
                         <%= t('.int_kids') %>
-                        <button
-                            class="btn-sort ascending"
-                            data-sort-target="toggle"
-                            data-action="click->sort#sort">
+                        <button class="btn-sort ascending" data-sort-target="toggle" data-action="click->sort#sort">
                             &#9650;
                         </button>
                     </th>
-                    <th scope="col"
-                        data-controller="sort"
-                        data-sort-event-value=<%= event_name %>
-                        data-sort-col-value=".res_kids">
+                    <th scope="col" data-controller="sort" data-sort-event-value=<%= event_name %> data-sort-col-value=".res_kids">
                         <%= t('.res_kids') %>
-                        <button
-                            class="btn-sort ascending"
-                            data-sort-target="toggle"
-                            data-action="click->sort#sort">
+                        <button class="btn-sort ascending" data-sort-target="toggle" data-action="click->sort#sort">
                             &#9650;
                         </button>
                     </th>
-                    <th scope="col"
-                        data-controller="sort"
-                        data-sort-event-value=<%= event_name %>
-                        data-sort-col-value=".ext_kids">
+                    <th scope="col" data-controller="sort" data-sort-event-value=<%= event_name %> data-sort-col-value=".ext_kids">
                         <%= t('.ext_kids') %>
-                        <button
-                            class="btn-sort ascending"
-                            data-sort-target="toggle"
-                            data-action="click->sort#sort">
+                        <button class="btn-sort ascending" data-sort-target="toggle" data-action="click->sort#sort">
                             &#9650;
                         </button>
                     </th>
-                    <th scope="col"
-                        data-controller="sort"
-                        data-sort-event-value=<%= event_name %>
-                        data-sort-col-value=".total_kids">
+                    <th scope="col" data-controller="sort" data-sort-event-value=<%= event_name %> data-sort-col-value=".total_kids">
                         <%= t('.total_kids') %>
-                        <button
-                            class="btn-sort ascending"
-                            data-sort-target="toggle"
-                            data-action="click->sort#sort">
+                        <button class="btn-sort ascending" data-sort-target="toggle" data-action="click->sort#sort">
                             &#9650;
                         </button>
                     </th>
-                    <th scope="col"
-                        data-controller="sort"
-                        data-sort-event-value=<%= event_name %>
-                        data-sort-col-value=".photo_sales">
+                    <th scope="col" data-controller="sort" data-sort-event-value=<%= event_name %> data-sort-col-value=".photo_sales">
                         <%= t('.photo_sales') %>
-                        <button
-                            class="btn-sort ascending"
-                            data-sort-target="toggle"
-                            data-action="click->sort#sort">
+                        <button class="btn-sort ascending" data-sort-target="toggle" data-action="click->sort#sort">
                             &#9650;
                         </button>
                     </th>
-                    <th scope="col"
-                        data-controller="sort"
-                        data-sort-event-value=<%= event_name %>
-                        data-sort-col-value=".total_revenue">
+                    <th scope="col" data-controller="sort" data-sort-event-value=<%= event_name %> data-sort-col-value=".total_revenue">
                         <%= t('.total_revenue') %>
-                        <button
-                            class="btn-sort ascending"
-                            data-sort-target="toggle"
-                            data-action="click->sort#sort">
+                        <button class="btn-sort ascending" data-sort-target="toggle" data-action="click->sort#sort">
                             &#9650;
                         </button>
                     </th>
-                    <th scope="col"
-                        data-controller="sort"
-                        data-sort-event-value=<%= event_name %>
-                        data-sort-col-value=".goal_revenue">
+                    <th scope="col" data-controller="sort" data-sort-event-value=<%= event_name %> data-sort-col-value=".goal_revenue">
                         <%= t('.goal_revenue') %>
-                        <button
-                            class="btn-sort ascending"
-                            data-sort-target="toggle"
-                            data-action="click->sort#sort">
+                        <button class="btn-sort ascending" data-sort-target="toggle" data-action="click->sort#sort">
                             &#9650;
                         </button>
                     </th>
-                    <th scope="col"
-                        data-controller="sort"
-                        data-sort-event-value=<%= event_name %>
-                        data-sort-col-value=".goal_percent">
+                    <th scope="col" data-controller="sort" data-sort-event-value=<%= event_name %> data-sort-col-value=".goal_percent">
                         <%= t('.goal_percent') %>
-                        <button
-                            class="btn-sort ascending"
-                            data-sort-target="toggle"
-                            data-action="click->sort#sort">
+                        <button class="btn-sort ascending" data-sort-target="toggle" data-action="click->sort#sort">
                             &#9650;
                         </button>
                     </th>
@@ -121,25 +72,26 @@
 
             <tbody id=<%= event_name %>>
                 <% events.each do |event| %>
-                    <% children = event.children %>
+                <% children = event.children %>
 
-                    <% int_kids = children.select { |c| c.category == 'internal' }.size %>
-                    <% res_kids = children.select { |c| c.category == 'reservation' }.size %>
-                    <% ext_kids = children.select { |c| c.category == 'external' }.size %>
+                <% int_kids = children.select { |c| c.category == 'internal' }.size %>
+                <% res_kids = children.select { |c| c.category == 'reservation' }.size %>
+                <% ext_kids = children.select { |c| c.category == 'external' }.size %>
 
-                    <% total_revenue = event.invoices.sum(&:total_cost) %>
-                    <% goal_percent = (total_revenue / event.goal.to_f * 100).truncate %>
+                <% total_revenue = event.invoices.sum(&:total_cost) %>
+                <% goal_percent = (total_revenue / event.goal.to_f * 100).truncate %>
 
-                    <tr>
-                        <td class="school"><%= link_to t("schools.#{event.school.name}"), children_path(source: 'event', id: event.id) %></td>
-                        <td class="int_kids"><%= int_kids %></td>
-                        <td class="res_kids"><%= res_kids %></td>
-                        <td class="ext_kids"><%= ext_kids %></td>
-                        <td class="total_kids"><%= children.size %></td>
-                        <td class="photo_sales"><%= event.options.reduce(0) { |sum, o| sum + o.registrations_count } %></td>
-                        <td class="total_revenue"><%= number_to_currency(total_revenue) %></td>
-                        <td class="goal_revenue"><%= number_to_currency(event.goal) %></td>
-                        <td class="goal_percent<%=
+                <tr>
+                    <td class="school-id"><%=event.school.id>
+                    <td class="school"><%= link_to t("schools.#{event.school.name}"), children_path(source: 'event', id: event.id) %></td>
+                    <td class="int_kids"><%= int_kids %></td>
+                    <td class="res_kids"><%= res_kids %></td>
+                    <td class="ext_kids"><%= ext_kids %></td>
+                    <td class="total_kids"><%= children.size %></td>
+                    <td class="photo_sales"><%= event.options.reduce(0) { |sum, o| sum + o.registrations_count } %></td>
+                    <td class="total_revenue"><%= number_to_currency(total_revenue) %></td>
+                    <td class="goal_revenue"><%= number_to_currency(event.goal) %></td>
+                    <td class="goal_percent<%=
                                 case goal_percent
                                 when (100..)
                                     ' table-success'
@@ -149,15 +101,12 @@
                                     ' table-danger'
                                 end
                             %>">
-                                <%= "#{goal_percent}%" %>
-                            </td>
-                        </tr>
-                    </tr>
+                        <%= "#{goal_percent}%" %>
+                    </td>
+                </tr>
+                </tr>
                 <% end %>
             </tbody>
         </table>
     </div>
 </div>
-
-
-
