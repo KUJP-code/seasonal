@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.5.9.5-id-fields"
+    "Name": "kidsup/event_site:2.5.9.6-id-fields"
   },
   "Ports": [
     {

@@ -27,7 +27,7 @@ class SchoolPolicy < ApplicationPolicy
 
   def permitted_attributes
     always_permit = %i[
-      name address phone nearby_stations bus_areas hiragana image_id email
+      id name address phone nearby_stations bus_areas hiragana image_id email
       nearby_schools prefecture
     ]
     return always_permit if user.school_manager? || user.area_manager?
