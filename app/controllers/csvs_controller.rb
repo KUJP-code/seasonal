@@ -103,20 +103,26 @@ class CsvsController < ApplicationController
   def update
     authorize(:csv)
     csv = params[:csv]
-
-    if params[:model] == 'Child'
-      update_child(csv)
-    elsif params[:model] == 'Setsumeikai'
-      update_setsumeikai(csv)
-    else
-      update_schedule(csv)
+  
+    begin
+      if params[:model] == 'Child'
+        update_child(csv)
+      elsif params[:model] == 'Setsumeikai'
+        update_setsumeikai(csv)
+      else
+        update_schedule(csv)
+      end
+  
+      flash[:notice] = "#{params[:model]} records updated."
+    rescue ActiveRecord::RecordInvalid => e
+      flash[:alert] = "Failed to update #{params[:model]} records: #{e.message}"
+    rescue StandardError => e
+      flash[:alert] = "An unexpected error occurred: #{e.message}"
+    ensure
+      redirect_to csvs_path
     end
-
-    redirect_to csvs_path,
-                notice: "#{if ALLOWED_MODELS.include?(params[:model])
-                             params[:model]
-                           end} records updated."
   end
+  
 
   def upload
     authorize(:csv)
