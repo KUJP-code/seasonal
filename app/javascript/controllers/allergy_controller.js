@@ -29,13 +29,11 @@ export default class extends Controller {
   epipenSelectionChanged(value) {
     if (value === "はい") {
       this.epipenWarning.style.display = "block";
-      // Set the field to be invalid
       this.epipenSelect.setCustomValidity(
         "エピペンをお持ちの場合、登録は行えません。"
       );
     } else {
       this.epipenWarning.style.display = "none";
-      // Clear any custom validity messages so the field becomes valid
       this.epipenSelect.setCustomValidity("");
     }
   }
@@ -61,18 +59,15 @@ export default class extends Controller {
   selectionChanged(selection) {
     switch (selection) {
       case " なし":
-        // No allergy: make the input read-only and remove the epipen section
         this.allergyInputTarget.readOnly = true;
         this.allergyInputTarget.value = "なし";
         this.removeEpipenContainer();
         break;
       case "有":
-        // Has allergy: allow editing and show the epipen question
         this.allergyInputTarget.readOnly = false;
         this.allergyInputTarget.value = "";
         if (!this.epipenContainer) {
           this.epipenContainer = this.createEpipenContainer();
-          // Insert the epipen container above the closest .form-floating container.
           const formFloating =
             this.allergyInputTarget.closest(".form-floating");
           formFloating.insertAdjacentElement(
