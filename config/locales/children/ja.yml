@@ -42,7 +42,7 @@ ja:
       seen_button:
         seen: "既読"
     form:
-      allergies: "アレルギーがない場合は「なし」と入力してください。"
+      allergies: "アレルゲンを入力してください"
       birthday: "誕生日"
       category: "（通学生・予約生・非会員）選択してください。"
       ele_school: "お通いの保育園／幼稚園／小学校"
