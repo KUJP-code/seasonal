@@ -127,11 +127,15 @@ export default class extends Controller {
     warning.classList.add("epipen-warning");
     warning.style.display = "none";
     warning.style.color = "red";
-    warning.style.whiteSpace = "normal";
     warning.style.overflowWrap = "break-word";
     warning.style.width = "100%";
+    if (window.innerWidth > 768) {
+      warning.style.whiteSpace = "pre-wrap";
+    } else {
+      warning.style.whiteSpace = "normal";
+    }
     warning.textContent =
-      "誠に申し訳ございませんが、キッズアップではお子様の安全を最優先に考えておりますため、エピペンをお持ちのお子様のお預かりは致しかねます。何卒ご理解いただけますようお願い申し上げます。";
+      "誠に申し訳ございませんが、キッズアップではお子様の安全を最優先に考えておりますため、\nエピペンをお持ちのお子様のお預かりは致しかねます。\n何卒ご理解いただけますようお願い申し上げます。";
     container.appendChild(warning);
     this.epipenWarning = warning;
 
