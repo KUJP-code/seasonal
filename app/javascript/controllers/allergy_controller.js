@@ -26,18 +26,6 @@ export default class extends Controller {
     }
   }
 
-  epipenSelectionChanged(value) {
-    if (value === "はい") {
-      this.epipenWarning.style.display = "block";
-      this.epipenSelect.setCustomValidity(
-        "エピペンをお持ちの場合、登録は行えません。"
-      );
-    } else {
-      this.epipenWarning.style.display = "none";
-      this.epipenSelect.setCustomValidity("");
-    }
-  }
-
   allergySelect() {
     const element = document.createElement("select");
     element.classList.add("form-select");
@@ -140,8 +128,12 @@ export default class extends Controller {
   epipenSelectionChanged(value) {
     if (value === "はい") {
       this.epipenWarning.style.display = "block";
+      this.epipenSelect.setCustomValidity(
+        "エピペンをお持ちの場合、登録は行えません。"
+      );
     } else {
       this.epipenWarning.style.display = "none";
+      this.epipenSelect.setCustomValidity("");
     }
   }
 }
