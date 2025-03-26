@@ -3,7 +3,10 @@
     = render 'shared/splash_image', avif: @avif, fallback: @fallback
     #action-pane
       .mb-5#login-logo
-
+      = link_to new_quick_booking_path,
+                class: 'w-100 btn btn-danger' do
+        %span.flex-grow-1.ms-3.fs-4= ('Quick Booking')
+        = image_tag 'arrow-right.svg', class: 'img-fluid'
       = link_to '申込サイトの使い方はこちら',
                 Rails.root.join('/instructions.pdf').to_s,
                 target: :blank, class: 'fw-bold link-underline-primary'

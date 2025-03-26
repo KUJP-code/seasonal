@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get 'quick_bookings/new'
   # My DB analytics dashboard
   authenticate :user, ->(user) { user.admin? } do
     mount MissionControl::Jobs::Engine, at: '/jobs'
@@ -11,6 +12,10 @@ Rails.application.routes.draw do
   get '/choco25', to: 'redirects#choco25'
 
   scope '(/:locale)', locale: /ja|en/ do
+    get '/schools/:school_id/quick_booking_timeslots', to: 'quick_bookings#timeslots', defaults: { format: :json }
+    resource :quick_booking, only: [:new, :create] do
+      get 'thank_you', on: :collection
+    end
     devise_for :users, path: 'auth', controllers: {
       registrations: 'users/registrations',
       sessions: 'users/sessions'
