@@ -9,6 +9,9 @@ class QuickBookingMailer < ApplicationMailer
 
   def confirmation(quick_booking)
     @quick_booking = quick_booking
-    mail(to: quick_booking.email, subject: "Quick Booking Confirmation")
+    mail(
+      to: quick_booking.email,
+      subject: "[#{quick_booking.event.name}パーティー] のご予約ありがとうございます"
+    )
   end
 end

@@ -1,0 +1,10 @@
+新しいクイック予約が入りました。
+
+予約者: <%= @quick_booking.first_name %> <%= @quick_booking.last_name %>
+メールアドレス: <%= @quick_booking.email %>
+電話番号: <%= @quick_booking.phone %>
+スクール: <%= @quick_booking.school.name %>
+イベント: <%= @quick_booking.event.name %>
+タイムスロット: <%= @quick_booking.timeslot&.start_time&.strftime('%H:%M') %> - <%= @quick_booking.timeslot&.end_time&.strftime('%H:%M') %>
+
+管理画面にて詳細をご確認ください。
