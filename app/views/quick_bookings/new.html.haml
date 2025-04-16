@@ -5,32 +5,32 @@
         = render 'shared/form_errors', resource: @quick_booking
 
         .personal_info.d-grid.gap-3
-          %h3 Quick Booking
+          %h3 会員登録せずに予約
 
         %div
-          = f.label :first_name, 'First Name', class: 'form-label'
+          = f.label :first_name, '名', class: 'form-label'
           .input-group
-            = f.text_field :first_name, class: 'form-control', placeholder: 'First Name', required: true
-            = f.text_field :last_name, class: 'form-control', placeholder: 'Last Name', required: true
+            = f.text_field :first_name, class: 'form-control', placeholder: '名', required: true
+            = f.text_field :last_name, class: 'form-control', placeholder: '姓', required: true
 
         %div
-          = f.label :email, 'Email', class: 'form-label'
+          = f.label :email, 'メールアドレス', class: 'form-label'
           .input-group
-            = f.email_field :email, class: 'form-control', placeholder: 'Email', required: true
+            = f.email_field :email, class: 'form-control', placeholder: 'メールアドレス', required: true
 
         %div
-          = f.label :phone, 'Phone Number', class: 'form-label'
+          = f.label :phone, '電話番号', class: 'form-label'
           .input-group
-            = f.telephone_field :phone, class: 'form-control', placeholder: 'Phone Number', required: true
+            = f.telephone_field :phone, class: 'form-control', placeholder: '電話番号', required: true
 
         %div
-          = f.label :school_id, 'School', class: 'form-label'
+          = f.label :school_id, '学校', class: 'form-label'
           = f.collection_select :school_id, School.real, :id, :name,
-                                { prompt: 'Select School' },
+                                { prompt: '学校を選択' },
                                 { class: 'form-select', required: true, data: { action: "change->quick-booking#loadTimeslots" } }
 
         #party-picture{ data: { quick_booking_target: "partyPicture" } }
         #timeslot-cards{ data: { quick_booking_target: "container" } }
         = f.hidden_field :timeslot_id, data: { quick_booking_target: "hiddenField" }
 
-        = f.submit 'Book Now', class: 'btn btn-primary', data: { turbo_frame: '_top' }
+        = f.submit '今すぐ予約', class: 'btn btn-primary', data: { turbo_frame: '_top' }

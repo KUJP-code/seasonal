@@ -30,7 +30,11 @@ class InquiriesController < ApplicationController
   end
 
   def create
-    @inquiry = Inquiry.new(inquiry_params)
+    @inquiry = Inquiry.new(inquiry_params.except(:recaptcha_token))
+
+    if recaptcha_needed_and_invalid?(inquiry_params[:recaptcha_token])
+      handle_failed_recaptcha and return
+    end
 
     respond_to do |format|
       format.json { create_json_response }
@@ -64,8 +68,23 @@ class InquiriesController < ApplicationController
     params.require(:inquiry).permit(
       :id, :setsumeikai_id, :parent_name, :phone, :email, :child_name,
       :referrer, :child_birthday, :kindy, :ele_school, :start_date, :notes,
-      :requests, :category, :school_id, :privacy_policy
+      :requests, :category, :school_id, :privacy_policy, :recaptcha_token
     )
+  end
+
+  def recaptcha_needed_and_invalid?(token)
+    token.present? && !verify_recaptcha_token(token)
+  end
+
+  def handle_failed_recaptcha
+    respond_to do |format|
+      format.html do
+        @schools = policy_scope(School)
+        flash.now[:alert] = 'reCAPTCHA verification failed. Please try again.'
+        render :new, status: :unprocessable_entity
+      end
+      format.json { render json: { status: 403, error: 'reCAPTCHA verification failed' } }
+    end
   end
 
   def create_html_response
@@ -112,6 +131,16 @@ class InquiriesController < ApplicationController
     params[:category] == 'R' ? scoped_inquiries.setsumeikai : scoped_inquiries.general
   end
 
+  def verify_recaptcha_token(token)
+    secret_key = ENV.fetch('RECAPTCHA_SECRET_KEY', nil)
+    return false if token.blank? || secret_key.blank?
+
+    uri = URI('https://www.google.com/recaptcha/api/siteverify')
+    res = Net::HTTP.post_form(uri, { 'secret' => secret_key, 'response' => token })
+    json = JSON.parse(res.body)
+    json['success'] == true && json['score'].to_f >= 0.5
+  end
+ 
   def send_mail(inquiry)
     if inquiry.category == 'R'
       InquiryMailer.with(inquiry: @inquiry).setsu_inquiry.deliver_later
