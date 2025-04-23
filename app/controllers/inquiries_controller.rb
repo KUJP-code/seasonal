@@ -80,10 +80,10 @@ class InquiriesController < ApplicationController
     respond_to do |format|
       format.html do
         @schools = policy_scope(School)
-        flash.now[:alert] = 'reCAPTCHA verification failed. Please try again.'
+        flash.now[:alert] = 'reCAPTCHA認証に失敗しました。もう一度お試しください。'
         render :new, status: :unprocessable_entity
       end
-      format.json { render json: { status: 403, error: 'reCAPTCHA verification failed' } }
+      format.json { render json: { status: 403, error: 'reCAPTCHAの検証に失敗しました' } }
     end
   end
 
@@ -100,7 +100,7 @@ class InquiriesController < ApplicationController
       @schools = policy_scope(School)
       render :new,
              status: :unprocessable_entity,
-             alert: 'Failed to create inquiry'
+             alert: '問い合わせの作成に失敗'
     end
   end
 
