@@ -7,9 +7,9 @@ RSpec.describe Setsumeikai do
 
   it { is_expected.to be_valid }
 
-  it 'automatically sets time component of close_at to 6pm' do
+  it 'automatically sets time component of close_at to 5:30pm' do
     setsumeikai.save
-    expect(setsumeikai.close_at.strftime('%H:%M')).to eq('18:00')
+    expect(setsumeikai.close_at.strftime('%H:%M')).to eq('17:30')
   end
 
   context 'when using full?' do

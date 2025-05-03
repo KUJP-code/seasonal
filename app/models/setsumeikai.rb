@@ -39,7 +39,7 @@ class Setsumeikai < ApplicationRecord
 
   def set_close_at
     self.close_at = Time.zone.local(
-      close_at.year, close_at.month, close_at.day, 18
+      close_at.year, close_at.month, close_at.day, 17, 30
     )
   end
 
