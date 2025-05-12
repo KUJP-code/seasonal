@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.7.0-setsutiming"
+    "Name": "kidsup/event_site:2.8.0-newcsvs"
   },
   "Ports": [
     {
