@@ -8,6 +8,10 @@ class CsvPolicy < ApplicationPolicy
   def download?
     user.admin?
   end
+  
+  def download_signups?
+    user.admin?
+  end
 
   def emails?
     user.admin?

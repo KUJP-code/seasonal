@@ -37,6 +37,67 @@ class CsvsController < ApplicationController
     send_file path, type: 'text/csv', disposition: 'attachment'
   end
 
+  def download_signups
+    authorize(:csv)
+
+    events = Event.where(name: params[:event])
+
+    invoices = Invoice
+      .where(event_id: events.select(:id))
+      .includes(child: :school)
+
+    timestamp = Time.zone.now.strftime('%Y%m%d%H%M')
+    path      = Rails.root.join('tmp', "#{params[:event]}_signups_#{timestamp}.csv")
+
+    CSV.open(path, 'wb', write_headers: true, headers: [
+      'SSID',
+      'Name',
+      'Name (Katakana)',
+      'School',
+      'Events Attended',
+      'Total Cost (Net ¥)',
+      'Photo Service Cost (¥)',
+      'Category',
+      'Confirm Date'
+                                                      ]) do |csv|
+      invoices.find_each do |inv|
+        child = inv.child
+        timeslots_attended = inv.time_slots.count
+
+        photo_cost = inv.options.event.sum(:cost)
+
+        net_cost = inv.total_cost - photo_cost
+
+        confirm_date = if child.external?
+          inv.updated_at.to_date.to_s
+        end
+
+        category_value = case child.category
+        when 'internal', 'reservation'
+          3
+        when 'external'
+          2
+        else
+          'unknown'
+        end
+
+        csv << [
+          child.ssid,
+          child.name,
+          child.katakana_name,
+          child.school.name,
+          timeslots_attended,
+          net_cost,
+          photo_cost,
+          category_value,
+          confirm_date
+        ]
+      end
+    end
+
+    send_file path, type: 'text/csv', disposition: 'attachment'
+  end
+
   def photo_kids
     authorize(:csv)
     path = "/tmp/photo_kids#{Time.zone.now.strftime('%Y%m%d%H%M')}.csv"

@@ -81,6 +81,14 @@
                     data: { turbolinks: false }
 
       .card.col.justify-content-center.align-items-center
+        %h1 Download sign up csv
+        - @events.each do |e|
+          = link_to e,
+                    download_signups_path(event: e),
+                    class: 'btn btn-primary',
+                    data: { turbolinks: false }
+
+      .card.col.justify-content-center.align-items-center
         = link_to 'Upload Assets', new_upload_path, class: 'btn btn-primary'
 
       .card.col.justify-content-center.align-items-center
