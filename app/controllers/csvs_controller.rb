@@ -40,48 +40,43 @@ class CsvsController < ApplicationController
   def download_signups
     authorize(:csv)
 
-    events = Event.where(name: params[:event])
-
+    events   = Event.where(name: params[:event])
     invoices = Invoice
-      .where(event_id: events.select(:id))
-      .includes(child: :school)
+                 .real
+                 .where(event_id: events.select(:id))
+                 .includes(child: :school)
 
-    timestamp = Time.zone.now.strftime('%Y%m%d%H%M')
-    path      = Rails.root.join('tmp', "#{params[:event]}_signups_#{timestamp}.csv")
 
-    CSV.open(path, 'wb', write_headers: true, headers: [
-      'SSID',
-      'Name',
-      'Name (Katakana)',
-      'School',
-      'Events Attended',
-      'Total Cost (Net ¥)',
-      'Photo Service Cost (¥)',
-      'Category',
-      'Confirm Date'
-                                                      ]) do |csv|
-      invoices.find_each do |inv|
-        child = inv.child
-        timeslots_attended = inv.time_slots.count
+    filename = "#{params[:event]}_signups_#{Time.zone.now.strftime('%Y%m%d')}.csv"
+    response.headers['Content-Type']        = 'text/csv; charset=utf-8'
+    response.headers['Content-Disposition'] = %(attachment; filename="#{filename}")
 
-        photo_cost = inv.options.event.sum(:cost)
+    self.response_body = Enumerator.new do |y|
+      y << CSV.generate_line([
+        'SSID',
+        'Name',
+        'Name (Katakana)',
+        'School',
+        'Time-Slots Attended',
+        'Total Cost (Net ¥)',
+        'Photo Service Cost (¥)',
+        'Category Value',
+        'Confirm Date'
+      ])
 
-        net_cost = inv.total_cost - photo_cost
+      invoices.find_each(batch_size: 500) do |inv|
+        child              = inv.child
+        timeslots_attended = inv.slot_regs.count
+        photo_cost         = inv.options.event.sum(:cost)
+        net_cost           = inv.total_cost - photo_cost
+        confirm_date       = child.external? ? inv.updated_at.to_date.to_s : ''
+        category_value     = case child.category
+                             when 'internal', 'reservation' then 3
+                             when 'external'                 then 2
+                             else 'unknown'
+                             end
 
-        confirm_date = if child.external?
-          inv.updated_at.to_date.to_s
-        end
-
-        category_value = case child.category
-        when 'internal', 'reservation'
-          3
-        when 'external'
-          2
-        else
-          'unknown'
-        end
-
-        csv << [
+        y << CSV.generate_line([
           child.ssid,
           child.name,
           child.katakana_name,
@@ -91,11 +86,11 @@ class CsvsController < ApplicationController
           photo_cost,
           category_value,
           confirm_date
-        ]
+        ])
       end
     end
-
-    send_file path, type: 'text/csv', disposition: 'attachment'
+  ensure
+    response.stream.close if response.stream.respond_to?(:close)
   end
 
   def photo_kids
