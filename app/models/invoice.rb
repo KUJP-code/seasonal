@@ -5,8 +5,8 @@ class Invoice < ApplicationRecord
   include InvoicePdfable
   include InvoiceSummarisable
 
-  before_save :update_regs_child, :calc_cost
-
+  before_save :update_regs_child
+  before_save :calc_cost, unless: :in_ss?
   belongs_to :child
   delegate :parent, to: :child
   delegate :school, to: :child
