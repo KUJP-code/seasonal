@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.8.3-no-recalc"
+    "Name": "kidsup/event_site:2.8.4-4hr_timeout"
   },
   "Ports": [
     {
