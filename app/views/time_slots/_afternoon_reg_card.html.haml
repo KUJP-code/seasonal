@@ -52,10 +52,12 @@
         %label.fw-bold.fs-5.form-check-label{ for: "a_slot#{slot.id}",
                                               'data-register-target': 'name' }
           = slot.special? ? slot.name : "午後（通常レッスン）"
-          - unless slot.special?
-            %span.fw-normal.text-muted.fs-6
-              = "( 13:30–18:30)"
-
+          %br/
+          %span.fw-normal.text-muted.fs-6
+            - if slot.special?
+              = "(#{slot.start_time.strftime('%H:%M')}–#{slot.end_time.strftime('%H:%M')})"
+            - else
+              = "(13:30–18:30)"
 
         - if confirmed_slot_regs.any? { |reg| reg.registerable_id == slot.id }
           %p ◯

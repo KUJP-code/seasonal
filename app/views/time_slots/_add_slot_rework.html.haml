@@ -39,6 +39,7 @@
     - elsif confirmed
       %p.fw-bold.fs-5
         = add_slot.name
+        %br/
         %span.fw-normal.text-muted.small
           = " (#{add_slot.start_time.strftime('%H:%M')}–#{add_slot.end_time.strftime('%H:%M')})"
         = ": ◯"
@@ -69,6 +70,7 @@
                   class: 'fw-bold fs-5 form-check-label',
                   data: { 'register-target': 'name' } }
             = add_slot.name
+            %br/
             %span.fw-normal.text-muted.fs-6
               = " (#{add_slot.start_time.strftime('%H:%M')}–#{add_slot.end_time.strftime('%H:%M')})"
 
