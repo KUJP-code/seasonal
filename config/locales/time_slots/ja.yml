@@ -5,12 +5,12 @@ ja:
     time_options:
       depart_options: "延長(後)"
     afternoon_reg_card:
-      afternoon: "午後（通常レッスン）"
+      afternoon: "午後（通常レッスン） 13:30-18:30"
       snack: "午後コースおやつ代"
       depart_options: "延長(後)"
       extra_charge: "追加料金: %{cost}"
     add_slot:
-      afternoon: "午後（通常レッスン）"
+      afternoon: "午後（通常レッスン 13:30-18:30）"
       arrival_options: "延長(前)"
       depart_options: "延長(後)"
       extra_charge: "追加料金: %{cost}"
