@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.8.5-event_times"
+    "Name": "kidsup/event_site:2.8.6-spc_times"
   },
   "Ports": [
     {
