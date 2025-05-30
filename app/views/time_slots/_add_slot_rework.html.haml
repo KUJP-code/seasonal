@@ -134,8 +134,9 @@
 
       - if add_slot.special? && add_slot.morning?
         :ruby
-          category = kindy ? :k_extension? : :extension?
-          ext_opt = add_slot.options.find(&category)
+          ext_opt =
+            kindy ? add_slot.options.k_extension.first
+                  : add_slot.options.extension.first
           ext_opt_registered =
             ext_opt && opt_regs.any? { |reg| reg.registerable_id == ext_opt.id }
         %div{ class: 'add_reg form-check form-switch p-0 d-flex ' \

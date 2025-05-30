@@ -36,10 +36,11 @@ class Option < ApplicationRecord
 
   # Scopes
   # For category of option
-  scope :extension, -> { where(category: %i[extension k_extension]) }
+  scope :extension,   -> { where(category: :extension) }
+  scope :k_extension, -> { where(category: :k_extension) }
   scope :not_time, -> { where.not(category: TIME_CATEGORIES) }
   scope :time, -> { where(category: TIME_CATEGORIES) }
-
+  scope :any_extension, -> { where(category: %i[extension k_extension]) }
   def any_arrival?
     category == 'arrival' || category == 'k_arrival'
   end
@@ -48,10 +49,14 @@ class Option < ApplicationRecord
     category == 'departure' || category == 'k_departure'
   end
 
-  def extension?
+  def any_extension?
     category == 'extension' || category == 'k_extension'
   end
 
+ def extension?
+   category == 'extension'
+ end
+ 
   def time?
     TIME_CATEGORIES.include?(category.to_sym)
   end
