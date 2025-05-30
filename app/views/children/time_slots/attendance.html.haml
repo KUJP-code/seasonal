@@ -4,10 +4,10 @@
   aft_kindy_count = @afternoon_children.count(&:kindy)
   aft_ele_count = @afternoon_children.count { |c| !c.kindy }
 
-  extensions = @options.select(&:extension?)
+  extensions = @options.select(&:any_extension?)
   ext_ids = extensions.map(&:id)
 
-  options = @options.reject { |o| o.extension? || o.time? }
+  options = @options.reject { |o| o.any_extension? || o.time? }
 
   child_columns = %w[arrival attend name level allergy photo]
 
