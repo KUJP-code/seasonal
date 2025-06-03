@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.8.7.1-extensions"
+    "Name": "kidsup/event_site:2.8.8-extension-bugfix"
   },
   "Ports": [
     {
