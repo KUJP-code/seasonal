@@ -92,7 +92,7 @@
 
           - add_slot.options.each do |opt|
             :ruby
-              next if opt.time? || opt.extension?
+              next if opt.time? || opt.any_extension?
 
               registered = opt_regs.any? { |reg| reg.registerable_id == opt.id }
 
