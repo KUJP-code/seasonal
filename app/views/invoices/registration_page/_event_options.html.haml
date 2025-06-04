@@ -22,7 +22,9 @@
                   'register-id-value': opt.id,
                   'register-type-value': 'Option',
                   'register-child-value': @child.id,
-                  'register-cost-value': opt.cost } }
+                  'register-cost-value': opt.cost,
+                  'register-default-value': (opt.optionable.party? ? 'true' : 'false')
+                  } }
 
       %label{ class: 'photoservice-container',
               'data-register-target': 'name', for: "eopt#{opt.id}" }
