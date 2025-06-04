@@ -15,7 +15,6 @@
       registered = registrations.any? do |reg|
         reg.child_id == child.id && reg.registerable_id == opt.id
       end
-
     %div{ class: 'add_ref ' \
                  'form-check form-switch p-0',
           data: { controller: 'register',
@@ -31,6 +30,7 @@
         = picture_tag ['photo_service.png', 'photo_service_mobile.png'],
                       class: 'photoservice-picture',
                       image: { class: 'photoservice-image' }
+        
         .photoservice-label
           .text-white.fw-bold= number_to_currency(opt.cost, locale: :ja)
           = check_box_tag "eopt#{opt.id}",
@@ -40,3 +40,6 @@
                           data: { action: 'register#toggle',
                                   'register-target': 'button' },
                           role: 'switch'
+      - if opt.optionable.party?
+        %p.text-white.small.text-center.mt-1.mb-0{ style: "font-size: 0.75rem;" }
+          ※フォトサービスを利用されない方はチェックを外してください
