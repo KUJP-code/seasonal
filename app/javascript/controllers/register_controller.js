@@ -11,8 +11,28 @@ export default class extends Controller {
 		name: String,
 		snack: String,
 		type: String,
+		default: Boolean
 	};
-
+	// Automatically tick photo service on for parties
+  connect() {
+    if (this.defaultValue) {
+      this.buttonTarget.checked = true;
+      this.buttonTarget.classList.add("registered");
+      this.dispatch("toggle", {
+        detail: {
+          child:    this.childValue,
+          checked:  true,
+          cost:     this.costValue,
+          id:       this.idValue,
+          modifier: this.modifierValue,
+          name:     this.nameValue,
+          siblings: getSiblings(this.element),
+          snack:    this.snackValue,
+          type:     this.typeValue
+        }
+      });
+    }
+  }
 	toggle(e) {
 		e.preventDefault();
 

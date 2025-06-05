@@ -490,7 +490,11 @@ main#event-index nav {
 #event-show #price-bar {
   bottom: 1vw;
 }
-
+@media (max-width: 575.98px) {
+  #price-bar {
+    padding: .1rem .25rem;
+    flex-wrap: nowrap;
+  }}
 // Invoices
 
 #invoice-index .card,
