@@ -2,6 +2,7 @@ ja:
   time_slots:
     add_slot_rework:
       extra_charge: "追加料金: %{cost}"
+      regular_day: "ご通学日"
     time_options:
       depart_options: "延長(後)"
     afternoon_reg_card:
@@ -9,6 +10,7 @@ ja:
       snack: "午後コースおやつ代"
       depart_options: "延長(後)"
       extra_charge: "追加料金: %{cost}"
+      regular_day: "ご通学日"
     add_slot:
       afternoon: "午後（通常レッスン 13:30-18:30）"
       arrival_options: "延長(前)"
@@ -35,3 +37,4 @@ ja:
       delete_confirm: "この登録を削除してもよろしいですか?"
       times: "時間: %{time}"
       view_attendance: "アテンダンス"
+      regular_day: "ご通学日"
