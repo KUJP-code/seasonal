@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.8.5-studentform_grades"
+    "Name": "kidsup/event_site:2.8.6-bugfix-battery"
   },
   "Ports": [
     {
