@@ -9,7 +9,7 @@
   = form_with model: @child do |f|
     = f.hidden_field :first_seasonal,
                      value: (@child.first_seasonal ? 0 : 1)
-    = f.submit "初めてのご参加: #{@child.first_seasonal ? '𐌢' : '〇'}",
+    = f.submit "初めてのシーズナル参加: #{@child.first_seasonal ? '〇' : '×'}",
                class: 'btn btn-primary'
 
   = form_with model: @child do |f|
