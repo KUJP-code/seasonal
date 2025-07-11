@@ -75,6 +75,7 @@ ja:
       address: "住所"
     index:
       allergies: "アレルギー"
+      first_seasonal: "初めてのシーズナル参加"
       category: "カテゴリー"
       create_child: "生徒を追加する"
       edit_info: "編集"
@@ -104,6 +105,7 @@ ja:
     show:
       allergies: "アレルギーや健康上の注意等: "
       bday: "生年月日: "
+      first_seasonal: "初めてのシーズナル参加:"
       child_bookings: "%{child}お申込内容"
       delete_child: "削除"
       edit_child: "編集"

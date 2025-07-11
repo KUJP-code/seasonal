@@ -24,6 +24,7 @@ en:
       address: "Address"
     index:
       allergies: "Allergies"
+      first_seasonal: "First Seasonal"
       category: "Category"
       create_child: "Create Child"
       edit_info: "Edit"
@@ -40,6 +41,7 @@ en:
       merge_this: "Merge this child"
     show:
       allergies: "Allergies:"
+      first_seasonal: "First Seasonal:"
       bday: "Birthday:"
       category: "Category:"
       child_bookings: "%{child} Bookings"
