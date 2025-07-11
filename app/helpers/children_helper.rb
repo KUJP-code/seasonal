@@ -17,7 +17,7 @@ module ChildrenHelper
   end
 
   def child_primary_grades
-    Child.grades.keys[1..11].map { |k| [k, k] }
+    Child.grades.keys[2..11].map { |k| [k, k] }
   end
 
   def departure_time_for(slot, depart_opt)
