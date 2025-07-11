@@ -32,6 +32,7 @@
         %p= @child.en_name
         %p #{t('.bday')} #{@child.birthday.to_s}
         %p #{t('.allergies')} #{@child.allergies}
+        %p #{t('.first_seasonal')} #{@child.first_seasonal?}
 
       .d-flex.flex-column.gap-1
         %p= t('.school', school: @child.school&.name || '---')
