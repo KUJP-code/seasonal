@@ -222,6 +222,7 @@ class InvoicesController < ApplicationController
 
       to.coupons << coupon
     end
+    to.calc_cost
     to.save
   end
 
