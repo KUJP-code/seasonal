@@ -10,87 +10,76 @@
 <% others_cost = @child.parent.invoices.where(event_id: @event.id).where.not(child_id: @child.id).reduce(0) { |sum, invoice| sum + invoice.total_cost } unless @child.parent.nil? %>
 
 
-<main id="event-show"
-      data-controller="invoice price"
-      data-action="register:toggle->invoice#change invoice:add@window->price#calculate invoice:remove@window->price#calculate"
-      data-price-price-list-value=<%= @price_list.to_json %>
-      data-price-sibling-event-cost-value="<%= others_cost || 0 %>"
-      data-price-event-name-value="<%= @event.name %>"
-      class="d-flex flex-column justify-content-start align-items-start text-start bg-white">
+<main id="event-show" data-controller="invoice price" data-action="register:toggle->invoice#change invoice:add@window->price#calculate invoice:remove@window->price#calculate" data-price-price-list-value=<%= @price_list.to_json %> data-price-sibling-event-cost-value="<%= others_cost || 0 %>" data-price-event-name-value="<%= @event.name %>" class="d-flex flex-column justify-content-start align-items-start text-start bg-white">
 
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 w-100">
-    <%= render 'invoices/registration_page/header', child: @child, siblings: @siblings, event: @event, event_cost: @event_cost %>
+        <%= render 'invoices/registration_page/header', child: @child, siblings: @siblings, event: @event, event_cost: @event_cost %>
 
-    <% if @siblings.size.positive? %>
+        <% if @siblings.size.positive? %>
         <h5 class="text-center">＋ボタンを押すと、お子様のお申込内容を他のお子様に反映させることができ、ご兄弟で同じ日程のお申込が出来ます。（反映させる前に、1人目のお申込を確定させる必要がございます。）</h5>
-    <% end %>
-
-    <% if @child.internal? && @event.seasonal? %>
-      <h5 class="text-center w-100">通常レッスン日(午後)は選択しないでください。</h5>
-    <% end %>
-
-    <hr class="border border-secondary border-1 w-100">
-
-    <% unless @event.options.empty? %>
-        <% @event.options.each do |opt| %>
-            <% if @child.siblings.any? { |sib| sib.registered?(opt) } %>
-                <div class="d-flex gap-2 align-items-center">
-                    <h4><%= "#{opt.name}: #{t('.sibling_reg', opt: opt.name)}" %></h4>
-                </div>
-            <% elsif confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id } %>
-                <div class="d-flex gap-2 align-items-center">
-                    <h4><%= "#{opt.name} (#{number_to_currency(opt.cost, unit: '円', precision: 0, locale: :ja)}): ◯" %></h4>
-                </div>
-            <% else %>
-                <% opt_registered = registrations.any? { |reg| reg.child_id == @child.id && reg.registerable_id == opt.id } %>
-                <div class="d-flex gap-2 align-items-center"
-                    data-controller="register"
-                    data-register-id-value=<%= opt.id %>
-                    data-register-type-value="Option"
-                    data-register-child-value=<%= @child.id %>
-                    data-register-cost-value=<%= opt.cost %>>
-                    <h4>
-                      <label for=<%="eopt#{opt.id}"%> data-register-target="name">
-                        <%= image_tag 'photo_service.png', height: '50px' %>
-                        <%= number_to_currency(opt.cost, unit: '円', precision: 0, locale: :ja) %>
-                      </label>
-                    </h4>
-                    <%= check_box_tag "eopt#{opt.id}", "eopt#{opt.id}", (true if opt_registered), data: { action: 'register#toggle', 'register-target': 'button' } %>
-                </div>
-            <% end %>
         <% end %>
-    <% end %>
 
-    <div class="accordion w-100" id="accordionEvent">
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed text-bg-primary" type="button" data-bs-toggle="collapse" data-bs-target="#event-collapseOne" aria-expanded="false" aria-controls="event-collapseOne">
-                    <%= t('.more_info') %>
-                </button>
-            </h2>
+        <% if @child.internal? && @event.seasonal? %>
+        <h5 class="text-center w-100">通常レッスン日(午後)は選択しないでください。</h5>
+        <% end %>
 
-            <div id="event-collapseOne" class="accordion-collapse collapse">
-                <div class="accordion-body">
-                  <%= render 'invoices/registration_page/more_info',
+        <hr class="border border-secondary border-1 w-100">
+
+        <% unless @event.options.empty? %>
+        <% @event.options.each do |opt| %>
+        <% if @child.siblings.any? { |sib| sib.registered?(opt) } %>
+        <div class="d-flex gap-2 align-items-center">
+            <h4><%= "#{opt.name}: #{t('.sibling_reg', opt: opt.name)}" %></h4>
+        </div>
+        <% elsif confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id } %>
+        <div class="d-flex gap-2 align-items-center">
+            <h4><%= "#{opt.name} (#{number_to_currency(opt.cost, unit: '円', precision: 0, locale: :ja)}): ◯" %></h4>
+        </div>
+        <% else %>
+        <% opt_registered = registrations.any? { |reg| reg.child_id == @child.id && reg.registerable_id == opt.id } %>
+        <div class="d-flex gap-2 align-items-center" data-controller="register" data-register-id-value=<%= opt.id %> data-register-type-value="Option" data-register-child-value=<%= @child.id %> data-register-cost-value=<%= opt.cost %>>
+            <h4>
+                <label for=<%="eopt#{opt.id}"%> data-register-target="name">
+                    <%= image_tag 'photo_service.png', height: '50px' %>
+                    <%= number_to_currency(opt.cost, unit: '円', precision: 0, locale: :ja) %>
+                </label>
+            </h4>
+            <%= check_box_tag "eopt#{opt.id}", "eopt#{opt.id}", (true if opt_registered), data: { action: 'register#toggle', 'register-target': 'button' } %>
+        </div>
+        <% end %>
+        <% end %>
+        <% end %>
+
+        <div class="accordion w-100" id="accordionEvent">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed text-bg-primary" type="button" data-bs-toggle="collapse" data-bs-target="#event-collapseOne" aria-expanded="false" aria-controls="event-collapseOne">
+                        <%= t('.more_info') %>
+                    </button>
+                </h2>
+
+                <div id="event-collapseOne" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <%= render 'invoices/registration_page/more_info',
                              adjustments:,
                              event: @event,
                              child: @child,
                              price_list: @price_list %>
+                    </div>
                 </div>
             </div>
-        </div>
 
 
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button text-bg-primary" type="button" data-bs-toggle="collapse" data-bs-target="#event-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
-                    <%= t('.unregistered_slots') %>
-                </button>
-            </h2>
-            <div id="event-collapseTwo" class="accordion-collapse collapse show">
-                <div class="accordion-body">
-                    <div class="d-flex flex-column flex-lg-row flex-lg-wrap justify-content-lg-around gap-3">
-                        <%= render partial: 'time_slots/add_slot',
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button text-bg-primary" type="button" data-bs-toggle="collapse" data-bs-target="#event-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
+                        <%= t('.unregistered_slots') %>
+                    </button>
+                </h2>
+                <div id="event-collapseTwo" class="accordion-collapse collapse show">
+                    <div class="accordion-body">
+                        <div class="d-flex flex-column flex-lg-row flex-lg-wrap justify-content-lg-around gap-3">
+                            <%= render partial: 'time_slots/add_slot',
                                    collection: unregistered_slots,
                                    locals: {
                                         child: @child,
@@ -99,57 +88,53 @@
                                         confirmed_slot_regs: confirmed_slot_regs,
                                         confirmed_opt_regs: confirmed_opt_regs
                                    } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed text-bg-primary" type="button" data-bs-toggle="collapse" data-bs-target="#event-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                        <%= t('.registered_slots') %>
+                    </button>
+                </h2>
+
+                <div id="event-collapseThree" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <div class="d-flex flex-column flex-lg-row flex-lg-wrap justify-content-lg-around gap-3">
+                            <%= render partial: 'time_slots/add_slot', collection: registered_slots, locals: { child: @child, registrations: registrations, event: @event, confirmed_slot_regs: confirmed_slot_regs, confirmed_opt_regs: confirmed_opt_regs } %>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed text-bg-primary" type="button" data-bs-toggle="collapse" data-bs-target="#event-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-                    <%= t('.registered_slots') %>
-                </button>
-            </h2>
-
-            <div id="event-collapseThree" class="accordion-collapse collapse">
-                <div class="accordion-body">
-                    <div class="d-flex flex-column flex-lg-row flex-lg-wrap justify-content-lg-around gap-3">
-                        <%= render partial: 'time_slots/add_slot', collection: registered_slots, locals: { child: @child, registrations: registrations, event: @event, confirmed_slot_regs: confirmed_slot_regs, confirmed_opt_regs: confirmed_opt_regs } %>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
-    <div id="price-bar" class="w-100 d-flex justify-content-evenly align-items-center flex-wrap gap-2 bg-info p-2 rounded sticky-bottom">
-      <h3 id="total_cost"
-          class="text-white fw-bold"
-          data-price-target="finalCost">
-        <% initial_cost = @all_invoices.reduce(0) do |sum, i|
+        <div id="price-bar" class="w-100 d-flex justify-content-evenly align-items-center flex-wrap gap-2 bg-info p-2 rounded sticky-bottom">
+            <h3 id="total_cost" class="text-white fw-bold" data-price-target="finalCost">
+                <% initial_cost = @all_invoices.reduce(0) do |sum, i|
              sum + i.total_cost
         end %>
-        <%= "#{t('.total_cost')}: #{number_to_currency(initial_cost,
+                <%= "#{t('.total_cost')}: #{number_to_currency(initial_cost,
                                                        locale: :ja)}" %>
-      </h3>
+            </h3>
 
-        <div class="d-flex justify-content-around gap-2">
-            <div id="reg-slots">
-                <% all_registered_slots.each do |slot| %>
-                    <p class='hidden' data-modifier=<%= activity_modifier(slot, @child) %> >
+            <div class="d-flex justify-content-around gap-2">
+                <div id="reg-slots">
+                    <% all_registered_slots.each do |slot| %>
+                    <p class='hidden' data-modifier=<%= activity_modifier(slot, @child) %>>
                         <%= slot.name.concat(slot.morning ? '' : ' (午後)') %>
                     </p>
-                <% end %>
-            </div>
-            <span data-price-target="snackCount"
-                  data-invoice-target="snackCount"
-                  class='hidden'>
-              <%= all_registered_slots.count { |s| s.snack } %>
-            </span>
-            <p data-price-target="optCount" class='hidden'>
-              <%= t('.num_options', num: @all_invoices.reduce(0) { |sum, i| sum + i.options.size  })%>
-            </p>
+                    <% end %>
+                </div>
+                <span data-price-target="snackCount" data-invoice-target="snackCount" class='hidden'>
+                    <%= all_registered_slots.count { |s| s.snack } %>
+                </span>
+                <p data-price-target="optCount" class='hidden'>
+                    <%= t('.num_options', num: @all_invoices.reduce(0) { |sum, i| sum + i.options.size  })%>
+                </p>
 
-            <% @all_invoices.each do |invoice| %>
+                <% @all_invoices.each do |invoice| %>
                 <turbo-frame class="<%= "d-none" if invoice.in_ss %>">
                     <%= form_with model: invoice,
                                   url: (invoice.new_record? ? confirm_new_invoice_path(new: true) : confirm_invoice_path(new: false)),
@@ -159,88 +144,85 @@
                                   html: {
                                     class: 'align-self-center d-flex gap-3'
                                   } do |f| %>
-                        <%= f.hidden_field :id %>
-                        <%= f.hidden_field :child_id %>
-                        <%= f.hidden_field :event_id %>
-                        <div class="slot_regs" data-price-target="slotRegs">
-                            <%= f.fields_for :slot_regs do |slot_f| %>
-                                <div class="slot_reg <%= "child#{slot_f.object.child_id}" %>" id=<%= "slot#{slot_f.object.registerable_id}child#{slot_f.object.child_id}" %>>
-                                    <%= slot_f.hidden_field :_destroy, value: 0 %>
-                                    <%= slot_f.hidden_field :id %>
-                                    <%= slot_f.hidden_field :child_id %>
-                                    <%= slot_f.hidden_field :registerable_id %>
-                                    <%= slot_f.hidden_field :registerable_type %>
-                                </div>
-                            <% end %>
-                            <% unless f.object.in_ss %>
-                                <div data-invoice-target="slotTarget"></div>
-                            <% end %>
+                    <%= f.hidden_field :id %>
+                    <%= f.hidden_field :child_id %>
+                    <%= f.hidden_field :event_id %>
+                    <div class="slot_regs" data-price-target="slotRegs">
+                        <%= f.fields_for :slot_regs do |slot_f| %>
+                        <div class="slot_reg <%= "child#{slot_f.object.child_id}" %>" id=<%= "slot#{slot_f.object.registerable_id}child#{slot_f.object.child_id}" %>>
+                            <%= slot_f.hidden_field :_destroy, value: 0 %>
+                            <%= slot_f.hidden_field :id %>
+                            <%= slot_f.hidden_field :child_id %>
+                            <%= slot_f.hidden_field :registerable_id %>
+                            <%= slot_f.hidden_field :registerable_type %>
                         </div>
-                        <div class="opt_regs" data-price-target="optRegs">
-                            <%= f.fields_for :opt_regs do |opt_f| %>
-                                <div class="opt_reg <%= "child#{opt_f.object.child_id}" %>" id=<%= "opt#{opt_f.object.registerable_id}child#{opt_f.object.child_id}" %>>
-                                    <%= opt_f.hidden_field :_destroy, value: 0 %>
-                                    <%= opt_f.hidden_field :id %>
-                                    <%= opt_f.hidden_field :child_id %>
-                                    <%= opt_f.hidden_field :registerable_id %>
-                                    <%= opt_f.hidden_field :registerable_type %>
-                                    <div class="opt_cost hidden registered" data-price-target="optCost"><%= @options.find { |opt| opt.id == opt_f.object.registerable_id }&.cost || 0 %></div>
-                                </div>
-                            <% end %>
-                            <% unless f.object.in_ss %>
-                                <div data-invoice-target="optTarget"></div>
-                            <% end %>
+                        <% end %>
+                        <% unless f.object.in_ss %>
+                        <div data-invoice-target="slotTarget"></div>
+                        <% end %>
+                    </div>
+                    <div class="opt_regs" data-price-target="optRegs">
+                        <%= f.fields_for :opt_regs do |opt_f| %>
+                        <div class="opt_reg <%= "child#{opt_f.object.child_id}" %>" id=<%= "opt#{opt_f.object.registerable_id}child#{opt_f.object.child_id}" %>>
+                            <%= opt_f.hidden_field :_destroy, value: 0 %>
+                            <%= opt_f.hidden_field :id %>
+                            <%= opt_f.hidden_field :child_id %>
+                            <%= opt_f.hidden_field :registerable_id %>
+                            <%= opt_f.hidden_field :registerable_type %>
+                            <div class="opt_cost hidden registered" data-price-target="optCost"><%= @options.find { |opt| opt.id == opt_f.object.registerable_id }&.cost || 0 %></div>
                         </div>
-                        <template data-invoice-target="slotTemplate">
-                            <%= f.fields_for :slot_regs, Registration.new, child_index: 'REG_INDEX' do |reg_f| %>
-                                <div class="slot_reg NEW_CLASS" id="NEW_ID" data-new-record="<%= reg_f.object.new_record? %>">
-                                    <%= reg_f.hidden_field :child_id, value: 'NEW_CHILD_ID' %>
-                                    <%= reg_f.hidden_field :registerable_id, value: 'NEW_REGISTERABLE_ID' %>
-                                    <%= reg_f.hidden_field :registerable_type, value: 'TimeSlot' %>
-                                </div>
-                            <% end %>
-                        </template>
-                        <template data-invoice-target="optTemplate">
-                            <%= f.fields_for :opt_regs, Registration.new, child_index: 'REG_INDEX' do |reg_f| %>
-                                <div class="opt_reg NEW_CLASS" id="NEW_ID" data-new-record="<%= reg_f.object.new_record? %>">
-                                    <%= reg_f.hidden_field :child_id, value: 'NEW_CHILD_ID' %>
-                                    <%= reg_f.hidden_field :registerable_id, value: 'NEW_REGISTERABLE_ID' %>
-                                    <%= reg_f.hidden_field :registerable_type, value: 'Option' %>
-                                    <div class="opt_cost hidden registered" data-price-target="optCost">NEW_COST</div>
-                                </div>
-                            <% end %>
-                        </template>
-                        <%= f.submit t('.confirm_invoice'),
+                        <% end %>
+                        <% unless f.object.in_ss %>
+                        <div data-invoice-target="optTarget"></div>
+                        <% end %>
+                    </div>
+                    <template data-invoice-target="slotTemplate">
+                        <%= f.fields_for :slot_regs, Registration.new, child_index: 'REG_INDEX' do |reg_f| %>
+                        <div class="slot_reg NEW_CLASS" id="NEW_ID" data-new-record="<%= reg_f.object.new_record? %>">
+                            <%= reg_f.hidden_field :child_id, value: 'NEW_CHILD_ID' %>
+                            <%= reg_f.hidden_field :registerable_id, value: 'NEW_REGISTERABLE_ID' %>
+                            <%= reg_f.hidden_field :registerable_type, value: 'TimeSlot' %>
+                        </div>
+                        <% end %>
+                    </template>
+                    <template data-invoice-target="optTemplate">
+                        <%= f.fields_for :opt_regs, Registration.new, child_index: 'REG_INDEX' do |reg_f| %>
+                        <div class="opt_reg NEW_CLASS" id="NEW_ID" data-new-record="<%= reg_f.object.new_record? %>">
+                            <%= reg_f.hidden_field :child_id, value: 'NEW_CHILD_ID' %>
+                            <%= reg_f.hidden_field :registerable_id, value: 'NEW_REGISTERABLE_ID' %>
+                            <%= reg_f.hidden_field :registerable_type, value: 'Option' %>
+                            <div class="opt_cost hidden registered" data-price-target="optCost">NEW_COST</div>
+                        </div>
+                        <% end %>
+                    </template>
+                    <%= f.submit t('.confirm_invoice'),
                                      class: 'btn btn-primary w-100',
                                      data: { 'bs-toggle' => 'modal',
                                              'bs-target' => "#child#{invoice.child_id}invoice#{invoice.id}",
                                              'price-target' => 'confirm' } unless f.object.in_ss %>
                     <% end %>
                 </turbo-frame>
-            <% end %>
-        </div>
-    </div>
-
-
-    <turbo-frame
-        id=<%= "child#{active_invoice.child_id}invoice#{active_invoice.id}" %>
-        class="modal fade"
-        tabindex="-1">
-        <div class="modal-dialog modal-fullscreen d-grid">
-            <div class="modal-content d-grid gap-2">
-                <div class="modal-header">
-                    <h5 class="modal-title"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t('.close') %></button>
-                </div>
+                <% end %>
             </div>
         </div>
-    </turbo-frame>
+
+
+        <turbo-frame id=<%= "child#{active_invoice.child_id}invoice#{active_invoice.id}" %> class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen d-grid">
+                <div class="modal-content d-grid gap-2">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t('.close') %></button>
+                    </div>
+                </div>
+            </div>
+        </turbo-frame>
 </main>

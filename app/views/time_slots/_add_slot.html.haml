@@ -2,8 +2,6 @@
   confirmed_opt_regs:, opt_regs:, registrations:, event:)
 
 :ruby
-  # temp for compatibility till I rename the partial
-  add_slot = add_slot_rework
 
   kindy = child.kindy?
   opt_regs = registrations.select { |reg| reg.registerable_type == 'Option' }
