@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.8.9-translationsgooumoushikomi"
+    "Name": "kidsup/event_site:2.8.9.1-thumbnail"
   },
   "Ports": [
     {
