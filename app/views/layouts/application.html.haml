@@ -12,7 +12,8 @@
     = javascript_importmap_tags
     = favicon_link_tag asset_path('favicon.svg')
     %meta{ property: 'og:image',
-           content: "#{request.base_url}#{image_path('signup_logo.png')}" }
+          content: asset_url('signup_logo.png') }
+
     %meta{ property: 'og:title', content: 'Kids UP申込フォーム' }
     %meta{ property: 'og:description', content: 'KidsUPイベント登録サイト' }
     %script
