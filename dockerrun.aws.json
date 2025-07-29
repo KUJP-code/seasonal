@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.9.0-security_sweep"
+    "Name": "kidsup/event_site:2.9.1-ogimage"
   },
   "Ports": [
     {
