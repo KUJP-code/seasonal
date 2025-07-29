@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.9.4-livetest"
+    "Name": "kidsup/event_site:2.9.5-inquiryparams"
   },
   "Ports": [
     {
