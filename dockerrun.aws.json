@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.9.9.1-whitelist"
+    "Name": "kidsup/event_site:2.9.9.1-loggers"
   },
   "Ports": [
     {
