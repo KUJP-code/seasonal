@@ -32,9 +32,10 @@ class InquiriesController < ApplicationController
   def create
     @inquiry = Inquiry.new(inquiry_params.except(:recaptcha_token))
 
-    if recaptcha_needed_and_invalid?(inquiry_params[:recaptcha_token])
+    if @inquiry.category != 'R' && recaptcha_needed_and_invalid?(inquiry_params[:recaptcha_token])
       handle_failed_recaptcha and return
     end
+
 
     respond_to do |format|
       format.json { create_json_response }
