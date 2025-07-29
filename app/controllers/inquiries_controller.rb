@@ -65,12 +65,19 @@ class InquiriesController < ApplicationController
   private
 
   def inquiry_params
-    params.require(:inquiry).permit(
+    raw = params[:inquiry] || params
+    ActionController::Parameters.new(raw).permit(
       :id, :setsumeikai_id, :parent_name, :phone, :email, :child_name,
       :referrer, :child_birthday, :kindy, :ele_school, :start_date, :notes,
-      :requests, :category, :school_id, :privacy_policy, :recaptcha_token
-    )
+      :requests, :category, :school_id, :privacy, :privacy_policy, :recaptcha_token
+    ).tap do |whitelisted|
+      # temp fix for inquiries
+      if whitelisted[:privacy] && whitelisted[:privacy_policy].blank?
+        whitelisted[:privacy_policy] = whitelisted.delete(:privacy)
+      end
+    end
   end
+
 
   def recaptcha_needed_and_invalid?(token)
     token.present? && !verify_recaptcha_token(token)
