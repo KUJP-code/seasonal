@@ -30,6 +30,10 @@ class InquiriesController < ApplicationController
   end
 
   def create
+    Rails.logger.info "=== Incoming params: #{params.to_unsafe_h.inspect}"
+    unless params.key?(:inquiry)
+      Rails.logger.warn "No :inquiry key in params!"
+    end
     @inquiry = Inquiry.new(inquiry_params.except(:recaptcha_token))
 
     if recaptcha_needed_and_invalid?(inquiry_params[:recaptcha_token])
@@ -65,19 +69,12 @@ class InquiriesController < ApplicationController
   private
 
   def inquiry_params
-    raw = params[:inquiry] || params
-    ActionController::Parameters.new(raw).permit(
+    params.require(:inquiry).permit(
       :id, :setsumeikai_id, :parent_name, :phone, :email, :child_name,
       :referrer, :child_birthday, :kindy, :ele_school, :start_date, :notes,
-      :requests, :category, :school_id, :privacy, :privacy_policy, :recaptcha_token
-    ).tap do |whitelisted|
-      # temp fix for inquiries
-      if whitelisted[:privacy] && whitelisted[:privacy_policy].blank?
-        whitelisted[:privacy_policy] = whitelisted.delete(:privacy)
-      end
-    end
+      :requests, :category, :school_id, :privacy_policy, :recaptcha_token
+    )
   end
-
 
   def recaptcha_needed_and_invalid?(token)
     token.present? && !verify_recaptcha_token(token)
