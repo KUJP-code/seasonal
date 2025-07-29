@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.9.1-ogimage"
+    "Name": "kidsup/event_site:2.9.2-dockerignore"
   },
   "Ports": [
     {
