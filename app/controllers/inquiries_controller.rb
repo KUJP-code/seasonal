@@ -30,6 +30,7 @@ class InquiriesController < ApplicationController
   end
 
   def create
+    params[:inquiry] ||= JSON.parse(request.body.read)["inquiry"] if request.format.json?
     @inquiry = Inquiry.new(inquiry_params.except(:recaptcha_token))
 
     if recaptcha_needed_and_invalid?(inquiry_params[:recaptcha_token])
