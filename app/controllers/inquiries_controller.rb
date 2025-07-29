@@ -30,6 +30,13 @@ class InquiriesController < ApplicationController
   end
 
   def create
+    Rails.logger.info("RAW PARAMS: #{params.to_unsafe_h}")
+    begin
+      @inquiry = Inquiry.new(inquiry_params.except(:recaptcha_token))
+    rescue ActionController::ParameterMissing => e
+      Rails.logger.error("Param missing: #{e.message}")
+      render plain: "Missing param: #{e.message}", status: 400 and return
+    end
     @inquiry = Inquiry.new(inquiry_params.except(:recaptcha_token))
 
     if @inquiry.category != 'R' && recaptcha_needed_and_invalid?(inquiry_params[:recaptcha_token])
