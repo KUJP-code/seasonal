@@ -30,7 +30,6 @@ class InquiriesController < ApplicationController
   end
 
   def create
-    params[:inquiry] ||= JSON.parse(request.body.read)["inquiry"] if request.format.json?
     @inquiry = Inquiry.new(inquiry_params.except(:recaptcha_token))
 
     if recaptcha_needed_and_invalid?(inquiry_params[:recaptcha_token])
@@ -66,8 +65,7 @@ class InquiriesController < ApplicationController
   private
 
   def inquiry_params
-    raw = params[:inquiry] || params
-    ActionController::Parameters.new(raw).permit(
+    params.require(:inquiry).permit(
       :id, :setsumeikai_id, :parent_name, :phone, :email, :child_name,
       :referrer, :child_birthday, :kindy, :ele_school, :start_date, :notes,
       :requests, :category, :school_id, :privacy_policy, :recaptcha_token
