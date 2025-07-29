@@ -78,7 +78,8 @@ RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
 RUN gem install foreman && \
     sed -i 's|pid /run|pid /rails/tmp/pids|' /etc/nginx/nginx.conf && \
     sed -i 's/access_log\s.*;/access_log \/dev\/stdout;/' /etc/nginx/nginx.conf && \
-    sed -i 's/error_log\s.*;/error_log \/dev\/stderr info;/' /etc/nginx/nginx.conf
+    sed -i 's/error_log\s.*;/error_log \/dev\/stderr info;/' /etc/nginx/nginx.conf && \
+    sed -i '/http {/a \    server_tokens off;' /etc/nginx/nginx.conf
 
 # configure client_max_body_size
 COPY <<-EOF /etc/nginx/conf.d/client_max_body_size.conf
@@ -89,6 +90,9 @@ COPY <<-"EOF" /etc/nginx/sites-available/default
 server {
   listen 80 default_server;
   listen [::]:80 default_server;
+
+  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains" always; 
+  add_header X-Content-Type-Options nosniff;
   access_log /dev/stdout;
 
   root /rails/public;
