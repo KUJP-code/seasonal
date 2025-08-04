@@ -40,12 +40,14 @@
     %td{ class: o.name }
       = (o.name == '昼食' ? 'Lunch' : o.name) if child.registered?(o)
 
-  -# FIXME: Probably passing the wrong thing here, n+1 queries
-  - if slot.special? && ext_ids.size.positive?
-    %td.extend
-      - registered = child.registered?(slot.options.extension.first)
+  -# Fix for the old method that didnt include k_ext
+  - if slot.special?
+    :ruby
+      ext_option = slot.options.any_extension.find { |o| child.registered?(o) }
 
-      = slot.options.extension.first.name if registered
+    - if ext_option
+      %td.extend= ext_option.name
+
 
   - if afternoon
     %td.afternoon
