@@ -1,0 +1,20 @@
+-# locals: (f:)
+
+%button.btn.btn-warning.mb-2{ type: 'button',
+                              aria: { controls: 'multi-school', expanded: 'false' },
+                              data: { bs: { toggle: 'collapse',
+                                            target: '#multi-school' } } }
+  Multi-School Batch Edit
+
+.collapse#multi-school
+  %h3.text-warning.mb-3 Apply Changes to Other Schools
+
+  .form-group
+    %p.mb-1.text-muted
+      Only schools with the same slot name and date will be affected.
+
+    .d-flex.flex-wrap.gap-2
+      - School.order(:name).each do |school|
+        .form-check
+          = check_box_tag 'time_slot[target_school_ids][]', school.id, false, id: "school_#{school.id}", class: 'form-check-input'
+          = label_tag "school_#{school.id}", t("schools.#{school.name}"), class: 'form-check-label'
