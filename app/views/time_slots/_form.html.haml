@@ -86,7 +86,8 @@
 
     = render 'time_slots/opt_fields',
              f:, slot:, special_no_arvo:
-
+    = render 'time_slots/multi_school_batch', f: f
+    
   - if slot.afternoon_slot
     .card
       = form_with model: slot.afternoon_slot do |aft_f|
