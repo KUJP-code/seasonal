@@ -29,6 +29,10 @@ class TimeSlotPolicy < ApplicationPolicy
     authorized_staff?
   end
 
+  def batch_update_summary?
+    user.admin?
+  end
+  
   class Scope < Scope
     def resolve
       case user.role

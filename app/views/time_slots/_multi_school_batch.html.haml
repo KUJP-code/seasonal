@@ -1,5 +1,13 @@
--# locals: (f:)
+-# locals: (f:, slot:)
+:javascript
+  document.addEventListener("DOMContentLoaded", () => {
+    const all = document.getElementById("select-all-checkbox");
+    const boxes = document.querySelectorAll("input[name='time_slot[target_school_ids][]']");
 
+    all.addEventListener("change", () => {
+      boxes.forEach(cb => cb.checked = all.checked);
+    });
+  });
 %button.btn.btn-warning.mb-2{ type: 'button',
                               aria: { controls: 'multi-school', expanded: 'false' },
                               data: { bs: { toggle: 'collapse',
@@ -14,7 +22,11 @@
       Only schools with the same slot name and date will be affected.
 
     .d-flex.flex-wrap.gap-2
+      %label.form-check-label
+        %input#select-all-checkbox.form-check-input{ type: 'checkbox' }
+        Select All
       - School.order(:name).each do |school|
+        - next if school.id == slot.event.school_id
         .form-check
           = check_box_tag 'time_slot[target_school_ids][]', school.id, false, id: "school_#{school.id}", class: 'form-check-input'
           = label_tag "school_#{school.id}", t("schools.#{school.name}"), class: 'form-check-label'

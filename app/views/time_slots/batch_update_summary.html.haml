@@ -1,0 +1,15 @@
+%h2.text-lg.fw-bold.mb-4 Batch Update Summary
+
+%h3.text-success.mb-2 Updated Time Slots
+  
+- if @changed_slots.any?
+  %ul
+    - @changed_slots.each do |slot|
+      %li
+        = slot.event.school.name
+        = " — #{slot.name} (#{slot.start_time.strftime('%b %d, %H:%M')})"
+- else
+  %p.text-muted No slots were changed.
+
+%br/
+= link_to 'Back to Time Slots', time_slots_path(event: @event&.id, school: @school&.id), class: 'btn btn-secondary'

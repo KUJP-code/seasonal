@@ -43,7 +43,11 @@ Rails.application.routes.draw do
       resources :staff_users, except: %i[show]
       resources :surveys, except: %i[destroy]
       resources :survey_responses, only: %i[create update]
-      resources :time_slots, except: %i[create destroy show]
+      resources :time_slots, except: %i[create destroy show] do
+        collection do
+          get :batch_update_summary
+        end
+      end
       resources :uploads, only: %i[create new]
       resources :users
 
