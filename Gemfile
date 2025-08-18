@@ -96,7 +96,7 @@ gem 'pghero'
 gem 'rack', '3.0.9.1'
 
 # Lock nokogiri to avoid vulnerabilities
-gem 'nokogiri', '1.16.5'
+gem 'nokogiri', '1.18.9'
 
 # Lock globalid to avoid vulnerabilities
 gem 'globalid', '1.2.1'
