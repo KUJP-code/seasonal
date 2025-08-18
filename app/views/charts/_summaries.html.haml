@@ -1,0 +1,6 @@
+- events = @events_for_summary
+.card.mb-3
+  = render 'events/stats_summary', events: @events_for_summary, event: @events_for_summary.first
+
+= render 'events/condensed_stats', events: @events_for_summary
+
