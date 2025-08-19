@@ -1,0 +1,18 @@
+- slot_ids = combo_slots.compact.map(&:id)
+- input_id = "combo_#{combo_name.parameterize}_#{slot_ids.join('_')}"
+
+.card.d-flex.flex-row.flex-nowrap.bg-white
+  .d-flex.flex-column
+    - if image_src.present?
+      = image_tag image_src, class: "img-fluid rounded"
+
+  .d-grid.gap-3.w-50{
+    data: { controller: "combo", "combo-slot-ids-value": slot_ids.to_json }
+  }
+    .d-flex.justify-content-center.align-items-center.w-100
+      .form-check.form-switch.d-flex.flex-column.align-items-center.gap-2
+        %input.form-check-input{ type: "checkbox",
+                                 id: input_id,
+                                 role: "switch",
+                                 data: { combo_target: "switch",
+                                         action: "change->combo#toggle" } }
