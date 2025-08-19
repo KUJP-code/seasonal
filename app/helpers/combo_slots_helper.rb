@@ -6,7 +6,6 @@ module ComboSlotsHelper
   def combo_card_for(event:, school:, child:, registrations:, confirmed_slot_regs:)
     return ''.html_safe unless event.name&.include?('ハロウィンパーティー 2025')
 
-
     taken_ids =
       registrations
         .select { |r| r.registerable_type == 'TimeSlot' }
@@ -21,7 +20,6 @@ module ComboSlotsHelper
 
     names =
       case school.name
-
       when '新浦安' then shin_urayasu_names
       when '南町田グランベリーパーク', 'ソコラ南行徳' then mall_names
       else regular_names
@@ -34,9 +32,9 @@ module ComboSlotsHelper
       slots = slots.compact
       return nil if slots.empty?
 
+      return nil if slots.any?(&:closed?)
       slot_ids = slots.map(&:id)
-
-      next nil if slot_ids.all? { |id| taken_ids.include?(id) }
+      return nil if slot_ids.all? { |id| taken_ids.include?(id) }
 
       render(
         'time_slots/combo_card',
