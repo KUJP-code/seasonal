@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.9.9.1-loggers"
+    "Name": "kidsup/event_site:3.0-nokogiri_bump"
   },
   "Ports": [
     {

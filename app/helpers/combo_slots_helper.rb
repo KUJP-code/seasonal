@@ -14,9 +14,26 @@ module ComboSlotsHelper
 
     slots_by_name = event.time_slots.index_by(&:name)
 
-    regular_names      = %w[09:00-10:20 11:00-12:20 14:00-15:20 16:00-17:20]
-    shin_urayasu_names = %w[09:15-10:35 11:15-12:35 14:00-15:20 16:00-17:20]
-    mall_names         = %w[10:15-11:35 13:00-14:20 15:00-16:20 17:00-18:20]
+  regular_names = [
+    "① 9:00-10:20 (Costume Parade)",
+    "② 11:00-12:20 (Monster Party)",
+    "③ 14:00-15:20 (Costume Parade)",
+    "④ 16:00-17:20 (Monster Party)"
+  ]
+
+  shin_urayasu_names = [
+    "① 9:15-10:35 (Costume Parade)",
+    "② 11:15-12:35 (Monster Party)",
+    "③ 14:00-15:20 (Costume Parade)",
+    "④ 16:00-17:20 (Monster Party)"
+  ]
+
+  mall_names = [
+    "① 10:15-11:35 (Costume Parade)",
+    "② 13:00-14:20 (Monster Party)",
+    "③ 15:00-16:20 (Costume Parade)",
+    "④ 17:00-18:20 (Monster Party)"
+  ]
 
     names =
       case school.name
