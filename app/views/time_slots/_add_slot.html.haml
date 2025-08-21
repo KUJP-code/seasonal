@@ -39,7 +39,8 @@
         = add_slot.name
         %br/
         %span.fw-normal.text-muted.small
-          = " (#{add_slot.start_time.strftime('%H:%M')}–#{add_slot.end_time.strftime('%H:%M')})"
+          - if add_slot.display_time_range
+            %span.fw-normal.text-muted.small= add_slot.display_time_range
         = ": ◯"
 
       - if activity_modifier(add_slot, child).positive?
@@ -70,7 +71,8 @@
             = add_slot.name
             %br/
             %span.fw-normal.text-muted.fs-6
-              = " (#{add_slot.start_time.strftime('%H:%M')}–#{add_slot.end_time.strftime('%H:%M')})"
+              - if add_slot.display_time_range
+                %span.fw-normal.text-muted.small= add_slot.display_time_range
 
           - if add_slot.closed?
             %p.d-flex.align-items-center.justify-content-center.text-bg-warning.p-1.rounded

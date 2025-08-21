@@ -109,6 +109,11 @@ class TimeSlot < ApplicationRecord
     category_cost + grade_cost
   end
 
+  def display_time_range
+    return nil if party?
+    " (#{start_time.strftime('%H:%M')}–#{end_time.strftime('%H:%M')})"
+  end
+
   private
 
   def create_aft_slot
