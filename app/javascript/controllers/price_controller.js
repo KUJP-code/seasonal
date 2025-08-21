@@ -23,44 +23,55 @@ export default class extends Controller {
 
 	// Base function called when form modified
 	calculate() {
-		console.log(this.snackCostValue, this.siblingEventCostValue)
 		const courseCost = this.calcCourseCost();
 		const optionCost = this.optCostTargets
 			.filter((cost) => cost.classList.contains("registered"))
 			.reduce((sum, option) => sum + Number.parseInt(option.innerHTML), 0);
 
-		const adjustmentCost = this.calcAdjustments();
+		// Apply adjustments, scaling early bird per child regs
+		let adjustmentCost = this.calcAdjustments();
+		if (this.hasAdjChangeTarget) {
+			const adjTexts = this.adjChangeTargets.map((n) => n.textContent.trim());
+			if (adjTexts.length === 1) {
+				const singleAdj = Number.parseInt(adjTexts[0].replace(/[^\d-]/g, ""), 10);
+				if (singleAdj < 0) {
+					const currentChildId = Number.parseInt(this.childTarget.children[0].innerHTML, 10);
+					const regCountForChild = this.slotRegsTargets.reduce((sum, target) => {
+						return sum + target.querySelectorAll(`.child${currentChildId}`).length;
+					}, 0);
+					adjustmentCost = singleAdj * regCountForChild;
+				}
+			}
+		}
 
-		// Count the number of options registered for
 		const optCount = this.optRegsTargets.reduce(
 			(sum, target) => sum + target.querySelectorAll(".registered").length,
 			0,
 		);
-		this.optCountTarget.innerHTML = `オプション：${optCount.toString()}つ`;
+		this.optCountTarget.innerHTML = `オプション：${optCount}つ`;
 
 		const registeredNodes = [...document.getElementById("reg-slots").children];
-		// Count slots with an extra cost
-		const extraCostNodes = registeredNodes.filter(
-			(slot) => slot.dataset.modifier !== "0",
+		const extraCost = registeredNodes.reduce(
+			(sum, node) => sum + Number.parseInt(node.dataset.modifier || "0"),
+			0,
 		);
-		// Get their total effect on the cost
-		const extraCost = extraCostNodes.reduce((sum, node) => {
-			return sum + Number.parseInt(node.dataset.modifier);
-		}, 0);
 
-		// Inner text set in the invoice controller if the time slot has a snack fee
 		const snackCost = Number.parseInt(this.snackCountTarget.innerText) * this.snackCostValue;
-		let finalCost =
-			optionCost + courseCost + adjustmentCost + snackCost + extraCost;
+
+		let finalCost = optionCost + courseCost + adjustmentCost + snackCost + extraCost;
 		if (finalCost < 0) finalCost = 0;
-		this.finalCostTarget.innerHTML = `合計（税込）: ${finalCost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}円`;
-		this.eventCostTarget.innerHTML = `${this.eventNameValue}の合計: ${(
-			this.siblingEventCostValue + finalCost
-		)
-			.toString()
-			.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}円`;
+
+		this.finalCostTarget.innerHTML =
+			`合計（税込）: ${finalCost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}円`;
+
+		this.eventCostTarget.innerHTML =
+			`${this.eventNameValue}の合計: ${(this.siblingEventCostValue + finalCost)
+				.toString()
+				.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}円`;
+
 		this.allowSubmission();
 	}
+
 
 	// Finds the cheapest price for the given number of regs
 	bestCourses(numRegs, courses) {
