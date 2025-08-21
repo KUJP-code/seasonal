@@ -3,6 +3,9 @@
 
 .card.d-flex.flex-row.flex-nowrap.bg-white
   .d-flex.flex-column
+    - if event&.start_date.present?
+      %p.text-black-50
+        = l(event.start_date, format: "%-m月%-d日(%a)")
     - if image_src.present?
       = image_tag image_src, class: "img-fluid rounded"
 
@@ -12,9 +15,6 @@
     .d-flex.justify-content-center.align-items-center.w-100.flex-column
       %p.fw-bold.fs-5.text-center.mb-0
         ２つのパーティーに参加
-      - if event&.start_date.present?
-        %p.text-muted.small.text-center.mb-2
-          = l(event.start_date, format: "%-m月%-d日(%a)")
 
     .d-flex.justify-content-center.align-items-center.w-100
       .form-check.form-switch.d-flex.flex-column.align-items-center.gap-2
