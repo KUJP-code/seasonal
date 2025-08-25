@@ -186,6 +186,7 @@ input[type="text"]:disabled {
   display: none;
 }
 
+.select-gray { background-color: var(--bs-gray-200); }
 // Child
 
 // Child#event_attendance
@@ -524,6 +525,7 @@ form > .errors {
   text-align: center;
   font-size: var(--sub-heading-size);
 }
+
 
 form .form-control,
 form .form-check-input,
