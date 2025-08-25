@@ -37,6 +37,42 @@ class CsvsController < ApplicationController
     send_file path, type: 'text/csv', disposition: 'attachment'
   end
 
+  def download_activities_by_event
+    authorize(:csv)
+
+    event_name = params[:event].to_s
+    time       = Time.zone.now.strftime('%Y%m%d%H%M')
+    safe_name  = event_name.parameterize.presence || "event"
+    path       = "/tmp/activities_#{safe_name}_#{time}.csv"
+
+    # All TimeSlots for all Events with this name (across schools)
+    slots = TimeSlot
+              .joins(event: :school)
+              .where(events: { name: event_name })
+              .includes(event: :school)
+              .order(Arel.sql('schools.name ASC, COALESCE(time_slots.starts_at, time_slots.start_time) ASC, time_slots.id ASC'))
+
+    CSV.open(path, 'wb') do |csv|
+      csv << %w[school activity_name start_time end_time]
+
+      # handle either starts_at/ends_at or start_time/end_time
+      slots.find_each(batch_size: 500) do |slot|
+        start_time = if slot.respond_to?(:starts_at) then slot.starts_at else slot.try(:start_time) end
+        end_time   = if slot.respond_to?(:ends_at)   then slot.ends_at   else slot.try(:end_time)   end
+
+        csv << [
+          slot.event.school.name,
+          slot.name,
+          (start_time&.in_time_zone&.to_s || ''),
+          (end_time&.in_time_zone&.to_s   || '')
+        ]
+      end
+    end
+
+    send_file path, type: 'text/csv', disposition: 'attachment'
+  end
+
+  
   def download_signups
     authorize(:csv)
 
