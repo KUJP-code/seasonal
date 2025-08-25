@@ -60,6 +60,7 @@ Rails.application.routes.draw do
       post 'csv/upload', to: 'csvs#upload', as: :upload_csv
       post 'csv/update', to: 'csvs#update', as: :update_csv
       get 'csv/download', to: 'csvs#download', as: :download_csv
+      get 'csv/download_activities_by_event', to: 'csvs#download_activities_by_event', as: :download_events
       get 'csv/emails/:event', to: 'csvs#emails', as: :download_emails
       get 'csv/no_photo_emails/:event', to: 'csvs#no_photo_emails',
                                         as: :download_no_photo_emails
