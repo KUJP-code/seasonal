@@ -13,6 +13,10 @@ class CsvPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def download_activities_by_event?
+    user.admin?
+  end
+
   def emails?
     user.admin?
   end
