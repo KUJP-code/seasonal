@@ -6,6 +6,7 @@ en:
       reg_at_selected: "Register at the selected school"
       title: "%{name} at %{school}"
     condensed_stats:
+      multi_slot_kids: "Multi Slots"
       ext_kids: "External Kids"
       external_revenue: "External Revenue"
       goal_percent: "Goal Percent"
@@ -33,6 +34,7 @@ en:
       reg_at_selected: "Register at the selected school"
       title: "%{name} at %{school}"
     stats_summary:
+      multi_slot_kids: "Multi Slots"
       attendance: "Attendance"
       ext_kids: "External Kids"
       external_revenue: "External Revenue"

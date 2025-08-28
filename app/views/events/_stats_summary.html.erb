@@ -20,7 +20,13 @@
 <% total_revenue = int_revenue + res_revenue + ext_revenue %>
 <% area_goal = events.reduce(0) { |sum, e| sum + e.goal  } %>
 <% goal_percent = (total_revenue / area_goal.to_f * 100).truncate %>
-
+<% timeslot_ids = TimeSlot.where(event_id: event_ids).pluck(:id) %>
+<% multi_slot_kids_count = Registration
+      .where(registerable_type: 'TimeSlot', registerable_id: timeslot_ids)
+      .group(:child_id)
+      .having('COUNT(DISTINCT registerable_id) > 1')
+      .count
+      .size %>
 <div class="table-responsive-lg">
     <table class="table">
         <thead>
@@ -33,6 +39,7 @@
                 <th scope="col"><%= t('.int_kids') %></th>
                 <th scope="col"><%= t('.res_kids') %></th>
                 <th scope="col"><%= t('.ext_kids') %></th>
+                <th scope="col"><%= t('.multi_slot_kids') %></th>
                 <th scope="col"><%= t('.total_kids') %></th>
                 <th scope="col"><%= t('.int_res_revenue') %></th>
                 <th scope="col"><%= t('.external_revenue') %></th>
@@ -41,12 +48,13 @@
                 <th scope="col"><%= t('.goal_percent') %></th>
             </tr>
         </thead>
-    
+
         <tbody>
             <tr>
                 <td><%= int_kids.size %></td>
                 <td><%= res_kids.size %></td>
                 <td><%= ext_kids.size %></td>
+                <td><%= multi_slot_kids_count %></td>
                 <td><%= children.size %></td>
                 <td><%= number_to_currency(int_revenue + res_revenue, unit: '円', precision: 0, locale: :ja) %></td>
                 <td><%= number_to_currency(ext_revenue, unit: '円', precision: 0, locale: :ja) %></td>
@@ -64,8 +72,9 @@
                 %>>
                     <%= "#{goal_percent}%" %>
                 </td>
+
             </tr>
-                        <tr>
+            <tr>
                 <th>通学生(初めて)</th>
                 <th>予約生(初めて)</th>
                 <th>非会員(初めて)</th>
@@ -73,24 +82,24 @@
             <tr>
                 <td>
                     <% if first_int.size.positive? %>
-                        <%= link_to first_int.size, users_path(ids: first_int.map(&:parent_id).uniq) %>
+                    <%= link_to first_int.size, users_path(ids: first_int.map(&:parent_id).uniq) %>
                     <% else %>
-                        <%= first_int.size %>
+                    <%= first_int.size %>
                     <% end %>
                 </td>
                 <td>
                     <% if first_res.size.positive? %>
-                        <%= link_to first_res.size, users_path(ids: first_res.map(&:parent_id).uniq) %>
+                    <%= link_to first_res.size, users_path(ids: first_res.map(&:parent_id).uniq) %>
                     <% else %>
-                        <%= first_res.size %>
+                    <%= first_res.size %>
                     <% end %>
                 </td>
-                
+
                 <td>
                     <% if first_ext.size.positive? %>
-                        <%= link_to first_ext.size, users_path(ids: first_ext.map(&:parent_id).uniq) %>
+                    <%= link_to first_ext.size, users_path(ids: first_ext.map(&:parent_id).uniq) %>
                     <% else %>
-                        <%= first_ext.size %>
+                    <%= first_ext.size %>
                     <% end %>
                 </td>
             </tr>

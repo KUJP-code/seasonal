@@ -80,34 +80,34 @@
                 <tr>
                     <td>
                         <% if first_int.size.positive? %>
-                            <%= link_to first_int.size,
+                        <%= link_to first_int.size,
                                     users_path(
                                         ids: first_int.map(&:parent_id).uniq
                                     ) %>
                         <% else %>
-                            <%= first_int.size %>
+                        <%= first_int.size %>
                         <% end %>
                     </td>
 
                     <td>
                         <% if first_res.size.positive? %>
-                            <%= link_to first_res.size,
+                        <%= link_to first_res.size,
                                     users_path(
                                         ids: first_res.map(&:parent_id).uniq
                                     ) %>
                         <% else %>
-                            <%= first_res.size %>
+                        <%= first_res.size %>
                         <% end %>
                     </td>
 
                     <td>
                         <% if first_ext.size.positive? %>
-                            <%= link_to first_ext.size,
+                        <%= link_to first_ext.size,
                                     users_path(
                                         ids: first_ext.map(&:parent_id).uniq
                                     ) %>
                         <% else %>
-                            <%= first_ext.size %>
+                        <%= first_ext.size %>
                         <% end %>
                     </td>
                 </tr>

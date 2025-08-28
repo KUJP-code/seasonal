@@ -8,6 +8,7 @@ ja:
       reg_at_selected: "お申込はこちら"
       title: "%{name}@%{school}"
     condensed_stats:
+      multi_slot_kids: "複数枠申込者数"
       ext_kids: "非会員生人数"
       external_revenue: "非会員生売り上げ"
       goal: "必達"
@@ -68,6 +69,7 @@ ja:
       reg_at_selected: "お申込はこちら"
       title: "%{name}@%{school}"
     stats_summary:
+      multi_slot_kids: "複数枠申込者数"
       attendance: "アテンダンス"
       ext_kids: "非会員生人数"
       external_revenue: "非会員生売り上げ"
