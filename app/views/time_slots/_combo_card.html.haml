@@ -1,6 +1,6 @@
-- slot_ids   = combo_slots.compact.map(&:id)
-- input_id   = "combo_#{combo_name.parameterize}_#{slot_ids.join('_')}"
-- slot_dates = combo_slots.compact.map { |s| s.try(:start_at) || s.try(:starts_at) || s.try(:start_time) }.compact.map(&:to_date).uniq
+- slot_ids     = combo_slots.compact.map(&:id)
+- input_id     = "combo_#{combo_name.parameterize}_#{slot_ids.join('_')}"
+- slot_dates   = combo_slots.compact.map(&:start_time).compact.map(&:to_date).uniq
 - display_date = slot_dates.present? ? (slot_dates.one? ? slot_dates.first : slot_dates.min) : event&.start_date
 
 .card.d-flex.flex-row.flex-nowrap.bg-white
