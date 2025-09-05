@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.0.5-multi_stats"
+    "Name": "kidsup/event_site:2.0.6-okurayama_card"
   },
   "Ports": [
     {
