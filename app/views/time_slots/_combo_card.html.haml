@@ -1,20 +1,17 @@
 - slot_ids = combo_slots.compact.map(&:id)
 - input_id = "combo_#{combo_name.parameterize}_#{slot_ids.join('_')}"
 
-- slot_start = ->(s) { s.try(:start_at) || s.try(:starts_at) || s.try(:start_time) }
-- slot_dates =
-    combo_slots.compact
-               .map { |s| s.try(:start_at) || s.try(:starts_at) || s.try(:start_time) }
-               .compact
-               .map(&:to_date)
-               .uniq
+- slot_dates = combo_slots.compact
+                          .map { |s| s.try(:start_at) || s.try(:starts_at) || s.try(:start_time) }
+                          .compact
+                          .map(&:to_date)
+                          .uniq
 
-- display_date =
-    if slot_dates.present?
-      slot_dates.one? ? slot_dates.first : slot_dates.min
-    else
-      event&.start_date
-    end
+- display_date = if slot_dates.present?
+                   slot_dates.one? ? slot_dates.first : slot_dates.min
+                 else
+                   event&.start_date
+                 end
 
 .card.d-flex.flex-row.flex-nowrap.bg-white
   .d-flex.flex-column
@@ -22,7 +19,6 @@
       %p.text-black-50= l(display_date, format: "%-m月%-d日(%a)")
     - if image_src.present?
       = image_tag image_src, class: "img-fluid rounded"
-
 
   .d-grid.gap-3.w-50{
     data: { controller: "combo", "combo-slot-ids-value": slot_ids.to_json }
