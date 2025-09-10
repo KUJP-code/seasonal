@@ -9,3 +9,4 @@ ja:
       en_name: "名前(ローマ字)"
       name: "名前"
       phone: "携帯電話番号"
+      submitted_at: "提出日時"

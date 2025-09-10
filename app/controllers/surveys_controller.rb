@@ -16,6 +16,7 @@ class SurveysController < ApplicationController
     scoped_responses = policy_scope(SurveyResponse)
                        .where(survey_id: @survey.id)
                        .includes(child: %i[parent])
+                       .order(created_at: :desc, id: :desc)
     @responses = @school.id.zero? ? scoped_responses : scoped_responses.where(child_id: @school.children.ids)
   end
 
