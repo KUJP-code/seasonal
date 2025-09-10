@@ -3,7 +3,7 @@
 
   <tr>
     <td>
-      <%= survey_response.created_at %>
+      <%= survey_response.created_at.strftime("%Y-%m-%d") %>
     </td>
     <td>
       <%= survey_response.child.name %>
