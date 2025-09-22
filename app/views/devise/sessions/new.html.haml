@@ -1,9 +1,13 @@
 %main.p-0
   #login
+    = render "shared/flash"
+
     = render 'shared/splash_image', avif: @avif, fallback: @fallback
-    = form_for resource, as: resource_name,
-                         url: session_path(resource_name),
-                         html: { class: '', id: 'action-pane' } do |f|
+    = form_for resource,
+               as: resource_name,
+               url: session_path(resource_name),
+               html: { id: 'action-pane', data: { turbo: false } } do |f|
+
       #login-logo
 
       %h2.mt-1= t('.login')
