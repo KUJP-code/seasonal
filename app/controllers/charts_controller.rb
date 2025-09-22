@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ChartsController < ApplicationController
-  CATEGORIES = %w[activities bookings children coupons edits options setsumeikais summaries].freeze
+  CATEGORIES = %w[summaries setsumeikais bookings activities children options edits coupons].freeze
   after_action :verify_authorized
 
   def index
@@ -320,7 +320,7 @@ class ChartsController < ApplicationController
   end
 
   def summaries_data
-    @events_for_summary = 
+    @events_for_summary =
       Event.where(name: @nav[:event], school_id: School.real.select(:id))
            .includes(:school, :children, :invoices, options: :registrations)
   end

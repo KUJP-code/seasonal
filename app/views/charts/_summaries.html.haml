@@ -1,6 +1,118 @@
 - events = @events_for_summary
-.card.mb-3
-  = render 'events/stats_summary', events: @events_for_summary, event: @events_for_summary.first
+/  Redid these pages to jacks liking, could clean up into partials later.
+:ruby
+  event_ids   = events.map(&:id)
+  children    = events.flat_map(&:children)
 
+  int_kids    = children.select { |c| c.category == 'internal' }
+  res_kids    = children.select { |c| c.category == 'reservation' }
+  ext_kids    = children.select { |c| c.category == 'external' }
+
+  int_res_ids = int_kids.map(&:id)
+  res_res_ids = res_kids.map(&:id)
+  ext_res_ids = ext_kids.map(&:id)
+
+  int_rev = Invoice.real.where(child_id: int_res_ids, event_id: event_ids).sum(&:total_cost)
+  res_rev = Invoice.real.where(child_id: res_res_ids, event_id: event_ids).sum(&:total_cost)
+  ext_rev = Invoice.real.where(child_id: ext_res_ids, event_id: event_ids).sum(&:total_cost)
+
+  total_rev = int_rev + res_rev + ext_rev
+  area_goal = events.sum(&:goal)
+  goal_pct  = area_goal.zero? ? 0 : ((total_rev / area_goal.to_f) * 100).round
+
+  # Photo sales
+  photo_regs = Option.where(optionable_id: event_ids, optionable_type: 'Event').sum(:registrations_count)
+
+  timeslot_ids = TimeSlot.where(event_id: event_ids).pluck(:id)
+  multi_slot_kids_count = Registration
+                            .where(registerable_type: 'TimeSlot', registerable_id: timeslot_ids)
+                            .group(:child_id)
+                            .having('COUNT(DISTINCT registerable_id) > 1')
+                            .count
+                            .size
+  photo_unit = events.all? { |e| e.respond_to?(:is_party?) && e.is_party? } ? 500 : 1100
+  photo_rev  = photo_regs * photo_unit
+  first_int = int_kids.select { |k| k.first_seasonal && k.parent_id }
+  first_res = res_kids.select { |k| k.first_seasonal && k.parent_id }
+  first_ext = ext_kids.select { |k| k.first_seasonal && k.parent_id }
+
+  attendance_mix = {
+    I18n.t('.int_kids', scope: 'events.condensed_stats') => int_kids.size,
+    I18n.t('.res_kids', scope: 'events.condensed_stats') => res_kids.size,
+    I18n.t('.ext_kids', scope: 'events.condensed_stats') => ext_kids.size
+  }
+
+  revenue_split = {
+    I18n.t('.int_res_revenue', scope: 'events.condensed_stats') => int_rev + res_rev,
+    I18n.t('.external_revenue', scope: 'events.condensed_stats') => ext_rev
+  }
+
+.card.w-100.mb-4
+  .card-header
+    %h4.mb-0= t('.kpi_overview', default: 'Overview')
+  .card-body.d-flex.justify-content-center.align-items-center.gap-4.p-3.w-100.text-center.flex-wrap
+    = render 'charts/highlight_box', data: children.size,                                  text: t('.total_kids')
+    = render 'charts/highlight_box', data: int_kids.size,                                   text: t('.int_kids')
+    = render 'charts/highlight_box', data: res_kids.size,                                   text: t('.res_kids')
+    = render 'charts/highlight_box', data: ext_kids.size,                                   text: t('.ext_kids')
+    = render 'charts/highlight_box', data: number_to_currency(total_rev, unit: '円', precision: 0, locale: :ja), text: t('.total_revenue')
+    = render 'charts/highlight_box', data: number_to_currency(area_goal, unit: '円', precision: 0, locale: :ja), text: t('.goal_revenue')
+    = render 'charts/highlight_box', data: "#{goal_pct}%",                                  text: t('.goal_percent')
+    = render 'charts/highlight_box', data: multi_slot_kids_count,                           text: t('.multi_slot_kids')
+    = render 'charts/highlight_box', data: photo_regs,                                      text: t('.photo_sales')
+
+.card.w-100
+  .card-header
+    %h4.mb-0= t('.goal_progress', default: 'Goal Progress')
+  .card-body
+    - label = "#{number_to_currency(total_rev, unit: '¥', precision: 0)} / #{number_to_currency(area_goal, unit: '¥', precision: 0)} (#{goal_pct}%)"
+    .mb-2.text-muted= label
+    .progress{ style: 'height: 24px;' }
+      .progress-bar{ role: 'progressbar',
+                      style: "width: #{[goal_pct, 100].min}%;",
+                      'aria-valuenow' => goal_pct, 'aria-valuemin' => 0, 'aria-valuemax' => 100 }
+        = "#{goal_pct}%"
+.d-flex.flex-row.w-100.gap-4.mb-4
+  .card.w-100
+    .card-header
+      %h4.mb-0= t('.first_time_parents', default: 'First-time Parents')
+    .card-body.p-0
+      %table.table.table-sm.align-middle.mb-0
+        %thead
+          %tr.table-secondary
+            %th 通学生(初めて)
+            %th 予約生(初めて)
+            %th 非会員(初めて)
+        %tbody
+          %tr
+            %td
+              - if first_int.any?
+                = link_to first_int.size, users_path(ids: first_int.map(&:parent_id).uniq)
+              - else
+                = 0
+            %td
+              - if first_res.any?
+                = link_to first_res.size, users_path(ids: first_res.map(&:parent_id).uniq)
+              - else
+                = 0
+            %td
+              - if first_ext.any?
+                = link_to first_ext.size, users_path(ids: first_ext.map(&:parent_id).uniq)
+              - else
+                = 0
+  .card.w-100
+    .card-header
+      %h4.mb-0= t('.photo_sales', default: 'Photo Sales')
+    .card-body.d-flex.justify-content-center.align-items-center.gap-3.p-3.w-100.text-center.flex-wrap
+      = render 'charts/highlight_box', data: photo_regs, text: t('.photo_sales_count', default: 'Sales Count')
+      = render 'charts/highlight_box', data: number_to_currency(photo_rev, unit: '円', precision: 0, locale: :ja), text: t('.photo_revenue', default: 'Revenue')
 = render 'events/condensed_stats', events: @events_for_summary
 
+.card.w-100.mb-4
+  .card-header
+    %h4.mb-0= t('.attendance/revenue_splits')
+  .card-body.d-flex.flex-row.gap-4
+    .w-50
+      = pie_chart attendance_mix, legend: 'left', height: '45vh'
+    .w-50
+      = column_chart revenue_split, suffix: '円', height: '45vh'

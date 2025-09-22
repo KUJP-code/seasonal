@@ -1,3 +1,14 @@
-<%= line_chart @customer_edits, title: t(".customer_edits_by_day") %>
+<div class="card w-100 mb-4">
+  <div class="card-header">
+    <h4 class="mb-0"><%= t(".edit_activity") %></h4>
+  </div>
+  <div class="card-body d-flex flex-row gap-5">
+    <%= line_chart @customer_edits,
+                   title: t(".customer_edits_by_day"),
+                   height: "50vh" %>
 
-<%= line_chart @staff_edits, title: t(".staff_edits_by_day") %>
+    <%= line_chart @staff_edits,
+                   title: t(".staff_edits_by_day"),
+                   height: "50vh" %>
+  </div>
+</div>

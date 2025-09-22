@@ -22,7 +22,8 @@
                                 event: @nav[:event]),
                     class: active ? active_styles : inactive_styles
 
-  - if all_schools || current_user.area_manager?
+  - if (all_schools || current_user.area_manager?) && @nav[:category] != 'summaries'
+
     %details.flex-grow-1
       %summary.card.p-2.bg-primary.text-white.fw-semibold
         - school_name = t("schools.#{@nav[:school].name}")

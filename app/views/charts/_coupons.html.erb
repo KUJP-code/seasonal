@@ -1,9 +1,16 @@
-<%= line_chart @coupons.group_by_day(:created_at).count,
-               title: t(".daily_coupon_use"),
-               height: "50vh" %>
+<div class="card w-100 mb-4">
+  <div class="card-header">
+    <h4 class="mb-0"><%= t(".coupon_stats") %></h4>
+  </div>
+  <div class="card-body d-flex flex-row">
+    <%= line_chart @coupons.group_by_day(:created_at).count,
+                   title: t(".daily_coupon_use"),
+                   height: "50vh" %>
 
-<%= pie_chart @coupons
-              .where.not(code: "")
-              .group(:code).count,
-              title: t(".coupon_popularity"),
-              height: "50vh" %>
+    <%= pie_chart @coupons
+                  .where.not(code: "")
+                  .group(:code).count,
+                  title: t(".coupon_popularity"),
+                  height: "50vh" %>
+  </div>
+</div>

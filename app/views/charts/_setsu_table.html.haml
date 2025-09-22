@@ -55,10 +55,6 @@
                           month: @month + 1.month),
               class: 'btn btn-primary'
 
-= line_chart inquiries_w_average,
-             title: t('.daily_inquiries'),
-             height: '45vh'
-
 %h2= t('.monthly_stats', month: @month.strftime('%B'))
 
 %table.table.table-striped.table-hover.text-center

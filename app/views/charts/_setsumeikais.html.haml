@@ -1,48 +1,67 @@
 :ruby
-  total_setsu = @setsumeikais.size
-  total_inquiries = @inquiries.size
-  setsu_inq_count = @setsumeikais.sum(:inquiries_count)
+  total_setsu             = @setsumeikais.size
+  total_inquiries         = @inquiries.size
+  setsu_inq_count         = @setsumeikais.sum(:inquiries_count)
   setsu_created_per_month = @setsumeikais.group_by_month(:created_at).count
-  setsu_held_per_month = @setsumeikais.group_by_month(:start).count
-  months_with_setsu = setsu_held_per_month.keys.size.to_f
+  setsu_held_per_month    = @setsumeikais.group_by_month(:start).count
+  months_with_setsu       = setsu_held_per_month.keys.size.to_f
 
-.d-flex.justify-content-center.align-items-center.gap-4.p-3.w-100.text-center
-  = render 'charts/highlight_box',
-           data: total_setsu,
-           text: t('.total_setsumeikais')
-  = render 'charts/highlight_box',
-           data: total_inquiries,
-           text: t('.total_inquiries')
-  = render 'charts/highlight_box',
-           data: (setsu_inq_count / total_setsu.to_f).round(2),
-           text: t('.inquiries_per_setsumeikai')
-  = render 'charts/highlight_box',
-           data: (total_setsu / months_with_setsu).round(2),
-           text: t('.avg_monthly_setsumeikais_held')
-  = render 'charts/highlight_box',
-           data: (total_inquiries / months_with_setsu).round(2),
-           text: t('.avg_monthly_inquiries')
+  # safe divisions
+  inquiries_per_setsumeikai = total_setsu.zero? ? 0 : (setsu_inq_count / total_setsu.to_f).round(2)
+  avg_monthly_setsus        = months_with_setsu.zero? ? 0 : (total_setsu / months_with_setsu).round(2)
+  avg_monthly_inquiries     = months_with_setsu.zero? ? 0 : (total_inquiries / months_with_setsu).round(2)
 
-= render 'charts/setsu_table',
-         monthly_setsu: @monthly_setsu,
-         schools: @nav[:schools]
+/ Summary
+.card.w-100.mb-4
+  .card-header
+    %h4.mb-0= t('.setsumeikai_summary')
+  .card-body.d-flex.justify-content-center.align-items-center.gap-4.p-3.w-100.text-center.flex-wrap
+    = render 'charts/highlight_box', data: total_setsu,             text: t('.total_setsumeikais')
+    = render 'charts/highlight_box', data: total_inquiries,         text: t('.total_inquiries')
+    = render 'charts/highlight_box', data: inquiries_per_setsumeikai, text: t('.inquiries_per_setsumeikai')
+    = render 'charts/highlight_box', data: avg_monthly_setsus,      text: t('.avg_monthly_setsumeikais_held')
+    = render 'charts/highlight_box', data: avg_monthly_inquiries,   text: t('.avg_monthly_inquiries')
 
-= line_chart setsu_created_per_month,
-             title: t('.monthly_created_setsumeikais'),
-             height: '45vh'
-= line_chart setsu_held_per_month,
-             title: t('.monthly_held_setsumeikais'),
-             height: '45vh'
-= line_chart @inquiries.group(:category).group_by_month(:created_at).count,
-             title: t('.monthly_inquiries'),
-             height: '45vh'
+/ Monthly table
+.card.w-100.mb-4
+  .card-header
+    %h4.mb-0= t('.setsumeikai_table')
+  .card-body
+    = render 'charts/setsu_table',
+             monthly_setsu: @monthly_setsu,
+             schools: @nav[:schools]
 
-= render 'charts/setsu_all_schools' if @nav[:school].id.zero?
+/ Monthly trends (Created / Held / Inquiries)
+.card.w-100.mb-4
+  .card-header
+    %h4.mb-0= t('.monthly_trends')
+  .card-body.d-flex.flex-row.flex-wrap.gap-4
+    = line_chart setsu_created_per_month,
+                 title: t('.monthly_created_setsumeikais'),
+                 height: '45vh'
+    = line_chart setsu_held_per_month,
+                 title: t('.monthly_held_setsumeikais'),
+                 height: '45vh'
+    = line_chart @inquiries.group(:category).group_by_month(:created_at).count,
+                 title: t('.monthly_inquiries'),
+                 height: '45vh'
 
-.d-flex.w-100
-  = pie_chart @inquiries.group(:referrer).count.except(nil),
-              title: t('.referrer'),
-              height: '45vh'
-  = pie_chart @inquiries.group(:category).count,
-              title: t('.category'),
-              height: '45vh'
+/ All schools overview (only when viewing all)
+- if @nav[:school].id.zero?
+  .card.w-100.mb-4
+    .card-header
+      %h4.mb-0= t('.all_schools_overview')
+    .card-body
+      = render 'charts/setsu_all_schools'
+
+/ Inquiry breakdown
+.card.w-100.mb-4
+  .card-header
+    %h4.mb-0= t('.inquiry_breakdown')
+  .card-body.d-flex.w-100.flex-row.gap-4
+    = pie_chart @inquiries.group(:referrer).count.except(nil),
+                title: t('.referrer'),
+                height: '45vh'
+    = pie_chart @inquiries.group(:category).count,
+                title: t('.category'),
+                height: '45vh'

@@ -1,65 +1,92 @@
-<div class="d-flex justify-content-center align-items-center gap-5 p-3 w-100 text-center">
+<!-- Photo registrations summary -->
+<div class="card w-100 mb-4">
+  <div class="card-header">
+    <h4 class="mb-0"><%= t(".photo_summary") %></h4>
+  </div>
+  <div class="card-body d-flex justify-content-center align-items-center gap-5 p-3 w-100 text-center">
     <% photo_regs = @all_opts.select { |o| o.category == 'event' }.size %>
     <div class="d-flex flex-column">
-        <h2 class="fw-semibold text-primary">
-            <%= photo_regs %>
-        </h2>
-        <p><%= t(".photo_regs") %></p>
+      <h2 class="fw-semibold text-primary"><%= photo_regs %></h2>
+      <p><%= t(".photo_regs") %></p>
     </div>
     <div class="d-flex flex-column">
-        <h2 class="fw-semibold text-primary">
-            <%= number_to_currency(photo_regs * 1_100,
-                        unit: '円',
-                        precision: 0,
-                        locale: :ja) %>
-        </h2>
-        <p><%= t(".photo_revenue") %></p>
+      <h2 class="fw-semibold text-primary">
+        <%= number_to_currency(photo_regs * 1_100,
+                               unit: '円',
+                               precision: 0,
+                               locale: :ja) %>
+      </h2>
+      <p><%= t(".photo_revenue") %></p>
     </div>
+  </div>
 </div>
 
-<%= column_chart @all_opts
-                       .group('options.category')
-                       .count("options.category")
-                       .except("なし")
-                       .to_h { |k, v| [k.capitalize, v] }
-                       .sort_by { |_k, v| v }.reverse,
-                 title: t(".category_popularity"),
-                 height: "50vh" %>
+<!-- Option categories -->
+<div class="card w-100 mb-4">
+  <div class="card-header">
+    <h4 class="mb-0"><%= t(".option_categories") %></h4>
+  </div>
+  <div class="card-body d-flex flex-row gap-5">
+    <%= column_chart @all_opts
+                           .group('options.category')
+                           .count("options.category")
+                           .except("なし")
+                           .to_h { |k, v| [k.capitalize, v] }
+                           .sort_by { |_k, v| v }.reverse,
+                     title: t(".category_popularity"),
+                     height: "50vh" %>
 
-<%= column_chart @all_opts
-                       .group('options.category')
-                       .sum("options.cost")
-                       .except("なし")
-                       .to_h { |k, v| [k.capitalize, v] }
-                       .sort_by { |_k, v| v }.reverse,
-                 title: t(".category_revenue"),
-                 suffix: "円",
-                 height: "50vh" %>
+    <%= column_chart @all_opts
+                           .group('options.category')
+                           .sum("options.cost")
+                           .except("なし")
+                           .to_h { |k, v| [k.capitalize, v] }
+                           .sort_by { |_k, v| v }.reverse,
+                     title: t(".category_revenue"),
+                     suffix: "円",
+                     height: "50vh" %>
+  </div>
+</div>
 
-<%= column_chart @all_opts
-                       .group('options.name')
-                       .count("options.name")
-                       .except("なし")
-                       .sort_by { |_k, v| v }.reverse,
-                 title: t(".option_popularity"),
-                 height: "50vh" %>
+<!-- Individual options -->
+<div class="card w-100 mb-4">
+  <div class="card-header">
+    <h4 class="mb-0"><%= t(".individual_options") %></h4>
+  </div>
+  <div class="card-body d-flex flex-row gap-5">
+    <%= column_chart @all_opts
+                           .group('options.name')
+                           .count("options.name")
+                           .except("なし")
+                           .sort_by { |_k, v| v }.reverse,
+                     title: t(".option_popularity"),
+                     height: "50vh" %>
 
-<%= column_chart @all_opts
-                       .group('options.name')
-                       .sum("options.cost")
-                       .except("なし")
-                       .sort_by { |_k, v| v }.reverse,
-                 title: t(".option_revenue"),
-                 suffix: "円",
-                 height: "50vh" %>
+    <%= column_chart @all_opts
+                           .group('options.name')
+                           .sum("options.cost")
+                           .except("なし")
+                           .sort_by { |_k, v| v }.reverse,
+                     title: t(".option_revenue"),
+                     suffix: "円",
+                     height: "50vh" %>
+  </div>
+</div>
 
-<div class="w-100 d-flex">
+<!-- Arrival / Departure breakdown -->
+<div class="card w-100 mb-4">
+  <div class="card-header">
+    <h4 class="mb-0"><%= t(".arrival_departure_options") %></h4>
+  </div>
+  <div class="card-body d-flex flex-row gap-5">
     <%= pie_chart @arrive_opts,
                   title: t(".arrival_option_popularity"),
                   legend: "left",
                   height: "50vh" %>
+
     <%= pie_chart @depart_opts,
                   title: t(".departure_option_popularity"),
                   legend: "left",
                   height: "50vh" %>
+  </div>
 </div>

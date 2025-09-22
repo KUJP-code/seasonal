@@ -1,85 +1,88 @@
-<div class="d-flex justify-content-center align-items-center gap-5 p-3 w-100 text-center">
+<div class="card w-100 mb-4">
+  <div class="card-header">
+    <h4 class="mb-0"><%= t(".booking_summary") %></h4>
+  </div>
+  <div class="card-body d-flex flex-row justify-content-center align-items-center gap-5 p-3 text-center">
     <div class="d-flex flex-column">
-        <h2 class="fw-semibold text-primary">
-            <% if @invoices.empty? %>
-              0円
-            <% else %>
-                <%= number_to_currency(@invoices.average(:total_cost),
-                        unit: '円',
-                        precision: 0,
-                        locale: :ja) %>
-            <% end %>
-        </h2>
-        <p><%= t(".avg_booking_cost") %></p>
+      <h2 class="fw-semibold text-primary">
+        <% if @invoices.empty? %>
+          0円
+        <% else %>
+          <%= number_to_currency(@invoices.average(:total_cost),
+                  unit: '円',
+                  precision: 0,
+                  locale: :ja) %>
+        <% end %>
+      </h2>
+      <p><%= t(".avg_booking_cost") %></p>
     </div>
     <div class="d-flex flex-column">
-        <h2 class="fw-semibold text-primary">
-            <% if @invoices.empty? || @regs.empty? %>
-                0
-            <% else %>
-                <%= (@regs.size.to_f / @invoices.size).round(2) %>
-            <% end %>
-        </h2>
-        <p><%= t(".activities_per_booking") %></p>
+      <h2 class="fw-semibold text-primary">
+        <% if @invoices.empty? || @regs.empty? %>
+          0
+        <% else %>
+          <%= (@regs.size.to_f / @invoices.size).round(2) %>
+        <% end %>
+      </h2>
+      <p><%= t(".activities_per_booking") %></p>
     </div>
+  </div>
 </div>
 
-<%= render 'events/event_stats', event: @event if @event %>
-
-<div class="w-100 d-flex">
+<div class="card w-100 mb-4">
+  <div class="card-header">
+    <h4 class="mb-0"><%= t(".booking_trends") %></h4>
+  </div>
+  <div class="card-body d-flex flex-row">
     <%= line_chart @invoices.group_by_day(:created_at).count,
                    title: t(".daily_new_bookings"),
                    height: "50vh" %>
     <%= line_chart @invoices.group_by_week(:created_at).count,
                    title: t(".weekly_new_bookings"),
                    height: "50vh" %>
+  </div>
 </div>
 
-<div class="w-100 d-flex">
+<div class="card w-100 mb-4">
+  <div class="card-header">
+    <h4 class="mb-0"><%= t(".registration_trends") %></h4>
+  </div>
+  <div class="card-body d-flex flex-row">
     <%= line_chart @regs.group_by_day(:created_at).count,
                    title: t(".daily_activity_registrations"),
                    height: "50vh" %>
     <%= line_chart @regs.group_by_week(:created_at).count,
                    title: t(".weekly_activity_registrations"),
                    height: "50vh" %>
+  </div>
 </div>
 
-<div class="w-100 d-flex">
-    <%= line_chart @invoices
-                        .group_by_day(:created_at)
-                        .sum(:total_cost),
+<div class="card w-100 mb-4">
+  <div class="card-header">
+    <h4 class="mb-0"><%= t(".revenue_trends") %></h4>
+  </div>
+  <div class="card-body d-flex flex-row">
+    <%= line_chart @invoices.group_by_day(:created_at).sum(:total_cost),
                    title: t(".daily_revenue"),
                    suffix: "円",
                    height: "50vh" %>
-    <%= line_chart @invoices
-                        .group_by_week(:created_at)
-                        .sum(:total_cost),
+    <%= line_chart @invoices.group_by_week(:created_at).sum(:total_cost),
                    title: t(".weekly_revenue"),
                    suffix: "円",
                    height: "50vh" %>
+  </div>
 </div>
 
-<div class="w-100 d-flex">
-    <%= column_chart @regs
-                          .group_by_day_of_week(:created_at, format: '%A')
-                          .count,
+<div class="card w-100 mb-4">
+  <div class="card-header">
+    <h4 class="mb-0"><%= t(".registration_breakdown") %></h4>
+  </div>
+  <div class="card-body d-flex flex-row">
+    <%= column_chart @regs.group_by_day_of_week(:created_at, format: '%A').count,
                      title: t(".day_of_week_regs"),
                      height: '50vh' %>
-
     <%= column_chart @regs.group_by_hour_of_day(:created_at).count,
                      title: t(".hour_of_day_regs"),
                      height: '50vh' %>
+  </div>
 </div>
-
-<% if @nav[:school].id.zero? %>
-    <%= column_chart @invoices
-                          .group(:event_id)
-                          .average(:total_cost)
-                          .to_h { |k, v| [@school_hash[k], v] }
-                          .sort_by { |_k, v| v}
-                          .reverse,
-                     title: t(".avg_booking_per_school"),
-                     round: 0,
-                     suffix: "円",
-                     height: '50vh' %>
-<% end %>

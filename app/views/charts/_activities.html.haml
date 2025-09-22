@@ -6,41 +6,60 @@
   by_category = @slots.each_with_object(Hash.new(0)) do |slot, hash|
     hash[slot.category] += slot.registrations_count
   end
-  morn_aft = { 'Morning' => @activities.reduce(0) { |sum, a| sum + a[1] },
-               'Afternoon' => @afternoons.reduce(0) { |sum, a| sum + a[1] } }
 
-= column_chart @activities.sort_by { |_k, v| v }.reverse,
-               title: t('.popularity'),
-               height: '80vh'
-= column_chart @afternoons.sort_by { |_k, v| v }.reverse,
-               title: t('.afternoon_popularity'),
-               height: '80vh'
+  morn_aft = {
+    'Morning' => @activities.reduce(0) { |sum, a| sum + a[1] },
+    'Afternoon' => @afternoons.reduce(0) { |sum, a| sum + a[1] }
+  }
+/ Popularity (All sessions)
+.card.w-100.mb-4
+  .card-header
+    %h4.mb-0= t(".popularity")
+  .card-body
+    = column_chart @activities.sort_by { |_k, v| v }.reverse,
+                    height: '80vh'
 
-= render 'charts/highlight_box',
-         data: number_to_currency(snack_cost, unit: '円', precision: 0,
-                                              locale: :ja),
-         text: t('.snack_revenue')
-
-.w-100.d-flex.justify-content-around.gap-5
-  = pie_chart morn_aft, title: t('.session_popularity'),
-                        height: '50vh'
-
-  = pie_chart by_category, title: t('.category_popularity'),
-                           height: '50vh'
 
 - if @school.id.zero?
   - dates = @date_attendance.keys.map(&:first).uniq
 
-  %table.table.table-striped.table-hover.align-self-start
-    %thead.table-primary
-      %tr
-        %th
-        - dates.each do |date|
-          %th= date.strftime('%m/%d')
-    %tbody
-      - @events.each do |event|
-        %tr
-          %th= t("schools.#{event.school.name}")
-          - dates.each do |date|
-            %td.text-end
-              = @date_attendance[[date, event.id]]
+  .card.w-100.mb-4
+    .card-header
+      %h4.mb-0= t(".attendance_by_school")
+    .card-body
+      .table-responsive
+        %table.table.table-striped.table-hover.align-self-start.mb-0
+          %thead.table-primary
+            %tr
+              %th
+              - dates.each do |date|
+                %th= date.strftime('%m/%d')
+          %tbody
+            - @events.each do |event|
+              %tr
+                %th= t("schools.#{event.school.name}")
+                - dates.each do |date|
+                  %td.text-end
+                    = @date_attendance[[date, event.id]]
+
+/ Snack revenue highlight
+.card.w-100.mb-4
+  .card-header
+    %h4.mb-0= t(".snack_revenue")
+  .card-body
+    = render 'charts/highlight_box',
+             data: number_to_currency(snack_cost, unit: '円', precision: 0, locale: :ja),
+             text: t('.snack_revenue')
+
+/ Session vs Category breakdown
+.card.w-100.mb-4
+  .card-header
+    %h4.mb-0= t(".session_and_category_breakdown")
+  .card-body.d-flex.flex-row.justify-content-around.gap-5
+    = pie_chart morn_aft,
+                title: t('.session_popularity'),
+                height: '50vh'
+
+    = pie_chart by_category,
+                title: t('.category_popularity'),
+                height: '50vh'
