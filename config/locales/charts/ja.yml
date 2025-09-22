@@ -7,6 +7,7 @@ ja:
       popularity: "人気度（アクティビティ）"
       session_popularity: "セッション人気度"
       snack_revenue: "スナック収益"
+      attendance_by_school: "スクール別出席状況"
     bookings:
       activities_per_booking: "予約に対するアクティビティ数"
       avg_booking_cost: "平均予約コスト"
@@ -19,6 +20,9 @@ ja:
       weekly_activity_registrations: "アクティビティ予約数（ウィークリー）"
       weekly_new_bookings: "新しい予約数（ウィークリー）"
       weekly_revenue: "週別収益"
+      booking_trends: "予約動向"
+      revenue_trends: "収益推移"
+      registration_patterns: "登録パターン"
     children:
       attendees_by_category: "カテゴリー別参加率"
       attendees_by_grade: "学年別参加率"
@@ -26,12 +30,16 @@ ja:
       hat_kids: "帽子を必要とする子供たち"
       name: "お子様の氏名（漢字）"
       registrations: "予約数（アクティビティ数/追加オプション）"
+      attendee_breakdown: "参加者内訳"
+      vips: "VIP"
     coupons:
       coupon_popularity: "クーポン種類"
       daily_coupon_use: "クーポン使用数（デイリー）"
+      usage: "クーポン利用状況"
     edits:
       customer_edits_by_day: "日々の予約変更"
       staff_edits_by_day: "日々の予約編集"
+      edits_over_time: "編集履歴の推移"
     options:
       arrival_option_popularity: "入室時間別"
       category_popularity: "カテゴリー別予約数"
@@ -41,6 +49,9 @@ ja:
       option_revenue: "オプション別収益"
       photo_regs: "フォトサービス予約数"
       photo_revenue: "フォトサービス収益"
+      option_popularity_header: "オプション人気度"
+      option_revenue_header: "オプション収益"
+      arrival_departure_options: "入退室オプション"
     nav:
       activities: "開催日"
       bookings: "お申込内容"
@@ -50,6 +61,7 @@ ja:
       edits: "変更"
       options: "オプション"
       setsumeikais: "説明会"
+      summaries: "サマリー"
     setsu_all_schools:
       gen_inquiries_by_school: "スクール別問い合わせ数"
       monthly_gen_inquiries_by_school: "月別スクール別問い合わせ数"
@@ -85,3 +97,25 @@ ja:
       referrer: "きっかけ"
       total_inquiries: "合計問い合わせ数"
       total_setsumeikais: "合計説明会数"
+      overview: "概要"
+      monthly_trends: "月別推移"
+      referrer_and_category: "きっかけ・カテゴリー"
+    summaries:
+      kpi_overview: "概要"
+      attendance: "出席状況"
+      photo_sales: "写真販売"
+      photo_sales_count: "販売数"
+      photo_revenue: "写真売上"
+      goal_progress: "目標達成状況"
+      first_time_parents: "初回参加の保護者"
+      attendance_and_revenue: "出席数と売上"
+
+      total_kids: "合計人数"
+      int_kids: "通学生"
+      res_kids: "予約生"
+      ext_kids: "非会員"
+      multi_slot_kids: "複数枠参加"
+
+      total_revenue: "総売上"
+      goal_revenue: "目標売上"
+      goal_percent: "目標達成率"
