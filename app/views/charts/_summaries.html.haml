@@ -106,9 +106,10 @@
     .card-body.d-flex.justify-content-center.align-items-center.gap-3.p-3.w-100.text-center.flex-wrap
       = render 'charts/highlight_box', data: photo_regs, text: t('.photo_sales_count', default: 'Sales Count')
       = render 'charts/highlight_box', data: number_to_currency(photo_rev, unit: '円', precision: 0, locale: :ja), text: t('.photo_revenue', default: 'Revenue')
-.card.mb-3
-  = render 'events/stats_summary', events: @events_for_summary, event: @events_for_summary.first
-= render 'events/condensed_stats', events: @events_for_summary
+- if @events_for_summary.present?
+  .card.mb-3
+    = render 'events/stats_summary', events: @events_for_summary, event: @events_for_summary.first
+  = render 'events/condensed_stats', events: @events_for_summary
 
 .card.w-100.mb-4
   .card-header
