@@ -321,8 +321,8 @@ class ChartsController < ApplicationController
 
   def summaries_data
     @events_for_summary =
-      policy_scope(Event)                               # ← key change
-      .where(name: @nav[:event])
+      policy_scope(Event)
+      .where(name: @nav[:event], school_id: School.real.select(:id))
       .includes(:school, :children, :invoices, options: :registrations)
   end
 end
