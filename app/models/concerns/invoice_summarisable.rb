@@ -55,8 +55,9 @@ module InvoiceSummarisable
     </div>"
   end
 
-  def party_summary(_data)
+  def party_summary(data)
     "<div class='d-flex flex-column align-items-start gap-1'>
+      <p>イベント x #{data[:num_regs]}: #{yenify(data[:course_cost])}</p>
     </div>"
   end
 
