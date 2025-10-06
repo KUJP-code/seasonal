@@ -34,7 +34,7 @@ en:
       name: "Name"
       parent: "Parent"
       school: "School"
-      ssid: "SSID"
+      ssid: "生徒コード"
     mergeable_child:
       merge_children: "Merge these children"
       merge_these: "Merge %{non_ss} into %{ss}?"

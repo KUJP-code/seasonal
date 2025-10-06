@@ -116,7 +116,7 @@ ja:
       parent: "保護者名"
       school: "スクール"
       ss_kid: "反映する生徒情報"
-      to_ssid: "反映する生徒情報のSSID"
+      to_ssid: "反映する生徒情報の生徒コード"
     school_manager:
       document_uploads: "アップロードされたドキュメントのリスト"
       edit_school_info: "学校情報の編集"
