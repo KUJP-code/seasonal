@@ -1,3 +1,5 @@
+- event_name = "event-sheet-#{@event.id}"
+
 %main#event-children-index{ data: { controller: 'refresh' } }
   = render 'children/events/event_slots_dropdown', slots: @slots
 
@@ -9,14 +11,49 @@
   %table.table.table-sm.table-light.table-striped.table-hover.table-bordered.text-center.text-nowrap.align-middle
     %thead.sticky-top
       %tr.table-primary
-        %th.order-header{ scope: 'col' }
-        %th.name-header{ scope: 'col' } Name (日本語)
-        %th.en-name-header{ scope: 'col' } Name (英語)
-        %th.ssid-header{ scope: 'col' } SSID
+        %th.order-header{ scope: 'col' } #
+        %th.name-header{ scope: 'col',
+                        data: { controller: 'sort',
+                                'sort-event-value': event_name,
+                                'sort-col-value': '.name' } }
+          名前 (日本語)
+          %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                              action: 'click->sort#sort' } } &#9650;
+
+        %th.en-name-header{ scope: 'col',
+                            data: { controller: 'sort',
+                                    'sort-event-value': event_name,
+                                    'sort-col-value': '.en-name' } }
+          名前 (英語)
+          %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                              action: 'click->sort#sort' } } &#9650;
+
+        %th.ssid-header{ scope: 'col',
+                        data: { controller: 'sort',
+                                'sort-event-value': event_name,
+                                'sort-col-value': '.ssid' } }
+          生徒コード
+          %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                              action: 'click->sort#sort' } } &#9650;
+
         %th{ scope: 'col' } フォトサービス
         %th{ scope: 'col' } 担当校舎
-        %th{ scope: 'col' }= t('.invoices')
-        %th{ scope: 'col' }= t('.cost')
+
+        %th{ scope: 'col',
+            data: { controller: 'sort',
+                    'sort-event-value': event_name,
+                    'sort-col-value': '.invoices' } }
+          = t('.invoices')
+          %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                              action: 'click->sort#sort' } } &#9650;
+
+        %th{ scope: 'col',
+            data: { controller: 'sort',
+                    'sort-event-value': event_name,
+                    'sort-col-value': '.cost' } }
+          = t('.cost')
+          %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                              action: 'click->sort#sort' } } &#9650;
         %th{ scope: 'col' }= t('.summary')
         %th{ scope: 'col' }= t('.changes')
         %th{ scope: 'col' } SS登録済
@@ -33,8 +70,8 @@
         %th{ scope: 'col' }= t('.allergy')
         %th{ scope: 'col' }= t('.photo')
 
-    %tbody
-      %tr
+    %tbody{id: event_name}
+      %tr{ data: { static: true } }
         %td
         - %w[.name .en-name .ssid .photo .diff_school .invoices .cost].each do |col_class|
           = render 'shared/filter_header', col_class:, siblings: '1'
