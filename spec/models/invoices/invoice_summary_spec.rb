@@ -124,7 +124,7 @@ RSpec.describe Invoice do
         slot_regs: [build(:slot_reg, registerable: slot)]
       )
       invoice.calc_cost
-      expect(invoice.summary).not_to include('イベント x 1:')
+      expect(invoice.summary).to include('イベント x 1: 1円')
     end
 
     it 'displays event * n = 1 course * n when multiple parties attended' do
@@ -135,7 +135,7 @@ RSpec.describe Invoice do
                     build(:slot_reg, registerable: create(:time_slot))]
       )
       invoice.calc_cost
-      expect(invoice.summary).not_to include('イベント x 2:')
+      expect(invoice.summary).to include('イベント x 2: 2円')
     end
   end
 end
