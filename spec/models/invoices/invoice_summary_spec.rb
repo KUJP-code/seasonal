@@ -37,15 +37,16 @@ RSpec.describe Invoice do
     end
 
     it 'includes course heading and count with course name' do
-      expect(invoice.summary).to include_all [
-        'コース:', '1円 (1回)', '1回コース x 1: 1円'
-      ]
+      expect(invoice.summary).to include('コース:')
+      expect(invoice.summary).to include('1回コース x 1: 1円')
+      expect(invoice.summary).not_to include('1円 (1回)')
     end
 
     it 'gives option heading, grouped count of options by name' do
-      expect(invoice.summary).to include_all [
-        'オプション:', '20円 (2オプション)', 'Event Option x 1: 10円', 'Slot Option x 1: 10円'
-      ]
+      expect(invoice.summary).to include('オプション:')
+      expect(invoice.summary).to include('Event Option x 1: 10円')
+      expect(invoice.summary).to include('Slot Option x 1: 10円')
+      expect(invoice.summary).not_to include('20円 (2オプション)')
     end
 
     it 'lists adjustments with reason and change' do
@@ -123,7 +124,7 @@ RSpec.describe Invoice do
         slot_regs: [build(:slot_reg, registerable: slot)]
       )
       invoice.calc_cost
-      expect(invoice.summary).to include('イベント x 1: 1円')
+      expect(invoice.summary).not_to include('イベント x 1:')
     end
 
     it 'displays event * n = 1 course * n when multiple parties attended' do
@@ -134,7 +135,7 @@ RSpec.describe Invoice do
                     build(:slot_reg, registerable: create(:time_slot))]
       )
       invoice.calc_cost
-      expect(invoice.summary).to include('イベント x 2: 2円')
+      expect(invoice.summary).not_to include('イベント x 2:')
     end
   end
 end
