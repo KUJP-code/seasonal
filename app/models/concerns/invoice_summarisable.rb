@@ -49,23 +49,20 @@ module InvoiceSummarisable
                  end
     "<div class='d-flex flex-column align-items-start gap-1'>
         <h4 class='fw-semibold'>コース:</h4>
-        <p>#{yenify(data[:course_cost])} (#{data[:num_regs]}回)</p>
         #{data[:course_summary]}\n
         #{extra_cost}
         #{snack_cost}
     </div>"
   end
 
-  def party_summary(data)
+  def party_summary(_data)
     "<div class='d-flex flex-column align-items-start gap-1'>
-        <p>イベント x #{data[:num_regs]}: #{yenify(data[:course_cost])}</p>
     </div>"
   end
 
   def option_summary(data)
     "<div class='d-flex flex-column align-items-start gap-1'>
        <h4 class='fw-semibold'>オプション:</h4>
-       <p>#{yenify(data[:opt_cost])} (#{data[:options].size}オプション)<p>
           #{per_name_summary(data[:options])}\n
      </div>"
   end
