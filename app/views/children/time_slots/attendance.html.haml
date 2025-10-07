@@ -73,6 +73,9 @@
 
           %th#depart-header{ scope: 'col' }= t('.depart')
 
+        - if @next_party_slot
+          %th#next-party-header{ scope: 'col' }
+            次のパーティー
     %tbody
       %tr.search
         - child_columns.each do |col|
@@ -95,10 +98,11 @@
                      col_class: ".#{o.name}", siblings: '0'
 
           = render 'shared/filter_header', col_class: '.depart', siblings: '0'
-
+        - if @next_party_slot
+          = render 'shared/filter_header', col_class: '.next_party', siblings: '0'
       = render partial: 'children/time_slots/child_row',
                collection: @children + (@afternoon_children - @children),
                as: :child,
                locals: { afternoon: @afternoon, event_options: @event_options,
                          afternoon_options: @afternoon_options, ext_ids:,
-                         options:, slot: @slot }
+                         options:, slot: @slot, next_party_slot: @next_party_slot, next_party_child_ids: @next_party_child_ids }
