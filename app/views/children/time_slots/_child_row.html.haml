@@ -59,3 +59,6 @@
 
     %td.depart
       = departure_time_for(afternoon, depart_option) if depart_option
+  - if next_party_slot
+    %td.next_party
+      = '◯' if next_party_child_ids.include?(child.id)
