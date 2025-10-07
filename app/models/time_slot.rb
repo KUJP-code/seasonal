@@ -84,6 +84,16 @@ class TimeSlot < ApplicationRecord
     "#{base} (午後)"
   end
 
+  # TODO: potentially remove this when partyies arent used.
+  def next_party_slot
+    return unless event.respond_to?(:party?) && event.party?
+
+    event.time_slots
+         .where('start_time > ?', start_time)
+         .order(:start_time)
+         .first
+  end
+
   def image_id
     return nil if image.blob.nil?
 
@@ -111,6 +121,7 @@ class TimeSlot < ApplicationRecord
 
   def display_time_range
     return nil if party?
+
     " (#{start_time.strftime('%H:%M')}–#{end_time.strftime('%H:%M')})"
   end
 
