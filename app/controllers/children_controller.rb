@@ -194,7 +194,22 @@ class ChildrenController < ApplicationController
                      )
     @afternoon = @slot.afternoon_slot
     afternoon_data
-
+    if @slot.event.respond_to?(:party?) && @slot.event.party?
+      @next_party_slot = @slot.event.time_slots
+                              .where('start_time > ?', @slot.start_time)
+                              .order(:start_time)
+                              .first
+      # Parties wanted if next party also has attendance for combo parties.
+      @next_party_child_ids =
+        if @next_party_slot
+          Registration.where(registerable: @next_party_slot).pluck(:child_id).to_set
+        else
+          Set.new
+        end
+    else
+      @next_party_slot = nil
+      @next_party_child_ids = Set.new
+    end
     render 'children/time_slots/attendance'
   end
 end
