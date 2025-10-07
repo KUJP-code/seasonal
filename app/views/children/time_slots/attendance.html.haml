@@ -32,10 +32,10 @@
                   children_path(id: @slot.morning_slot.id, source: 'time_slot'),
                   class: 'btn btn-primary'
 
-    %h1.text-center= name_date(@slot)
-    %h2.counter.text-center
-      %span{ 'data-refresh-target': 'counter' } 10:00
-      後にページが更新される。
+  %h1.text-center= name_date(@slot)
+  %h2.counter.text-center
+    %span{ 'data-refresh-target': 'counter' } 10:00
+    後にページが更新される。
 
   %table.table.table-sm.table-light.table-striped.table-hover.table-bordered.text-center.text-nowrap.align-middle
     %thead.sticky-top
