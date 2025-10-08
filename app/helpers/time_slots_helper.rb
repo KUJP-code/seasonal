@@ -13,6 +13,7 @@ module TimeSlotsHelper
   end
 
   def slot_closed_key(slot)
+    return 'closed' if slot.event.party?
     return 'am_closed' if slot.respond_to?(:morning?) && slot.morning?
     return 'pm_closed' if slot.respond_to?(:afternoon?) && slot.afternoon?
 
