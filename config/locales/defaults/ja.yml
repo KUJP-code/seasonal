@@ -8,6 +8,8 @@ ja:
           has_one: "%{record}が存在しているので削除できません"
           has_many: "%{record}が存在しているので削除できません"
   am_closed: "午前中：申込受付を終了"
+  pm_closed: "午後：申込受付を終了"
+  closed: "申込受付を終了"
   back: "戻る"
   confirm: "本当に削除しても良いですか？"
   date:

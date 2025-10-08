@@ -32,7 +32,7 @@
   .d-grid.gap-3.w-50
     - if add_slot.closed? && current_user.customer?
       %p.d-flex.align-items-center.justify-content-center.text-bg-warning.p-1.rounded
-        = t('am_closed')
+        = t(slot_closed_key(add_slot))
 
     - elsif confirmed
       %p.fw-bold.fs-5
