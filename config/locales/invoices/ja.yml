@@ -92,6 +92,7 @@ ja:
       confirm_no_email: "申込確定（メールなし）"
       confirm_w_email: "申込確定（メールあり）"
       confirm_success: "お申込は送信されました。スクールがお申込を確定するまで、ログインページよりお申込内容の変更が可能です。お申込の確定後の変更をご希望の場合は、スクールにお問い合わせください。"
+      check_email: "お申込み内容は、「bookings@kids-up.app」より送付いたします。必ず上記からのメールを受信できるように設定くださいませ。"
       customer_invoices: "お客様のお申込内容"
       current_version: "現在のバージョン"
       delete_booking: "消去"

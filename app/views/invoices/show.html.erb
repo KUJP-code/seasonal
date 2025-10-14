@@ -5,16 +5,18 @@
     </div>
 
     <% if @updated %>
-      <div class="card bg-success w-100 text-white">
+      <div class="card bg-success w-100 text-white p-3">
         <% if current_user.staff? && @invoice.in_ss %>
           <%= t('.marked_in_ss') %>
         <% elsif current_user.staff? %>
           <%= t('.staff_confirm') %>
         <% else %>
-          <%= t('.confirm_success') %>
+          <p><%= t('.confirm_success') %></p>
+          <p><%= t('.check_email') %></p>
         <% end %>
       </div>
     <% end %>
+
 
     <% if @surveys %>
         <% @surveys.each do |s| %>
