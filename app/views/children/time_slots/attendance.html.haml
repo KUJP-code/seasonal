@@ -3,7 +3,6 @@
   ele_count = @children.count { |c| !c.kindy }
   aft_kindy_count = @afternoon_children.count(&:kindy)
   aft_ele_count = @afternoon_children.count { |c| !c.kindy }
-
   extensions = @options.select(&:any_extension?)
   ext_ids = extensions.map(&:id)
 
@@ -24,6 +23,7 @@
                    'data-action': 'click->print#print'
 
       - if @slot.special? && @afternoon
+
         = link_to @afternoon.name,
                   children_path(id: @afternoon.id, source: 'time_slot'),
                   class: 'btn btn-primary'
@@ -32,6 +32,10 @@
                   children_path(id: @slot.morning_slot.id, source: 'time_slot'),
                   class: 'btn btn-primary'
 
+      - if @slot.special?
+        = link_to t('.all_day_photo_list'),
+                  children_path(id: @slot.id, source: 'photo'),
+                  class: 'btn btn-primary'
   %h1.text-center= name_date(@slot)
   %h2.counter.text-center
     %span{ 'data-refresh-target': 'counter' } 10:00
