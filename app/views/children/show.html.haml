@@ -11,7 +11,7 @@
                    sibling_events: e.sibling_events
     - else
       .single-event-card
-        = render 'events/external_event', child: child_for_external
+        = render 'events/external_event', child: @child
         - @events.each do |e|
           = render 'events/child_event',
                    child: @child,
