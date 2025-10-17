@@ -60,17 +60,18 @@
         = f.label :birthday, t('.birthday'), class: 'form-label'
 
       %p アレルギー
-      .form-floating{ 'data-controller': 'allergy' }
+      .form-floating{ data: { controller: 'allergy' } }
         = f.text_field :allergies,
-                       class: 'form-control',
-                       required: true, placeholder: t('.allergies'),
-                       data: { 'allergy-target': 'allergyInput' }
+                      class: 'form-control',
+                      required: true,
+                      placeholder: t('.allergies'),
+                      data: { 'allergy-target': 'allergyInput' }
         = f.label :allergies, t('.allergies'), class: 'form-label'
 
-      %div
-        = f.label :grade, t('.grade'), class: 'form-label'
-        = f.select :grade, child_primary_grades,
-                   {}, { class: 'form-select', required: true }
+        / Hidden own_snack (controlled by Stimulus)
+        = f.hidden_field :own_snack,
+                        value: @child.own_snack,
+                        data: { 'allergy-target': 'ownSnackField' }
 
       - if @child.new_record?
         .form-floating

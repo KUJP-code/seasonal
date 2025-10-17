@@ -1,7 +1,8 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["allergyInput"];
+  // CHANGED: add ownSnackField to targets
+  static targets = ["allergyInput", "ownSnackField"];
 
   connect() {
     this.allergyInputTarget.parentNode.before(this.allergySelect());
@@ -12,14 +13,25 @@ export default class extends Controller {
     if (form) {
       form.addEventListener("submit", this.handleSubmit.bind(this));
     }
+
+    // NEW: initialize own_snack to 0 unless already set
+    if (this.ownSnackFieldTarget && this.ownSnackFieldTarget.value === "") {
+      this.ownSnackFieldTarget.value = "0";
+    }
+
+    // NEW: if allergies pre-filled (and not "なし"), reveal food + epipen blocks
+    const preset = (this.allergyInputTarget.value || "").trim();
+    if (preset && preset !== "なし") {
+      this.insertFoodContainer();
+      this.insertEpipenContainer();
+    }
   }
 
   handleSubmit(event) {
     if (this.epipenSelect && this.epipenSelect.value === "はい") {
       event.preventDefault();
-      // Mark the field as invalid and trigger the browser’s validation UI
       this.epipenSelect.setCustomValidity(
-        "エピペンをお持ちの場合、登録は行えません。"
+        "エピペンをお持ちの場合、登録は行えません。",
       );
       this.epipenSelect.reportValidity();
       return;
@@ -49,26 +61,99 @@ export default class extends Controller {
       case " なし":
         this.allergyInputTarget.readOnly = true;
         this.allergyInputTarget.value = "なし";
+        this.removeFoodContainer();
         this.removeEpipenContainer();
+        this.setOwnSnack(false); // NEW: force false
         break;
+
       case "有":
         this.allergyInputTarget.readOnly = false;
-        this.allergyInputTarget.value = "";
-        if (!this.epipenContainer) {
-          this.epipenContainer = this.createEpipenContainer();
-          const formFloating =
-            this.allergyInputTarget.closest(".form-floating");
-          formFloating.insertAdjacentElement(
-            "beforebegin",
-            this.epipenContainer
-          );
+        if (this.allergyInputTarget.value === "なし") {
+          this.allergyInputTarget.value = "";
         }
+        this.insertFoodContainer(); // NEW
+        this.insertEpipenContainer(); // existing behavior preserved
         break;
+
       default:
         this.allergyInputTarget.readOnly = true;
         this.allergyInputTarget.value = "";
+        this.removeFoodContainer();
         this.removeEpipenContainer();
+        this.setOwnSnack(false); // NEW: force false
         break;
+    }
+  }
+
+  // === Food allergy block (NEW) ===
+  insertFoodContainer() {
+    if (this.foodContainer) return;
+
+    const container = document.createElement("div");
+    container.classList.add("food-allergy-container");
+    container.style.marginTop = "0.5rem";
+
+    const label = document.createElement("p");
+    label.textContent = "そのアレルギーは食べ物ですか？";
+    label.style.marginBottom = "0.5rem";
+    container.appendChild(label);
+
+    const select = document.createElement("select");
+    select.classList.add("form-select");
+    const options = [
+      { v: "", t: "" },
+      { v: "no", t: "いいえ" },
+      { v: "yes", t: "はい（おやつ持参をお願いします）" },
+    ];
+    options.forEach(({ v, t }) => {
+      const opt = document.createElement("option");
+      opt.value = v;
+      opt.textContent = t;
+      select.appendChild(opt);
+    });
+
+    select.addEventListener("change", (e) => {
+      this.foodSelectionChanged(e.target.value);
+    });
+
+    container.appendChild(select);
+    this.foodSelect = select;
+
+    // Insert above the floating input block
+    const formFloating = this.allergyInputTarget.closest(".form-floating");
+    formFloating.insertAdjacentElement("beforebegin", container);
+
+    this.foodContainer = container;
+
+    // default own_snack to false until "yes"
+    this.setOwnSnack(false);
+  }
+
+  removeFoodContainer() {
+    if (this.foodContainer) {
+      this.foodContainer.remove();
+      this.foodContainer = null;
+      this.foodSelect = null;
+    }
+  }
+
+  foodSelectionChanged(value) {
+    // Only set true when user explicitly chooses yes
+    this.setOwnSnack(value === "yes");
+  }
+
+  setOwnSnack(val) {
+    if (this.ownSnackFieldTarget) {
+      this.ownSnackFieldTarget.value = val ? "1" : "0";
+    }
+  }
+
+  // === Epipen block (your existing logic, extracted for reuse) ===
+  insertEpipenContainer() {
+    if (!this.epipenContainer) {
+      this.epipenContainer = this.createEpipenContainer();
+      const formFloating = this.allergyInputTarget.closest(".form-floating");
+      formFloating.insertAdjacentElement("beforebegin", this.epipenContainer);
     }
   }
 
@@ -129,7 +214,7 @@ export default class extends Controller {
     if (value === "はい") {
       this.epipenWarning.style.display = "block";
       this.epipenSelect.setCustomValidity(
-        "エピペンをお持ちの場合、登録は行えません。"
+        "エピペンをお持ちの場合、登録は行えません。",
       );
     } else {
       this.epipenWarning.style.display = "none";

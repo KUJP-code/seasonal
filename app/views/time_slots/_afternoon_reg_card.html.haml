@@ -47,7 +47,7 @@
                     'register-id-value': slot.id,
                     'register-modifier-value': activity_modifier(slot, child),
                     'register-name-value': slot.name.concat(' (午後)').tr(' ', '_'),
-                    'register-snack-value': slot.snack.to_s,
+                    'register-snack-value': (slot.snack && !child.own_snack?).to_s,
                     'register-type-value': 'TimeSlot' } }
         %label.fw-bold.fs-5.form-check-label{ for: "a_slot#{slot.id}",
                                               'data-register-target': 'name' }
@@ -82,7 +82,10 @@
                   cost: number_to_currency(activity_modifier(slot, child)))
 
           - if slot.snack
-            %p #{t('.snack')}: ◯
+            - if child.own_snack?
+              %p おやつ持参（料金なし）
+            - else
+              %p #{t('.snack')}: ◯
 
           - slot.options.each do |opt|
             - next if opt.time?
