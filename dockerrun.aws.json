@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.3.6-party_closed_displays"
+    "Name": "kidsup/event_site:b2.3.7-xmas_cards"
   },
   "Ports": [
     {
