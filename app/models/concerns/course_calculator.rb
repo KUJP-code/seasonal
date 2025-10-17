@@ -75,9 +75,8 @@ module CourseCalculator
 
   def snack_cost(slots)
     snack_count = slots.count(&:snack)
-    snack_cost = snack_count * TimeSlot::SNACK_COST
-
-    [snack_cost, snack_count]
+    cost = child.respond_to?(:own_snack?) && child.own_snack? ? 0 : snack_count * TimeSlot::SNACK_COST
+    [cost, snack_count]
   end
 
   def extra_cost(slots)

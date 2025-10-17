@@ -1,5 +1,6 @@
 %main.gap-3#user-show
-
+  - child_for_external = @user.children.first
+  - total_cards = @events.to_a.size + 1
 
   - unless @user.confirmed?
     .card.justify-content-center.align-items-center.bg-danger
@@ -52,15 +53,16 @@
                       nil,
                       class: 'form-label'
 
-  - if @events&.size.to_i > 1
+  - if total_cards > 1
     .event-card-container
       - @events&.each do |e|
         = render partial: 'events/child_event',
                           locals: { event: e,
                           child: @user.children.first,
                           sibling_events: e.sibling_events }
+      = render 'events/external_event', child: child_for_external
   - else
-    .single-event-card 
+    .single-event-card
       - @events&.each do |e|
         = render partial: 'events/child_event',
                           locals: { event: e,

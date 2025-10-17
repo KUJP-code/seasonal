@@ -1,7 +1,11 @@
 :ruby
-  snack_cost = @slots.select(&:snack).reduce(0) do |sum, s|
-    sum + (s.registrations_count * TimeSlot::SNACK_COST)
-  end
+  # Only charge for snack when the child is NOT own_snack
+  snack_reg_count =
+    @slots
+      .select(&:snack)
+      .sum { |s| s.registrations.joins(:child).where(children: { own_snack: [false, nil] }).count }
+
+  snack_cost = snack_reg_count * TimeSlot::SNACK_COST
 
   by_category = @slots.each_with_object(Hash.new(0)) do |slot, hash|
     hash[slot.category] += slot.registrations_count

@@ -5,7 +5,7 @@ class ChildrenController < ApplicationController
   # from different schools. Index action is authorized instead
   after_action :verify_authorized, except: %i[attended_seasonal find_child]
 
-  ALLOWED_SOURCES = %w[event time_slot].freeze
+  ALLOWED_SOURCES = %w[event time_slot photo].freeze
 
   def index
     return show_attendance_sheet if attendance_request?
@@ -101,7 +101,7 @@ class ChildrenController < ApplicationController
   def child_params
     params.require(:child).permit(
       :id, :first_name, :family_name, :parent_id, :kana_first, :kana_family,
-      :en_name, :category, :birthday, :level, :allergies, :grade, :ssid,
+      :en_name, :category, :birthday, :level, :allergies, :own_snack, :grade, :ssid,
       :ele_school_name, :photos, :first_seasonal, :received_hat, :school_id,
       registrations_attributes:
         %i[child_id registerable_type registerable_id]
@@ -133,7 +133,11 @@ class ChildrenController < ApplicationController
   end
 
   def show_attendance_sheet
-    params[:source] == 'event' ? event_attendance : time_slot_attendance
+    case params[:source]
+    when 'event'     then event_attendance
+    when 'time_slot' then time_slot_attendance
+    when 'photo'     then photo_attendance
+    end
   end
 
   def attendance_request?
@@ -181,25 +185,42 @@ class ChildrenController < ApplicationController
   end
 
   def time_slot_attendance
-    @slot = authorize(TimeSlot.find(params[:id]), :attendance?)
+    build_timeslot_assigns(TimeSlot.find(params[:id]))
+    render 'children/time_slots/attendance'
+  end
+
+  def photo_attendance
+    build_timeslot_assigns(TimeSlot.find(params[:id]))
+
+    photo_child_ids = load_photo_child_ids(@slot.event)
+
+    all_day_children = (@children + @afternoon_children).uniq
+    photo_kids = all_day_children.select { |c| photo_child_ids.include?(c.id) }
+
+    @children = photo_kids.select { |c| c.time_slots.include?(@slot) }
+    @afternoon_children =
+      if @afternoon
+        photo_kids.select { |c| c.registered?(@afternoon) }
+      else
+        []
+      end
+
+    render 'children/time_slots/attendance'
+  end
+
+  def build_timeslot_assigns(slot)
+    @slot = authorize(slot, :attendance?)
     @options = @slot.options
     @event_options = @slot.event.options
     @children = @slot.children
-                     .includes(
-                       :options,
-                       :parent,
-                       :registrations,
-                       :regular_schedule,
-                       :time_slots
-                     )
+                     .includes(:options, :parent, :registrations, :regular_schedule, :time_slots)
+
     @afternoon = @slot.afternoon_slot
     afternoon_data
+
     if @slot.event.respond_to?(:party?) && @slot.event.party?
-      @next_party_slot = @slot.event.time_slots
-                              .where('start_time > ?', @slot.start_time)
-                              .order(:start_time)
-                              .first
-      # Parties wanted if next party also has attendance for combo parties.
+      @next_party_slot = @slot.event.time_slots.where('start_time > ?',
+                                                      @slot.start_time).order(:start_time).first
       @next_party_child_ids =
         if @next_party_slot
           Registration.where(registerable: @next_party_slot).pluck(:child_id).to_set
@@ -210,6 +231,13 @@ class ChildrenController < ApplicationController
       @next_party_slot = nil
       @next_party_child_ids = Set.new
     end
-    render 'children/time_slots/attendance'
+  end
+
+  def load_photo_child_ids(event)
+    photo_opt = event.options.first!
+
+    direct_ids = Registration.where(registerable: photo_opt).pluck(:child_id).uniq
+    parent_ids = Child.where(id: direct_ids).select(:parent_id)
+    Child.where(parent_id: parent_ids).pluck(:id)
   end
 end

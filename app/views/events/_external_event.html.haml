@@ -1,0 +1,10 @@
+.card.event-card.d-grid
+  = link_to external_event_url, target: '_blank', rel: 'noopener' do
+    = picture_tag(external_event_avif_path(child), external_event_image_path(child), image: { class: 'img-fluid img-thumbnail', alt: external_event_title(child) })
+
+  .d-flex.flex-column.flex-grow-1.gap-3
+    %h2.fw-bold
+      = link_to external_event_title(child), external_event_url, target: '_blank', rel: 'noopener'
+
+    - if (d = external_event_date(child))
+      %p= date_yy_mm_dd(d)

@@ -43,6 +43,7 @@ en:
       confirm_no_email: "Confirm (No email)"
       confirm_w_email: "Confirm (Send email)"
       confirm_success: "Your booking has been created successfully. You can make changes to your booking on this site until it has been confirmed by the school manager, at which point you will need to contact the school for further changes."
+      check_email: "Your application will be sent from 'bookings@kids-up.app'. Please make sure you are able to receive emails from the above address."
       makes_editable: "Customers will be able to edit this invoice if it's unconfirmed. Are you sure?"
       mark_in_ss: "Mark In SS"
       merge_bookings: "Merge Bookings"
