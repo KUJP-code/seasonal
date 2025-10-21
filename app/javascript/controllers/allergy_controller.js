@@ -103,7 +103,10 @@ export default class extends Controller {
     const options = [
       { v: "", t: "" },
       { v: "no", t: "いいえ" },
-      { v: "yes", t: "はい（おやつ持参をお願いします）" },
+      {
+        v: "yes",
+        t: "はい（午後のコースにご参加される場合は、おやつをご持参ください）",
+      },
     ];
     options.forEach(({ v, t }) => {
       const opt = document.createElement("option");
