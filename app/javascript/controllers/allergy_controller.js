@@ -1,7 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  // CHANGED: add ownSnackField to targets
   static targets = ["allergyInput", "ownSnackField"];
 
   connect() {
@@ -14,12 +13,10 @@ export default class extends Controller {
       form.addEventListener("submit", this.handleSubmit.bind(this));
     }
 
-    // NEW: initialize own_snack to 0 unless already set
     if (this.ownSnackFieldTarget && this.ownSnackFieldTarget.value === "") {
       this.ownSnackFieldTarget.value = "0";
     }
 
-    // NEW: if allergies pre-filled (and not "なし"), reveal food + epipen blocks
     const preset = (this.allergyInputTarget.value || "").trim();
     if (preset && preset !== "なし") {
       this.insertFoodContainer();
@@ -71,8 +68,8 @@ export default class extends Controller {
         if (this.allergyInputTarget.value === "なし") {
           this.allergyInputTarget.value = "";
         }
-        this.insertFoodContainer(); // NEW
-        this.insertEpipenContainer(); // existing behavior preserved
+        this.insertFoodContainer();
+        this.insertEpipenContainer();
         break;
 
       default:
@@ -80,12 +77,11 @@ export default class extends Controller {
         this.allergyInputTarget.value = "";
         this.removeFoodContainer();
         this.removeEpipenContainer();
-        this.setOwnSnack(false); // NEW: force false
+        this.setOwnSnack(false);
         break;
     }
   }
 
-  // === Food allergy block (NEW) ===
   insertFoodContainer() {
     if (this.foodContainer) return;
 
@@ -122,13 +118,11 @@ export default class extends Controller {
     container.appendChild(select);
     this.foodSelect = select;
 
-    // Insert above the floating input block
     const formFloating = this.allergyInputTarget.closest(".form-floating");
     formFloating.insertAdjacentElement("beforebegin", container);
 
     this.foodContainer = container;
 
-    // default own_snack to false until "yes"
     this.setOwnSnack(false);
   }
 
@@ -141,7 +135,6 @@ export default class extends Controller {
   }
 
   foodSelectionChanged(value) {
-    // Only set true when user explicitly chooses yes
     this.setOwnSnack(value === "yes");
   }
 
@@ -151,7 +144,6 @@ export default class extends Controller {
     }
   }
 
-  // === Epipen block (your existing logic, extracted for reuse) ===
   insertEpipenContainer() {
     if (!this.epipenContainer) {
       this.epipenContainer = this.createEpipenContainer();
