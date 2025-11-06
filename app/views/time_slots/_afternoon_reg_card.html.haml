@@ -70,8 +70,9 @@
         = check_box_tag "a_slot#{slot.id}",
                         '', (true if registered),
                         class: 'form-check-input m-0',
-                        data: { action: 'register#toggle',
-                                'register-target': 'button' },
+                        data: { action: 'register#toggle change->full-day#syncFromSlots',
+                                'register-target': 'button',
+                                'full-day-target': 'slot' },
                         role: 'switch'
 
         %div{ class: "options mt-2 #{'hidden' unless registered}",
