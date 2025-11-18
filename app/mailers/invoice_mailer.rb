@@ -4,7 +4,7 @@ class InvoiceMailer < ApplicationMailer
   before_action :set_shared_vars
 
   def confirmation_notif
-    attachments['invoice.pdf'] = @invoice.pdf
+    # attachments['invoice.pdf'] = @invoice.pdf
     mail(to: @parent.email, subject: t('.invoice_confirm'))
   end
 
