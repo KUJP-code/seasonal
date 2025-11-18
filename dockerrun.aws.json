@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.4.0-multi-afternoon"
+    "Name": "kidsup/event_site:2.4.1-invoice-cancelled"
   },
   "Ports": [
     {
