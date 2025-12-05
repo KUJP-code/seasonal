@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.4.3-email-msg"
+    "Name": "kidsup/event_site:2.4.4-badges"
   },
   "Ports": [
     {
