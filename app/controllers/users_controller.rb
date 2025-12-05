@@ -207,7 +207,7 @@ class UsersController < ApplicationController
     sm_upcoming_events_data(@upcoming_events.ids, user) if @upcoming_events
     @badge_invoices = Invoice.where(event_id: @upcoming_events.ids)
                              .includes(:child, :slot_regs)
-                             .select { |i| i.slot_regs.size >= 5 }
+                             .select { |i| i.slot_regs.size >= 3 }
   end
 
   def sm_deleted_invoices(user, event_ids)
