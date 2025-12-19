@@ -3,7 +3,9 @@
     - if @events&.size.to_i > 1
 
       .event-card-container
-        = render 'events/external_event', child: @child
+        - if show_christmas_event?(@child)
+          = render 'events/external_event', child: @child
+        = render 'events/choco_party', child: @child
         - @events.each do |e|
           = render 'events/child_event',
                    child: @child,
@@ -11,13 +13,14 @@
                    sibling_events: e.sibling_events
     - else
       .single-event-card
-        = render 'events/external_event', child: @child
+        - if show_christmas_event?(@child)
+          = render 'events/external_event', child: @child
+        = render 'events/choco_party', child: @child
         - @events.each do |e|
           = render 'events/child_event',
                    child: @child,
                    event: e,
                    sibling_events: e.sibling_events
-
 
   .card.w-100
     %h1.fw-bold= @child.name
@@ -68,7 +71,7 @@
                             locals: { event: e,
                             child: @child,
                             sibling_events: e.sibling_events }
-        
+
     - else
       .single-event-card
         - @events&.each do |e|
@@ -76,4 +79,3 @@
                             locals: { event: e,
                             child: @child,
                             sibling_events: e.sibling_events }
-
