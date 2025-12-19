@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.4.4-badges"
+    "Name": "kidsup/event_site:2.4.5-choco_card"
   },
   "Ports": [
     {
