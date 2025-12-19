@@ -60,6 +60,7 @@
                           locals: { event: e,
                           child: @user.children.first,
                           sibling_events: e.sibling_events }
+      = render 'events/choco_party', child: @child
       = render 'events/external_event', child: child_for_external
   - else
     .single-event-card
