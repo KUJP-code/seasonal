@@ -22,13 +22,13 @@
                    class: 'btn btn-primary print',
                    'data-action': 'click->print#print'
 
-      - if @slot.special? && @afternoon
+      - if @afternoon
 
-        = link_to @afternoon.name,
+        = link_to "#{@afternoon.name} (午後)",
                   children_path(id: @afternoon.id, source: 'time_slot'),
                   class: 'btn btn-primary'
-      - elsif @slot.special? && @slot.morning_slot
-        = link_to @slot.morning_slot.name,
+      - elsif @slot.morning_slot
+        = link_to "#{@slot.morning_slot.name} (朝)",
                   children_path(id: @slot.morning_slot.id, source: 'time_slot'),
                   class: 'btn btn-primary'
 
