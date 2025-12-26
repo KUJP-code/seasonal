@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.4.7-attendance_adjustments"
+    "Name": "kidsup/event_site:2.4.8-seasonal_photo_notice"
   },
   "Ports": [
     {
