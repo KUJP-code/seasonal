@@ -190,6 +190,7 @@ class InvoicesController < ApplicationController
       # FIXME: bandaid to cover for the fact that some callbacks don't
       # update the summary (adjustments, option registrations)
       @invoice.reload.calc_cost && @invoice.save
+      @invoice.sync_photo_service_with_siblings!
       # Only send emails on customer updates or staff confirmations
       send_emails(@invoice) if current_user.customer? || @invoice.email_sent
       redirect_to invoice_path(
