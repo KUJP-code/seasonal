@@ -37,6 +37,12 @@ RSpec.describe Invoice do
   end
 
   context 'when calculating cost for event options' do
+    let(:event) do
+      create(:event,
+             start_date: Date.new(2025, 8, 1),
+             end_date: Date.new(2025, 8, 2),
+             early_bird_date: Date.new(2025, 7, 1))
+    end
     let(:event_option) { create(:event_option, cost: 10, optionable: event) }
 
     it 'calculates cost for event options if at least one slot registered' do

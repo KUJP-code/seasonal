@@ -127,6 +127,12 @@ RSpec.describe Invoice do
   end
 
   context 'when considering repeater discount' do
+    let(:event) do
+      create(:event,
+             start_date: Date.new(2025, 8, 1),
+             end_date: Date.new(2025, 8, 2),
+             early_bird_date: Date.new(2025, 7, 1))
+    end
     let(:change) { -10_000 }
     let(:reason) { '非会員リピーター割引(以前シーズナルスクールに参加された非会員の方)' }
     let(:valid_repeater_invoice) do
@@ -135,7 +141,7 @@ RSpec.describe Invoice do
                         time_slots.map { |s| build(:slot_reg, child:, registerable: s) })
       invoice
     end
-    let(:time_slots) { create_list(:time_slot, 5) }
+    let(:time_slots) { create_list(:time_slot, 5, event:) }
 
     it 'does not apply to parties' do
       party = create(:event, early_bird_discount: -500)
@@ -194,6 +200,45 @@ RSpec.describe Invoice do
                [create(:adjustment, change:, reason:)])
       valid_repeater_invoice.calc_cost
       expect(find_adjustment(valid_repeater_invoice)).to be_present
+    end
+  end
+
+  context 'when pricing rules change in 2026' do
+    it 'applies first time adjustment for a 2025 event' do
+      event_2025 = create(:event,
+                          start_date: Date.new(2025, 8, 1),
+                          end_date: Date.new(2025, 8, 2),
+                          early_bird_date: Date.new(2025, 7, 1))
+      child = build(:child, category: :external, first_seasonal: true)
+      invoice = build(:invoice, event: event_2025, child:, slot_regs:
+                        [build(:slot_reg, child:, registerable: create(:time_slot))])
+
+      invoice.calc_cost
+
+      first_time_adj = invoice.adjustments.find do |adj|
+        adj.change == 1_100 &&
+          adj.reason == '初回登録料(初めてシーズナルスクールに参加する非会員の方)'
+      end
+      expect(first_time_adj).to be_present
+    end
+
+    it 'does not apply repeater discount for a 2026 event' do
+      event_2026 = create(:event,
+                          start_date: Date.new(2026, 8, 1),
+                          end_date: Date.new(2026, 8, 2),
+                          early_bird_date: Date.new(2026, 7, 1))
+      child = build(:child, category: :external, first_seasonal: false)
+      time_slots = create_list(:time_slot, 5)
+      invoice = build(:invoice, event: event_2026, child:, slot_regs:
+                        time_slots.map { |slot| build(:slot_reg, child:, registerable: slot) })
+
+      invoice.calc_cost
+
+      repeater_adj = invoice.adjustments.find do |adj|
+        adj.change == -10_000 &&
+          adj.reason == '非会員リピーター割引(以前シーズナルスクールに参加された非会員の方)'
+      end
+      expect(repeater_adj).to be_nil
     end
   end
 
