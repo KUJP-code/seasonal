@@ -80,9 +80,7 @@ class Invoice < ApplicationRecord
     end
     return if siblings_with_slots.empty?
 
-    any_photo = Registration.option_registrations
-                            .where(child: siblings_with_slots, registerable_id: photo_option_ids)
-                            .exists?
+    current_has_photo = opt_regs.any? { |reg| photo_option_ids.include?(reg.registerable_id) }
 
     siblings_with_slots.each do |sibling|
       invoices = sibling.invoices.where(event:).includes(:slot_regs, :opt_regs)
@@ -95,7 +93,7 @@ class Invoice < ApplicationRecord
       end
 
       updated = false
-      if any_photo
+      if current_has_photo
         unless existing_reg
           target_invoice.opt_regs.create!(
             child: sibling,
