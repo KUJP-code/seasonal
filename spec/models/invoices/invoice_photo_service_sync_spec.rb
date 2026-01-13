@@ -21,6 +21,7 @@ RSpec.describe Invoice do
 
   def add_photo(invoice, child_record)
     create(:event_opt_reg, child: child_record, invoice:, registerable: photo_option)
+    invoice.reload
   end
 
   it 'adds photo service to siblings with registrations for 2026+ events' do
