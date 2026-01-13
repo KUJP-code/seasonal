@@ -68,6 +68,54 @@ class Invoice < ApplicationRecord
     "##{id}, #{yenify(total_cost)}"
   end
 
+  def sync_photo_service_with_siblings!
+    return unless event.pricing_rules_2026?
+
+    photo_option_ids = event.options.where(category: :event).pluck(:id)
+    return if photo_option_ids.empty?
+
+    siblings = child.siblings + [child]
+    siblings_with_slots = siblings.select do |sibling|
+      sibling.time_slots.where(event_id: event.id).exists?
+    end
+    return if siblings_with_slots.empty?
+
+    any_photo = Registration.option_registrations
+                            .where(child: siblings_with_slots, registerable_id: photo_option_ids)
+                            .exists?
+
+    siblings_with_slots.each do |sibling|
+      invoices = sibling.invoices.where(event:).includes(:slot_regs, :opt_regs)
+      target_invoice = invoices.find { |inv| inv.slot_regs.any? }
+      target_invoice ||= invoices.order(in_ss: :asc).first
+      next unless target_invoice
+
+      existing_reg = target_invoice.opt_regs.find do |reg|
+        photo_option_ids.include?(reg.registerable_id)
+      end
+
+      updated = false
+      if any_photo
+        unless existing_reg
+          target_invoice.opt_regs.create!(
+            child: sibling,
+            registerable_id: photo_option_ids.first,
+            registerable_type: 'Option'
+          )
+          updated = true
+        end
+      elsif existing_reg
+        existing_reg.destroy
+        updated = true
+      end
+
+      next unless updated
+
+      target_invoice.calc_cost
+      target_invoice.save!
+    end
+  end
+
   private
 
   def blank_or_dup(coupon)
