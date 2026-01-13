@@ -11,6 +11,8 @@ module OptionCalculator
 
   def duplicated_event_opts(opts)
     duplicated = opts.select do |opt|
+      next false if event.pricing_rules_2026? && opt.event?
+
       opt.event? &&
         child.siblings.any? { |s| s.options.include?(opt) }
     end
