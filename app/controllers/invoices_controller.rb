@@ -43,6 +43,7 @@ class InvoicesController < ApplicationController
     @invoice = authorize Invoice.new(permitted_attributes(Invoice))
 
     if @invoice.save
+      @invoice.sync_photo_service_with_siblings!
       send_emails(@invoice) unless current_user.admin?
       redirect_to invoice_path(@invoice, updated: true),
                   notice: t('success', model: 'お申込', action: '追加')

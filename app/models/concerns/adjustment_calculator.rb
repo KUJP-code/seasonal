@@ -10,7 +10,7 @@ module AdjustmentCalculator
     if event.seasonal?
       first_time_adjustment if first_time?(num_regs)
       hat_adjustment if needs_hat?
-      repeater_discount if repeater?(num_regs)
+      repeater_discount if repeater?(num_regs) && !event.pricing_rules_2026?
     end
     adjustments.reduce(0) { |sum, adj| sum + adj.change }
   end
