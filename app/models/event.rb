@@ -98,6 +98,10 @@ class Event < ApplicationRecord
     early_bird_discount.zero?
   end
 
+  def pricing_rules_2026?
+    start_date.year >= 2026
+  end
+
   def to_gas_summary
     external_kids = children.external
     internal_kids = children.internal
