@@ -2,14 +2,7 @@
   registrations:, siblings:)
 
 - event_options.each do |opt|
-  - if siblings.any? { |sibling| sibling.registered?(opt) }
-    .d-flex.gap-2.align-items-center
-      %h3 #{opt.name}: #{t('.sibling_reg', opt: opt.name)}
-
-  - elsif confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id }
-    .d-flex.gap-2.align-items-center
-      %h3 #{opt.name} (#{number_to_currency(opt.cost, locale: :ja)}): ◯
-
+  - if confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id }
   - else
     :ruby
       registered = registrations.any? do |reg|

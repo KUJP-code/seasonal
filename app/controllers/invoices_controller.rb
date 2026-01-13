@@ -278,6 +278,7 @@ class InvoicesController < ApplicationController
 
     if @invoice.update(permitted_attributes(@invoice))
       @invoice.reload
+      @invoice.sync_photo_service_with_siblings!
       respond_to do |format|
         format.turbo_stream
       end
