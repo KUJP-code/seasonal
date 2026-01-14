@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.4.9-api_changes"
+    "Name": "kidsup/event_site:2.5-pricing"
   },
   "Ports": [
     {
