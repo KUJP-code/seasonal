@@ -109,6 +109,7 @@ class Invoice < ApplicationRecord
 
       next unless updated
 
+      target_invoice.reload
       target_invoice.calc_cost
       target_invoice.save!
     end
