@@ -8,6 +8,10 @@
       registered = registrations.any? do |reg|
         reg.child_id == child.id && reg.registerable_id == opt.id
       end
+        sibling_has_photo = opt.optionable.respond_to?(:pricing_rules_2026?) &&
+          opt.optionable.pricing_rules_2026? &&
+          siblings.any? { |sibling| sibling.options.exists?(id: opt.id) }
+      default_opt = opt.optionable.party? || sibling_has_photo
     %div{ class: 'add_ref ' \
                  'form-check form-switch p-0',
           data: { controller: 'register',
@@ -15,7 +19,7 @@
                   'register-type-value': 'Option',
                   'register-child-value': @child.id,
                   'register-cost-value': opt.cost,
-                  'register-default-value': (opt.optionable.party? ? 'true' : 'false')
+                  'register-default-value': (default_opt ? 'true' : 'false')
                   } }
 
       %label{ class: 'photoservice-container',
