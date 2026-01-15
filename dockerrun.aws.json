@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.5.1-reload_invoice"
+    "Name": "kidsup/event_site:2.5.2-jp_text"
   },
   "Ports": [
     {
