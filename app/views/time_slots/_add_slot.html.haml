@@ -164,3 +164,27 @@
              confirmed_slot_regs:, confirmed_opt_regs:, child:,
              opt_regs:, registrations:, slot: add_slot.afternoon_slot
 
+    - if add_slot.afternoon_slot.present?
+      :ruby
+        start_time = add_slot.start_time
+        end_time =
+          if add_slot.afternoon_slot&.end_time
+            add_slot.afternoon_slot.end_time
+          else
+            Time.zone.parse('18:30')
+          end
+        full_day_range =
+          if start_time && end_time
+            "#{start_time.strftime('%H:%M')}–#{end_time.strftime('%H:%M')}"
+          else
+            '10:00–18:30'
+          end
+      .full-day.w-100.mt-2
+        %div{ class: 'add_reg w-100 form-check form-switch p-0 d-flex ' \
+                     'flex-column justify-content-center align-items-center ' \
+                     'gap-3' }
+          %label.fw-bold.form-check-label{ for: "full#{add_slot.id}" }
+            終日参加（午前・午後の計２コマに参加）
+            %br/
+            %span.text-muted.small= full_day_range
+          = check_box_tag "full#{add_slot.id}", '', false, class: 'form-check-input m-0', data: { 'full-day-target': 'full', action: 'change->full-day#toggleFromFull' }
