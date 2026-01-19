@@ -22,5 +22,6 @@ FactoryBot.define do
     start_date { Date.new(2016, 4, 1) }
     requests { 'お疲れ様でした' }
     category { 'R' }
+    privacy_policy { 'on' }
   end
 end
