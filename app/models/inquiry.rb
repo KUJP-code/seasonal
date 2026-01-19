@@ -115,7 +115,6 @@ class Inquiry < ApplicationRecord
     return unless setsumeikai.full?
 
     errors.add(:setsumeikai_id, '申し込みは締め切られました。')
-    end
   end
   CATEGORY_MAP = {
     'C' => 'Call center',
