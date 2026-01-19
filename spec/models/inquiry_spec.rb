@@ -90,4 +90,26 @@ describe Inquiry do
       expect(inquiry.child_grade).to eq('小学４年生')
     end
   end
+
+  describe 'setsumeikai cutoff validation' do
+    it 'rejects R inquiries after close_at (cutoff)' do
+      school = create(:school)
+      setsumeikai = create(
+        :setsumeikai,
+        school:,
+        start: 1.day.from_now,
+        release_date: 2.days.ago,
+        close_at: 1.day.ago # already past cutoff
+      )
+
+      inquiry = build(:inquiry,
+                      category: 'R',
+                      school:,
+                      setsumeikai:,
+                      privacy_policy: 'on')
+
+      expect(inquiry).not_to be_valid
+      expect(inquiry.errors[:setsumeikai_id]).to include('申し込みは締め切られました。')
+    end
+  end
 end
