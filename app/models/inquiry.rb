@@ -13,7 +13,7 @@ class Inquiry < ApplicationRecord
             presence: true,
             length: { is: 1 },
             inclusion: { in: VALID_CATEGORIES }
-
+  validate :setsumeikai_open_for_inquiry, if: -> { category == 'R' }
   enum :referrer, 'チラシ' => 0,
                   '口コミ' => 1,
                   'ホームページ' => 2,
@@ -109,6 +109,14 @@ class Inquiry < ApplicationRecord
     setsumeikai.school.name
   end
 
+  def setsumeikai_open_for_inquiry
+    return if setsumeikai.nil?
+
+    return unless setsumeikai.full?
+
+    errors.add(:setsumeikai_id, '申し込みは締め切られました。')
+    end
+  end
   CATEGORY_MAP = {
     'C' => 'Call center',
     'I' => '問合せ',
