@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     mount MissionControl::Jobs::Engine, at: '/jobs'
     mount PgHero::Engine, at: 'pghero'
   end
-  
+
   # custom routes
   get '/choco25', to: 'redirects#choco25'
 
@@ -53,6 +53,10 @@ Rails.application.routes.draw do
 
       # Mailer subscription routes
       resources :mailer_subscriptions, only: %i[index create update]
+      resources :mailer_templates, only: %i[index]
+      get 'mailer_templates/:preview/:email',
+          to: 'mailer_templates#show',
+          as: :mailer_template
 
       # Non-REST routes for Children controller
       get 'child/find_child', to: 'children#find_child', as: :find_child
