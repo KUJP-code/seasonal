@@ -8,12 +8,19 @@ en:
   nav_bar:
     children: "Children"
     customers: "Customers"
+    email_templates: "Email templates"
     events: "Events"
     logout: "Sign Out"
     profile: "My Profile"
     schools: "Schools"
     time_slots: "Activities"
     users: "Users"
+  mailer_templates:
+    back: "Back"
+    email_label: "Email"
+    empty: "No mailer previews available."
+    preview_label: "Preview"
+    title: "Email templates"
   not_authorized: "You don't have permission to access that. Contact Brett if you think you should."
   number:
     currency:

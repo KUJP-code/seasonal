@@ -137,8 +137,15 @@ ja:
     children: "生徒"
     customers: "保護者"
     events: "イベント"
+    email_templates: "メールテンプレート"
     logout: "サインアウト"
     time_slots: "開催日"
+  mailer_templates:
+    back: "戻る"
+    email_label: "メール"
+    empty: "メールテンプレートのプレビューがありません。"
+    preview_label: "プレビュー"
+    title: "メールテンプレート"
   not_authorized: "そのURLへのアクセスは許可されていない。"
   not_in_school: "このサイトには自スクールからのみアクセスできます。このメッセージを受け取った場合は、Leroy係長に連絡してください。"
   number:
