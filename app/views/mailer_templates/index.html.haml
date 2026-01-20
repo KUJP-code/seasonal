@@ -1,0 +1,10 @@
+%h1= t('mailer_templates.title')
+
+- if @previews.any?
+  - @previews.each do |preview|
+    %h2= preview[:name]
+    %ul
+      - preview[:emails].each do |email|
+        %li= link_to email, mailer_template_path(preview: preview[:name], email: email)
+- else
+  %p= t('mailer_templates.empty')

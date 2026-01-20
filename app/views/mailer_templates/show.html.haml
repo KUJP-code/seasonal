@@ -1,0 +1,19 @@
+%h1= t('mailer_templates.title')
+
+%p
+  %strong= t('mailer_templates.preview_label')
+  = @preview.preview_name
+
+%p
+  %strong= t('mailer_templates.email_label')
+  = @email_action
+
+- if @message.html_part
+  .card
+    .card-body
+      = @message.html_part.body.raw_source.html_safe
+- else
+  %pre= @message.body.raw_source
+
+%p
+  = link_to t('mailer_templates.back'), mailer_templates_path, class: 'btn btn-secondary'
