@@ -1,6 +1,15 @@
 -# locals: (child:, event_options:, confirmed_opt_regs:,
   registrations:, siblings:)
 
+:ruby
+  siblings_registered_for_event = if event_options.first
+    event_id = event_options.first.optionable_id
+    siblings.any? { |sibling| sibling.time_slots.where(event_id: event_id).exists? }
+  else
+    false
+  end
+
+
 - event_options.each do |opt|
   - if confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id }
   - else
@@ -8,9 +17,13 @@
       registered = registrations.any? do |reg|
         reg.child_id == child.id && reg.registerable_id == opt.id
       end
-        sibling_has_photo = opt.optionable.respond_to?(:pricing_rules_2026?) &&
-          opt.optionable.pricing_rules_2026? &&
-          siblings.any? { |sibling| sibling.options.exists?(id: opt.id) }
+      sibling_has_photo = opt.optionable.respond_to?(:pricing_rules_2026?) &&
+        opt.optionable.pricing_rules_2026? &&
+        siblings.any? { |sibling| sibling.options.exists?(id: opt.id) }
+      show_sibling_warning = opt.event? &&
+        opt.optionable.respond_to?(:pricing_rules_2026?) &&
+        opt.optionable.pricing_rules_2026? &&
+        siblings_registered_for_event
       default_opt = opt.optionable.party? || sibling_has_photo
     %div{ class: 'add_ref ' \
                  'form-check form-switch p-0',
@@ -19,7 +32,10 @@
                   'register-type-value': 'Option',
                   'register-child-value': @child.id,
                   'register-cost-value': opt.cost,
-                  'register-default-value': (default_opt ? 'true' : 'false')
+                  'register-default-value': (default_opt ? 'true' : 'false'),
+                  'register-sibling-warning-value': (show_sibling_warning ? 'true' : 'false'),
+                  'register-sibling-warning-message-value':
+                    '兄弟姉妹のお申込内容にもフォトサービスが反映されます。続行しますか？'
                   } }
 
       %label{ class: 'photoservice-container',
