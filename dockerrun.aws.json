@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.5.4-confirmation_button"
+    "Name": "kidsup/event_site:2.5.5-api_fix"
   },
   "Ports": [
     {
