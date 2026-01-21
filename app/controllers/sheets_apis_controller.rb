@@ -68,7 +68,7 @@ class SheetsApisController < ApplicationController
     @r_success = 0
     @i_success = 0
     @inquiries.each do |i|
-      next @r_success += 1 if i.category == 'R' && i.update(send_flg: false)
+      next @r_success += 1 if i.category == 'R' && i.update_columns(send_flg: false)
 
       @i_success += 1 if i.update(send_flg: false)
     end
