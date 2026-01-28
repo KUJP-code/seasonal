@@ -75,7 +75,8 @@ class School < ApplicationRecord
       nearbySchools: details['nearby_schools'] || [''],
       nearbyStations: details['nearby_stations'] || [''],
       setsumeikais: calendar_setsumeikais,
-      position:
+      position:,
+      isNew: is_new?
     }
   end
 

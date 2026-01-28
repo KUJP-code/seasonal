@@ -15,10 +15,14 @@
 
   .form-floating
     = f.text_field :name,
-                   class: 'form-control',
-                   placeholder: t('.name'),
-                   required: true
+                  class: 'form-control',
+                  placeholder: t('.name'),
+                  required: true
     = f.label :name, t('.name'), class: 'form-label'
+
+  .mt-2.ms-1
+    = f.label :is_new, 'New school? (affects Setsu page)', class: 'form-label'
+    = f.check_box :is_new, class: 'form-check-input'
 
   .form-floating
     = f.email_field :email,
