@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.5.6-new_school"
+    "Name": "kidsup/event_site:2.5.7-nakameguro"
   },
   "Ports": [
     {
