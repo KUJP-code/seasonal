@@ -347,7 +347,24 @@ School.where.not(name: 'Test').each do |school|
   Option.create!(name: 'Photo Service', category: :event,
                  optionable: event, cost: 1_100)
 
-  TimeSlot.create!(time_slot_attrs.map { |attrs| attrs.merge(event_id: event.id) })
+  created_slots =
+    TimeSlot.create!(time_slot_attrs.map { |attrs| attrs.merge(event_id: event.id) })
+
+  # Add an afternoon slot for the special day so it supports full-day + 中延長 testing.
+  special_morning =
+    created_slots.find { |slot| slot.morning? && slot.special? && slot.afternoon_slot.nil? }
+  if special_morning
+    special_morning.create_afternoon_slot!(
+      name: special_morning.name,
+      start_time: special_morning.start_time + 5.hours,
+      end_time: special_morning.end_time + 5.hours,
+      close_at: special_morning.close_at,
+      category: :special,
+      morning: false,
+      event_id: event.id,
+      snack: true
+    )
+  end
 end
 
 puts 'Creating Party event'
