@@ -7,5 +7,6 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     resource '/schools', headers: :any, methods: %i[post]
     resource '/setsu_schools.json', headers: :any, methods: %i[get]
     resource '/create_inquiry.json', headers: :any, methods: %i[post]
+    resource '/api/recruit_applications', headers: :any, methods: %i[post]
   end
 end

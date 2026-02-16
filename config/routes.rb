@@ -38,6 +38,12 @@ Rails.application.routes.draw do
       resources :invoices, except: %i[edit]
       resources :inquiries, except: %i[show]
       resources :price_lists, except: %i[destroy show]
+      resources :recruit_applications, only: %i[index show destroy]
+      resources :recruit_tracking_links, only: %i[index create] do
+        member do
+          patch :remove
+        end
+      end
       resources :schools, except: [:index]
       resources :setsumeikais
       resources :staff_users, except: %i[show]
@@ -108,6 +114,9 @@ Rails.application.routes.draw do
 
   # Inquiry API endpoint
   post 'create_inquiry', to: 'inquiries#create'
+  post 'api/recruit_applications',
+       to: 'recruit_applications#create',
+       defaults: { format: :json }
 
   # Health check endpoint for EB load balancer
   get '/health_check', to: proc { [200, {}, ['success']] }
