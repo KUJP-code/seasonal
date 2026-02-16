@@ -1,0 +1,12 @@
+ja:
+  recruit_tracking_links:
+    index:
+      title: "採用トラッキングリンク"
+      back_to_applications: "応募一覧へ戻る"
+      new_link: "新規トラッキングリンク"
+      name: "名称"
+      slug: "slug"
+      actions: "操作"
+      create: "作成"
+      remove: "削除"
+      remove_confirm: "このトラッキングリンクを削除しますか？"

@@ -1,0 +1,12 @@
+en:
+  recruit_tracking_links:
+    index:
+      title: "Recruit Tracking Links"
+      back_to_applications: "Back to Applications"
+      new_link: "New Tracking Link"
+      name: "Name"
+      slug: "Slug"
+      actions: "Actions"
+      create: "Create"
+      remove: "Remove"
+      remove_confirm: "Remove this tracking link?"
