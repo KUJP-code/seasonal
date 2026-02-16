@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_28_023450) do
+ActiveRecord::Schema[7.1].define(version: 2026_02_16_113000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -235,6 +235,58 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_28_023450) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_quick_bookings_on_school_id"
+  end
+
+  create_table "recruit_applications", force: :cascade do |t|
+    t.string "role", null: false
+    t.string "email", null: false
+    t.string "phone", null: false
+    t.string "full_name", null: false
+    t.date "date_of_birth", null: false
+    t.text "full_address", null: false
+    t.string "gender"
+    t.string "highest_education"
+    t.text "employment_history"
+    t.text "reason_for_application"
+    t.string "nationality"
+    t.string "work_visa_status"
+    t.text "questions"
+    t.boolean "privacy_policy_consent", default: false, null: false
+    t.string "privacy_policy_url"
+    t.string "utm_source"
+    t.string "utm_medium"
+    t.string "utm_campaign"
+    t.string "utm_term"
+    t.string "utm_content"
+    t.string "gclid"
+    t.string "fbclid"
+    t.string "ttclid"
+    t.string "tracking_link_slug"
+    t.string "tracking_click_id"
+    t.string "attribution_method"
+    t.text "landing_page_url"
+    t.text "referrer_url"
+    t.jsonb "raw_tracking", default: {}, null: false
+    t.string "ip_address"
+    t.text "user_agent"
+    t.string "locale"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_recruit_applications_on_created_at"
+    t.index ["role"], name: "index_recruit_applications_on_role"
+    t.index ["tracking_link_slug"], name: "index_recruit_applications_on_tracking_link_slug"
+    t.index ["utm_campaign"], name: "index_recruit_applications_on_utm_campaign"
+    t.index ["utm_source"], name: "index_recruit_applications_on_utm_source"
+  end
+
+  create_table "recruit_tracking_links", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_recruit_tracking_links_on_active"
+    t.index ["slug"], name: "index_recruit_tracking_links_on_slug", unique: true
   end
 
   create_table "registrations", force: :cascade do |t|
