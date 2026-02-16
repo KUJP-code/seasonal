@@ -1,6 +1,5 @@
 %main.gap-3#user-show
-  - child_for_external = @user.children.first
-  - total_cards = @events.to_a.size + 1
+  - total_cards = @events.to_a.size
 
   - unless @user.confirmed?
     .card.justify-content-center.align-items-center.bg-danger
@@ -60,7 +59,6 @@
                           locals: { event: e,
                           child: @user.children.first,
                           sibling_events: e.sibling_events }
-      = render 'events/choco_party', child: @child
   - else
     .single-event-card
       - @events&.each do |e|

@@ -3,8 +3,6 @@
 module EventsHelper
   # Schools that use the 21st and special image
   EXTERNAL_EVENT_SPECIAL_SCHOOL_IDS = [7, 9, 10, 3].freeze
-  # Choco Party special schools
-  CHOCO_PARTY_SPECIAL_SCHOOL_IDS = [40, 10, 9, 7, 3].freeze
 
   def show_christmas_event?(child = external_event_child)
     return false unless child
@@ -69,30 +67,4 @@ module EventsHelper
     ''
   end
 
-  # CHOCO PARTY
-  def choco_party_is_special?(child = external_event_child)
-    CHOCO_PARTY_SPECIAL_SCHOOL_IDS.include?(external_event_school_id(child))
-  end
-
-  def choco_party_url
-    'https://kids-up.jp/events/choco-2026/form/'
-  end
-
-  def choco_party_title(child = external_event_child)
-    base = 'チョコパーティー2025'
-    school = external_event_school(child)
-    school ? "#{base} (#{I18n.t("schools.#{school.name}")})" : base
-  end
-
-  def choco_party_image_path(child = external_event_child)
-    asset_path(choco_party_is_special?(child) ? 'choco-15th.png' : 'choco-14th.png')
-  rescue StandardError
-    ''
-  end
-
-  def choco_party_avif_path(child = external_event_child)
-    asset_path(choco_party_is_special?(child) ? 'choco-15th.avif' : 'choco-14th.avif')
-  rescue StandardError
-    ''
-  end
 end

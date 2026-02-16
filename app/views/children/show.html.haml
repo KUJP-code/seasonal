@@ -3,7 +3,6 @@
     - if @events&.size.to_i > 1
 
       .event-card-container
-        = render 'events/choco_party', child: @child
         - @events.each do |e|
           = render 'events/child_event',
                    child: @child,
@@ -11,7 +10,6 @@
                    sibling_events: e.sibling_events
     - else
       .single-event-card
-        = render 'events/choco_party', child: @child
         - @events.each do |e|
           = render 'events/child_event',
                    child: @child,
