@@ -1,0 +1,48 @@
+%main#recruit-tracking-links-index
+  .d-flex.justify-content-between.align-items-center.gap-3.mb-3.flex-wrap
+    %h2.mb-0= t('.title')
+    = link_to t('.back_to_applications'),
+              recruit_applications_path,
+              class: 'btn btn-secondary'
+
+  .card.p-3.mb-4
+    %h4= t('.new_link')
+    = form_with model: @recruit_tracking_link,
+                url: recruit_tracking_links_path,
+                local: true,
+                class: 'row g-2' do |f|
+      .col-md-5
+        = f.text_field :name,
+                       class: 'form-control',
+                       placeholder: t('.name'),
+                       required: true
+      .col-md-5
+        = f.text_field :slug,
+                       class: 'form-control',
+                       placeholder: t('.slug'),
+                       required: true
+      .col-md-2.d-grid
+        = f.submit t('.create'), class: 'btn btn-primary'
+
+  = paginate @recruit_tracking_links, window: 40
+
+  .table-responsive
+    %table.table.table-striped.table-hover.align-middle
+      %thead.table-primary
+        %tr
+          %th= t('.name')
+          %th= t('.slug')
+          %th= t('.actions')
+      %tbody
+        - @recruit_tracking_links.each do |link|
+          %tr
+            %td= link.name
+            %td= link.slug
+            %td
+              = link_to t('.remove'),
+                        remove_recruit_tracking_link_path(link),
+                        data: { turbo_method: :patch,
+                                turbo_confirm: t('.remove_confirm') },
+                        class: 'btn btn-sm btn-outline-danger'
+
+  = paginate @recruit_tracking_links, window: 40

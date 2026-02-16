@@ -107,11 +107,12 @@
                 %label.form-check-label{ for: "opt#{opt.id}",
                                          'data-register-target': 'name' }
                   = opt.name
+                - opt_data = { action: 'register#toggle', 'register-target': 'button' }
+                - opt_data['full-day-target'] = 'extension' if opt.any_extension?
                 = check_box_tag "opt#{opt.id}",
                                 '', (true if registered),
                                 class: 'form-check-input m-0',
-                                data: { action: 'register#toggle',
-                                        'register-target': 'button' },
+                                data: opt_data,
                                 role: 'switch'
 
           - if confirmed_depart

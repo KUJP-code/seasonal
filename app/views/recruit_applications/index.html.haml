@@ -1,0 +1,105 @@
+%main#recruit-applications-index
+  .card.p-3.mb-3
+    .d-flex.flex-row.justify-content-between.align-items-center.gap-3.flex-wrap.mb-3
+      %h2.mb-0= t('.title')
+      - if current_user.admin?
+        = link_to t('.manage_tracking_links'),
+                  recruit_tracking_links_path,
+                  class: 'btn btn-primary'
+
+    = form_with url: recruit_applications_path, method: :get, local: true, class: 'd-flex flex-column gap-3' do |f|
+      .row.g-2
+        .col-6
+          = f.select :role,
+                     options_for_select([[t('.all_roles'), '']] + RecruitApplication::ROLES.map { |role| [role, role] }, params[:role]),
+                     {},
+                     class: 'form-select'
+        .col-6
+          = f.select :tracking_link_slug,
+                     options_for_select([[t('.all_tracking_links'), '']] + @tracking_link_slugs.map { |slug| [slug, slug] }, params[:tracking_link_slug]),
+                     {},
+                     class: 'form-select'
+      = f.submit t('.filter'), class: 'btn btn-primary w-100'
+
+  = paginate @recruit_applications, window: 40
+
+  .table-responsive
+    %table.table.table-striped.table-hover.text-nowrap
+      %thead.table-primary
+        %tr
+          %th{ data: { controller: 'sort',
+                       'sort-event-value': 'recruit-applications-table',
+                       'sort-col-value': '.created-at',
+                       'sort-type-value': 'date' } }
+            = t('.created_at')
+            %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                                action: 'click->sort#sort' } } &#9650;
+          %th{ data: { controller: 'sort',
+                       'sort-event-value': 'recruit-applications-table',
+                       'sort-col-value': '.role',
+                       'sort-type-value': 'text' } }
+            = t('.role')
+            %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                                action: 'click->sort#sort' } } &#9650;
+          %th{ data: { controller: 'sort',
+                       'sort-event-value': 'recruit-applications-table',
+                       'sort-col-value': '.full-name',
+                       'sort-type-value': 'text' } }
+            = t('.full_name')
+            %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                                action: 'click->sort#sort' } } &#9650;
+          %th{ data: { controller: 'sort',
+                       'sort-event-value': 'recruit-applications-table',
+                       'sort-col-value': '.email',
+                       'sort-type-value': 'text' } }
+            = t('.email')
+            %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                                action: 'click->sort#sort' } } &#9650;
+          %th{ data: { controller: 'sort',
+                       'sort-event-value': 'recruit-applications-table',
+                       'sort-col-value': '.phone',
+                       'sort-type-value': 'text' } }
+            = t('.phone')
+            %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                                action: 'click->sort#sort' } } &#9650;
+          %th{ data: { controller: 'sort',
+                       'sort-event-value': 'recruit-applications-table',
+                       'sort-col-value': '.nationality',
+                       'sort-type-value': 'text' } }
+            = t('.nationality')
+            %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                                action: 'click->sort#sort' } } &#9650;
+          %th{ data: { controller: 'sort',
+                       'sort-event-value': 'recruit-applications-table',
+                       'sort-col-value': '.tracking-link-slug',
+                       'sort-type-value': 'text' } }
+            = t('.tracking_link_slug')
+            %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                                action: 'click->sort#sort' } } &#9650;
+          %th= t('.view')
+          %th= t('.delete')
+      %tbody#recruit-applications-table
+        - @recruit_applications.each do |application|
+          %tr
+            %td.created-at{ data: { sort_value: application.created_at.to_i } }= l(application.created_at, format: :short)
+            %td.role= application.role
+            %td.full-name= application.full_name
+            %td.email= mail_to application.email
+            %td.phone= application.phone
+            %td.nationality= application.nationality
+            %td.tracking-link-slug= application.tracking_link_slug
+            %td
+              = link_to t('.view'),
+                        recruit_application_path(application),
+                        class: 'btn btn-sm btn-primary'
+            %td
+              - if current_user.admin?
+                = link_to t('.delete'),
+                          recruit_application_path(application),
+                          data: { turbo_method: :delete,
+                                  turbo_confirm: t('.delete_confirm') },
+                          class: 'btn btn-sm btn-outline-danger'
+              - else
+                -
+
+  = paginate @recruit_applications, window: 40
