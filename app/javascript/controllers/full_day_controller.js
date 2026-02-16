@@ -1,9 +1,11 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["full", "slot"];
+  static targets = ["full", "slot", "extension"];
 
   connect() {
+    this.initialized = false;
+
     if (!this.hasFullTarget) return;
 
     if (this.slotTargets.length < 2) {
@@ -13,6 +15,7 @@ export default class extends Controller {
     }
 
     this.syncFromSlots();
+    this.initialized = true;
   }
 
   toggleFromFull(event) {
@@ -26,6 +29,18 @@ export default class extends Controller {
   syncFromSlots() {
     if (!this.hasFullTarget || !this.slotTargets.length) return;
     const allOn = this.slotTargets.every((el) => el.checked);
+    const wasOn = this.fullTarget.checked;
     this.fullTarget.checked = allOn;
+
+    if (this.initialized && allOn && !wasOn) {
+      this.enableExtensions();
+    }
+  }
+
+  enableExtensions() {
+    if (!this.hasExtensionTarget) return;
+    this.extensionTargets.forEach((el) => {
+      if (!el.checked) el.click();
+    });
   }
 }

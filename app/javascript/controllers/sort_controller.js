@@ -2,59 +2,74 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = ["toggle"];
-  static values = { col: String, event: String };
+  static values = { col: String, event: String, type: String };
+
+  cellValue(row, colValue) {
+    const cell = row.querySelector(colValue);
+    if (!cell) return "";
+
+    return (cell.dataset.sortValue || cell.textContent || "").trim();
+  }
+
+  textValue(row, colValue) {
+    return this.cellValue(row, colValue);
+  }
+
+  numberValue(row, colValue) {
+    const rawValue = this.cellValue(row, colValue);
+    const normalized = rawValue.replace(/[^\d.-]/g, "");
+    const parsed = parseFloat(normalized);
+
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+
+  dateValue(row, colValue) {
+    const rawValue = this.cellValue(row, colValue);
+    if (!rawValue) return 0;
+
+    const numeric = Number(rawValue);
+    if (!Number.isNaN(numeric)) return numeric;
+
+    const parsed = Date.parse(rawValue);
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+
+  inferType(colValue) {
+    const textCols = [".school", ".name", ".en-name", ".ssid"];
+    return textCols.includes(colValue) ? "text" : "number";
+  }
 
   ascending(tableBody, colValue, rows) {
-    const isTextCol =
-      colValue === ".school" ||
-      colValue === ".name" ||
-      colValue === ".en-name" ||
-      colValue === ".ssid";
+    const sortType = this.typeValue || this.inferType(colValue);
 
-    if (isTextCol) {
-      rows.sort(function (a, b) {
-        const A = a.querySelector(colValue).textContent.trim();
-        const B = b.querySelector(colValue).textContent.trim();
-        return A === B ? 0 : A > B ? 1 : -1;
+    if (sortType === "text") {
+      rows.sort((a, b) => {
+        const A = this.textValue(a, colValue);
+        const B = this.textValue(b, colValue);
+        return A.localeCompare(B);
       });
+    } else if (sortType === "date") {
+      rows.sort((a, b) => this.dateValue(a, colValue) - this.dateValue(b, colValue));
     } else {
-      rows.sort(function (a, b) {
-        let numA = parseInt(
-          a.querySelector(colValue).textContent.replace(/[円,%]/g, ""),
-        );
-        let numB = parseInt(
-          b.querySelector(colValue).textContent.replace(/[円,%]/g, ""),
-        );
-        return numA == numB ? 0 : numA > numB ? 1 : -1;
-      });
+      rows.sort((a, b) => this.numberValue(a, colValue) - this.numberValue(b, colValue));
     }
 
     for (let i = 0; i < rows.length; ++i) tableBody.appendChild(rows[i]);
   }
 
   descending(tableBody, colValue, rows) {
-    const isTextCol =
-      colValue === ".school" ||
-      colValue === ".name" ||
-      colValue === ".en-name" ||
-      colValue === ".ssid";
+    const sortType = this.typeValue || this.inferType(colValue);
 
-    if (isTextCol) {
-      rows.sort(function (a, b) {
-        const A = a.querySelector(colValue).textContent.trim();
-        const B = b.querySelector(colValue).textContent.trim();
-        return A === B ? 0 : A > B ? -1 : 1;
+    if (sortType === "text") {
+      rows.sort((a, b) => {
+        const A = this.textValue(a, colValue);
+        const B = this.textValue(b, colValue);
+        return B.localeCompare(A);
       });
+    } else if (sortType === "date") {
+      rows.sort((a, b) => this.dateValue(b, colValue) - this.dateValue(a, colValue));
     } else {
-      rows.sort(function (a, b) {
-        let numA = parseInt(
-          a.querySelector(colValue).textContent.replace(/[円,%]/g, ""),
-        );
-        let numB = parseInt(
-          b.querySelector(colValue).textContent.replace(/[円,%]/g, ""),
-        );
-        return numA == numB ? 0 : numA > numB ? -1 : 1;
-      });
+      rows.sort((a, b) => this.numberValue(b, colValue) - this.numberValue(a, colValue));
     }
 
     for (let i = 0; i < rows.length; ++i) tableBody.appendChild(rows[i]);
