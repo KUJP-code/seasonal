@@ -14,19 +14,4 @@ Kids UP 採用応募を受け付けました。
 就労ビザ: <%= @recruit_application.work_visa_status.presence || '-' %>
 質問: <%= @recruit_application.questions.presence || '-' %>
 
---- Tracking ---
-utm_source: <%= @recruit_application.utm_source.presence || '-' %>
-utm_medium: <%= @recruit_application.utm_medium.presence || '-' %>
-utm_campaign: <%= @recruit_application.utm_campaign.presence || '-' %>
-utm_term: <%= @recruit_application.utm_term.presence || '-' %>
-utm_content: <%= @recruit_application.utm_content.presence || '-' %>
-gclid: <%= @recruit_application.gclid.presence || '-' %>
-fbclid: <%= @recruit_application.fbclid.presence || '-' %>
-ttclid: <%= @recruit_application.ttclid.presence || '-' %>
-tracking_link_slug: <%= @recruit_application.tracking_link_slug.presence || '-' %>
-tracking_click_id: <%= @recruit_application.tracking_click_id.presence || '-' %>
-attribution_method: <%= @recruit_application.attribution_method.presence || '-' %>
-landing_page_url: <%= @recruit_application.landing_page_url.presence || '-' %>
-referrer_url: <%= @recruit_application.referrer_url.presence || '-' %>
-
 受信日時: <%= l(@recruit_application.created_at, format: :long) rescue @recruit_application.created_at %>
