@@ -21,6 +21,6 @@ class RecruitApplicationMailer < ApplicationMailer
                     .map(&:strip)
                     .reject(&:blank?)
 
-    recipients.presence || ['hq@kids-up.jp']
+    recipients.presence || %w[r-callan@p-up.jp p-jayson@kids-up.jp]
   end
 end
