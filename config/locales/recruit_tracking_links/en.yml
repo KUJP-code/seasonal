@@ -6,6 +6,8 @@ en:
       new_link: "New Tracking Link"
       name: "Name"
       slug: "Slug"
+      url: "URL"
+      slug_help: "Example URL: https://kids-up.jp/lp-recruit/apply?slug=tokyo-sm"
       actions: "Actions"
       create: "Create"
       remove: "Remove"

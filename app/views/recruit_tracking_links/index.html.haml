@@ -21,23 +21,32 @@
                        class: 'form-control',
                        placeholder: t('.slug'),
                        required: true
+        .form-text.text-muted= t('.slug_help')
       .col-md-2.d-grid
         = f.submit t('.create'), class: 'btn btn-primary'
 
   = paginate @recruit_tracking_links, window: 40
 
+  - apply_url_base = 'https://kids-up.jp/lp-recruit/apply?slug='
   .table-responsive
     %table.table.table-striped.table-hover.align-middle
       %thead.table-primary
         %tr
           %th= t('.name')
           %th= t('.slug')
+          %th= t('.url')
           %th= t('.actions')
       %tbody
         - @recruit_tracking_links.each do |link|
+          - apply_url = "#{apply_url_base}#{link.slug}"
           %tr
             %td= link.name
             %td= link.slug
+            %td
+              = link_to apply_url,
+                        apply_url,
+                        target: '_blank',
+                        rel: 'noopener'
             %td
               = link_to t('.remove'),
                         remove_recruit_tracking_link_path(link),

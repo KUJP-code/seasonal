@@ -6,6 +6,8 @@ ja:
       new_link: "新規トラッキングリンク"
       name: "名称"
       slug: "slug"
+      url: "URL"
+      slug_help: "URL例: https://kids-up.jp/lp-recruit/apply?slug=tokyo-sm"
       actions: "操作"
       create: "作成"
       remove: "削除"
