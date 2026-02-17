@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.6.0-recruitment_updates"
+    "Name": "kidsup/event_site:2.6.1-email_edits"
   },
   "Ports": [
     {
