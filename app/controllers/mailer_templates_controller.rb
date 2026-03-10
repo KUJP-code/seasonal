@@ -2,7 +2,7 @@
 
 class MailerTemplatesController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_admin
+  before_action :require_template_access
 
   def index
     @previews = ActionMailer::Preview.all.sort_by(&:preview_name).map do |preview|
@@ -23,8 +23,8 @@ class MailerTemplatesController < ApplicationController
 
   private
 
-  def require_admin
-    return if current_user&.admin?
+  def require_template_access
+    return if current_user&.staff? || current_user&.statistician?
 
     redirect_to root_path, alert: t('not_authorized')
   end

@@ -60,8 +60,8 @@ Rails.application.configure do
   # Configure default mailer for Devise
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
-  # Use Rspec path for mailer previews
-  config.action_mailer.preview_path = "#{Rails.root.join('spec/mailers/previews')}"
+  # Keep mailer previews in app code so they are available in all envs.
+  config.action_mailer.preview_paths = [Rails.root.join('app/mailers/previews').to_s]
   config.action_mailer.show_previews = true
 
   # Print deprecation notices to the Rails logger.
