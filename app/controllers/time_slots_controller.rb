@@ -17,18 +17,22 @@ class TimeSlotsController < ApplicationController
     authorize TimeSlot
     if params[:all_schools]
       @events = Event.where(name: params[:event])
-                     .includes(:school)
+                     .includes(:school, time_slots: [image_attachment: :blob, avif_attachment: :blob])
                      .with_attached_image
                      .with_attached_avif
     else
-      @event = Event.find(params[:event])
+      @event = Event.includes(time_slots: [image_attachment: :blob, avif_attachment: :blob])
+                    .find(params[:event])
     end
-    @images = blobs_by_folder('time_slots')
+    records = @events ? @events.flat_map(&:time_slots) : @event&.time_slots
+    @images = blobs_by_folder('time_slots',
+                              attached_blobs: attached_blobs_for(records))
   end
 
   def edit
     @slot = authorize TimeSlot.find(params[:id])
-    @images = blobs_by_folder('time_slots')
+    @images = blobs_by_folder('time_slots',
+                              attached_blobs: attached_blobs_for(@slot))
   end
 
 
@@ -51,7 +55,8 @@ class TimeSlotsController < ApplicationController
       updated_schools = apply_batch_to_matching_schools(@slot, slot_params[:target_school_ids], base_slot_name, base_start_time)
       redirect_to batch_update_summary_time_slots_path(changed: [@slot.id] + updated_schools[:changed].map(&:id))
     else
-      @images = blobs_by_folder('time_slots')
+      @images = blobs_by_folder('time_slots',
+                                attached_blobs: attached_blobs_for(@slot))
       render :edit, status: :unprocessable_entity, alert: 'Slots couldn’t be updated'
     end
   end
@@ -66,7 +71,8 @@ class TimeSlotsController < ApplicationController
         school: @slot.school.id
       ), notice: "Updated #{@slot.name}"
     else
-      @images = blobs_by_folder('time_slots')
+      @images = blobs_by_folder('time_slots',
+                                attached_blobs: attached_blobs_for(@slot))
       render :edit, status: :unprocessable_entity, alert: "#{@slot.name} couldn't be updated"
     end
   end

@@ -138,7 +138,10 @@ class EventsController < ApplicationController
   end
 
   def set_form_data
-    @images = blobs_by_folder('events')
+    event = Event.includes(image_attachment: :blob, avif_attachment: :blob)
+                 .find_by(id: params[:id])
+    @images = blobs_by_folder('events',
+                              attached_blobs: attached_blobs_for(event))
     @prices = PriceList.order(:name)
     @schools = [%w[All all]] + School.order(:id).map { |school| [school.name, school.id] }
   end

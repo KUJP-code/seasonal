@@ -22,4 +22,36 @@ RSpec.describe Event do
     event = build(:event, goal: 2_147_483_648)
     expect(event).not_to be_valid
   end
+
+  describe 'attachment setters' do
+    it 'ignores blank image ids' do
+      event = create(:event)
+      event.image.attach(
+        io: StringIO.new('image data'),
+        filename: 'event.png',
+        content_type: 'image/png'
+      )
+
+      original_blob = event.image.blob
+
+      event.update!(image_id: '')
+
+      expect(event.reload.image.blob).to eq(original_blob)
+    end
+
+    it 'ignores blank avif ids' do
+      event = create(:event)
+      event.avif.attach(
+        io: StringIO.new('avif data'),
+        filename: 'event.avif',
+        content_type: 'image/avif'
+      )
+
+      original_blob = event.avif.blob
+
+      event.update!(avif_id: '')
+
+      expect(event.reload.avif.blob).to eq(original_blob)
+    end
+  end
 end

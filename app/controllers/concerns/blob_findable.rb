@@ -10,10 +10,17 @@ module BlobFindable
     # 'parent_folder/subfolder' => [[filename, id], [filename, id]]
     # Like { time_slots/summer_2023 => [[fruit_smoothie.avif, 1]] }
     # So they can be grouped in a select input
-    def blobs_by_folder(parent_folder)
+    def blobs_by_folder(parent_folder, attached_blobs: [])
       blobs = ActiveStorage::Blob.where('key LIKE ?', "%#{parent_folder}%")
                                  .where(created_at: 2.months.ago..Time.zone.now)
                                  .order(created_at: :desc).pluck(:key, :id)
+      preserved_blobs = attached_blobs.compact.filter_map do |blob|
+        next unless blob.respond_to?(:id) && blob.respond_to?(:key)
+
+        [blob.key, blob.id]
+      end
+
+      blobs.concat(preserved_blobs).uniq! { |_key, id| id }
       group_by_path(blobs)
     end
 
@@ -23,6 +30,17 @@ module BlobFindable
                                 .order(created_at: :desc).first
 
       blob.nil? ? "login_splash.#{content_type.split('/').last}" : url_for(blob)
+    end
+
+    def attached_blobs_for(records)
+      Array(records).flatten.compact.flat_map do |record|
+        %i[image avif].filter_map do |attachment_name|
+          next unless record.respond_to?(attachment_name)
+
+          attachment = record.public_send(attachment_name)
+          attachment.blob if attachment.attached?
+        end
+      end
     end
   end
 

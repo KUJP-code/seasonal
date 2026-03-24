@@ -59,7 +59,7 @@ class TimeSlot < ApplicationRecord
   end
 
   def avif_id=(avif_id)
-    return if avif_id.nil?
+    return if avif_id.blank?
 
     self.avif = ActiveStorage::Blob.find(avif_id)
   end
@@ -101,7 +101,7 @@ class TimeSlot < ApplicationRecord
   end
 
   def image_id=(image_id)
-    return if image_id.nil?
+    return if image_id.blank?
 
     self.image = ActiveStorage::Blob.find(image_id)
   end

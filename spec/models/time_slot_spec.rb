@@ -37,4 +37,36 @@ RSpec.describe TimeSlot do
       expect { time_slot.closed? }.not_to change(time_slot, :closed)
     end
   end
+
+  describe 'attachment setters' do
+    it 'ignores blank image ids' do
+      slot = create(:time_slot)
+      slot.image.attach(
+        io: StringIO.new('image data'),
+        filename: 'slot.png',
+        content_type: 'image/png'
+      )
+
+      original_blob = slot.image.blob
+
+      slot.update!(image_id: '')
+
+      expect(slot.reload.image.blob).to eq(original_blob)
+    end
+
+    it 'ignores blank avif ids' do
+      slot = create(:time_slot)
+      slot.avif.attach(
+        io: StringIO.new('avif data'),
+        filename: 'slot.avif',
+        content_type: 'image/avif'
+      )
+
+      original_blob = slot.avif.blob
+
+      slot.update!(avif_id: '')
+
+      expect(slot.reload.avif.blob).to eq(original_blob)
+    end
+  end
 end
