@@ -1,5 +1,6 @@
 %main.gap-3#user-show
-  - total_cards = @events.to_a.size
+  - child_for_external = @user.children.first
+  - total_cards = @events.to_a.size + (show_mega_game?(child_for_external) ? 1 : 0)
 
   - unless @user.confirmed?
     .card.justify-content-center.align-items-center.bg-danger
@@ -54,6 +55,8 @@
 
   - if total_cards > 1
     .event-card-container
+      - if show_mega_game?(child_for_external)
+        = render 'events/mega_game', child: child_for_external
       - @events&.each do |e|
         = render partial: 'events/child_event',
                           locals: { event: e,
@@ -61,6 +64,8 @@
                           sibling_events: e.sibling_events }
   - else
     .single-event-card
+      - if show_mega_game?(child_for_external)
+        = render 'events/mega_game', child: child_for_external
       - @events&.each do |e|
         = render partial: 'events/child_event',
                           locals: { event: e,

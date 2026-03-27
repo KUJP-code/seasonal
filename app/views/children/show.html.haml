@@ -3,6 +3,8 @@
     - if @events&.size.to_i > 1
 
       .event-card-container
+        - if show_mega_game?(@child)
+          = render 'events/mega_game', child: @child
         - @events.each do |e|
           = render 'events/child_event',
                    child: @child,
@@ -10,6 +12,8 @@
                    sibling_events: e.sibling_events
     - else
       .single-event-card
+        - if show_mega_game?(@child)
+          = render 'events/mega_game', child: @child
         - @events.each do |e|
           = render 'events/child_event',
                    child: @child,

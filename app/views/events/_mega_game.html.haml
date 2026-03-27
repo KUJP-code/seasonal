@@ -1,0 +1,18 @@
+.card.event-card.d-grid
+  - avif_src = mega_game_avif_path(child)
+  - image_src = mega_game_image_path(child)
+  - if avif_src.present? || image_src.present?
+    = link_to mega_game_url, target: '_blank', rel: 'noopener' do
+      - if avif_src.present? && image_src.present?
+        = picture_tag(avif_src, image_src, image: { class: 'img-fluid img-thumbnail', alt: mega_game_title(child) })
+      - else
+        = image_tag(image_src.presence || avif_src, { class: 'img-fluid img-thumbnail', alt: mega_game_title(child) })
+
+  .d-flex.flex-column.flex-grow-1.gap-3
+    - if mega_game_date(child).present?
+      %p.text-black-50.mb-0= l(mega_game_date(child), format: "%-m月%-d日(%a)")
+
+    %h2.fw-bold
+      = link_to mega_game_title(child), mega_game_url, target: '_blank', rel: 'noopener'
+
+    %p= '※Mega Game のお申込みは別サイトに変更となりました'
