@@ -58,7 +58,8 @@ en:
       photos: "Photos OK:"
       school: "Kids Up %{school}"
     staff_actions:
-      has_hat: "Has Hat:"
+      add_hat: "Mark hat received"
+      remove_hat: "Remove hat"
       photos: "Photos: "
     timeslot_index:
       level_count: "Elementary: %{ele}, Kindy: %{kindy}"

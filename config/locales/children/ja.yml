@@ -117,7 +117,8 @@ ja:
       school: "Kids UP %{school}"
       ssid: "マイページID: "
     staff_actions:
-      has_hat: "Kids UP帽子"
+      add_hat: "帽子ありにする"
+      remove_hat: "帽子なしにする"
       photos: "写真掲載: "
     time_slots:
       attendance:
