@@ -2,16 +2,16 @@
 
 :ruby
   online_kid = child.school_id == 2
+  sibling_events = Array(sibling_events).compact.select { |e| e.school.present? }
   # Trainers want staff they're teaching to be able to create
   # bookings at online for fake online students
-  if current_user.staff? && sibling_events
-    sibling_events =
-      [Event.find_by(name: sibling_events.first.name, school_id: 2)] +
-      sibling_events
+  if current_user.staff? && sibling_events.present?
+    online_event = Event.find_by(name: sibling_events.first.name, school_id: 2)
+    sibling_events = [online_event, *sibling_events].compact
   end
 
 .card.event-card.d-grid
-  - if online_kid && sibling_events
+  - if online_kid && sibling_events.present?
     %h2.text-bg-warning.fw-bold.p-2.rounded
       参加希望のスクールをお選びください。
     = picture_tag((event.avif.blank? ? '' : url_for(event.avif)),
@@ -33,7 +33,7 @@
                   new_invoice_path(event_id: event, child: child.id)
       %p= date_yy_mm_dd(event.start_date)
 
-  - if sibling_events
+  - if sibling_events.present?
     %button.btn.btn-info{ class: ('hidden' if online_kid),
                           data: { 'bs-toggle' => 'collapse',
                                   'bs-target' => '#school-select' },

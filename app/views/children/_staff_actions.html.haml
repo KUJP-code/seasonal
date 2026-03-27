@@ -1,25 +1,26 @@
 -# locals: (child:)
 
 .card.d-flex.flex-row.justify-content-center.gap-3.p-2.w-100
-  - unless @child.received_hat
-    = form_with model: @child do |f|
-      = f.hidden_field :received_hat, value: 1
-      = f.submit "#{t('.has_hat')} あり", class: 'btn btn-primary'
+  = form_with model: child do |f|
+    = f.hidden_field :received_hat,
+                     value: (child.received_hat ? 0 : 1)
+    = f.submit t(child.received_hat ? '.remove_hat' : '.add_hat'),
+               class: 'btn btn-primary'
 
-  = form_with model: @child do |f|
+  = form_with model: child do |f|
     = f.hidden_field :first_seasonal,
-                     value: (@child.first_seasonal ? 0 : 1)
-    = f.submit "初めてのシーズナル参加: #{@child.first_seasonal ? '×' : '〇'}",
+                     value: (child.first_seasonal ? 0 : 1)
+    = f.submit "初めてのシーズナル参加: #{child.first_seasonal ? '×' : '〇'}",
                class: 'btn btn-primary'
 
-  = form_with model: @child do |f|
+  = form_with model: child do |f|
     = f.hidden_field :photos,
-                     value: (@child.photos == 'OK' ? 'NG' : 'OK')
-    = f.submit "#{t('.photos')} #{@child.photos == 'OK' ? 'NG' : 'OK'}",
+                     value: (child.photos == 'OK' ? 'NG' : 'OK')
+    = f.submit "#{t('.photos')} #{child.photos == 'OK' ? 'NG' : 'OK'}",
                class: 'btn btn-primary'
 
-  - if current_user.admin? && @child.parent_id.present?
-    = form_with model: @child do |f|
+  - if current_user.admin? && child.parent_id.present?
+    = form_with model: child do |f|
       = f.hidden_field :parent_id, value: nil
       = f.submit 'Remove from parent',
                  class: 'btn btn-primary'

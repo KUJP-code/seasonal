@@ -124,6 +124,7 @@ class Event < ApplicationRecord
   def with_sibling_events
     @sibling_events = Event.where(name:)
                            .where.not(school_id: 2)
+                           .where.not(school_id: nil)
                            .includes(:school)
     self
   end
