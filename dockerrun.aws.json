@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.6.5-mega_game_cards"
+    "Name": "kidsup/event_site:2.6.6-stats"
   },
   "Ports": [
     {
