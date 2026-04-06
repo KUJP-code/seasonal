@@ -15,13 +15,22 @@
     'Morning' => @activities.reduce(0) { |sum, a| sum + a[1] },
     'Afternoon' => @afternoons.reduce(0) { |sum, a| sum + a[1] }
   }
-/ Popularity (All sessions)
+/ Morning activity popularity
 .card.w-100.mb-4
   .card-header
     %h4.mb-0= t(".popularity")
   .card-body
     = column_chart @activities.sort_by { |_k, v| v }.reverse,
                     height: '80vh'
+
+- if @afternoons.present?
+  / Afternoon activity popularity
+  .card.w-100.mb-4
+    .card-header
+      %h4.mb-0= t(".afternoon_popularity")
+    .card-body
+      = column_chart @afternoons.sort_by { |_k, v| v }.reverse,
+                      height: '80vh'
 
 
 - if @school.id.zero?

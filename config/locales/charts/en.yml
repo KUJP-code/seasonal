@@ -3,7 +3,7 @@ en:
     activities:
       afternoon_popularity: "Afternoon Popularity"
       category_popularity: "Category Popularity"
-      popularity: "Activity Popularity"
+      popularity: "Morning Activity Popularity"
       session_popularity: "Session Popularity"
       attendance_by_school: "Attendance by School"
       snack_revenue: "Snack Revenue"
