@@ -34,8 +34,8 @@ class ChartsController < ApplicationController
                    .includes(:school)
 
     @slots = TimeSlot.where(event_id: @events.ids)
-    @morning_slots = @slots.morning.or(@slots.special)
-    @afternoon_slots = @slots.afternoon.where.not(category: :special)
+    @morning_slots = @slots.morning
+    @afternoon_slots = @slots.afternoon
 
     @activities = @morning_slots
                         .group(:name).sum(:registrations_count)
@@ -53,9 +53,9 @@ class ChartsController < ApplicationController
 
   def activities_school_data(school)
     @slots = school.events.find_by(name: @nav[:event]).time_slots
-    @activities = @slots.morning.or(@slots.special)
+    @activities = @slots.morning
                         .group(:name).sum(:registrations_count)
-    @afternoons = @slots.afternoon.where.not(category: :special)
+    @afternoons = @slots.afternoon
                         .group(:name).sum(:registrations_count)
   end
 
