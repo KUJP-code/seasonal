@@ -34,12 +34,21 @@ class ChartsController < ApplicationController
                    .includes(:school)
 
     @slots = TimeSlot.where(event_id: @events.ids)
-    @activities = @slots.morning.or(@slots.special)
+    @morning_slots = @slots.morning.or(@slots.special)
+    @afternoon_slots = @slots.afternoon.where.not(category: :special)
+
+    @activities = @morning_slots
                         .group(:name).sum(:registrations_count)
-    @afternoons = @slots.afternoon.where.not(category: :special)
+    @afternoons = @afternoon_slots
                         .group(:name).sum(:registrations_count)
     @date_attendance = @slots.group_by_day(:start_time).group(:event_id)
                              .sum(:registrations_count)
+    @date_attendance_morning =
+      @morning_slots.group_by_day(:start_time).group(:event_id)
+                    .sum(:registrations_count)
+    @date_attendance_afternoon =
+      @afternoon_slots.group_by_day(:start_time).group(:event_id)
+                      .sum(:registrations_count)
   end
 
   def activities_school_data(school)

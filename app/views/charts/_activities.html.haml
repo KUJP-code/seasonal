@@ -35,25 +35,42 @@
 
 - if @school.id.zero?
   - dates = @date_attendance.keys.map(&:first).uniq
+  - attendance_panels = { all: @date_attendance, morning: @date_attendance_morning, afternoon: @date_attendance_afternoon }
 
-  .card.w-100.mb-4
+  .card.w-100.mb-4{ data: { controller: 'panel-selector' } }
     .card-header
-      %h4.mb-0= t(".attendance_by_school")
+      .d-flex.flex-wrap.justify-content-between.align-items-center.gap-3
+        %h4.mb-0= t(".attendance_by_school")
+        .btn-group{ role: 'group', aria: { label: t('.attendance_view') } }
+          %button.btn.btn-outline-primary.active{ type: 'button',
+            data: { action: 'panel-selector#show', 'panel-selector-panel-param': 'all', 'panel-selector-target': 'button' },
+            aria: { pressed: 'true' } }
+            = t('.attendance_all')
+          %button.btn.btn-outline-primary{ type: 'button',
+            data: { action: 'panel-selector#show', 'panel-selector-panel-param': 'morning', 'panel-selector-target': 'button' },
+            aria: { pressed: 'false' } }
+            = t('.attendance_morning')
+          %button.btn.btn-outline-primary{ type: 'button',
+            data: { action: 'panel-selector#show', 'panel-selector-panel-param': 'afternoon', 'panel-selector-target': 'button' },
+            aria: { pressed: 'false' } }
+            = t('.attendance_afternoon')
     .card-body
-      .table-responsive
-        %table.table.table-striped.table-hover.align-self-start.mb-0
-          %thead.table-primary
-            %tr
-              %th
-              - dates.each do |date|
-                %th= date.strftime('%m/%d')
-          %tbody
-            - @events.each do |event|
+      - attendance_panels.each_with_index do |(panel_name, panel_data), index|
+        .table-responsive{ class: ('d-none' unless index.zero?),
+          data: { panel: panel_name, 'panel-selector-target': 'panel' } }
+          %table.table.table-striped.table-hover.align-self-start.mb-0
+            %thead.table-primary
               %tr
-                %th= t("schools.#{event.school.name}")
+                %th
                 - dates.each do |date|
-                  %td.text-end
-                    = @date_attendance[[date, event.id]]
+                  %th= date.strftime('%m/%d')
+            %tbody
+              - @events.each do |event|
+                %tr
+                  %th= t("schools.#{event.school.name}")
+                  - dates.each do |date|
+                    %td.text-end
+                      = panel_data[[date, event.id]]
 
 / Snack revenue highlight
 .card.w-100.mb-4

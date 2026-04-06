@@ -1,6 +1,10 @@
 en:
   charts:
     activities:
+      attendance_afternoon: "PM"
+      attendance_all: "AM + PM"
+      attendance_morning: "AM"
+      attendance_view: "Attendance table view"
       afternoon_popularity: "Afternoon Popularity"
       category_popularity: "Category Popularity"
       popularity: "Morning Activity Popularity"

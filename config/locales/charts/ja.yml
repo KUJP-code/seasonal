@@ -1,6 +1,10 @@
 ja:
   charts:
     activities:
+      attendance_afternoon: "午後"
+      attendance_all: "午前 + 午後"
+      attendance_morning: "午前"
+      attendance_view: "出席テーブル表示"
       afternoon_popularity: "午後のアテンダンス（各アクティビティ）"
       category_popularity: "カテゴリー別人気度"
       extra_cost_revenue: "追加収益（スペシャルデイからの追加分）"
