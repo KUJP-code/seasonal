@@ -139,6 +139,7 @@ ja:
     events: "イベント"
     email_templates: "メールテンプレート"
     logout: "サインアウト"
+    recruitment: "採用"
     time_slots: "開催日"
   mailer_templates:
     back: "戻る"
@@ -198,6 +199,13 @@ ja:
       format:
         delimiter: ""
   pm_closed: "午後：満席の為受付を終了"
+  roles:
+    admin: "管理者"
+    area_manager: "エリアマネージャー"
+    customer: "保護者"
+    human_resources: "人事"
+    school_manager: "スクールマネージャー"
+    statistician: "統計担当"
   schools:
     "要町": "要町"
     "上野": "上野"
