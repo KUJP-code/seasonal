@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_02_16_113000) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_09_101500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -272,6 +272,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_16_113000) do
     t.string "locale"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "contacted_on"
+    t.boolean "interviewed"
+    t.text "hr_comments"
     t.index ["created_at"], name: "index_recruit_applications_on_created_at"
     t.index ["role"], name: "index_recruit_applications_on_role"
     t.index ["tracking_link_slug"], name: "index_recruit_applications_on_tracking_link_slug"
