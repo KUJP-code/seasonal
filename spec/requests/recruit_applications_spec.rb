@@ -83,6 +83,8 @@ RSpec.describe 'Recruit applications' do
       expect(response.body).to include('Recruit Applications')
       expect(response.body).to include('View')
       expect(response.body).to include('Delete')
+      expect(response.body).to include('Contacted')
+      expect(response.body).to include('Interview?')
       expect(response.body).to include(recruit_application_path(application, locale: :en))
     end
   end
@@ -105,6 +107,88 @@ RSpec.describe 'Recruit applications' do
       expect(response.body).to include('Recruit Application')
       expect(response.body).to include(application.full_name)
       expect(response.body).to include(application.email)
+      expect(response.body).to include('Comments from HR')
+    end
+
+    it 'shows change history to admin after updates' do
+      with_versioning do
+        admin = create(:admin)
+        hr = create(:human_resources)
+
+        sign_in hr
+        patch recruit_application_path(application, locale: :ja), params: {
+          recruit_application: {
+            interviewed: true,
+            hr_comments: 'Moved forward after screening.'
+          }
+        }
+        sign_out hr
+
+        sign_in admin
+        get path
+
+        expect(response.body).to include('Change History')
+        expect(response.body).to include('Moved forward after screening.')
+        expect(response.body).to include(hr.name)
+      end
+    end
+  end
+
+  describe 'PATCH /ja/recruit_applications/:id' do
+    let!(:application) { create(:recruit_application) }
+    let(:path) { recruit_application_path(application, locale: :ja) }
+
+    it 'allows human resources to update internal workflow fields' do
+      sign_in create(:human_resources)
+
+      patch path, params: {
+        recruit_application: {
+          contacted_on: '2026-04-09',
+          interviewed: true,
+          hr_comments: 'Screening call completed. Move to interview.'
+        }
+      }
+
+      expect(response).to redirect_to(recruit_application_path(application, locale: :ja))
+
+      application.reload
+      expect(application.contacted_on).to eq(Date.new(2026, 4, 9))
+      expect(application.interviewed).to eq(true)
+      expect(application.hr_comments).to eq('Screening call completed. Move to interview.')
+    end
+
+    it 'redirects back to the list when updated from the index' do
+      sign_in create(:human_resources)
+
+      patch path,
+            params: {
+              recruit_application: {
+                interviewed: false
+              }
+            },
+            headers: { 'HTTP_REFERER' => recruit_applications_url(locale: :ja) }
+
+      expect(response).to redirect_to(recruit_applications_url(locale: :ja))
+      expect(application.reload.interviewed).to eq(false)
+    end
+
+    it 'forbids statistician from updating internal workflow fields' do
+      sign_in create(:statistician)
+
+      patch path, params: {
+        recruit_application: {
+          contacted_on: '2026-04-09',
+          interviewed: true,
+          hr_comments: 'Should not be saved'
+        }
+      }
+
+      expect(response).to redirect_to(root_path(locale: :ja))
+
+      application.reload
+      expect(application.contacted_on).to be_nil
+      expect(application.interviewed).to be_nil
+      expect(application.hr_comments).to be_nil
     end
   end
 
