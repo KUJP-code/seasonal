@@ -220,6 +220,228 @@ input[type="text"]:disabled {
     min-width: 150px;
 }
 
+#recruit-application-show {
+    align-items: center;
+}
+
+.recruit-application-shell {
+    width: 100%;
+    max-width: 1180px;
+    display: grid;
+    gap: $spacer;
+}
+
+.recruit-application-topbar {
+    text-align: left;
+}
+
+.recruit-application-eyebrow {
+    color: var(--bs-gray-600);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.recruit-application-subtitle {
+    color: var(--bs-gray-700);
+}
+
+.recruit-application-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.8fr) minmax(320px, 0.95fr);
+    gap: $spacer;
+    align-items: start;
+}
+
+.recruit-application-main,
+.recruit-application-sidebar {
+    display: grid;
+    gap: $spacer;
+}
+
+.recruit-section-card {
+    text-align: left;
+    padding: 1.25rem;
+}
+
+.recruit-section-header {
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.25rem;
+    border-bottom: 1px solid var(--bs-gray-300);
+}
+
+.recruit-summary-pills {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+}
+
+.recruit-pill {
+    display: grid;
+    gap: 0.2rem;
+    padding: 0.9rem 1rem;
+    border-radius: 0.9rem;
+    background: white;
+    border: 1px solid var(--bs-gray-300);
+}
+
+.recruit-pill-label,
+.recruit-detail-label {
+    color: var(--bs-gray-600);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.recruit-pill-value,
+.recruit-detail-value {
+    color: var(--near-black);
+    font-size: 1rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.recruit-detail-list {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.recruit-detail-row {
+    display: grid;
+    grid-template-columns: minmax(150px, 180px) minmax(0, 1fr);
+    gap: 1rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--bs-gray-200);
+}
+
+.recruit-detail-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.recruit-detail-row-wide {
+    align-items: start;
+}
+
+.recruit-notes-block {
+    padding: 1rem 1.1rem;
+    border-radius: 0.9rem;
+    background: white;
+    border: 1px solid var(--bs-gray-300);
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.recruit-history-list {
+    display: grid;
+    gap: 0.9rem;
+}
+
+.recruit-history-details {
+    width: 100%;
+}
+
+.recruit-history-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    font-weight: 700;
+    list-style: none;
+}
+
+.recruit-history-summary::-webkit-details-marker {
+    display: none;
+}
+
+.recruit-history-count {
+    color: var(--bs-gray-600);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.recruit-history-entry {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1rem 1.1rem;
+    border-radius: 0.9rem;
+    background: white;
+    border: 1px solid var(--bs-gray-300);
+}
+
+.recruit-history-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    color: var(--bs-gray-700);
+}
+
+.recruit-history-changes {
+    display: grid;
+    gap: 0.6rem;
+}
+
+.recruit-history-change {
+    display: grid;
+    grid-template-columns: minmax(150px, 190px) minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: start;
+}
+
+.recruit-history-field {
+    color: var(--bs-gray-600);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.recruit-history-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+    overflow-wrap: anywhere;
+}
+
+.recruit-history-from {
+    color: var(--bs-gray-600);
+}
+
+.recruit-history-arrow {
+    color: var(--ku-orange);
+    font-weight: 700;
+}
+
+.recruit-hr-card {
+    position: sticky;
+    top: 88px;
+}
+
+@media (max-width: 991.98px) {
+    .recruit-application-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .recruit-hr-card {
+        position: static;
+    }
+
+    .recruit-detail-row {
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
+    }
+
+    .recruit-history-change {
+        grid-template-columns: 1fr;
+    }
+}
+
 #event-children-index .en-name-header {
     position: sticky;
     left: 180px;
