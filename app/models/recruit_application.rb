@@ -5,6 +5,8 @@ class RecruitApplication < ApplicationRecord
 
   ROLES = %w[sm bilingual native driver tour_staff new_graduate].freeze
 
+  has_paper_trail
+
   validates :role, inclusion: { in: ROLES }
   validates :email, :phone, :full_name, :date_of_birth, :full_address,
             presence: true
