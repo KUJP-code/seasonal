@@ -2,7 +2,7 @@
 
 class RecruitApplicationsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: :create
-  after_action :verify_authorized, only: %i[index show destroy]
+  after_action :verify_authorized, only: %i[index show update destroy]
   after_action :verify_policy_scoped, only: :index
 
   def index
@@ -34,6 +34,24 @@ class RecruitApplicationsController < ApplicationController
 
   def show
     @recruit_application = authorize RecruitApplication.find(params[:id])
+    @change_history = if current_user.admin?
+                        @recruit_application.versions
+                                            .where.not(object_changes: nil)
+                                            .reorder(created_at: :desc)
+                      else
+                        []
+                      end
+  end
+
+  def update
+    @recruit_application = authorize RecruitApplication.find(params[:id])
+
+    if @recruit_application.update(internal_recruit_application_params)
+      redirect_back fallback_location: recruit_application_path(@recruit_application),
+                    notice: 'Recruit application updated'
+    else
+      render :show, status: :unprocessable_entity
+    end
   end
 
   def destroy
@@ -78,6 +96,14 @@ class RecruitApplicationsController < ApplicationController
       :referrer_url,
       :locale,
       raw_tracking: {}
+    )
+  end
+
+  def internal_recruit_application_params
+    params.require(:recruit_application).permit(
+      :contacted_on,
+      :interviewed,
+      :hr_comments
     )
   end
 
