@@ -79,6 +79,19 @@ seeded = 0
     ip_address: "203.0.113.#{rng.rand(1..254)}",
     user_agent: 'Mozilla/5.0 (RecruitSeedBot)',
     locale: %w[ja en][rng.rand(2)],
+    contacted_on: (rng.rand < 0.65 ? submitted_at.to_date + rng.rand(0..4) : nil),
+    interviewed: (rng.rand < 0.5 ? [true, false][rng.rand(2)] : nil),
+    hr_comments: (
+      if rng.rand < 0.55
+        [
+          'Strong communication skills. Follow up next week.',
+          'Potential fit for Tokyo schools. Waiting on availability.',
+          'Needs visa confirmation before moving forward.',
+          'Good profile on paper. Schedule screening call.',
+          'Not a fit for current openings, but keep on file.'
+        ][rng.rand(5)]
+      end
+    ),
     created_at: submitted_at,
     updated_at: submitted_at
   }

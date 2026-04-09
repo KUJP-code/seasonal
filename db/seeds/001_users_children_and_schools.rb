@@ -25,6 +25,11 @@ FactoryBot.create(
          role: :statistician
 )
 
+FactoryBot.create(
+  :user, email: 'hr@gmail.com', password: 'hrpasswordhrpassword',
+         role: :human_resources
+)
+
 puts 'Created test accounts'
 
 area = Area.create!(name: '中川')

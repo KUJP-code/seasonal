@@ -22,6 +22,10 @@ FactoryBot.define do
       role { 'statistician' }
     end
 
+    factory :human_resources do
+      role { 'human_resources' }
+    end
+
     factory :area_manager do
       role { 'area_manager' }
     end

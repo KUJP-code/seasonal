@@ -14,6 +14,10 @@ RSpec.describe RecruitApplicationPolicy do
       expect(described_class.new(build(:statistician), record).show?).to be(true)
     end
 
+    it 'allows human resources' do
+      expect(described_class.new(build(:human_resources), record).show?).to be(true)
+    end
+
     it 'forbids school manager' do
       expect(described_class.new(build(:school_manager), record).show?).to be(false)
     end
@@ -31,6 +35,22 @@ RSpec.describe RecruitApplicationPolicy do
     end
   end
 
+  describe '#update?' do
+    let(:record) { build(:recruit_application) }
+
+    it 'allows admin' do
+      expect(described_class.new(build(:admin), record).update?).to be(true)
+    end
+
+    it 'allows human resources' do
+      expect(described_class.new(build(:human_resources), record).update?).to be(true)
+    end
+
+    it 'forbids statistician' do
+      expect(described_class.new(build(:statistician), record).update?).to be(false)
+    end
+  end
+
   describe '#index?' do
     let(:record) { build(:recruit_application) }
 
@@ -40,6 +60,10 @@ RSpec.describe RecruitApplicationPolicy do
 
     it 'allows statistician' do
       expect(described_class.new(build(:statistician), record).index?).to be(true)
+    end
+
+    it 'allows human resources' do
+      expect(described_class.new(build(:human_resources), record).index?).to be(true)
     end
 
     it 'forbids school manager' do
@@ -56,6 +80,10 @@ RSpec.describe RecruitApplicationPolicy do
 
     it 'returns none for customer' do
       expect(Pundit.policy_scope!(build(:customer), RecruitApplication)).to be_empty
+    end
+
+    it 'returns all for human resources' do
+      expect(Pundit.policy_scope!(build(:human_resources), RecruitApplication).count).to eq(2)
     end
   end
 end

@@ -9,6 +9,9 @@ FactoryBot.define do
     date_of_birth { Date.new(1990, 1, 1) }
     full_address { Faker::Address.full_address }
     privacy_policy_consent { true }
+    contacted_on { nil }
+    interviewed { nil }
+    hr_comments { nil }
 
     trait :native do
       role { 'native' }
