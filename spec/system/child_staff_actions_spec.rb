@@ -8,6 +8,7 @@ RSpec.describe 'Child staff actions', :js do
 
   before do
     sign_in staff
+    page.current_window.resize_to(1400, 1200)
   end
 
   after do
