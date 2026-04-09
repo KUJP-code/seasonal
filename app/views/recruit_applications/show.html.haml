@@ -1,55 +1,134 @@
 %main#recruit-application-show
-  .card.p-3.mb-3
-    .d-flex.justify-content-between.align-items-center.gap-3.flex-wrap
-      %h2.mb-0= t('.title')
-      = link_to t('.back_to_list'),
-                recruit_applications_path,
-                class: 'btn btn-primary'
-
   - display = ->(value) { value.presence || '-' }
+  - interviewed_label = @recruit_application.interviewed.nil? ? t('.unknown') : (@recruit_application.interviewed? ? t('.yes') : t('.no'))
 
-  .card.p-4
-    .row.g-4
-      .col-12
-        %h4.border-bottom.pb-2.mb-3= t('.summary')
-        %dl.row.mb-0
-          %dt.col-sm-3= t('.submitted_at')
-          %dd.col-sm-9= l(@recruit_application.created_at, format: :long)
-          %dt.col-sm-3= t('.role')
-          %dd.col-sm-9= display.call(@recruit_application.role)
-          %dt.col-sm-3= t('.tracking_link_slug')
-          %dd.col-sm-9= display.call(@recruit_application.tracking_link_slug)
+  .recruit-application-shell
+    .recruit-application-topbar.card
+      .d-flex.justify-content-between.align-items-center.gap-3.flex-wrap
+        .text-start
+          %p.recruit-application-eyebrow= t('.title')
+          %h2.mb-1= @recruit_application.full_name
+          %p.recruit-application-subtitle
+            = display.call(@recruit_application.role)
+            = " · "
+            = l(@recruit_application.created_at, format: :long)
+        = link_to t('.back_to_list'),
+                  recruit_applications_path,
+                  class: 'btn btn-primary'
 
-      .col-12.col-lg-6
-        %h4.border-bottom.pb-2.mb-3= t('.contact_info')
-        %dl.row.mb-0
-          %dt.col-sm-4= t('.full_name')
-          %dd.col-sm-8= display.call(@recruit_application.full_name)
-          %dt.col-sm-4= t('.email')
-          %dd.col-sm-8= mail_to @recruit_application.email
-          %dt.col-sm-4= t('.phone')
-          %dd.col-sm-8= display.call(@recruit_application.phone)
-          %dt.col-sm-4= t('.date_of_birth')
-          %dd.col-sm-8= display.call(@recruit_application.date_of_birth&.to_s)
-          %dt.col-sm-4= t('.full_address')
-          %dd.col-sm-8= display.call(@recruit_application.full_address)
-          %dt.col-sm-4= t('.gender')
-          %dd.col-sm-8= display.call(@recruit_application.gender)
-          %dt.col-sm-4= t('.nationality')
-          %dd.col-sm-8= display.call(@recruit_application.nationality)
+    .recruit-application-grid
+      .recruit-application-main
+        .card.recruit-section-card
+          .recruit-section-header
+            %h4= t('.summary')
+          .recruit-summary-pills
+            .recruit-pill
+              %span.recruit-pill-label= t('.tracking_link_slug')
+              %span.recruit-pill-value= display.call(@recruit_application.tracking_link_slug)
+            .recruit-pill
+              %span.recruit-pill-label= t('.contacted_on')
+              %span.recruit-pill-value= @recruit_application.contacted_on ? l(@recruit_application.contacted_on) : '-'
+            .recruit-pill
+              %span.recruit-pill-label= t('.interviewed')
+              %span.recruit-pill-value= interviewed_label
 
-      .col-12.col-lg-6
-        %h4.border-bottom.pb-2.mb-3= t('.background')
-        %dl.row.mb-0
-          %dt.col-sm-4= t('.highest_education')
-          %dd.col-sm-8= display.call(@recruit_application.highest_education)
-          %dt.col-sm-4= t('.employment_history')
-          %dd.col-sm-8= display.call(@recruit_application.employment_history)
-          %dt.col-sm-4= t('.reason_for_application')
-          %dd.col-sm-8= display.call(@recruit_application.reason_for_application)
-          %dt.col-sm-4= t('.work_visa_status')
-          %dd.col-sm-8= display.call(@recruit_application.work_visa_status)
+        .card.recruit-section-card
+          .recruit-section-header
+            %h4= t('.contact_info')
+          .recruit-detail-list
+            .recruit-detail-row
+              .recruit-detail-label= t('.full_name')
+              .recruit-detail-value= display.call(@recruit_application.full_name)
+            .recruit-detail-row
+              .recruit-detail-label= t('.email')
+              .recruit-detail-value= mail_to @recruit_application.email
+            .recruit-detail-row
+              .recruit-detail-label= t('.phone')
+              .recruit-detail-value= display.call(@recruit_application.phone)
+            .recruit-detail-row
+              .recruit-detail-label= t('.date_of_birth')
+              .recruit-detail-value= display.call(@recruit_application.date_of_birth&.to_s)
+            .recruit-detail-row
+              .recruit-detail-label= t('.gender')
+              .recruit-detail-value= display.call(@recruit_application.gender)
+            .recruit-detail-row.recruit-detail-row-wide
+              .recruit-detail-label= t('.full_address')
+              .recruit-detail-value= display.call(@recruit_application.full_address)
+            .recruit-detail-row
+              .recruit-detail-label= t('.nationality')
+              .recruit-detail-value= display.call(@recruit_application.nationality)
 
-      .col-12
-        %h4.border-bottom.pb-2.mb-3= t('.notes')
-        %p.mb-0= display.call(@recruit_application.questions)
+        .card.recruit-section-card
+          .recruit-section-header
+            %h4= t('.background')
+          .recruit-detail-list
+            .recruit-detail-row
+              .recruit-detail-label= t('.highest_education')
+              .recruit-detail-value= display.call(@recruit_application.highest_education)
+            .recruit-detail-row.recruit-detail-row-wide
+              .recruit-detail-label= t('.employment_history')
+              .recruit-detail-value= display.call(@recruit_application.employment_history)
+            .recruit-detail-row.recruit-detail-row-wide
+              .recruit-detail-label= t('.reason_for_application')
+              .recruit-detail-value= display.call(@recruit_application.reason_for_application)
+            .recruit-detail-row
+              .recruit-detail-label= t('.work_visa_status')
+              .recruit-detail-value= display.call(@recruit_application.work_visa_status)
+
+        .card.recruit-section-card
+          .recruit-section-header
+            %h4= t('.notes')
+          .recruit-notes-block= display.call(@recruit_application.questions)
+
+      .recruit-application-sidebar
+        .card.recruit-section-card.recruit-hr-card
+          .recruit-section-header
+            %h4= t('.hr_comments_title')
+          - if policy(@recruit_application).update?
+            = form_with model: @recruit_application, local: true do |f|
+              .d-grid.gap-3
+                %div
+                  = f.label :contacted_on, t('.contacted_on'), class: 'form-label'
+                  = f.date_field :contacted_on, class: 'form-control'
+                %div
+                  = f.label :interviewed, t('.interviewed'), class: 'form-label'
+                  = f.select :interviewed,
+                             [[t('.unknown'), ''], [t('.yes'), true], [t('.no'), false]],
+                             {},
+                             class: 'form-select'
+                %div
+                  = f.label :hr_comments, t('.hr_comments'), class: 'form-label'
+                  = f.text_area :hr_comments, rows: 10, class: 'form-control'
+                = f.submit t('.save_hr_notes'), class: 'btn btn-primary'
+          - else
+            .recruit-detail-list
+              .recruit-detail-row
+                .recruit-detail-label= t('.contacted_on')
+                .recruit-detail-value= @recruit_application.contacted_on ? l(@recruit_application.contacted_on) : '-'
+              .recruit-detail-row
+                .recruit-detail-label= t('.interviewed')
+                .recruit-detail-value= interviewed_label
+            .recruit-notes-block.mt-3= display.call(@recruit_application.hr_comments)
+
+    - if current_user.admin? && @change_history.any?
+      .card.recruit-section-card
+        %details.recruit-history-details
+          %summary.recruit-history-summary
+            %span= t('.change_history')
+            %span.recruit-history-count= "#{@change_history.size} #{t('.changes_count')}"
+          .recruit-history-list.mt-3
+            - @change_history.each do |version|
+              .recruit-history-entry
+                .recruit-history-meta
+                  %strong= l(version.created_at, format: :long)
+                  %span= t('.changed_by', user: recruit_version_actor(version))
+                - entries = recruit_change_entries(version)
+                - if entries.any?
+                  .recruit-history-changes
+                    - entries.each do |entry|
+                      .recruit-history-change
+                        .recruit-history-field= entry[:field]
+                        .recruit-history-values
+                          %span.recruit-history-from= entry[:from]
+                          %span.recruit-history-arrow -> 
+                          %span.recruit-history-to= entry[:to]

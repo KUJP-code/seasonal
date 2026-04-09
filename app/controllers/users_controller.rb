@@ -16,11 +16,15 @@ class UsersController < ApplicationController
   end
 
   def profile
+    return redirect_to recruit_applications_path if current_user.human_resources?
+
     redirect_to user_path(current_user)
   end
 
   def show
     @user = authorize User.find(params[:id])
+    return redirect_to recruit_applications_path if @user.human_resources?
+
     send(:"#{@user.role}_data", @user)
     render "users/#{@user.role}"
   end

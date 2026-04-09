@@ -64,6 +64,34 @@
                                                 action: 'click->sort#sort' } } &#9650;
           %th{ data: { controller: 'sort',
                        'sort-event-value': 'recruit-applications-table',
+                       'sort-col-value': '.date-of-birth',
+                       'sort-type-value': 'text' } }
+            = t('.date_of_birth')
+            %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                                action: 'click->sort#sort' } } &#9650;
+          %th{ data: { controller: 'sort',
+                       'sort-event-value': 'recruit-applications-table',
+                       'sort-col-value': '.gender',
+                       'sort-type-value': 'text' } }
+            = t('.gender')
+            %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                                action: 'click->sort#sort' } } &#9650;
+          %th{ data: { controller: 'sort',
+                       'sort-event-value': 'recruit-applications-table',
+                       'sort-col-value': '.contacted-on',
+                       'sort-type-value': 'date' } }
+            = t('.contacted_on')
+            %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                                action: 'click->sort#sort' } } &#9650;
+          %th{ data: { controller: 'sort',
+                       'sort-event-value': 'recruit-applications-table',
+                       'sort-col-value': '.interviewed',
+                       'sort-type-value': 'text' } }
+            = t('.interviewed')
+            %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
+                                                action: 'click->sort#sort' } } &#9650;
+          %th{ data: { controller: 'sort',
+                       'sort-event-value': 'recruit-applications-table',
                        'sort-col-value': '.nationality',
                        'sort-type-value': 'text' } }
             = t('.nationality')
@@ -86,6 +114,35 @@
             %td.full-name= application.full_name
             %td.email= mail_to application.email
             %td.phone= application.phone
+            %td.date-of-birth= application.date_of_birth ? l(application.date_of_birth) : '-'
+            %td.gender= application.gender.presence || '-'
+            %td.contacted-on{ data: { sort_value: application.contacted_on&.to_time&.to_i || 0 } }
+              - if policy(application).update?
+                = form_with model: application,
+                            url: recruit_application_path(application),
+                            method: :patch,
+                            local: true,
+                            class: 'm-0' do |f|
+                  = f.date_field :contacted_on,
+                                 value: application.contacted_on,
+                                 class: 'form-control form-control-sm',
+                                 onblur: "if (this.value.length === 10 || this.value === '') this.form.requestSubmit()"
+              - else
+                = application.contacted_on ? l(application.contacted_on) : '-'
+            %td.interviewed
+              - if policy(application).update?
+                = form_with model: application,
+                            url: recruit_application_path(application),
+                            method: :patch,
+                            local: true,
+                            class: 'm-0' do |f|
+                  = f.select :interviewed,
+                             [[t('.unknown'), ''], [t('.yes'), true], [t('.no'), false]],
+                             { selected: application.interviewed.nil? ? '' : application.interviewed.to_s },
+                             { class: 'form-select form-select-sm',
+                               onchange: 'this.form.requestSubmit()' }
+              - else
+                = application.interviewed.nil? ? '-' : (application.interviewed? ? t('.yes') : t('.no'))
             %td.nationality= application.nationality
             %td.tracking-link-slug= application.tracking_link_slug
             %td
