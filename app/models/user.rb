@@ -99,11 +99,13 @@ class User < ApplicationRecord
               area_manager: 2,
               admin: 3,
               statistician: 4,
+              human_resources: 5,
               default: :customer
 
   # Scopes for each role
   scope :customers, -> { where(role: :customer) }
   scope :staff, -> { where(role: %i[admin area_manager school_manager]) }
+  scope :human_resources, -> { where(role: :human_resources) }
   scope :area_managers, -> { where(role: :area_manager) }
   scope :school_managers, -> { where(role: :school_manager) }
   scope :admins, -> { where(role: :admin) }
