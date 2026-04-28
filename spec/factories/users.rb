@@ -22,6 +22,10 @@ FactoryBot.define do
       role { 'statistician' }
     end
 
+    trait :recruiter_privileges do
+      recruiter_privileges { true }
+    end
+
     factory :human_resources do
       role { 'human_resources' }
     end

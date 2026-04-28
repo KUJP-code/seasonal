@@ -39,4 +39,50 @@ RSpec.describe User do
       expect(user.allowed_ips).to eq(['1.1.1.1', '*'])
     end
   end
+
+  describe '#recruiter_access?' do
+    it 'allows human resources users' do
+      expect(build(:human_resources)).to be_recruiter_access
+    end
+
+    it 'allows area managers with recruiter privileges' do
+      expect(build(:area_manager, :recruiter_privileges)).to be_recruiter_access
+    end
+
+    it 'allows statisticians with recruiter privileges' do
+      expect(build(:statistician, :recruiter_privileges)).to be_recruiter_access
+    end
+
+    it 'does not allow customers even if the flag is set' do
+      user = build(:customer, recruiter_privileges: true)
+
+      expect(user).not_to be_recruiter_access
+    end
+  end
+
+  describe 'recruiter privileges' do
+    it 'clears the flag for customers' do
+      user = build(:customer, recruiter_privileges: true)
+
+      user.valid?
+
+      expect(user).not_to be_recruiter_privileges
+    end
+
+    it 'clears the flag for school managers' do
+      user = build(:school_manager, recruiter_privileges: true)
+
+      user.valid?
+
+      expect(user).not_to be_recruiter_privileges
+    end
+
+    it 'keeps the flag for area managers' do
+      user = build(:area_manager, :recruiter_privileges)
+
+      user.valid?
+
+      expect(user).to be_recruiter_privileges
+    end
+  end
 end

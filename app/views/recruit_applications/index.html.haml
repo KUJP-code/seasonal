@@ -1,4 +1,5 @@
 %main#recruit-applications-index
+  - can_destroy_recruit_applications = policy(RecruitApplication).destroy?
   .card.p-3.mb-3
     .d-flex.flex-row.justify-content-between.align-items-center.gap-3.flex-wrap.mb-3
       %h2.mb-0= t('.title')
@@ -105,7 +106,8 @@
             %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
                                                 action: 'click->sort#sort' } } &#9650;
           %th= t('.view')
-          %th= t('.delete')
+          - if can_destroy_recruit_applications
+            %th= t('.delete')
       %tbody#recruit-applications-table
         - @recruit_applications.each do |application|
           %tr
@@ -149,14 +151,12 @@
               = link_to t('.view'),
                         recruit_application_path(application),
                         class: 'btn btn-sm btn-primary'
-            %td
-              - if current_user.admin?
+            - if can_destroy_recruit_applications
+              %td
                 = link_to t('.delete'),
                           recruit_application_path(application),
                           data: { turbo_method: :delete,
                                   turbo_confirm: t('.delete_confirm') },
                           class: 'btn btn-sm btn-outline-danger'
-              - else
-                -
 
   = paginate @recruit_applications, window: 40

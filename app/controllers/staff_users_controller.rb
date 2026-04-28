@@ -65,6 +65,7 @@ class StaffUsersController < ApplicationController
     params.require(:user).permit(
       :address, :allowed_ips, :email, :katakana_name, :name, :password,
       :password_confirmation, :phone, :pin, :postcode, :prefecture, :role,
+      :recruiter_privileges,
       managements_attributes:
         %i[id manageable_id manageable_type manager_id _destroy]
     )

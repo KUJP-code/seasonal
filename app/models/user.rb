@@ -2,7 +2,7 @@
 
 class User < ApplicationRecord
   # Set full name from submitted first and last names
-  before_validation :set_name, :set_kana, :set_allowed_ips
+  before_validation :set_name, :set_kana, :set_allowed_ips, :clear_recruiter_privileges
 
   # Allow use of separate fields to ensure consistent name formatting
   attr_accessor :first_name, :family_name, :kana_first, :kana_family
@@ -142,6 +142,14 @@ class User < ApplicationRecord
     admin? || area_manager? || school_manager?
   end
 
+  def recruiter_access?
+    human_resources? || (recruiter_privileges? && recruiter_privileges_role?)
+  end
+
+  def recruiter_privileges_role?
+    area_manager? || statistician?
+  end
+
   # Checks if user is subscribed to a mailer (opt-out strategy)
   def subscribed_to_mailer?(mailer)
     MailerSubscription.find_by(
@@ -152,6 +160,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def clear_recruiter_privileges
+    self.recruiter_privileges = false unless recruiter_privileges_role?
+  end
 
   def set_allowed_ips
     return unless allowed_ips.instance_of?(String)

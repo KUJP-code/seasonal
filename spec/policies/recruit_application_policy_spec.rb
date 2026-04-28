@@ -18,6 +18,10 @@ RSpec.describe RecruitApplicationPolicy do
       expect(described_class.new(build(:human_resources), record).show?).to be(true)
     end
 
+    it 'allows area manager with recruiter privileges' do
+      expect(described_class.new(build(:area_manager, :recruiter_privileges), record).show?).to be(true)
+    end
+
     it 'forbids school manager' do
       expect(described_class.new(build(:school_manager), record).show?).to be(false)
     end
@@ -46,6 +50,10 @@ RSpec.describe RecruitApplicationPolicy do
       expect(described_class.new(build(:human_resources), record).update?).to be(true)
     end
 
+    it 'allows statistician with recruiter privileges' do
+      expect(described_class.new(build(:statistician, :recruiter_privileges), record).update?).to be(true)
+    end
+
     it 'forbids statistician' do
       expect(described_class.new(build(:statistician), record).update?).to be(false)
     end
@@ -66,6 +74,10 @@ RSpec.describe RecruitApplicationPolicy do
       expect(described_class.new(build(:human_resources), record).index?).to be(true)
     end
 
+    it 'allows area manager with recruiter privileges' do
+      expect(described_class.new(build(:area_manager, :recruiter_privileges), record).index?).to be(true)
+    end
+
     it 'forbids school manager' do
       expect(described_class.new(build(:school_manager), record).index?).to be(false)
     end
@@ -84,6 +96,10 @@ RSpec.describe RecruitApplicationPolicy do
 
     it 'returns all for human resources' do
       expect(Pundit.policy_scope!(build(:human_resources), RecruitApplication).count).to eq(2)
+    end
+
+    it 'returns all for user with recruiter privileges' do
+      expect(Pundit.policy_scope!(build(:statistician, :recruiter_privileges), RecruitApplication).count).to eq(2)
     end
   end
 end

@@ -25,7 +25,7 @@
         = render 'nav/staff_nav' if current_user.staff?
         = render 'nav/admin_nav' if current_user.admin?
         = render 'nav/customer_nav' if current_user.customer?
-        = render 'nav/human_resources_nav' if current_user.human_resources?
+        = render 'nav/human_resources_nav' if current_user.recruiter_access?
         = render 'nav/statistician_nav' if current_user.statistician?
         = link_to t('nav_bar.logout'),
                   destroy_user_session_path,

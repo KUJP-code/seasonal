@@ -25,6 +25,11 @@
     = f.label :role, class: 'form-label'
     = f.select :role, roles, {}, class: 'form-select'
 
+  - if user.recruiter_privileges_role? || user.recruiter_privileges?
+    .form-check
+      = f.check_box :recruiter_privileges, class: 'form-check-input'
+      = f.label :recruiter_privileges, 'Recruiter privileges', class: 'form-check-label'
+
   - if school_managements.any?
     .d-grid.gap-3{ 'data-controller': 'fields' }
       %h3 Managed Schools

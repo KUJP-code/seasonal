@@ -87,6 +87,16 @@ RSpec.describe 'Recruit applications' do
       expect(response.body).to include('Interview?')
       expect(response.body).to include(recruit_application_path(application, locale: :en))
     end
+
+    it 'does not show delete column to recruiter users' do
+      sign_in create(:area_manager, :recruiter_privileges)
+      create(:recruit_application)
+
+      get path
+
+      expect(response).to have_http_status(:success)
+      expect(response.body).not_to include('Delete')
+    end
   end
 
   describe 'GET /ja/recruit_applications/:id' do
@@ -155,6 +165,25 @@ RSpec.describe 'Recruit applications' do
       expect(application.contacted_on).to eq(Date.new(2026, 4, 9))
       expect(application.interviewed).to eq(true)
       expect(application.hr_comments).to eq('Screening call completed. Move to interview.')
+    end
+
+    it 'allows area manager with recruiter privileges to update internal workflow fields' do
+      sign_in create(:area_manager, :recruiter_privileges)
+
+      patch path, params: {
+        recruit_application: {
+          contacted_on: '2026-04-09',
+          interviewed: true,
+          hr_comments: 'Screening call completed.'
+        }
+      }
+
+      expect(response).to redirect_to(recruit_application_path(application, locale: :ja))
+
+      application.reload
+      expect(application.contacted_on).to eq(Date.new(2026, 4, 9))
+      expect(application.interviewed).to eq(true)
+      expect(application.hr_comments).to eq('Screening call completed.')
     end
 
     it 'redirects back to the list when updated from the index' do

@@ -2,7 +2,7 @@
 
 class RecruitApplicationPolicy < ApplicationPolicy
   def index?
-    user.admin? || user.statistician? || user.human_resources?
+    user.admin? || user.statistician? || user.recruiter_access?
   end
 
   def show?
@@ -10,7 +10,7 @@ class RecruitApplicationPolicy < ApplicationPolicy
   end
 
   def update?
-    user.admin? || user.human_resources?
+    user.admin? || user.recruiter_access?
   end
 
   def destroy?
@@ -19,7 +19,7 @@ class RecruitApplicationPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      return scope.all if user.admin? || user.statistician? || user.human_resources?
+      return scope.all if user.admin? || user.statistician? || user.recruiter_access?
 
       scope.none
     end
