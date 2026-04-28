@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.7.0-hr_view"
+    "Name": "kidsup/event_site:2.7.1-hr_accounts"
   },
   "Ports": [
     {
