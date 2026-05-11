@@ -2,3 +2,6 @@ production:
   clear_finished_transactions:
     class: ClearFinishedTransactionsJob
     schedule: "every sunday at midnight"
+  update_recent_finished_seasonal_attendance:
+    class: RecentFinishedSeasonalAttendanceJob
+    schedule: "every monday at 3am"

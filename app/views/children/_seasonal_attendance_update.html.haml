@@ -1,13 +1,15 @@
 -# locals: (events:)
 
-- return if @events.blank?
+- return if events.blank?
 
-.card
-  %h2 Press these buttons after each seasonal
-  %p Marks the kids who attended that event as having attended a seasonal event
-  %p So they don't get the first seasonal discount
-  .d-flex.justify-content-center.gap-3
-    - @events.each do |event_name|
+%details.card
+  %summary.fw-semibold Manual seasonal attendance update
+  %p.mt-3 Use this fallback if the automatic weekly update misses a seasonal.
+  %p
+    Marks the kids who attended that event as having attended a seasonal event,
+    so they don't get the first seasonal discount.
+  .d-flex.justify-content-center.flex-wrap.gap-3
+    - events.each do |event_name|
       = button_to event_name,
                   attended_seasonal_path(event_name:),
                   class: 'btn btn-primary',
