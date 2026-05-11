@@ -1,0 +1,14 @@
+.card.event-card.d-grid
+  - image_src = science_2026_image_path(child)
+  - if image_src.present?
+    = link_to science_2026_url, target: '_blank', rel: 'noopener' do
+      = image_tag(image_src, { class: 'img-fluid img-thumbnail', alt: science_2026_title(child) })
+
+  .d-flex.flex-column.flex-grow-1.gap-3
+    - if science_2026_date(child).present?
+      %p.text-black-50.mb-0= l(science_2026_date(child), format: "%-m月%-d日(%a)")
+
+    %h2.fw-bold
+      = link_to science_2026_title(child), science_2026_url, target: '_blank', rel: 'noopener'
+
+    %p= '※Science 2026 のお申込みは別サイトに変更となりました'

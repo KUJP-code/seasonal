@@ -1,6 +1,7 @@
 %main.gap-3#user-show
   - child_for_external = @user.children.first
-  - total_cards = @events.to_a.size + (show_mega_game?(child_for_external) ? 1 : 0)
+  - external_event_cards = [show_mega_game?(child_for_external), show_science_2026?(child_for_external)].count(true)
+  - total_cards = @events.to_a.size + external_event_cards
 
   - unless @user.confirmed?
     .card.justify-content-center.align-items-center.bg-danger
@@ -57,6 +58,8 @@
     .event-card-container
       - if show_mega_game?(child_for_external)
         = render 'events/mega_game', child: child_for_external
+      - if show_science_2026?(child_for_external)
+        = render 'events/science_2026', child: child_for_external
       - @events&.each do |e|
         = render partial: 'events/child_event',
                           locals: { event: e,
@@ -66,6 +69,8 @@
     .single-event-card
       - if show_mega_game?(child_for_external)
         = render 'events/mega_game', child: child_for_external
+      - if show_science_2026?(child_for_external)
+        = render 'events/science_2026', child: child_for_external
       - @events&.each do |e|
         = render partial: 'events/child_event',
                           locals: { event: e,

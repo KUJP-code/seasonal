@@ -1,8 +1,12 @@
 %main#child-show
   - if @child.school_id && current_user.customer?
-    - if @events&.size.to_i > 1
+    - external_event_cards = [show_mega_game?(@child), show_science_2026?(@child)].count(true)
+    - total_cards = @events.to_a.size + external_event_cards
+    - if total_cards > 1
 
       .event-card-container
+        - if show_science_2026?(@child)
+          = render 'events/science_2026', child: @child
         - if show_mega_game?(@child)
           = render 'events/mega_game', child: @child
         - @events.each do |e|
@@ -12,6 +16,8 @@
                    sibling_events: e.sibling_events
     - else
       .single-event-card
+        - if show_science_2026?(@child)
+          = render 'events/science_2026', child: @child
         - if show_mega_game?(@child)
           = render 'events/mega_game', child: @child
         - @events.each do |e|

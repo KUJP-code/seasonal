@@ -8,6 +8,8 @@ module EventsHelper
   MEGA_GAME_MAY_24_SCHOOL_IDS = [
     3, 7, 9, 10, 12, 16, 19, 21, 24, 26, 29, 30, 31, 35, 40
   ].freeze
+  SCIENCE_SUNDAY_SCHOOL_IDS = [3, 7, 9, 10, 40].freeze
+  SCIENCE_START_ON = Date.new(2026, 5, 10)
 
   def event_card_child
     current_user&.children&.first
@@ -22,6 +24,13 @@ module EventsHelper
 
     hide_on = mega_game_hide_on(child)
     hide_on.present? && Time.zone.today < hide_on
+  end
+
+  def show_science_2026?(child = event_card_child)
+    return false unless child
+
+    hide_on = science_2026_hide_on(child)
+    hide_on.present? && Time.zone.today >= SCIENCE_START_ON && Time.zone.today < hide_on
   end
 
   def mega_game_date(child = event_card_child)
@@ -65,6 +74,44 @@ module EventsHelper
 
   def mega_game_avif_path(_child = event_card_child)
     ''
+  rescue StandardError
+    ''
+  end
+
+  def science_2026_date(child = event_card_child)
+    return nil unless child
+
+    if SCIENCE_SUNDAY_SCHOOL_IDS.include?(child.school_id)
+      Date.new(2026, 7, 5)
+    else
+      Date.new(2026, 7, 4)
+    end
+  end
+
+  def science_2026_hide_on(child = event_card_child)
+    event_date = science_2026_date(child)
+    event_date ? event_date + 1.day : nil
+  end
+
+  def science_2026_title(child = event_card_child)
+    base = 'Science 2026'
+    school = event_card_school(child)
+    school ? "#{base} (#{I18n.t("schools.#{school.name}")})" : base
+  end
+
+  def science_2026_url
+    'https://my.ptsc.jp/kids-up/entry?i=Science2026'
+  end
+
+  def science_2026_image_path(child = event_card_child)
+    case science_2026_date(child)
+    when Date.new(2026, 7, 4)
+      asset_path('2026-science-4th.png')
+    when Date.new(2026, 7, 5)
+      asset_path('2026-science-5th.png')
+    else
+      ''
+    end
   rescue StandardError
     ''
   end
