@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.7.1-hr_accounts"
+    "Name": "kidsup/event_site:2.7.2-science_cards"
   },
   "Ports": [
     {
