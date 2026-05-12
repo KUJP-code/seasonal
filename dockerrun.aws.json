@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.7.2-science_cards"
+    "Name": "kidsup/event_site:2.7.3-form_changes"
   },
   "Ports": [
     {

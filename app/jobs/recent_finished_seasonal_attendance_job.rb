@@ -21,6 +21,6 @@ class RecentFinishedSeasonalAttendanceJob < ApplicationJob
                     )
                     .distinct
 
-    children.find_each { |child| StudentSeasonalUpdateJob.perform_later(child) }
+    children.find_each { |child| StudentSeasonalUpdateJob.perform_now(child) }
   end
 end
