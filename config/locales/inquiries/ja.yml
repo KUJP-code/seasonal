@@ -9,6 +9,7 @@ ja:
       child_birthday: "生年月日"
       category: "カテゴリー"
       child_name: "子供"
+      child_katakana_name: "子供（カタカナ）"
       ele_school: "小学校名と在学状況"
       email: "メールアドレス"
       kindy: "保育園・幼稚園名と在園状況"

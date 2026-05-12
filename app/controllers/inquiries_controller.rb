@@ -71,8 +71,9 @@ class InquiriesController < ApplicationController
   def inquiry_params
     params.require(:inquiry).permit(
       :id, :setsumeikai_id, :parent_name, :phone, :email, :child_name,
-      :referrer, :child_birthday, :kindy, :ele_school, :start_date, :notes,
-      :requests, :category, :school_id, :privacy_policy, :recaptcha_token
+      :child_katakana_name, :referrer, :child_birthday, :kindy, :ele_school,
+      :start_date, :notes, :requests, :category, :school_id, :privacy_policy,
+      :recaptcha_token
     )
   end
 

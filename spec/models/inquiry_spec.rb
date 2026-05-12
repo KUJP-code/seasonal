@@ -13,6 +13,34 @@ describe Inquiry do
     expect(build(:setsumeikai_inquiry)).to be_valid
   end
 
+  describe '#child_display_name' do
+    it 'appends child katakana when present' do
+      inquiry = build(:inquiry,
+                      child_name: '山田 花子',
+                      child_katakana_name: 'ヤマダ ハナコ')
+
+      expect(inquiry.child_display_name).to eq('山田 花子 (ヤマダ ハナコ)')
+    end
+
+    it 'returns child name when katakana is blank' do
+      inquiry = build(:inquiry,
+                      child_name: '山田 花子',
+                      child_katakana_name: nil)
+
+      expect(inquiry.child_display_name).to eq('山田 花子')
+    end
+  end
+
+  describe '#to_gas_api' do
+    it 'sends child name with katakana appended' do
+      inquiry = create(:setsumeikai_inquiry,
+                       child_name: '山田 花子',
+                       child_katakana_name: 'ヤマダ ハナコ')
+
+      expect(inquiry.to_gas_api[:name_child]).to eq('山田 花子 (ヤマダ ハナコ)')
+    end
+  end
+
   context 'when calculating school grade during 2023 school year' do
     before do
       travel_to Date.new(2024, 3, 14)

@@ -16,6 +16,7 @@ FactoryBot.define do
     phone { '090-1234-5678' }
     email { 'XkxZs@example.com' }
     child_name { '田中' }
+    child_katakana_name { 'タナカ' }
     child_birthday { Date.new(2016, 4, 1) }
     kindy { 'Okurayama' }
     ele_school { '東京都立青山高等学校' }

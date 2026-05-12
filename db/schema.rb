@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_28_000000) do
+ActiveRecord::Schema[7.1].define(version: 2026_05_12_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -148,6 +148,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_28_000000) do
     t.boolean "send_flg", default: true
     t.string "category", default: "R"
     t.bigint "school_id"
+    t.string "child_katakana_name"
     t.index ["school_id"], name: "index_inquiries_on_school_id"
     t.index ["setsumeikai_id"], name: "index_inquiries_on_setsumeikai_id"
   end

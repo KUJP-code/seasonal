@@ -48,6 +48,12 @@
             <%= f.label :child_name, t('.child_name'), class: 'form-label' %>
         </div>
         <div class="form-floating w-25">
+            <%= f.text_field :child_katakana_name,
+                    class: 'form-control',
+                    placeholder: t('.child_katakana_name') %>
+            <%= f.label :child_katakana_name, t('.child_katakana_name'), class: 'form-label' %>
+        </div>
+        <div class="form-floating w-25">
             <%= f.date_field :child_birthday, class: 'form-control' %>
             <%= f.label :child_birthday, t('.child_birthday'), class: 'form-label' %>
         </div>

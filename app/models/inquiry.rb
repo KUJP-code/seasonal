@@ -40,7 +40,7 @@ class Inquiry < ApplicationRecord
       id:,
       category:,
       created_at: created_at.strftime('%Y-%m-%d'),
-      name_child: child_name,
+      name_child: child_display_name,
       name: parent_name,
       tel: phone,
       email:,
@@ -54,6 +54,12 @@ class Inquiry < ApplicationRecord
       age: child_grade,
       event_schedule:
     }
+  end
+
+  def child_display_name
+    return child_name if child_katakana_name.blank?
+
+    "#{child_name} (#{child_katakana_name})"
   end
 
   def to_gas_update
