@@ -17,6 +17,7 @@ export default class extends Controller {
 	static values = {
 		eventName: String,
 		priceList: Object,
+		pricingRules2026: Boolean,
 		siblingEventCost: Number,
 		snackCost: Number,
 	};
@@ -112,12 +113,43 @@ export default class extends Controller {
 		const id = Number.parseInt(this.childTarget.children[0].innerHTML);
 
 		const cost = this.slotRegsTargets.reduce((sum, target) => {
-			const numRegs = target.querySelectorAll(`.child${id}`).length;
-			const courseCost = this.bestCourses(numRegs, this.priceList);
+			const regs = target.querySelectorAll(`.child${id}`);
+			const courseCost = this.pricingRules2026Value
+				? this.batchCourseCost(regs)
+				: this.bestCourses(regs.length, this.priceList);
 			return sum + courseCost;
 		}, 0);
 
 		return cost;
+	}
+
+	batchCourseCost(regs) {
+		const counts = [...regs].reduce((batches, reg) => {
+			const batch = reg.dataset.pricingBatch || "1";
+			batches[batch] = (batches[batch] || 0) + 1;
+			return batches;
+		}, {});
+
+		return Object.values(counts).reduce((sum, count) => {
+			return sum + this.packageCourseCost2026(count);
+		}, 0);
+	}
+
+	packageCourseCost2026(numRegs) {
+		let remainingRegs = numRegs;
+
+		return this.availableCourses().reduce((sum, course) => {
+			const count = Math.floor(remainingRegs / course);
+			remainingRegs %= course;
+			return sum + count * this.priceList[course];
+		}, 0);
+	}
+
+	availableCourses() {
+		return Object.entries(this.priceList)
+			.filter(([_course, price]) => price !== null && price !== undefined)
+			.map(([course]) => Number.parseInt(course, 10))
+			.sort((a, b) => b - a);
 	}
 
 	// Calculates cost from spot use when less than 5 courses

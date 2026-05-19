@@ -69,4 +69,40 @@ RSpec.describe TimeSlot do
       expect(slot.reload.avif.blob).to eq(original_blob)
     end
   end
+
+  describe 'pricing rule defaults' do
+    it 'keeps legacy snack and elementary extension prices before May 2026' do
+      event = create(:event,
+                     start_date: Date.new(2026, 4, 30),
+                     end_date: Date.new(2026, 4, 30))
+      slot = create(:time_slot, :morning, event:)
+      afternoon = slot.afternoon_slot
+
+      expect(TimeSlot.snack_cost_for(event)).to eq(200)
+      expect(afternoon.options.departure.pluck(:cost)).to eq([550, 1_100, 1_650, 2_200])
+      expect(slot.options.arrival.pluck(:cost)).to eq([550, 1_100, 1_650])
+    end
+
+    it 'uses new snack and elementary extension prices from May 2026' do
+      event = create(:event,
+                     start_date: Date.new(2026, 5, 1),
+                     end_date: Date.new(2026, 5, 1))
+      slot = create(:time_slot, :morning, event:)
+      afternoon = slot.afternoon_slot
+
+      expect(TimeSlot.snack_cost_for(event)).to eq(225)
+      expect(afternoon.options.departure.pluck(:cost)).to eq([660, 1_320, 1_980, 2_640])
+      expect(slot.options.arrival.pluck(:cost)).to eq([660, 1_320, 1_980])
+    end
+
+    it 'uses kindy pricing for elementary middle extension from May 2026' do
+      event = create(:event,
+                     start_date: Date.new(2026, 5, 1),
+                     end_date: Date.new(2026, 5, 1))
+      slot = create(:time_slot, :morning, category: :special, event:)
+
+      expect(slot.options.extension.first.cost).to eq(1_980)
+      expect(slot.options.k_extension.first.cost).to eq(1_980)
+    end
+  end
 end

@@ -53,7 +53,9 @@ RSpec.describe RecentFinishedSeasonalAttendanceJob do
   end
 
   it 'matches the manual button behavior by updating all events with a recent seasonal name' do
-    recent_event = create_finished_event(name: 'Summer School', end_date: 1.week.ago.to_date)
+    recent_event = create_finished_event(name: 'Summer School',
+                                         end_date: 1.week.ago.to_date,
+                                         early_bird_discount: 0)
     same_name_event = create_finished_event(name: recent_event.name, end_date: 2.months.ago.to_date)
     child = create(:child, first_seasonal: true)
     create_real_invoice(child:, event: same_name_event)

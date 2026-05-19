@@ -3,7 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe Invoice do
-  let(:event) { create(:event) }
+  let(:event) do
+    create(:event,
+           start_date: Date.new(2026, 4, 1),
+           end_date: Date.new(2026, 4, 2))
+  end
 
   def find_adjustment(invoice)
     invoice.adjustments.find do |adj|
@@ -239,6 +243,24 @@ RSpec.describe Invoice do
           adj.reason == '非会員リピーター割引(以前シーズナルスクールに参加された非会員の方)'
       end
       expect(repeater_adj).to be_nil
+    end
+
+    it 'does not apply first time adjustment for a 2026 pricing rules event' do
+      event_2026 = create(:event,
+                          start_date: Date.new(2026, 5, 1),
+                          end_date: Date.new(2026, 5, 2),
+                          early_bird_date: Date.new(2026, 4, 1))
+      child = build(:child, category: :external, first_seasonal: true)
+      invoice = build(:invoice, event: event_2026, child:, slot_regs:
+                        [build(:slot_reg, child:, registerable: create(:time_slot))])
+
+      invoice.calc_cost
+
+      first_time_adj = invoice.adjustments.find do |adj|
+        adj.change == 1_100 &&
+          adj.reason == '初回登録料(初めてシーズナルスクールに参加する非会員の方)'
+      end
+      expect(first_time_adj).to be_nil
     end
   end
 

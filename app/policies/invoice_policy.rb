@@ -51,7 +51,7 @@ class InvoicePolicy < ApplicationPolicy
     always_permit = [
       :id, :child_id, :event_id,
       { slot_regs_attributes: %i[id child_id _destroy invoice_id
-                                 registerable_id registerable_type],
+                                 pricing_batch registerable_id registerable_type],
         opt_regs_attributes: %i[id child_id _destroy invoice_id
                                 registerable_id registerable_type],
         coupons_attributes: [:code] }

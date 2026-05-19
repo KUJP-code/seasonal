@@ -49,7 +49,7 @@ RSpec.describe 'Registration flow', :js do
     # expect(total_cost.text).to eq cost_text(expected_cost)
 
     check "a_slot#{time_slot.afternoon_slot.id}"
-    expected_cost += event.member_prices.courses['1'] + TimeSlot::SNACK_COST
+    expected_cost += event.member_prices.courses['1'] + TimeSlot.snack_cost_for(event)
     expect(total_cost.text).to eq cost_text(expected_cost)
 
     check "eopt#{event.options.first.id}"
@@ -68,5 +68,41 @@ RSpec.describe 'Registration flow', :js do
     click_on I18n.t('invoices.confirm.confirm_changes')
     expect(page).to have_content I18n.t('invoices.show.confirm_success')
     expect(find_by_id('final_cost').text).to eq cost_text(expected_cost)
+  end
+
+  it 'keeps the footer total in sync when new 2026 batches are added to existing batches' do
+    member_prices = create(:member_prices, course1: '1_000', course3: '',
+                                           course5: '2_500', course10: '',
+                                           course15: '', course20: '',
+                                           course25: '', course30: '',
+                                           course35: '', course40: '',
+                                           course45: '', course50: '')
+    event = create(:event,
+                   start_date: Date.new(2026, 5, 20),
+                   end_date: Date.new(2026, 6, 10),
+                   member_prices:)
+    initial_slots = create_list(:time_slot, 4, :morning, event:,
+                                close_at: 1.week.from_now)
+    later_slot = create(:time_slot, :morning, event:, close_at: 1.week.from_now)
+    new_slots = create_list(:time_slot, 5, :morning, event:,
+                            close_at: 1.week.from_now)
+    invoice = create(:invoice, event:, child:,
+                               slot_regs_attributes: slot_attributes(initial_slots, child))
+    invoice.assign_attributes(slot_regs_attributes: slot_attributes([later_slot], child))
+    invoice.save!
+
+    visit new_invoice_path(event_id: event.id, child: child.id)
+
+    new_slots.each { |slot| check "m_slot#{slot.id}" }
+
+    expect(find_by_id('total_cost').text).to eq cost_text(7_500)
+  end
+
+  def slot_attributes(slots, child)
+    slots.map do |slot|
+      { child_id: child.id,
+        registerable_id: slot.id,
+        registerable_type: 'TimeSlot' }
+    end
   end
 end

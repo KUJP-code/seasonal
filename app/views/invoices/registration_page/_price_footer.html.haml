@@ -49,10 +49,12 @@
           - slot_id = "slot#{slot_f.object.registerable_id}child#{slot_f.object.child_id}"
 
           %div{ class: "slot_reg child#{slot_f.object.child_id}",
-                id: slot_id }
+                id: slot_id,
+                data: { pricing_batch: slot_f.object.pricing_batch || 1 } }
             = slot_f.hidden_field :_destroy, value: 0
             = slot_f.hidden_field :id
             = slot_f.hidden_field :child_id
+            = slot_f.hidden_field :pricing_batch
             = slot_f.hidden_field :registerable_id
             = slot_f.hidden_field :registerable_type
 
@@ -83,8 +85,11 @@
       %template{ 'data-invoice-target': 'slotTemplate' }
         = f.fields_for :slot_regs, Registration.new,
                        child_index: 'REG_INDEX' do |reg_f|
-          .slot_reg.NEW_CLASS{ 'data-new-record': 'true', id: 'NEW_ID' }
+          .slot_reg.NEW_CLASS{ 'data-new-record': 'true',
+                                'data-pricing-batch': 'new',
+                                id: 'NEW_ID' }
             = reg_f.hidden_field :child_id, value: 'NEW_CHILD_ID'
+            = reg_f.hidden_field :pricing_batch, value: nil
             = reg_f.hidden_field :registerable_id,
                                  value: 'NEW_REGISTERABLE_ID'
             = reg_f.hidden_field :registerable_type, value: 'TimeSlot'

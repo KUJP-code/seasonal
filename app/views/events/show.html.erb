@@ -10,7 +10,7 @@
 <% others_cost = @child.parent.invoices.where(event_id: @event.id).where.not(child_id: @child.id).reduce(0) { |sum, invoice| sum + invoice.total_cost } unless @child.parent.nil? %>
 
 
-<main id="event-show" data-controller="invoice price" data-action="register:toggle->invoice#change invoice:add@window->price#calculate invoice:remove@window->price#calculate" data-price-price-list-value=<%= @price_list.to_json %> data-price-sibling-event-cost-value="<%= others_cost || 0 %>" data-price-event-name-value="<%= @event.name %>" class="d-flex flex-column justify-content-start align-items-start text-start bg-white">
+<main id="event-show" data-controller="invoice price" data-action="register:toggle->invoice#change invoice:add@window->price#calculate invoice:remove@window->price#calculate" data-price-price-list-value=<%= @price_list.to_json %> data-price-pricing-rules2026-value="<%= @event.pricing_rules_2026? %>" data-price-snack-cost-value="<%= TimeSlot.snack_cost_for(@event) %>" data-price-sibling-event-cost-value="<%= others_cost || 0 %>" data-price-event-name-value="<%= @event.name %>" class="d-flex flex-column justify-content-start align-items-start text-start bg-white">
 
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 w-100">
         <%= render 'invoices/registration_page/header', child: @child, siblings: @siblings, event: @event, event_cost: @event_cost %>
@@ -129,10 +129,11 @@
                     <%= f.hidden_field :event_id %>
                     <div class="slot_regs" data-price-target="slotRegs">
                         <%= f.fields_for :slot_regs do |slot_f| %>
-                        <div class="slot_reg <%= "child#{slot_f.object.child_id}" %>" id=<%= "slot#{slot_f.object.registerable_id}child#{slot_f.object.child_id}" %>>
+                        <div class="slot_reg <%= "child#{slot_f.object.child_id}" %>" id=<%= "slot#{slot_f.object.registerable_id}child#{slot_f.object.child_id}" %> data-pricing-batch="<%= slot_f.object.pricing_batch || 1 %>">
                             <%= slot_f.hidden_field :_destroy, value: 0 %>
                             <%= slot_f.hidden_field :id %>
                             <%= slot_f.hidden_field :child_id %>
+                            <%= slot_f.hidden_field :pricing_batch %>
                             <%= slot_f.hidden_field :registerable_id %>
                             <%= slot_f.hidden_field :registerable_type %>
                         </div>
@@ -158,8 +159,9 @@
                     </div>
                     <template data-invoice-target="slotTemplate">
                         <%= f.fields_for :slot_regs, Registration.new, child_index: 'REG_INDEX' do |reg_f| %>
-                        <div class="slot_reg NEW_CLASS" id="NEW_ID" data-new-record="<%= reg_f.object.new_record? %>">
+                        <div class="slot_reg NEW_CLASS" id="NEW_ID" data-new-record="<%= reg_f.object.new_record? %>" data-pricing-batch="new">
                             <%= reg_f.hidden_field :child_id, value: 'NEW_CHILD_ID' %>
+                            <%= reg_f.hidden_field :pricing_batch, value: nil %>
                             <%= reg_f.hidden_field :registerable_id, value: 'NEW_REGISTERABLE_ID' %>
                             <%= reg_f.hidden_field :registerable_type, value: 'TimeSlot' %>
                         </div>

@@ -119,6 +119,16 @@ class TimeSlot < ApplicationRecord
     category_cost + grade_cost
   end
 
+  def snack_cost
+    self.class.snack_cost_for(event)
+  end
+
+  def self.snack_cost_for(event)
+    return SNACK_COST_2026 if event&.pricing_rules_2026?
+
+    SNACK_COST
+  end
+
   def display_time_range
     return nil if party?
 
@@ -145,15 +155,43 @@ class TimeSlot < ApplicationRecord
 
   def create_default_opts
     if morning
-      options.create(DEFAULT_MORN_OPTS)
-      options.create(DEFAULT_SPECIAL_OPTS) if special?
+      options.create(default_morn_opts)
+      options.create(default_special_opts) if special?
     else
-      options.create(DEFAULT_AFT_OPTS)
+      options.create(default_aft_opts)
     end
   end
 
   def name_blank?(afternoon_slot)
     afternoon_slot[:name].blank?
+  end
+
+  def default_aft_opts
+    default_opts_for_pricing(DEFAULT_AFT_OPTS)
+  end
+
+  def default_morn_opts
+    default_opts_for_pricing(DEFAULT_MORN_OPTS)
+  end
+
+  def default_special_opts
+    default_opts_for_pricing(DEFAULT_SPECIAL_OPTS)
+  end
+
+  def default_opts_for_pricing(opts)
+    return opts unless event.pricing_rules_2026?
+
+    opts.map do |opt|
+      next opt unless %i[arrival departure extension].include?(opt[:category])
+
+      opt.merge(cost: new_elementary_extension_cost(opt))
+    end
+  end
+
+  def new_elementary_extension_cost(opt)
+    return 1_980 if opt[:category] == :extension
+
+    opt[:modifier].abs / 30 * 660
   end
 
   DEFAULT_AFT_OPTS = [
@@ -270,6 +308,7 @@ class TimeSlot < ApplicationRecord
   ].freeze
 
   SNACK_COST = 200
+  SNACK_COST_2026 = 225
 
   DAYS = { 'Sunday' => '日', 'Monday' => '月', 'Tuesday' => '火',
            'Wednesday' => '水', 'Thursday' => '木', 'Friday' => '金',

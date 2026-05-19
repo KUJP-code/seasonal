@@ -13,14 +13,16 @@ module CourseCalculator
     @data[:course_summary] = +''
 
     @data[:course_cost] =
-      slot_cost(slots.size) + @data[:extra_cost] + @data[:snack_cost]
+      slot_cost(slots) + @data[:extra_cost] + @data[:snack_cost]
   end
 
-  def slot_cost(num_regs)
+  def slot_cost(slots)
+    num_regs = slots.size
+
     if child.member?
-      best_price(num_regs, member_prices)
+      best_price_for_event(num_regs, member_prices)
     else
-      best_price(num_regs, non_member_prices)
+      best_price_for_event(num_regs, non_member_prices)
     end
   end
 
@@ -73,9 +75,51 @@ module CourseCalculator
     spot_cost
   end
 
+  def best_price_for_event(num_regs, courses)
+    return best_price(num_regs, courses) unless event.pricing_rules_2026?
+
+    priced_slot_regs.sum do |_batch, regs|
+      package_price_2026(regs.size, courses)
+    end
+  end
+
+  def priced_slot_regs
+    slot_regs_for_pricing =
+      @data[:slot_regs].presence || slot_regs.reject(&:marked_for_destruction?)
+    slot_regs_for_pricing.group_by { |reg| reg.pricing_batch || 1 }
+  end
+
+  def package_price_2026(num_regs, courses)
+    remaining_regs = num_regs
+    available_courses(courses).sum do |course|
+      count, remaining_regs = remaining_regs.divmod(course)
+      next 0 if count.zero?
+
+      package_summary_2026(course, count, courses)
+    end
+  end
+
+  def package_summary_2026(course, count, courses)
+    cost = courses[course.to_s] * count
+    @data[:course_summary] << "<p>- #{course}回コース x #{count}: #{yenify(cost)}</p>"
+    cost
+  end
+
+  def available_courses(courses)
+    courses.select { |_course, price| price.present? }
+           .keys
+           .map(&:to_i)
+           .sort
+           .reverse
+  end
+
   def snack_cost(slots)
     snack_count = slots.count(&:snack)
-    cost = child.respond_to?(:own_snack?) && child.own_snack? ? 0 : snack_count * TimeSlot::SNACK_COST
+    cost = if child.respond_to?(:own_snack?) && child.own_snack?
+             0
+           else
+             slots.select(&:snack).sum(&:snack_cost)
+           end
     [cost, snack_count]
   end
 

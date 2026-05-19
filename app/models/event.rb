@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Event < ApplicationRecord
+  PRICING_RULES_2026_START_DATE = Date.new(2026, 5, 1)
+
   def self.summary_json(names)
     names.index_with do |name|
       Event.where(name:).map(&:to_gas_summary)
@@ -99,7 +101,7 @@ class Event < ApplicationRecord
   end
 
   def pricing_rules_2026?
-    start_date.year >= 2026
+    start_date >= PRICING_RULES_2026_START_DATE
   end
 
   def to_gas_summary

@@ -54,4 +54,22 @@ RSpec.describe Event do
       expect(event.reload.avif.blob).to eq(original_blob)
     end
   end
+
+  describe '#pricing_rules_2026?' do
+    it 'does not apply to events before May 2026' do
+      event = build(:event,
+                    start_date: Date.new(2026, 4, 30),
+                    end_date: Date.new(2026, 4, 30))
+
+      expect(event).not_to be_pricing_rules_2026
+    end
+
+    it 'applies to events starting in May 2026 or later' do
+      event = build(:event,
+                    start_date: Date.new(2026, 5, 1),
+                    end_date: Date.new(2026, 5, 1))
+
+      expect(event).to be_pricing_rules_2026
+    end
+  end
 end

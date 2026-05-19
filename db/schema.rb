@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_05_12_000000) do
+ActiveRecord::Schema[7.1].define(version: 2026_05_18_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -300,6 +300,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_12_000000) do
     t.bigint "invoice_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "pricing_batch", default: 1, null: false
     t.index ["child_id"], name: "index_registrations_on_child_id"
     t.index ["invoice_id"], name: "index_registrations_on_invoice_id"
     t.index ["registerable_id", "child_id", "registerable_type"], name: "idx_reg_per_child", unique: true

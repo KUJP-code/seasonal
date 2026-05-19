@@ -8,7 +8,7 @@ module AdjustmentCalculator
     # The following discounts only apply to seasonal events
     # Seasonal events don't have an early bird discount
     if event.seasonal?
-      first_time_adjustment if first_time?(num_regs)
+      first_time_adjustment if first_time?(num_regs) && !event.pricing_rules_2026?
       hat_adjustment if needs_hat?
       repeater_discount if repeater?(num_regs) && !event.pricing_rules_2026?
     end

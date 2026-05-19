@@ -6,6 +6,7 @@ class Invoice < ApplicationRecord
   include InvoiceSummarisable
 
   before_save :update_regs_child
+  before_save :assign_pricing_batches
   before_save :calc_cost, unless: :in_ss?
   belongs_to :child
   delegate :parent, to: :child
@@ -58,6 +59,7 @@ class Invoice < ApplicationRecord
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   def calc_cost
+    assign_pricing_batches
     generate_data
     self.total_cost = @data[:total_cost]
     self.summary = generate_summary(@data)
@@ -129,5 +131,22 @@ class Invoice < ApplicationRecord
     registrations.each do |reg|
       reg.update!(child_id:)
     end
+  end
+
+  def assign_pricing_batches
+    return unless event&.pricing_rules_2026?
+
+    new_slot_regs = slot_regs.select do |reg|
+      reg.id.blank? && !reg.marked_for_destruction?
+    end
+    return if new_slot_regs.empty?
+
+    existing_batches = slot_regs.reject do |reg|
+      reg.id.blank? || reg.marked_for_destruction?
+    end.map(&:pricing_batch)
+    next_batch = existing_batches.compact.max.to_i + 1
+    next_batch = 1 if existing_batches.empty?
+
+    new_slot_regs.each { |reg| reg.pricing_batch = next_batch }
   end
 end

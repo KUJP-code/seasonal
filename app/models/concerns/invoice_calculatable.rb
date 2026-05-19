@@ -9,6 +9,7 @@ module InvoiceCalculatable
   included do
     def generate_data
       @data = { options: validated_options,
+                slot_regs: validated_slot_regs,
                 time_slots: validated_slots }
       @data[:num_regs] = @data[:time_slots].size
       calc_course_cost(@data[:time_slots])
@@ -32,9 +33,12 @@ module InvoiceCalculatable
   end
 
   def validated_slots
-    valid_reg_ids = slot_regs.reject(&:marked_for_destruction?)
-                             .map(&:registerable_id)
+    valid_reg_ids = validated_slot_regs.map(&:registerable_id)
 
     TimeSlot.where(id: valid_reg_ids).includes(:options)
+  end
+
+  def validated_slot_regs
+    slot_regs.reject(&:marked_for_destruction?)
   end
 end
