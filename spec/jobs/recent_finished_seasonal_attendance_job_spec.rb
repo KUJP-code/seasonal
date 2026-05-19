@@ -24,7 +24,7 @@ RSpec.describe RecentFinishedSeasonalAttendanceJob do
 
   it 'marks first seasonal children from recently finished seasonals' do
     event = create_finished_event(end_date: 1.week.ago.to_date, early_bird_discount: 0)
-    child = create(:child, first_seasonal: true)
+    child = create(:external_child, first_seasonal: true)
     create_real_invoice(child:, event:)
 
     perform_enqueued_jobs { described_class.perform_later }
@@ -34,7 +34,7 @@ RSpec.describe RecentFinishedSeasonalAttendanceJob do
 
   it 'does not update children from seasonals outside the lookback window' do
     event = create_finished_event(end_date: 2.months.ago.to_date, early_bird_discount: 0)
-    child = create(:child, first_seasonal: true)
+    child = create(:external_child, first_seasonal: true)
     create_real_invoice(child:, event:)
 
     perform_enqueued_jobs { described_class.perform_later }
@@ -44,7 +44,7 @@ RSpec.describe RecentFinishedSeasonalAttendanceJob do
 
   it 'does not update children from non-seasonal events' do
     event = create_finished_event(end_date: 1.week.ago.to_date, early_bird_discount: -1000)
-    child = create(:child, first_seasonal: true)
+    child = create(:external_child, first_seasonal: true)
     create_real_invoice(child:, event:)
 
     perform_enqueued_jobs { described_class.perform_later }
@@ -57,7 +57,7 @@ RSpec.describe RecentFinishedSeasonalAttendanceJob do
                                          end_date: 1.week.ago.to_date,
                                          early_bird_discount: 0)
     same_name_event = create_finished_event(name: recent_event.name, end_date: 2.months.ago.to_date)
-    child = create(:child, first_seasonal: true)
+    child = create(:external_child, first_seasonal: true)
     create_real_invoice(child:, event: same_name_event)
 
     perform_enqueued_jobs { described_class.perform_later }
