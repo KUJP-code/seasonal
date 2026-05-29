@@ -1,84 +1,26 @@
 # frozen_string_literal: true
 
 module EventsHelper
-  MEGA_GAME_MAY_23_SCHOOL_IDS = [
-    4, 5, 6, 8, 11, 13, 14, 15, 17, 18, 20, 22, 23, 25, 27, 28, 32, 33, 34,
-    36, 39, 41
-  ].freeze
-  MEGA_GAME_MAY_24_SCHOOL_IDS = [
-    3, 7, 9, 10, 12, 16, 19, 21, 24, 26, 29, 30, 31, 35, 40
-  ].freeze
   SCIENCE_SUNDAY_SCHOOL_IDS = [3, 7, 9, 10, 40].freeze
   SCIENCE_START_ON = Date.new(2026, 5, 10)
 
-  def event_card_child
-    current_user&.children&.first
+  def visible_external_event_cards(child, external_event_cards)
+    cards = Array(external_event_cards)
+    show_science_2026?(child) ? [:science, *cards] : cards
   end
 
-  def event_card_school(child = event_card_child)
-    child&.school
+  def event_card_count(child, events, external_event_cards)
+    Array(events).size + visible_external_event_cards(child, external_event_cards).size
   end
 
-  def show_mega_game?(child = event_card_child)
-    return false unless child
-
-    hide_on = mega_game_hide_on(child)
-    hide_on.present? && Time.zone.today < hide_on
-  end
-
-  def show_science_2026?(child = event_card_child)
+  def show_science_2026?(child)
     return false unless child
 
     hide_on = science_2026_hide_on(child)
     hide_on.present? && Time.zone.today >= SCIENCE_START_ON && Time.zone.today < hide_on
   end
 
-  def mega_game_date(child = event_card_child)
-    return nil unless child
-
-    case child.school_id
-    when *MEGA_GAME_MAY_23_SCHOOL_IDS
-      Date.new(2026, 5, 23)
-    when *MEGA_GAME_MAY_24_SCHOOL_IDS
-      Date.new(2026, 5, 24)
-    end
-  end
-
-  def mega_game_hide_on(child = event_card_child)
-    event_date = mega_game_date(child)
-    event_date ? event_date + 1.day : nil
-  end
-
-  def mega_game_title(child = event_card_child)
-    base = 'Mega Game 2026'
-    school = event_card_school(child)
-    school ? "#{base} (#{I18n.t("schools.#{school.name}")})" : base
-  end
-
-  def mega_game_url
-    'https://my.ptsc.jp/kids-up/entry?i=Mega2026'
-  end
-
-  def mega_game_image_path(child = event_card_child)
-    case mega_game_date(child)
-    when Date.new(2026, 5, 23)
-      asset_path('mega_game_23.webp')
-    when Date.new(2026, 5, 24)
-      asset_path('mega_game_24.webp')
-    else
-      ''
-    end
-  rescue StandardError
-    ''
-  end
-
-  def mega_game_avif_path(_child = event_card_child)
-    ''
-  rescue StandardError
-    ''
-  end
-
-  def science_2026_date(child = event_card_child)
+  def science_2026_date(child)
     return nil unless child
 
     if SCIENCE_SUNDAY_SCHOOL_IDS.include?(child.school_id)
@@ -88,14 +30,14 @@ module EventsHelper
     end
   end
 
-  def science_2026_hide_on(child = event_card_child)
+  def science_2026_hide_on(child)
     event_date = science_2026_date(child)
     event_date ? event_date + 1.day : nil
   end
 
-  def science_2026_title(child = event_card_child)
+  def science_2026_title(child)
     base = 'Science 2026'
-    school = event_card_school(child)
+    school = child&.school
     school ? "#{base} (#{I18n.t("schools.#{school.name}")})" : base
   end
 
@@ -103,7 +45,7 @@ module EventsHelper
     'https://my.ptsc.jp/kids-up/entry?i=Science2026'
   end
 
-  def science_2026_image_path(child = event_card_child)
+  def science_2026_image_path(child)
     case science_2026_date(child)
     when Date.new(2026, 7, 4)
       asset_path('2026-science-4th.png')

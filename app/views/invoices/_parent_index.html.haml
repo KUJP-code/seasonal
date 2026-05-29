@@ -15,8 +15,9 @@
     = render partial: 'invoices/event_cost',
              locals: { cost: event_cost, event: e.name }
 
-    = render partial: 'events/child_event',
-             locals: { event: e, child: c }
+    .single-event-card
+      = render partial: 'events/child_event',
+               locals: { event: e, child: c }
 
     = render partial: 'invoices/invoice',
              collection: c.real_invoices.select { |i| i.event_id == e.id },

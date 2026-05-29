@@ -27,25 +27,25 @@ module ChildrenHelper
   def family_name(child)
     return '' if child.name.nil?
 
-    child.name.split.first
+    split_name(child.name).first
   end
 
   def first_name(child)
     return '' if child.name.nil?
 
-    child.name.split.last
+    split_name(child.name).last
   end
 
   def kana_family(child)
     return '' if child.katakana_name.nil?
 
-    child.katakana_name.split.first
+    split_name(child.katakana_name).first
   end
 
   def kana_first(child)
     return '' if child.katakana_name.nil?
 
-    child.katakana_name.split.last
+    split_name(child.katakana_name).last
   end
 
   def kanji_category(category)
@@ -63,5 +63,12 @@ module ChildrenHelper
     return 'なし' if parent.nil?
 
     link_to parent.name, user_path(parent)
+  end
+
+  private
+
+  def split_name(name)
+    parts = name.to_s.strip.split(/[[:space:]　]+/, 2)
+    [parts.first.to_s, parts.second.to_s]
   end
 end

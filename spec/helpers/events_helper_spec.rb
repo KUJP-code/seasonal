@@ -2,14 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe EventsHelper, type: :helper do
+RSpec.describe EventsHelper do
   include ActiveSupport::Testing::TimeHelpers
 
   describe '#show_science_2026?' do
     let(:school) { create(:school, id: school_id, name: school_name) }
     let(:child) { create(:child, school:, school_id:) }
-
-    after { travel_back }
 
     context 'with a Saturday school' do
       let(:school_id) { 6 }
@@ -47,6 +45,18 @@ RSpec.describe EventsHelper, type: :helper do
 
         expect(helper.show_science_2026?(child)).to be(false)
       end
+    end
+  end
+
+  describe '#event_card_count' do
+    let(:school) { create(:school, id: 6, name: '東陽町') }
+    let(:child) { create(:child, school:, school_id: school.id) }
+
+    it 'counts normal events, admin external cards, and the legacy Science card' do
+      external_event_cards = [build(:external_event_card)]
+      travel_to Date.new(2026, 5, 10)
+
+      expect(helper.event_card_count(child, [build(:event)], external_event_cards)).to eq(3)
     end
   end
 end

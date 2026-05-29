@@ -1,0 +1,31 @@
+-# locals: (external_event_card:, child:)
+- variant = external_event_card.variant_for(child)
+- if variant
+  - school_name = child.school ? t("schools.#{child.school.name}") : nil
+  - display_title = school_name ? "#{external_event_card.title} at #{school_name}" : external_event_card.title
+  .card.event-card.d-grid
+    - avif_src = variant.avif.attached? ? url_for(variant.avif) : nil
+    - image_src = variant.image.attached? ? url_for(variant.image) : nil
+    - if avif_src.present? || image_src.present?
+      = link_to external_event_card.url, target: '_blank', rel: 'noopener' do
+        - if avif_src.present? && image_src.present?
+          = picture_tag(avif_src,
+                        image_src,
+                        image: { class: 'img-fluid img-thumbnail',
+                                 alt: display_title })
+        - else
+          = image_tag(image_src.presence || avif_src,
+                      class: 'img-fluid img-thumbnail',
+                      alt: display_title)
+
+    .d-flex.flex-column.flex-grow-1.gap-3
+      %p.text-black-50.mb-0= l(variant.event_on, format: "%-m月%-d日(%a)")
+
+      %h2.fw-bold
+        = link_to display_title,
+                  external_event_card.url,
+                  target: '_blank',
+                  rel: 'noopener'
+
+      - if external_event_card.note.present?
+        %p= external_event_card.note

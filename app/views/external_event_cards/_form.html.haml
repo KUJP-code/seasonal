@@ -1,0 +1,64 @@
+= form_with model: external_event_card,
+            data: { controller: 'fields' },
+            html: { class: 'd-grid gap-3 card needs-validation w-100',
+                    novalidate: true } do |f|
+  = render partial: 'shared/form_errors', locals: { resource: external_event_card }
+
+  %h2 External Event Card
+
+  .form-floating
+    = f.text_field :title,
+                   class: 'form-control',
+                   placeholder: 'Title',
+                   required: true
+    = f.label :title, class: 'form-label'
+
+  .form-floating
+    = f.url_field :url,
+                  class: 'form-control',
+                  placeholder: 'URL',
+                  required: true
+    = f.label :url, class: 'form-label'
+
+  .form-floating
+    = f.text_field :note,
+                   class: 'form-control',
+                   placeholder: 'Note'
+    = f.label :note, class: 'form-label'
+
+  .form-floating
+    = f.date_field :starts_on,
+                   class: 'form-control',
+                   placeholder: 'Starts on',
+                   required: true
+    = f.label :starts_on, class: 'form-label'
+
+  .form-floating
+    = f.date_field :ends_on,
+                   class: 'form-control',
+                   placeholder: 'Ends on',
+                   required: true
+    = f.label :ends_on, class: 'form-label'
+
+  .external-card-active-toggle.border.rounded.p-3
+    = f.label :active, 'Active', class: 'form-check-label fw-bold mb-0'
+    = f.check_box :active, class: 'form-check-input m-0'
+
+  %h3 Date / Image / School Lists
+
+  = f.fields_for :variants do |variant_f|
+    = render 'variant_fields', f: variant_f
+
+  %template{ 'data-fields-target': 'template' }
+    = f.fields_for :variants,
+                   ExternalEventCardVariant.new,
+                   child_index: 'CHILD' do |variant_f|
+      = render 'variant_fields', f: variant_f
+
+  .d-none{ 'data-fields-target': 'target' }
+
+  = button_tag 'Add date / image set',
+               type: 'button',
+               data: { action: 'fields#add' },
+               class: 'btn btn-info'
+  = f.submit class: 'btn btn-primary'

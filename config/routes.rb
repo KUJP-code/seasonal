@@ -35,6 +35,7 @@ Rails.application.routes.draw do
       resources :csvs, only: %i[index]
       resources :document_uploads, only: %i[destroy index]
       resources :events, except: %i[destroy]
+      resources :external_event_cards, except: %i[show]
       resources :invoices, except: %i[edit]
       resources :inquiries, except: %i[show]
       resources :price_lists, except: %i[destroy show]

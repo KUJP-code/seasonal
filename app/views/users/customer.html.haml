@@ -1,7 +1,7 @@
 %main.gap-3#user-show
   - child_for_external = @user.children.first
-  - external_event_cards = [show_mega_game?(child_for_external), show_science_2026?(child_for_external)].count(true)
-  - total_cards = @events.to_a.size + external_event_cards
+  - external_event_cards = visible_external_event_cards(child_for_external, @external_event_cards)
+  - total_cards = event_card_count(child_for_external, @events, @external_event_cards)
 
   - unless @user.confirmed?
     .card.justify-content-center.align-items-center.bg-danger
@@ -56,10 +56,13 @@
 
   - if total_cards > 1
     .event-card-container
-      - if show_mega_game?(child_for_external)
-        = render 'events/mega_game', child: child_for_external
-      - if show_science_2026?(child_for_external)
-        = render 'events/science_2026', child: child_for_external
+      - external_event_cards.each do |card|
+        - if card == :science
+          = render 'events/science_2026', child: child_for_external
+        - else
+          = render 'events/external_event_card',
+                   external_event_card: card,
+                   child: child_for_external
       - @events&.each do |e|
         = render partial: 'events/child_event',
                           locals: { event: e,
@@ -67,10 +70,13 @@
                           sibling_events: e.sibling_events }
   - else
     .single-event-card
-      - if show_mega_game?(child_for_external)
-        = render 'events/mega_game', child: child_for_external
-      - if show_science_2026?(child_for_external)
-        = render 'events/science_2026', child: child_for_external
+      - external_event_cards.each do |card|
+        - if card == :science
+          = render 'events/science_2026', child: child_for_external
+        - else
+          = render 'events/external_event_card',
+                   external_event_card: card,
+                   child: child_for_external
       - @events&.each do |e|
         = render partial: 'events/child_event',
                           locals: { event: e,

@@ -1,6 +1,7 @@
 -# locals: (child:, events:, invoices:)
-- next_event = @events.first
-- unless next_event.nil?
+- booked_events = @events.select { |event| @child.real_invoices.find { |invoice| invoice.event_id == event.id } }
+- next_event = booked_events.first
+- if next_event
   :ruby
     event_cost = @invoices.select { |i| i.event_id == next_event.id }
                           .reduce(0) { |sum, i| sum + i.total_cost }
@@ -9,12 +10,10 @@
 
 %h1= link_to @child.name, child_path(@child)
 
-- if @events&.size.to_i > 1
+- if booked_events.size > 1
 
   .event-card-container
-    - @events.each do |e|
-      - next unless @child.real_invoices.find { |i| i.event_id == e.id }
-
+    - booked_events.each do |e|
       = render partial: 'events/child_event',
               locals: { event: e, child: @child }
 
@@ -22,10 +21,8 @@
               collection: @invoices.select { |i| i.event_id == e.id },
               locals: { index: true }
 - else
-  .single-event-card 
-    - @events.each do |e|
-      - next unless @child.real_invoices.find { |i| i.event_id == e.id }
-
+  .single-event-card
+    - booked_events.each do |e|
       = render partial: 'events/child_event',
               locals: { event: e, child: @child }
 

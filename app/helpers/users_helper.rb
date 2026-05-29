@@ -4,24 +4,31 @@ module UsersHelper
   def family_name(user)
     return '' if user.name.nil?
 
-    user.name.split.first
+    split_name(user.name).first
   end
 
   def first_name(user)
     return '' if user.name.nil?
 
-    user.name.split.last
+    split_name(user.name).last
   end
 
   def kana_family(user)
-    return '' if user.name.nil?
+    return '' if user.katakana_name.nil?
 
-    user.katakana_name.split.first
+    split_name(user.katakana_name).first
   end
 
   def kana_first(user)
-    return '' if user.name.nil?
+    return '' if user.katakana_name.nil?
 
-    user.katakana_name.split.last
+    split_name(user.katakana_name).last
+  end
+
+  private
+
+  def split_name(name)
+    parts = name.to_s.strip.split(/[[:space:]　]+/, 2)
+    [parts.first.to_s, parts.second.to_s]
   end
 end

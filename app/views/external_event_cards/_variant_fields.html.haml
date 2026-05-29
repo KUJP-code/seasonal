@@ -1,0 +1,31 @@
+.fields_wrapper.border.rounded.p-3.d-grid.gap-3{ data: { new_record: f.object.new_record? } }
+  = f.hidden_field :_destroy
+
+  .form-floating
+    = f.date_field :event_on,
+                   class: 'form-control',
+                   placeholder: 'Event date',
+                   required: true
+    = f.label :event_on, 'Event date', class: 'form-label'
+
+  %div
+    = f.label :image_id, 'Image', class: 'form-label'
+    = f.select :image_id, @images, { include_blank: true }, class: 'form-select'
+
+  %div
+    = f.label :avif_id, 'AVIF image', class: 'form-label'
+    = f.select :avif_id, @images, { include_blank: true }, class: 'form-select'
+
+  %div
+    %p.fw-bold.mb-2 Schools
+    .external-card-school-list
+      = f.collection_check_boxes :school_ids, @schools, :id, :name do |school_f|
+        .external-card-school-option.border.rounded
+          = school_f.check_box(class: 'form-check-input m-0')
+          = school_f.label(class: 'form-check-label mb-0') do
+            = t("schools.#{school_f.object.name}")
+
+  = button_tag 'Remove date / image set',
+               type: 'button',
+               data: { action: 'fields#remove' },
+               class: 'btn btn-outline-danger'

@@ -4,8 +4,8 @@ export default class extends Controller {
   static targets = ["allergyInput", "ownSnackField"];
 
   connect() {
-    this.allergyInputTarget.parentNode.before(this.allergySelect());
-    this.allergyInputTarget.readOnly = true;
+    this.selectElement = this.allergySelect();
+    this.allergyInputTarget.parentNode.before(this.selectElement);
 
     // Attach a submit event listener to the parent form
     const form = this.allergyInputTarget.closest("form");
@@ -18,9 +18,18 @@ export default class extends Controller {
     }
 
     const preset = (this.allergyInputTarget.value || "").trim();
-    if (preset && preset !== "なし") {
-      this.insertFoodContainer();
-      this.insertEpipenContainer();
+    const selection = preset === "なし" ? "なし" : preset ? "有" : "";
+    this.selectElement.value = selection;
+    this.selectionChanged(selection);
+
+    if (selection === "有") {
+      if (this.ownSnackFieldTarget.value === "1" && this.foodSelect) {
+        this.foodSelect.value = "yes";
+        this.setOwnSnack(true);
+      }
+      if (this.epipenSelect) {
+        this.epipenSelect.value = "いいえ";
+      }
     }
   }
 
@@ -38,7 +47,7 @@ export default class extends Controller {
   allergySelect() {
     const element = document.createElement("select");
     element.classList.add("form-select");
-    const allergyOptions = ["", " なし", "有"];
+    const allergyOptions = ["", "なし", "有"];
     element.addEventListener("change", (e) => {
       this.selectionChanged(e.target.value);
     });
@@ -55,7 +64,7 @@ export default class extends Controller {
 
   selectionChanged(selection) {
     switch (selection) {
-      case " なし":
+      case "なし":
         this.allergyInputTarget.readOnly = true;
         this.allergyInputTarget.value = "なし";
         this.removeFoodContainer();
@@ -65,7 +74,7 @@ export default class extends Controller {
 
       case "有":
         this.allergyInputTarget.readOnly = false;
-        if (this.allergyInputTarget.value === "なし") {
+        if (this.allergyInputTarget.value.trim() === "なし") {
           this.allergyInputTarget.value = "";
         }
         this.insertFoodContainer();

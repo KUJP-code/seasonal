@@ -1,0 +1,76 @@
+%main.d-grid.gap-3.p-3#external-event-card-index
+  .external-card-index-actions
+    = link_to 'Create external event card',
+              new_external_event_card_path,
+              class: 'btn btn-primary'
+
+  = paginate @external_event_cards
+
+  .external-card-index-list
+    - @external_event_cards.each do |card|
+      .card.external-card-index-card
+        - preview_variant = card.variants.detect { |variant| variant.avif.attached? || variant.image.attached? }
+        .external-card-index-summary
+          .external-card-index-copy
+            .external-card-index-title-row
+              %h2.mb-0= card.title
+              %span.badge{ class: card.active? ? 'text-bg-success' : 'text-bg-secondary' }
+                = card.active? ? 'Active' : 'Inactive'
+
+            .external-card-index-meta
+              %span
+                = l(card.starts_on)
+                = ' - '
+                = l(card.ends_on)
+              = link_to card.url, card.url, target: '_blank', rel: 'noopener'
+            - if card.note.present?
+              %p.external-card-index-note= card.note
+
+          - if preview_variant
+            .external-card-index-preview
+              - avif_src = preview_variant.avif.attached? ? url_for(preview_variant.avif) : nil
+              - image_src = preview_variant.image.attached? ? url_for(preview_variant.image) : nil
+              - if avif_src.present? && image_src.present?
+                = picture_tag(avif_src,
+                              image_src,
+                              image: { class: 'external-card-index-thumb',
+                                       alt: card.title })
+              - else
+                = image_tag(image_src.presence || avif_src,
+                            class: 'external-card-index-thumb',
+                            alt: card.title)
+
+        .d-grid.gap-2
+          - card.variants.each do |variant|
+            .external-card-index-variant
+              - variant_avif_src = variant.avif.attached? ? url_for(variant.avif) : nil
+              - variant_image_src = variant.image.attached? ? url_for(variant.image) : nil
+              - if variant_avif_src.present? || variant_image_src.present?
+                .external-card-index-variant-preview
+                  - if variant_avif_src.present? && variant_image_src.present?
+                    = picture_tag(variant_avif_src,
+                                  variant_image_src,
+                                  image: { class: 'external-card-index-variant-thumb',
+                                           alt: "#{card.title} #{l(variant.event_on)}" })
+                  - else
+                    = image_tag(variant_image_src.presence || variant_avif_src,
+                                class: 'external-card-index-variant-thumb',
+                                alt: "#{card.title} #{l(variant.event_on)}")
+              .external-card-index-variant-details
+                .external-card-index-variant-date= l(variant.event_on)
+                - image_name = variant.image.blob&.filename || variant.avif.blob&.filename
+                - if image_name
+                  %p.text-black-50.mb-1= image_name
+                %p.mb-0= variant.schools.map { |school| t("schools.#{school.name}") }.join(', ')
+
+        .external-card-index-card-actions
+          = link_to 'Edit',
+                    edit_external_event_card_path(card),
+                    class: 'btn btn-primary'
+          = link_to 'Delete',
+                    external_event_card_path(card),
+                    data: { turbo_method: :delete,
+                            turbo_confirm: "Delete #{card.title}?" },
+                    class: 'btn btn-danger'
+
+  = paginate @external_event_cards

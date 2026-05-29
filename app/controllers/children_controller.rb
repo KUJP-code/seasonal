@@ -24,6 +24,7 @@ class ChildrenController < ApplicationController
     @child = authorize Child.find(params[:id])
     @parent = @child.parent
     @events = child_show_events
+    @external_event_cards = ExternalEventCard.visible_for(@child)
   end
 
   def new

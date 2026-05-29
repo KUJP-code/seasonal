@@ -143,6 +143,7 @@ class UsersController < ApplicationController
                        .school.events.where(released: true)
                        .upcoming.reorder(start_date: :desc)
                        .map(&:with_sibling_events)
+    @external_event_cards = ExternalEventCard.visible_for(@children.first)
   end
 
   def delete_admin?

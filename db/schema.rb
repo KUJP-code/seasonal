@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_05_18_000000) do
+ActiveRecord::Schema[7.1].define(version: 2026_05_29_090000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -128,6 +128,35 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_18_000000) do
     t.index ["member_prices_id"], name: "index_events_on_member_prices_id"
     t.index ["non_member_prices_id"], name: "index_events_on_non_member_prices_id"
     t.index ["school_id"], name: "index_events_on_school_id"
+  end
+
+  create_table "external_event_card_variant_schools", force: :cascade do |t|
+    t.bigint "external_event_card_variant_id", null: false
+    t.bigint "school_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["external_event_card_variant_id", "school_id"], name: "idx_ext_card_variant_schools_unique", unique: true
+    t.index ["external_event_card_variant_id"], name: "idx_ext_card_variant_schools_on_variant_id"
+    t.index ["school_id"], name: "index_external_event_card_variant_schools_on_school_id"
+  end
+
+  create_table "external_event_card_variants", force: :cascade do |t|
+    t.bigint "external_event_card_id", null: false
+    t.date "event_on", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["external_event_card_id"], name: "idx_ext_card_variants_on_card_id"
+  end
+
+  create_table "external_event_cards", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "url", null: false
+    t.string "note"
+    t.date "starts_on", null: false
+    t.date "ends_on", null: false
+    t.boolean "active", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "inquiries", force: :cascade do |t|
@@ -569,6 +598,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_18_000000) do
   add_foreign_key "events", "price_lists", column: "member_prices_id"
   add_foreign_key "events", "price_lists", column: "non_member_prices_id"
   add_foreign_key "events", "schools"
+  add_foreign_key "external_event_card_variant_schools", "external_event_card_variants"
+  add_foreign_key "external_event_card_variant_schools", "schools"
+  add_foreign_key "external_event_card_variants", "external_event_cards"
   add_foreign_key "inquiries", "schools"
   add_foreign_key "inquiries", "setsumeikais"
   add_foreign_key "invoices", "children"
