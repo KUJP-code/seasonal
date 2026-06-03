@@ -1,8 +1,26 @@
 # frozen_string_literal: true
 
 class Child < ApplicationRecord
+  SCHOOL_AGE_GRADES = {
+    0 => '満１歳',
+    1 => '満１歳',
+    2 => '満２歳',
+    3 => '年少',
+    4 => '年中',
+    5 => '年長',
+    6 => '小１',
+    7 => '小２',
+    8 => '小３',
+    9 => '小４',
+    10 => '小５',
+    11 => '小６',
+    12 => '中学１年',
+    13 => '中学２年',
+    14 => '高校生以上'
+  }.freeze
+
   # Set names, kindy from attr_accessors
-  before_validation :set_name, :set_kana, :set_kindy
+  before_validation :set_name, :set_kana, :set_grade_from_birthday, :set_kindy
 
   # Allow use of separate fields to ensure consistent name formatting
   attr_accessor :first_name, :family_name, :kana_first, :kana_family
@@ -128,6 +146,13 @@ class Child < ApplicationRecord
     self.katakana_name = [kana_family.strip, kana_first.strip].join(' ')
   end
 
+  def set_grade_from_birthday
+    return if birthday.blank?
+    return if grade.present? && will_save_change_to_grade?
+
+    self.grade = SCHOOL_AGE_GRADES[school_age_from_birthday] || '高校生以上'
+  end
+
   def set_kindy
     self.kindy = %w[満１歳 満２歳 年々少 年少 年中 年長].include?(grade)
   end
@@ -138,5 +163,20 @@ class Child < ApplicationRecord
     return if first_name.nil? && family_name.nil?
 
     self.name = [family_name.strip, first_name.strip].join(' ')
+  end
+
+  def school_age_from_birthday
+    school_age = Time.zone.today.year - birthday.year
+    school_age -= 1 if born_after_school_start?
+    school_age -= 1 if before_new_school_year?
+    school_age
+  end
+
+  def before_new_school_year?
+    Time.zone.today.month < 4
+  end
+
+  def born_after_school_start?
+    birthday.month > 4 || (birthday.month == 4 && birthday.day > 1)
   end
 end
