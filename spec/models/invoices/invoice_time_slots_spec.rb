@@ -443,6 +443,10 @@ RSpec.describe Invoice do
       end
     end
 
+    def destroyed_slot_attributes(regs)
+      persisted_slot_attributes(regs).map { |attrs| attrs.merge(_destroy: '1') }
+    end
+
     it 'prices three activities as three single courses' do
       slots = create_list(:time_slot, 3, event:)
       invoice = create(:invoice,
@@ -465,6 +469,69 @@ RSpec.describe Invoice do
       invoice.save!
 
       expect(invoice.total_cost).to eq(member_prices.courses['1'] * 5)
+    end
+
+    it 'keeps the original ten course when one activity is swapped in the same edit' do
+      initial_slots = create_list(:time_slot, 10, event:)
+      invoice = create(:invoice,
+                       event:,
+                       child:,
+                       slot_regs_attributes: slot_attributes(initial_slots, child))
+      removed_reg = invoice.slot_regs.first
+      replacement_slot = create(:time_slot, event:)
+
+      invoice.assign_attributes(
+        slot_regs_attributes: destroyed_slot_attributes([removed_reg]) +
+                              slot_attributes([replacement_slot], child)
+      )
+      invoice.save!
+
+      expect(invoice.total_cost).to eq(member_prices.courses['10'])
+      expect(invoice.slot_regs.reject(&:marked_for_destruction?).map(&:pricing_batch).uniq).to eq([1])
+    end
+
+    it 'does not regain the original ten course when a later edit adds back above nine' do
+      initial_slots = create_list(:time_slot, 10, event:)
+      invoice = create(:invoice,
+                       event:,
+                       child:,
+                       slot_regs_attributes: slot_attributes(initial_slots, child))
+      removed_reg = invoice.slot_regs.first
+
+      invoice.assign_attributes(slot_regs_attributes: destroyed_slot_attributes([removed_reg]))
+      invoice.save!
+      invoice.update!(in_ss: true)
+      invoice.update!(in_ss: false)
+
+      replacement_slot = create(:time_slot, event:)
+      invoice.assign_attributes(slot_regs_attributes: slot_attributes([replacement_slot], child))
+      invoice.save!
+
+      expected_cost = member_prices.courses['5'] + (member_prices.courses['1'] * 5)
+      expect(invoice.total_cost).to eq(expected_cost)
+      expect(invoice.summary).not_to include('10回コース')
+      expect(invoice.slot_regs.map(&:pricing_batch).uniq.sort).to eq([1, 2])
+    end
+
+    it 'can force current activities into one pricing batch when recalculated' do
+      initial_slots = create_list(:time_slot, 10, event:)
+      invoice = create(:invoice,
+                       event:,
+                       child:,
+                       slot_regs_attributes: slot_attributes(initial_slots, child))
+      removed_reg = invoice.slot_regs.first
+      invoice.assign_attributes(slot_regs_attributes: destroyed_slot_attributes([removed_reg]))
+      invoice.save!
+
+      replacement_slot = create(:time_slot, event:)
+      invoice.assign_attributes(slot_regs_attributes: slot_attributes([replacement_slot], child))
+      invoice.save!
+
+      invoice.recalculate_pricing!
+
+      expect(invoice.total_cost).to eq(member_prices.courses['10'])
+      expect(invoice.summary).to include('10回コース x 1')
+      expect(invoice.slot_regs.map(&:pricing_batch).uniq).to eq([1])
     end
 
     it 'does not rebundle existing activities with later additions in the confirmation preview' do

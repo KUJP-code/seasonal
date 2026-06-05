@@ -50,7 +50,7 @@ ja:
         sign_up_msg: "新規にアカウントを作成する場合は、以下にお客様の情報を入力してください。"
         welcome: "Welcome"
       terms_and_conditions:
-        accept_policy: "P-UPプライバシーポリシーに同意する"
+        accept_policy: "プライバシーポリシーに同意する"
         view_policy: "プライバシーポリシーはこちら"
     sessions:
       new:

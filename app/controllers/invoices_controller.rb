@@ -121,6 +121,14 @@ class InvoicesController < ApplicationController
     end
   end
 
+  def recalculate
+    @invoice = authorize Invoice.find(params[:id]), :recalculate?
+    @invoice.recalculate_pricing!
+
+    redirect_to invoice_path(id: @invoice.id),
+                notice: t('.success')
+  end
+
   private
 
   def already_registered?(t_regs, o_reg)

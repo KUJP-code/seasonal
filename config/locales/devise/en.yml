@@ -2,7 +2,7 @@ en:
   devise:
     registrations:
       new:
-        accept_policy: "Accept P-UP privacy policy"
+        accept_policy: "Accept privacy policy"
         account_information: "Account Information"
         address: "Address"
         name: "Name"

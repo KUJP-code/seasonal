@@ -36,7 +36,11 @@ Rails.application.routes.draw do
       resources :document_uploads, only: %i[destroy index]
       resources :events, except: %i[destroy]
       resources :external_event_cards, except: %i[show]
-      resources :invoices, except: %i[edit]
+      resources :invoices, except: %i[edit] do
+        member do
+          patch :recalculate
+        end
+      end
       resources :inquiries, except: %i[show]
       resources :price_lists, except: %i[destroy show]
       resources :recruit_applications, only: %i[index show update destroy]

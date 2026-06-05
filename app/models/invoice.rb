@@ -117,6 +117,15 @@ class Invoice < ApplicationRecord
     end
   end
 
+  def recalculate_pricing!
+    transaction do
+      slot_regs.update_all(pricing_batch: 1) if event.pricing_rules_2026?
+      reload
+      calc_cost
+      save!
+    end
+  end
+
   private
 
   def blank_or_dup(coupon)
@@ -141,12 +150,17 @@ class Invoice < ApplicationRecord
     end
     return if new_slot_regs.empty?
 
-    existing_batches = slot_regs.reject do |reg|
-      reg.id.blank? || reg.marked_for_destruction?
-    end.map(&:pricing_batch)
+    persisted_slot_regs = slot_regs.reject { |reg| reg.id.blank? }
+    replacement_batches = persisted_slot_regs.select(&:marked_for_destruction?)
+                                             .map(&:pricing_batch)
+                                             .compact
+
+    existing_batches = persisted_slot_regs.map(&:pricing_batch)
     next_batch = existing_batches.compact.max.to_i + 1
     next_batch = 1 if existing_batches.empty?
 
-    new_slot_regs.each { |reg| reg.pricing_batch = next_batch }
+    new_slot_regs.each do |reg|
+      reg.pricing_batch = replacement_batches.shift || next_batch
+    end
   end
 end

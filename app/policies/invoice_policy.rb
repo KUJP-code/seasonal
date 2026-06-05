@@ -47,6 +47,10 @@ class InvoicePolicy < ApplicationPolicy
     user.staff?
   end
 
+  def recalculate?
+    user.admin?
+  end
+
   def permitted_attributes
     always_permit = [
       :id, :child_id, :event_id,

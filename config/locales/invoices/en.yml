@@ -47,7 +47,11 @@ en:
       makes_editable: "Customers will be able to edit this invoice if it's unconfirmed. Are you sure?"
       mark_in_ss: "Mark In SS"
       merge_bookings: "Merge Bookings"
+      recalculate: "Recalculate"
+      recalculate_warning: "This will recalculate the current activities as one pricing batch. Are you sure?"
       unconfirm_booking: "Unconfirm Booking"
       version_from: "Version from: %{date}"
+    recalculate:
+      success: "Invoice recalculated."
     new:
     total_cost: "合計（税込）"

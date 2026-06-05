@@ -13,7 +13,7 @@ RSpec.shared_examples 'an authorized user for InvoicePolicy' do
     expect(subject).to permit_attributes(
       [:id, :child_id, :event_id, :in_ss, :entered, :email_sent,
        { slot_regs_attributes:
-           %i[id child_id _destroy invoice_id registerable_id registerable_type],
+           %i[id child_id _destroy invoice_id pricing_batch registerable_id registerable_type],
          opt_regs_attributes:
            %i[id child_id _destroy invoice_id registerable_id registerable_type],
          coupons_attributes: [:code],
@@ -32,18 +32,21 @@ describe InvoicePolicy do
 
     it_behaves_like 'fully authorized user'
     it_behaves_like 'an authorized user for InvoicePolicy'
+    it { is_expected.to authorize_action(:recalculate) }
   end
 
   context 'when area manager' do
     let(:user) { build(:area_manager) }
 
     it_behaves_like 'an authorized user for InvoicePolicy'
+    it { is_expected.not_to authorize_action(:recalculate) }
   end
 
   context 'when school manager' do
     let(:user) { build(:school_manager) }
 
     it_behaves_like 'an authorized user for InvoicePolicy'
+    it { is_expected.not_to authorize_action(:recalculate) }
   end
 
   context 'when statistician' do
@@ -66,6 +69,7 @@ describe InvoicePolicy do
     it { is_expected.to authorize_action(:copy) }
     it { is_expected.not_to authorize_action(:merge) }
     it { is_expected.not_to authorize_action(:seen) }
+    it { is_expected.not_to authorize_action(:recalculate) }
 
     it 'does not allow staff attributes' do
       expect(policy).to forbid_attributes(
@@ -84,6 +88,7 @@ describe InvoicePolicy do
     it { is_expected.not_to authorize_action(:copy) }
     it { is_expected.not_to authorize_action(:merge) }
     it { is_expected.not_to authorize_action(:seen) }
+    it { is_expected.not_to authorize_action(:recalculate) }
 
     it 'does not allow staff attributes' do
       expect(policy).to forbid_attributes(
