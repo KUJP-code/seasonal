@@ -63,6 +63,14 @@
                 <% else %>
                     <%= link_to t('.adjustments'), edit_adjustment_path(@invoice), class: 'btn btn-primary' %>
 
+                        <% if current_user.admin? %>
+                            <%= button_to t('.recalculate'),
+                                          recalculate_invoice_path(id: @invoice.id),
+                                          method: :patch,
+                                          class: 'btn btn-warning',
+                                          data: { turbo_confirm: t('.recalculate_warning') } %>
+                        <% end %>
+
                         <%= form_with model: @invoice do |f| %>
                             <%= f.hidden_field :in_ss, value: true %>
                             <%= f.hidden_field :email_sent, value: true %>
@@ -75,14 +83,6 @@
                             <%= f.hidden_field :email_sent, value: false %>
 
                             <%= f.submit t('.confirm_no_email'), class: 'btn btn-primary' %>
-                        <% end %>
-
-                        <% if current_user.admin? %>
-                            <%= button_to t('.recalculate'),
-                                          recalculate_invoice_path(id: @invoice.id),
-                                          method: :patch,
-                                          class: 'btn btn-warning',
-                                          data: { turbo_confirm: t('.recalculate_warning') } %>
                         <% end %>
 
                     <% unless Invoice.where(child_id: @invoice.child_id, event_id: @invoice.event_id).excluding(@invoice).empty? %>

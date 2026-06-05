@@ -115,7 +115,7 @@ export default class extends Controller {
 		const cost = this.slotRegsTargets.reduce((sum, target) => {
 			const regs = target.querySelectorAll(`.child${id}`);
 			const courseCost = this.pricingRules2026Value
-				? this.batchCourseCost(regs)
+				? this.batchCourseCost(target, id)
 				: this.bestCourses(regs.length, this.priceList);
 			return sum + courseCost;
 		}, 0);
@@ -123,9 +123,14 @@ export default class extends Controller {
 		return cost;
 	}
 
-	batchCourseCost(regs) {
+	batchCourseCost(target, childId) {
+		const replacementBatches = this.removedPricingBatches(target, childId);
+		const regs = target.querySelectorAll(`.child${childId}`);
+		const nextBatch = "new";
+
 		const counts = [...regs].reduce((batches, reg) => {
-			const batch = reg.dataset.pricingBatch || "1";
+			let batch = reg.dataset.pricingBatch || "1";
+			if (batch === "new") batch = replacementBatches.shift() || nextBatch;
 			batches[batch] = (batches[batch] || 0) + 1;
 			return batches;
 		}, {});
@@ -133,6 +138,21 @@ export default class extends Controller {
 		return Object.values(counts).reduce((sum, count) => {
 			return sum + this.packageCourseCost2026(count);
 		}, 0);
+	}
+
+	removedPricingBatches(target, childId) {
+		return [...target.querySelectorAll(".slot_reg")]
+			.filter((reg) => {
+				const destroy = reg.querySelector("input[name*='_destroy']");
+				const childInput = reg.querySelector("input[name*='[child_id]']");
+				return (
+					reg.dataset.newRecord !== "true" &&
+					destroy?.value === "1" &&
+					Number.parseInt(childInput?.value, 10) === childId
+				);
+			})
+			.map((reg) => reg.dataset.pricingBatch)
+			.filter((batch) => batch && batch !== "new");
 	}
 
 	packageCourseCost2026(numRegs) {
