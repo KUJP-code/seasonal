@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:2.8.2-privacy_policy"
+    "Name": "kidsup/event_site:2.9.0-recalc_button"
   },
   "Ports": [
     {
