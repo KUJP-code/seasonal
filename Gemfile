@@ -86,6 +86,12 @@ gem 'oj'
 # Use rack-cors to allow API requests
 gem 'rack-cors', '2.0.2'
 
+# Use Google APIs for public photo service endpoints
+gem 'google-apis-drive_v3'
+gem 'google-apis-sheets_v4'
+gem 'googleauth'
+gem 'multi_json'
+
 # Use haml-rails for templating
 gem 'haml-rails'
 

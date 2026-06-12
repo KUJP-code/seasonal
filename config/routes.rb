@@ -122,6 +122,11 @@ Rails.application.routes.draw do
   post 'api/recruit_applications',
        to: 'recruit_applications#create',
        defaults: { format: :json }
+  namespace :api do
+    post 'login', to: 'photo_service#login'
+    get 'pictures', to: 'photo_service#pictures'
+    post 'seasonal-pictures', to: 'photo_service#seasonal_pictures'
+  end
 
   # Health check endpoint for EB load balancer
   get '/health_check', to: proc { [200, {}, ['success']] }

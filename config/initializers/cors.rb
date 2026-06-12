@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     origins '*'
@@ -8,5 +10,8 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     resource '/setsu_schools.json', headers: :any, methods: %i[get]
     resource '/create_inquiry.json', headers: :any, methods: %i[post]
     resource '/api/recruit_applications', headers: :any, methods: %i[post]
+    resource '/api/login', headers: :any, methods: %i[post]
+    resource '/api/pictures', headers: :any, methods: %i[get]
+    resource '/api/seasonal-pictures', headers: :any, methods: %i[post]
   end
 end
