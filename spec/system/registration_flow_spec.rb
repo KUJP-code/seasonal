@@ -78,8 +78,8 @@ RSpec.describe 'Registration flow', :js do
                                            course35: '', course40: '',
                                            course45: '', course50: '')
     event = create(:event,
-                   start_date: Date.new(2026, 5, 20),
-                   end_date: Date.new(2026, 6, 10),
+                   start_date: 1.week.from_now.to_date,
+                   end_date: 2.weeks.from_now.to_date,
                    member_prices:)
     initial_slots = create_list(:time_slot, 4, :morning, event:,
                                 close_at: 1.week.from_now)
