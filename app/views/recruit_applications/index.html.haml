@@ -10,12 +10,27 @@
 
     = form_with url: recruit_applications_path, method: :get, local: true, class: 'd-flex flex-column gap-3' do |f|
       .row.g-2
-        .col-6
+        .col-12.col-md-4
+          = f.search_field :full_name,
+                           value: params[:full_name],
+                           placeholder: t('.name_search'),
+                           class: 'form-control'
+        .col-6.col-md-2
           = f.select :role,
                      options_for_select([[t('.all_roles'), '']] + RecruitApplication::ROLES.map { |role| [role, role] }, params[:role]),
                      {},
                      class: 'form-select'
-        .col-6
+        .col-6.col-md-2
+          = f.select :contacted,
+                     options_for_select([[t('.all_contacted'), ''], [t('.yes'), 'yes'], [t('.no'), 'no']], params[:contacted]),
+                     {},
+                     class: 'form-select'
+        .col-6.col-md-2
+          = f.select :interviewed,
+                     options_for_select([[t('.all_interviewed'), ''], [t('.yes'), 'yes'], [t('.no_or_unknown'), 'no']], params[:interviewed]),
+                     {},
+                     class: 'form-select'
+        .col-6.col-md-2
           = f.select :tracking_link_slug,
                      options_for_select([[t('.all_tracking_links'), '']] + @tracking_link_slugs.map { |slug| [slug, slug] }, params[:tracking_link_slug]),
                      {},
@@ -51,23 +66,9 @@
                                                 action: 'click->sort#sort' } } &#9650;
           %th{ data: { controller: 'sort',
                        'sort-event-value': 'recruit-applications-table',
-                       'sort-col-value': '.email',
-                       'sort-type-value': 'text' } }
-            = t('.email')
-            %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
-                                                action: 'click->sort#sort' } } &#9650;
-          %th{ data: { controller: 'sort',
-                       'sort-event-value': 'recruit-applications-table',
-                       'sort-col-value': '.phone',
-                       'sort-type-value': 'text' } }
-            = t('.phone')
-            %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
-                                                action: 'click->sort#sort' } } &#9650;
-          %th{ data: { controller: 'sort',
-                       'sort-event-value': 'recruit-applications-table',
-                       'sort-col-value': '.date-of-birth',
-                       'sort-type-value': 'text' } }
-            = t('.date_of_birth')
+                       'sort-col-value': '.age',
+                       'sort-type-value': 'number' } }
+            = t('.age')
             %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
                                                 action: 'click->sort#sort' } } &#9650;
           %th{ data: { controller: 'sort',
@@ -87,7 +88,7 @@
           %th{ data: { controller: 'sort',
                        'sort-event-value': 'recruit-applications-table',
                        'sort-col-value': '.interviewed',
-                       'sort-type-value': 'text' } }
+                       'sort-type-value': 'number' } }
             = t('.interviewed')
             %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
                                                 action: 'click->sort#sort' } } &#9650;
@@ -114,9 +115,7 @@
             %td.created-at{ data: { sort_value: application.created_at.to_i } }= l(application.created_at, format: :short)
             %td.role= application.role
             %td.full-name= application.full_name
-            %td.email= mail_to application.email
-            %td.phone= application.phone
-            %td.date-of-birth= application.date_of_birth ? l(application.date_of_birth) : '-'
+            %td.age{ data: { sort_value: application.age || 0 } }= application.age || '-'
             %td.gender= application.gender.presence || '-'
             %td.contacted-on{ data: { sort_value: application.contacted_on&.to_time&.to_i || 0 } }
               - if policy(application).update?
@@ -131,7 +130,8 @@
                                  onblur: "if (this.value.length === 10 || this.value === '') this.form.requestSubmit()"
               - else
                 = application.contacted_on ? l(application.contacted_on) : '-'
-            %td.interviewed
+            - interviewed_sort_value = application.interviewed.nil? ? 0 : (application.interviewed? ? 2 : 1)
+            %td.interviewed{ data: { sort_value: interviewed_sort_value } }
               - if policy(application).update?
                 = form_with model: application,
                             url: recruit_application_path(application),

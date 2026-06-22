@@ -75,7 +75,12 @@ RSpec.describe 'Recruit applications' do
 
     it 'allows admin to view the list' do
       sign_in create(:admin)
-      application = create(:recruit_application)
+      application = create(
+        :recruit_application,
+        date_of_birth: 28.years.ago.to_date,
+        email: 'private-email@example.com',
+        phone: '090-9999-9999'
+      )
 
       get path
 
@@ -83,9 +88,13 @@ RSpec.describe 'Recruit applications' do
       expect(response.body).to include('Recruit Applications')
       expect(response.body).to include('View')
       expect(response.body).to include('Delete')
+      expect(response.body).to include('Age')
+      expect(response.body).to include(">#{application.age}<")
       expect(response.body).to include('Contacted')
       expect(response.body).to include('Interview?')
       expect(response.body).to include(recruit_application_path(application, locale: :en))
+      expect(response.body).not_to include('private-email@example.com')
+      expect(response.body).not_to include('090-9999-9999')
     end
 
     it 'does not show delete column to recruiter users' do
@@ -96,6 +105,64 @@ RSpec.describe 'Recruit applications' do
 
       expect(response).to have_http_status(:success)
       expect(response.body).not_to include('Delete')
+    end
+
+    it 'filters applications by partial name case-insensitively' do
+      sign_in create(:admin)
+      create(:recruit_application, full_name: '採用 Hanako')
+      create(:recruit_application, full_name: 'Different Applicant')
+
+      get path, params: { full_name: 'hana' }
+
+      expect(response.body).to include('採用 Hanako')
+      expect(response.body).not_to include('Different Applicant')
+    end
+
+    it 'filters applications by contacted status' do
+      sign_in create(:admin)
+      contacted_application = create(
+        :recruit_application,
+        full_name: 'Contacted Person',
+        contacted_on: Date.new(2026, 4, 9)
+      )
+      uncontacted_application = create(
+        :recruit_application,
+        full_name: 'Uncontacted Person',
+        contacted_on: nil
+      )
+
+      get path, params: { contacted: 'yes' }
+
+      expect(response.body).to include(contacted_application.full_name)
+      expect(response.body).not_to include(uncontacted_application.full_name)
+
+      get path, params: { contacted: 'no' }
+
+      expect(response.body).to include(uncontacted_application.full_name)
+      expect(response.body).not_to include(contacted_application.full_name)
+    end
+
+    it 'filters interview yes separately from no and not set' do
+      sign_in create(:admin)
+      yes_application = create(:recruit_application, full_name: 'Interview Yes', interviewed: true)
+      no_application = create(:recruit_application, full_name: 'Interview No', interviewed: false)
+      unknown_application = create(
+        :recruit_application,
+        full_name: 'Interview Unknown',
+        interviewed: nil
+      )
+
+      get path, params: { interviewed: 'yes' }
+
+      expect(response.body).to include(yes_application.full_name)
+      expect(response.body).not_to include(no_application.full_name)
+      expect(response.body).not_to include(unknown_application.full_name)
+
+      get path, params: { interviewed: 'no' }
+
+      expect(response.body).not_to include(yes_application.full_name)
+      expect(response.body).to include(no_application.full_name)
+      expect(response.body).to include(unknown_application.full_name)
     end
   end
 

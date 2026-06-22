@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class RecruitApplication < ApplicationRecord
-  PRIVACY_POLICY_URL = 'https://www.p-up.world/privacypolicy/'.freeze
+  PRIVACY_POLICY_URL = 'https://www.p-up.world/privacypolicy/'
 
   ROLES = %w[sm bilingual native driver tour_staff new_graduate].freeze
 
@@ -19,6 +19,15 @@ class RecruitApplication < ApplicationRecord
 
   scope :latest_first, -> { order(created_at: :desc) }
   validate :tracking_link_slug_must_be_managed
+
+  def age
+    return if date_of_birth.blank?
+
+    today = Time.zone.today
+    years = today.year - date_of_birth.year
+    years -= 1 if today < date_of_birth.advance(years:)
+    years
+  end
 
   private
 

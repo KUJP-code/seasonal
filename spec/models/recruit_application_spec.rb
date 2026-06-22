@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe RecruitApplication do
+  include ActiveSupport::Testing::TimeHelpers
+
   it 'has a valid factory' do
     expect(build(:recruit_application)).to be_valid
   end
@@ -43,6 +45,21 @@ RSpec.describe RecruitApplication do
     application = create(:recruit_application, privacy_policy_url: nil)
 
     expect(application.privacy_policy_url).to eq(RecruitApplication::PRIVACY_POLICY_URL)
+  end
+
+  describe '#age' do
+    it 'returns age from date of birth' do
+      travel_to Date.new(2026, 6, 22) do
+        expect(build(:recruit_application, date_of_birth: Date.new(1998, 6, 22)).age).to eq(28)
+        expect(build(:recruit_application, date_of_birth: Date.new(1998, 6, 23)).age).to eq(27)
+      end
+    end
+
+    it 'handles leap day birthdays' do
+      travel_to Date.new(2026, 2, 28) do
+        expect(build(:recruit_application, date_of_birth: Date.new(2000, 2, 29)).age).to eq(26)
+      end
+    end
   end
 
   it 'rejects unknown tracking link slugs' do

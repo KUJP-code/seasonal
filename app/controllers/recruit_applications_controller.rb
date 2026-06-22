@@ -11,10 +11,8 @@ class RecruitApplicationsController < ApplicationController
     scoped_recruit_applications = policy_scope(RecruitApplication)
     @tracking_link_slugs = RecruitTrackingLink.active.order(:slug).pluck(:slug)
 
-    @recruit_applications = scoped_recruit_applications.latest_first
-    @recruit_applications = @recruit_applications.where(role: params[:role]) if role_filter_given?
-    @recruit_applications = @recruit_applications.where(tracking_link_slug: params[:tracking_link_slug]) if tracking_link_filter_given?
-    @recruit_applications = @recruit_applications.page(params[:page])
+    @recruit_applications = filtered_recruit_applications(scoped_recruit_applications)
+                            .page(params[:page])
   end
 
   def create
@@ -120,6 +118,72 @@ class RecruitApplicationsController < ApplicationController
 
   def tracking_link_filter_given?
     params[:tracking_link_slug].present?
+  end
+
+  def filtered_recruit_applications(scope)
+    %i[
+      filter_by_role
+      filter_by_tracking_link
+      filter_by_name
+      filter_by_contacted
+      filter_by_interviewed
+    ].reduce(scope.latest_first) { |filtered_scope, filter| send(filter, filtered_scope) }
+  end
+
+  def filter_by_role(scope)
+    return scope unless role_filter_given?
+
+    scope.where(role: params[:role])
+  end
+
+  def filter_by_tracking_link(scope)
+    return scope unless tracking_link_filter_given?
+
+    scope.where(tracking_link_slug: params[:tracking_link_slug])
+  end
+
+  def filter_by_name(scope)
+    return scope unless name_filter_given?
+
+    scope.where('full_name ILIKE ?', "%#{name_filter}%")
+  end
+
+  def filter_by_contacted(scope)
+    return scope.where.not(contacted_on: nil) if contacted_filter_yes?
+    return scope.where(contacted_on: nil) if contacted_filter_no?
+
+    scope
+  end
+
+  def filter_by_interviewed(scope)
+    return scope.where(interviewed: true) if interviewed_filter_yes?
+    return scope.where(interviewed: [false, nil]) if interviewed_filter_no?
+
+    scope
+  end
+
+  def name_filter
+    ActiveRecord::Base.sanitize_sql_like(params[:full_name].to_s.strip)
+  end
+
+  def name_filter_given?
+    name_filter.present?
+  end
+
+  def contacted_filter_yes?
+    params[:contacted] == 'yes'
+  end
+
+  def contacted_filter_no?
+    params[:contacted] == 'no'
+  end
+
+  def interviewed_filter_yes?
+    params[:interviewed] == 'yes'
+  end
+
+  def interviewed_filter_no?
+    params[:interviewed] == 'no'
   end
 
   def success_payload

@@ -3,8 +3,11 @@ ja:
     index:
       title: "採用応募一覧"
       manage_tracking_links: "トラッキングリンク管理"
+      name_search: "氏名検索"
       all_roles: "すべての応募種別"
       all_tracking_links: "すべてのトラッキングリンク"
+      all_contacted: "すべての連絡状況"
+      all_interviewed: "すべての面接状況"
       filter: "絞り込み"
       created_at: "応募日時"
       role: "応募種別"
@@ -12,6 +15,7 @@ ja:
       email: "メール"
       phone: "電話番号"
       date_of_birth: "生年月日"
+      age: "年齢"
       gender: "性別"
       contacted_on: "連絡日"
       interviewed: "面接"
@@ -23,6 +27,7 @@ ja:
       unknown: "未設定"
       yes: "はい"
       no: "いいえ"
+      no_or_unknown: "いいえ / 未設定"
     show:
       title: "採用応募詳細"
       back_to_list: "一覧へ戻る"
