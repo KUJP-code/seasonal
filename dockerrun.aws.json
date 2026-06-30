@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:3.1-recruiting_searches"
+    "Name": "kidsup/event_site:3.1.1-special_cards"
   },
   "Ports": [
     {
