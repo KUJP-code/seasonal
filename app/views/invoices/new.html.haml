@@ -16,52 +16,6 @@
   confirmed_opt_regs =
     @all_invoices.select(&:in_ss)
                  .reduce([]) { |array, invoice| array + invoice.opt_regs }
-  slot_registered = lambda do |slot|
-    registrations.any? do |reg|
-      reg.registerable_type == 'TimeSlot' && reg.registerable_id == slot.id
-    end || confirmed_slot_regs.any? { |reg| reg.registerable_id == slot.id }
-  end
-  special_day_groups =
-    @event_slots
-    .group_by { |slot| slot.start_time.to_date }
-    .values
-    .select { |slots| slots.size > 1 && slots.any?(&:special?) }
-  special_day_slot_ids = special_day_groups.flatten.map(&:id)
-  grouped_day_slots = lambda do |slots|
-    (slots + slots.filter_map(&:afternoon_slot)).uniq.sort_by(&:start_time)
-  end
-  unregistered_special_day_groups =
-    special_day_groups.select do |slots|
-      grouped_day_slots.call(slots).any? { |slot| !slot_registered.call(slot) }
-    end
-  registered_special_day_groups =
-    special_day_groups.select do |slots|
-      grouped_day_slots.call(slots).all? { |slot| slot_registered.call(slot) }
-    end
-  normal_unregistered_slots =
-    unregistered_slots.reject { |slot| special_day_slot_ids.include?(slot.id) }
-  normal_registered_slots =
-    @registered_slots.reject { |slot| special_day_slot_ids.include?(slot.id) }
-  unregistered_card_items =
-    (
-      unregistered_special_day_groups.map do |slots|
-        day_slots = grouped_day_slots.call(slots)
-        { type: :special_day_group, start_time: day_slots.first.start_time, slots: slots }
-      end +
-      normal_unregistered_slots.map do |slot|
-        { type: :slot, start_time: slot.start_time, slot: slot }
-      end
-    ).sort_by { |item| item[:start_time] }
-  registered_card_items =
-    (
-      registered_special_day_groups.map do |slots|
-        day_slots = grouped_day_slots.call(slots)
-        { type: :special_day_group, start_time: day_slots.first.start_time, slots: slots }
-      end +
-      normal_registered_slots.map do |slot|
-        { type: :slot, start_time: slot.start_time, slot: slot }
-      end
-    ).sort_by { |item| item[:start_time] }
 
   stimulus_actions = 'register:toggle->invoice#change ' \
                      'invoice:add@window->price#calculate ' \
@@ -104,39 +58,21 @@
                                     confirmed_slot_regs: confirmed_slot_regs
       = cards_html
 
-      - unregistered_card_items.each do |item|
-        - if item[:type] == :special_day_group
-          = render 'time_slots/special_day_group',
-                   special_day_slots: item[:slots], child: @child,
-                   registrations: registrations,
-                   confirmed_slot_regs: confirmed_slot_regs,
-                   confirmed_opt_regs: confirmed_opt_regs,
-                   opt_regs: opt_regs
-        - else
-          = render 'time_slots/add_slot',
-                   add_slot: item[:slot], child: @child,
-                   registrations: registrations, event: @event,
-                   confirmed_slot_regs: confirmed_slot_regs,
-                   confirmed_opt_regs: confirmed_opt_regs,
-                   opt_regs: opt_regs
+      = render partial: 'time_slots/add_slot',
+              collection: unregistered_slots,
+              locals: { child: @child, registrations: registrations, event: @event,
+                        confirmed_slot_regs: confirmed_slot_regs,
+                        confirmed_opt_regs: confirmed_opt_regs,
+                        opt_regs: opt_regs }
 
 
   %details.w-100.border.rounded.mt-n3{ name: 'accordion' }
     %summary.bg-primary.rounded.p-3= t('.registered_slots')
     .d-flex.flex-column.justify-content-around.flex-lg-row.flex-wrap.gap-3.p-3
-      - registered_card_items.each do |item|
-        - if item[:type] == :special_day_group
-          = render 'time_slots/special_day_group',
-                   special_day_slots: item[:slots], child: @child,
-                   registrations: registrations,
-                   confirmed_slot_regs: confirmed_slot_regs,
-                   confirmed_opt_regs: confirmed_opt_regs,
-                   opt_regs: opt_regs
-        - else
-          = render 'time_slots/add_slot',
-                   add_slot: item[:slot], child: @child,
-                   registrations:, event: @event,
-                   confirmed_slot_regs:, confirmed_opt_regs:, opt_regs:
+      = render partial: 'time_slots/add_slot',
+               collection: @registered_slots,
+               locals: { child: @child, registrations:, event: @event,
+                         confirmed_slot_regs:, confirmed_opt_regs:, opt_regs: }
 
   = render 'invoices/registration_page/price_footer',
            all_invoices: @all_invoices, child: @child, confirmed_opt_regs:,
