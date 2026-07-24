@@ -8,12 +8,19 @@ class ApplicationController < ActionController::Base
   # Make sure we're in the right language and know who's making changes
   around_action :switch_locale
   before_action :check_sm_ip, :set_paper_trail_whodunnit
+  after_action :prevent_authenticated_page_caching
 
   private
 
   # Overwriting the Devise sign_out redirect path method
   def after_sign_out_path_for(_resource_or_scope)
     new_user_session_path
+  end
+
+  # Never carry an account-specific URL from a previous session into a new one.
+  def after_sign_in_path_for(resource)
+    stored_location_for(resource)
+    user_path(resource)
   end
 
   def default_url_options
@@ -50,5 +57,9 @@ class ApplicationController < ActionController::Base
   def user_not_authorized
     redirect_to root_path,
                 alert: t('not_authorized')
+  end
+
+  def prevent_authenticated_page_caching
+    response.headers['Cache-Control'] = 'no-store' if current_user
   end
 end
