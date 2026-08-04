@@ -50,6 +50,20 @@ RSpec.describe Invoice do
     expect(sibling_invoice.opt_regs.where(registerable: photo_option)).to be_empty
   end
 
+  it 'keeps photo service when a later invoice for the same child omits it' do
+    original_invoice = create(:invoice, child:, event:, in_ss: true)
+    additional_invoice = create(:invoice, child:, event:)
+    additional_time_slot = create(:time_slot, event:)
+    add_slot(original_invoice, child)
+    create(:slot_reg, child:, invoice: additional_invoice, registerable: additional_time_slot)
+    add_photo(original_invoice, child)
+
+    additional_invoice.sync_photo_service_with_siblings!
+
+    expect(original_invoice.reload.opt_regs.where(registerable: photo_option)).to be_present
+    expect(additional_invoice.reload.opt_regs.where(registerable: photo_option)).to be_empty
+  end
+
   it 'does not sync photo service for events before 2026' do
     event_2025 = create(:event,
                         start_date: Date.new(2025, 8, 1),

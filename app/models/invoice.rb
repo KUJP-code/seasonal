@@ -82,7 +82,12 @@ class Invoice < ApplicationRecord
     end
     return if siblings_with_slots.empty?
 
-    current_has_photo = opt_regs.any? { |reg| photo_option_ids.include?(reg.registerable_id) }
+    current_has_photo = child.invoices.where(event:)
+                             .joins(:opt_regs)
+                             .exists?(registrations: {
+                               registerable_type: 'Option',
+                               registerable_id: photo_option_ids
+                             })
 
     siblings_with_slots.each do |sibling|
       invoices = sibling.invoices.where(event:).includes(:slot_regs, :opt_regs)
@@ -90,13 +95,13 @@ class Invoice < ApplicationRecord
       target_invoice ||= invoices.order(in_ss: :asc).first
       next unless target_invoice
 
-      existing_reg = target_invoice.opt_regs.find do |reg|
+      existing_regs = invoices.flat_map(&:opt_regs).select do |reg|
         photo_option_ids.include?(reg.registerable_id)
       end
 
       updated = false
       if current_has_photo
-        unless existing_reg
+        if existing_regs.empty?
           target_invoice.opt_regs.create!(
             child: sibling,
             registerable_id: photo_option_ids.first,
@@ -104,8 +109,8 @@ class Invoice < ApplicationRecord
           )
           updated = true
         end
-      elsif existing_reg
-        existing_reg.destroy
+      elsif existing_regs.any?
+        existing_regs.each(&:destroy)
         updated = true
       end
 
