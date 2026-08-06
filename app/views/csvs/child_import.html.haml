@@ -1,0 +1,41 @@
+- content_for :head do
+  - unless @import.finished?
+    %meta{ 'http-equiv': 'refresh', content: '5' }
+
+%main.container.py-4
+  %h1 SS Kids Update
+  .card.p-4.d-grid.gap-3
+    %p
+      %strong Status:
+      = @import.status.titleize
+    %p
+      %strong Progress:
+      = number_with_delimiter(@import.processed_rows)
+      /
+      = number_with_delimiter(@import.total_rows)
+    .progress{ role: 'progressbar', 'aria-label': 'Import progress' }
+      - percent = @import.total_rows.positive? ? ((@import.processed_rows.to_f / @import.total_rows) * 100).round : 0
+      .progress-bar{ style: "width: #{percent}%" }= "#{percent}%"
+    %dl.row
+      %dt.col-sm-3 Created
+      %dd.col-sm-9= number_with_delimiter(@import.created_count)
+      %dt.col-sm-3 Updated
+      %dd.col-sm-9= number_with_delimiter(@import.updated_count)
+      %dt.col-sm-3 Unchanged
+      %dd.col-sm-9= number_with_delimiter(@import.unchanged_count)
+      %dt.col-sm-3 Skipped (not 生徒)
+      %dd.col-sm-9= number_with_delimiter(@import.skipped_count)
+      %dt.col-sm-3 Failed rows
+      %dd.col-sm-9= number_with_delimiter(@import.failed_count)
+
+    - if @import.error_details.any?
+      %h2 Errors
+      %ul
+        - @import.error_details.each do |error|
+          %li
+            - if error['row']
+              = "Row #{error['row']}: #{error['message']}"
+            - else
+              = error['message']
+
+    = link_to 'Back to CSV tools', csvs_path, class: 'btn btn-secondary'

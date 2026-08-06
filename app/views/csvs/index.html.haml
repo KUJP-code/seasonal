@@ -4,6 +4,19 @@
 
 %main.w-100.d-grid#csvs_index
   .row.gap-5
+    .card.col-12
+      %h1 Update Kids from SS
+      %p Upload the original Japanese SS export. Shift_JIS/CP932 conversion, formatting, and batching happen automatically. Do not split the file.
+      = form_with url: update_ss_children_csv_path,
+                  html: { class: 'd-grid gap-3 p-5' } do |f|
+        .field
+          = f.label :csv, 'Original SS file', class: 'form-label'
+          = f.file_field :csv,
+                         class: 'form-control',
+                         accept: '.csv,.tsv,text/csv,text/tab-separated-values',
+                         required: true
+        = f.submit 'Update Kids', class: 'btn btn-primary'
+
     .card.col
       %h1 Import
       %p Faster, only if all records are new

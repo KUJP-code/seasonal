@@ -74,6 +74,8 @@ Rails.application.routes.draw do
       # Non-REST routes for CSVs controller
       post 'csv/upload', to: 'csvs#upload', as: :upload_csv
       post 'csv/update', to: 'csvs#update', as: :update_csv
+      post 'csv/update_ss_children', to: 'csvs#update_ss_children', as: :update_ss_children_csv
+      get 'csv/child_imports/:id', to: 'csvs#child_import', as: :child_import_csv
       get 'csv/download', to: 'csvs#download', as: :download_csv
       get 'csv/download_activities_by_event', to: 'csvs#download_activities_by_event', as: :download_events
       get 'csv/emails/:event', to: 'csvs#emails', as: :download_emails

@@ -33,6 +33,14 @@ class CsvPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def update_ss_children?
+    user.admin?
+  end
+
+  def child_import?
+    user.admin?
+  end
+
   def upload?
     user.admin?
   end

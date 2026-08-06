@@ -214,6 +214,35 @@ class CsvsController < ApplicationController
       redirect_to csvs_path
     end
   end
+
+  # Accept the original SS export. The attached file outlives this request and
+  # is decoded/formatted by ChildImportJob, so large imports do not time out.
+  def update_ss_children
+    authorize(:csv)
+    csv = params[:csv]
+    unless csv
+      redirect_to csvs_path, alert: 'Choose an SS CSV file.'
+      return
+    end
+
+    if ChildImport.where(status: %w[queued processing]).exists?
+      redirect_to csvs_path, alert: 'Another SS child update is already running.'
+      return
+    end
+
+    import = ChildImport.create!(user: current_user)
+    import.source_file.attach(csv)
+    ChildImportJob.perform_later(import)
+
+    redirect_to child_import_csv_path(import), notice: 'SS child update queued.'
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_to csvs_path, alert: "Could not queue SS child update: #{e.message}"
+  end
+
+  def child_import
+    authorize(:csv)
+    @import = ChildImport.find(params[:id])
+  end
   
 
   def upload

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_05_29_090000) do
+ActiveRecord::Schema[7.1].define(version: 2026_08_06_010000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -66,6 +66,24 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_29_090000) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "child_imports", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "status", default: "queued", null: false
+    t.integer "total_rows", default: 0, null: false
+    t.integer "processed_rows", default: 0, null: false
+    t.integer "created_count", default: 0, null: false
+    t.integer "updated_count", default: 0, null: false
+    t.integer "unchanged_count", default: 0, null: false
+    t.integer "failed_count", default: 0, null: false
+    t.jsonb "error_details", default: [], null: false
+    t.datetime "started_at"
+    t.datetime "finished_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "skipped_count", default: 0, null: false
+    t.index ["user_id"], name: "index_child_imports_on_user_id"
   end
 
   create_table "children", force: :cascade do |t|
@@ -592,6 +610,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_29_090000) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "adjustments", "invoices"
+  add_foreign_key "child_imports", "users"
   add_foreign_key "children", "schools"
   add_foreign_key "children", "users", column: "parent_id"
   add_foreign_key "document_uploads", "schools"
