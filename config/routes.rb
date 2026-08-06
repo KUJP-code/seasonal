@@ -43,7 +43,9 @@ Rails.application.routes.draw do
       end
       resources :inquiries, except: %i[show]
       resources :price_lists, except: %i[destroy show]
-      resources :recruit_applications, only: %i[index show update destroy]
+      resources :recruit_applications, only: %i[index show update destroy] do
+        patch :restore, on: :member
+      end
       resources :recruit_tracking_links, only: %i[index create] do
         member do
           patch :remove

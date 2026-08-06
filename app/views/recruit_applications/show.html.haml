@@ -12,9 +12,20 @@
             = display.call(@recruit_application.role)
             = " · "
             = l(@recruit_application.created_at, format: :long)
-        = link_to t('.back_to_list'),
-                  recruit_applications_path,
-                  class: 'btn btn-primary'
+        .d-flex.gap-2
+          - if @recruit_application.quarantined? && policy(@recruit_application).update?
+            = button_to t('.restore'),
+                        restore_recruit_application_path(@recruit_application),
+                        method: :patch,
+                        class: 'btn btn-success'
+          = link_to t('.back_to_list'),
+                    recruit_applications_path(queue: ('quarantine' if @recruit_application.quarantined?)),
+                    class: 'btn btn-primary'
+
+    - if @recruit_application.quarantined?
+      .alert.alert-danger
+        %strong= t('.quarantined')
+        = " — #{@recruit_application.quarantine_reason}"
 
     .recruit-application-grid
       .recruit-application-main

@@ -2,7 +2,7 @@
 
 class RecruitApplicationsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: :create
-  after_action :verify_authorized, only: %i[index show update destroy]
+  after_action :verify_authorized, only: %i[index show update destroy restore]
   after_action :verify_policy_scoped, only: :index
 
   def index
@@ -10,8 +10,16 @@ class RecruitApplicationsController < ApplicationController
 
     scoped_recruit_applications = policy_scope(RecruitApplication)
     @tracking_link_slugs = RecruitTrackingLink.active.order(:slug).pluck(:slug)
+    @quarantine_view = params[:queue] == 'quarantine'
+    @active_count = scoped_recruit_applications.visible_to_hr.count
+    @quarantine_count = scoped_recruit_applications.quarantine.count
+    queue_scope = if @quarantine_view
+                    scoped_recruit_applications.quarantine
+                  else
+                    scoped_recruit_applications.visible_to_hr
+                  end
 
-    @recruit_applications = filtered_recruit_applications(scoped_recruit_applications)
+    @recruit_applications = filtered_recruit_applications(queue_scope)
                             .page(params[:page])
   end
 
@@ -20,9 +28,11 @@ class RecruitApplicationsController < ApplicationController
     assign_request_metadata
 
     if @recruit_application.save
-      RecruitApplicationMailer.with(recruit_application: @recruit_application)
-                             .application_notification
-                             .deliver_later
+      unless @recruit_application.quarantined?
+        RecruitApplicationMailer.with(recruit_application: @recruit_application)
+                                .application_notification
+                                .deliver_later
+      end
       render json: success_payload, status: :ok
     else
       render json: { status: 422, errors: @recruit_application.errors.full_messages },
@@ -58,6 +68,18 @@ class RecruitApplicationsController < ApplicationController
 
     redirect_to recruit_applications_path,
                 notice: 'Recruit application deleted'
+  end
+
+  def restore
+    @recruit_application = authorize RecruitApplication.find(params[:id]), :update?
+    @recruit_application.update!(
+      quarantined: false,
+      quarantine_reason: nil,
+      quarantined_at: nil
+    )
+
+    redirect_to recruit_applications_path(queue: 'quarantine'),
+                notice: 'Recruit application restored'
   end
 
   private

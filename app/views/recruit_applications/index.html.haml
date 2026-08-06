@@ -8,7 +8,18 @@
                   recruit_tracking_links_path,
                   class: 'btn btn-primary'
 
+    .nav.nav-pills.gap-2.mb-3
+      = link_to recruit_applications_path,
+                class: "nav-link #{'active' unless @quarantine_view}" do
+        = t('.applications')
+        %span.badge.rounded-pill.ms-1{ class: @quarantine_view ? 'bg-secondary' : 'bg-white text-primary' }= @active_count
+      = link_to recruit_applications_path(queue: 'quarantine'),
+                class: "nav-link #{@quarantine_view ? 'active bg-danger' : 'text-danger'}" do
+        = t('.quarantine')
+        %span.badge.rounded-pill.ms-1{ class: @quarantine_view ? 'bg-white text-danger' : 'bg-danger' }= @quarantine_count
+
     = form_with url: recruit_applications_path, method: :get, local: true, class: 'd-flex flex-column gap-3' do |f|
+      = f.hidden_field :queue, value: 'quarantine' if @quarantine_view
       .row.g-2
         .col-12.col-md-4
           = f.search_field :full_name,
@@ -107,6 +118,8 @@
             %button.btn-sort.ascending{ data: { 'sort-target': 'toggle',
                                                 action: 'click->sort#sort' } } &#9650;
           %th= t('.view')
+          - if @quarantine_view && policy(RecruitApplication).update?
+            %th= t('.restore')
           - if can_destroy_recruit_applications
             %th= t('.delete')
       %tbody#recruit-applications-table
@@ -151,6 +164,13 @@
               = link_to t('.view'),
                         recruit_application_path(application),
                         class: 'btn btn-sm btn-primary'
+            - if @quarantine_view && policy(application).update?
+              %td
+                = button_to t('.restore'),
+                            restore_recruit_application_path(application),
+                            method: :patch,
+                            class: 'btn btn-sm btn-outline-success',
+                            form: { class: 'm-0' }
             - if can_destroy_recruit_applications
               %td
                 = link_to t('.delete'),

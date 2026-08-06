@@ -3,6 +3,9 @@ ja:
     index:
       title: "採用応募一覧"
       manage_tracking_links: "トラッキングリンク管理"
+      applications: "応募"
+      quarantine: "隔離"
+      restore: "復元"
       name_search: "氏名検索"
       all_roles: "すべての応募種別"
       all_tracking_links: "すべてのトラッキングリンク"
@@ -64,3 +67,5 @@ ja:
       unknown: "未設定"
       yes: "はい"
       no: "いいえ"
+      quarantined: "隔離済み"
+      restore: "応募を復元"

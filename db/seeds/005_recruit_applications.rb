@@ -15,7 +15,18 @@ tracking_slugs = %w[
   gg-tour-01
   yh-newgrad-01
 ]
-nationalities = ['Japan', 'USA', 'Canada', 'UK', 'Australia', 'Philippines']
+nationalities = [
+  'Japan', 'USA', 'Canada', 'UK', 'Australia', 'Philippines',
+  'Nigeria', 'South Africa', 'France', 'Germany', 'India',
+  'New Zealand', 'Brazil', 'Singapore'
+]
+quarantined_nationalities = {
+  5 => 'fuck',
+  11 => 'F.U.C.K. spam',
+  17 => 'cunt',
+  23 => 'C U N T spam',
+  29 => 'cock spam'
+}.freeze
 genders = ['male', 'female', 'non_binary', nil]
 education_levels = [
   'High School',
@@ -42,6 +53,10 @@ seeded = 0
   medium = mediums[rng.rand(mediums.length)]
   campaign = campaigns[rng.rand(campaigns.length)]
   submitted_at = n.days.ago.change(hour: rng.rand(9..20), min: rng.rand(0..59), sec: 0)
+  nationality = quarantined_nationalities.fetch(n) do
+    nationalities[(n - 1) % nationalities.length]
+  end
+  quarantined = quarantined_nationalities.key?(n)
 
   attrs = {
     role: role,
@@ -54,7 +69,7 @@ seeded = 0
     highest_education: education_levels[rng.rand(education_levels.length)],
     employment_history: "#{rng.rand(1..8)} years in education/customer support.",
     reason_for_application: (role == 'native' ? 'Interested in child-focused English education.' : nil),
-    nationality: nationalities[rng.rand(nationalities.length)],
+    nationality:,
     work_visa_status: (role == 'native' ? visa_statuses[rng.rand(visa_statuses.length)] : nil),
     questions: (rng.rand < 0.35 ? 'Can you share expected onboarding timing?' : nil),
     privacy_policy_consent: true,
@@ -92,6 +107,9 @@ seeded = 0
         ][rng.rand(5)]
       end
     ),
+    quarantined:,
+    quarantine_reason: (RecruitApplication::ABUSIVE_NATIONALITY_REASON if quarantined),
+    quarantined_at: (submitted_at if quarantined),
     created_at: submitted_at,
     updated_at: submitted_at
   }

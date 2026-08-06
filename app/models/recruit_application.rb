@@ -4,6 +4,9 @@ class RecruitApplication < ApplicationRecord
   PRIVACY_POLICY_URL = 'https://www.p-up.world/privacypolicy/'
 
   ROLES = %w[sm bilingual native driver tour_staff new_graduate].freeze
+  ABUSIVE_NATIONALITY_TERMS = %w[nigeria nigerian zambia cameroon cameroonian zimbabwean zimbabwe
+                                 kenya ghana ghanian srilanka].freeze
+  ABUSIVE_NATIONALITY_REASON = 'Spam origin detected'
 
   has_paper_trail
 
@@ -16,8 +19,11 @@ class RecruitApplication < ApplicationRecord
   before_validation :normalize_role
   before_validation :normalize_tracking_link_slug
   before_validation :set_privacy_policy_url
+  before_validation :quarantine_abusive_nationality, on: :create
 
   scope :latest_first, -> { order(created_at: :desc) }
+  scope :visible_to_hr, -> { where(quarantined: false) }
+  scope :quarantine, -> { where(quarantined: true) }
   validate :tracking_link_slug_must_be_managed
 
   def age
@@ -30,6 +36,16 @@ class RecruitApplication < ApplicationRecord
   end
 
   private
+
+  def quarantine_abusive_nationality
+    normalized = nationality.to_s.unicode_normalize(:nfkc)
+                            .downcase.gsub(/[^a-z]/, '')
+    return unless ABUSIVE_NATIONALITY_TERMS.any? { |term| normalized.include?(term) }
+
+    self.quarantined = true
+    self.quarantine_reason = ABUSIVE_NATIONALITY_REASON
+    self.quarantined_at ||= Time.current
+  end
 
   def normalize_role
     self.role = role.to_s.strip

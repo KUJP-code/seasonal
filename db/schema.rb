@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_08_06_010000) do
+ActiveRecord::Schema[7.1].define(version: 2026_08_06_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -323,7 +323,11 @@ ActiveRecord::Schema[7.1].define(version: 2026_08_06_010000) do
     t.date "contacted_on"
     t.boolean "interviewed"
     t.text "hr_comments"
+    t.boolean "quarantined", default: false, null: false
+    t.string "quarantine_reason"
+    t.datetime "quarantined_at"
     t.index ["created_at"], name: "index_recruit_applications_on_created_at"
+    t.index ["quarantined"], name: "index_recruit_applications_on_quarantined"
     t.index ["role"], name: "index_recruit_applications_on_role"
     t.index ["tracking_link_slug"], name: "index_recruit_applications_on_tracking_link_slug"
     t.index ["utm_campaign"], name: "index_recruit_applications_on_utm_campaign"

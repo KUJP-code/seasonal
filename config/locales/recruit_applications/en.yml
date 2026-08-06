@@ -3,6 +3,9 @@ en:
     index:
       title: "Recruit Applications"
       manage_tracking_links: "Manage Tracking Links"
+      applications: "Applications"
+      quarantine: "Quarantine"
+      restore: "Restore"
       name_search: "Search name"
       all_roles: "All roles"
       all_tracking_links: "All tracking links"
@@ -64,3 +67,5 @@ en:
       unknown: "Not set"
       yes: "Yes"
       no: "No"
+      quarantined: "Quarantined"
+      restore: "Restore application"

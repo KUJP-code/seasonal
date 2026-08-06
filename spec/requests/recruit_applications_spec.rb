@@ -63,6 +63,24 @@ RSpec.describe 'Recruit applications' do
       json = JSON.parse(response.body)
       expect(json['errors']).to be_present
     end
+
+    it 'quarantines abusive nationality values without notifying HR' do
+      expect do
+        post '/api/recruit_applications', params: {
+          recruit_application: attributes_for(
+            :recruit_application,
+            full_name: 'Normal Applicant',
+            nationality: 'Spam F.U.C.K value'
+          )
+        }, as: :json
+      end.not_to have_enqueued_mail(RecruitApplicationMailer, :application_notification)
+
+      expect(response).to have_http_status(:ok)
+      expect(RecruitApplication.last).to have_attributes(
+        quarantined: true,
+        quarantine_reason: RecruitApplication::ABUSIVE_NATIONALITY_REASON
+      )
+    end
   end
 
   describe 'GET /ja/recruit_applications' do
@@ -163,6 +181,24 @@ RSpec.describe 'Recruit applications' do
       expect(response.body).not_to include(yes_application.full_name)
       expect(response.body).to include(no_application.full_name)
       expect(response.body).to include(unknown_application.full_name)
+    end
+
+    it 'keeps quarantined applications out of the main list and shows them in quarantine' do
+      sign_in create(:admin)
+      normal = create(:recruit_application, full_name: 'Normal Applicant')
+      quarantined = create(
+        :recruit_application,
+        full_name: 'Quarantined Applicant',
+        nationality: 'Spam Cunt value'
+      )
+
+      get path
+      expect(response.body).to include(normal.full_name)
+      expect(response.body).not_to include(quarantined.full_name)
+
+      get path, params: { queue: 'quarantine' }
+      expect(response.body).not_to include(normal.full_name)
+      expect(response.body).to include(quarantined.full_name, 'Restore')
     end
   end
 
@@ -310,6 +346,26 @@ RSpec.describe 'Recruit applications' do
       end.not_to change(RecruitApplication, :count)
 
       expect(response).to redirect_to(root_path(locale: :ja))
+    end
+  end
+
+  describe 'PATCH /ja/recruit_applications/:id/restore' do
+    it 'allows HR to restore an application to the main queue' do
+      application = create(
+        :recruit_application,
+        full_name: 'Restored Applicant',
+        nationality: 'Spam Cock value'
+      )
+      sign_in create(:human_resources)
+
+      patch restore_recruit_application_path(application, locale: :ja)
+
+      expect(response).to redirect_to(recruit_applications_path(queue: 'quarantine', locale: :ja))
+      expect(application.reload).to have_attributes(
+        quarantined: false,
+        quarantine_reason: nil,
+        quarantined_at: nil
+      )
     end
   end
 end
