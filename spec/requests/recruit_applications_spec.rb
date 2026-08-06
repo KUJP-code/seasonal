@@ -70,7 +70,7 @@ RSpec.describe 'Recruit applications' do
           recruit_application: attributes_for(
             :recruit_application,
             full_name: 'Normal Applicant',
-            nationality: 'Spam F.U.C.K value'
+            nationality: 'nigeria'
           )
         }, as: :json
       end.not_to have_enqueued_mail(RecruitApplicationMailer, :application_notification)
@@ -189,7 +189,7 @@ RSpec.describe 'Recruit applications' do
       quarantined = create(
         :recruit_application,
         full_name: 'Quarantined Applicant',
-        nationality: 'Spam Cunt value'
+        nationality: 'nigeria'
       )
 
       get path
