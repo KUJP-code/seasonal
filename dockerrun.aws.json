@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:3.1.4-recruit-filtering"
+    "Name": "kidsup/event_site:3.1.5-stats_pdf"
   },
   "Ports": [
     {
