@@ -1,0 +1,87 @@
+- exact_label = t('.matching_children_exact', count: @activity_count_target)
+- at_least_label = t('.matching_children_at_least', count: @activity_count_target)
+
+.card.w-100.mb-4.border-0.shadow-sm
+  .card-body.p-4
+    .d-flex.flex-wrap.justify-content-between.align-items-start.gap-3
+      .me-auto
+        %h2.h4.mb-2= t('.title')
+        %p.text-muted.mb-0= t('.description')
+      = form_with url: (@nav[:school].id.zero? ? charts_path : chart_path(id: @nav[:school].id)),
+                  method: :get,
+                  local: true,
+                  class: 'd-flex flex-wrap align-items-end gap-2' do
+        = hidden_field_tag :category, 'activity_counts'
+        = hidden_field_tag :event, @nav[:event]
+        .field
+          = label_tag :activity_count, t('.exact_count'), class: 'form-label fw-semibold'
+          = number_field_tag :activity_count,
+                             @activity_count_target,
+                             min: 1,
+                             max: 100,
+                             required: true,
+                             class: 'form-control form-control-lg',
+                             style: 'width: 9rem'
+        = submit_tag t('.find_children'), class: 'btn btn-primary btn-lg'
+
+.card.w-100.mb-4.border-0.shadow-sm
+  .card-body.d-flex.justify-content-around.align-items-center.gap-4.p-4.flex-wrap
+    = render 'charts/highlight_box',
+             data: number_with_delimiter(@activity_count_rows.size),
+             text: exact_label
+    = render 'charts/highlight_box',
+             data: number_with_delimiter(@at_least_activity_count),
+             text: at_least_label
+    = render 'charts/highlight_box',
+             data: number_with_delimiter(@activity_counts.size),
+             text: t('.participating_children')
+    = render 'charts/highlight_box',
+             data: @average_activity_count,
+             text: t('.average_activities')
+
+.card.w-100.mb-4.border-0.shadow-sm
+  .card-header.bg-white.p-4.border-0
+    %h3.h5.mb-0= t('.distribution')
+  .card-body.pt-0
+    - if @activity_count_distribution.any?
+      .d-flex.flex-wrap.gap-2.mb-4
+        - @activity_count_distribution.each do |count, children_count|
+          - selected = count == @activity_count_target
+          = link_to (@nav[:school].id.zero? ? charts_path(category: 'activity_counts', event: @nav[:event], activity_count: count) : chart_path(id: @nav[:school].id, category: 'activity_counts', event: @nav[:event], activity_count: count)),
+                    class: "btn #{selected ? 'btn-primary' : 'btn-outline-primary'}" do
+            %span.fw-semibold= "#{count}×"
+            %span.badge.rounded-pill{ class: selected ? 'bg-white text-primary' : 'bg-primary' }= children_count
+      = column_chart @activity_count_distribution,
+                     xtitle: t('.activities'),
+                     ytitle: t('.participating_children'),
+                     height: '45vh',
+                     discrete: true
+    - else
+      %p.text-muted.mb-0= t('.no_matches_exact', count: @activity_count_target)
+
+.card.w-100.mb-4.border-0.shadow-sm
+  .card-header.bg-white.p-4.border-0
+    %h3.h5.mb-0= exact_label
+  - if @activity_count_rows.any?
+    .table-responsive
+      %table.table.table-striped.table-hover.align-middle.mb-0
+        %thead.table-primary
+          %tr
+            %th= t('.child')
+            %th= t('.school')
+            %th= t('.category')
+            %th.text-end= t('.activities')
+        %tbody
+          - @activity_count_rows.each do |row|
+            - child = row[:child]
+            %tr
+              %td
+                = link_to child.name, child_path(child), class: 'fw-semibold text-decoration-none'
+                .small.text-muted= child.en_name
+              %td= child.school ? t("schools.#{child.school.name}") : '—'
+              %td= child.category&.titleize || '—'
+              %td.text-end
+                %span.badge.bg-primary.fs-6= row[:count]
+  - else
+    .card-body.pt-0
+      %p.text-muted.mb-0= t('.no_matches_exact', count: @activity_count_target)

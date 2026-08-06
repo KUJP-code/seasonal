@@ -2,6 +2,7 @@
   all_schools = current_user.admin? || current_user.statistician?
   inactive_styles = 'card p-2'
   active_styles = "#{inactive_styles} bg-primary text-white fw-semibold"
+  activity_count_param = params[:activity_count] if @nav[:category] == 'activity_counts'
 
 %nav.w-100.d-flex.gap-5.p-3.justify-content-center.align-items-center
   - if all_schools && @nav[:category] == 'setsumeikais'
@@ -31,14 +32,16 @@
       .d-flex.flex-wrap.justify-content-between.gap-2.my-2
         = link_to (all_schools ? "All Schools" : "Area Schools"),
                   charts_path(category: @nav[:category],
-                              event: @nav[:event]),
+                              event: @nav[:event],
+                              activity_count: activity_count_param),
                   class: @nav[:school].id.zero? ? active_styles : inactive_styles
         - @nav[:schools].each do |s|
           - active = @nav[:school].id == s.id
           = link_to t("schools.#{s.name}"),
                     chart_path(id: s.id,
                                category: @nav[:category],
-                               event: @nav[:event]),
+                               event: @nav[:event],
+                               activity_count: activity_count_param),
                     class: active ? active_styles : inactive_styles
 
   - unless @nav[:category] == 'setsumeikais'
@@ -51,13 +54,15 @@
           - if @nav[:school].id.zero?
             = link_to e,
                       charts_path(category: @nav[:category],
-                                  event: e),
+                                  event: e,
+                                  activity_count: activity_count_param),
                       class: active ? active_styles : inactive_styles
           - else
             = link_to e,
                       chart_path(id: @nav[:school].id,
                                  category: @nav[:category],
-                                 event: e),
+                                 event: e,
+                                 activity_count: activity_count_param),
                       class: active ? active_styles : inactive_styles
 
   %details

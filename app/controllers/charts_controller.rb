@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class ChartsController < ApplicationController
-  CATEGORIES = %w[summaries setsumeikais bookings activities children options edits coupons].freeze
+  CATEGORIES = %w[
+    summaries setsumeikais bookings activities activity_counts children options edits coupons
+  ].freeze
   after_action :verify_authorized
 
   def index
@@ -17,6 +19,41 @@ class ChartsController < ApplicationController
   end
 
   private
+
+  # rubocop:disable Metrics/AbcSize
+  def activity_counts_data
+    @activity_count_target = params.fetch(:activity_count, 5).to_i.clamp(1, 100)
+    event_ids = activity_count_event_ids
+    slot_ids = TimeSlot.where(event_id: event_ids).select(:id)
+    @activity_counts = Registration.slot_registrations
+                                   .where(registerable_id: slot_ids)
+                                   .group(:child_id)
+                                   .count
+    @activity_count_distribution = @activity_counts.values.tally.sort.to_h
+    @at_least_activity_count = @activity_counts.count do |_child_id, count|
+      count >= @activity_count_target
+    end
+    matching_ids = @activity_counts.select do |_child_id, count|
+      count == @activity_count_target
+    end.keys
+    children = Child.where(id: matching_ids).includes(:school).order(:name)
+    @activity_count_rows = children.map do |child|
+      { child:, count: @activity_counts.fetch(child.id) }
+    end
+    @average_activity_count = if @activity_counts.empty?
+                                0
+                              else
+                                (@activity_counts.values.sum.to_f / @activity_counts.size).round(1)
+                              end
+  end
+  # rubocop:enable Metrics/AbcSize
+
+  def activity_count_event_ids
+    events = Event.where(name: @nav[:event])
+    return events.where(school_id: School.real.select(:id)).select(:id) if @nav[:school].id.zero?
+
+    events.where(school_id: @nav[:school].id).select(:id)
+  end
 
   def activities_data
     @school = @nav[:school]
