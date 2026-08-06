@@ -10,12 +10,14 @@ class ChartsController < ApplicationController
     authorize(:chart)
     @nav = nav_data('index')
     send(:"#{@nav[:category]}_data")
+    render_activity_counts_csv if request.format.csv? && @nav[:category] == 'activity_counts'
   end
 
   def show
     authorize(:chart)
     @nav = nav_data('show')
     send(:"#{@nav[:category]}_data")
+    render_activity_counts_csv if request.format.csv? && @nav[:category] == 'activity_counts'
   end
 
   private
@@ -30,15 +32,16 @@ class ChartsController < ApplicationController
                                    .group(:child_id)
                                    .count
     @activity_count_distribution = @activity_counts.values.tally.sort.to_h
+    @exact_activity_count = @activity_count_distribution.fetch(@activity_count_target, 0)
     @at_least_activity_count = @activity_counts.count do |_child_id, count|
       count >= @activity_count_target
     end
-    matching_ids = @activity_counts.select do |_child_id, count|
-      count == @activity_count_target
-    end.keys
-    children = Child.where(id: matching_ids).includes(:school).order(:name)
-    @activity_count_rows = children.map do |child|
-      { child:, count: @activity_counts.fetch(child.id) }
+    @activity_count_table = @activity_count_distribution.map do |count, exact_count|
+      {
+        count:,
+        exact_count:,
+        at_least_count: @activity_counts.count { |_child_id, total| total >= count }
+      }
     end
     @average_activity_count = if @activity_counts.empty?
                                 0
@@ -53,6 +56,35 @@ class ChartsController < ApplicationController
     return events.where(school_id: School.real.select(:id)).select(:id) if @nav[:school].id.zero?
 
     events.where(school_id: @nav[:school].id).select(:id)
+  end
+
+  def render_activity_counts_csv
+    filename = [
+      @nav[:event].parameterize,
+      @nav[:school].id.zero? ? 'all-schools' : @nav[:school].name.parameterize,
+      'activity-count-distribution'
+    ].join('-')
+
+    send_data activity_counts_csv,
+              filename: "#{filename}.csv",
+              type: 'text/csv; charset=utf-8'
+  end
+
+  def activity_counts_csv
+    CSV.generate(headers: true) do |csv|
+      csv << ['Activity Count', 'Children Exactly', 'Children At Least', 'Event', 'School']
+      @activity_count_table.each do |row|
+        csv << [
+          row[:count], row[:exact_count], row[:at_least_count],
+          csv_safe(@nav[:event]), csv_safe(@nav[:school].name)
+        ]
+      end
+    end
+  end
+
+  def csv_safe(value)
+    string = value.to_s
+    string.match?(/\A[=+\-@]/) ? "'#{string}" : string
   end
 
   def activities_data

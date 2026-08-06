@@ -27,7 +27,7 @@
 .card.w-100.mb-4.border-0.shadow-sm
   .card-body.d-flex.justify-content-around.align-items-center.gap-4.p-4.flex-wrap
     = render 'charts/highlight_box',
-             data: number_with_delimiter(@activity_count_rows.size),
+             data: number_with_delimiter(@exact_activity_count),
              text: exact_label
     = render 'charts/highlight_box',
              data: number_with_delimiter(@at_least_activity_count),
@@ -61,27 +61,28 @@
 
 .card.w-100.mb-4.border-0.shadow-sm
   .card-header.bg-white.p-4.border-0
-    %h3.h5.mb-0= exact_label
-  - if @activity_count_rows.any?
+    .d-flex.justify-content-between.align-items-center.gap-3.flex-wrap
+      %div
+        %h3.h5.mb-1= t('.breakdown_table')
+        %p.text-muted.mb-0= @nav[:event]
+      = link_to t('.download_csv'),
+                (@nav[:school].id.zero? ? charts_path(category: 'activity_counts', event: @nav[:event], activity_count: @activity_count_target, format: :csv) : chart_path(id: @nav[:school].id, category: 'activity_counts', event: @nav[:event], activity_count: @activity_count_target, format: :csv)),
+                class: 'btn btn-outline-primary'
+  - if @activity_count_table.any?
     .table-responsive
-      %table.table.table-striped.table-hover.align-middle.mb-0
+      %table.table.table-striped.table-hover.text-center.align-middle.mb-0
         %thead.table-primary
           %tr
-            %th= t('.child')
-            %th= t('.school')
-            %th= t('.category')
-            %th.text-end= t('.activities')
+            %th= t('.activities')
+            %th= t('.children_exactly')
+            %th= t('.children_at_least')
         %tbody
-          - @activity_count_rows.each do |row|
-            - child = row[:child]
+          - @activity_count_table.each do |row|
             %tr
               %td
-                = link_to child.name, child_path(child), class: 'fw-semibold text-decoration-none'
-                .small.text-muted= child.en_name
-              %td= child.school ? t("schools.#{child.school.name}") : '—'
-              %td= child.category&.titleize || '—'
-              %td.text-end
-                %span.badge.bg-primary.fs-6= row[:count]
+                %span.badge.bg-primary.fs-6= "#{row[:count]}×"
+              %td.fw-semibold= number_with_delimiter(row[:exact_count])
+              %td= number_with_delimiter(row[:at_least_count])
   - else
     .card-body.pt-0
       %p.text-muted.mb-0= t('.no_matches_exact', count: @activity_count_target)

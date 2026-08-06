@@ -14,15 +14,15 @@ RSpec.describe 'Activity count statistics' do
     register_for_slots(four_activity_child, slots.first(4))
   end
 
-  it 'shows children with exactly the requested number of activities' do
+  it 'shows an aggregate table instead of child names' do
     get charts_path, params: {
       category: 'activity_counts', event: event.name, activity_count: 5
     }
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('Five Activities')
-    expect(response.body).not_to include('Four Activities')
     expect(response.body).to include('Children with exactly 5 activities')
+    expect(response.body).to include('Activity-count table')
+    expect(response.body).not_to include('Five Activities', 'Four Activities')
   end
 
   it 'limits results to the selected school' do
@@ -36,7 +36,7 @@ RSpec.describe 'Activity count statistics' do
     }
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('Five Activities')
+    expect(response.body).to include('Activity-count table')
     expect(response.body).not_to include('Other School Five')
   end
 
@@ -49,6 +49,23 @@ RSpec.describe 'Activity count statistics' do
     expect(response).to have_http_status(:ok)
     expect(response.body).to include('Children with exactly 4 activities')
     expect(response.body).to include('Children with 4 or more activities')
+  end
+
+  it 'downloads exact-match results as CSV' do
+    get charts_path(format: :csv), params: {
+      category: 'activity_counts', event: event.name, activity_count: 5
+    }
+
+    expect(response).to have_http_status(:ok)
+    expect(response.media_type).to eq('text/csv')
+    csv = CSV.parse(response.body, headers: true)
+    expect(csv.headers).to eq(
+      ['Activity Count', 'Children Exactly', 'Children At Least', 'Event', 'School']
+    )
+    five_row = csv.find { |row| row['Activity Count'] == '5' }
+    expect(five_row.to_h).to include(
+      'Children Exactly' => '1', 'Children At Least' => '1'
+    )
   end
 
   private
