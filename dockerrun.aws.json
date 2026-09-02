@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:3.1.5-stats_pdf"
+    "Name": "kidsup/event_site:3.1.6-translations"
   },
   "Ports": [
     {
