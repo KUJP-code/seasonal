@@ -54,10 +54,18 @@ class RecruitApplicationsController < ApplicationController
   def update
     @recruit_application = authorize RecruitApplication.find(params[:id])
 
-    if @recruit_application.update(internal_recruit_application_params)
+    attributes = workflow_update_attributes
+
+    if @recruit_application.update(attributes)
+      if attributes[:quarantined]
+        return redirect_to recruit_applications_path,
+                           notice: 'Recruit application moved to quarantine'
+      end
+
       redirect_back fallback_location: recruit_application_path(@recruit_application),
                     notice: 'Recruit application updated'
     else
+      @change_history = []
       render :show, status: :unprocessable_entity
     end
   end
@@ -117,6 +125,19 @@ class RecruitApplicationsController < ApplicationController
       :locale,
       raw_tracking: {}
     )
+  end
+
+  def workflow_update_attributes
+    attributes = internal_recruit_application_params
+    rejected = attributes.key?(:interviewed) &&
+               ActiveModel::Type::Boolean.new.cast(attributes[:interviewed]) == false
+    if rejected
+      attributes = attributes.merge(quarantined: true,
+                                    quarantine_reason: 'Interview declined',
+                                    quarantined_at: Time.current)
+    end
+
+    attributes
   end
 
   def internal_recruit_application_params

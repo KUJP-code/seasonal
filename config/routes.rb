@@ -53,7 +53,9 @@ Rails.application.routes.draw do
       end
       resources :schools, except: [:index]
       resources :setsumeikais
-      resources :staff_users, except: %i[show]
+      resources :staff_users, except: %i[show] do
+        get :stats, on: :collection
+      end
       resources :surveys, except: %i[destroy]
       resources :survey_responses, only: %i[create update]
       resources :time_slots, except: %i[create destroy show] do

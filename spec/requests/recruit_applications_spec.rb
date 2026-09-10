@@ -300,8 +300,25 @@ RSpec.describe 'Recruit applications' do
             },
             headers: { 'HTTP_REFERER' => recruit_applications_url(locale: :ja) }
 
-      expect(response).to redirect_to(recruit_applications_url(locale: :ja))
-      expect(application.reload.interviewed).to eq(false)
+      expect(response).to redirect_to(recruit_applications_path(locale: :ja))
+      expect(application.reload).to have_attributes(
+        interviewed: false, quarantined: true, quarantine_reason: 'Interview declined'
+      )
+      expect(application.quarantined_at).to be_present
+      get recruit_applications_path(locale: :ja)
+      expect(response.body).not_to include(application.full_name)
+      get recruit_applications_path(locale: :ja, queue: 'quarantine')
+      expect(response.body).to include(application.full_name)
+    end
+
+    it 'keeps a restored application active when only notes are saved' do
+      application.update!(interviewed: false, quarantined: true)
+      sign_in create(:human_resources)
+      patch restore_recruit_application_path(application, locale: :ja)
+      patch path, params: { recruit_application: { hr_comments: 'Reconsidering' } }
+      expect(application.reload).to have_attributes(
+        quarantined: false, hr_comments: 'Reconsidering'
+      )
     end
 
     it 'forbids statistician from updating internal workflow fields' do

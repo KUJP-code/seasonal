@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class StaffUserPolicy < ApplicationPolicy
+  def stats?
+    user.admin?
+  end
+
   def new?
     user.admin?
   end

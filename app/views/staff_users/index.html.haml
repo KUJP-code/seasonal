@@ -1,7 +1,8 @@
 %main
-  = link_to 'Create Staff',
-            new_staff_user_path,
-            class: 'btn btn-primary'
+  .d-flex.gap-2.mb-3
+    = link_to 'Create Staff', new_staff_user_path, class: 'btn btn-primary'
+    - if current_user.admin?
+      = link_to 'Staff Stats', stats_staff_users_path, class: 'btn btn-outline-primary'
 
   .card
     %table.table.table-striped.table-hover.text-center

@@ -15,6 +15,14 @@ class StaffUsersController < ApplicationController
     )
   end
 
+  def stats
+    authorize User, :stats?, policy_class: StaffUserPolicy
+    @staff = policy_scope(
+      User.staff.or(User.statistician).or(User.human_resources).order(:name),
+      policy_scope_class: StaffUserPolicy::Scope
+    )
+  end
+
   def new
     @user = authorize(User.new(role: :school_manager),
                       policy_class: StaffUserPolicy)

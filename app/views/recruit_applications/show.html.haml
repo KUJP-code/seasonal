@@ -102,11 +102,10 @@
                   = f.label :contacted_on, t('.contacted_on'), class: 'form-label'
                   = f.date_field :contacted_on, class: 'form-control'
                 %div
-                  = f.label :interviewed, t('.interviewed'), class: 'form-label'
-                  = f.select :interviewed,
-                             [[t('.unknown'), ''], [t('.yes'), true], [t('.no'), false]],
-                             {},
-                             class: 'form-select'
+                  %p.form-label= t('.interviewed')
+                  .btn-group{ role: 'group', 'aria-label': t('.interviewed') }
+                    = f.button t('.yes'), name: 'recruit_application[interviewed]', value: 'true', class: "btn #{@recruit_application.interviewed == true ? 'btn-success' : 'btn-outline-success'}", 'aria-pressed': (@recruit_application.interviewed == true).to_s
+                    = f.button t('.no'), name: 'recruit_application[interviewed]', value: 'false', class: "btn #{@recruit_application.interviewed == false ? 'btn-danger' : 'btn-outline-danger'}", 'aria-pressed': (@recruit_application.interviewed == false).to_s
                 %div
                   = f.label :hr_comments, t('.hr_comments'), class: 'form-label'
                   = f.text_area :hr_comments, rows: 10, class: 'form-control'

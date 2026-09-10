@@ -1,0 +1,24 @@
+%main
+  .d-flex.justify-content-between.align-items-center.mb-3
+    %h1 Staff Stats
+    = link_to 'Back to Staff', staff_users_path, class: 'btn btn-primary'
+
+  .card.table-responsive
+    %table.table.table-striped.table-hover.text-center
+      %thead
+        %tr.table-primary
+          %th Name
+          %th Email
+          %th Role
+          %th Last login (JST)
+          %th Login IP
+          %th Login count
+      %tbody
+        - @staff.each do |staff_user|
+          %tr
+            %td= staff_user.name
+            %td= mail_to staff_user.email
+            %td= staff_user.role.titleize
+            %td= staff_user.current_sign_in_at&.in_time_zone('Tokyo')&.strftime('%Y-%m-%d %H:%M:%S') || 'Not recorded'
+            %td= staff_user.current_sign_in_ip.presence || 'Not recorded'
+            %td= staff_user.sign_in_count

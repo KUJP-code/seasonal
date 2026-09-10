@@ -151,11 +151,9 @@
                             method: :patch,
                             local: true,
                             class: 'm-0' do |f|
-                  = f.select :interviewed,
-                             [[t('.unknown'), ''], [t('.yes'), true], [t('.no'), false]],
-                             { selected: application.interviewed.nil? ? '' : application.interviewed.to_s },
-                             { class: 'form-select form-select-sm',
-                               onchange: 'this.form.requestSubmit()' }
+                  .btn-group{ role: 'group', 'aria-label': t('.interviewed') }
+                    = f.button t('.yes'), name: 'recruit_application[interviewed]', value: 'true', class: "btn btn-sm #{application.interviewed == true ? 'btn-success' : 'btn-outline-success'}", 'aria-pressed': (application.interviewed == true).to_s
+                    = f.button t('.no'), name: 'recruit_application[interviewed]', value: 'false', class: "btn btn-sm #{application.interviewed == false ? 'btn-danger' : 'btn-outline-danger'}", 'aria-pressed': (application.interviewed == false).to_s
               - else
                 = application.interviewed.nil? ? '-' : (application.interviewed? ? t('.yes') : t('.no'))
             %td.nationality= application.nationality

@@ -111,9 +111,16 @@ class User < ApplicationRecord
   scope :admins, -> { where(role: :admin) }
 
   # Include default devise modules. Others available are:
-  # :trackable and :omniauthable
+  # :omniauthable
   devise :database_authenticatable, :registerable, :timeoutable,
-         :recoverable, :rememberable, :validatable, :lockable, :confirmable
+         :recoverable, :rememberable, :validatable, :lockable, :confirmable, :trackable
+
+  # Only staff accounts collect login metadata; customer logins are excluded.
+  def update_tracked_fields!(request)
+    return if customer?
+
+    super
+  end
 
   # Public methods
   def all_inquiries
