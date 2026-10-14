@@ -7,4 +7,5 @@
 # notations and behaviors.
 Rails.application.config.filter_parameters += %i[
   passw secret token _key crypt salt certificate otp ssn
+  email company name phone message child_age admin_notes
 ]

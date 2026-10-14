@@ -1,0 +1,19 @@
+らしんばのフォームから新しい送信がありました。
+
+種別: <%= @inquiry.kind_label %>
+受付日時: <%= @inquiry.created_at.in_time_zone('Tokyo').strftime('%Y/%m/%d %H:%M %Z') %>
+メールアドレス: <%= @inquiry.email %>
+<% if @inquiry.sponsor? %>
+会社名: <%= @inquiry.company %>
+お名前: <%= @inquiry.name %>
+電話番号: <%= @inquiry.phone.presence || '未入力' %>
+
+備考:
+<%= @inquiry.message.presence || '未入力' %>
+<% else %>
+お子様の年齢: <%= @inquiry.child_age.presence || '未入力' %>
+<% end %>
+
+プライバシーポリシーへの同意日時: <%= @inquiry.consented_at.in_time_zone('Tokyo').strftime('%Y/%m/%d %H:%M %Z') %>
+管理画面（管理者のみ）:
+<%= rashimba_inquiry_url(@inquiry, locale: :en) %>
