@@ -1,0 +1,47 @@
+<main id="rashimba-inquiry">
+  <div class="card p-3 mb-3">
+    <div class="d-flex justify-content-between gap-3 flex-wrap mb-3">
+      <h2><%= @rashimba_inquiry.kind_label %></h2>
+      <%= link_to 'Back to inquiries', rashimba_inquiries_path, class: 'btn btn-primary' %>
+    </div>
+    <dl class="row">
+      <% {
+        'Received' => l(@rashimba_inquiry.created_at, format: :long),
+        'Email' => @rashimba_inquiry.email,
+        'Company' => @rashimba_inquiry.company,
+        'Name' => @rashimba_inquiry.name,
+        'Phone' => @rashimba_inquiry.phone,
+        'Child age' => @rashimba_inquiry.child_age,
+        'Privacy consent' => l(@rashimba_inquiry.consented_at, format: :long),
+        'Confirmation email sent' => @rashimba_inquiry.confirmation_sent_at&.then { |time| l(time, format: :long) },
+        'Internal email sent' => @rashimba_inquiry.notification_sent_at&.then { |time| l(time, format: :long) }
+      }.each do |label, value| %>
+        <dt class="col-sm-4"><%= label %></dt>
+        <dd class="col-sm-8"><%= value.presence || '-' %></dd>
+      <% end %>
+    </dl>
+    <h3>Message</h3>
+    <div class="text-break" style="white-space: pre-wrap"><%= @rashimba_inquiry.message.presence || '-' %></div>
+  </div>
+
+  <div class="card p-3">
+    <h3>Admin review</h3>
+    <% if @rashimba_inquiry.errors.any? %>
+      <div class="alert alert-danger" role="alert"><%= @rashimba_inquiry.errors.full_messages.join(', ') %></div>
+    <% end %>
+    <%= form_with model: @rashimba_inquiry, local: true do |f| %>
+      <div class="mb-3">
+        <%= f.label :status, class: 'form-label' %>
+        <%= f.select :status, RashimbaInquiry.statuses.keys.map { |status| [status.humanize, status] }, {}, class: 'form-select' %>
+      </div>
+      <div class="mb-3">
+        <%= f.label :admin_notes, class: 'form-label' %>
+        <%= f.text_area :admin_notes, rows: 6, maxlength: 5000, class: 'form-control' %>
+      </div>
+      <%= f.submit 'Save review', class: 'btn btn-primary' %>
+    <% end %>
+    <div class="mt-3">
+      <%= button_to 'Delete inquiry', rashimba_inquiry_path(@rashimba_inquiry), method: :delete, class: 'btn btn-outline-danger', form: { data: { turbo_confirm: 'Permanently delete this inquiry?' } } %>
+    </div>
+  </div>
+</main>
