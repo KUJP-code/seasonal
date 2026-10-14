@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_09_10_000000) do
+ActiveRecord::Schema[7.1].define(version: 2026_10_13_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -283,6 +283,34 @@ ActiveRecord::Schema[7.1].define(version: 2026_09_10_000000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_quick_bookings_on_school_id"
+  end
+
+  create_table "rashimba_inquiries", force: :cascade do |t|
+    t.string "kind", null: false
+    t.string "email", null: false
+    t.string "company"
+    t.string "name"
+    t.string "phone"
+    t.text "message"
+    t.string "child_age"
+    t.boolean "privacy_consent", null: false
+    t.datetime "consented_at", null: false
+    t.string "status", default: "pending", null: false
+    t.text "admin_notes"
+    t.string "ip_address", null: false
+    t.string "submission_key", null: false
+    t.string "submission_digest", null: false
+    t.datetime "confirmation_sent_at"
+    t.datetime "notification_sent_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email", "created_at"], name: "index_rashimba_inquiries_on_email_and_created_at"
+    t.index ["ip_address", "created_at"], name: "index_rashimba_inquiries_on_ip_address_and_created_at"
+    t.index ["kind", "status", "created_at"], name: "index_rashimba_inquiries_on_kind_and_status_and_created_at"
+    t.index ["submission_key"], name: "index_rashimba_inquiries_on_submission_key", unique: true
+    t.check_constraint "kind::text = ANY (ARRAY['sponsor'::character varying, 'release_notification'::character varying]::text[])", name: "rashimba_kind"
+    t.check_constraint "privacy_consent = true", name: "rashimba_consent"
+    t.check_constraint "status::text = ANY (ARRAY['pending'::character varying, 'reviewed'::character varying, 'resolved'::character varying]::text[])", name: "rashimba_status"
   end
 
   create_table "recruit_applications", force: :cascade do |t|
