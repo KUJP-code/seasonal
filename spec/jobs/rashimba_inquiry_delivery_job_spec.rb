@@ -27,7 +27,7 @@ RSpec.describe RashimbaInquiryDeliveryJob do
     parent = create(:rashimba_inquiry, :release_notification)
     described_class.perform_now(parent.id)
     confirmation, notification = ActionMailer::Base.deliveries
-    expect(confirmation.body.decoded).to include('お知らせ登録', '2026年12月予定')
+    expect(confirmation.text_part.body.decoded).to include('お知らせ登録', '2026年12月予定')
     expect(confirmation.body.decoded).not_to include('スポンサー')
     expect(notification.body.decoded).to include('3-5')
   end

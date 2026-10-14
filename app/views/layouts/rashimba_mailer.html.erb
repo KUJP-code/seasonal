@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+    <title><%= @confirmation_subject %></title>
+    <!--[if mso]>
+    <xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
+    <![endif]-->
+    <style>
+      body, table, td, p, h1, h2 { margin: 0; padding: 0; }
+      table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+      img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+      @media only screen and (max-width: 600px) {
+        .email-outer { padding: 16px 8px !important; }
+        .email-padding { padding-left: 24px !important; padding-right: 24px !important; }
+        .email-title { font-size: 25px !important; }
+        .email-logo { width: 140px !important; height: auto !important; }
+      }
+    </style>
+  </head>
+  <body bgcolor="#e9fcf3" style="margin: 0; padding: 0; width: 100%; background-color: #e9fcf3; color: #121212; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+    <div style="display: none; max-height: 0; overflow: hidden; opacity: 0; font-size: 1px; line-height: 1px; mso-hide: all;"><%= @confirmation_subject %></div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#e9fcf3" style="width: 100%; table-layout: fixed; background-color: #e9fcf3;">
+      <tr>
+        <td class="email-outer" align="center" style="padding: 40px 16px;">
+          <!--[if mso]><table role="presentation" width="640" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width: 100%; max-width: 640px; table-layout: fixed; background-color: #ffffff; border: 1px solid #c8e8d8; border-radius: 16px; overflow: hidden; font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;">
+            <tr>
+              <td>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td width="80%" height="6" bgcolor="#15a566" style="height: 6px; font-size: 0; line-height: 0; background-color: #15a566;">&nbsp;</td>
+                    <td width="20%" height="6" bgcolor="#ff8100" style="height: 6px; font-size: 0; line-height: 0; background-color: #ff8100;">&nbsp;</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td class="email-padding" style="padding: 32px 40px 28px;">
+                <a href="https://rashimba.com" style="color: #15a566; text-decoration: none;">
+                  <img class="email-logo" src="<%= attachments['rashimba-logo.png'].url %>" alt="らしんば" width="160" height="52" style="display: block; width: 160px; height: 52px; color: #15a566; font-size: 28px; font-weight: bold;">
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td class="email-padding" bgcolor="#e9fcf3" style="padding: 30px 40px 32px; background-color: #e9fcf3; border-top: 1px solid #d9f0e3; border-bottom: 1px solid #d9f0e3;">
+                <p style="margin: 0 0 12px; color: #117c4d; font-size: 12px; font-weight: bold; letter-spacing: 1px; line-height: 1.6;">らしんば運営事務局</p>
+                <h1 class="email-title" style="margin: 0; color: #121212; font-size: 28px; font-weight: bold; line-height: 1.65; word-break: normal;"><%= @confirmation_subject.delete_prefix('【らしんば】') %></h1>
+              </td>
+            </tr>
+            <tr>
+              <td class="email-padding" style="padding: 32px 40px 36px; font-size: 15px; line-height: 1.95; word-wrap: break-word; overflow-wrap: anywhere;">
+                <%= yield %>
+              </td>
+            </tr>
+          </table>
+          <!--[if mso]></td></tr></table><![endif]-->
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

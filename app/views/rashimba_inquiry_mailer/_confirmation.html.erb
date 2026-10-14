@@ -1,0 +1,45 @@
+<% body, signature, notices = copy.split(/^―{8,}$/, 3) %>
+<% body.strip.split(/\n{2,}/).each_with_index do |paragraph, index| %>
+  <% if paragraph.start_with?('■ ') %>
+    <% heading, *lines = paragraph.lines %>
+    <h2 style="margin: 32px 0 14px; padding-left: 12px; border-left: 4px solid #ff8100; color: #117c4d; font-size: 18px; font-weight: bold; line-height: 1.6;"><%= heading.strip %></h2>
+    <% if lines.first&.start_with?('・') %>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#e9fcf3" style="width: 100%; background-color: #e9fcf3; border: 1px solid #c8e8d8; border-radius: 10px;">
+        <tr><td style="padding: 20px; font-size: 14px; line-height: 1.9;">
+          <% lines.each do |line| %>
+            <p style="margin: 0 0 8px;"><%= rashimba_email_copy(line) %></p>
+          <% end %>
+        </td></tr>
+      </table>
+    <% elsif lines.first&.start_with?('Instagram：') %>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#e9fcf3" style="width: 100%; margin-bottom: 22px; background-color: #e9fcf3; border: 1px solid #c8e8d8; border-radius: 10px;">
+        <tr><td style="padding: 20px; font-size: 14px; line-height: 1.9;">
+          <% lines.each do |line| %>
+            <p style="margin: 0 0 12px;"><%= rashimba_email_copy(line) %></p>
+          <% end %>
+        </td></tr>
+      </table>
+    <% else %>
+      <p style="margin: 0 0 22px;"><%= rashimba_email_copy(lines.join) %></p>
+    <% end %>
+  <% else %>
+    <p style="margin: 0 0 22px;<%= ' font-weight: bold;' if index.zero? && @inquiry.sponsor? %>"><%= rashimba_email_copy(paragraph, breaks: index.zero? && @inquiry.sponsor?) %></p>
+    <% if @inquiry.sponsor? && paragraph.include?('本メールに添付') %>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#fff7ed" style="width: 100%; margin-bottom: 28px; background-color: #fff7ed; border: 1px solid #ffcd99; border-radius: 10px;">
+        <tr><td style="padding: 18px 20px;">
+          <p style="margin: 0 0 6px; color: #9a4b00; font-size: 12px; font-weight: bold; line-height: 1.6;">添付資料 · PDF</p>
+          <p style="margin: 0; color: #121212; font-size: 15px; font-weight: bold; line-height: 1.7;">らしんば_サービス案内資料.pdf</p>
+        </td></tr>
+      </table>
+    <% end %>
+  <% end %>
+<% end %>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; margin-top: 30px; border-top: 2px solid #9adbbf;">
+  <tr><td style="padding-top: 24px; color: #414141; font-size: 13px; line-height: 1.9;">
+    <%= rashimba_email_copy(signature.to_s.strip, breaks: true) %>
+  </td></tr>
+</table>
+<% notices.to_s.strip.split(/\n(?=※)/).each do |notice| %>
+  <p style="margin: 18px 0 0; color: #666666; font-size: 11px; line-height: 1.8;"><%= rashimba_email_copy(notice) %></p>
+<% end %>

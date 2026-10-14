@@ -4,19 +4,30 @@
 class RashimbaInquiryMailer < ActionMailer::Base # rubocop:disable Rails/ApplicationMailer
   SPONSOR_GUIDE_PATH = Rails.root.join('app/mailers/attachments/rashimba-service-guide.pdf').freeze
   SPONSOR_GUIDE_FILENAME = 'らしんば_サービス案内資料.pdf'
+  LOGO_PATH = Rails.root.join('app/mailers/attachments/rashimba-logo.png').freeze
 
   default from: 'らしんば運営事務局 <notifications@rashimba.com>'
-  layout false
+  helper RashimbaInquiryMailerHelper
+  layout 'rashimba_mailer', only: :confirmation
   after_action { mail.raise_delivery_errors = true }
 
   def confirmation
     @inquiry = params[:inquiry]
+    options = confirmation_options
+    @confirmation_subject = options.fetch(:subject)
+    @confirmation_copy = render_to_string(
+      template: "rashimba_inquiry_mailer/#{options.fetch(:template_name)}",
+      formats: [:text], layout: false
+    )
+    attachments.inline['rashimba-logo.png'] = {
+      mime_type: 'image/png', content: File.binread(LOGO_PATH)
+    }
     if @inquiry.sponsor?
       attachments[SPONSOR_GUIDE_FILENAME] = {
         mime_type: 'application/pdf', content: File.binread(SPONSOR_GUIDE_PATH)
       }
     end
-    mail(to: @inquiry.email, **confirmation_options)
+    mail(to: @inquiry.email, **options)
   end
 
   def notification
