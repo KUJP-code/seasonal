@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:3.1.7-tracking"
+    "Name": "kidsup/event_site:3.1.8-rashimba"
   },
   "Ports": [
     {
