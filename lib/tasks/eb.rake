@@ -71,7 +71,7 @@ end
 
 def build_docker_image(version)
   puts "Tag will be 'kidsup/event_site:#{version}'"
-  system("docker build . -t kidsup/event_site:#{version}")
+  system("docker build --platform linux/amd64 . -t kidsup/event_site:#{version}")
   return if $CHILD_STATUS.exitstatus.zero?
 
   puts 'Docker build failed. Aborting'
@@ -104,5 +104,7 @@ end
 
 def deploy_to_eb(version)
   puts "Deploying version #{version} to AWS"
-  system("eb deploy -l #{version}")
+  return if system('eb', 'deploy', '-l', version)
+
+  abort 'AWS deployment failed. Aborting'
 end
