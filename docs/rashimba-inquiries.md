@@ -47,8 +47,14 @@ Origin restrictions do not authenticate clients.
    PostgreSQL database in this application's current Solid Queue configuration;
    keep that shared-database arrangement for atomic acceptance.
 2. Set `RASHIMBA_ALLOWED_ORIGINS` if needed. Defaults are
-   `https://rashimba.com,https://www.rashimba.com`. Use exact origins without paths
-   or trailing slashes. For local development, include the Vite origin explicitly,
+   `https://rashimba.com,https://www.rashimba.com,https://rashimba-staging.pages.dev`.
+   If this variable is already set on Rails, add `https://rashimba-staging.pages.dev`
+   to its value to test from that site; the variable replaces the defaults.
+   Staging submissions use the same delivery flow and recipients as production:
+   enter a mailbox you control to receive the confirmation, and expect an internal
+   notification to `p-jayson@kids-up.jp` too.
+   Use exact origins without paths or trailing slashes. For local development,
+   include the Vite origin explicitly,
    e.g. `http://127.0.0.1:5173`. Restart Rails after changing this setting.
 3. CAPTCHA is optional for now, including in production. Leave
    `RASHIMBA_RECAPTCHA_SECRET_KEY` and `VITE_RASHIMBA_RECAPTCHA_SITE_KEY` unset

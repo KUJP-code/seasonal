@@ -135,6 +135,39 @@ RSpec.describe 'Rashimba inquiry API' do
     expect(response.headers['Access-Control-Allow-Credentials']).not_to eq('true')
   end
 
+  context 'from the staging frontend' do
+    let(:headers) { { 'Origin' => 'https://rashimba-staging.pages.dev' } }
+
+    it 'allows CORS preflight requests for both forms' do
+      [path, '/api/rashimba/release_notifications'].each do |endpoint|
+        options endpoint, headers: headers.merge(
+          'Access-Control-Request-Method' => 'POST',
+          'Access-Control-Request-Headers' => 'content-type'
+        )
+
+        expect(response.headers['Access-Control-Allow-Origin']).to eq(headers['Origin'])
+      end
+    end
+
+    it 'accepts both forms and queues their email deliveries' do
+      expect do
+        post path, params: payload, headers:, as: :json
+      end.to change(RashimbaInquiry, :count).by(1)
+         .and have_enqueued_job(RashimbaInquiryDeliveryJob)
+      expect(response).to have_http_status(:accepted)
+      expect(response.headers['Access-Control-Allow-Origin']).to eq(headers['Origin'])
+
+      expect do
+        post '/api/rashimba/release_notifications', params: {
+          email: 'parent@example.com', privacy_consent: 'agreed', submission_key: SecureRandom.uuid
+        }, headers:, as: :json
+      end.to change(RashimbaInquiry, :count).by(1)
+         .and have_enqueued_job(RashimbaInquiryDeliveryJob)
+      expect(response).to have_http_status(:accepted)
+      expect(response.headers['Access-Control-Allow-Origin']).to eq(headers['Origin'])
+    end
+  end
+
   it 'quietly discards honeypot submissions' do
     post path, params: payload.merge(website: 'https://spam.example'), headers:, as: :json
     expect(response).to have_http_status(:accepted)
