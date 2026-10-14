@@ -42,6 +42,7 @@ Rails.application.routes.draw do
         end
       end
       resources :inquiries, except: %i[show]
+      resources :rashimba_inquiries, only: %i[index show update destroy]
       resources :price_lists, except: %i[destroy show]
       resources :recruit_applications, only: %i[index show update destroy] do
         patch :restore, on: :member
@@ -129,6 +130,8 @@ Rails.application.routes.draw do
        to: 'recruit_applications#create',
        defaults: { format: :json }
   namespace :api do
+    post 'rashimba/sponsor_inquiries', to: 'rashimba_inquiries#sponsor'
+    post 'rashimba/release_notifications', to: 'rashimba_inquiries#release_notification'
     post 'login', to: 'photo_service#login'
     get 'pictures', to: 'photo_service#pictures'
     post 'seasonal-pictures', to: 'photo_service#seasonal_pictures'
