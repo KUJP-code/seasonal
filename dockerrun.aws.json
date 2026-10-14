@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:3.2.1-rashimba"
+    "Name": "kidsup/event_site:3.2.2-mailer_updates"
   },
   "Ports": [
     {
