@@ -9,6 +9,39 @@ RSpec.describe TimeSlot do
     expect(create(:time_slot)).to be_valid
   end
 
+  describe 'standalone afternoon activities' do
+    let(:event) { create(:event) }
+
+    it 'creates afternoon options without creating a morning activity' do
+      slot = create(:time_slot, :afternoon, event:)
+
+      expect(event.time_slots).to contain_exactly(slot)
+      expect(slot.morning_slot).to be_nil
+      expect(slot.afternoon_slot).to be_nil
+      expect(slot.options.departure.count).to eq(4)
+      expect(slot.options.arrival).to be_empty
+    end
+
+    it 'includes standalone afternoons once alongside paired morning activities' do
+      morning = create(:time_slot, :morning, event:)
+      afternoon = create(:time_slot, :afternoon, event:)
+      create(:time_slot, :afternoon)
+
+      expect(event.time_slots.for_registration_page(event)).to contain_exactly(morning, afternoon)
+    end
+
+    it 'survives deletion of an unrelated morning and its linked afternoon' do
+      morning = create(:time_slot, :morning, event:)
+      linked_afternoon = morning.afternoon_slot
+      afternoon = create(:time_slot, :afternoon, event:)
+
+      morning.destroy!
+
+      expect(event.time_slots).to contain_exactly(afternoon)
+      expect(described_class.exists?(linked_afternoon.id)).to be false
+    end
+  end
+
   context 'when calling closed?' do
     it 'returns true if closed' do
       time_slot.closed = true

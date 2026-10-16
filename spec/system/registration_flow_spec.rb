@@ -22,6 +22,7 @@ RSpec.describe 'Registration flow', :js do
 
   before do
     sign_in parent
+    page.current_window.resize_to(1400, 1000)
   end
 
   after do
@@ -96,6 +97,29 @@ RSpec.describe 'Registration flow', :js do
     new_slots.each { |slot| check "m_slot#{slot.id}" }
 
     expect(find_by_id('total_cost').text).to eq cost_text(7_500)
+  end
+
+  it 'registers for an afternoon-only activity with snack and departure extension' do
+    afternoon = create(:time_slot, :afternoon, event:, snack: true,
+                                               close_at: 1.day.from_now)
+    departure = afternoon.options.departure.first
+
+    visit new_invoice_path(event_id: event.id, child: child.id)
+
+    check "a_slot#{afternoon.id}"
+    expected_cost = event.member_prices.courses['1'] + TimeSlot.snack_cost_for(event)
+    expect(find_by_id('total_cost').text).to eq cost_text(expected_cost)
+
+    choose "arrival#{afternoon.id}opt#{departure.id}"
+    expected_cost += departure.cost
+    expect(find_by_id('total_cost').text).to eq cost_text(expected_cost)
+
+    click_on I18n.t('events.show.confirm_invoice')
+    expect(page).to have_content I18n.t('invoices.confirm.not_done')
+    click_on I18n.t('invoices.confirm.confirm_changes')
+    expect(page).to have_content I18n.t('invoices.show.confirm_success')
+    expect(find_by_id('final_cost').text).to eq cost_text(expected_cost)
+    expect(child.time_slots).to contain_exactly(afternoon)
   end
 
   def slot_attributes(slots, child)

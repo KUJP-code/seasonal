@@ -131,7 +131,7 @@ RSpec.describe RashimbaInquiryMailer do
   it 'keeps internal notifications addressed to the staff mailbox without attachments' do
     inquiry = create(:rashimba_inquiry)
     mail = described_class.with(inquiry:).notification
-    expect(mail.to).to eq(['p-jayson@kids-up.jp'])
+    expect(mail.to).to eq(['j-kusaka@kids-up.jp'])
     expect(mail.reply_to).to eq([inquiry.email])
     expect(mail.attachments).to be_empty
     expect(mail.body.decoded).to include(inquiry.company, inquiry.name, inquiry.email)

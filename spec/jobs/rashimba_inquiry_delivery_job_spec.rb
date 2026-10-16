@@ -11,7 +11,7 @@ RSpec.describe RashimbaInquiryDeliveryJob do
     described_class.perform_now(inquiry.id)
     confirmation, notification = ActionMailer::Base.deliveries
     expect(confirmation.to).to eq([inquiry.email])
-    expect(notification.to).to eq(['p-jayson@kids-up.jp'])
+    expect(notification.to).to eq(['j-kusaka@kids-up.jp'])
     expect(notification.reply_to).to eq([inquiry.email])
     [confirmation, notification].each do |mail|
       expect(mail.from).to eq(['notifications@rashimba.com'])
@@ -42,7 +42,7 @@ RSpec.describe RashimbaInquiryDeliveryJob do
   it 'retries the internal notification without repeating the confirmation' do
     inquiry.update!(confirmation_sent_at: Time.current)
     described_class.perform_now(inquiry.id)
-    expect(ActionMailer::Base.deliveries.map(&:to)).to eq([['p-jayson@kids-up.jp']])
+    expect(ActionMailer::Base.deliveries.map(&:to)).to eq([['j-kusaka@kids-up.jp']])
   end
 
   it 'keeps the completed confirmation when the internal delivery fails' do
