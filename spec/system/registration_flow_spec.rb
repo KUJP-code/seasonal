@@ -100,9 +100,9 @@ RSpec.describe 'Registration flow', :js do
   end
 
   it 'registers for an afternoon-only activity with snack and departure extension' do
-    afternoon = create(:time_slot, :afternoon, event:, snack: true,
+    afternoon = create(:time_slot, :afternoon, event:, snack: nil,
                                                close_at: 1.day.from_now)
-    departure = afternoon.options.departure.first
+    departure = (child.kindy? ? afternoon.options.k_departure : afternoon.options.departure).first
 
     visit new_invoice_path(event_id: event.id, child: child.id)
 

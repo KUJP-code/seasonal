@@ -4,6 +4,8 @@
 :ruby
   return if slot.nil?
 
+  activity = slot.morning_slot_id.nil? || slot.special?
+
   confirmed = confirmed_slot_regs.any? { |reg| reg.registerable_id == slot.id }
   registered = registrations.any? do |reg|
     reg.registerable_id == slot.id && reg.registerable_type == 'TimeSlot'
@@ -16,13 +18,13 @@
     confirmed_opt_regs.any? { |reg| reg.registerable_id == o.id }
   end
 
-- if slot.closed && current_user.customer?
+- if slot.closed? && current_user.customer?
   %p.d-flex.align-items-center.justify-content-center.text-bg-warning.p-1.rounded
     = t('pm_closed')
 
 - else
   - if confirmed
-    %p.fw-bold.fs-5 #{slot.special? ? slot.name : t('.afternoon')}: ◯
+    %p.fw-bold.fs-5 #{activity ? "#{slot.name} (午後)" : t('.afternoon')}: ◯
 
     - if activity_modifier(slot, child).positive?
       %p= t('.extra_charge',
@@ -46,15 +48,15 @@
                     'register-child-value': child.id,
                     'register-id-value': slot.id,
                     'register-modifier-value': activity_modifier(slot, child),
-                    'register-name-value': slot.name.concat(' (午後)').tr(' ', '_'),
+                    'register-name-value': "#{slot.name} (午後)".tr(' ', '_'),
                     'register-snack-value': (slot.snack && !child.own_snack?).to_s,
                     'register-type-value': 'TimeSlot' } }
         %label.fw-bold.fs-5.form-check-label{ for: "a_slot#{slot.id}",
                                               'data-register-target': 'name' }
-          = slot.special? ? slot.name : "午後（通常レッスン）"
+          = activity ? "#{slot.name} (午後)" : "午後（通常レッスン）"
           %br/
           %span.fw-normal.text-muted.fs-6
-            - if slot.special?
+            - if activity
               = "(#{slot.start_time.strftime('%H:%M')}–#{slot.end_time.strftime('%H:%M')})"
             - else
               = "(13:30–18:30)"

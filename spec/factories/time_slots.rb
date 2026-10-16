@@ -6,6 +6,7 @@ FactoryBot.define do
     event
     start_time { 1.hour.from_now }
     end_time { 2.hours.from_now }
+    snack { false }
 
     trait :morning do
       morning { true }

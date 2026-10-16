@@ -33,7 +33,7 @@ class RashimbaInquiryMailer < ActionMailer::Base # rubocop:disable Rails/Applica
   def notification
     @inquiry = params[:inquiry]
     subject = @inquiry.sponsor? ? 'スポンサーのお問い合わせ' : '配信開始のお知らせ登録'
-    mail(to: 'p-jayson@kids-up.jp', reply_to: @inquiry.email, subject: "【らしんば】#{subject}")
+    mail(to: 'j-kusaka@kids-up.jp', reply_to: @inquiry.email, subject: "【らしんば】#{subject}")
   end
 
   private

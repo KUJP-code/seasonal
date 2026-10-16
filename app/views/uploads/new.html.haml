@@ -1,22 +1,40 @@
 %main
-  = form_with url: uploads_path, class: 'card' do |f|
+  = form_with url: uploads_path, class: 'card',
+              data: { controller: 'asset-upload', turbo: false,
+                      action: 'submit->asset-upload#upload',
+                      'asset-upload-max-size-value': UploadsController::MAX_FILE_SIZE } do |f|
     %h2 Upload Assets
+    %p Choose any number of images. Each image must be 9 MB or smaller.
 
     .form-group
       = f.label :uploads, class: 'form-label'
       = f.file_field :uploads,
                      class: 'form-control',
                      multiple: true, include_hidden: false,
-                     required: true
+                     required: true,
+                     accept: UploadsController::ALLOWED_FILETYPES.join(','),
+                     data: { 'asset-upload-target': 'files control',
+                             action: 'change->asset-upload#select' }
 
     .form-group
       = f.label :folder, class: 'form-label'
-      = f.select :folder, @folders, {}, { class: 'form-select' }
+      = f.select :folder, @folders, {},
+                 { class: 'form-select', data: { 'asset-upload-target': 'folder control' } }
 
     .form-floating
       = f.text_field :subfolder,
                      class: 'form-control',
-                     placeholder: 'Subfolder'
+                     placeholder: 'Subfolder',
+                     data: { 'asset-upload-target': 'subfolder control' }
       = f.label :subfolder, 'Subfolder', class: 'form-label'
 
-    = f.submit 'Upload', class: 'btn btn-primary'
+    %p{ role: 'status', 'aria-live': 'polite', data: { 'asset-upload-target': 'summary' } }
+    %progress.w-100{ max: 1, value: 0, hidden: true,
+                     'aria-label': 'Images processed', data: { 'asset-upload-target': 'progress' } }
+    %ul.list-unstyled{ data: { 'asset-upload-target': 'results' } }
+    = f.submit 'Upload', class: 'btn btn-primary',
+               data: { 'asset-upload-target': 'control' }
+    %button.btn.btn-warning{ type: 'button', hidden: true,
+                             data: { 'asset-upload-target': 'retry',
+                                     action: 'asset-upload#retry' } }
+      Retry failed uploads

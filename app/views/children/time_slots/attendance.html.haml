@@ -75,6 +75,7 @@
           - @afternoon_options.each do |o|
             %th{ scope: 'col' } #{o.name}: #{o.registrations_count}
 
+        - if @afternoon || !@slot.morning?
           %th#depart-header{ scope: 'col' }= t('.depart')
 
         - if @next_party_slot
@@ -101,6 +102,7 @@
             = render 'shared/filter_header',
                      col_class: ".#{o.name}", siblings: '0'
 
+        - if @afternoon || !@slot.morning?
           = render 'shared/filter_header', col_class: '.depart', siblings: '0'
         - if @next_party_slot
           = render 'shared/filter_header', col_class: '.next_party', siblings: '0'

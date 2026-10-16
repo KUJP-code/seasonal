@@ -24,7 +24,7 @@ class EventsController < ApplicationController
     return orphan_redirect if @child.parent_id.nil?
 
     user_specific_info
-    @event_slots = @event.time_slots.morning
+    @event_slots = @event.time_slots.top_level
                          .with_attached_image
                          .with_attached_avif
                          .includes(
@@ -91,13 +91,11 @@ class EventsController < ApplicationController
 
   def update
     authorize Event
+    return update_matching_events if params[:apply_to_matching_events] == '1'
 
     if params[:event][:school_id] == 'all' || params[:event][:school_id].nil?
-      results = School.all.map do |school|
-        event = school.events.find_by(name: params[:event][:name])
-        params[:event][:school_id] = event.school_id
-
-        { updated: event.update(event_params), school: school.name }
+      results = Event.includes(:school).where(name: params[:event][:name]).map do |event|
+        { updated: event.update(event_params.except(:school_id)), school: event.school.name }
       end
 
       if results.all? { |r| r[:updated] }
@@ -124,6 +122,29 @@ class EventsController < ApplicationController
 
   private
 
+  def update_matching_events
+    @event = Event.find(params[:id])
+    matching_events = Event.with_rich_text_description
+                           .with_attached_image.with_attached_avif
+                           .where(name: @event.name).where.not(id: @event.id).to_a
+    common_fields = event_params.except(:school_id, :time_slots_attributes, :options_attributes)
+    local_fields = event_params.slice(:time_slots_attributes, :options_attributes)
+
+    Event.transaction do
+      @event.update!(common_fields.merge(local_fields))
+      matching_events.each { |event| event.update!(common_fields) }
+    end
+
+    redirect_to edit_event_path(id: @event.id),
+                notice: "Updated Event Fields across #{matching_events.size + 1} events."
+  rescue ActiveRecord::RecordInvalid => e
+    if e.record != @event
+      details = e.record.errors.full_messages.to_sentence
+      @event.errors.add(:base, "#{e.record.school.name}: #{details}")
+    end
+    render :edit, status: :unprocessable_entity
+  end
+
   def event_params
     params.require(:event).permit(
       :name, :start_date, :image_id, :end_date, :school_id, :released, :early_bird_date,
@@ -144,6 +165,8 @@ class EventsController < ApplicationController
                               attached_blobs: attached_blobs_for(event))
     @prices = PriceList.order(:name)
     @schools = [%w[All all]] + School.order(:id).map { |school| [school.name, school.id] }
+    @matching_event_name = event&.name
+    @matching_event_count = event ? Event.where(name: event.name).count : 0
   end
 
   def old_event_redirect

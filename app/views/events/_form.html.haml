@@ -7,17 +7,37 @@
   .d-grid.gap-3
     %h3 Event Fields
 
+    - if @event.persisted? && @matching_event_count > 1
+      .border.rounded.p-3.text-start.bg-light
+        .form-check
+          = check_box_tag :apply_to_matching_events, '1',
+                          params[:apply_to_matching_events] == '1',
+                          class: 'form-check-input'
+          = label_tag :apply_to_matching_events,
+                      "Apply Event Fields to all #{@matching_event_count} events named ‘#{@matching_event_name}’",
+                      class: 'form-check-label fw-bold'
+        %p.small.mt-2
+          Copies the name, description, images, dates, goal, price lists, and release settings.
+          School assignments stay the same. Event options and activities are edited separately at each school.
+
     .form-floating
       = f.text_field :name,
                      class: 'form-control', placeholder: 'Name',
                      required: true
       = f.label :name, class: 'form-label'
 
-    %div
+    %div{ data: { controller: 'event-description' } }
       = f.label :description, class: 'form-label'
       = f.rich_text_area :description,
                          placeholder: 'Description',
-                         required: true
+                         required: true,
+                         aria: { describedby: 'event-description-help' },
+                         data: { 'event-description-target': 'editor',
+                                 action: 'trix-before-paste->event-description#normalizePaste keydown->event-description#keydown:capture' }
+      %p.small.text-muted.text-start.mt-2#event-description-help
+        Paste formatted text from Word or Google Docs.
+        Enter adds a line; Enter twice leaves a blank line.
+        Tab indents the selected line; Shift+Tab removes indentation.
 
     %div
       = f.label :image_id, class: 'form-label'

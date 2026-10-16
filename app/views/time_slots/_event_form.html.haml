@@ -10,16 +10,17 @@
   - else
     = f.hidden_field :school_id
 
-  = f.fields_for :time_slots, form_event.time_slots.morning do |slot_f|
-    = render 'time_slots/event_slot_fields', f: slot_f
+  - unless @events
+    = f.fields_for :time_slots, form_event.time_slots.top_level do |slot_f|
+      = render 'time_slots/event_slot_fields', f: slot_f
 
   %template{ data: { 'fields-target' => 'template' } }
     - if @events
-      = f.fields_for :time_slots, TimeSlot.new, child_index: 'CHILD' do |slot_f|
+      = f.fields_for :time_slots, TimeSlot.new(morning: true), child_index: 'CHILD' do |slot_f|
         = render 'time_slots/event_slot_fields', f: slot_f
     - else
       = f.fields_for :time_slots,
-                     TimeSlot.new(event_id: form_event.id),
+                     TimeSlot.new(event_id: form_event.id, morning: true),
                      child_index: 'CHILD' do |slot_f|
         = render 'time_slots/event_slot_fields', f: slot_f
 

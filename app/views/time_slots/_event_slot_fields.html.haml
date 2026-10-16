@@ -3,7 +3,16 @@
 .fields_wrapper.d-grid.gap-3{ data: { 'new-record' => f.object.new_record?.to_s } }
   = f.hidden_field :id
   = f.hidden_field :event_id
-  = f.hidden_field :morning, value: true
+  - unless f.object.new_record?
+    = f.hidden_field :morning, id: nil
+
+  %div
+    = f.label :morning, 'Time slot', class: 'form-label'
+    = f.select :morning,
+               [['Morning (AM)', true], ['Afternoon only (PM)', false]],
+               {},
+               class: 'form-select', disabled: f.object.persisted?
+    %small.form-text Afternoon-only activities do not require a morning activity.
 
   %div
     = f.label :image_id, 'Image', class: 'form-label'
@@ -26,7 +35,7 @@
                        placeholder: 'Start Time',
                        required: true
     = f.label :start_time, 'Start Time', class: 'form-label'
-    %small.form-text Default start time is 10am
+    %small.form-text Enter the activity's scheduled start time.
 
   .form-floating
     = f.datetime_field :end_time,
@@ -34,7 +43,7 @@
                        placeholder: 'End Time',
                        required: true
     = f.label :end_time, 'End Time', class: 'form-label'
-    %small.form-text Default end time is 1:30pm
+    %small.form-text Enter the activity's scheduled end time.
 
   .form-floating
     = f.datetime_field :close_at,

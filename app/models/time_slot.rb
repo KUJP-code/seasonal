@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class TimeSlot < ApplicationRecord
+  before_validation :default_afternoon_snack, on: :create
   after_create :create_default_opts, :create_aft_slot,
                unless: proc { |ts| ts.party? }
 
@@ -41,9 +42,11 @@ class TimeSlot < ApplicationRecord
   enum :category, { seasonal: 0, special: 1, party: 2, outdoor: 3 }
 
   scope :afternoon, -> { where(morning: false) }
+  scope :top_level, -> { where(morning_slot_id: nil) }
   scope :for_registration_page,
         lambda { |event|
-          where(event_id: event.id, morning: true)
+          top_level
+            .where(event_id: event.id)
             .includes(:options,
                       afternoon_slot: %i[options],
                       avif_attachment: %(blob),
@@ -136,6 +139,10 @@ class TimeSlot < ApplicationRecord
   end
 
   private
+
+  def default_afternoon_snack
+    self.snack = true if !morning? && !party? && snack.nil?
+  end
 
   def create_aft_slot
     return unless morning

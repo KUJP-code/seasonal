@@ -147,7 +147,7 @@ class ChildrenController < ApplicationController
 
   def event_attendance
     @event = authorize(Event.find(params[:id]), :attendance?)
-    @slots = @event.time_slots.morning.or(@event.time_slots.special).distinct
+    @slots = @event.time_slots.top_level.or(@event.time_slots.special).distinct
     # this will work as long as photo service is the only event opt
     @photo_kids = Child.where(
       parent_id:

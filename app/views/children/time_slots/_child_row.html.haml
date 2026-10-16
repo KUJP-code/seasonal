@@ -1,10 +1,11 @@
 :ruby
   arrival_option =
     child.options.find { |o| o.any_arrival? && o.optionable_id == slot.id }
-  if afternoon
+  departure_slot = afternoon || (slot unless slot.morning?)
+  if departure_slot
     depart_option =
       child.options
-           .find { |o| o.any_departure? && o.optionable_id == afternoon.id }
+           .find { |o| o.any_departure? && o.optionable_id == departure_slot.id }
   end
 
 %tr
@@ -57,8 +58,9 @@
     - afternoon_options.each do |opt|
       %td{ class: opt.name }= opt.name if child.registered?(opt)
 
+  - if departure_slot
     %td.depart
-      = departure_time_for(afternoon, depart_option) if depart_option
+      = departure_time_for(departure_slot, depart_option) if depart_option
   - if next_party_slot
     %td.next_party
       = '◯' if next_party_child_ids.include?(child.id)

@@ -12,6 +12,32 @@ RSpec.describe TimeSlot do
   describe 'standalone afternoon activities' do
     let(:event) { create(:event) }
 
+    it 'includes snack by default when none is specified' do
+      slot = create(:time_slot, :afternoon, event:, snack: nil)
+
+      expect(slot.reload.snack).to be true
+    end
+
+    it 'preserves an explicit snack override when creating and editing an afternoon' do
+      slot = create(:time_slot, :afternoon, event:, snack: false)
+      slot.update!(name: 'Updated Afternoon')
+
+      expect(slot.reload.snack).to be false
+    end
+
+    it 'keeps morning activities without snack and their automatic afternoons with snack' do
+      slot = create(:time_slot, :morning, event:, snack: nil)
+
+      expect(slot.snack).to be_falsey
+      expect(slot.afternoon_slot.snack).to be true
+    end
+
+    it 'does not add snack by default to party activities' do
+      slot = create(:time_slot, :afternoon, event:, category: :party, snack: nil)
+
+      expect(slot.reload.snack).to be_falsey
+    end
+
     it 'creates afternoon options without creating a morning activity' do
       slot = create(:time_slot, :afternoon, event:)
 

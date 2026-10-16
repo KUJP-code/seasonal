@@ -11,6 +11,11 @@
 
   %h2= active_name
 
+  - if @selected_events.size > 1 && current_user.admin?
+    = link_to "Edit Event Fields for all #{@selected_events.size} events",
+              edit_event_path(id: @selected_events.first.id, apply_to_matching_events: '1'),
+              class: 'btn btn-primary'
+
   .d-flex.gap-3
     = form_with url: release_event_path(name: active_name) do |f|
       = f.hidden_field :release, value: true

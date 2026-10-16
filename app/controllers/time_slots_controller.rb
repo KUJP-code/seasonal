@@ -89,7 +89,8 @@ class TimeSlotsController < ApplicationController
     matching_event_ids = Event.where(name: base_event.name, school_id: school_ids).pluck(:id)
 
     matching_slots = TimeSlot
-                     .where(event_id: matching_event_ids, name: base_slot_name)
+                     .where(event_id: matching_event_ids, name: base_slot_name,
+                            morning: base_slot.morning)
                      .where(start_time: base_start_time.beginning_of_day..base_start_time.end_of_day)
                      .where.not(id: base_slot.id)
 
@@ -99,7 +100,7 @@ class TimeSlotsController < ApplicationController
     attrs_to_copy = base_slot.slice(
       'start_time', 'end_time', 'close_at', 'category',
       'int_modifier', 'ext_modifier', 'kindy_modifier', 'ele_modifier',
-      'image_id', 'avif_id', 'name'
+      'image_id', 'avif_id', 'name', 'snack'
     )
     slot.assign_attributes(attrs_to_copy)
       if slot.changed? && slot.save
@@ -157,7 +158,7 @@ class TimeSlotsController < ApplicationController
   end
 
   def index_slots(event)
-    event.time_slots.morning
+    event.time_slots.top_level
          .or(@event.time_slots.special)
          .includes(:afternoon_slot)
          .with_attached_image
