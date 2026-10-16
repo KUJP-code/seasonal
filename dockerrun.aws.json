@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:3.2.2-mailer_updates"
+    "Name": "kidsup/event_site:3.2.3-pm_activities"
   },
   "Ports": [
     {
