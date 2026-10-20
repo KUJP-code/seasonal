@@ -109,6 +109,13 @@ server {
     try_files $uri @backend;
   }
 
+  # The full SS export must pass the upload limit before Rails can batch it.
+  location ~ ^/(?:en/|ja/)?csv/update_ss_children/?$ {
+    client_max_body_size 50M;
+    proxy_pass http://localhost:3001;
+    proxy_set_header Host $http_host;
+  }
+
   location @backend {
     proxy_pass http://localhost:3001;
     proxy_set_header Host $http_host;
