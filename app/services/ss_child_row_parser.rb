@@ -91,7 +91,7 @@ class SsChildRowParser
   def parse_category(value)
     normalized = value.to_s.unicode_normalize(:nfkc).strip.downcase
     internal = %w[内部生 休会オンライン生 オンライン生 休会生]
-    reservations = ['予約生', '◆キャンセル待ち（予約生）']
+    reservations = ['予約生', '◆キャンセル待ち(予約生)']
     return 'internal' if normalized.in?(internal)
     return 'reservation' if normalized.in?(reservations)
 

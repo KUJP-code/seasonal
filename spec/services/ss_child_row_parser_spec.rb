@@ -79,4 +79,12 @@ RSpec.describe SsChildRowParser do
 
     expect(attributes[:own_snack]).to be(true)
   end
+
+  ['◆キャンセル待ち（予約生）', '◆キャンセル待ち(予約生)'].each do |category|
+    it "keeps #{category} in the reservation category" do
+      row['生徒種別'] = category
+
+      expect(attributes[:category]).to eq('reservation')
+    end
+  end
 end

@@ -106,4 +106,17 @@ RSpec.describe ChildImportJob do
       expect(Child.find_by!(ssid: 12_345)).to have_attributes(grade: '年少', kindy: true)
     end
   end
+
+  context 'when an existing reservation is waitlisted in SS' do
+    let(:values) { super().tap { |row| row[10] = '◆キャンセル待ち（予約生）' } }
+
+    it 'updates the student without changing them to an external student' do
+      child = create(:child, ssid: 12_345, category: 'reservation')
+
+      described_class.perform_now(import)
+
+      expect(child.reload).to have_attributes(category: 'reservation', en_name: 'Taro')
+      expect(import.reload).to have_attributes(status: 'completed', updated_count: 1)
+    end
+  end
 end
