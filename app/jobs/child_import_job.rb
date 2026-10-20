@@ -64,10 +64,11 @@ class ChildImportJob < ApplicationJob
     child = Child.find_or_initialize_by(ssid: attributes[:ssid])
     new_record = child.new_record?
     child.assign_attributes(attributes)
+    child.grade = nil if new_record && !attributes.key?(:grade)
 
     if !child.changed?
       counters[:unchanged_count] += 1
-    elsif child.save
+    elsif child.save(context: :ss_import)
       counters[new_record ? :created_count : :updated_count] += 1
     else
       raise ActiveRecord::RecordInvalid, child

@@ -148,6 +148,9 @@ class Child < ApplicationRecord
 
   def set_grade_from_birthday
     return if birthday.blank?
+    # SS grades are authoritative, including unchanged grades on unrelated updates.
+    # A missing SS grade leaves existing students' grades intact.
+    return if validation_context == :ss_import && grade.present?
     return if grade.present? && will_save_change_to_grade?
 
     self.grade = SCHOOL_AGE_GRADES[school_age_from_birthday] || '高校生以上'

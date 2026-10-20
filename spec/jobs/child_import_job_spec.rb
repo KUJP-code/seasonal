@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe ChildImportJob do
+  include ActiveSupport::Testing::TimeHelpers
+
   let(:school) { create(:school, name: '大島') }
   let(:import) { ChildImport.create!(user: create(:admin)) }
   let(:values) do
@@ -35,5 +37,73 @@ RSpec.describe ChildImportJob do
       status: 'completed', total_rows: 1, processed_rows: 1,
       created_count: 1, skipped_count: 0, failed_count: 0
     )
+  end
+
+  shared_examples 'a stable imported grade' do |source_grade, stored_grade|
+    let(:values) do
+      super().tap do |row|
+        row[5] = '2008/04/02'
+        row[6] = source_grade
+      end
+    end
+
+    it 'keeps the grade when another imported field changes and skips a repeat import' do
+      child = create(:child, ssid: 12_345, birthday: Date.new(2008, 4, 2),
+                             grade: stored_grade, en_name: 'Previous nickname')
+
+      described_class.perform_now(import)
+
+      expect(child.reload).to have_attributes(grade: stored_grade, en_name: 'Taro')
+      expect(import.reload).to have_attributes(status: 'completed', updated_count: 1)
+      saved_at = child.updated_at
+      repeated_import = ChildImport.create!(user: import.user)
+      repeated_import.source_file.attach(import.source_file.blob)
+
+      described_class.perform_now(repeated_import)
+
+      expect(child.reload).to have_attributes(grade: stored_grade, updated_at: saved_at)
+      expect(repeated_import.reload).to have_attributes(
+        status: 'completed', updated_count: 0, unchanged_count: 1, failed_count: 0
+      )
+    end
+  end
+
+  context 'when SS says high school or above' do
+    include_examples 'a stable imported grade', '高校生以上', '高校生以上'
+  end
+
+  context 'when SS says third-year middle school' do
+    include_examples 'a stable imported grade', '中学３年', '高校生以上'
+  end
+
+  context 'when SS has no grade' do
+    include_examples 'a stable imported grade', nil, '高校生以上'
+  end
+
+  context 'when the supplied grade differs from the birthday calculation' do
+    include_examples 'a stable imported grade', '中学２年', '中学２年'
+  end
+
+  context 'when a new student has no grade in SS' do
+    let(:values) { super().tap { |row| row[6] = nil } }
+
+    it 'calculates the grade from the birthday' do
+      travel_to Date.new(2026, 10, 20) do
+        described_class.perform_now(import)
+
+        expect(Child.find_by!(ssid: 12_345)).to have_attributes(grade: '小２', kindy: false)
+        expect(import.reload.status).to eq('completed')
+      end
+    end
+  end
+
+  context 'when the supplied grade matches the database default' do
+    let(:values) { super().tap { |row| row[6] = '年少' } }
+
+    it 'keeps the supplied grade for a new student' do
+      described_class.perform_now(import)
+
+      expect(Child.find_by!(ssid: 12_345)).to have_attributes(grade: '年少', kindy: true)
+    end
   end
 end

@@ -29,7 +29,7 @@ class SsChildRowParser
       category: parse_category(required(row, '生徒種別')),
       photos: parse_photos(value(row, '写真掲載')),
       own_snack: parse_boolean(value(row, 'スナック持参有無'))
-    }
+    }.compact
     school = parse_school(required(row, '担当校舎'))
     attributes[:school_id] = school.id if school
     attributes
@@ -71,7 +71,8 @@ class SsChildRowParser
       '小学４年' => '小４', '小学５年' => '小５', '小学６年' => '小６'
     }
     grade = aliases.fetch(normalized, normalized)
-    return '中学２年' if grade.in?(['', '中学３年', '高校生以上'])
+    return if grade.blank?
+    return '高校生以上' if grade == '中学３年'
     return grade if Child.grades.key?(grade)
 
     raise ArgumentError, "Unknown 学年: #{value}"

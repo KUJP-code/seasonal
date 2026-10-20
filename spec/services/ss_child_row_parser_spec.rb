@@ -37,16 +37,30 @@ RSpec.describe SsChildRowParser do
     expect { attributes }.to raise_error(SsChildRowParser::SkippedRow, '問合せ者')
   end
 
-  it 'maps a blank grade to enum 13 like the spreadsheet' do
+  it 'leaves a blank grade unspecified so it cannot overwrite an existing grade' do
     row['学年'] = ''
 
-    expect(attributes[:grade]).to eq('中学２年')
+    expect(attributes).not_to have_key(:grade)
   end
 
   it 'maps third-year middle school into the oldest supported grade' do
     row['学年'] = '中学３年'
 
-    expect(attributes[:grade]).to eq('中学２年')
+    expect(attributes[:grade]).to eq('高校生以上')
+  end
+
+  Child.grades.each_key do |grade|
+    it "preserves the supported grade #{grade}" do
+      row['学年'] = grade
+
+      expect(attributes[:grade]).to eq(grade)
+    end
+  end
+
+  it 'rejects an unrecognized grade instead of assigning a fallback' do
+    row['学年'] = '不明な学年'
+
+    expect { attributes }.to raise_error(ArgumentError, 'Unknown 学年: 不明な学年')
   end
 
   it 'supports every student category present in the SS file' do
