@@ -3,8 +3,8 @@
 The sponsor form at `rashimba.com/contact/` and parent release-notification form at
 `rashimba.com/parents/` submit to the Rails application on `kids-up.app`.
 Records live in `rashimba_inquiries`, separately from school inquiries. Only the
-`admin` role can list, view, review, or delete them. The admin navbar has a
-**Rashimba Inquiries** tab, with type/status filters, search, pagination, private
+`admin` role can list, view, review, or delete them. The admin menu has a
+**Rashimba Inquiries** button, with type/status filters, search, pagination, private
 notes, and per-recipient email delivery timestamps. Review statuses are Pending,
 Reviewed, and Resolved. Deletion is permanent and cancels delivery that has not
 started; it cannot recall sent mail.
