@@ -1,6 +1,17 @@
 # frozen_string_literal: true
 
 module ChildrenHelper
+  def monthly_regular_days(child, events: nil)
+    schedules = child.regular_schedules.select do |schedule|
+      schedule.month && regular_month_visible?(schedule.month, events)
+    end
+
+    schedules.sort_by(&:month).map do |schedule|
+      days = schedule.days.gsub(', ', '・').presence || '—'
+      "#{schedule.month.month}月：#{days}"
+    end.join('　')
+  end
+
   def arrival_time_for(slot, arrive_opt)
     f_time(slot.start_time + arrive_opt.modifier.minutes).concat('~')
   end
@@ -66,6 +77,14 @@ module ChildrenHelper
   end
 
   private
+
+  def regular_month_visible?(month, events)
+    return month >= Time.zone.today.beginning_of_month if events.nil?
+
+    Array(events).any? do |event|
+      month.between?(event.start_date.beginning_of_month, event.end_date.beginning_of_month)
+    end
+  end
 
   def split_name(name)
     parts = name.to_s.strip.split(/[[:space:]　]+/, 2)

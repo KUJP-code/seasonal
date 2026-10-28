@@ -2,9 +2,21 @@
 
 # Controls data for a child's usual schedule
 class RegularSchedule < ApplicationRecord
+  WEEKDAYS = %w[monday tuesday wednesday thursday friday].freeze
+
   belongs_to :child
+  before_validation :normalize_month
+
+  validates :month, presence: true
+  validates :child_id, uniqueness: { scope: :month }, if: -> { month.present? }
+
+  has_paper_trail
 
   acts_as_copy_target
+
+  def self.default_month(date = Time.zone.today)
+    (date.day >= 21 ? date.next_month : date).beginning_of_month
+  end
 
   def days
     "#{'月, ' if monday}#{'火, ' if tuesday}#{'水, ' if wednesday}" \
@@ -22,9 +34,17 @@ class RegularSchedule < ApplicationRecord
   end
 
   def has?(date)
+    return false unless month == date.to_date.beginning_of_month
+
     day = date.strftime('%A').downcase
     return false if %w[saturday sunday].include?(day)
 
     send(:"#{date.strftime('%A').downcase}")
+  end
+
+  private
+
+  def normalize_month
+    self.month = month.beginning_of_month if month
   end
 end

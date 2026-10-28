@@ -29,7 +29,12 @@
         <% end %>
     <% end %>
 
-    <h1><%= link_to @invoice.child.name, child_path(@invoice.child_id) %></h1>
+    <h1>
+      <span class="d-inline-block text-center">
+        <%= link_to @invoice.child.name, child_path(@invoice.child_id) %>
+        <%= render 'children/regular_days', child: @invoice.child, events: [@invoice.event] %>
+      </span>
+    </h1>
 
     <% unless @previous_versions.empty? %>
         <h1><%= t('.current_version') %></h1>

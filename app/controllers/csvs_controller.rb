@@ -201,8 +201,10 @@ class CsvsController < ApplicationController
         update_child(csv)
       elsif params[:model] == 'Setsumeikai'
         update_setsumeikai(csv)
-      else
+      elsif params[:model] == 'RegularSchedule'
         update_schedule(csv)
+      else
+        raise ArgumentError, 'Unsupported update model.'
       end
   
       flash[:notice] = "#{params[:model]} records updated."
@@ -247,6 +249,10 @@ class CsvsController < ApplicationController
 
   def upload
     authorize(:csv)
+    if params[:model] == 'RegularSchedule'
+      return redirect_to csvs_path, alert: 'Use Monthly Regular Schedules and choose an attendance month.'
+    end
+
     csv = params[:csv]
     model = params[:model].constantize if ALLOWED_MODELS.include?(params[:model])
     time = Time.zone.now
@@ -289,15 +295,6 @@ class CsvsController < ApplicationController
     end
   end
 
-  # Find the child from provided SSID and set their child_id/
-  # remove ssid from the hash
-  def get_child_id(row)
-    child_id = Child.find_by(ssid: row['ssid']).id
-    row['child_id'] = child_id
-    row.delete('ssid')
-    child_id
-  end
-
   # The CSV method doesn't accept int values for enums, so we need to
   # translate to the string values
   def translate_enums(row)
@@ -334,14 +331,6 @@ class CsvsController < ApplicationController
 
   # Update Schedule records if present, otherwise create new ones
   def update_schedule(csv)
-    CSV.foreach(csv.tempfile.path, headers: true) do |row|
-      child_id = get_child_id(row)
-
-      if Child.find(child_id)&.regular_schedule.nil?
-        Child.find(child_id).create_regular_schedule(row.to_hash)
-      else
-        RegularSchedule.find_by(child_id:).update!(row.to_hash)
-      end
-    end
+    MonthlyScheduleImport.new(csv, params[:attendance_month]).call
   end
 end

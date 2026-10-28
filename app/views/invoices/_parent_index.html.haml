@@ -3,7 +3,10 @@
 - children.each do |c|
   - next if c.real_invoices.empty?
 
-  %h1= link_to c.name, child_path(c)
+  %h1
+    %span.d-inline-block.text-center
+      = link_to c.name, child_path(c)
+      = render 'children/regular_days', child: c, events: c.events.to_a
   - c.events.order(start_date: :desc).each do |e|
     - next unless c.real_invoices.find { |i| i.event_id == e.id }
 

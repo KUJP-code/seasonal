@@ -115,7 +115,7 @@ class ChildrenController < ApplicationController
         :options,
         :parent,
         :registrations,
-        :regular_schedule,
+        :regular_schedules,
         :time_slots
       )
       @afternoon_options = @afternoon.options.not_time
@@ -155,7 +155,7 @@ class ChildrenController < ApplicationController
              .select(:parent_id)
     ).ids
     @children = @event.children
-                      .includes(:regular_schedule,
+                      .includes(:regular_schedules,
                                 real_invoices: :coupons)
                       .order(ssid: :desc)
     render 'children/events/event_sheet'
@@ -214,7 +214,7 @@ class ChildrenController < ApplicationController
     @options = @slot.options
     @event_options = @slot.event.options
     @children = @slot.children
-                     .includes(:options, :parent, :registrations, :regular_schedule, :time_slots)
+                     .includes(:options, :parent, :registrations, :regular_schedules, :time_slots)
 
     @afternoon = @slot.afternoon_slot
     afternoon_data

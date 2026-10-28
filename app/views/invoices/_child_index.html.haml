@@ -8,7 +8,10 @@
   = render partial: 'invoices/event_cost',
            locals: { cost: event_cost, event: next_event.name }
 
-%h1= link_to @child.name, child_path(@child)
+%h1
+  %span.d-inline-block.text-center
+    = link_to @child.name, child_path(@child)
+    = render 'children/regular_days', child: @child, events: booked_events
 
 - if booked_events.size > 1
 

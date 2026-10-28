@@ -29,7 +29,7 @@ class Child < ApplicationRecord
   belongs_to :school, optional: true
   has_many :upcoming_events, through: :school,
                              class_name: 'Event'
-  has_one :regular_schedule, dependent: :destroy
+  has_many :regular_schedules, dependent: :destroy
   delegate :area, to: :school
 
   has_many :registrations, dependent: :destroy
@@ -85,6 +85,15 @@ class Child < ApplicationRecord
   validates :katakana_name, format: { with: /\A[ァ-ヶヶ　ー ]+\z/ }
   validates :allergies, :category, :en_name, :grade, :katakana_name, :name, :photos, presence: true
   validates :ssid, uniqueness: { allow_blank: true }
+
+  def regular_schedule_for(date)
+    month = date.to_date.beginning_of_month
+    regular_schedules.find { |schedule| schedule.month == month }
+  end
+
+  def regular_day?(date)
+    regular_schedule_for(date)&.has?(date) || false
+  end
 
   def arrival_time(slot)
     arr_opt = options.find_by(optionable: slot, category: :arrival)

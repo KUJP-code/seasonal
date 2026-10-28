@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_10_13_000000) do
+ActiveRecord::Schema[7.1].define(version: 2026_10_27_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -395,6 +395,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_10_13_000000) do
     t.bigint "child_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "month"
+    t.index ["child_id", "month"], name: "index_regular_schedules_on_child_id_and_month", unique: true
     t.index ["child_id"], name: "index_regular_schedules_on_child_id"
   end
 

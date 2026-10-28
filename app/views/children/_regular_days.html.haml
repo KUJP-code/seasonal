@@ -1,0 +1,5 @@
+-# locals: (child:, events: nil)
+- days = monthly_regular_days(child, events:)
+- if days.present?
+  %span.regular-school-days.d-block.text-danger.fw-normal.fs-5
+    = days

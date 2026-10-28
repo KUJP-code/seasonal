@@ -33,7 +33,10 @@
                    sibling_events: e.sibling_events
 
   .card.w-100
-    %h1.fw-bold= @child.name
+    %h1.fw-bold
+      %span.d-inline-block.text-center
+        = @child.name
+        = render 'children/regular_days', child: @child
     %h5
       %span.fw-bold= t('.ssid')
       = @child.ssid || '---'

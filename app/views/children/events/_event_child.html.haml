@@ -63,8 +63,7 @@
                 %button.btn.btn-primary{ data: { action: 'clipboard#copy',
                                                  'clipboard-target': 'button' } }
                   コピー
-                %p= sanitize invoice.summary,
-                    tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id]
+                %p= booking_summary(invoice)
 
           .modal-footer
             %button.btn.btn-secondary{ type: 'button',
@@ -89,6 +88,6 @@
 
   %td.kindy= event_child.kindy? ? '幼児' : '小学生'
   %td.membership= kanji_category(event_child.category)
-  %td.regular_schedule= event_child.regular_schedule&.days
+  %td.regular_schedule= monthly_regular_days(event_child, events: [event])
   %td.allergies= event_child.allergies
   %td.photos= event_child.photos unless event_child.photos == 'OK'

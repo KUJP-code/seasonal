@@ -24,7 +24,7 @@
                   html: { class: 'd-grid gap-3 p-5' } do |f|
         .fields
           = f.label :model, class: 'form-label'
-          = f.select :model, models, {}, class: 'form-select'
+          = f.select :model, models.reject { |model| model[1] == 'RegularSchedule' }, {}, class: 'form-select'
 
         .field
           = f.label :csv, class: 'form-label'
@@ -40,9 +40,7 @@
         .fields
           = f.label :model, class: 'form-label'
           = f.select :model,
-                     [%w[Children Child],
-                      ['Regular Schedules', 'RegularSchedule'],
-                      %w[Setsumeikais Setsumeikai]],
+                     [%w[Children Child], %w[Setsumeikais Setsumeikai]],
                      {},
                      class: 'form-select'
 
@@ -51,6 +49,38 @@
           = f.file_field :csv, class: 'form-control', required: true
 
         = f.submit 'Update Records', class: 'btn btn-primary'
+
+    .card.col-12
+      %h1 Monthly Regular Schedules
+      %p Choose the attendance month the file applies to, even if you upload it late. Existing and confirmed bookings will display that month's weekdays automatically.
+      %p
+        Upload the original SS contract export directly. Shift_JIS/CP932
+        conversion happens automatically. The configured SS course filter and
+        attendance-day rules are applied automatically; repeated weekdays count
+        once per student. The file's 対象年月 must match the attendance month
+        selected below.
+      %p
+        Formatted CSVs with headers
+        ssid,monday,tuesday,wednesday,thursday,friday are also accepted;
+        use true or false for every weekday. Re-uploading corrects
+        the selected month; other months are preserved.
+      %p
+        For the current or a future month, omitted external students at schools
+        represented in the file have their saved weekdays cleared for that month.
+        Omitted internal students keep their days. Uploading a past month preserves
+        all omitted students. Update student membership from SS before uploading.
+      = form_with url: update_csv_path,
+                  html: { class: 'd-grid gap-3 p-5' } do |f|
+        = f.hidden_field :model, value: 'RegularSchedule'
+        .field
+          = f.label :attendance_month, 'Attendance month', class: 'form-label'
+          = f.month_field :attendance_month,
+                          value: RegularSchedule.default_month.strftime('%Y-%m'),
+                          required: true, class: 'form-control'
+        .field
+          = f.label :csv, 'Schedule CSV', class: 'form-label'
+          = f.file_field :csv, accept: '.csv,text/csv', required: true, class: 'form-control'
+        = f.submit 'Update Monthly Schedules', class: 'btn btn-primary'
 
     .card.col.justify-content-center.align-items-center
       = link_to 'Upload Assets', new_upload_path, class: 'btn btn-primary'

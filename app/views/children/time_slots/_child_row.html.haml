@@ -53,7 +53,7 @@
   - if afternoon
     %td.afternoon
       = '◯' if child.registered?(afternoon)
-      = 'ご通学日' if child.regular_schedule&.has?(afternoon.start_time)
+      = 'ご通学日' if child.regular_day?(afternoon.start_time)
 
     - afternoon_options.each do |opt|
       %td{ class: opt.name }= opt.name if child.registered?(opt)
