@@ -173,7 +173,7 @@ RSpec.describe 'Regular weekdays on booking screens' do
 
     html = Nokogiri::HTML(response.body)
     expect(html.at_css('.regular-school-days').text.strip)
-      .to eq('12月：火・水　1月：水・木　2月：水・木（2027-01の予定を適用）')
+      .to eq('12月：火・水　1月：水・木　2月：水・木')
     expect(html.css('.regular-day').map { |label| label.parent.text })
       .to contain_exactly(include('雪だるまアイス'), include('January 6'), include('February Wednesday'))
     expect(invoice.reload.attributes).to eq(original)

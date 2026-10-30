@@ -93,8 +93,8 @@ December's pattern for January activities. A later upload for an older attendanc
 month does not override a newer attendance month's record.
 
 An explicit schedule with all weekdays false stops older days from returning;
-it is displayed as `1月：—`. Fallback labels identify their source, such as
-`1月：月・火（2026-12の予定を適用）`. The same lookup controls regular-day labels,
+it is displayed as `1月：—`. Month labels show only the effective weekdays, such
+as `1月：月・火`. The same lookup controls regular-day labels,
 the optional afternoon price, and snack fee waivers. Lookups do not copy records
 into future months or rewrite saved invoices.
 

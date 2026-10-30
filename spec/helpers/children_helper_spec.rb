@@ -11,13 +11,13 @@ RSpec.describe ChildrenHelper do
       build(:event, start_date: Date.new(2027, 1, 1), end_date: Date.new(2027, 2, 28))
     end
 
-    it 'shows each event month using the latest available schedule and identifies its source' do
+    it 'shows each event month using the latest available weekdays without the source month' do
       create(:regular_schedule, child:, month: Date.new(2026, 12, 1), monday: true)
       create(:regular_schedule, child:, month: Date.new(2027, 2, 1), tuesday: true)
 
       I18n.with_locale(:ja) do
         expect(helper.monthly_regular_days(child, events: [event]))
-          .to eq('1月：月（2026-12の予定を適用）　2月：火')
+          .to eq('1月：月　2月：火')
       end
     end
 
@@ -26,7 +26,7 @@ RSpec.describe ChildrenHelper do
 
       travel_to Date.new(2027, 1, 4) do
         I18n.with_locale(:ja) do
-          expect(helper.monthly_regular_days(child)).to eq('1月：月（2026-12の予定を適用）')
+          expect(helper.monthly_regular_days(child)).to eq('1月：月')
         end
       end
     end
@@ -44,7 +44,7 @@ RSpec.describe ChildrenHelper do
 
       I18n.with_locale(:ja) do
         expect(helper.monthly_regular_days(child, events: [event]))
-          .to eq('1月：—　2月：—（2027-01の予定を適用）')
+          .to eq('1月：—　2月：—')
       end
     end
   end

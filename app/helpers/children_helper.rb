@@ -7,11 +7,7 @@ module ChildrenHelper
       next unless schedule
 
       days = schedule.days.gsub(', ', '・').presence || '—'
-      label = "#{month.month}月：#{days}"
-      if schedule.month != month
-        label += t('regular_schedules.based_on', month: schedule.month.strftime('%Y-%m'))
-      end
-      label
+      "#{month.month}月：#{days}"
     end.join('　')
   end
 

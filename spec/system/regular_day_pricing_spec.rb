@@ -127,7 +127,7 @@ RSpec.describe 'Regular-day afternoon booking prices', :js do
                                              end_time: Time.zone.local(2027, 1, 4, 18, 30))
 
     visit new_invoice_path(event_id: event.id, child: child.id, locale: :ja)
-    expect(page).to have_css('.regular-school-days', text: '1月：月・火（2026-12の予定を適用）')
+    expect(page).to have_css('.regular-school-days', text: '12月：月・火　1月：月・火', exact_text: true)
     check "a_slot#{january.id}"
     expect(find_by_id('total_cost').text).to eq(cost_text(2700))
     click_on I18n.t('invoices.registration_page.price_footer.confirm_invoice')
