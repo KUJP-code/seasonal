@@ -20,6 +20,16 @@
             %td= course
             %td= number_to_currency(price)
 
+        - regular_day_price = event.regular_day_afternoon_price_for(child)
+        - unless regular_day_price.nil?
+          %tr
+            %td= t('regular_day_pricing.price')
+            %td= number_to_currency(regular_day_price)
+      - unless regular_day_price.nil?
+        %tfoot
+          %tr
+            %td{ colspan: 2 }= t('regular_day_pricing.explanation')
+
   - unless adjustments.empty?
     %table.table.table-info.table-striped.table-hover.text-center
       %caption.caption-top

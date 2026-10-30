@@ -27,7 +27,7 @@
 
   %span.hidden{ data: { 'price-target': 'snackCount',
                         'invoice-target': 'snackCount' } }
-    = all_registered_slots.count(&:snack)
+    = all_registered_slots.count { |slot| slot.snack_charge_for(child).positive? }
 
   %p.hidden{ data: { 'price-target': 'optCount' } }
     = t('.num_options', num: num_options)

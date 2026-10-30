@@ -66,7 +66,7 @@
                         'register-modifier-value': activity_modifier(add_slot, child),
                         'register-name-value': add_slot.name.tr(' ', '_'),
                         'register-child-value': child.id,
-                        'register-snack-value': (add_slot.snack && !child.own_snack?).to_s } }
+                        'register-snack-value': add_slot.snack_charge_for(child).positive?.to_s } }
             %label{ for: "m_slot#{add_slot.id}",
                     class: 'fw-bold fs-5 form-check-label',
                     data: { 'register-target': 'name' } }

@@ -73,7 +73,8 @@ Historical imports never automatically clear omitted students based on today's
 membership. A student who is external now retains their recorded past weekdays
 and still matches those past regular days. Changing membership alone does not
 alter any monthly schedule. Regular-day labels use the activity month's
-effective schedule, even if the student is external today.
+effective schedule, even if the student is external today. The afternoon price
+and snack waiver apply only to students who are currently internal.
 Schedule edits and automatic clearing are recorded with PaperTrail and the
 uploading admin. Uploads without changes do not create repeat schedule versions.
 
@@ -93,14 +94,48 @@ month does not override a newer attendance month's record.
 
 An explicit schedule with all weekdays false stops older days from returning;
 it is displayed as `1月：—`. Fallback labels identify their source, such as
-`1月：月・火（2026-12の予定を適用）`. The same lookup controls regular-day labels.
-Lookups do not copy records
+`1月：月・火（2026-12の予定を適用）`. The same lookup controls regular-day labels,
+the optional afternoon price, and snack fee waivers. Lookups do not copy records
 into future months or rewrite saved invoices.
 
 These are live web annotations. Uploading schedules updates the display on
 existing and confirmed/locked bookings without saving or recalculating invoices,
 changing prices, or sending emails. Previously sent emails and saved invoice
 summaries do not change.
+
+## Optional regular-day afternoon pricing
+
+The admin price list editor has an optional **Regular-day afternoon price**.
+Leave it blank to retain normal session packages and snack fees. An explicit
+zero is a free regular-day afternoon. Only currently internal students are
+eligible, using the event's member price list. External, reservation and unknown
+students retain normal package pricing and snack fees even if their price list
+has a regular-day amount or they have recorded regular weekdays. Their recorded
+monthly attendance is preserved, as is the own-snack exemption.
+
+When the member price list has a value, Seasonal School afternoons other than
+special or party activities automatically use that amount on an internal student's
+regular lesson days. No per-activity switch is needed. Morning activities and
+afternoons with no eligible exact-month or recent prior schedule retain normal pricing.
+
+Qualifying afternoons are excluded from the normal session package count and
+have no snack fee. Other sessions keep their existing package/batch rules and
+snack fees, including the own-snack exemption. Activity surcharges and selected
+options still apply separately. The live booking total and saved invoice use
+the same rules, and the invoice lists regular-day afternoons separately.
+
+For example, with a 5,500-yen single session, 22,000-yen five-session package,
+and 2,700-yen regular-day afternoon, ten sessions with four qualifying afternoons
+cost 22,000 + 5,500 + (2,700 × 4) = **38,300 yen** before any chargeable snacks,
+options or activity surcharges. Monday/Wednesday afternoons for a Monday/Tuesday
+student cost 5,500 + 225 + 2,700 = **8,425 yen**.
+
+Use a price list with this field blank for an event without this offer. Price
+lists can be shared by multiple events; editing a shared list changes the
+configuration for every event using it. Saving a rate or uploading schedules
+does not automatically rewrite invoices or send emails. Existing locked
+invoices keep their saved totals; explicit invoice recalculation applies the
+current rates and monthly schedules.
 
 Existing undated schedules are preserved by the migration but are excluded from
 monthly matching. Re-upload them for their actual attendance month; the

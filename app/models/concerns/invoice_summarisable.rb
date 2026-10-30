@@ -50,9 +50,17 @@ module InvoiceSummarisable
     "<div class='d-flex flex-column align-items-start gap-1'>
         <h4 class='fw-semibold'>コース:</h4>
         #{data[:course_summary]}\n
+        #{regular_day_summary(data)}
         #{extra_cost}
         #{snack_cost}
     </div>"
+  end
+
+  def regular_day_summary(data)
+    return '' unless data[:regular_day_count].to_i.positive?
+
+    "<p>通学日午後コース（おやつ代なし） x #{data[:regular_day_count]}: " \
+      "#{yenify(data[:regular_day_cost])}</p>"
   end
 
   def party_summary(data)

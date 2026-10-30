@@ -12,26 +12,19 @@ module CourseCalculator
     @data[:extra_cost], @data[:extra_cost_count] = extra_cost(slots)
     @data[:course_summary] = +''
 
-    @data[:course_cost] =
-      slot_cost(slots) + @data[:extra_cost] + @data[:snack_cost]
+    @data[:course_cost] = slot_cost(slots) + @data[:extra_cost] + @data[:snack_cost]
+  end
+
+  def calc_regular_day_cost(slots)
+    @data[:regular_day_prices] = slots.to_h { |s| [s.id, s.regular_day_price_for(child)] }.compact
+    @data[:regular_day_count] = @data[:regular_day_prices].size
+    @data[:regular_day_cost] = @data[:regular_day_prices].values.sum
   end
 
   def slot_cost(slots)
-    num_regs = slots.size
-
-    if child.member?
-      best_price_for_event(num_regs, member_prices)
-    else
-      best_price_for_event(num_regs, non_member_prices)
-    end
-  end
-
-  def member_prices
-    event.member_prices.courses
-  end
-
-  def non_member_prices
-    event.non_member_prices.courses
+    calc_regular_day_cost(slots)
+    package_slots = slots.reject { |slot| @data[:regular_day_prices].key?(slot.id) }
+    best_price_for_event(package_slots.size, event.price_list_for(child)) + @data[:regular_day_cost]
   end
 
   def best_price(num_regs, courses)
@@ -86,7 +79,10 @@ module CourseCalculator
   def priced_slot_regs
     slot_regs_for_pricing =
       @data[:slot_regs].presence || slot_regs.reject(&:marked_for_destruction?)
-    slot_regs_for_pricing.group_by { |reg| reg.pricing_batch || 1 }
+    package_regs = slot_regs_for_pricing.reject do |reg|
+      @data[:regular_day_prices].key?(reg.registerable_id)
+    end
+    package_regs.group_by { |reg| reg.pricing_batch || 1 }
   end
 
   def package_price_2026(num_regs, courses)
@@ -114,13 +110,8 @@ module CourseCalculator
   end
 
   def snack_cost(slots)
-    snack_count = slots.count(&:snack)
-    cost = if child.respond_to?(:own_snack?) && child.own_snack?
-             0
-           else
-             slots.select(&:snack).sum(&:snack_cost)
-           end
-    [cost, snack_count]
+    charges = slots.map { |slot| slot.snack_charge_for(child) }.select(&:positive?)
+    [charges.sum, charges.size]
   end
 
   def extra_cost(slots)

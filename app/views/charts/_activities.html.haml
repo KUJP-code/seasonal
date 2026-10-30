@@ -1,13 +1,11 @@
 :ruby
-  # Only charge for snack when the child is NOT own_snack
   snack_cost =
     @slots
       .select(&:snack)
       .sum do |slot|
-        slot.registrations
-            .joins(:child)
-            .where(children: { own_snack: [false, nil] })
-            .count * slot.snack_cost
+        slot.registrations.includes(child: :regular_schedules).sum do |registration|
+          slot.snack_charge_for(registration.child)
+        end
       end
 
   by_category = @slots.each_with_object(Hash.new(0)) do |slot, hash|

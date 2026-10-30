@@ -96,6 +96,18 @@ class Event < ApplicationRecord
     price_list.courses
   end
 
+  def regular_day_afternoon_price_for(child)
+    return unless child.internal?
+
+    member_prices&.regular_day_afternoon_price
+  end
+
+  def regular_day_slot_prices_for(child)
+    return {} if regular_day_afternoon_price_for(child).nil?
+
+    time_slots.to_h { |slot| [slot.id, slot.regular_day_price_for(child)] }.compact
+  end
+
   def seasonal?
     early_bird_discount.zero?
   end

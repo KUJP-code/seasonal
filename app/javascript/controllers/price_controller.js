@@ -17,6 +17,7 @@ export default class extends Controller {
 	static values = {
 		eventName: String,
 		priceList: Object,
+		regularDayPrices: Object,
 		pricingRules2026: Boolean,
 		siblingEventCost: Number,
 		snackCost: Number,
@@ -113,14 +114,25 @@ export default class extends Controller {
 		const id = Number.parseInt(this.childTarget.children[0].innerHTML);
 
 		const cost = this.slotRegsTargets.reduce((sum, target) => {
-			const regs = target.querySelectorAll(`.child${id}`);
+			const regs = [...target.querySelectorAll(`.child${id}`)];
+			const regularDayCost = regs.reduce((total, reg) => {
+				return total + (this.regularDayPrice(reg) ?? 0);
+			}, 0);
+			const packageRegs = regs.filter((reg) => this.regularDayPrice(reg) === null);
 			const courseCost = this.pricingRules2026Value
 				? this.batchCourseCost(target, id)
-				: this.bestCourses(regs.length, this.priceList);
-			return sum + courseCost;
+				: this.bestCourses(packageRegs.length, this.priceList);
+			return sum + courseCost + regularDayCost;
 		}, 0);
 
 		return cost;
+	}
+
+	regularDayPrice(reg) {
+		const slotId = reg.querySelector("input[name*='[registerable_id]']")?.value;
+		return Object.hasOwn(this.regularDayPricesValue, slotId)
+			? this.regularDayPricesValue[slotId]
+			: null;
 	}
 
 	batchCourseCost(target, childId) {
@@ -131,6 +143,7 @@ export default class extends Controller {
 		const counts = [...regs].reduce((batches, reg) => {
 			let batch = reg.dataset.pricingBatch || "1";
 			if (batch === "new") batch = replacementBatches.shift() || nextBatch;
+			if (this.regularDayPrice(reg) !== null) return batches;
 			batches[batch] = (batches[batch] || 0) + 1;
 			return batches;
 		}, {});

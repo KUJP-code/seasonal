@@ -126,6 +126,19 @@ class TimeSlot < ApplicationRecord
     self.class.snack_cost_for(event)
   end
 
+  def regular_day_price_for(child)
+    return if morning? || special? || party? || !event.seasonal?
+
+    price = event.regular_day_afternoon_price_for(child)
+    price if !price.nil? && child.regular_day?(start_time)
+  end
+
+  def snack_charge_for(child)
+    return 0 if !snack? || child.own_snack? || !regular_day_price_for(child).nil?
+
+    snack_cost
+  end
+
   def self.snack_cost_for(event)
     return SNACK_COST_2026 if event&.pricing_rules_2026?
 

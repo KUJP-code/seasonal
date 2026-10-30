@@ -5,6 +5,7 @@
   return if slot.nil?
 
   activity = slot.morning_slot_id.nil? || slot.special?
+  regular_day_price = slot.regular_day_price_for(child)
 
   confirmed = confirmed_slot_regs.any? { |reg| reg.registerable_id == slot.id }
   registered = registrations.any? do |reg|
@@ -49,7 +50,7 @@
                     'register-id-value': slot.id,
                     'register-modifier-value': activity_modifier(slot, child),
                     'register-name-value': "#{slot.name} (午後)".tr(' ', '_'),
-                    'register-snack-value': (slot.snack && !child.own_snack?).to_s,
+                    'register-snack-value': slot.snack_charge_for(child).positive?.to_s,
                     'register-type-value': 'TimeSlot' } }
         %label.fw-bold.fs-5.form-check-label{ for: "a_slot#{slot.id}",
                                               'data-register-target': 'name' }
@@ -69,6 +70,10 @@
           %p.d-flex.align-items-center.justify-content-center.text-bg-warning.p-1.rounded
             = t('pm_closed')
 
+        - unless regular_day_price.nil?
+          %p.regular-day-price
+            = t('regular_day_pricing.activity_price', price: number_to_currency(regular_day_price))
+
         = check_box_tag "a_slot#{slot.id}",
                         '', (true if registered),
                         class: 'form-check-input m-0',
@@ -85,7 +90,9 @@
                   cost: number_to_currency(activity_modifier(slot, child)))
 
           - if slot.snack
-            - if child.own_snack?
+            - if !regular_day_price.nil?
+              %p= t('regular_day_pricing.snack_waived')
+            - elsif child.own_snack?
               %p おやつ持参（料金なし）
             - else
               %p #{t('.snack')}: ◯

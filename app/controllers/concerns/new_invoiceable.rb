@@ -31,6 +31,7 @@ module NewInvoiceable
 
     def get_event_data(event, child, siblings)
       @price_list = event.price_list_for(child)
+      @regular_day_prices = event.regular_day_slot_prices_for(child)
       @event_slots = event.time_slots.for_registration_page(event)
       @options = event.options + event.slot_options
       @event_cost =
