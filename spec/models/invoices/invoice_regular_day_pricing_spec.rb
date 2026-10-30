@@ -40,7 +40,7 @@ RSpec.describe Invoice do
       invoice = invoice_for(slots)
 
       expect(invoice.reload.total_cost).to eq(total)
-      expect(invoice.summary).to include("通学日午後コース（おやつ代なし） x #{regular}")
+      expect(invoice.summary).to include("通学日午後コース x #{regular}")
     end
   end
 

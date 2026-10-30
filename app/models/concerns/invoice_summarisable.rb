@@ -59,7 +59,7 @@ module InvoiceSummarisable
   def regular_day_summary(data)
     return '' unless data[:regular_day_count].to_i.positive?
 
-    "<p>通学日午後コース（おやつ代なし） x #{data[:regular_day_count]}: " \
+    "<p>通学日午後コース x #{data[:regular_day_count]}: " \
       "#{yenify(data[:regular_day_cost])}</p>"
   end
 
