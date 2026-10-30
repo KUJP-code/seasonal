@@ -41,6 +41,8 @@ en:
         confirm_invoice: "Preview Changes"
     show:
       changed_by: "Changed by: %{user}"
+      system_change: "System"
+      deleted_user: "Deleted user"
       change: "Change: %{action}"
       confirm_no_email: "Confirm (No email)"
       confirm_w_email: "Confirm (Send email)"

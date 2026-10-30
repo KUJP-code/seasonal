@@ -89,6 +89,8 @@ ja:
     show:
       adjustments: "調整内容を追加する"
       changed_by: "変更者: %{user}"
+      system_change: "システム"
+      deleted_user: "削除済みユーザー"
       child_invoices: "お子様のお申込内容"
       confirm_no_email: "申込確定（メールなし）"
       confirm_w_email: "申込確定（メールあり）"

@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 module InvoicesHelper
+  def invoice_version_actor(version)
+    actor = version.whodunnit.to_s
+    return t('invoices.show.system_change') unless actor.match?(/\A[1-9]\d*\z/)
+
+    User.find_by(id: actor)&.name || t('invoices.show.deleted_user')
+  end
+
   def booking_summary(invoice)
     summary = sanitize(invoice.summary, tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id])
     return summary unless current_user&.staff?
