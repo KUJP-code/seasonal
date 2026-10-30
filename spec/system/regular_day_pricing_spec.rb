@@ -72,7 +72,10 @@ RSpec.describe 'Regular-day afternoon booking prices', :js do
     visit new_invoice_path(event_id: event.id, child: child.id, locale: :ja)
     expect(page).to have_no_css('.regular-day-price')
     expect(page).to have_no_content(I18n.t('regular_day_pricing.explanation'))
-    slots.each { |slot| check "a_slot#{slot.id}" }
+    slots.each do |slot|
+      scroll_to(find_by_id("a_slot#{slot.id}"), align: :center)
+      check "a_slot#{slot.id}"
+    end
     expect(find_by_id('total_cost').text).to eq(cost_text(23_125))
 
     click_on I18n.t('invoices.registration_page.price_footer.confirm_invoice')
@@ -127,7 +130,10 @@ RSpec.describe 'Regular-day afternoon booking prices', :js do
                                              end_time: Time.zone.local(2027, 1, 4, 18, 30))
 
     visit new_invoice_path(event_id: event.id, child: child.id, locale: :ja)
-    expect(page).to have_css('.regular-school-days', text: '12月：月・火　1月：月・火', exact_text: true)
+    expect(page).to have_no_css('.regular-school-days, .regular-day, .afternoon .text-bg-danger')
+    expect(page).to have_no_content('12月：月・火')
+    expect(page).to have_no_content('1月：月・火')
+    expect(page).to have_no_content('ご通学日')
     check "a_slot#{january.id}"
     expect(find_by_id('total_cost').text).to eq(cost_text(2700))
     click_on I18n.t('invoices.registration_page.price_footer.confirm_invoice')

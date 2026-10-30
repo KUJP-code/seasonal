@@ -42,25 +42,21 @@ RSpec.describe 'Regular weekdays on booking screens' do
     expect(heading.text).to include('雪だるまアイス', '(午後)')
   end
 
-  it 'shows current weekdays and only marks matching afternoons for the customer' do
+  it 'hides schedules and regular-day annotations on every parent-facing page' do
     sign_in child.parent
 
-    get invoice_path(id: invoice.id, locale: :ja)
+    [invoice_path(id: invoice.id, locale: :ja), child_path(id: child.id, locale: :ja),
+     new_invoice_path(event_id: event.id, child: child.id, locale: :ja),
+     event_path(id: event.id, child: child.id, locale: :ja),
+     invoices_path(child: child.id, locale: :ja),
+     invoices_path(user: child.parent_id, locale: :ja)].each do |path|
+      get path
 
-    expect(response).to have_http_status(:ok)
-    expect(Nokogiri::HTML(response.body).at_css('h1 .regular-school-days.d-block.text-danger')
-      .text.strip).to eq('12月：火・水')
-    expect_regular_day_label
-
-    get child_path(id: child.id, locale: :ja)
-    expect(response).to have_http_status(:ok)
-    expect(Nokogiri::HTML(response.body).at_css('h1 .regular-school-days.d-block.text-danger')
-      .text.strip).to eq('12月：火・水')
-
-    get new_invoice_path(event_id: event.id, child: child.id, locale: :ja)
-    expect(response).to have_http_status(:ok)
-    expect(Nokogiri::HTML(response.body).at_css('.regular-school-days.d-block.text-danger')
-      .text.strip).to eq('12月：火・水')
+      expect(response).to have_http_status(:ok)
+      html = Nokogiri::HTML(response.body)
+      expect(html.css('.regular-school-days, .regular-day, .afternoon .text-bg-danger')).to be_empty
+      expect(html.text).not_to include('12月：', 'ご通学日', '通学日', 'Regular Day')
+    end
   end
 
   it 'shows the same labels for admins and both booking lists' do
@@ -75,8 +71,27 @@ RSpec.describe 'Regular weekdays on booking screens' do
     end
   end
 
+  it 'shows schedules and matching activity badges on staff booking forms and student information' do
+    sign_in create(:admin)
+    create(:time_slot, :afternoon, event:,
+                                   start_time: Time.zone.local(2026, 12, 16, 14),
+                                   end_time: Time.zone.local(2026, 12, 16, 18),
+                                   close_at: Time.zone.local(2026, 12, 15))
+
+    [child_path(id: child.id, locale: :ja),
+     new_invoice_path(event_id: event.id, child: child.id, locale: :ja),
+     event_path(id: event.id, child: child.id, locale: :ja)].each do |path|
+      get path
+
+      expect(response).to have_http_status(:ok)
+      expect(Nokogiri::HTML(response.body).at_css('.regular-school-days').text.strip)
+        .to eq('12月：火・水')
+    end
+    expect(Nokogiri::HTML(response.body).css('.afternoon .text-bg-danger')).not_to be_empty
+  end
+
   it 'updates annotations without modifying saved summaries, costs or sending emails' do
-    sign_in child.parent
+    sign_in create(:admin)
     original = invoice.attributes.slice('summary', 'total_cost', 'updated_at')
     child.regular_schedules.first.update!(tuesday: false, wednesday: false, thursday: true)
 
@@ -94,7 +109,7 @@ RSpec.describe 'Regular weekdays on booking screens' do
   it 'keeps regular-day labels on locked bookings after activity names are corrected' do
     invoice.update!(in_ss: true)
     original = invoice.reload.attributes
-    sign_in child.parent
+    sign_in create(:admin)
 
     morning.afternoon_slot.update!(name: 'Corrected activity name')
     get invoice_path(id: invoice.id, locale: :ja)
@@ -102,10 +117,14 @@ RSpec.describe 'Regular weekdays on booking screens' do
     expect(response).to have_http_status(:ok)
     expect_regular_day_label
     expect(invoice.reload.attributes).to eq(original)
+
+    sign_in child.parent
+    get invoice_path(id: invoice.id, locale: :ja)
+    expect(Nokogiri::HTML(response.body).css('.regular-day, .regular-school-days')).to be_empty
   end
 
   it 'shows no annotations or empty weekday heading when the schedule is missing' do
-    sign_in child.parent
+    sign_in create(:admin)
     child.regular_schedules.destroy_all
 
     get invoice_path(id: invoice.id, locale: :ja)
@@ -116,7 +135,7 @@ RSpec.describe 'Regular weekdays on booking screens' do
     expect(response.body).not_to include('未通学日', '通学曜日未登録')
   end
 
-  it 'annotates an unsaved booking preview using its selected activities' do
+  it 'hides regular-day annotations on the parent confirmation preview' do
     sign_in child.parent
 
     selected_slot = { child_id: child.id, registerable_type: 'TimeSlot',
@@ -127,9 +146,23 @@ RSpec.describe 'Regular weekdays on booking screens' do
     }
 
     expect(response).to have_http_status(:ok)
-    label = Nokogiri::HTML(response.body).at_css('.slot_regs .regular-day')
-    expect(label.text).to eq('通学日')
-    expect(label.parent.text).to include('雪だるまアイス', '(午後)')
+    html = Nokogiri::HTML(response.body)
+    expect(html.css('.regular-day, .regular-school-days')).to be_empty
+    expect(html.css('.slot_regs h5').text).to include('雪だるまアイス', '(午後)')
+  end
+
+  it 'annotates an unsaved staff booking preview using its selected activities' do
+    sign_in create(:admin)
+
+    selected_slot = { child_id: child.id, registerable_type: 'TimeSlot',
+                      registerable_id: morning.afternoon_slot.id }
+    post confirm_new_invoice_path(locale: :ja), params: {
+      new: 'true',
+      invoice: { event_id: event.id, child_id: child.id, slot_regs_attributes: [selected_slot] }
+    }
+
+    expect(response).to have_http_status(:ok)
+    expect_regular_day_label
   end
 
   it 'uses recent schedules and updates locked October booking labels after a late upload' do
@@ -167,7 +200,6 @@ RSpec.describe 'Regular weekdays on booking screens' do
       end
     end
     expect(flash[:alert]).to be_nil
-    sign_in child.parent
 
     get invoice_path(id: invoice.id, locale: :ja)
 
@@ -184,7 +216,7 @@ RSpec.describe 'Regular weekdays on booking screens' do
     child.regular_schedules.destroy_all
     legacy = child.regular_schedules.build(tuesday: true)
     legacy.save!(validate: false)
-    sign_in child.parent
+    sign_in create(:admin)
 
     get invoice_path(id: invoice.id, locale: :ja)
 

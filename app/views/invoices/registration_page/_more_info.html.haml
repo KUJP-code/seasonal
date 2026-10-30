@@ -45,7 +45,7 @@
               = number_to_currency(adjustment.change, locale: :ja)
             %td= adjustment.reason
 
-  - if monthly_regular_days(child, events: [event]).present?
+  - if current_user.staff? && monthly_regular_days(child, events: [event]).present?
     %table.table.table-striped.table-info.text-center
       %thead
         %tr

@@ -78,11 +78,15 @@ and snack waiver apply only to students who are currently internal.
 Schedule edits and automatic clearing are recorded with PaperTrail and the
 uploading admin. Uploads without changes do not create repeat schedule versions.
 
-The booking screen displays known schedules for the event's months, centered in
-red below the student's name, such as `12月：火・水　1月：水・木`. Student information
-shows the current effective schedule and future uploaded schedules. Each booked
-afternoon checks its own calendar month's effective weekdays and displays the
-red `通学日` label on a match.
+For staff only, booking screens display known schedules for the event's months,
+centered in red below the student's name, such as `12月：火・水　1月：水・木`.
+Staff student information shows the current effective schedule and future
+uploaded schedules. Each booked afternoon checks its own calendar month's
+effective weekdays and displays the red `通学日` label on a match for staff.
+Parents do not see monthly weekdays, schedule tables, or regular-day activity
+badges on student pages, booking forms, booking lists, invoices, or confirmation
+previews. Eligible regular-day prices and snack waivers still apply and are
+shown as pricing information.
 
 If a student has no upload for an activity's month, use their most recent
 schedule at or before that month, up to **five calendar months earlier**. For

@@ -3,6 +3,8 @@
 module InvoicesHelper
   def booking_summary(invoice)
     summary = sanitize(invoice.summary, tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id])
+    return summary unless current_user&.staff?
+
     regular_dates = regular_afternoon_dates(invoice)
     return summary if regular_dates.empty?
 
