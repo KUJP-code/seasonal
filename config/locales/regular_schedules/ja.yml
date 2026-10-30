@@ -1,3 +1,4 @@
 ja:
   regular_schedules:
     regular_day: "通学日"
+    based_on: "（%{month}の予定を適用）"

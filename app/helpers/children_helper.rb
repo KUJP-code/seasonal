@@ -2,13 +2,16 @@
 
 module ChildrenHelper
   def monthly_regular_days(child, events: nil)
-    schedules = child.regular_schedules.select do |schedule|
-      schedule.month && regular_month_visible?(schedule.month, events)
-    end
+    regular_display_months(child, events).filter_map do |month|
+      schedule = child.regular_schedule_for(month)
+      next unless schedule
 
-    schedules.sort_by(&:month).map do |schedule|
       days = schedule.days.gsub(', ', '・').presence || '—'
-      "#{schedule.month.month}月：#{days}"
+      label = "#{month.month}月：#{days}"
+      if schedule.month != month
+        label += t('regular_schedules.based_on', month: schedule.month.strftime('%Y-%m'))
+      end
+      label
     end.join('　')
   end
 
@@ -78,12 +81,24 @@ module ChildrenHelper
 
   private
 
-  def regular_month_visible?(month, events)
-    return month >= Time.zone.today.beginning_of_month if events.nil?
-
-    Array(events).any? do |event|
-      month.between?(event.start_date.beginning_of_month, event.end_date.beginning_of_month)
+  def regular_display_months(child, events)
+    if events.nil?
+      current_month = Time.zone.today.beginning_of_month
+      months = [current_month, *child.regular_schedules.filter_map(&:month)]
+      return months.select { |month| month >= current_month }.uniq.sort
     end
+
+    Array(events).flat_map { |event| regular_event_months(event) }.uniq.sort
+  end
+
+  def regular_event_months(event)
+    months = []
+    month = event.start_date.beginning_of_month
+    while month <= event.end_date.beginning_of_month
+      months << month
+      month = month.next_month
+    end
+    months
   end
 
   def split_name(name)

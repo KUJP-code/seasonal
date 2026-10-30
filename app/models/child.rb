@@ -88,11 +88,14 @@ class Child < ApplicationRecord
 
   def regular_schedule_for(date)
     month = date.to_date.beginning_of_month
-    regular_schedules.find { |schedule| schedule.month == month }
+    earliest = month - RegularSchedule::FALLBACK_MONTHS.months
+    regular_schedules.select do |schedule|
+      schedule.month&.between?(earliest, month)
+    end.max_by(&:month)
   end
 
   def regular_day?(date)
-    regular_schedule_for(date)&.has?(date) || false
+    regular_schedule_for(date)&.weekday?(date) || false
   end
 
   def arrival_time(slot)

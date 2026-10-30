@@ -63,25 +63,39 @@ existing weekdays for omitted students who are currently external, limited to
 schools represented by students in the file. Omitted internal, reservation and
 unknown students keep their days, as do students at other schools. Clearing is
 part of the same transaction and records five false weekday values rather than
-deleting the monthly schedule. Students with no saved schedule already have no
-regular days; no empty records are created for them. Update student membership
+deleting the monthly schedule. No empty records are created for students without
+a recent schedule. If an omitted external student has a schedule in the preceding
+five months, the upload saves an explicit no-days schedule for the upload month
+to stop older weekdays from carrying forward. Update student membership
 from SS before importing schedules so the external category is current.
 
 Historical imports never automatically clear omitted students based on today's
 membership. A student who is external now retains their recorded past weekdays
 and still matches those past regular days. Changing membership alone does not
-alter any monthly schedule. Future regular-attendance bonuses must use the
-schedule for the activity's month, rather than reject a past regular day because
-the student is external today; bonus pricing has not been implemented here.
+alter any monthly schedule. Regular-day labels use the activity month's
+effective schedule, even if the student is external today.
 Schedule edits and automatic clearing are recorded with PaperTrail and the
 uploading admin. Uploads without changes do not create repeat schedule versions.
 
 The booking screen displays known schedules for the event's months, centered in
 red below the student's name, such as `12月：火・水　1月：水・木`. Student information
-shows the current and future known schedules. Each booked afternoon checks its
-own calendar month's weekdays and displays only the red `通学日` label on a
-match. Missing months never inherit another month's weekdays. A known schedule
-with no weekdays is displayed as `12月：—`.
+shows the current effective schedule and future uploaded schedules. Each booked
+afternoon checks its own calendar month's effective weekdays and displays the
+red `通学日` label on a match.
+
+If a student has no upload for an activity's month, use their most recent
+schedule at or before that month, up to **five calendar months earlier**. For
+example, January 2027 activities can use an August–December 2026 upload, with
+December taking priority. Older schedules, undated legacy records, and schedules
+for months after the activity are excluded. A January upload always overrides
+December's pattern for January activities. A later upload for an older attendance
+month does not override a newer attendance month's record.
+
+An explicit schedule with all weekdays false stops older days from returning;
+it is displayed as `1月：—`. Fallback labels identify their source, such as
+`1月：月・火（2026-12の予定を適用）`. The same lookup controls regular-day labels.
+Lookups do not copy records
+into future months or rewrite saved invoices.
 
 These are live web annotations. Uploading schedules updates the display on
 existing and confirmed/locked bookings without saving or recalculating invoices,

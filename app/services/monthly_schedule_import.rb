@@ -74,14 +74,23 @@ class MonthlyScheduleImport
     # Today's membership cannot tell us whether a student attended in a past month.
     return if @month < Time.zone.today.beginning_of_month
 
-    school_ids = children.values.filter_map(&:school_id).uniq
-    omitted_students = Child.external.where(school_id: school_ids).where.not(id: seen.keys)
+    affected_ids = omitted_external_schedule_ids(children, seen)
     weekdays = RegularSchedule::WEEKDAYS.index_with(false)
+    existing = RegularSchedule.where(month: @month, child_id: affected_ids).index_by(&:child_id)
 
-    RegularSchedule.where(month: @month, child_id: omitted_students.select(:id)).find_each do |schedule|
+    affected_ids.each do |child_id|
+      schedule = existing[child_id] || RegularSchedule.new(child_id:, month: @month)
       schedule.assign_attributes(weekdays)
       schedule.save! if schedule.changed?
     end
+  end
+
+  def omitted_external_schedule_ids(children, seen)
+    school_ids = children.values.filter_map(&:school_id).uniq
+    omitted_students = Child.external.where(school_id: school_ids).where.not(id: seen.keys)
+    recent_months = (@month - RegularSchedule::FALLBACK_MONTHS.months)..@month
+    RegularSchedule.where(month: recent_months, child_id: omitted_students.select(:id))
+                   .distinct.pluck(:child_id)
   end
 
   def weekday_attributes(row, line)

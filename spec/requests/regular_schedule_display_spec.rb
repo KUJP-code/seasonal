@@ -132,7 +132,7 @@ RSpec.describe 'Regular weekdays on booking screens' do
     expect(label.parent.text).to include('雪だるまアイス', '(午後)')
   end
 
-  it 'keeps months separate and updates locked October bookings after a late upload' do
+  it 'uses recent schedules and updates locked October booking labels after a late upload' do
     event.update!(end_date: Date.new(2027, 2, 5))
     child.update!(ssid: '123456')
     january_slots = [5, 6].map do |day|
@@ -151,7 +151,7 @@ RSpec.describe 'Regular weekdays on booking screens' do
     sign_in create(:admin)
 
     get invoice_path(id: invoice.id)
-    expect(Nokogiri::HTML(response.body).css('.regular-day').size).to eq(1)
+    expect(Nokogiri::HTML(response.body).css('.regular-day').size).to eq(4)
 
     travel_to Time.zone.local(2027, 1, 2) do
       sign_out :user
@@ -172,9 +172,10 @@ RSpec.describe 'Regular weekdays on booking screens' do
     get invoice_path(id: invoice.id, locale: :ja)
 
     html = Nokogiri::HTML(response.body)
-    expect(html.at_css('.regular-school-days').text.strip).to eq('12月：火・水　1月：水・木')
+    expect(html.at_css('.regular-school-days').text.strip)
+      .to eq('12月：火・水　1月：水・木　2月：水・木（2027-01の予定を適用）')
     expect(html.css('.regular-day').map { |label| label.parent.text })
-      .to contain_exactly(include('雪だるまアイス'), include('January 6'))
+      .to contain_exactly(include('雪だるまアイス'), include('January 6'), include('February Wednesday'))
     expect(invoice.reload.attributes).to eq(original)
     expect(child.reload.regular_schedule_for(Date.new(2026, 12, 15)).days).to eq('火, 水')
   end

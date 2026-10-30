@@ -3,6 +3,7 @@
 # Controls data for a child's usual schedule
 class RegularSchedule < ApplicationRecord
   WEEKDAYS = %w[monday tuesday wednesday thursday friday].freeze
+  FALLBACK_MONTHS = 5
 
   belongs_to :child
   before_validation :normalize_month
@@ -36,10 +37,14 @@ class RegularSchedule < ApplicationRecord
   def has?(date)
     return false unless month == date.to_date.beginning_of_month
 
-    day = date.strftime('%A').downcase
-    return false if %w[saturday sunday].include?(day)
+    weekday?(date)
+  end
 
-    send(:"#{date.strftime('%A').downcase}")
+  def weekday?(date)
+    day = date.strftime('%A').downcase
+    return false unless WEEKDAYS.include?(day)
+
+    public_send(day)
   end
 
   private

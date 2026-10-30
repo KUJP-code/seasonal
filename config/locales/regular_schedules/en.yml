@@ -1,3 +1,4 @@
 en:
   regular_schedules:
     regular_day: "通学日"
+    based_on: " (using %{month} schedule)"

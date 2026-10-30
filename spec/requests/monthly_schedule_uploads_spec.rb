@@ -322,6 +322,34 @@ RSpec.describe 'Monthly regular schedule uploads' do
     end
   end
 
+  it 'stops fallback for omitted external students without an upload-month record' do
+    travel_to Time.zone.local(2026, 11, 22) do
+      former_student = create(:external_child, school: child.school, ssid: '654321')
+      previous = create(:regular_schedule, child: former_student, month: Date.new(2026, 11, 1),
+                                           monday: true)
+      upload_schedule('2026-12')
+
+      expect(flash[:alert]).to be_nil
+      expect(previous.reload.days).to eq('月')
+      expect(former_student.regular_schedules.find_by!(month: Date.new(2026, 12, 1)).days).to eq('')
+      expect(former_student.reload.regular_day?(Date.new(2027, 1, 4))).to be(false)
+    end
+  end
+
+  it 'does not create omission records for students with no recent schedules' do
+    travel_to Time.zone.local(2026, 11, 22) do
+      unscheduled = create(:external_child, school: child.school, ssid: '654321')
+      expired = create(:external_child, school: child.school, ssid: '654322')
+      create(:regular_schedule, child: expired, month: Date.new(2026, 6, 1), monday: true)
+
+      upload_schedule('2026-12')
+
+      expect(flash[:alert]).to be_nil
+      expect(unscheduled.regular_schedules).to be_empty
+      expect(expired.regular_schedules.where(month: Date.new(2026, 12, 1))).to be_empty
+    end
+  end
+
   it 'preserves omitted students from other schools and non-external categories' do
     travel_to Time.zone.local(2026, 11, 22) do
       students = [

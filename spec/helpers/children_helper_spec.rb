@@ -3,6 +3,52 @@
 require 'rails_helper'
 
 RSpec.describe ChildrenHelper do
+  describe '#monthly_regular_days' do
+    include ActiveSupport::Testing::TimeHelpers
+
+    let(:child) { create(:internal_child) }
+    let(:event) do
+      build(:event, start_date: Date.new(2027, 1, 1), end_date: Date.new(2027, 2, 28))
+    end
+
+    it 'shows each event month using the latest available schedule and identifies its source' do
+      create(:regular_schedule, child:, month: Date.new(2026, 12, 1), monday: true)
+      create(:regular_schedule, child:, month: Date.new(2027, 2, 1), tuesday: true)
+
+      I18n.with_locale(:ja) do
+        expect(helper.monthly_regular_days(child, events: [event]))
+          .to eq('1月：月（2026-12の予定を適用）　2月：火')
+      end
+    end
+
+    it 'shows current weekdays on student information using an earlier upload' do
+      create(:regular_schedule, child:, month: Date.new(2026, 12, 1), monday: true)
+
+      travel_to Date.new(2027, 1, 4) do
+        I18n.with_locale(:ja) do
+          expect(helper.monthly_regular_days(child)).to eq('1月：月（2026-12の予定を適用）')
+        end
+      end
+    end
+
+    it 'does not display expired schedules or borrow from a future month' do
+      create(:regular_schedule, child:, month: Date.new(2026, 7, 1), monday: true)
+      create(:regular_schedule, child:, month: Date.new(2027, 3, 1), tuesday: true)
+
+      expect(helper.monthly_regular_days(child, events: [event])).to eq('')
+    end
+
+    it 'shows an explicit no-days schedule instead of older weekdays' do
+      create(:regular_schedule, child:, month: Date.new(2026, 12, 1), monday: true)
+      create(:regular_schedule, child:, month: Date.new(2027, 1, 1))
+
+      I18n.with_locale(:ja) do
+        expect(helper.monthly_regular_days(child, events: [event]))
+          .to eq('1月：—　2月：—（2027-01の予定を適用）')
+      end
+    end
+  end
+
   describe 'name splitting helpers' do
     let(:child) do
       build(:child, name: '廣田　快斗', katakana_name: 'ヒロタ　カイト')
