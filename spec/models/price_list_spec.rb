@@ -56,4 +56,30 @@ RSpec.describe PriceList do
     price_list = create(:member_prices, course1: '')
     expect(price_list.courses['1']).to be_nil
   end
+
+  describe 'regular-day afternoon price' do
+    it 'defaults to disabled and accepts a blank value' do
+      price_list = create(:member_prices)
+      expect(price_list.regular_day_afternoon_price).to be_nil
+      price_list.update!(regular_day_afternoon_price: '')
+      expect(price_list.reload.regular_day_afternoon_price).to be_nil
+    end
+
+    it 'preserves package prices when only the optional afternoon price is updated or cleared' do
+      price_list = create(:member_prices)
+      courses = price_list.courses
+      price_list.reload.update!(regular_day_afternoon_price: 2700)
+      expect(price_list.reload.courses).to eq(courses)
+      price_list.update!(regular_day_afternoon_price: nil)
+      expect(price_list.reload.courses).to eq(courses)
+    end
+
+    [-1, 2700.5, 'invalid', 2_147_483_648].each do |price|
+      it "rejects an invalid afternoon price of #{price.inspect}" do
+        price_list = build(:member_prices, regular_day_afternoon_price: price)
+        expect(price_list).not_to be_valid
+        expect(price_list.errors[:regular_day_afternoon_price]).not_to be_empty
+      end
+    end
+  end
 end

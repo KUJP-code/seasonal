@@ -44,7 +44,8 @@ class PriceListsController < ApplicationController
   def price_list_params
     params.require(:price_list).permit(
       :id, :name, :course1, :course3, :course5, :course10, :course15, :course20,
-      :course25, :course30, :course35, :course40, :course45, :course50
+      :course25, :course30, :course35, :course40, :course45, :course50,
+      :regular_day_afternoon_price
     )
   end
 end

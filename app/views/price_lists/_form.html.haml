@@ -1,7 +1,8 @@
-- possible_courses = %w[1 3 5 10 15 20 25 30 35 40 45 50]
+- possible_courses = PriceList::COURSE_SIZES
 
 %main#price_list_edit
   = form_with model: @price_list, html: { class: 'card' } do |f|
+    = render 'shared/form_errors', resource: @price_list
     .form-floating
       = f.text_field :name,
                      class: 'form-control', placeholder:  t('.name'),
@@ -19,4 +20,13 @@
                     course,
                     class: 'form-label'
         %span.input-group-text 円
+    .form-floating.input-group
+      = f.number_field :regular_day_afternoon_price,
+                       class: 'form-control', min: 0, max: 2_147_483_647, step: 1,
+                       placeholder: t('regular_day_pricing.price'),
+                       aria: { describedby: 'regular-day-price-help' }
+      = f.label :regular_day_afternoon_price, t('regular_day_pricing.price')
+      %span.input-group-text 円
+    %p.small.text-muted.text-start#regular-day-price-help
+      = t('regular_day_pricing.help')
     = f.submit class: 'btn btn-primary'

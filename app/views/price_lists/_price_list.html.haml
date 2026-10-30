@@ -16,6 +16,10 @@
         - else
           %td.fw-bold.text-danger Not set
 
+    %tr
+      %td= t('regular_day_pricing.price')
+      %td= price_list.regular_day_afternoon_price.nil? ? t('regular_day_pricing.disabled') : number_to_currency(price_list.regular_day_afternoon_price)
+
   = link_to 'Edit', edit_price_list_path(price_list), class: 'btn btn-primary'
 
   = render 'price_lists/used_by', price_list: price_list

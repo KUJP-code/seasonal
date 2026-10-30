@@ -1,0 +1,8 @@
+en:
+  regular_day_pricing:
+    price: "Regular-day afternoon price (optional)"
+    help: "Leave blank to keep normal pricing. For internal students only, non-special Seasonal School afternoons on their regular lesson days use this price, have no snack fee, and do not count toward session packages. Applies only to events using this as their member price list."
+    disabled: "Not enabled"
+    explanation: "For internal students only, non-special afternoons on regular lesson days use the regular-day price, with no snack fee, and do not count toward session packages."
+    activity_price: "Regular-day afternoon: %{price} (no snack fee)"
+    snack_waived: "No snack fee on regular lesson days"

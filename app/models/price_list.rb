@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class PriceList < ApplicationRecord
+  COURSE_SIZES = %w[1 3 5 10 15 20 25 30 35 40 45 50].freeze
+
   # Allow separate fields for courses
-  attr_accessor :course1, :course3, :course5, :course10, :course15, :course20, :course25,
-                :course30, :course35, :course40, :course45, :course50
+  attr_accessor(*COURSE_SIZES.map { |size| "course#{size}" })
 
   before_validation :set_courses
 
@@ -17,6 +18,10 @@ class PriceList < ApplicationRecord
                                inverse_of: :non_member_prices
 
   validates :name, :courses, presence: true
+  validates :regular_day_afternoon_price,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0,
+                            less_than_or_equal_to: 2_147_483_647 },
+            allow_nil: true
 
   # Simplifies getting the list of events using a given price list
   def events
@@ -26,14 +31,9 @@ class PriceList < ApplicationRecord
   private
 
   def set_courses
-    hash = {
-      '1' => course1, '3' => course3, '5' => course5,
-      '10' => course10, '15' => course15, '20' => course20,
-      '25' => course25, '30' => course30, '35' => course35,
-      '40' => course40, '45' => course45, '50' => course50
-    }
+    hash = COURSE_SIZES.index_with { |size| public_send("course#{size}") }
 
-    self.courses = course_prices_to_int(hash)
+    self.courses = (courses || {}).merge(course_prices_to_int(hash.compact))
   end
 
   def course_prices_to_int(course_hash)
