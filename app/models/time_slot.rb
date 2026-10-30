@@ -54,6 +54,7 @@ class TimeSlot < ApplicationRecord
             .order(start_time: :desc)
         }
   scope :morning, -> { where(morning: true) }
+  scope :photo_service_eligible, -> { where(morning: true).or(where(category: :special)) }
 
   def avif_id
     return nil if avif.blob.nil?

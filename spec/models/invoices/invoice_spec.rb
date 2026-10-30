@@ -29,10 +29,10 @@ RSpec.describe Invoice do
     end
 
     it 'calculates cost on save' do
-      slot = create(:time_slot)
+      slot = create(:time_slot, :morning, event:)
       invoice.slot_regs << build(:slot_reg, registerable: slot)
       invoice.opt_regs <<
-        build(:event_opt_reg, registerable: create(:event_option, cost: 10))
+        build(:event_opt_reg, registerable: create(:event_option, cost: 10, optionable: event))
       invoice.save
       expect(invoice.total_cost).to eq(11)
     end

@@ -60,4 +60,8 @@ class Option < ApplicationRecord
   def time?
     TIME_CATEGORIES.include?(category.to_sym)
   end
+
+  def photo_service?
+    event? && optionable.is_a?(Event) && optionable.seasonal? && optionable.pricing_rules_2026?
+  end
 end

@@ -10,7 +10,7 @@ RSpec.describe Invoice do
            early_bird_date: Date.new(2026, 7, 1))
   end
   let(:photo_option) { create(:event_option, optionable: event, category: :event) }
-  let(:time_slot) { create(:time_slot, event:) }
+  let(:time_slot) { create(:time_slot, :morning, event:) }
   let(:parent) { create(:user) }
   let(:child) { create(:child, parent:) }
   let(:sibling) { create(:child, parent:) }
@@ -136,5 +136,64 @@ RSpec.describe Invoice do
     invoice.sync_photo_service_with_siblings!
 
     expect(sibling_invoice.reload.opt_regs.where(registerable: photo_option)).to be_present
+  end
+
+  it 'does not add photo service to siblings attending only regular afternoons' do
+    invoice = create(:invoice, child:, event:)
+    sibling_invoice = create(:invoice, child: sibling, event:)
+    add_slot(invoice, child)
+    afternoon = create(:time_slot, :afternoon, event:)
+    create(:slot_reg, child: sibling, invoice: sibling_invoice, registerable: afternoon)
+    add_photo(invoice, child)
+
+    invoice.sync_photo_service_with_siblings!
+
+    expect(sibling_invoice.reload.opt_regs.where(registerable: photo_option)).to be_empty
+    expect(invoice.reload.opt_regs.where(registerable: photo_option)).to be_present
+  end
+
+  it 'does not opt an eligible sibling out when an afternoon-only child edits their booking' do
+    afternoon = create(:time_slot, :afternoon, event:)
+    invoice = create(:invoice, child:, event:)
+    create(:slot_reg, child:, invoice:, registerable: afternoon)
+    sibling_invoice = create(:invoice, child: sibling, event:)
+    add_slot(sibling_invoice, sibling)
+    add_photo(sibling_invoice, sibling)
+
+    invoice.sync_photo_service_with_siblings!
+
+    expect(sibling_invoice.reload.opt_regs.where(registerable: photo_option)).to be_present
+    expect(invoice.reload.opt_regs.where(registerable: photo_option)).to be_empty
+  end
+
+  it 'removes stale photo service from confirmed afternoon-only sibling invoices' do
+    invoice = create(:invoice, child:, event:)
+    add_slot(invoice, child)
+    add_photo(invoice, child)
+    afternoon = create(:time_slot, :afternoon, event:)
+    sibling_invoice = create(:invoice, child: sibling, event:, in_ss: true)
+    create(:slot_reg, child: sibling, invoice: sibling_invoice, registerable: afternoon)
+    add_photo(sibling_invoice, sibling)
+
+    invoice.sync_photo_service_with_siblings!
+
+    expect(sibling_invoice.reload.opt_regs.where(registerable: photo_option)).to be_empty
+    expect(sibling_invoice).to be_in_ss
+  end
+
+  it 'retains party photo service for afternoon attendees and uses their activity invoice' do
+    event.update!(early_bird_discount: -500, early_bird_date: Date.new(2020, 1, 1))
+    afternoon = create(:time_slot, :afternoon, event:)
+    invoice = create(:invoice, child:, event:)
+    create(:slot_reg, child:, invoice:, registerable: afternoon)
+    empty_invoice = create(:invoice, child: sibling, event:)
+    sibling_invoice = create(:invoice, child: sibling, event:)
+    create(:slot_reg, child: sibling, invoice: sibling_invoice, registerable: afternoon)
+    add_photo(invoice, child)
+
+    invoice.sync_photo_service_with_siblings!
+
+    expect(sibling_invoice.reload.opt_regs.where(registerable: photo_option)).to be_present
+    expect(empty_invoice.reload.opt_regs).to be_empty
   end
 end

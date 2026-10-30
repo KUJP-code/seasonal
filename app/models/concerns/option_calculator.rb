@@ -24,6 +24,8 @@ module OptionCalculator
 
   def orphan_option?(opt_reg)
     option = Option.find(opt_reg['registerable_id'])
+    return !photo_service_eligible? if option.photo_service?
+
     # we want event options to be registerable no matter what
     return false if option.event?
     return true if slot_regs.empty?

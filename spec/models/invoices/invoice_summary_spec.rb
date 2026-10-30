@@ -21,7 +21,7 @@ RSpec.describe Invoice do
     build_stubbed(:child, category: :internal, name: 'Child',
                           kindy: true)
   end
-  let(:slot) { create(:time_slot, name: 'Slot', snack: false, morning: false) }
+  let(:slot) { create(:time_slot, :afternoon, event:, category: :special, name: 'Slot', snack: false) }
   let(:event_opt) { create(:event_option, name: 'Event Option', cost: 10, optionable: event) }
   let(:spare_slot_option) do
     create(:slot_option, name: 'Spare Slot Option', cost: 10, optionable: slot)

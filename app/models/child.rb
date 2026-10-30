@@ -98,6 +98,10 @@ class Child < ApplicationRecord
     regular_schedule_for(date)&.weekday?(date) || false
   end
 
+  def photo_service_eligible_for?(event)
+    time_slots.where(event:).photo_service_eligible.exists?
+  end
+
   def arrival_time(slot)
     arr_opt = options.find_by(optionable: slot, category: :arrival)
     return slot.start_time.strftime('%I:%M%p') if arr_opt.nil?

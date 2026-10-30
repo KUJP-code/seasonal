@@ -59,6 +59,7 @@ class Invoice < ApplicationRecord
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   def calc_cost
+    remove_ineligible_photo_service
     assign_pricing_batches
     generate_data
     self.total_cost = @data[:total_cost]
@@ -70,6 +71,16 @@ class Invoice < ApplicationRecord
     "##{id}, #{yenify(total_cost)}"
   end
 
+  def photo_service_eligible?
+    own_slot_ids = validated_slot_regs.map(&:registerable_id)
+    return true if TimeSlot.where(id: own_slot_ids, event_id:).photo_service_eligible.exists?
+    return false unless child_id && event_id
+
+    other_slots = child.time_slots.where(event_id:)
+    other_slots = other_slots.where.not(registrations: { invoice_id: id }) if id.present?
+    other_slots.photo_service_eligible.exists?
+  end
+
   def sync_photo_service_with_siblings!
     return unless event.pricing_rules_2026?
 
@@ -77,11 +88,13 @@ class Invoice < ApplicationRecord
     return if photo_option_ids.empty?
 
     siblings = child.siblings + [child]
-    siblings_with_slots = siblings.select do |sibling|
-      sibling.time_slots.where(event_id: event.id).exists?
+    eligible_siblings = siblings.select do |sibling|
+      if event.seasonal?
+        sibling.photo_service_eligible_for?(event)
+      else
+        sibling.time_slots.exists?(event:)
+      end
     end
-    return if siblings_with_slots.empty?
-
     current_has_photo = child.invoices.where(event:)
                              .joins(:opt_regs)
                              .exists?(registrations: {
@@ -89,10 +102,20 @@ class Invoice < ApplicationRecord
                                registerable_id: photo_option_ids
                              })
 
-    siblings_with_slots.each do |sibling|
-      invoices = sibling.invoices.where(event:).includes(:slot_regs, :opt_regs)
-      target_invoice = invoices.find { |inv| inv.slot_regs.any? }
-      target_invoice ||= invoices.order(in_ss: :asc).first
+    sync_eligible_siblings = eligible_siblings.include?(child)
+
+    siblings.each do |sibling|
+      next if eligible_siblings.include?(sibling) && !sync_eligible_siblings
+
+      invoices = sibling.invoices.where(event:).includes(:time_slots, :slot_regs, :opt_regs).to_a
+      target_invoice = invoices.find do |inv|
+        if event.seasonal?
+          inv.time_slots.any? { |slot| slot.morning? || slot.special? }
+        else
+          inv.slot_regs.any?
+        end
+      end
+      target_invoice ||= invoices.first
       next unless target_invoice
 
       existing_regs = invoices.flat_map(&:opt_regs).select do |reg|
@@ -100,7 +123,7 @@ class Invoice < ApplicationRecord
       end
 
       updated = false
-      if current_has_photo
+      if current_has_photo && eligible_siblings.include?(sibling)
         if existing_regs.empty?
           target_invoice.opt_regs.create!(
             child: sibling,
@@ -132,6 +155,15 @@ class Invoice < ApplicationRecord
   end
 
   private
+
+  def remove_ineligible_photo_service
+    photo_regs = opt_regs.reject(&:marked_for_destruction?).select do |reg|
+      reg.registerable.photo_service?
+    end
+    return if photo_regs.empty? || photo_service_eligible?
+
+    photo_regs.each(&:mark_for_destruction)
+  end
 
   def blank_or_dup(coupon)
     return true if coupon['code'].empty? || coupons.map(&:code).include?(coupon['code'])
