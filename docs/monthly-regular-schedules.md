@@ -25,7 +25,8 @@ schedules; formatted weekday CSVs remain available.
 
 Only allowed `コースコード` values (column AG) contribute weekdays:
 
-- Codes **414, 415, 430, 431** use **BB and BN** (schedule slots 2 and 4).
+- KeepUP codes **414, 415, 430, 431** use **AV and BH** (schedule slots 1 and 3).
+  BB and BN contain evening lessons and are excluded for these codes.
 - Other allowed codes use **AV, BB, BH, BN, BT** (schedule slots 1–5).
 - Other course rows and unused schedule slots do not contribute weekdays.
 
@@ -78,10 +79,12 @@ and snack waiver apply only to students who are currently internal.
 Schedule edits and automatic clearing are recorded with PaperTrail and the
 uploading admin. Uploads without changes do not create repeat schedule versions.
 
-For staff only, booking screens display known schedules for the event's months,
-centered in red below the student's name, such as `12月：火・水　1月：水・木`.
-Staff student information shows the current effective schedule and future
-uploaded schedules. Each booked afternoon checks its own calendar month's
+For staff only, booking screens display one set of weekdays, such as `月・水・金`,
+centered in red below the student's name. Use the effective schedule for the
+event's final month, or the latest event's final month on combined booking lists.
+Do not show month labels or earlier weekday patterns. Staff student information
+shows only the current effective weekdays.
+Each booked afternoon checks its own calendar month's
 effective weekdays and displays the red `通学日` label on a match for staff.
 Parents do not see monthly weekdays, schedule tables, or regular-day activity
 badges on student pages, booking forms, booking lists, invoices, or confirmation
@@ -97,8 +100,7 @@ December's pattern for January activities. A later upload for an older attendanc
 month does not override a newer attendance month's record.
 
 An explicit schedule with all weekdays false stops older days from returning;
-it is displayed as `1月：—`. Month labels show only the effective weekdays, such
-as `1月：月・火`. The same lookup controls regular-day labels,
+it is displayed as `—`. The same lookup controls regular-day labels,
 the optional afternoon price, and snack fee waivers. Lookups do not copy records
 into future months or rewrite saved invoices.
 

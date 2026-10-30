@@ -72,22 +72,24 @@ RSpec.describe 'Regular weekdays on booking screens' do
   end
 
   it 'shows schedules and matching activity badges on staff booking forms and student information' do
-    sign_in create(:admin)
-    create(:time_slot, :afternoon, event:,
-                                   start_time: Time.zone.local(2026, 12, 16, 14),
-                                   end_time: Time.zone.local(2026, 12, 16, 18),
-                                   close_at: Time.zone.local(2026, 12, 15))
+    travel_to Time.zone.local(2026, 12, 1) do
+      sign_in create(:admin)
+      create(:time_slot, :afternoon, event:,
+                                     start_time: Time.zone.local(2026, 12, 16, 14),
+                                     end_time: Time.zone.local(2026, 12, 16, 18),
+                                     close_at: Time.zone.local(2026, 12, 15))
 
-    [child_path(id: child.id, locale: :ja),
-     new_invoice_path(event_id: event.id, child: child.id, locale: :ja),
-     event_path(id: event.id, child: child.id, locale: :ja)].each do |path|
-      get path
+      [child_path(id: child.id, locale: :ja),
+       new_invoice_path(event_id: event.id, child: child.id, locale: :ja),
+       event_path(id: event.id, child: child.id, locale: :ja)].each do |path|
+        get path
 
-      expect(response).to have_http_status(:ok)
-      expect(Nokogiri::HTML(response.body).at_css('.regular-school-days').text.strip)
-        .to eq('12月：火・水')
+        expect(response).to have_http_status(:ok)
+        expect(Nokogiri::HTML(response.body).at_css('.regular-school-days').text.strip)
+          .to eq('火・水')
+      end
+      expect(Nokogiri::HTML(response.body).css('.afternoon .text-bg-danger')).not_to be_empty
     end
-    expect(Nokogiri::HTML(response.body).css('.afternoon .text-bg-danger')).not_to be_empty
   end
 
   it 'updates annotations without modifying saved summaries, costs or sending emails' do
@@ -205,7 +207,7 @@ RSpec.describe 'Regular weekdays on booking screens' do
 
     html = Nokogiri::HTML(response.body)
     expect(html.at_css('.regular-school-days').text.strip)
-      .to eq('12月：火・水　1月：水・木　2月：水・木')
+      .to eq('水・木')
     expect(html.css('.regular-day').map { |label| label.parent.text })
       .to contain_exactly(include('雪だるまアイス'), include('January 6'), include('February Wednesday'))
     expect(invoice.reload.attributes).to eq(original)

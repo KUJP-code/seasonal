@@ -2,13 +2,13 @@
 
 module ChildrenHelper
   def monthly_regular_days(child, events: nil)
-    regular_display_months(child, events).filter_map do |month|
-      schedule = child.regular_schedule_for(month)
-      next unless schedule
+    date = events.nil? ? Time.zone.today : Array(events).map(&:end_date).max
+    return '' unless date
 
-      days = schedule.days.gsub(', ', '・').presence || '—'
-      "#{month.month}月：#{days}"
-    end.join('　')
+    schedule = child.regular_schedule_for(date)
+    return '' unless schedule
+
+    schedule.days.gsub(', ', '・').presence || '—'
   end
 
   def arrival_time_for(slot, arrive_opt)
@@ -76,26 +76,6 @@ module ChildrenHelper
   end
 
   private
-
-  def regular_display_months(child, events)
-    if events.nil?
-      current_month = Time.zone.today.beginning_of_month
-      months = [current_month, *child.regular_schedules.filter_map(&:month)]
-      return months.select { |month| month >= current_month }.uniq.sort
-    end
-
-    Array(events).flat_map { |event| regular_event_months(event) }.uniq.sort
-  end
-
-  def regular_event_months(event)
-    months = []
-    month = event.start_date.beginning_of_month
-    while month <= event.end_date.beginning_of_month
-      months << month
-      month = month.next_month
-    end
-    months
-  end
 
   def split_name(name)
     parts = name.to_s.strip.split(/[[:space:]　]+/, 2)

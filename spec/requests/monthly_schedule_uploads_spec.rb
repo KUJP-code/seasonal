@@ -71,13 +71,23 @@ RSpec.describe 'Monthly regular schedule uploads' do
     expect(child.regular_schedules.sole.month).to eq(Date.new(2026, 9, 1))
   end
 
-  it 'uses only BB and BN for course codes 414, 415, 430 and 431' do
+  it 'uses only AV and BH for course codes 414, 415, 430 and 431' do
     %w[414 415 430 431].each do |code|
       upload_ss_schedule([ss_schedule_row(%w[月 火 水 木 金], 'コースコード' => code)])
 
       expect(flash[:alert]).to be_nil
-      expect(child.regular_schedules.sole.days).to eq('火, 木')
+      expect(child.regular_schedules.sole.days).to eq('月, 水')
     end
+  end
+
+  it 'imports the Monday attendance rather than the Friday evening lesson for KeepUP' do
+    row = ss_schedule_row(%w[月 金], 'コースコード' => '430',
+                                    '受講日程１開始時刻' => '13:30',
+                                    '受講日程２開始時刻' => '18:15')
+    upload_ss_schedule([row])
+
+    expect(flash[:alert]).to be_nil
+    expect(child.regular_schedules.sole.days).to eq('月')
   end
 
   it 'imports every approved course code, including codes absent from the example export' do
@@ -89,7 +99,7 @@ RSpec.describe 'Monthly regular schedule uploads' do
       upload_ss_schedule([ss_schedule_row(%w[月 火 水 木 金], 'コースコード' => code)])
 
       expect(flash[:alert]).to be_nil
-      days = %w[414 415 430 431].include?(code) ? '火, 木' : '月, 火, 水, 木, 金'
+      days = %w[414 415 430 431].include?(code) ? '月, 水' : '月, 火, 水, 木, 金'
       expect(child.regular_schedules.sole.days).to eq(days)
     end
   end
@@ -105,8 +115,8 @@ RSpec.describe 'Monthly regular schedule uploads' do
 
   it 'ignores unsupported weekdays in unused combined-course slots and excluded course rows' do
     upload_ss_schedule([
-                         ss_schedule_row(%w[土 火 日 木], 'コースコード' => '414',
-                                                            '受講日程１間隔' => '隔週'),
+                         ss_schedule_row(%w[火 土 木 日 土], 'コースコード' => '414',
+                                                               '受講日程２間隔' => '隔週'),
                          ss_schedule_row(%w[土], 'コースコード' => '505',
                                                '生徒情報：生徒コード' => 'not-a-student',
                                                '受講開始日' => 'invalid')

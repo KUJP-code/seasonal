@@ -4,7 +4,8 @@
 class SsScheduleParser
   SLOTS = %w[１ ２ ３ ４ ５].freeze
   COMBINED_COURSE_CODES = %w[414 415 430 431].freeze
-  COMBINED_COURSE_SLOTS = %w[２ ４].freeze
+  # KeepUP attendance is in AV/BH; BB/BN include evening lessons.
+  COMBINED_COURSE_SLOTS = %w[１ ３].freeze
   ALLOWED_COURSE_CODES = Rails.application.config_for(:regular_schedule_courses)
                             .fetch(:allowed_course_codes).map(&:to_s).freeze
   DAYS = %w[月 火 水 木 金].zip(RegularSchedule::WEEKDAYS).to_h.freeze
