@@ -309,9 +309,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_10_29_000000) do
     t.index ["ip_address", "created_at"], name: "index_rashimba_inquiries_on_ip_address_and_created_at"
     t.index ["kind", "status", "created_at"], name: "index_rashimba_inquiries_on_kind_and_status_and_created_at"
     t.index ["submission_key"], name: "index_rashimba_inquiries_on_submission_key", unique: true
-    t.check_constraint "kind::text = ANY (ARRAY['sponsor'::character varying, 'release_notification'::character varying]::text[])", name: "rashimba_kind"
+    t.check_constraint "kind::text = ANY (ARRAY['sponsor'::character varying::text, 'release_notification'::character varying::text])", name: "rashimba_kind"
     t.check_constraint "privacy_consent = true", name: "rashimba_consent"
-    t.check_constraint "status::text = ANY (ARRAY['pending'::character varying, 'reviewed'::character varying, 'resolved'::character varying]::text[])", name: "rashimba_status"
+    t.check_constraint "status::text = ANY (ARRAY['pending'::character varying::text, 'reviewed'::character varying::text, 'resolved'::character varying::text])", name: "rashimba_status"
   end
 
   create_table "recruit_applications", force: :cascade do |t|
