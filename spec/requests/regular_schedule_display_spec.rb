@@ -92,6 +92,26 @@ RSpec.describe 'Regular weekdays on booking screens' do
     end
   end
 
+  it 'shows the latest uploaded weekdays to admins and managers before the schedule month starts' do
+    travel_to Time.zone.local(2026, 10, 30) do
+      %i[admin area_manager school_manager].each do |role|
+        sign_in create(role, allowed_ips: ['*'])
+
+        get child_path(id: child.id, locale: :ja)
+
+        expect(response).to have_http_status(:ok)
+        expect(Nokogiri::HTML(response.body).at_css('.regular-school-days').text.strip)
+          .to eq('火・水')
+      end
+
+      sign_in child.parent
+      get child_path(id: child.id, locale: :ja)
+
+      expect(response).to have_http_status(:ok)
+      expect(Nokogiri::HTML(response.body).css('.regular-school-days')).to be_empty
+    end
+  end
+
   it 'updates annotations without modifying saved summaries, costs or sending emails' do
     sign_in create(:admin)
     original = invoice.attributes.slice('summary', 'total_cost', 'updated_at')

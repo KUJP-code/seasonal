@@ -79,11 +79,14 @@ and snack waiver apply only to students who are currently internal.
 Schedule edits and automatic clearing are recorded with PaperTrail and the
 uploading admin. Uploads without changes do not create repeat schedule versions.
 
-For staff only, booking screens display one set of weekdays, such as `月・水・金`,
-centered in red below the student's name. Use the effective schedule for the
+For staff only, booking screens display one set of weekdays for internal students,
+such as `月・水・金`, centered in red below the student's name. Other student
+categories do not display the weekday summary. Use the effective schedule for the
 event's final month, or the latest event's final month on combined booking lists.
 Do not show month labels or earlier weekday patterns. Staff student information
-shows only the current effective weekdays.
+shows only the latest uploaded, dated schedule's weekdays, including an upcoming
+month before it begins. This display does not change the activity-month lookup
+used for pricing and attendance matching.
 Each booked afternoon checks its own calendar month's
 effective weekdays and displays the red `通学日` label on a match for staff.
 Parents do not see monthly weekdays, schedule tables, or regular-day activity

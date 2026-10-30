@@ -2,10 +2,15 @@
 
 module ChildrenHelper
   def monthly_regular_days(child, events: nil)
-    date = events.nil? ? Time.zone.today : Array(events).map(&:end_date).max
-    return '' unless date
+    return '' unless child.internal?
 
-    schedule = child.regular_schedule_for(date)
+    schedule = if events.nil?
+                 child.regular_schedules.select(&:month).max_by(&:month)
+               else
+                 date = Array(events).map(&:end_date).max
+                 child.regular_schedule_for(date) if date
+               end
+
     return '' unless schedule
 
     schedule.days.gsub(', ', '・').presence || '—'

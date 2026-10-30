@@ -11,6 +11,16 @@ RSpec.describe ChildrenHelper do
       build(:event, start_date: Date.new(2027, 1, 1), end_date: Date.new(2027, 2, 28))
     end
 
+    %i[external reservation unknown].each do |category|
+      it "hides recorded weekdays for #{category} students" do
+        child.update!(category:)
+        create(:regular_schedule, child:, month: Date.new(2026, 12, 1), monday: true)
+
+        expect(helper.monthly_regular_days(child)).to eq('')
+        expect(helper.monthly_regular_days(child, events: [event])).to eq('')
+      end
+    end
+
     it 'shows only the latest weekdays applicable to the event' do
       create(:regular_schedule, child:, month: Date.new(2026, 12, 1), monday: true)
       create(:regular_schedule, child:, month: Date.new(2027, 2, 1), tuesday: true)
@@ -22,14 +32,23 @@ RSpec.describe ChildrenHelper do
       end
     end
 
-    it 'shows current weekdays on student information using an earlier upload' do
+    it 'shows only the latest uploaded weekdays on student information' do
       create(:regular_schedule, child:, month: Date.new(2026, 12, 1), monday: true)
       create(:regular_schedule, child:, month: Date.new(2027, 2, 1), tuesday: true)
 
       travel_to Date.new(2027, 1, 4) do
         I18n.with_locale(:ja) do
-          expect(helper.monthly_regular_days(child)).to eq('月')
+          expect(helper.monthly_regular_days(child)).to eq('火')
         end
+      end
+    end
+
+    it 'shows November weekdays on student information before November starts' do
+      create(:regular_schedule, child:, month: Date.new(2026, 11, 1),
+                                monday: true, wednesday: true, friday: true)
+
+      travel_to Date.new(2026, 10, 30) do
+        expect(helper.monthly_regular_days(child)).to eq('月・水・金')
       end
     end
 
