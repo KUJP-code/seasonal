@@ -53,7 +53,7 @@ class InvoicePolicy < ApplicationPolicy
 
   def permitted_attributes
     always_permit = [
-      :id, :child_id, :event_id,
+      :id, :child_id, :event_id, :photo_service_opt_out,
       { slot_regs_attributes: %i[id child_id _destroy invoice_id
                                  pricing_batch registerable_id registerable_type],
         opt_regs_attributes: %i[id child_id _destroy invoice_id

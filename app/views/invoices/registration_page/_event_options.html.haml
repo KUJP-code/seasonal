@@ -1,61 +1,76 @@
 -# locals: (child:, event_options:, confirmed_opt_regs:,
   registrations:, siblings:)
 
-:ruby
-  siblings_registered_for_event = if event_options.first
-    event_id = event_options.first.optionable_id
-    siblings.any? { |sibling| sibling.time_slots.where(event_id: event_id).exists? }
-  else
-    false
-  end
-
-
 - event_options.each do |opt|
-  - if confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id }
-  - else
-    :ruby
-      registered = registrations.any? do |reg|
-        reg.child_id == child.id && reg.registerable_id == opt.id
+  :ruby
+    photo_service = opt.photo_service?
+    eligible = !photo_service || child.photo_service_eligible_for?(opt.optionable)
+    confirmed = confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id }
+  - next if confirmed && !photo_service
+
+  :ruby
+    registered = registrations.any? do |reg|
+      reg.child_id == child.id && reg.registerable_id == opt.id
+    end
+    eligible_siblings = siblings.select do |sibling|
+      if photo_service
+        sibling.photo_service_eligible_for?(opt.optionable)
+      else
+        sibling.time_slots.where(event_id: opt.optionable_id).exists?
       end
-      sibling_has_photo = opt.optionable.respond_to?(:pricing_rules_2026?) &&
-        opt.optionable.pricing_rules_2026? &&
-        siblings.any? { |sibling| sibling.options.exists?(id: opt.id) }
-      show_sibling_warning = opt.event? &&
-        opt.optionable.respond_to?(:pricing_rules_2026?) &&
-        opt.optionable.pricing_rules_2026? &&
-        siblings_registered_for_event
-      default_opt = opt.optionable.party? || sibling_has_photo
-    %div{ class: 'add_ref ' \
-                 'form-check form-switch p-0',
-          data: { controller: 'register',
-                  'register-id-value': opt.id,
-                  'register-type-value': 'Option',
-                  'register-child-value': @child.id,
-                  'register-cost-value': opt.cost,
-                  'register-default-value': (default_opt ? 'true' : 'false'),
-                  'register-sibling-warning-value': (show_sibling_warning ? 'true' : 'false'),
-                  'register-sibling-warning-message-value':
-                    '兄弟姉妹のお申込内容にもフォトサービスが反映されます。続行しますか？'
-                  } }
+    end
+    show_sibling_warning = opt.event? && opt.optionable.pricing_rules_2026? && eligible_siblings.any?
+    family_selected = (registered && eligible) ||
+      eligible_siblings.any? { |sibling| sibling.options.exists?(id: opt.id) }
+    sibling_photo_count = photo_service ? opt.registrations.where(child: siblings).count : 0
+    ineligible_photo_count = photo_service ? opt.registrations.where(child: siblings - eligible_siblings).count : 0
+    default_opt = !confirmed && eligible && opt.optionable.party?
 
-      %label{ class: 'photoservice-container',
-              'data-register-target': 'name', for: "eopt#{opt.id}" }
-        = picture_tag ['photo_service.png', 'photo_service_mobile.png'],
-                      class: 'photoservice-picture',
-                      image: { class: 'photoservice-image' }
+  %div{ class: "add_ref form-check form-switch p-0 #{'photo-service-offer' if photo_service}",
+        data: { controller: 'register',
+                'price-target': ('photoService' if photo_service),
+                'photo-option-id': opt.id,
+                'photo-confirmed': confirmed.to_s,
+                'photo-family-selected': family_selected.to_s,
+                'photo-sibling-selected-delta': (eligible_siblings.size - sibling_photo_count) * opt.cost,
+                'photo-sibling-unselected-delta': -sibling_photo_count * opt.cost,
+                'photo-sibling-ineligible-delta': -ineligible_photo_count * opt.cost,
+                'register-id-value': opt.id,
+                'register-type-value': 'Option',
+                'register-child-value': child.id,
+                'register-cost-value': opt.cost,
+                'register-default-value': default_opt.to_s,
+                'register-sibling-warning-value': show_sibling_warning.to_s,
+                'register-sibling-warning-message-value': t('photo_service.sibling_warning'),
+                'register-sibling-removal-warning-message-value': t('photo_service.sibling_removal_warning') } }
+    %label{ class: "photoservice-container #{'photo-service-disabled' unless eligible}",
+            'data-register-target': 'name', for: "eopt#{opt.id}" }
+      = picture_tag ['photo_service.png', 'photo_service_mobile.png'],
+                    class: 'photoservice-picture',
+                    image: { class: 'photoservice-image' }
 
-        .photoservice-label
-          .text-white.fw-bold= number_to_currency(opt.cost, locale: :ja)
-          = check_box_tag "eopt#{opt.id}",
-                          "eopt#{opt.id}",
-                          (true if registered),
-                          class: 'form-check-input m-0',
-                          data: { action: 'register#toggle',
-                                  'register-target': 'button' },
-                          role: 'switch'
-      - if opt.optionable.respond_to?(:seasonal?) && opt.optionable.seasonal?
-        %p.text-white.text-center.mb-0.mt-1.fw-semibold{ style: 'font-size: 0.75rem;' }
-          ※撮影は午前のみ。お一人のお申し込みで、参加するごきょうだい全員に自動追加されます（料金は人数分かかります）。
-      - if opt.optionable.party?
-        %p.text-white.small.text-center.mt-1.mb-0{ style: "font-size: 0.75rem;" }
-          ※フォトサービスを利用されない方はチェックを外してください
+      .photoservice-label
+        .text-white.fw-bold= number_to_currency(opt.cost, locale: :ja)
+        = check_box_tag "eopt#{opt.id}",
+                        "eopt#{opt.id}", registered && eligible,
+                        class: 'form-check-input m-0 photo-service-toggle',
+                        disabled: !eligible || confirmed,
+                        aria: { describedby: ("photo-service-help-#{opt.id}" if photo_service) },
+                        data: { action: 'register#toggle', 'register-target': 'button' },
+                        role: 'switch'
+
+    - if photo_service
+      .photo-service-help{ id: "photo-service-help-#{opt.id}",
+                           role: 'status', 'aria-live': 'polite' }
+        %p.mb-0{ 'data-photo-unavailable': true, hidden: eligible }
+          = t('photo_service.unavailable')
+        %p.mb-0{ 'data-photo-available': true, hidden: !eligible }
+          = t('photo_service.available')
+          - if confirmed
+            %span.d-block= t('photo_service.confirmed')
+    - elsif opt.optionable.seasonal?
+      %p.text-white.text-center.mb-0.mt-1.fw-semibold{ style: 'font-size: 0.75rem;' }
+        = t('photo_service.available')
+    - if opt.optionable.party?
+      %p.text-white.small.text-center.mt-1.mb-0{ style: 'font-size: 0.75rem;' }
+        ※フォトサービスを利用されない方はチェックを外してください

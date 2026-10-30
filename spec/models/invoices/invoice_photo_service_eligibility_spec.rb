@@ -70,6 +70,24 @@ RSpec.describe 'Invoice photo-service eligibility' do
     expect(invoice_with_photo([afternoon]).opt_regs).to be_empty
   end
 
+  it 'includes the family photo fee in the preview when a sibling adds a morning later' do
+    sibling = create(:internal_child, parent: child.parent)
+    create(:invoice, child: sibling, event:,
+                     slot_regs_attributes: [{ child_id: sibling.id, registerable: morning }],
+                     opt_regs_attributes: [{ child_id: sibling.id, registerable_id: photo.id,
+                                             registerable_type: 'Option' }])
+    invoice = create(:invoice, child:, event:,
+                     slot_regs_attributes: [{ child_id: child.id, registerable: afternoon }])
+    expect(invoice.opt_regs).to be_empty
+    extra_morning = create(:time_slot, :morning, event:)
+    invoice.slot_regs.build(child:, registerable: extra_morning)
+
+    invoice.calc_cost
+
+    expect(invoice.generate_data[:opt_cost]).to eq(photo.cost)
+    expect(invoice.summary).to include(photo.name)
+  end
+
   it 'removes a legacy photo charge from a confirmed afternoon-only invoice during explicit recalculation' do
     invoice = create(:invoice, child:, event:,
                      slot_regs_attributes: [{ child_id: child.id, registerable: afternoon }])

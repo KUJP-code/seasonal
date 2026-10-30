@@ -29,6 +29,7 @@
                action: stimulus_actions,
                'price-price-list-value': @price_list.to_json,
                'price-regular-day-prices-value': @regular_day_prices.to_json,
+               'price-photo-slot-ids-value': @event.time_slots.photo_service_eligible.ids.to_json,
                'price-pricing-rules2026-value': @event.pricing_rules_2026?,
                'price-snack-cost-value': TimeSlot.snack_cost_for(@event),
                'price-sibling-event-cost-value': @siblings_event_cost || 0,

@@ -9,7 +9,7 @@
 
 %footer{ class: 'w-100 d-flex justify-content-center ' \
                 'justify-content-md-evenly align-items-center ' \
-                'flex-wrap gap-3 bg-info p-2 rounded sticky-bottom',
+                "flex-wrap gap-3 bg-info p-2 rounded sticky-bottom #{'photo-service-footer' if event_options.any?(&:photo_service?)}",
          id: 'price-bar' }
   %h2.text-white.fw-bold#total_cost{ data: { 'price-target': 'finalCost' } }
     = t('.total_cost')
@@ -43,6 +43,7 @@
       = f.hidden_field :id
       = f.hidden_field :child_id
       = f.hidden_field :event_id
+      = f.hidden_field :photo_service_opt_out, value: 'false'
 
       .slot_regs.hidden{ data: { 'price-target': 'slotRegs' } }
         = f.fields_for :slot_regs do |slot_f|

@@ -43,7 +43,7 @@ class InvoicesController < ApplicationController
     @invoice = authorize Invoice.new(permitted_attributes(Invoice))
 
     if @invoice.save
-      @invoice.sync_photo_service_with_siblings!
+      @invoice.sync_photo_service_with_siblings!(allow_opt_out: false)
       send_emails(@invoice) unless current_user.admin?
       redirect_to invoice_path(@invoice, updated: true),
                   notice: t('success', model: 'お申込', action: '追加')
@@ -194,11 +194,13 @@ class InvoicesController < ApplicationController
   end
 
   def full_update
+    photo_ids = @invoice.event.options.where(category: :event).select(:id)
+    previously_selected_photo = @invoice.child.options.exists?(id: photo_ids)
     if @invoice.update(permitted_attributes(@invoice))
       # FIXME: bandaid to cover for the fact that some callbacks don't
       # update the summary (adjustments, option registrations)
       @invoice.reload.calc_cost && @invoice.save
-      @invoice.sync_photo_service_with_siblings!
+      @invoice.sync_photo_service_with_siblings!(allow_opt_out: previously_selected_photo)
       # Only send emails on customer updates or staff confirmations
       send_emails(@invoice) if current_user.customer? || @invoice.email_sent
       redirect_to invoice_path(

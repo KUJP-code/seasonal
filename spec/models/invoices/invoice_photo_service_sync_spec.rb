@@ -166,6 +166,39 @@ RSpec.describe Invoice do
     expect(invoice.reload.opt_regs.where(registerable: photo_option)).to be_empty
   end
 
+  it 'inherits the family selection when another child becomes eligible' do
+    invoice = create(:invoice, child:, event:)
+    add_slot(invoice, child)
+    sibling_invoice = create(:invoice, child: sibling, event:)
+    add_slot(sibling_invoice, sibling)
+    add_photo(sibling_invoice, sibling)
+
+    invoice.sync_photo_service_with_siblings!(allow_opt_out: false)
+
+    expect(invoice.reload.opt_regs.where(registerable: photo_option)).to be_present
+    expect(sibling_invoice.reload.opt_regs.where(registerable: photo_option)).to be_present
+  end
+
+  it 'removes photo service from all eligible siblings after an explicit family opt-out' do
+    third_child = create(:child, parent:)
+    invoices = [child, sibling, third_child].map do |student|
+      record = create(:invoice, child: student, event:)
+      add_slot(record, student)
+      add_photo(record, student)
+      record
+    end
+    source = invoices.first
+    source.photo_service_opt_out = 'true'
+    source.calc_cost
+    source.save!
+
+    source.sync_photo_service_with_siblings!(allow_opt_out: false)
+
+    invoices.each do |record|
+      expect(record.reload.opt_regs.where(registerable: photo_option)).to be_empty
+    end
+  end
+
   it 'removes stale photo service from confirmed afternoon-only sibling invoices' do
     invoice = create(:invoice, child:, event:)
     add_slot(invoice, child)

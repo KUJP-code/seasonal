@@ -60,7 +60,7 @@ RSpec.describe 'Invoice recalculation' do
     sign_in create(:admin)
     patch recalculate_invoice_path(id: invoice.id)
 
-    expect(response).to redirect_to(invoice_path(id: invoice.id))
+    expect(response).to redirect_to(invoice_path(id: invoice.id, locale: :en))
     expect(invoice.reload.total_cost).to eq(member_prices.courses['10'])
     expect(invoice.slot_regs.map(&:pricing_batch).uniq).to eq([1])
   end

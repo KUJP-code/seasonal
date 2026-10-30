@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Invoice < ApplicationRecord
+  attr_accessor :photo_service_opt_out
+
   include InvoiceCalculatable
   include InvoicePdfable
   include InvoiceSummarisable
@@ -59,6 +61,7 @@ class Invoice < ApplicationRecord
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   def calc_cost
+    inherit_family_photo_service
     remove_ineligible_photo_service
     assign_pricing_batches
     generate_data
@@ -81,7 +84,7 @@ class Invoice < ApplicationRecord
     other_slots.photo_service_eligible.exists?
   end
 
-  def sync_photo_service_with_siblings!
+  def sync_photo_service_with_siblings!(allow_opt_out: true)
     return unless event.pricing_rules_2026?
 
     photo_option_ids = event.options.where(category: :event).pluck(:id)
@@ -102,7 +105,14 @@ class Invoice < ApplicationRecord
                                registerable_id: photo_option_ids
                              })
 
-    sync_eligible_siblings = eligible_siblings.include?(child)
+    opted_out = photo_service_opted_out?
+    if opted_out
+      current_has_photo = false
+    elsif !current_has_photo && !allow_opt_out
+      current_has_photo = eligible_siblings.any? { |sibling| sibling.options.exists?(id: photo_option_ids) }
+    end
+    sync_eligible_siblings = opted_out ||
+      (eligible_siblings.include?(child) && (current_has_photo || allow_opt_out))
 
     siblings.each do |sibling|
       next if eligible_siblings.include?(sibling) && !sync_eligible_siblings
@@ -140,6 +150,7 @@ class Invoice < ApplicationRecord
       next unless updated
 
       target_invoice.reload
+      target_invoice.photo_service_opt_out = !current_has_photo
       target_invoice.calc_cost
       target_invoice.save!
     end
@@ -156,11 +167,30 @@ class Invoice < ApplicationRecord
 
   private
 
+  def photo_service_opted_out?
+    ActiveModel::Type::Boolean.new.cast(photo_service_opt_out)
+  end
+
+  def inherit_family_photo_service
+    return unless event.seasonal? && event.pricing_rules_2026?
+    return if photo_service_opted_out? || !photo_service_eligible?
+
+    event.options.select(&:photo_service?).each do |option|
+      next if opt_regs.any? { |reg| reg.registerable_id == option.id && !reg.marked_for_destruction? }
+      next if child.options.exists?(id: option.id)
+
+      family_selected = child.siblings.any? do |sibling|
+        sibling.photo_service_eligible_for?(event) && sibling.options.exists?(id: option.id)
+      end
+      opt_regs.build(child:, registerable: option) if family_selected
+    end
+  end
+
   def remove_ineligible_photo_service
     photo_regs = opt_regs.reject(&:marked_for_destruction?).select do |reg|
       reg.registerable.photo_service?
     end
-    return if photo_regs.empty? || photo_service_eligible?
+    return if photo_regs.empty? || (photo_service_eligible? && !photo_service_opted_out?)
 
     photo_regs.each(&:mark_for_destruction)
   end

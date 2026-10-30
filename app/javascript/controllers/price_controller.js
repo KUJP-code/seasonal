@@ -12,12 +12,14 @@ export default class extends Controller {
 		"optCount",
 		"slotRegs",
 		"snackCount",
+		"photoService",
 	];
 
 	static values = {
 		eventName: String,
 		priceList: Object,
 		regularDayPrices: Object,
+		photoSlotIds: Array,
 		pricingRules2026: Boolean,
 		siblingEventCost: Number,
 		snackCost: Number,
@@ -25,6 +27,7 @@ export default class extends Controller {
 
 	// Base function called when form modified
 	calculate() {
+		this.updatePhotoService();
 		const courseCost = this.calcCourseCost();
 		const optionCost = this.optCostTargets
 			.filter((cost) => cost.classList.contains("registered"))
@@ -67,7 +70,7 @@ export default class extends Controller {
 			`合計（税込）: ${finalCost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}円`;
 
 		this.eventCostTarget.innerHTML =
-			`${this.eventNameValue}の合計: ${(this.siblingEventCostValue + finalCost)
+			`${this.eventNameValue}の合計: ${(this.siblingEventCostValue + this.photoSiblingAdjustment() + finalCost)
 				.toString()
 				.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}円`;
 
@@ -93,7 +96,66 @@ export default class extends Controller {
 		this.confirmText = this.confirmTarget.value;
 		this.initialCost = this.getInitialCost();
 		this.priceList = this.priceListValue;
-		this.preventSubmission();
+		if (this.updatePhotoService()) this.calculate();
+		else this.preventSubmission();
+	}
+
+	updatePhotoService() {
+		if (!this.hasPhotoServiceTarget) return false;
+		const childId = Number.parseInt(this.childTarget.children[0].innerHTML, 10);
+		const eligibleIds = new Set(this.photoSlotIdsValue.map(String));
+		const eligible = this.slotRegsTargets.some((target) =>
+			[...target.querySelectorAll(`.slot_reg.child${childId}`)].some((reg) =>
+				eligibleIds.has(reg.querySelector("input[name*='[registerable_id]']")?.value),
+			),
+		);
+		let changed = false;
+		this.photoServiceTargets.forEach((banner) => {
+			const checkbox = banner.querySelector(".photo-service-toggle");
+			checkbox.disabled = !eligible || banner.dataset.photoConfirmed === "true";
+			banner.querySelector(".photoservice-container").classList.toggle("photo-service-disabled", !eligible);
+			banner.querySelector("[data-photo-available]").hidden = !eligible;
+			banner.querySelector("[data-photo-unavailable]").hidden = eligible;
+			const optionId = banner.dataset.photoOptionId;
+			const registered = this.optRegsTargets.some((target) =>
+				target.querySelector(`#opt${optionId}child${childId}.child${childId}`),
+			);
+			if (eligible && banner.dataset.photoFamilySelected === "true" && !registered && !checkbox.checked) {
+				checkbox.checked = true;
+				checkbox.classList.add("registered");
+				changed = true;
+				this.element.dispatchEvent(new CustomEvent("register:toggle", {
+					bubbles: true,
+					detail: {
+						child: String(childId), id: optionId, type: "Option", checked: true,
+						cost: banner.dataset.registerCostValue,
+					},
+				}));
+				return;
+			}
+			if (eligible || (!checkbox.checked && !registered)) return;
+
+			checkbox.checked = false;
+			checkbox.classList.remove("registered");
+			changed = true;
+			this.element.dispatchEvent(new CustomEvent("register:toggle", {
+				bubbles: true,
+				detail: { child: String(childId), id: optionId, type: "Option", checked: false },
+			}));
+		});
+		return changed;
+	}
+
+	photoSiblingAdjustment() {
+		return this.photoServiceTargets.reduce((sum, banner) => {
+			let key = "photoSiblingIneligibleDelta";
+			if (banner.dataset.photoFamilyOptedOut === "true") key = "photoSiblingUnselectedDelta";
+			else if (banner.dataset.photoFamilySelected === "true" &&
+				!banner.querySelector(".photoservice-container").classList.contains("photo-service-disabled")) {
+				key = "photoSiblingSelectedDelta";
+			}
+			return sum + Number(banner.dataset[key] || 0);
+		}, 0);
 	}
 
 	// Calculates total change due to adjustments

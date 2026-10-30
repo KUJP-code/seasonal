@@ -14,9 +14,11 @@ export default class extends Controller {
     default: Boolean,
     siblingWarning: Boolean,
     siblingWarningMessage: String,
+    siblingRemovalWarningMessage: String,
   };
   // Automatically tick photo service on for parties
   connect() {
+    this.buttonTarget.classList.toggle("registered", this.buttonTarget.checked);
     console.log("connected", {
       defaultValue: this.defaultValue,
       button: this.buttonTarget,
@@ -24,7 +26,7 @@ export default class extends Controller {
 
     // added incase dom wasnt ready
     setTimeout(() => {
-      if (this.defaultValue) {
+      if (this.defaultValue && !this.buttonTarget.disabled) {
         this.buttonTarget.checked = true;
         this.buttonTarget.classList.add("registered");
         this.dispatch("toggle", {
@@ -46,6 +48,7 @@ export default class extends Controller {
 
   toggle(e) {
     e.preventDefault();
+    if (this.buttonTarget.disabled) return;
 
     const child = this.childValue;
     const checked = this.buttonTarget.checked;
@@ -59,9 +62,10 @@ export default class extends Controller {
     const type = this.typeValue;
 
     if (this.siblingWarningValue && checked !== wasRegistered) {
-      const warningMessage =
-        this.siblingWarningMessageValue ||
-        "兄弟姉妹のお申込内容にもフォトサービスが反映されます。続行しますか？";
+      const warningMessage = !checked && this.siblingRemovalWarningMessageValue
+        ? this.siblingRemovalWarningMessageValue
+        : this.siblingWarningMessageValue ||
+          "兄弟姉妹のお申込内容にもフォトサービスが反映されます。続行しますか？";
 
       if (!window.confirm(warningMessage)) {
         this.buttonTarget.checked = wasRegistered;
@@ -73,6 +77,15 @@ export default class extends Controller {
       this.buttonTarget.classList.add("registered");
     } else {
       this.buttonTarget.classList.remove("registered");
+    }
+
+    if (this.element.matches('[data-price-target~="photoService"]')) {
+      this.element.dataset.photoFamilySelected = String(checked);
+      this.element.dataset.photoFamilyOptedOut = String(!checked);
+      const invoice = this.element.closest('[data-controller~="invoice"]');
+      invoice?.querySelectorAll('input[name="invoice[photo_service_opt_out]"]').forEach((field) => {
+        field.value = String(!checked);
+      });
     }
 
     this.dispatch("toggle", {

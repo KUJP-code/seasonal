@@ -10,7 +10,7 @@
 <% others_cost = @child.parent.invoices.where(event_id: @event.id).where.not(child_id: @child.id).reduce(0) { |sum, invoice| sum + invoice.total_cost } unless @child.parent.nil? %>
 
 
-<main id="event-show" data-controller="invoice price" data-action="register:toggle->invoice#change invoice:add@window->price#calculate invoice:remove@window->price#calculate" data-price-price-list-value=<%= @price_list.to_json %> data-price-regular-day-prices-value="<%= @regular_day_prices.to_json %>" data-price-pricing-rules2026-value="<%= @event.pricing_rules_2026? %>" data-price-snack-cost-value="<%= TimeSlot.snack_cost_for(@event) %>" data-price-sibling-event-cost-value="<%= others_cost || 0 %>" data-price-event-name-value="<%= @event.name %>" class="d-flex flex-column justify-content-start align-items-start text-start bg-white">
+<main id="event-show" data-controller="invoice price" data-action="register:toggle->invoice#change invoice:add@window->price#calculate invoice:remove@window->price#calculate" data-price-price-list-value=<%= @price_list.to_json %> data-price-regular-day-prices-value="<%= @regular_day_prices.to_json %>" data-price-photo-slot-ids-value="<%= @event.time_slots.photo_service_eligible.ids.to_json %>" data-price-pricing-rules2026-value="<%= @event.pricing_rules_2026? %>" data-price-snack-cost-value="<%= TimeSlot.snack_cost_for(@event) %>" data-price-sibling-event-cost-value="<%= others_cost || 0 %>" data-price-event-name-value="<%= @event.name %>" class="d-flex flex-column justify-content-start align-items-start text-start bg-white">
 
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 w-100">
         <%= render 'invoices/registration_page/header', child: @child, siblings: @siblings, event: @event, event_cost: @event_cost %>
@@ -90,7 +90,7 @@
         </div>
 
 
-        <div id="price-bar" class="w-100 d-flex justify-content-evenly align-items-center flex-wrap gap-2 bg-info p-2 rounded sticky-bottom">
+        <div id="price-bar" class="w-100 d-flex justify-content-evenly align-items-center flex-wrap gap-2 bg-info p-2 rounded sticky-bottom <%= 'photo-service-footer' if @event.options.any?(&:photo_service?) %>">
             <h3 id="total_cost" class="text-white fw-bold" data-price-target="finalCost">
                 <% initial_cost = @all_invoices.reduce(0) do |sum, i|
              sum + i.total_cost
@@ -127,6 +127,7 @@
                     <%= f.hidden_field :id %>
                     <%= f.hidden_field :child_id %>
                     <%= f.hidden_field :event_id %>
+                    <%= f.hidden_field :photo_service_opt_out, value: 'false' %>
                     <div class="slot_regs" data-price-target="slotRegs">
                         <%= f.fields_for :slot_regs do |slot_f| %>
                         <div class="slot_reg <%= "child#{slot_f.object.child_id}" %>" id=<%= "slot#{slot_f.object.registerable_id}child#{slot_f.object.child_id}" %> data-pricing-batch="<%= slot_f.object.pricing_batch || 1 %>">

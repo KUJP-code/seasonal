@@ -1,0 +1,7 @@
+en:
+  photo_service:
+    confirmed: "Photo service is already included in a confirmed booking."
+    unavailable: "Select a morning or special activity to enable photo service. Regular afternoon-only bookings have no photography or photo-service fee."
+    available: "Photo service covers mornings and special activities. It also applies to siblings attending those activities; the fee is per eligible child."
+    sibling_warning: "This will also update photo service for eligible siblings attending this event. Continue?"
+    sibling_removal_warning: "Saving this change will also remove photo service from eligible siblings' bookings for this event. Continue?"
