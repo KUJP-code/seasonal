@@ -32,7 +32,12 @@
             cost: number_to_currency(activity_modifier(slot, child)))
 
     - if slot.snack
-      %p #{t('.snack')}: ◯
+      - if child.own_snack?
+        %p= t('regular_day_pricing.own_snack')
+      - elsif !regular_day_price.nil?
+        %p= t('regular_day_pricing.snack_waived')
+      - else
+        %p #{t('.snack')}: ◯
 
     - slot.options.each do |opt|
       - next if opt_regs.none? { |reg| reg.registerable_id == opt.id }
@@ -93,7 +98,7 @@
             - if !regular_day_price.nil?
               %p= t('regular_day_pricing.snack_waived')
             - elsif child.own_snack?
-              %p おやつ持参（料金なし）
+              %p= t('regular_day_pricing.own_snack')
             - else
               %p #{t('.snack')}: ◯
 

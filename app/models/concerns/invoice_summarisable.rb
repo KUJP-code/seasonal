@@ -42,18 +42,25 @@ module InvoiceSummarisable
                  else
                    ''
                  end
-    snack_cost = if data[:snack_cost].positive?
-                   "<p>午後コースおやつ代 x #{data[:snack_count]}: #{yenify(data[:snack_cost])}</p>\n"
-                 else
-                   ''
-                 end
     "<div class='d-flex flex-column align-items-start gap-1'>
         <h4 class='fw-semibold'>コース:</h4>
         #{data[:course_summary]}\n
         #{regular_day_summary(data)}
         #{extra_cost}
-        #{snack_cost}
+        #{snack_summary(data)}
     </div>"
+  end
+
+  def snack_summary(data)
+    if data[:snack_cost].positive?
+      "<p>午後コースおやつ代 x #{data[:snack_count]}: #{yenify(data[:snack_cost])}</p>\n"
+    elsif child.own_snack? && data[:time_slots].any? do |slot|
+      slot.snack? && slot.regular_day_price_for(child).nil?
+    end
+      "<p>おやつ代なし（おやつ持参）</p>\n"
+    else
+      ''
+    end
   end
 
   def regular_day_summary(data)

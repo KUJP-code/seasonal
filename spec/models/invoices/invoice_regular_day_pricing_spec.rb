@@ -169,8 +169,29 @@ RSpec.describe Invoice do
   it 'keeps the own-snack exemption on non-regular afternoons' do
     child.update!(own_snack: true)
 
-    expect(invoice_for([afternoon(7, snack: true),
-                        afternoon(9, snack: true)]).total_cost).to eq(8200)
+    invoice = invoice_for([afternoon(7, snack: true), afternoon(9, snack: true)])
+
+    expect(invoice.total_cost).to eq(8200)
+    expect(invoice.summary.scan('おやつ代なし（おやつ持参）').size).to eq(1)
+  end
+
+  it 'does not attribute the regular-day snack waiver to bringing a snack' do
+    child.update!(own_snack: true)
+
+    expect(invoice_for([afternoon(7, snack: true)]).summary)
+      .not_to include('おやつ代なし（おやつ持参）')
+  end
+
+  it 'does not add an own-snack notice when no booked activities provide snacks' do
+    child.update!(own_snack: true)
+
+    expect(invoice_for([afternoon(9, snack: false)]).summary)
+      .not_to include('おやつ代なし（おやつ持参）')
+  end
+
+  it 'does not add an own-snack notice for children receiving snacks' do
+    expect(invoice_for([afternoon(9, snack: true)]).summary)
+      .not_to include('おやつ代なし（おやつ持参）')
   end
 
   it 'preserves separate normal pricing batches when regular-day afternoons are added later' do

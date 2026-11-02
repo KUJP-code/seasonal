@@ -64,7 +64,53 @@ RSpec.describe 'Regular-day afternoon booking prices', :js do
     expect(find_by_id('total_cost').text).to eq(cost_text(23_125))
   end
 
-  it 'keeps external students on normal pricing even when their price list has a regular-day rate' do
+  it 'waives own-snack fees through booking and labels confirmed activities correctly' do
+    child.update!(own_snack: true)
+    slot = afternoon(9)
+
+    visit new_invoice_path(event_id: event.id, child: child.id, locale: :ja)
+    check "a_slot#{slot.id}"
+    expect(page).to have_content('おやつ持参（料金なし）')
+    expect(find_by_id('total_cost').text).to eq(cost_text(5500))
+    uncheck "a_slot#{slot.id}"
+    expect(find_by_id('total_cost').text).to eq(cost_text(0))
+    check "a_slot#{slot.id}"
+    expect(find_by_id('total_cost').text).to eq(cost_text(5500))
+
+    click_on I18n.t('invoices.registration_page.price_footer.confirm_invoice')
+    expect(page).to have_css('#final_cost', text: cost_text(5500))
+    expect(page).to have_content('おやつ代なし（おやつ持参）', count: 1)
+    expect(page).to have_no_content('午後コースおやつ代 x')
+    click_on I18n.t('invoices.confirm.confirm_changes')
+    expect(page).to have_content(I18n.t('invoices.show.confirm_success'))
+    invoice = child.invoices.last
+    expect(invoice.total_cost).to eq(5500)
+    expect(invoice.summary).not_to include('午後コースおやつ代 x')
+    expect(invoice.summary.scan('おやつ代なし（おやつ持参）').size).to eq(1)
+
+    invoice.update!(in_ss: true)
+    visit new_invoice_path(event_id: event.id, child: child.id, locale: :ja)
+    find('summary', text: I18n.t('invoices.new.registered_slots')).click
+    expect(page).to have_content('おやつ持参（料金なし）')
+    expect(page).to have_no_content('午後コースおやつ代: ◯')
+    expect(find_by_id('total_cost').text).to match(/合計（税込）\s*:\s*5,500円/)
+  end
+
+  it 'also waives own-snack fees for external students and special activities on the event page' do
+    child.update!(category: :external, own_snack: true)
+    event.update!(non_member_prices: prices)
+    normal = afternoon(9)
+    special = afternoon(10, category: :special)
+
+    visit event_path(id: event.id, child: child.id, locale: :ja)
+    check "a_slot#{normal.id}"
+    check "a_slot#{special.id}"
+
+    expect(find_by_id('total_cost').text).to eq(cost_text(11_000))
+    expect(page).to have_content('おやつ持参（料金なし）', count: 2)
+  end
+
+  it 'keeps external students on normal pricing when their price list has a regular-day rate' do
     child.update!(category: :external)
     event.update!(non_member_prices: prices)
     slots = [7, 8, 9, 10, 11].map { |day| afternoon(day) }
