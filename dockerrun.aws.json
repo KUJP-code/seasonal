@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:3.2.9-child_show"
+    "Name": "kidsup/event_site:3.3-photo_service"
   },
   "Ports": [
     {
