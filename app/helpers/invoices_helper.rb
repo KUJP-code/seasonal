@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 module InvoicesHelper
+  def photo_service_copy_scope(event)
+    winter_event = event.name == 'ウインタースクール 2026' && event.start_date&.year == 2026
+    before_cutoff = Time.current.in_time_zone('Tokyo').to_date <= Date.new(2027, 1, 7)
+
+    winter_event && before_cutoff ? 'photo_service.winter_2026' : 'photo_service'
+  end
+
   def invoice_version_actor(version)
     actor = version.whodunnit.to_s
     return t('invoices.show.system_change') unless actor.match?(/\A[1-9]\d*\z/)

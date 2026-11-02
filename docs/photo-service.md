@@ -12,6 +12,13 @@ explanation for ineligible bookings. Selecting a morning or special activity
 enables it. Removing the last eligible activity unchecks it and removes its
 fee from the live total. Valid confirmed photo selections stay checked and
 locked. The availability explanation is provided in English and Japanese.
+The banner has separate before/after-selection wording and a shared sibling-fee
+notice. Winter School 2026 uses the supplied December 25–January 7 wording
+through January 7, 2027 (Japan time), reverting to the general morning/special
+wording from January 8. This is a copy override only: it does not restrict
+eligibility dates or remove special activities from eligibility. Other events
+always use the general wording. Mobile text wraps without clipping, and the
+footer uses compact spacing and a smaller banner.
 
 The server applies the same rule to submitted options and invoice summaries.
 Saving or explicitly recalculating an ineligible invoice removes its photo

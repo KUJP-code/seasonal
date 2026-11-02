@@ -4,6 +4,7 @@
 - event_options.each do |opt|
   :ruby
     photo_service = opt.photo_service?
+    copy_scope = photo_service_copy_scope(opt.optionable)
     eligible = !photo_service || child.photo_service_eligible_for?(opt.optionable)
     confirmed = confirmed_opt_regs.any? { |reg| reg.registerable_id == opt.id }
   - next if confirmed && !photo_service
@@ -63,14 +64,17 @@
       .photo-service-help{ id: "photo-service-help-#{opt.id}",
                            role: 'status', 'aria-live': 'polite' }
         %p.mb-0{ 'data-photo-unavailable': true, hidden: eligible }
-          = t('photo_service.unavailable')
+          = t("#{copy_scope}.unavailable")
         %p.mb-0{ 'data-photo-available': true, hidden: !eligible }
-          = t('photo_service.available')
+          = t("#{copy_scope}.available")
           - if confirmed
             %span.d-block= t('photo_service.confirmed')
+        %p.mb-0= t("#{copy_scope}.siblings_notice")
     - elsif opt.optionable.seasonal?
       %p.text-white.text-center.mb-0.mt-1.fw-semibold{ style: 'font-size: 0.75rem;' }
-        = t('photo_service.available')
+        = t("#{copy_scope}.available")
+        %br/
+        = t("#{copy_scope}.siblings_notice")
     - if opt.optionable.party?
       %p.text-white.small.text-center.mt-1.mb-0{ style: 'font-size: 0.75rem;' }
         ※フォトサービスを利用されない方はチェックを外してください

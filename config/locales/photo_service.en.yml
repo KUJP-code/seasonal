@@ -1,7 +1,12 @@
 en:
   photo_service:
     confirmed: "Photo service is already included in a confirmed booking."
-    unavailable: "Select a morning or special activity to enable photo service. Regular afternoon-only bookings have no photography or photo-service fee."
-    available: "Photo service covers mornings and special activities. It also applies to siblings attending those activities; the fee is per eligible child."
+    unavailable: "Select a morning or special activity to sign up for photo service."
+    available: "Photo service is available for morning and special activities only."
+    siblings_notice: "Each sibling attending an eligible activity is charged separately."
+    winter_2026:
+      unavailable: "You can sign up after selecting a morning program between December 25 (Fri) and January 7 (Thu)."
+      available: "This service is only for morning programs between December 25 (Fri) and January 7 (Thu)."
+      siblings_notice: "All siblings must sign up for photo service."
     sibling_warning: "This will also update photo service for eligible siblings attending this event. Continue?"
     sibling_removal_warning: "Saving this change will also remove photo service from eligible siblings' bookings for this event. Continue?"
