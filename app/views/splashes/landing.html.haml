@@ -1,23 +1,23 @@
-%main.p-0
+%main.auth-page
   #splash
     = render 'shared/splash_image', avif: @avif, fallback: @fallback
     #action-pane
-      .mb-5#login-logo
-      = link_to '申込サイトの使い方はこちら',
-                Rails.root.join('/instructions.pdf').to_s,
-                target: :blank, class: 'fw-bold link-underline-primary'
-      %p.form-text はじめてご利用の方は、初回にアカウント登録が必要です。
+      .auth-brand
+        = image_tag 'kidsup-auth-logo.svg', alt: 'Kids UP', width: 164, height: 50
+        = link_to '申込サイトの使い方はこちら',
+                  Rails.root.join('/instructions.pdf').to_s,
+                  target: :blank, class: 'auth-guide'
+      .auth-new
+        %p.auth-help はじめてご利用の方は、初回にアカウント登録が必要です。
 
-      = link_to new_user_registration_path,
-                class: 'w-100 btn btn-primary' do
-        %span.flex-grow-1.ms-3= t('.sign_up')
-        = image_tag 'arrow-right.svg', class: 'img-fluid'
+        = link_to new_user_registration_path,
+                  class: 'w-100 btn btn-primary' do
+          %span= t('.sign_up')
+          = image_tag 'arrow-right.svg', alt: ''
 
-      %hr.border-top.border-dark.w-100
-
-        %p.form-text 既にアカウントをお持ちの方は、こちらより
-        %p.form-text ログインしてください
-      = link_to new_user_session_path,
-                class: 'w-100 btn btn-grey d-flex' do
-        %span.flex-grow-1.ms-3= t('.log_in')
-        = image_tag 'arrow-right.svg', class: 'img-fluid'
+      .auth-returning
+        %p.auth-help 既にアカウントをお持ちの方は、こちらよりログインしてください
+        = link_to new_user_session_path,
+                  class: 'w-100 btn btn-grey' do
+          %span= t('.log_in')
+          = image_tag 'arrow-right.svg', alt: ''

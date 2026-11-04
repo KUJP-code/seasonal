@@ -527,62 +527,169 @@ input[type="text"]:disabled {
     }
 }
 
+// Campaign images retain their natural dimensions; controls sit directly below.
+main.auth-page {
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 1rem;
+    gap: 0;
+}
+
 #login,
 #splash {
-    height: 100vh;
+    --auth-controls-height: 140px;
     display: flex;
-    flex-flow: column nowrap;
-    text-align: center;
+    flex-direction: column;
+    width: fit-content;
+    max-width: 100%;
     padding: 0;
     gap: 0;
+    border-radius: 0.75rem;
+    overflow: hidden;
     background: var(--bs-gray-200);
+    box-shadow: 0 4px 20px rgba(34, 34, 34, 0.07);
+}
 
-    @media (min-width: 992px) {
-        width: 95vw;
-        height: 95vh;
-        flex-flow: row nowrap;
-        border-radius: 2rem;
-        overflow: hidden;
-    }
+#login {
+    --auth-controls-height: 140px;
 }
 
 #splash-img {
-    width: 100%;
-    flex-shrink: 0;
-    object-fit: cover;
-    object-position: center;
-
-    @media (min-width: 992px) {
-        flex-shrink: 1;
-        width: 70%;
-    }
+    display: block;
+    flex: none;
+    line-height: 0;
 
     img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
+        display: block;
+        width: auto;
+        height: auto;
+        // Capitalized CSS functions also survive SassC's second compression pass.
+        max-width: Min(1120px, calc(100vw - 2rem));
+        max-height: Max(320px, calc(100svh - var(--auth-controls-height) - 2rem));
+        object-fit: contain;
     }
 }
 
 #action-pane {
+    // Let the poster determine the shell's width, not the form's intrinsic width.
+    contain: inline-size;
     width: 100%;
-    margin-top: -1rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: stretch;
-    gap: 0.75rem;
-    padding: 0.75rem;
-    background: white;
-    border-radius: 1rem 1rem 0 0;
+    margin: 0;
+    padding: 1.25rem 1.5rem;
+    display: grid;
+    align-items: center;
+    gap: 1.5rem;
+    background: #4e4a4a;
+    color: white;
+    text-align: left;
 
-    @media (min-width: 992px) {
-        border-radius: 0;
-        flex-grow: 0;
-        width: 30%;
+    .auth-brand {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+
+        img { width: 164px; height: auto; }
+        h2 { font-size: 1rem; }
     }
+
+    .auth-guide,
+    #reset-pass a {
+        color: white;
+        font-size: 0.8125rem;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    .auth-help {
+        color: white;
+        margin: 0 0 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+
+    .btn {
+        min-height: 44px;
+        position: relative;
+
+        img { position: absolute; right: 1.125rem; width: 18px; height: 18px; }
+    }
+}
+
+#splash #action-pane {
+    min-height: 140px;
+    grid-template-columns: 188px minmax(0, 1fr) minmax(0, 1fr);
+
+    .auth-returning {
+        border-left: 1px solid rgba(255, 255, 255, 0.25);
+        padding-left: 1.5rem;
+    }
+}
+
+#login #action-pane {
+    min-height: 140px;
+    grid-template-columns: 145px minmax(0, 1fr) minmax(0, 1fr) 150px;
+    grid-template-areas: "brand email password submit" ". remember reset register";
+    grid-template-rows: auto auto;
+    align-content: center;
+    gap: 0.375rem 0.75rem;
+
+    .auth-brand {
+        grid-area: brand;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.375rem;
+        text-align: center;
+
+        img { width: 140px; }
+    }
+    > * { min-width: 0; }
+    .auth-email { grid-area: email; }
+    .auth-password { grid-area: password; }
+    .auth-remember {
+        grid-area: remember;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        margin: 0;
+        padding-left: 0;
+        font-size: 0.875rem;
+        line-height: 1.4;
+
+        .form-check-input { float: none; flex: none; margin: 0.125rem 0 0; }
+        .form-check-label { min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+    }
+    #reset-pass { grid-area: reset; text-align: left; }
+    #reset-pass a { font-size: 0.875rem; line-height: 1.4; overflow-wrap: anywhere; }
+    .auth-actions { display: contents; }
+    .auth-submit { grid-area: submit; }
+    .auth-register { grid-area: register; border: 1px solid #d9d6d3; color: white; font-size: 0.875rem; min-height: 36px; }
+    .form-floating { color: #4e4a4a; }
+    .form-control { min-height: 48px; height: 48px; }
+    .form-floating > label { padding-top: 0.65rem; }
+    .form-floating > .form-control:focus,
+    .form-floating > .form-control:not(:placeholder-shown) { padding-top: 1.5rem; padding-bottom: 0.25rem; }
+}
+
+@media (max-width: 767.98px) {
+    main.auth-page { padding: 0; justify-content: flex-start; background: #4e4a4a; }
+    #login, #splash { width: 100%; border-radius: 0; box-shadow: none; }
+    #splash-img img { width: 100%; max-width: 100%; max-height: none; }
+    #action-pane { padding: 1rem; gap: 1rem; }
+    #action-pane .auth-brand { flex-direction: row; align-items: center; justify-content: space-between; gap: 1rem; }
+    #action-pane .auth-brand img { width: 140px; }
+    #action-pane .auth-guide { font-size: 0.8125rem; }
+    #splash #action-pane { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+    #splash #action-pane .auth-returning { padding-left: 0; border-left: 0; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.25); }
+    #login #action-pane {
+        min-height: 0;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: "brand" "email" "password" "remember" "reset" "submit" "register";
+        gap: 0.625rem;
+    }
+    #login #action-pane .auth-remember,
+    #login #action-pane #reset-pass a { font-size: 0.875rem; }
+    #login #action-pane .auth-register { min-height: 44px; }
 }
 
 #login,
@@ -638,21 +745,6 @@ input[type="text"]:disabled {
 
     @media (min-width: 992px) {
         width: 10%;
-    }
-}
-
-#login-logo {
-    display: none;
-
-    @media (min-width: 992px) {
-        display: block;
-        background-image: image-url("favicon.svg");
-        background-position: cover;
-        background-repeat: no-repeat;
-        align-self: center;
-        width: 15vw;
-        height: 15vw;
-        justify-self: center;
     }
 }
 
