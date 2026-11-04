@@ -127,6 +127,10 @@ special or party activities automatically use that amount on an internal student
 regular lesson days. No per-activity switch is needed. Morning activities and
 afternoons with no eligible exact-month or recent prior schedule retain normal pricing.
 
+The offer applies to afternoon activities, not `午後（通常レッスン）`.
+Regular-lesson afternoons are linked to a morning slot via `morning_slot_id`;
+they retain normal package pricing and snack rules even on regular school days.
+
 Qualifying afternoons are excluded from the normal session package count and
 have no snack fee. Other sessions keep their existing package/batch rules and
 snack fees, including the own-snack exemption. Activity surcharges and selected

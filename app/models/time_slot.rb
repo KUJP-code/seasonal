@@ -128,7 +128,8 @@ class TimeSlot < ApplicationRecord
   end
 
   def regular_day_price_for(child)
-    return if morning? || special? || party? || !event.seasonal?
+    return if morning? || %w[special party].include?(category) || !event.seasonal?
+    return if morning_slot_id.present?
 
     price = event.regular_day_afternoon_price_for(child)
     price if !price.nil? && child.regular_day?(start_time)

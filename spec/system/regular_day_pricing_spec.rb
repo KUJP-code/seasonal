@@ -64,6 +64,34 @@ RSpec.describe 'Regular-day afternoon booking prices', :js do
     expect(find_by_id('total_cost').text).to eq(cost_text(23_125))
   end
 
+  it 'applies the regular-day offer to afternoon activities and excludes regular lessons' do
+    morning = create(:time_slot, :morning, event:, close_at: Time.zone.local(2026, 12, 1),
+                                           start_time: Time.zone.local(2026, 12, 7, 10),
+                                           end_time: Time.zone.local(2026, 12, 7, 13))
+    lesson = morning.afternoon_slot
+    activity = afternoon(8)
+
+    visit new_invoice_path(event_id: event.id, child: child.id, locale: :ja)
+    lesson_card = find_by_id("a_slot#{lesson.id}")
+                  .find(:xpath, 'ancestor::div[contains(@class,"afternoon")]')
+    within(lesson_card) do
+      expect(page).to have_content('午後（通常レッスン）')
+      expect(page).to have_no_css('.regular-day-price')
+    end
+    check "a_slot#{lesson.id}"
+    expect(find_by_id('total_cost').text).to eq(cost_text(5725))
+    check "a_slot#{activity.id}"
+    expect(find_by_id('total_cost').text).to eq(cost_text(8425))
+
+    click_on I18n.t('invoices.registration_page.price_footer.confirm_invoice')
+    expect(page).to have_css('#final_cost', text: cost_text(8425))
+    click_on I18n.t('invoices.confirm.confirm_changes')
+    expect(page).to have_content(I18n.t('invoices.show.confirm_success'))
+    invoice = child.invoices.last
+    expect(invoice.total_cost).to eq(8425)
+    expect(invoice.summary).to include('通学日午後コース x 1: 2,700円', '午後コースおやつ代 x 1: 225円')
+  end
+
   it 'waives own-snack fees through booking and labels confirmed activities correctly' do
     child.update!(own_snack: true)
     slot = afternoon(9)

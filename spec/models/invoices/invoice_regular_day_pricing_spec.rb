@@ -175,6 +175,24 @@ RSpec.describe Invoice do
     expect(invoice.summary.scan('おやつ代なし（おやつ持参）').size).to eq(1)
   end
 
+  it 'keeps linked regular-lesson afternoons on normal pricing even on a regular school day' do
+    morning = create(:time_slot, :morning, event:,
+                                          start_time: Time.zone.local(2026, 12, 7, 10),
+                                          end_time: Time.zone.local(2026, 12, 7, 13))
+    slot = morning.afternoon_slot
+    invoice = invoice_for([slot])
+
+    expect(slot.regular_day_price_for(child)).to be_nil
+    expect(event.regular_day_slot_prices_for(child)).not_to have_key(slot.id)
+    expect(invoice.total_cost).to eq(5725)
+    expect(invoice.summary).not_to include('通学日午後コース')
+
+    child.update!(own_snack: true)
+    invoice.reload.calc_cost
+    expect(invoice.total_cost).to eq(5500)
+    expect(invoice.summary).to include('おやつ代なし（おやつ持参）')
+  end
+
   it 'does not attribute the regular-day snack waiver to bringing a snack' do
     child.update!(own_snack: true)
 
