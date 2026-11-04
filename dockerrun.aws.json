@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:3.3.1-own_snack"
+    "Name": "kidsup/event_site:3.3.2-afternoons_fix"
   },
   "Ports": [
     {
