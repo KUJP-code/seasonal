@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:3.3.3-flags"
+    "Name": "kidsup/event_site:3.3.4-logo"
   },
   "Ports": [
     {
