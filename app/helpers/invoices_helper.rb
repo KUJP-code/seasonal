@@ -40,6 +40,8 @@ module InvoicesHelper
     # Decorate their activity headings only for the web, including older bookings.
     fragment = Nokogiri::HTML.fragment(summary)
     fragment.css('.slot_regs h5').each do |heading|
+      next unless heading.text.squish.end_with?('(午後)')
+
       # Match the dated afternoon suffix, which survives an activity-name correction.
       next unless heading.text.squish.end_with?(*regular_dates)
 

@@ -71,6 +71,25 @@ RSpec.describe 'Regular weekdays on booking screens' do
     end
   end
 
+  it 'does not label a morning-only booking on a regular attendance day' do
+    invoice.slot_regs.where.not(registerable_id: morning.id).destroy_all
+    invoice.recalculate_pricing!
+    original_invoice = invoice.reload.attributes
+    sign_in create(:admin)
+
+    [invoice_path(id: invoice.id), invoices_path(child: child.id),
+     invoices_path(user: child.parent_id)].each do |path|
+      get path
+
+      expect(response).to have_http_status(:ok)
+      html = Nokogiri::HTML(response.body)
+      expect(html.css('.slot_regs h5').map(&:text).join).to include('雪だるまアイス')
+      expect(html.css('.slot_regs .regular-day')).to be_empty
+    end
+
+    expect(invoice.reload.attributes).to eq(original_invoice)
+  end
+
   %i[external reservation].each do |category|
     it "hides saved attendance-day labels for #{category} children without deleting their schedule" do
       child.update!(category:)
