@@ -71,6 +71,31 @@ RSpec.describe 'Regular weekdays on booking screens' do
     end
   end
 
+  %i[external reservation].each do |category|
+    it "hides saved attendance-day labels for #{category} children without deleting their schedule" do
+      child.update!(category:)
+      original_schedule = child.regular_schedules.first.attributes
+      original_invoice = invoice.reload.attributes
+      sign_in create(:admin)
+
+      [invoice_path(id: invoice.id, locale: :ja),
+       invoices_path(child: child.id, locale: :ja),
+       invoices_path(user: child.parent_id, locale: :ja),
+       new_invoice_path(event_id: event.id, child: child.id, locale: :ja),
+       event_path(id: event.id, child: child.id, locale: :ja)].each do |path|
+        get path
+
+        expect(response).to have_http_status(:ok)
+        html = Nokogiri::HTML(response.body)
+        expect(html.css('.regular-school-days, .regular-day, .afternoon .text-bg-danger')).to be_empty
+        expect(html.text).not_to include('ご通学日')
+      end
+
+      expect(child.regular_schedules.first.reload.attributes).to eq(original_schedule)
+      expect(invoice.reload.attributes).to eq(original_invoice)
+    end
+  end
+
   it 'shows schedules and matching activity badges on staff booking forms and student information' do
     travel_to Time.zone.local(2026, 12, 1) do
       sign_in create(:admin)
