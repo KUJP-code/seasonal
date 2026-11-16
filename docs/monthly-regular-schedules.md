@@ -88,7 +88,9 @@ shows only the latest uploaded, dated schedule's weekdays, including an upcoming
 month before it begins. This display does not change the activity-month lookup
 used for pricing and attendance matching.
 Each booked afternoon checks its own calendar month's
-effective weekdays and displays the red `通学日` label on a match for staff.
+effective weekdays and displays the red `通学日` label on a match for staff,
+except for `通常レッスン` afternoons. Regular lessons never show the regular-day
+badge on booking cards, invoice pages, booking lists, or confirmation previews.
 Parents do not see monthly weekdays, schedule tables, or regular-day activity
 badges on student pages, booking forms, booking lists, invoices, or confirmation
 previews. Eligible regular-day prices and snack waivers still apply and are

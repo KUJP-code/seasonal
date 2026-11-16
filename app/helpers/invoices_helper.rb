@@ -51,7 +51,7 @@ module InvoicesHelper
 
   def regular_afternoon_dates(invoice)
     invoice.validated_slots.filter_map do |slot|
-      next if slot.morning? || !invoice.child.regular_day?(slot.start_time)
+      next if slot.morning? || slot.regular_lesson? || !invoice.child.regular_day?(slot.start_time)
 
       slot.name_date.delete_prefix(slot.booking_name).squish
     end
@@ -63,6 +63,7 @@ module InvoicesHelper
     fragment = Nokogiri::HTML.fragment(summary)
     fragment.css('.slot_regs h5').each do |heading|
       next unless heading.text.squish.end_with?('(午後)')
+      next if heading.text.squish.start_with?('通常レッスン (')
 
       # Match the dated afternoon suffix, which survives an activity-name correction.
       next unless heading.text.squish.end_with?(*regular_dates)
