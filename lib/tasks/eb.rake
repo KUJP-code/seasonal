@@ -3,7 +3,7 @@
 require 'English'
 
 namespace :eb do
-  desc 'Deploys current version of the app to elastic beanstalk'
+  desc 'Deploys to elastic beanstalk (SKIP_TESTS=1 to skip tests)'
   task deploy: :environment do
     run_tests
     current_version = find_current_version
@@ -18,6 +18,11 @@ namespace :eb do
 end
 
 def run_tests
+  if ENV['SKIP_TESTS'] == '1'
+    puts 'Skipping tests (SKIP_TESTS=1).'
+    return
+  end
+
   puts 'Running tests...'
   errors = `bundle exec rspec | grep '#'`.split("\n")
   confirm_failing_tests(errors) if errors.any?

@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/event_site:3.3.4-logo"
+    "Name": "kidsup/event_site:3.3.5-invoice_labels"
   },
   "Ports": [
     {
