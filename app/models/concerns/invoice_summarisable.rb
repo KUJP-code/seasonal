@@ -117,7 +117,7 @@ module InvoiceSummarisable
     date = "#{slot.start_time.strftime('%m月%d日')} #{ja_day}"
 
     "<div class='slot_regs d-flex flex-wrap gap-3 text-start'>
-      <h5>#{slot.name} (#{date}) #{afternoon_text}</h5>
+      <h5>#{slot.booking_name} (#{date}) #{afternoon_text}</h5>
       #{detailed_slot_options(slot, registered_opts).join}\n
     </div>"
   end

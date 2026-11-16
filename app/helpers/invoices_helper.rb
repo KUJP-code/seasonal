@@ -17,6 +17,7 @@ module InvoicesHelper
 
   def booking_summary(invoice)
     summary = sanitize(invoice.summary, tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id])
+    summary = label_regular_lessons(summary, invoice)
     return summary unless current_user&.staff? && invoice.child.internal?
 
     regular_dates = regular_afternoon_dates(invoice)
@@ -27,11 +28,32 @@ module InvoicesHelper
 
   private
 
+  def label_regular_lessons(summary, invoice)
+    lesson_dates, activity_headings = regular_lesson_headings(invoice)
+    return summary if lesson_dates.empty?
+
+    fragment = Nokogiri::HTML.fragment(summary)
+    fragment.css('.slot_regs h5').each do |heading|
+      next if activity_headings.include?(heading.text.squish)
+
+      date = lesson_dates.find { |suffix| heading.text.squish.end_with?(suffix) }
+      heading.content = "通常レッスン #{date}" if date
+    end
+
+    sanitize(fragment.to_html, tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id])
+  end
+
+  def regular_lesson_headings(invoice)
+    lessons, activities = invoice.validated_slots.partition(&:regular_lesson?)
+    lesson_dates = lessons.map { |slot| slot.name_date.delete_prefix(slot.booking_name).squish }
+    [lesson_dates, activities.map { |slot| slot.name_date.squish }]
+  end
+
   def regular_afternoon_dates(invoice)
     invoice.validated_slots.filter_map do |slot|
       next if slot.morning? || !invoice.child.regular_day?(slot.start_time)
 
-      slot.name_date.delete_prefix(slot.name).squish
+      slot.name_date.delete_prefix(slot.booking_name).squish
     end
   end
 

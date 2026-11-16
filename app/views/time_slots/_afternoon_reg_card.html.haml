@@ -54,7 +54,7 @@
                     'register-child-value': child.id,
                     'register-id-value': slot.id,
                     'register-modifier-value': activity_modifier(slot, child),
-                    'register-name-value': "#{slot.name} (午後)".tr(' ', '_'),
+                    'register-name-value': "#{slot.booking_name} (午後)".tr(' ', '_'),
                     'register-snack-value': slot.snack_charge_for(child).positive?.to_s,
                     'register-type-value': 'TimeSlot' } }
         %label.fw-bold.fs-5.form-check-label{ for: "a_slot#{slot.id}",

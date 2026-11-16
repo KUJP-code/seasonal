@@ -82,10 +82,18 @@ class TimeSlot < ApplicationRecord
   def name_date
     en_day = start_time.strftime('%A')
     date = start_time.strftime('%m月%d日')
-    base = "#{name} (#{date} #{DAYS[en_day]})"
+    base = "#{booking_name} (#{date} #{DAYS[en_day]})"
     return base if morning
 
     "#{base} (午後)"
+  end
+
+  def regular_lesson?
+    !morning? && morning_slot_id.present? && !special?
+  end
+
+  def booking_name
+    regular_lesson? ? '通常レッスン' : name
   end
 
   # TODO: potentially remove this when partyies arent used.

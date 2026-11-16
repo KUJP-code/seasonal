@@ -39,7 +39,7 @@ RSpec.describe 'Regular weekdays on booking screens' do
     labels = html.css('.slot_regs .regular-day')
     expect(labels.map(&:text)).to eq(['通学日'])
     heading = html.at_css('.slot_regs h5:not(.text-danger) > .regular-day.text-danger').parent
-    expect(heading.text).to include('雪だるまアイス', '(午後)')
+    expect(heading.text).to include('通常レッスン', '(午後)')
   end
 
   it 'hides schedules and regular-day annotations on every parent-facing page' do
@@ -69,6 +69,33 @@ RSpec.describe 'Regular weekdays on booking screens' do
       expect(Nokogiri::HTML(response.body).at_css('.regular-school-days').text).to include('火・水')
       expect_regular_day_label
     end
+  end
+
+  it 'corrects regular-lesson names on existing locked invoices without changing saved data' do
+    other_afternoon.update!(start_time: morning.afternoon_slot.start_time,
+                            end_time: morning.afternoon_slot.end_time)
+    invoice.recalculate_pricing!
+    invoice.update!(summary: invoice.summary.sub('通常レッスン', morning.name), in_ss: true)
+    original = invoice.reload.attributes
+
+    [child.parent, create(:admin)].each do |user|
+      sign_in user
+      [invoice_path(id: invoice.id), invoices_path(child: child.id),
+       invoices_path(user: child.parent_id)].each do |path|
+        get path
+
+        expect(response).to have_http_status(:ok)
+        headings = Nokogiri::HTML(response.body).css('.slot_regs h5').map(&:text)
+        expect(headings).to contain_exactly(
+          include('雪だるまアイス'),
+          include('通常レッスン', '(午後)'),
+          include('ウィンタースポーツ大会', '(午後)')
+        )
+      end
+      sign_out user
+    end
+
+    expect(invoice.reload.attributes).to eq(original)
   end
 
   it 'does not label a morning-only booking on a regular attendance day' do
@@ -214,7 +241,7 @@ RSpec.describe 'Regular weekdays on booking screens' do
     expect(response).to have_http_status(:ok)
     html = Nokogiri::HTML(response.body)
     expect(html.css('.regular-day, .regular-school-days')).to be_empty
-    expect(html.css('.slot_regs h5').text).to include('雪だるまアイス', '(午後)')
+    expect(html.css('.slot_regs h5').text).to include('通常レッスン', '(午後)')
   end
 
   it 'annotates an unsaved staff booking preview using its selected activities' do
@@ -273,7 +300,7 @@ RSpec.describe 'Regular weekdays on booking screens' do
     expect(html.at_css('.regular-school-days').text.strip)
       .to eq('水・木')
     expect(html.css('.regular-day').map { |label| label.parent.text })
-      .to contain_exactly(include('雪だるまアイス'), include('January 6'), include('February Wednesday'))
+      .to contain_exactly(include('通常レッスン'), include('January 6'), include('February Wednesday'))
     expect(invoice.reload.attributes).to eq(original)
     expect(child.reload.regular_schedule_for(Date.new(2026, 12, 15)).days).to eq('火, 水')
   end

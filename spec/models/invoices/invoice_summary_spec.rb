@@ -102,6 +102,18 @@ RSpec.describe Invoice do
     end
   end
 
+  context 'when booking a linked regular-lesson afternoon' do
+    let(:slot) { create(:time_slot, :morning, event:, name: '雪だるまアイス').afternoon_slot }
+
+    it 'identifies the regular lesson in the invoice instead of the morning activity' do
+      invoice.calc_cost
+
+      headings = Nokogiri::HTML.fragment(invoice.summary).css('.slot_regs h5').map(&:text)
+      expect(headings).to contain_exactly(include('通常レッスン', '(午後)'))
+      expect(headings.join).not_to include('雪だるまアイス')
+    end
+  end
+
   context 'when niche cases apply' do
     it 'displays extra costs' do
       extra_cost_slot = create(:time_slot, int_modifier: 100)

@@ -9,6 +9,28 @@ RSpec.describe TimeSlot do
     expect(create(:time_slot)).to be_valid
   end
 
+  describe 'booking names' do
+    it 'labels a linked afternoon as a regular lesson and keeps the morning activity name' do
+      morning = create(:time_slot, :morning, name: '雪だるまアイス')
+
+      expect(morning.booking_name).to eq('雪だるまアイス')
+      expect(morning.afternoon_slot.booking_name).to eq('通常レッスン')
+      expect(morning.afternoon_slot.name_date).to include('通常レッスン', '(午後)')
+      expect(morning.afternoon_slot.name_date).not_to include(morning.name)
+    end
+
+    it 'keeps the names of standalone and special afternoon activities' do
+      standalone = create(:time_slot, :afternoon, name: '午後アクティビティ')
+      morning = create(:time_slot, :morning)
+      special = morning.afternoon_slot
+      special.update!(category: :special, name: 'スペシャル')
+
+      expect(standalone.booking_name).to eq(standalone.name)
+      expect(special.booking_name).to eq(special.name)
+      expect(special.name_date).to include('スペシャル', '(午後)')
+    end
+  end
+
   describe 'standalone afternoon activities' do
     let(:event) { create(:event) }
 

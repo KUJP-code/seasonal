@@ -23,7 +23,7 @@
   #reg-slots.hidden
     - all_registered_slots.each do |slot|
       %p.hidden{ 'data-modifier': activity_modifier(slot, @child) }
-        = slot.name.concat(slot.morning ? '' : ' (午後)')
+        = "#{slot.booking_name}#{slot.morning? ? '' : ' (午後)'}"
 
   %span.hidden{ data: { 'price-target': 'snackCount',
                         'invoice-target': 'snackCount' } }
