@@ -39,6 +39,20 @@ RSpec.describe 'Invoice history display' do
     expect(response.body).to include('Changed by: Deleted user')
   end
 
+  it 'renders history from before a merged duplicate child was deleted' do
+    invoice
+    duplicate_id = Child.maximum(:id) + 1
+    invoice.versions.create!(event: 'update', whodunnit: admin.id.to_s,
+                             object: PaperTrail.serializer.dump(
+                               invoice.attributes.merge('child_id' => duplicate_id)
+                             ))
+
+    get invoice_path(id: invoice.id, locale: :en)
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("Changed by: #{admin.name}")
+  end
+
   it 'retains the name of an existing user in the history' do
     add_history(admin.id.to_s)
 
