@@ -7,6 +7,9 @@ class MonthlyScheduleImport
     'false' => false, 'f' => false, '0' => false, 'no' => false
   }.freeze
 
+  # Bookings repriced because their students' weekdays changed in this upload.
+  attr_reader :repriced
+
   def initialize(csv, attendance_month)
     raise ArgumentError, 'Choose a schedule CSV file.' unless csv.respond_to?(:tempfile)
     unless attendance_month.to_s.match?(/\A\d{4}-(0[1-9]|1[0-2])\z/)
@@ -21,12 +24,14 @@ class MonthlyScheduleImport
     rows = read_rows
     children = Child.where(ssid: rows.filter_map { |row| student_ssid(row) }).index_by(&:ssid)
     seen = {}
+    @changed_child_ids = []
 
     RegularSchedule.transaction do
       rows.each_with_index do |row, index|
         import_row(row, row.fetch('_source_row', index + 2), children, seen)
       end
       clear_omitted_external_schedules(children, seen)
+      @repriced = RegularDayRepricing.new(@changed_child_ids, @month).call
     end
     rows.size
   end
@@ -62,7 +67,10 @@ class MonthlyScheduleImport
     seen[child.id] = true
     schedule = RegularSchedule.find_or_initialize_by(child:, month: @month)
     schedule.assign_attributes(weekday_attributes(row, line))
-    schedule.save! if schedule.changed?
+    return unless schedule.changed?
+
+    schedule.save!
+    @changed_child_ids << child.id
   end
 
   def student_ssid(row)

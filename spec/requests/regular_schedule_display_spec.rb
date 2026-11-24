@@ -223,6 +223,29 @@ RSpec.describe 'Regular weekdays on booking screens' do
     end
   end
 
+  it "shows each booking's own month and both months on the booking list" do
+    event.update!(end_date: Date.new(2027, 1, 8))
+    child.regular_schedules.create!(month: Date.new(2027, 1, 1), monday: true, friday: true)
+    january = create(:time_slot, :afternoon, event:, start_time: Time.zone.local(2027, 1, 6, 14),
+                                             end_time: Time.zone.local(2027, 1, 6, 18))
+    invoice.update!(in_ss: true)
+    create(:event_option, optionable: event)
+    regs = [{ child_id: child.id, registerable: january }]
+    january_booking = create(:invoice, event:, child:, slot_regs_attributes: regs)
+    sign_in create(:admin)
+
+    days_on = lambda do |path, selector|
+      get path
+      Nokogiri::HTML(response.body).at_css(selector).text.squish
+    end
+
+    header = '.regular-school-days'
+    expect(days_on.call(invoice_path(id: invoice.id, locale: :ja), header)).to eq('火・水')
+    expect(days_on.call(invoice_path(id: january_booking.id, locale: :ja), header)).to eq('月・金')
+    booking_list = children_path(source: 'event', id: event.id, locale: :ja)
+    expect(days_on.call(booking_list, 'td.regular_schedule')).to eq('12月 火・水 ｜ 1月 月・金')
+  end
+
   it 'updates annotations without modifying saved summaries, costs or sending emails' do
     sign_in create(:admin)
     original = invoice.attributes.slice('summary', 'total_cost', 'updated_at')
@@ -356,7 +379,7 @@ RSpec.describe 'Regular weekdays on booking screens' do
 
     html = Nokogiri::HTML(response.body)
     expect(html.at_css('.regular-school-days').text.strip)
-      .to eq('水・木')
+      .to eq('12月 火・水 ｜ 1月 水・木 ｜ 2月 水・木')
     expect(html.css('.regular-day').map { |label| label.parent.text })
       .to contain_exactly(include('January 6'), include('February Wednesday'))
     expect(invoice.reload.attributes).to eq(original)

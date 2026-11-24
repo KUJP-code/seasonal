@@ -88,6 +88,8 @@
 
   %td.kindy= event_child.kindy? ? '幼児' : '小学生'
   %td.membership= kanji_category(event_child.category)
-  %td.regular_schedule= monthly_regular_days(event_child, events: [event])
+  %td.regular_schedule
+    = monthly_regular_days(event_child, events: [event],
+                                        dates: event_invoices.flat_map(&:time_slots).map(&:start_time))
   %td.allergies= event_child.allergies
   %td.photos= event_child.photos unless event_child.photos == 'OK'

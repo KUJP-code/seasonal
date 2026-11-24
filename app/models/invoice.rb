@@ -64,6 +64,13 @@ class Invoice < ApplicationRecord
     inherit_family_photo_service
     remove_ineligible_photo_service
     assign_pricing_batches
+    refresh_pricing
+  end
+
+  # Prices the saved registrations against current rates and monthly schedules,
+  # keeping existing package batches. Unlike calc_cost, it never adds or removes
+  # registrations, so it is safe to apply to confirmed bookings.
+  def refresh_pricing
     generate_data
     self.total_cost = @data[:total_cost]
     self.summary = generate_summary(@data)

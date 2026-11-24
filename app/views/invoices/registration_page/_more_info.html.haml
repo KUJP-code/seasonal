@@ -45,11 +45,12 @@
               = number_to_currency(adjustment.change, locale: :ja)
             %td= adjustment.reason
 
-  - if current_user.staff? && monthly_regular_days(child, events: [event]).present?
+  - regular_days = monthly_regular_days(child, events: [event], dates: event.start_date..event.end_date) if current_user.staff?
+  - if regular_days.present?
     %table.table.table-striped.table-info.text-center
       %thead
         %tr
           %th= t('.regular_schedule')
       %tbody
         %tr
-          %td= monthly_regular_days(child, events: [event])
+          %td= regular_days

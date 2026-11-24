@@ -79,11 +79,19 @@ and snack waiver apply only to students who are currently internal.
 Schedule edits and automatic clearing are recorded with PaperTrail and the
 uploading admin. Uploads without changes do not create repeat schedule versions.
 
-For staff only, booking screens display one set of weekdays for internal students,
-such as `月・水・金`, centered in red below the student's name. Other student
-categories do not display the weekday summary. Use the effective schedule for the
-event's final month, or the latest event's final month on combined booking lists.
-Do not show month labels or earlier weekday patterns. Staff student information
+For staff only, booking screens display weekdays for internal students, such as
+`月・水・金`, centered in red below the student's name. Other student categories do
+not display the weekday summary. Each month uses its own effective schedule:
+
+- An invoice page uses the months of that booking's activities. A December booking
+  shows December's weekdays even after January is uploaded.
+- The event booking list uses the months of all the student's bookings for that event.
+- The registration page uses every month the event covers.
+
+When those months have different weekdays, each is labelled, for example
+`12月 月・水 ｜ 1月 火・木`. When they match, including while a month still falls back
+to an earlier upload, one unlabelled set is shown. Combined booking lists across
+events use the latest event's final month. Staff student information
 shows only the latest uploaded, dated schedule's weekdays, including an upcoming
 month before it begins. This display does not change the activity-month lookup
 used for pricing and attendance matching.
@@ -109,10 +117,37 @@ it is displayed as `—`. The same lookup controls regular-day labels,
 the optional afternoon price, and snack fee waivers. Lookups do not copy records
 into future months or rewrite saved invoices.
 
-These are live web annotations. Uploading schedules updates the display on
-existing and confirmed/locked bookings without saving or recalculating invoices,
-changing prices, or sending emails. Previously sent emails and saved invoice
-summaries do not change.
+## Repricing bookings after an upload
+
+Weekday labels are live web annotations. Prices are saved on the booking, so an
+upload also reprices the bookings it affects, in the same transaction:
+
+- Only students whose weekdays changed for the uploaded month are checked.
+  Re-uploading an unchanged file reprices nothing.
+- Only bookings with activities in the uploaded month, or in the following five
+  months that may fall back to it, are checked.
+- Every afternoon is still priced from its own month. A January upload changes
+  January afternoons; December afternoons in the same booking keep December's
+  weekdays. Packages are rebuilt within the booking's existing batches.
+- Confirmed (`in_ss`) bookings are repriced and stay confirmed. Photo-service
+  options are not added or removed.
+- Students who are not currently internal are never repriced. Eligibility uses
+  today's membership, so repricing a student who has since withdrawn would remove
+  regular-day prices from months they attended. SMs adjust these manually.
+- No emails are sent. The upload notice states how many bookings were repriced.
+
+SS is not updated. Price differences on bookings already debited are adjusted in
+SS by the SMs.
+
+To reprice bookings created before a month's schedule was uploaded, run the
+catch-up task. It is a dry run unless `APPLY=1` is set. Unlike an upload, it
+checks every internal student with that month's schedule, so review the dry run
+for bookings changed for other reasons, such as a price list edited since.
+
+```sh
+bin/rails "regular_schedules:reprice[2026-12]"
+APPLY=1 bin/rails "regular_schedules:reprice[2026-12]"
+```
 
 ## Optional regular-day afternoon pricing
 
@@ -147,10 +182,10 @@ student cost 5,500 + 225 + 2,700 = **8,425 yen**.
 
 Use a price list with this field blank for an event without this offer. Price
 lists can be shared by multiple events; editing a shared list changes the
-configuration for every event using it. Saving a rate or uploading schedules
-does not automatically rewrite invoices or send emails. Existing locked
-invoices keep their saved totals; explicit invoice recalculation applies the
-current rates and monthly schedules.
+configuration for every event using it. Saving a rate does not rewrite
+invoices or send emails. Uploading schedules reprices affected bookings as
+described above. Explicit invoice recalculation applies the current rates and
+monthly schedules.
 
 Existing undated schedules are preserved by the migration but are excluded from
 monthly matching. Re-upload them for their actual attendance month; the

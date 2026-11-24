@@ -32,7 +32,8 @@
     <h1>
       <span class="d-inline-block text-center">
         <%= link_to @invoice.child.name, child_path(@invoice.child_id) %>
-        <%= render 'children/regular_days', child: @invoice.child, events: [@invoice.event] %>
+        <%= render 'children/regular_days', child: @invoice.child, events: [@invoice.event],
+                                             dates: @invoice.time_slots.map(&:start_time) %>
       </span>
     </h1>
 

@@ -76,6 +76,40 @@ RSpec.describe ChildrenHelper do
       expect(helper.monthly_regular_days(child, events: [event])).to eq('月')
     end
 
+    context "with a booking's activity dates" do
+      let(:december) { Date.new(2026, 12, 22) }
+      let(:january) { Date.new(2027, 1, 6) }
+
+      before do
+        create(:regular_schedule, child:, month: Date.new(2026, 12, 1),
+                                  monday: true, wednesday: true)
+      end
+
+      it 'shows only December weekdays for a December booking' do
+        create(:regular_schedule, child:, month: Date.new(2027, 1, 1), tuesday: true)
+
+        expect(helper.monthly_regular_days(child, events: [event], dates: [december])).to eq('月・水')
+      end
+
+      it 'labels each month when weekdays change between months' do
+        create(:regular_schedule, child:, month: Date.new(2027, 1, 1),
+                                  tuesday: true, thursday: true)
+
+        expect(helper.monthly_regular_days(child, dates: [january, december, december]))
+          .to eq('12月 月・水 ｜ 1月 火・木')
+      end
+
+      it 'shows one unlabelled set while January falls back to December' do
+        expect(helper.monthly_regular_days(child, dates: [december, january])).to eq('月・水')
+      end
+
+      it 'uses the event when the booking has no activities' do
+        create(:regular_schedule, child:, month: Date.new(2027, 2, 1), friday: true)
+
+        expect(helper.monthly_regular_days(child, events: [event], dates: [])).to eq('金')
+      end
+    end
+
     it 'does not display expired schedules or borrow from a future month' do
       create(:regular_schedule, child:, month: Date.new(2026, 7, 1), monday: true)
       create(:regular_schedule, child:, month: Date.new(2027, 3, 1), tuesday: true)

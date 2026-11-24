@@ -156,7 +156,7 @@ class ChildrenController < ApplicationController
     ).ids
     @children = @event.children
                       .includes(:regular_schedules,
-                                real_invoices: :coupons)
+                                real_invoices: %i[coupons time_slots])
                       .order(ssid: :desc)
     render 'children/events/event_sheet'
   end

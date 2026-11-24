@@ -458,6 +458,32 @@ RSpec.describe 'Monthly regular schedule uploads' do
     expect(flash[:alert]).to include('choose an attendance month')
   end
 
+  it 'reprices confirmed bookings whose afternoons fall on changed weekdays' do
+    prices = create(:member_prices, course1: '5500', regular_day_afternoon_price: 2700)
+    event = create(:event, member_prices: prices,
+                           start_date: Date.new(2026, 12, 1), end_date: Date.new(2027, 1, 31))
+    create(:regular_schedule, child:, month: Date.new(2026, 12, 1), monday: true)
+    slots = [Date.new(2026, 12, 7), Date.new(2027, 1, 4)].map do |date|
+      create(:time_slot, :afternoon, event:,
+                                     start_time: date.in_time_zone.change(hour: 13),
+                                     end_time: date.in_time_zone.change(hour: 18))
+    end
+    regs = slots.map { |slot| { child_id: child.id, registerable: slot } }
+    booking = create(:invoice, event:, child:, slot_regs_attributes: regs)
+    booking.update!(in_ss: true)
+    expect(booking.total_cost).to eq(2700 * 2)
+
+    travel_to Date.new(2026, 12, 22) do
+      upload_schedule('2027-01', "123456,false,true,false,false,false\n")
+    end
+
+    expect(flash[:notice]).to include('1 bookings repriced')
+    expect(booking.reload).to have_attributes(in_ss: true, total_cost: 2700 + 5500)
+
+    upload_schedule('2027-01', "123456,false,true,false,false,false\n")
+    expect(flash[:notice]).not_to include('repriced')
+  end
+
   it 'does not let customers upload schedules' do
     sign_in create(:customer)
     upload_schedule('2026-12')

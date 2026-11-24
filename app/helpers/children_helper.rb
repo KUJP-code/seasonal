@@ -1,19 +1,23 @@
 # frozen_string_literal: true
 
 module ChildrenHelper
-  def monthly_regular_days(child, events: nil)
+  # Staff-only weekday summary.
+  # - dates: a booking's activity dates (or an event's range). Each calendar month
+  #   uses its own effective schedule; differing months are labelled, e.g.
+  #   "12月 月・水 ｜ 1月 火・木". Identical months collapse to one unlabelled set.
+  # - events: the latest event's final month, as on combined booking lists.
+  # - neither: the latest uploaded schedule, as on student information.
+  def monthly_regular_days(child, events: nil, dates: nil)
     return '' unless child.internal?
 
-    schedule = if events.nil?
-                 child.regular_schedules.select(&:month).max_by(&:month)
-               else
-                 date = Array(events).map(&:end_date).max
-                 child.regular_schedule_for(date) if date
-               end
+    dates = Array(dates).compact
+    if dates.empty?
+      return format_regular_days(latest_regular_schedule(child)) if events.nil?
 
-    return '' unless schedule
+      dates = Array(Array(events).filter_map(&:end_date).max)
+    end
 
-    schedule.days.gsub(', ', '・').presence || '—'
+    regular_days_by_month(child, dates)
   end
 
   def arrival_time_for(slot, arrive_opt)
@@ -81,6 +85,29 @@ module ChildrenHelper
   end
 
   private
+
+  def latest_regular_schedule(child)
+    child.regular_schedules.select(&:month).max_by(&:month)
+  end
+
+  def regular_days_by_month(child, dates)
+    by_month = activity_months(dates).index_with do |month|
+      format_regular_days(child.regular_schedule_for(month))
+    end.compact_blank
+    return by_month.values.first.to_s if by_month.values.uniq.size <= 1
+
+    by_month.map { |month, days| "#{month.month}月 #{days}" }.join(' ｜ ')
+  end
+
+  def activity_months(dates)
+    dates.map { |date| date.to_date.beginning_of_month }.uniq.sort
+  end
+
+  def format_regular_days(schedule)
+    return '' unless schedule
+
+    schedule.days.gsub(', ', '・').presence || '—'
+  end
 
   def split_name(name)
     parts = name.to_s.strip.split(/[[:space:]　]+/, 2)
