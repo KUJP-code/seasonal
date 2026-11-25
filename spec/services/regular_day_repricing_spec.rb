@@ -84,6 +84,85 @@ RSpec.describe RegularDayRepricing do
     expect(booking.reload.total_cost).to eq(2700 * 2)
   end
 
+  it 'lists changed totals for managers and keeps the previous version in the history',
+     :versioning do
+    booking = confirmed_booking(Date.new(2027, 1, 4), Date.new(2027, 1, 5))
+
+    upload_january(monday: true)
+
+    expect(PriceChange.unseen.sole).to have_attributes(invoice: booking, old_total: 5400,
+                                                       new_total: 2700 + 5500,
+                                                       attendance_month: january)
+    expect(booking.versions.last.reify).to have_attributes(total_cost: 5400, in_ss: true)
+  end
+
+  it 'does not list a booking whose total stays the same' do
+    confirmed_booking(Date.new(2027, 1, 4), Date.new(2027, 1, 6))
+
+    upload_january(monday: true)
+
+    expect(PriceChange.count).to eq(0)
+  end
+
+  it 'never touches events that started before monthly weekday pricing' do
+    event.update!(start_date: described_class::FIRST_EVENT_DATE - 1.day)
+    booking = confirmed_booking(Date.new(2027, 1, 4))
+
+    expect(upload_january).to be_empty
+    expect(booking.reload.total_cost).to eq(2700)
+    expect(PriceChange.count).to eq(0)
+  end
+
+  context 'with the weekdays from before the upload' do
+    def upload_january_after(previous, **)
+      create(:regular_schedule, child:, month: january, **)
+      described_class.new([child.id], january, previous: { child.id => previous }).call
+    end
+
+    it 'reprices bookings where an afternoon changes regular-day status' do
+      booking = confirmed_booking(Date.new(2027, 1, 4))
+
+      changes = upload_january_after(nil, wednesday: true)
+
+      expect(changes.map(&:status)).to eq([:repriced])
+      expect(booking.reload.total_cost).to eq(5500)
+    end
+
+    it 'leaves bookings alone whose afternoons keep their status, even if mispriced' do
+      booking = confirmed_booking(Date.new(2027, 1, 6))
+      # e.g. pricing rules changed since booking
+      booking.update_columns(total_cost: 9999) # rubocop:disable Rails/SkipsModelValidations
+
+      expect(upload_january_after(nil, monday: true)).to be_empty
+      expect(booking.reload.total_cost).to eq(9999)
+      expect(PriceChange.count).to eq(0)
+    end
+
+    it 'still reprices bookings that only have automatic adjustments' do
+      booking = confirmed_booking(Date.new(2027, 1, 4))
+      booking.adjustments.create!(change: -500, reason: Adjustment::EARLY_BIRD)
+
+      changes = upload_january_after(nil, wednesday: true)
+
+      expect(changes.map(&:status)).to eq([:repriced])
+    end
+
+    it 'lists bookings with manual adjustments for review instead of repricing them' do
+      booking = confirmed_booking(Date.new(2027, 1, 4))
+      create(:adjustment, invoice: booking, change: -100, reason: '通学日調整')
+      booking.reload.update!(in_ss: false)
+      booking.update!(in_ss: true)
+      total = booking.total_cost
+
+      changes = upload_january_after(nil, wednesday: true)
+
+      expect(changes.map(&:status)).to eq([:review])
+      expect(booking.reload.total_cost).to eq(total)
+      expect(PriceChange.needs_review.sole).to have_attributes(old_total: total,
+                                                               new_total: total + 2800)
+    end
+  end
+
   it 'does not save during a dry run' do
     booking = confirmed_booking(Date.new(2027, 1, 4))
     create(:regular_schedule, child:, month: january)
@@ -92,5 +171,6 @@ RSpec.describe RegularDayRepricing do
 
     expect(changes.map(&:new_total)).to eq([5500])
     expect(booking.reload.total_cost).to eq(2700)
+    expect(PriceChange.count).to eq(0)
   end
 end

@@ -63,6 +63,10 @@
             surveys_path,
             class: 'btn btn-primary flex-grow-1'
 
+  = link_to 'Booking Checks',
+            price_changes_path,
+            class: 'btn btn-primary flex-grow-1'
+
   - if current_user.id == 1
     = link_to 'DB',
               pg_hero_path,

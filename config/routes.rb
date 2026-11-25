@@ -38,6 +38,7 @@ Rails.application.routes.draw do
       end
       resources :inquiries, except: %i[show]
       resources :rashimba_inquiries, only: %i[index show update destroy]
+      resources :price_changes, only: %i[index update]
       resources :price_lists, except: %i[destroy show]
       resources :recruit_applications, only: %i[index show update destroy] do
         patch :restore, on: :member

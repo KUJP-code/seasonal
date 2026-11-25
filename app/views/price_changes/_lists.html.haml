@@ -1,0 +1,13 @@
+-# locals: (unseen:, seen:)
+
+.card
+  %h2= t('price_changes.lists.unseen', count: unseen.size)
+  - if unseen.empty?
+    %p= t('price_changes.lists.none')
+  - else
+    = render 'price_changes/table', changes: unseen
+
+- unless seen.empty?
+  .card
+    %h2= t('price_changes.lists.seen')
+    = render 'price_changes/table', changes: seen

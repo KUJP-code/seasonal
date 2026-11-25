@@ -1,0 +1,8 @@
+-# locals: (count:)
+
+#price-change-alert
+  .card.flex-row.flex-wrap.justify-content-evenly.align-items-center.gap-3
+    %p.fw-bold.text-danger= t('price_changes.alert.message', count:)
+    = link_to t('price_changes.alert.check'),
+              price_changes_path,
+              class: 'btn btn-primary'

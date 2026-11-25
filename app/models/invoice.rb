@@ -35,6 +35,7 @@ class Invoice < ApplicationRecord
                      source: :registerable,
                      source_type: 'Option'
   has_many :adjustments, dependent: :destroy
+  has_many :price_changes, dependent: :destroy
   accepts_nested_attributes_for :adjustments, allow_destroy: true
   has_many :coupons, as: :couponable,
                      dependent: :destroy

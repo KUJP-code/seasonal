@@ -126,23 +126,73 @@ upload also reprices the bookings it affects, in the same transaction:
   Re-uploading an unchanged file reprices nothing.
 - Only bookings with activities in the uploaded month, or in the following five
   months that may fall back to it, are checked.
+- Only bookings where a booked afternoon becomes or stops being a regular day are
+  repriced. Bookings whose price drifted for other reasons (e.g. pricing rules
+  changed since booking) are left alone.
 - Every afternoon is still priced from its own month. A January upload changes
   January afternoons; December afternoons in the same booking keep December's
   weekdays. Packages are rebuilt within the booking's existing batches.
 - Confirmed (`in_ss`) bookings are repriced and stay confirmed. Photo-service
   options are not added or removed.
+- Bookings with manual adjustments (any adjustment except the automatic
+  早割, first-time, hat and repeater ones, `Adjustment::AUTOMATIC_REASONS`) are
+  never repriced. SMs often adjusted regular days by hand before the system did,
+  so repricing would apply them twice. They are listed for review instead.
 - Students who are not currently internal are never repriced. Eligibility uses
   today's membership, so repricing a student who has since withdrawn would remove
   regular-day prices from months they attended. SMs adjust these manually.
-- No emails are sent. The upload notice states how many bookings were repriced.
+- Only events starting on or after 2026-12-01 (Winter School 2026, the first
+  priced from monthly weekdays) are repriced
+  (`RegularDayRepricing::FIRST_EVENT_DATE`). Uploading an old month never
+  rewrites older bookings.
+- No emails are sent. The upload notice states how many bookings were repriced,
+  left for review and flagged as double bookings.
+- Each repriced booking gets a history version, including confirmed bookings,
+  which otherwise skip versioning. The booking page shows the previous price and
+  summary under the current one, changed by the uploader (or System for the
+  catch-up task).
 
 SS is not updated. Price differences on bookings already debited are adjusted in
 SS by the SMs.
 
+### Booking checks for SMs
+
+Bookings to check are listed at `/price_changes` (お申込の確認) with the student,
+SSID, booking link, reason, totals and the date. There are three kinds:
+
+- 料金変更: repriced because the weekdays changed. Shows before, after and the
+  difference.
+- 要確認（手動調整あり）: would have been repriced but has manual adjustments, so
+  the price was kept. 変更後 is the system's price, marked （未反映）.
+- 通学日に通常レッスン: a 通常レッスン afternoon booked on the student's regular
+  weekday, which they attend anyway. Older booking pages showed these afternoons
+  under the morning activity's name, so some parents booked them by mistake.
+  Shows the clashing dates. Uploads check the students whose weekdays changed.
+
+School and area managers see their students' schools; admins see everything.
+Until each entry is ticked, school and area managers see a banner at the top of
+every page, wherever they are. Ticking records who checked it and when, and can
+be undone.
+
+A booking keeps one unchecked entry per kind. A later upload updates it, keeping
+the total the SMs last saw, and removes it if the reason goes away, for example
+when a wrong upload is corrected. Double bookings already ticked for the same
+dates are not listed again.
+
+### Tasks
+
+List existing 通常レッスン double bookings once (uploads only check the students
+they change). Dry run unless `APPLY=1`:
+
+```sh
+bin/rails regular_schedules:double_bookings
+APPLY=1 bin/rails regular_schedules:double_bookings
+```
+
 To reprice bookings created before a month's schedule was uploaded, run the
-catch-up task. It is a dry run unless `APPLY=1` is set. Unlike an upload, it
-checks every internal student with that month's schedule, so review the dry run
-for bookings changed for other reasons, such as a price list edited since.
+catch-up task. Unlike an upload, it compares every booking of internal students
+with that month's schedule with current prices, so review the dry run for
+bookings changed for other reasons, such as a price list edited since.
 
 ```sh
 bin/rails "regular_schedules:reprice[2026-12]"

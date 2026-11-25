@@ -1,0 +1,17 @@
+-# locals: (changes:)
+
+.table-responsive-lg
+  %table.table.table-hover.table-striped.align-middle
+    %thead
+      %tr.table-primary
+        %th= t('price_changes.table.name')
+        %th= t('price_changes.table.ssid')
+        %th= t('price_changes.table.booking')
+        %th= t('price_changes.table.reason')
+        %th= t('price_changes.table.before')
+        %th= t('price_changes.table.after')
+        %th= t('price_changes.table.difference')
+        %th= t('price_changes.table.changed_at')
+        %th= t('price_changes.table.seen')
+    %tbody
+      = render partial: 'price_changes/price_change', collection: changes

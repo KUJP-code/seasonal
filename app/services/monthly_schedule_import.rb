@@ -7,8 +7,9 @@ class MonthlyScheduleImport
     'false' => false, 'f' => false, '0' => false, 'no' => false
   }.freeze
 
-  # Bookings repriced because their students' weekdays changed in this upload.
-  attr_reader :repriced
+  # Bookings repriced (or left for review) because their students' weekdays
+  # changed in this upload, and 通常レッスン double bookings found for them.
+  attr_reader :repriced, :double_bookings
 
   def initialize(csv, attendance_month)
     raise ArgumentError, 'Choose a schedule CSV file.' unless csv.respond_to?(:tempfile)
@@ -24,14 +25,14 @@ class MonthlyScheduleImport
     rows = read_rows
     children = Child.where(ssid: rows.filter_map { |row| student_ssid(row) }).index_by(&:ssid)
     seen = {}
-    @changed_child_ids = []
+    @previous = {}
 
     RegularSchedule.transaction do
       rows.each_with_index do |row, index|
         import_row(row, row.fetch('_source_row', index + 2), children, seen)
       end
       clear_omitted_external_schedules(children, seen)
-      @repriced = RegularDayRepricing.new(@changed_child_ids, @month).call
+      check_bookings
     end
     rows.size
   end
@@ -52,6 +53,11 @@ class MonthlyScheduleImport
     rows
   end
 
+  def check_bookings
+    @repriced = RegularDayRepricing.new(@previous.keys, @month, previous: @previous).call
+    @double_bookings = RegularLessonDoubleBookings.new(@previous.keys).call
+  end
+
   def decoded_content
     bytes = File.binread(@path)
     content = bytes.force_encoding(Encoding::UTF_8)
@@ -65,12 +71,18 @@ class MonthlyScheduleImport
     raise ArgumentError, "Row #{line}: duplicate student SSID #{ssid}." if seen[child.id]
 
     seen[child.id] = true
+    save_schedule(child, weekday_attributes(row, line))
+  end
+
+  # Keeps the weekdays from before the upload so repricing can compare them.
+  def save_schedule(child, weekdays)
     schedule = RegularSchedule.find_or_initialize_by(child:, month: @month)
-    schedule.assign_attributes(weekday_attributes(row, line))
+    previous = schedule.dup unless schedule.new_record?
+    schedule.assign_attributes(weekdays)
     return unless schedule.changed?
 
     schedule.save!
-    @changed_child_ids << child.id
+    @previous[child.id] = previous
   end
 
   def student_ssid(row)

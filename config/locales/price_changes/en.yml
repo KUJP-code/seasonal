@@ -1,0 +1,32 @@
+en:
+  price_changes:
+    alert:
+      check: "Check"
+      message: "%{count} bookings need checking."
+    index:
+      explanation: "Bookings to check after regular weekday uploads. Open a booking to see its previous version below it when the price changed. Tick each one once checked."
+      kinds_help:
+        double_booking: "通常レッスン booked on the student's regular weekday, which they attend anyway. Possibly a double booking; check with the parent."
+        needs_review: "Has manual adjustments, so the price was not changed. After shows the system's price. Check the adjustments and correct if needed."
+        price_change: "Repriced automatically because the student's regular weekdays changed."
+      title: "Booking checks"
+    kinds:
+      double_booking: "通常レッスン on regular day"
+      needs_review: "Review (manual adjustments)"
+      price_change: "Price change"
+    lists:
+      none: "Nothing to check."
+      seen: "Checked (latest 50)"
+      unseen: "Unchecked (%{count})"
+    table:
+      after: "After"
+      before: "Before"
+      booking: "Booking"
+      changed_at: "Date"
+      difference: "Difference"
+      month_format: "%{year}/%{month} weekdays"
+      name: "Name"
+      not_applied: "(not applied)"
+      reason: "Reason"
+      seen: "Checked"
+      ssid: "SSID"

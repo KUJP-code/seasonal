@@ -31,6 +31,8 @@
     %turbo_frame#flash
       = render 'shared/flash'
     = render 'nav/navbar' if user_signed_in?
+    - if show_price_change_alert?
+      = render 'price_changes/alert', count: unseen_price_change_count
     %noscript
       %iframe{ src: 'https://www.googletagmanager.com/ns.html?id=GTM-MGWSQLH',
                height: '0', width: '0', style: 'display:none;visibility:hidden' }

@@ -98,6 +98,23 @@ a {
     z-index: 10;
 }
 
+#price-change-alert {
+    display: flex;
+    justify-content: center;
+    padding: 1vw 1vw 0;
+    background: var(--bs-gray-200);
+
+    .card {
+        width: 90vw;
+        border: 2px solid $danger;
+    }
+}
+
+#price-changes > .card,
+#price-change-lists {
+    width: 90vw;
+}
+
 // Cards
 
 .card {

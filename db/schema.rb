@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_11_04_050000) do
+ActiveRecord::Schema[7.1].define(version: 2026_11_24_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -247,6 +247,22 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_04_050000) do
     t.datetime "updated_at", null: false
     t.integer "registrations_count", default: 0
     t.index ["optionable_type", "optionable_id"], name: "index_options_on_optionable"
+  end
+
+  create_table "price_changes", force: :cascade do |t|
+    t.bigint "invoice_id", null: false
+    t.integer "kind", default: 0, null: false
+    t.integer "old_total", null: false
+    t.integer "new_total", null: false
+    t.date "attendance_month"
+    t.string "details"
+    t.datetime "seen_at"
+    t.bigint "seen_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invoice_id"], name: "index_price_changes_on_invoice_id"
+    t.index ["kind", "seen_at"], name: "index_price_changes_on_kind_and_seen_at"
+    t.index ["seen_by_id"], name: "index_price_changes_on_seen_by_id"
   end
 
   create_table "price_lists", force: :cascade do |t|
@@ -653,6 +669,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_04_050000) do
   add_foreign_key "invoices", "events"
   add_foreign_key "mailer_subscriptions", "users"
   add_foreign_key "managements", "users", column: "manager_id"
+  add_foreign_key "price_changes", "invoices"
+  add_foreign_key "price_changes", "users", column: "seen_by_id"
   add_foreign_key "qr_code_usages", "qr_codes"
   add_foreign_key "registrations", "children"
   add_foreign_key "registrations", "invoices"

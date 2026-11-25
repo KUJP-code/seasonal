@@ -484,6 +484,23 @@ RSpec.describe 'Monthly regular schedule uploads' do
     expect(flash[:notice]).not_to include('repriced')
   end
 
+  it 'lists 通常レッスン booked on newly uploaded regular weekdays for SMs' do
+    event = create(:event, start_date: Date.new(2026, 12, 14), end_date: Date.new(2026, 12, 25))
+    morning = create(:time_slot, :morning, event:,
+                                           start_time: Time.zone.local(2026, 12, 15, 10),
+                                           end_time: Time.zone.local(2026, 12, 15, 13))
+    regs = [morning, morning.afternoon_slot].map { { child_id: child.id, registerable: _1 } }
+    booking = create(:invoice, event:, child:, slot_regs_attributes: regs)
+
+    travel_to Date.new(2026, 11, 25) do
+      upload_schedule('2026-12', "123456,false,true,false,false,false\n")
+    end
+
+    expect(flash[:notice]).to include('1 通常レッスン double bookings')
+    expect(PriceChange.double_booking.sole)
+      .to have_attributes(invoice: booking, details: '2026-12-15')
+  end
+
   it 'does not let customers upload schedules' do
     sign_in create(:customer)
     upload_schedule('2026-12')

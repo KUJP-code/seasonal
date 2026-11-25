@@ -202,13 +202,13 @@ class CsvsController < ApplicationController
       elsif params[:model] == 'Setsumeikai'
         update_setsumeikai(csv)
       elsif params[:model] == 'RegularSchedule'
-        repriced = update_schedule(csv)
+        schedule_notice = update_schedule(csv)
       else
         raise ArgumentError, 'Unsupported update model.'
       end
   
       flash[:notice] = "#{params[:model]} records updated."
-      flash[:notice] += " #{repriced.size} bookings repriced." if repriced&.any?
+      flash[:notice] += " #{schedule_notice}" if schedule_notice.present?
     rescue ActiveRecord::RecordInvalid => e
       flash[:alert] = "Failed to update #{params[:model]} records: #{e.message}"
     rescue StandardError => e
@@ -331,10 +331,13 @@ class CsvsController < ApplicationController
   end
 
   # Update Schedule records if present, otherwise create new ones
-  # Returns the bookings repriced because weekdays changed
+  # Returns a summary of the bookings listed for SMs because weekdays changed
   def update_schedule(csv)
     import = MonthlyScheduleImport.new(csv, params[:attendance_month])
     import.call
-    import.repriced
+    statuses = import.repriced.map(&:status).tally
+    { 'bookings repriced' => statuses[:repriced], 'need review (manual adjustments)' => statuses[:review],
+      '通常レッスン double bookings' => import.double_bookings.size }
+      .filter_map { |label, count| "#{count} #{label}." if count&.positive? }.join(' ')
   end
 end

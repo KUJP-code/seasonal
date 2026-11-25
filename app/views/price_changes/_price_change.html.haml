@@ -1,0 +1,44 @@
+-# locals: (price_change:)
+
+- invoice = price_change.invoice
+- child = invoice.child
+- difference = price_change.difference
+%tr{ id: dom_id(price_change),
+     class: ('table-danger' unless price_change.seen_at) }
+  %td= link_to child.name, child_path(child)
+  %td= child.ssid
+  %td
+    = link_to invoice_path(invoice) do
+      = invoice.event.name
+      %br
+      %small ##{invoice.id}
+  %td
+    = price_change_kind(price_change)
+    %br
+    %small= price_change_detail(price_change)
+  %td= price_change_yen(price_change.old_total)
+  - if price_change.double_booking?
+    %td —
+    %td —
+  - else
+    %td
+      %span.fw-bold= price_change_yen(price_change.new_total)
+      - if price_change.needs_review?
+        %br
+        %small.text-muted= t('price_changes.table.not_applied')
+    %td{ class: difference.positive? ? 'text-danger' : 'text-success' }
+      = price_change_yen(difference, signed: true)
+  %td= l(price_change.updated_at, format: :short)
+  %td
+    = form_with url: price_change_path(price_change), method: :patch,
+                class: 'd-flex flex-column align-items-center gap-1' do
+      = check_box_tag :seen, '1', price_change.seen_at.present?,
+                      id: "seen_#{price_change.id}",
+                      class: 'form-check-input fs-4 m-0',
+                      onchange: 'this.form.requestSubmit()',
+                      aria: { label: t('price_changes.table.seen') }
+      - if price_change.seen_at
+        %small.text-muted
+          = price_change.seen_by&.name
+          %br
+          = l(price_change.seen_at, format: :short)

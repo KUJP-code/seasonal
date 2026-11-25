@@ -136,11 +136,17 @@ class TimeSlot < ApplicationRecord
   end
 
   def regular_day_price_for(child)
+    price = regular_day_rate_for(child)
+    price if !price.nil? && child.regular_day?(start_time)
+  end
+
+  # The regular-day price this afternoon would have on one of the child's regular
+  # weekdays, or nil when it never gets one (mornings, 通常レッスン, specials).
+  def regular_day_rate_for(child)
     return if morning? || %w[special party].include?(category) || !event.seasonal?
     return if morning_slot_id.present?
 
-    price = event.regular_day_afternoon_price_for(child)
-    price if !price.nil? && child.regular_day?(start_time)
+    event.regular_day_afternoon_price_for(child)
   end
 
   def snack_charge_for(child)

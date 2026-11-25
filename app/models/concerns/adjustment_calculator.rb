@@ -21,7 +21,7 @@ module AdjustmentCalculator
 
   def first_time_adjustment
     change = 1_100
-    reason = '初回登録料(初めてシーズナルスクールに参加する非会員の方)'
+    reason = Adjustment::FIRST_TIME
     apply_if_never_applied(change, reason)
   end
 
@@ -35,7 +35,7 @@ module AdjustmentCalculator
 
   def early_bird_adjustment(num_regs)
     change = event.early_bird_discount
-    reason = '早割'
+    reason = Adjustment::EARLY_BIRD
 
     early_bird_count = adjustments.count { |adj| adj.reason == reason }
     while early_bird_count < num_regs
@@ -52,7 +52,7 @@ module AdjustmentCalculator
 
   def hat_adjustment
     change = 1_100
-    reason = '帽子代(野外アクティビティに参加される方でKids UP帽子をお持ちでない方のみ)'
+    reason = Adjustment::HAT
     apply_if_never_applied(change, reason)
   end
 
@@ -62,7 +62,7 @@ module AdjustmentCalculator
 
   def repeater_discount
     change = -10_000
-    reason = '非会員リピーター割引(以前シーズナルスクールに参加された非会員の方)'
+    reason = Adjustment::REPEATER
     apply_if_not_applied_to_event(change, reason)
   end
 

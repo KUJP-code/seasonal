@@ -86,16 +86,18 @@ class Child < ApplicationRecord
   validates :allergies, :category, :en_name, :grade, :katakana_name, :name, :photos, presence: true
   validates :ssid, uniqueness: { allow_blank: true }
 
-  def regular_schedule_for(date)
+  # schedules: defaults to the saved schedules; pass others to ask what a
+  # different set (e.g. before an upload) would mean.
+  def regular_schedule_for(date, schedules: regular_schedules)
     month = date.to_date.beginning_of_month
     earliest = month - RegularSchedule::FALLBACK_MONTHS.months
-    regular_schedules.select do |schedule|
+    schedules.select do |schedule|
       schedule.month&.between?(earliest, month)
     end.max_by(&:month)
   end
 
-  def regular_day?(date)
-    regular_schedule_for(date)&.weekday?(date) || false
+  def regular_day?(date, schedules: regular_schedules)
+    regular_schedule_for(date, schedules:)&.weekday?(date) || false
   end
 
   def photo_service_eligible_for?(event)

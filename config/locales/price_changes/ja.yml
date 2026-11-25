@@ -1,0 +1,32 @@
+ja:
+  price_changes:
+    alert:
+      check: "確認する"
+      message: "確認が必要なお申込が%{count}件あります。"
+    index:
+      explanation: "通学曜日のアップロードで確認が必要になったお申込です。お申込を開くと、料金が変わった場合は下に変更前の内容が表示されます。確認したらチェックを入れてください。"
+      kinds_help:
+        double_booking: "通学日に通常レッスンを申し込んでいます。通学日はもともと通常レッスンに参加するため、重複の可能性があります。保護者様にご確認ください。"
+        needs_review: "手動の調整があるため、料金は自動で変更していません。「変更後」はシステムの計算です。調整内容を確認し、必要に応じて修正してください。"
+        price_change: "通学曜日の変更により、料金が自動で変更されました。"
+      title: "お申込の確認"
+    kinds:
+      double_booking: "通学日に通常レッスン"
+      needs_review: "要確認（手動調整あり）"
+      price_change: "料金変更"
+    lists:
+      none: "未確認のお申込はありません。"
+      seen: "確認済み（最新50件）"
+      unseen: "未確認 (%{count}件)"
+    table:
+      after: "変更後"
+      before: "変更前"
+      booking: "お申込"
+      changed_at: "日時"
+      difference: "差額"
+      month_format: "%{year}年%{month}月分の通学曜日"
+      name: "名前"
+      not_applied: "（未反映）"
+      reason: "内容"
+      seen: "確認"
+      ssid: "SSID"

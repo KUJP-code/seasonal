@@ -1,0 +1,12 @@
+%main.justify-content-start.gap-3#price-changes
+  .card.text-center
+    %h1.fw-bold= t('.title')
+    %p= t('.explanation')
+    %ul.text-start.d-flex.flex-column.gap-2
+      - %w[price_change needs_review double_booking].each do |kind|
+        %li
+          = price_change_kind(PriceChange.new(kind:))
+          = t(".kinds_help.#{kind}")
+
+  .d-flex.flex-column.gap-3.w-100#price-change-lists
+    = render 'price_changes/lists', unseen: @unseen, seen: @seen
