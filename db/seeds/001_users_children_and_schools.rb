@@ -12,7 +12,7 @@ am = FactoryBot.create(
 
 sm = FactoryBot.create(
   :user, email: 'sm@gmail.com', password: 'smpasswordsmpassword',
-         role: :school_manager, pin: '0000', allowed_ips: ['127.0.0.1']
+         role: :school_manager, pin: '0000', allowed_ips: ['*']
 )
 
 customer = FactoryBot.create(
