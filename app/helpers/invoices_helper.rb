@@ -18,8 +18,10 @@ module InvoicesHelper
   def booking_summary(invoice)
     summary = sanitize(invoice.summary, tags: %w[h2 h3 h4 h5 div p], attributes: %w[class id])
     summary = label_regular_lessons(summary, invoice)
-    # History versions can point at a merged duplicate child that was since deleted.
-    return summary unless current_user&.staff? && invoice.child&.internal?
+    # Regular days follow today's schedule, so they would mislabel history versions,
+    # which can also point at a merged duplicate child that was since deleted.
+    return summary unless current_user&.staff? && invoice.paper_trail.live?
+    return summary unless invoice.child&.internal?
 
     regular_dates = regular_afternoon_dates(invoice)
     return summary if regular_dates.empty?

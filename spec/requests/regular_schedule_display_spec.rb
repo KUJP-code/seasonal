@@ -72,6 +72,18 @@ RSpec.describe 'Regular weekdays on booking screens' do
     end
   end
 
+  it 'labels only the current booking, not history versions priced from other weekdays' do
+    child.regular_schedules.first.update!(thursday: true)
+    invoice.versions.create!(event: 'update',
+                             object: PaperTrail.serializer.dump(invoice.attributes))
+    sign_in create(:admin)
+
+    get invoice_path(id: invoice.id)
+
+    expect(response.body).to include('Previous Versions')
+    expect_regular_day_label
+  end
+
   it 'corrects regular-lesson names on existing locked invoices without changing saved data' do
     other_afternoon.update!(start_time: morning.afternoon_slot.start_time,
                             end_time: morning.afternoon_slot.end_time)
