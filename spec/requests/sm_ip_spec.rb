@@ -28,7 +28,7 @@ RSpec.describe 'SM redirect if not in school' do
       expect(response).to redirect_to(user_path(user))
     end
 
-    it 'tells the SM to contact Leroy if incorrectly redirected' do
+    it 'tells the SM who to contact if incorrectly redirected' do
       get children_path, env: { 'REMOTE_ADDR' => non_school_ip }
       expect(flash[:alert]).to eq(I18n.t('not_in_school'))
     end

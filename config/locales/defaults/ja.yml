@@ -148,7 +148,7 @@ ja:
     preview_label: "プレビュー"
     title: "メールテンプレート"
   not_authorized: "そのURLへのアクセスは許可されていない。"
-  not_in_school: "このサイトには自スクールからのみアクセスできます。このメッセージを受け取った場合は、Leroy係長に連絡してください。"
+  not_in_school: "このサイトには自スクールからのみアクセスできます。このメッセージを受け取った場合は、Jaysonに連絡してください。"
   number:
     currency:
       format:
