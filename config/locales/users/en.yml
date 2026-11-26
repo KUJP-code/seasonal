@@ -4,6 +4,7 @@ en:
       dates: "From %{start_date} to %{end_date}"
   users:
     add_child:
+      already_claimed: "This child is already linked to another account. Please log in with the email address you registered with before, or contact your school."
       claim_child: "Claim Child"
       find_child: "Find Child"
       remove_child: "Remove Child"

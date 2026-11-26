@@ -14,6 +14,7 @@ ja:
   users:
     add_child:
       add_new_child: "新しいお子様の情報を追加する"
+      already_claimed: "このお子様はすでに別のアカウントに登録されています。以前ご登録いただいたメールアドレスでログインするか、通われている校舎へお問い合わせください。"
       back: "戻る"
       bday: "誕生日"
       claim_child: "追加する"
